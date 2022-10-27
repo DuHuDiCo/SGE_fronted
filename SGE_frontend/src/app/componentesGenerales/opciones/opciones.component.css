@@ -1,0 +1,79 @@
+.caja {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #fff;
+}
+
+    .options{
+        display: flex;
+        list-style: none;
+    }
+    
+    .option {
+    margin: 0 25px;
+    position: relative;
+    border-radius: 50%;
+    }
+
+    .option a {
+        position: relative;
+        background: #000;
+        text-decoration: none;
+        width: 100px;
+        height: 80px;
+        display: flex;
+        border-radius: 50%;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 10px 60px  #960010;
+        text-align: center;
+        transition: .3s;
+    }
+
+    .option a:hover {
+        background: #960010;
+        padding: 50px;
+    }
+
+
+    /* .option a:hover .fas{
+        padding: 50px;
+    } */
+
+    .option a .fas{
+        font-size: 50px;
+        color: #fff;
+        transition: .1s;
+    }
+
+    .option a span{
+        position: absolute;
+        color: #fff;
+        background: #000;
+        font-family: 'Rubik';
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 5px;
+        border-radius: 5px;
+        font-weight: 600;
+        visibility: hidden;
+        opacity: 0;
+        transition: .3s;
+    }
+
+.option a:hover span {
+    top: 70px;
+    visibility: visible;
+    opacity: 1;
+    box-shadow: 0px 2px 5px rgbs(0, 0, 0, .4);
+    padding: 10px;
+}
+
+
+
+
+
+
