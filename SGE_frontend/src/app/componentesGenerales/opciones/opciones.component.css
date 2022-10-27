@@ -6,31 +6,31 @@
     background: #fff;
 }
 
-    .options{
-        display: flex;
-        list-style: none;
-    }
-    
-    .option {
+.options {
+    display: flex;
+    list-style: none;
+}
+
+.option {
     margin: 0 25px;
     position: relative;
     border-radius: 50%;
-    }
+}
 
-    .option a {
-        position: relative;
-        background: #000;
-        text-decoration: none;
-        width: 100px;
-        height: 80px;
-        display: flex;
-        border-radius: 50%;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 10px 60px  #960010;
-        text-align: center;
-        transition: .3s;
-    }
+.option a {
+    position: relative;
+    background: #000;
+    text-decoration: none;
+    width: 100px;
+    height: 80px;
+    display: flex;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 60px #960010;
+    text-align: center;
+    transition: .3s;
+}
 
     .option a:hover {
         background: #960010;
@@ -46,11 +46,11 @@
         padding: 50px;
     } */
 
-    .option a .fas{
-        font-size: 50px;
-        color: #fff;
-        transition: .1s;
-    }
+.option a .fas {
+    font-size: 50px;
+    color: #fff;
+    transition: .1s;
+}
 
     .option a span{
         position: absolute;
