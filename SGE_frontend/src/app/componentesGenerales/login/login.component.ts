@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,13 @@ export class LoginComponent implements OnInit {
   }
 
   public iniciarSesion(){
+    Swal.fire({
+      position:'top-end',
+      icon:'success',
+      title:'Inicio Sesion Exitoso',
+      showConfirmButton: false,
+      timer:2000
+    })
     this.router.navigate(['opciones'])
   }
 

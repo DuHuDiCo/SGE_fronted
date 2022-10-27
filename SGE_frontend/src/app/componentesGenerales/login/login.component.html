@@ -7,7 +7,7 @@
             <b><h1>Iniciar sesión</h1></b>
         </div>
         <!-- Login Form -->
-        <form>
+        <form (ngSubmit)="iniciarSesion()">
             <input type="text" id="login" class="fadeIn second" name="username" placeholder="usuario" [(ngModel)]="login.username">
             <input type="password" id="password" class="fadeIn third" name="password" placeholder="contraseña" [(ngModel)]="login.password">
             <input type="submit" class="fadeIn fourth" value="Entrar" >
