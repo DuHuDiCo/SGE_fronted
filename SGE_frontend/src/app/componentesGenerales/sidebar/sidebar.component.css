@@ -32,5 +32,25 @@ li a{
 }
 
 
+@media(max-width : 700px){
+    .offcanvas offcanvas-start size bg{
+    height: auto;
+    width: 70px;
+    left: 0;
+    margin: 100px 0;
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+.offcanvas offcanvas-start size bg a {
+    height: 70px;
+    display: grid;
+}
 
-
+.offcanvas offcanvas-start size bg a i {
+    margin-left: -10px;
+}
+a:hover {
+    width: 200px;
+    background: inherit;
+}
+}
