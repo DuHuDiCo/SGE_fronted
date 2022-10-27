@@ -7,6 +7,7 @@ import { OpcionesComponent } from './componentesGenerales/opciones/opciones.comp
 import { SidebarComponent } from './componentesGenerales/sidebar/sidebar.component';
 import { DashboardComponent } from './Pages/Cartera/pages/dashboard/dashboard.component';
 import { NavbarComponent } from './componentesGenerales/navbar/navbar.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { NavbarComponent } from './componentesGenerales/navbar/navbar.component'
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
