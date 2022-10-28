@@ -1,4 +1,4 @@
-<nav class="nav">
+<!-- <nav class="nav">
 
     <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBackdrop"
         aria-controls="offcanvasWithBackdrop"><i class="fa-solid fa-bars"
@@ -28,4 +28,72 @@
           <li><a class="dropdown-item" href="#">Something else here</a></li>
         </ul>
       </div>
-</nav>
+</nav> -->
+
+<div class="row d-none d-sm-none d-md-block">
+    <nav class="navbar navbar-expand-lg shadow p-3 mb-5 bg-body rounded nav">
+
+        <div class="row">
+            <div class="col-md-2">
+                <button class="btn me-5" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasWithBackdrop" aria-controls="offcanvasWithBackdrop"><i
+                        class="fa-solid fa-bars" style="height: 40px;width: 30px;color: black;"></i></button>
+            </div>
+            <div class="col-md-3 ms-5">
+                <a><img src="../../../assets/logo.png" alt="" srcset="" width="180px" height="170px"></a>
+
+            </div>
+            <div class="col-md-4">
+                <div class="input-wrapper">
+                    <input type="search" class="search">
+                    <i class="fa-solid fa-magnifying-glass input-icon"></i>
+                </div>
+            </div>
+            <div class="col-md-1 ">
+                <div class="dropdown">
+                    <a class="noti" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fa-solid fa-bell" style="height: 40px;width: 20px;"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-1 ms-3">
+                <div class="dropdown">
+                    <a class="option dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <img src="../../../assets/perfil.png" alt="" srcset="" style="width: 40;height: 60px;"
+                            class="perfil">
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+    </nav>
+</div>
+
+
+<div class="row d-block d-sm-block d-md-none">
+    <div class="nav">
+        <div class="col-md-3">
+            <button class="btn me-5" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBackdrop"
+                aria-controls="offcanvasWithBackdrop"><i class="fa-solid fa-bars"
+                    style="height: 40px;width: 30px;color: black;"></i></button>
+        </div>
+        <div class="col-md-3 ms-9">
+            <a><img src="../../../assets/logo.png" alt="" srcset="" width="180px" height="170px"></a>
+
+        </div>
+
+    </div>
+</div>
