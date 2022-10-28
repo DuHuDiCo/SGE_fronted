@@ -9,6 +9,7 @@ import { DashboardComponent } from './Pages/Cartera/pages/dashboard/dashboard.co
 import { NavbarComponent } from './componentesGenerales/navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
 import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/perfil-usuario.component';
+import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/sidebar/gestion/gestion.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/pe
     SidebarComponent,
     DashboardComponent,
     NavbarComponent,
-    PerfilUsuarioComponent
+    PerfilUsuarioComponent,
+    GestionComponent
   ],
   imports: [
     BrowserModule,
