@@ -8,6 +8,7 @@ import { SidebarComponent } from './componentesGenerales/sidebar/sidebar.compone
 import { DashboardComponent } from './Pages/Cartera/pages/dashboard/dashboard.component';
 import { NavbarComponent } from './componentesGenerales/navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
+import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/perfil-usuario.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { FormsModule } from '@angular/forms';
     OpcionesComponent,
     SidebarComponent,
     DashboardComponent,
-    NavbarComponent
+    NavbarComponent,
+    PerfilUsuarioComponent
   ],
   imports: [
     BrowserModule,
