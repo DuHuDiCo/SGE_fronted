@@ -10,6 +10,7 @@ import { NavbarComponent } from './componentesGenerales/navbar/navbar.component'
 import { FormsModule } from '@angular/forms';
 import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/perfil-usuario.component';
 import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/sidebar/gestion/gestion.component';
+import { TablaGestionComponent } from './Pages/Cartera/pages/componentesCartera/tabla-gestion/tabla-gestion.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/sideb
     DashboardComponent,
     NavbarComponent,
     PerfilUsuarioComponent,
-    GestionComponent
+    GestionComponent,
+    TablaGestionComponent
   ],
   imports: [
     BrowserModule,
