@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './componentesGenerales/login/login.component';
 import { OpcionesComponent } from './componentesGenerales/opciones/opciones.component';
 import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/perfil-usuario.component';
-import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/sidebar/gestion/gestion.component';
+import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/gestion/gestion.component';
 import { DashboardComponent } from './Pages/Cartera/pages/dashboard/dashboard.component';
 
 const routes: Routes = [

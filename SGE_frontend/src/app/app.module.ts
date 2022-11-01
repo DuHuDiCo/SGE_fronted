@@ -9,7 +9,8 @@ import { DashboardComponent } from './Pages/Cartera/pages/dashboard/dashboard.co
 import { NavbarComponent } from './componentesGenerales/navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
 import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/perfil-usuario.component';
-import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/sidebar/gestion/gestion.component';
+import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/gestion/gestion.component';
+import { DatosCarteraComponent } from './Pages/Cartera/pages/componentesCartera/datos-cartera/datos-cartera.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/sideb
     DashboardComponent,
     NavbarComponent,
     PerfilUsuarioComponent,
-    GestionComponent
+    GestionComponent,
+    DatosCarteraComponent
   ],
   imports: [
     BrowserModule,
