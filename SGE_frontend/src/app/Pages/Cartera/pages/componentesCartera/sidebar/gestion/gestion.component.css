@@ -71,6 +71,12 @@ background-color: #212121;
     .iconos ul li.google {
         margin-left: 60px;
     }
+    input[type=button]{
+        width: 35px;
+    }
+    /* input[type=submit]{
+        margin-left: auto;
+    } */
 }
 
 .iconos ul li{
@@ -88,3 +94,28 @@ background-color: #212121;
     flex-direction: column;
 } 
 
+
+.card{
+    padding: 100px;
+    box-shadow: 0 30px 60px 0 rgb(0, 0, 0);
+    display: flex;
+    flex-direction: column; 
+}
+
+
+
+.listado-numeros ul li{
+    margin: 0 10px;
+    cursor: pointer;
+    float: left;
+    position: relative;
+}
+
+.listado-numeros ul{
+    list-style: none;
+}
+
+li.active{
+    background: #212121;
+    color: #fff;
+}
