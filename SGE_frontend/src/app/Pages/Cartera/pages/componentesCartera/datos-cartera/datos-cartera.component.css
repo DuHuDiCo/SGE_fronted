@@ -1,46 +1,30 @@
 
-*{
-    margin: auto;
-    padding: 0;
-}
 
-.row{
-padding-left: 25px;
-}
 
-.col-sm-4{
-    width: 420px;
-}
-.card{
-width: 350px;
-margin: 0 10px;
-}
+
 
 .card-body{
-padding: 25px;
+padding: 15px;
 }
 
 .cardd{
-    width: 320px;
     color: #fff;
     background: #960010;
     border-radius: 20px;
-    box-shadow: 0 30px 60px 0 rgb(255, 255, 255);
+
 }
 
 
 .cardx{
-    display: grid;
-    width: 820px;
     height: 240px;
-    background: rgb(209, 209, 209);
+    background: rgb(255, 255, 255);
     border-radius: 20px;
     box-shadow: 0 20px 60px 0 rgb(226, 242, 245);
 }
 
 .cardR{
     width: 300px;
-    height: 315px;
+
     background: #ffffff;
     color: rgb(0, 0, 0);
     border-radius: 20px;
@@ -65,3 +49,19 @@ padding: 25px;
 @keyframes rotate {
 100% {transform: rotate(360deg);}
 } 
+
+
+/* iconos */
+
+#dolar{
+    box-shadow: 0 0px 17px 12px rgb(255 255 255);
+}
+
+
+#persona{
+    box-shadow: 0 0px 13px 6px rgb(131 131 131 / 68%);
+}
+
+#comision{
+    box-shadow: 0 0px 11px 9px rgb(68 66 66);
+}
