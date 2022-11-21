@@ -1,10 +1,7 @@
 
-
-
-
-
 .card-body{
 padding: 15px;
+
 }
 
 .cardd{
@@ -14,7 +11,9 @@ padding: 15px;
 
 }
 
-
+.card{
+    border-radius: 20px;
+}
 .cardx{
     height: 240px;
     background: rgb(255, 255, 255);
@@ -24,7 +23,6 @@ padding: 15px;
 
 .cardR{
     width: 300px;
-
     background: #ffffff;
     color: rgb(0, 0, 0);
     border-radius: 20px;
@@ -53,15 +51,25 @@ padding: 15px;
 
 /* iconos */
 
-#dolar{
-    box-shadow: 0 0px 17px 12px rgb(255 255 255);
-}
 
 
-#persona{
-    box-shadow: 0 0px 13px 6px rgb(131 131 131 / 68%);
-}
 
-#comision{
-    box-shadow: 0 0px 11px 9px rgb(68 66 66);
-}
+input#exportar{
+    margin: auto;
+    padding: 10px;
+    color: #000;
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: 20px;
+    margin: 5px;
+} 
+
+input#traer{
+    margin: auto;
+    padding: 10px;
+    color: #000;
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: 20px;
+    margin: 5px;
+} 
