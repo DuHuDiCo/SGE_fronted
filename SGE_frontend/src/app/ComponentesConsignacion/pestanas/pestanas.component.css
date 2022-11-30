@@ -1,0 +1,10 @@
+.container{
+    text-align: center;
+    background: rgb(236, 230, 230);
+    color: #000;
+    position: relative;
+    margin: 200px auto;
+    border-radius: 20px;
+    padding: 10px 0;
+    box-shadow: 0 35px 60px 0 rgba(0, 0, 0, 0.3);
+}

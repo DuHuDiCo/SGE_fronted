@@ -1,0 +1,28 @@
+h1{
+    text-align: center;
+}
+
+.was-validated{
+    text-align: center;
+    background: rgb(255, 255, 255);
+    color: #000;
+    width: 400px auto;
+    height: 400px auto;
+    position: relative;
+    margin: 150px auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 1px 9px 60px 0 rgb(0 0 0 / 30%);
+}
+
+
+.abs-center {
+    margin: 100px;
+    align-items: center;
+    justify-content: center;
+}
+
+#contenedor1.row{
+    margin: 0;
+    padding: 0;
+}
