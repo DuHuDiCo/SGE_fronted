@@ -5,6 +5,11 @@ import { OpcionesComponent } from './componentesGenerales/opciones/opciones.comp
 import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/perfil-usuario.component';
 import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/gestion/gestion.component';
 import { DashboardComponent } from './Pages/Cartera/pages/dashboard/dashboard.component';
+import { ConsultasComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/consultas/consultas.component';
+import { IngresarComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ingresar/ingresar.component';
+
+import { ReportesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/reportes/reportes.component';
+import { InicioComponent } from './Pages/Consignaciones/pages/inicio/inicio.component';
 
 const routes: Routes = [
   {path: '', redirectTo:'login' , pathMatch:'full' },
@@ -29,7 +34,15 @@ const routes: Routes = [
     path:"gestion",
     component:GestionComponent,
     children:[]
-  }
+  },
+  {
+    path:'consignaciones',
+    component:InicioComponent,
+    pathMatch: 'full'
+  },
+
+
+
 ];
 
 @NgModule({

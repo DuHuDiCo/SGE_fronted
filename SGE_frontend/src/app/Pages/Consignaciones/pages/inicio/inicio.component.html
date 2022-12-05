@@ -1,0 +1,17 @@
+<app-navbar></app-navbar>
+
+<div class="container" class="was-validated">
+    <div class="row">
+        <div class="card">
+            <div class="card-header">
+                <app-pestanas></app-pestanas>
+
+            </div>
+            <div class="card-body">
+                <app-ingresar *ngIf="validar == 1"></app-ingresar>
+                <app-consultas *ngIf="validar == 2"></app-consultas>
+                <app-reportes *ngIf="validar == 3"></app-reportes>
+            </div>
+        </div>
+    </div>
+</div>

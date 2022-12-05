@@ -12,6 +12,13 @@ import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/pe
 import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/gestion/gestion.component';
 import { DatosCarteraComponent } from './Pages/Cartera/pages/componentesCartera/datos-cartera/datos-cartera.component';
 
+import { ConsultasComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/consultas/consultas.component';
+import { IngresarComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ingresar/ingresar.component';
+import { ReportesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/reportes/reportes.component';
+import { PanelComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/panel/panel.component';
+import { InicioComponent } from './Pages/Consignaciones/pages/inicio/inicio.component';
+import { PestanasComponent } from './Pages/Consignaciones/pages/inicio/pestanas/pestanas.component';
+
 
 @NgModule({
   declarations: [
@@ -23,7 +30,14 @@ import { DatosCarteraComponent } from './Pages/Cartera/pages/componentesCartera/
     NavbarComponent,
     PerfilUsuarioComponent,
     GestionComponent,
-    DatosCarteraComponent
+    DatosCarteraComponent,
+
+    ConsultasComponent,
+    IngresarComponent,
+    ReportesComponent,
+    PanelComponent,
+    InicioComponent,
+    PestanasComponent
   ],
   imports: [
     BrowserModule,
