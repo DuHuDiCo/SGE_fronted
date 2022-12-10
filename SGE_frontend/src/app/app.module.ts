@@ -18,6 +18,9 @@ import { ReportesComponent } from './Pages/Consignaciones/pages/componentesConsi
 import { PanelComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/panel/panel.component';
 import { InicioComponent } from './Pages/Consignaciones/pages/inicio/inicio.component';
 import { PestanasComponent } from './Pages/Consignaciones/pages/inicio/pestanas/pestanas.component';
+import { GestionUsuariosComponent } from './Pages/Administracion/pages/gestion-usuarios/gestion-usuarios.component';
+import { PermisosGeneralesComponent } from './Pages/Administracion/pages/permisos-generales/permisos-generales.component';
+import { CrearUsuariosComponent } from './Pages/Administracion/pages/crear-usuarios/crear-usuarios.component';
 
 
 @NgModule({
@@ -37,7 +40,10 @@ import { PestanasComponent } from './Pages/Consignaciones/pages/inicio/pestanas/
     ReportesComponent,
     PanelComponent,
     InicioComponent,
-    PestanasComponent
+    PestanasComponent,
+    GestionUsuariosComponent,
+    PermisosGeneralesComponent,
+    CrearUsuariosComponent
   ],
   imports: [
     BrowserModule,

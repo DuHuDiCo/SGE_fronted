@@ -1,0 +1,24 @@
+
+h1{
+    text-align: center;
+    color: #000;
+}
+.bg-danger {
+    background-color: #dc3545!important;
+    border-radius: 50%;
+}
+
+.container{
+    background: rgb(255, 255, 255);
+    color: #000;
+    position: relative;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 1px 9px 60px 0 rgb(0 0 0 / 30%);
+    padding: 20px;
+}
+
+/* .row{
+    display: none;
+} */
