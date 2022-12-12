@@ -15,12 +15,16 @@ import { DatosCarteraComponent } from './Pages/Cartera/pages/componentesCartera/
 import { ConsultasComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/consultas/consultas.component';
 import { IngresarComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ingresar/ingresar.component';
 import { ReportesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/reportes/reportes.component';
-import { PanelComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/panel/panel.component';
-import { InicioComponent } from './Pages/Consignaciones/pages/inicio/inicio.component';
-import { PestanasComponent } from './Pages/Consignaciones/pages/inicio/pestanas/pestanas.component';
-import { GestionUsuariosComponent } from './Pages/Administracion/pages/gestion-usuarios/gestion-usuarios.component';
-import { PermisosGeneralesComponent } from './Pages/Administracion/pages/permisos-generales/permisos-generales.component';
-import { CrearUsuariosComponent } from './Pages/Administracion/pages/crear-usuarios/crear-usuarios.component';
+
+
+import { GestionUsuariosComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/gestion-usuarios.component';
+
+import { CrearUsuariosComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/crear-usuarios.component';
+import { DashboardAdminComponent } from './Pages/Administracion/pages/dashboard-admin/dashboard-admin.component';
+
+import { RolesUsuarioComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/roles-usuario/roles-usuario.component';
+import { DashboarConsignacionesComponent } from './Pages/Consignaciones/pages/dashboar-consignaciones/dashboar-consignaciones.component';
+
 
 
 @NgModule({
@@ -38,12 +42,15 @@ import { CrearUsuariosComponent } from './Pages/Administracion/pages/crear-usuar
     ConsultasComponent,
     IngresarComponent,
     ReportesComponent,
-    PanelComponent,
-    InicioComponent,
-    PestanasComponent,
+
+
     GestionUsuariosComponent,
-    PermisosGeneralesComponent,
-    CrearUsuariosComponent
+    
+    CrearUsuariosComponent,
+    DashboardAdminComponent,
+    RolesUsuarioComponent,
+    DashboarConsignacionesComponent,
+   
   ],
   imports: [
     BrowserModule,

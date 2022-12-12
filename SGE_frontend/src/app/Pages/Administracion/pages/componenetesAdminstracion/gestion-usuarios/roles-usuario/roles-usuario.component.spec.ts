@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PestanasComponent } from './pestanas.component';
+import { RolesUsuarioComponent } from './roles-usuario.component';
 
-describe('PestanasComponent', () => {
-  let component: PestanasComponent;
-  let fixture: ComponentFixture<PestanasComponent>;
+describe('RolesUsuarioComponent', () => {
+  let component: RolesUsuarioComponent;
+  let fixture: ComponentFixture<RolesUsuarioComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PestanasComponent ]
+      declarations: [ RolesUsuarioComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PestanasComponent);
+    fixture = TestBed.createComponent(RolesUsuarioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

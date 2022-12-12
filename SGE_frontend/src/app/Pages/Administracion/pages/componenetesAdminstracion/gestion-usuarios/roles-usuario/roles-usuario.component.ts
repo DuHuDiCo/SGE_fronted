@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-permisos-generales',
-  templateUrl: './permisos-generales.component.html',
-  styleUrls: ['./permisos-generales.component.css'],
+  selector: 'app-roles-usuario',
+  templateUrl: './roles-usuario.component.html',
+  styleUrls: ['./roles-usuario.component.css']
 })
-export class PermisosGeneralesComponent implements OnInit {
+export class RolesUsuarioComponent implements OnInit {
   validar = {
     cartera: false,
     ventas: false,
@@ -221,4 +221,5 @@ export class PermisosGeneralesComponent implements OnInit {
         break;
     }
   }
+
 }
