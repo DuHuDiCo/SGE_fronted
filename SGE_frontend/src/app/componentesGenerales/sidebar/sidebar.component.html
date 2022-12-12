@@ -5,45 +5,17 @@
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" style="background-color: white;"></button>
 
   </div>
-  <h2 style="color: white; font-size: 1.2em;font-weight: bold;" class="text-center">Departamento de Cartera</h2>
+  <h2 style="color: white; font-size: 1.2em;font-weight: bold;" class="text-center">{{datosSidebar.tituloPagina}}</h2>
   <hr style="color: white;">
   <ul class="nav flex-column ">
+    <div *ngFor="let datos of datosSidebar.opciones;let i = index">
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-house-user"></i>&nbsp; Escritorio</a>
+      <a class="nav-link active" aria-current="page" [routerLink]="datosSidebar.urls[i]"><i class="{{datosSidebar.clases[i]}}"></i>&nbsp; {{datos}}</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-building-columns"></i>&nbsp; Tasa de Cobro</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-calendar-days"></i>&nbsp; Calendario</a>
-    </li>
-    
+    <hr style="color: white;" *ngIf="i == 2 || i == 5">
+  </div>
   </ul>
-  <hr style="color: white;">
-  <ul class="nav flex-column ">
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-chart-simple"></i>&nbsp; Estadisticas</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-file-invoice"></i>&nbsp; Facturacion</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" [routerLink]="'/gestion'" ><i class="fa-solid fa-credit-card"></i>&nbsp; Gestion</a>
-    </li>
-    
-  </ul>
-  <hr style="color: white;">
-  <ul class="nav flex-column ">
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-eye"></i>&nbsp; Revisiones</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-gear"></i>&nbsp; Configuraciones</a>
-    </li>
-
-    
-  </ul>
-  <hr style="color: white;">
-  <a class="logout" aria-current="page" href="#" ><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+ 
+  
   
 </div>
