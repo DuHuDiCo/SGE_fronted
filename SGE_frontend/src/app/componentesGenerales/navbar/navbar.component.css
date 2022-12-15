@@ -1,6 +1,7 @@
 .nav{
     height: 120px;
-    background-color: white;
+    background: #ecf0f3ea;
+    box-shadow: inset 11px 8px 20px #adb5bd, -1px 6px 20px #6c757d;
     width: 100%;
 }
 .btn{
@@ -51,10 +52,15 @@
     margin-top: 55px;
     color: black;
 }
+svg#persona {
+    height: 50px;
+    color: #191919;
+}
 
 .perfil{
-   margin-top: 40px; 
+   margin-top: 50px; 
    margin-left: 100px;
+   width: 80px auto;
 }
 .option{
     color: #960010;

@@ -1,31 +1,38 @@
-
+.container{
+    margin-top: 30px;
+}
 .card-body{
 padding: 15px;
-
+border-bottom: 20px;
 }
 
 .cardd{
     color: #fff;
     background: #960010;
     border-radius: 20px;
-
+    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
 }
 
 .card{
     border-radius: 20px;
+    background: #dfe2e5;
+    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
 }
 .cardx{
     height: 240px;
-    background: rgb(255, 255, 255);
-    border-radius: 20px;
-    box-shadow: 0 20px 60px 0 rgb(226, 242, 245);
+    border-radius: 25px;
+    text-align: center;
+    margin: 25px auto;
+    background: #dfe2e5;
+    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
 }
 
 .cardR{
     width: 300px;
-    background: #ffffff;
     color: rgb(0, 0, 0);
     border-radius: 20px;
+    background: #dfe2e5;
+    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
 }
 
 #circle {

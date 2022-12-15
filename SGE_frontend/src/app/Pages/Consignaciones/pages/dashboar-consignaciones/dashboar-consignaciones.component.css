@@ -1,0 +1,30 @@
+.card{
+    color: #000;
+    position: relative;
+    margin-top: 50px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #eaecee;
+    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.card-header{
+    border-radius: 25px;
+    text-align: center;
+    width: 90%;
+    margin: 10px auto;
+    background: #ecf0f3ea;
+    box-shadow: inset 10px 10px 20px #5f6264, inset -10px -10px 20px #ffffffd2;
+    border: none;
+    outline: none;
+    background: none;
+}
+
+
+label.btn.btn-outline-dark{
+    border: none;
+    outline: none;
+
+}

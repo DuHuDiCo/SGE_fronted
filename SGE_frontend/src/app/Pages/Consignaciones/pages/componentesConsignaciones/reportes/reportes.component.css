@@ -2,9 +2,35 @@
 
 h1{
     text-align: center;
-    color: #a71414;
+    color: #000000;
 }
 
+input{
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 15px;
+    margin: 13px 10px;
+    border-bottom: 10px;
+}
+.form-control{
+    border-radius: 25px;
+    text-align: center;
+    width: 90%;
+    padding: 15px;
+    margin: 15px auto;
+    background: #ecf0f3;
+    box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
+
+}
+
+.form-select{
+    border-radius: 25px;
+    text-align: center;
+    margin: 15px auto;
+    padding: 10px;
+    box-shadow: inset 10px 10px 20px #adb5bd, inset -10px -10px 20px #adb5bd;
+}
 
 .container{
     text-align: center;

@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #fff;
+    background: #ffffff;
 }
 
 .options {
@@ -19,7 +19,6 @@
 
 .option a {
     position: relative;
-    background: #000;
     text-decoration: none;
     width: 100px;
     height: 80px;
@@ -27,19 +26,19 @@
     border-radius: 50%;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 10px 60px #960010;
     text-align: center;
     transition: .3s;
+    background: #a0a3a5;
+    box-shadow: 10px 10px 20px #6c757d, -5px -3px 20px 5px #6c757d;
 }
 
     .option a:hover {
-        background: #960010;
+        background: #fff;
         padding: 30px;
     }
 
     a {
-        color: #ffffff;
-
+        color: #811919;
         font-size: 50px;
     }
     /* .option a:hover .fas{

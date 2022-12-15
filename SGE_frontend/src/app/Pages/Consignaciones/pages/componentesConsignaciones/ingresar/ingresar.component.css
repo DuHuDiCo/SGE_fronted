@@ -4,7 +4,6 @@ h1{
 
 .was-validated{
     text-align: center;
-    background: rgb(255, 255, 255);
     color: #000;
     width: 300px auto;
     height: 300px auto;
@@ -12,7 +11,8 @@ h1{
     margin: 0px 10px 40px 40px;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 1px 9px 60px 0 rgb(0 0 0 / 30%);
+    background: #f2f3f5;
+    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
 }
 
 
@@ -28,4 +28,53 @@ h1{
 }
 *{
     margin: 0;
+}
+.usuario,.file{
+    border-radius: 25px;
+    text-align: center;
+    width: 90%;
+    margin: 10px auto;
+    background: #ecf0f3;
+    box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
+
+}
+.file{
+    border-radius: 25px;
+    text-align: center;
+    width: 90%;
+    margin: 10px auto;
+    background: #ecf0f3;
+}
+
+.form-select{
+    border-radius: 25px;
+    text-align: center;
+    margin: 15px auto;
+    padding: 10px;
+    box-shadow: inset 10px 10px 20px #adb5bd, inset -10px -10px 20px #ffffff;
+}
+
+input{
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 15px;
+    margin: 13px 10px;
+    border-bottom: 10px;
+}
+select{
+    border: none;
+    outline: none;
+
+}
+
+button{
+    background: #cd1f1f;
+    cursor: pointer;
+    outline: none;
+    border: #f70606;
+    border-radius: 18px;
+    height: 50px;
+    margin-bottom: 30px;
+    box-shadow: inset 10px 10px 20px #842029, 5px 3px 11px 3px #6c757d;
 }
