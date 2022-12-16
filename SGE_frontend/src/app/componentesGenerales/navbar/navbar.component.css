@@ -25,7 +25,8 @@
     height: 48px;
     margin-left: 200px;
     margin-top: 50px;
-    background-color: #f3f3f3;
+    background: #ecf0f3ea;
+    box-shadow: inset 11px 8px 20px #adb5bd, -1px 6px 20px #6c757d;
     border: 0px solid;
     padding-left: 54px;
     padding-right: 8px;
@@ -53,12 +54,12 @@
     color: black;
 }
 svg#persona {
-    height: 50px;
+    height: 30px;
     color: #191919;
 }
 
 .perfil{
-   margin-top: 50px; 
+   margin-top: 60px; 
    margin-left: 100px;
    width: 80px auto;
 }

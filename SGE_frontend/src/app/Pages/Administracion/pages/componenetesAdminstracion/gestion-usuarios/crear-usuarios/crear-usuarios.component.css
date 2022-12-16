@@ -53,6 +53,16 @@
     box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
 
 }
+.form-control{
+    border-radius: 25px;
+    text-align: center;
+    width: 90%;
+    padding: 15px;
+    margin: 15px auto;
+    background: #ecf0f3;
+    box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
+
+}
 
 input{
     border: none;
