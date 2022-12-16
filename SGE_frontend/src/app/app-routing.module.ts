@@ -10,6 +10,7 @@ import { RolesUsuarioComponent } from './Pages/Administracion/pages/componenetes
 
 
 import { DashboardAdminComponent } from './Pages/Administracion/pages/dashboard-admin/dashboard-admin.component';
+import { EstadisticasDashboardComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas-dashboard/estadisticas-dashboard.component';
 import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/gestion/gestion.component';
 import { DashboardComponent } from './Pages/Cartera/pages/dashboard/dashboard.component';
 import { ConsultasComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/consultas/consultas.component';
@@ -29,22 +30,34 @@ const routes: Routes = [
     children:[]
   },
   {
-    path:"cartera",
+    path: 'cartera', redirectTo:'dashboard-cartera/inicio' , pathMatch:'full' 
+  }
+  ,
+  {
+    path:"dashboard-cartera",
     component:DashboardComponent,
-    children:[]
+    children:[
+      {
+        path:"gestion",
+        component:GestionComponent,
+       
+      },
+      {
+        path:"inicio",
+        component:EstadisticasDashboardComponent
+      }
+    ]
   },
   {
     path:"perfil-usuario",
     component:PerfilUsuarioComponent,
     children:[]
-  },
+  }  
+  ,
+  {path: 'consignaciones', redirectTo:'dashboard-consignaciones/consultar' , pathMatch:'full' }
+  ,
   {
-    path:"gestion",
-    component:GestionComponent,
-    children:[]
-  },
-  {
-    path:'consignaciones',
+    path:'dashboard-consignaciones',
     component:DashboarConsignacionesComponent,
     children:[
       {
@@ -64,8 +77,11 @@ const routes: Routes = [
       },
     ]
   },
+  {path: 'administracion', redirectTo:'dashboard-administracion/gestionUsuarios' , pathMatch:'full' }
+  
+  ,
   {
-    path:"administracion",
+    path:"dashboard-administracion",
     component:DashboardAdminComponent,
     children:[
       {

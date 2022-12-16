@@ -7,16 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
   
-  datos = {
-    "tituloPagina": "Departamento de Cartera",
-    "opciones":["Escritorio", "Tasa de Cobro", "Calendario", "Estadisticas", "Facturacion", "Gestion", "Revisiones", "Configuraciones", "Logout"],
-    "clases":["fa-solid fa-house-user", "fa-solid fa-building-columns", "fa-solid fa-calendar-days", "fa-solid fa-chart-simple", "fa-solid fa-file-invoice", "fa-solid fa-credit-card", "fa-solid fa-eye", "fa-solid fa-gear", "fa-solid fa-right-from-bracket"],
-    "urls": ["", "", "", "", "", "/gestion", "", "", ""]
-  }
+  
+
+  validDashboar:number = 1;
    
   constructor() { }
 
   ngOnInit(): void {
+    this.validDashboar = 1;
+   
+  }
+
+  public cambiar(){
+    this.validDashboar = 0;
+  }
+
+  public cambiarBack(){
+    this.validDashboar = 1;
   }
 
 }

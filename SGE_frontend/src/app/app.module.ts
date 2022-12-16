@@ -10,7 +10,7 @@ import { NavbarComponent } from './componentesGenerales/navbar/navbar.component'
 import { FormsModule } from '@angular/forms';
 import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/perfil-usuario.component';
 import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/gestion/gestion.component';
-import { DatosCarteraComponent } from './Pages/Cartera/pages/componentesCartera/datos-cartera/datos-cartera.component';
+
 
 import { ConsultasComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/consultas/consultas.component';
 import { IngresarComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ingresar/ingresar.component';
@@ -24,6 +24,10 @@ import { DashboardAdminComponent } from './Pages/Administracion/pages/dashboard-
 
 import { RolesUsuarioComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/roles-usuario/roles-usuario.component';
 import { DashboarConsignacionesComponent } from './Pages/Consignaciones/pages/dashboar-consignaciones/dashboar-consignaciones.component';
+import { EstadisticasDashboardComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas-dashboard/estadisticas-dashboard.component';
+import { SidebarCarteraComponent } from './Pages/Cartera/pages/componentesCartera/sidebar-cartera/sidebar-cartera.component';
+import { SidebarConsignacionesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/sidebar-consignaciones/sidebar-consignaciones.component';
+import { SidebarAdministracionComponent } from './Pages/Administracion/pages/componenetesAdminstracion/sidebar-administracion/sidebar-administracion.component';
 
 
 
@@ -37,7 +41,7 @@ import { DashboarConsignacionesComponent } from './Pages/Consignaciones/pages/da
     NavbarComponent,
     PerfilUsuarioComponent,
     GestionComponent,
-    DatosCarteraComponent,
+    
 
     ConsultasComponent,
     IngresarComponent,
@@ -50,6 +54,10 @@ import { DashboarConsignacionesComponent } from './Pages/Consignaciones/pages/da
     DashboardAdminComponent,
     RolesUsuarioComponent,
     DashboarConsignacionesComponent,
+    EstadisticasDashboardComponent,
+    SidebarCarteraComponent,
+    SidebarConsignacionesComponent,
+    SidebarAdministracionComponent,
    
   ],
   imports: [

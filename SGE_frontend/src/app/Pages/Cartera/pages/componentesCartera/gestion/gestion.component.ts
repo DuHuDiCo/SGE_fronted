@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DashboardComponent } from '../../dashboard/dashboard.component';
 
 @Component({
   selector: 'app-gestion',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GestionComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dash:DashboardComponent) { }
 
   ngOnInit(): void {
+    this.dash.cambiar();
+    
   }
+
+
 
 }
