@@ -54,14 +54,18 @@ tr:hover td{
 /* estilo de los botos  */
 
 button{
-    background: #cd1f1f;
+    background: #8d1515;
     cursor: pointer;
     outline: none;
     border: #f70606;
     border-radius: 18px;
     height: 50px;
     margin-bottom: 30px;
-    box-shadow: inset 10px 10px 20px #842029, 5px 3px 11px 3px #6c757d;
+    box-shadow: 10px 10px 20px #707274, -2px 0px 10px 4px #707274;
+}
+
+button:hover{
+    background: #D60303 ;
 }
 
 

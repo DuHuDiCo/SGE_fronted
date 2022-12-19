@@ -1,6 +1,7 @@
 .caja {
     display: flex;
     justify-content: center;
+    width: 1325px;
     align-items: center;
     min-height: 100vh;
     background: #ffffff;
