@@ -28,7 +28,7 @@ import { EstadisticasDashboardComponent } from './Pages/Cartera/pages/componente
 import { SidebarCarteraComponent } from './Pages/Cartera/pages/componentesCartera/sidebar-cartera/sidebar-cartera.component';
 import { SidebarConsignacionesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/sidebar-consignaciones/sidebar-consignaciones.component';
 import { SidebarAdministracionComponent } from './Pages/Administracion/pages/componenetesAdminstracion/sidebar-administracion/sidebar-administracion.component';
-
+import { HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -63,7 +63,8 @@ import { SidebarAdministracionComponent } from './Pages/Administracion/pages/com
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
