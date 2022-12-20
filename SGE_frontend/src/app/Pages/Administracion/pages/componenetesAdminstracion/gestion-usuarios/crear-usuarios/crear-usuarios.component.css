@@ -48,7 +48,7 @@
     border-radius: 25px;
     text-align: center;
     width: 90%;
-    margin: 10px auto;
+    margin: 15px auto;
     background: #ecf0f3;
     box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
 
@@ -61,9 +61,16 @@
     margin: 15px auto;
     background: #ecf0f3;
     box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
-
 }
 
+.form-select{
+    border-radius: 25px;
+    text-align: center;
+    margin: 15px auto;
+    width: 90%;
+    padding: 13px;
+    box-shadow: inset 2px 7px 20px 9px #adb5bd, inset 1px -6px 20px #adb5bd;
+}
 input{
     border: none;
     outline: none;

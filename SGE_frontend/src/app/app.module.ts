@@ -28,6 +28,7 @@ import { EstadisticasDashboardComponent } from './Pages/Cartera/pages/componente
 import { SidebarCarteraComponent } from './Pages/Cartera/pages/componentesCartera/sidebar-cartera/sidebar-cartera.component';
 import { SidebarConsignacionesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/sidebar-consignaciones/sidebar-consignaciones.component';
 import { SidebarAdministracionComponent } from './Pages/Administracion/pages/componenetesAdminstracion/sidebar-administracion/sidebar-administracion.component';
+import { AsignarRolesComponent } from './Pages/Administracion//pages/componenetesAdminstracion/asignar-roles/asignar-roles.component';
 
 
 
@@ -41,15 +42,10 @@ import { SidebarAdministracionComponent } from './Pages/Administracion/pages/com
     NavbarComponent,
     PerfilUsuarioComponent,
     GestionComponent,
-    
-
     ConsultasComponent,
     IngresarComponent,
     ReportesComponent,
-
-
     GestionUsuariosComponent,
-    
     CrearUsuariosComponent,
     DashboardAdminComponent,
     RolesUsuarioComponent,
@@ -58,7 +54,8 @@ import { SidebarAdministracionComponent } from './Pages/Administracion/pages/com
     SidebarCarteraComponent,
     SidebarConsignacionesComponent,
     SidebarAdministracionComponent,
-   
+    AsignarRolesComponent,
+
   ],
   imports: [
     BrowserModule,

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './componentesGenerales/login/login.component';
 import { OpcionesComponent } from './componentesGenerales/opciones/opciones.component';
 import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/perfil-usuario.component';
+import { AsignarRolesComponent } from './Pages/Administracion/pages/componenetesAdminstracion/asignar-roles/asignar-roles.component';
 import { CrearUsuariosComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/crear-usuarios.component';
 import { GestionUsuariosComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/gestion-usuarios.component';
 
@@ -45,6 +46,10 @@ const routes: Routes = [
       {
         path:"inicio",
         component:EstadisticasDashboardComponent
+      },
+      {
+        path:"asignar-roles",
+        component:AsignarRolesComponent
       }
     ]
   },
