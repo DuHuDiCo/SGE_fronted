@@ -29,6 +29,8 @@ import { SidebarCarteraComponent } from './Pages/Cartera/pages/componentesCarter
 import { SidebarConsignacionesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/sidebar-consignaciones/sidebar-consignaciones.component';
 import { SidebarAdministracionComponent } from './Pages/Administracion/pages/componenetesAdminstracion/sidebar-administracion/sidebar-administracion.component';
 import { HttpClientModule} from '@angular/common/http';
+import { RolesPerfilesDirective } from './directivas/roles-perfiles.directive';
+import { authInterceptorProviders } from './Interceptors/auth.interceptor';
 
 
 @NgModule({
@@ -58,6 +60,7 @@ import { HttpClientModule} from '@angular/common/http';
     SidebarCarteraComponent,
     SidebarConsignacionesComponent,
     SidebarAdministracionComponent,
+    RolesPerfilesDirective,
    
   ],
   imports: [
@@ -66,7 +69,7 @@ import { HttpClientModule} from '@angular/common/http';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './componentesGenerales/login/login.component';
 import { OpcionesComponent } from './componentesGenerales/opciones/opciones.component';
 import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/perfil-usuario.component';
+import { AuthenticationGuard } from './Guards/authentication.guard';
+import { LoginGuard } from './Guards/login.guard';
 import { CrearUsuariosComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/crear-usuarios.component';
 import { GestionUsuariosComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/gestion-usuarios.component';
 
@@ -22,12 +24,17 @@ import { DashboarConsignacionesComponent } from './Pages/Consignaciones/pages/da
 
 const routes: Routes = [
   {path: '', redirectTo:'login' , pathMatch:'full' },
-  {path:'login', component:LoginComponent},
+  {
+    path:'login', 
+    component:LoginComponent,
+    canActivate: [LoginGuard]
+  },
 
   {
     path:'opciones', 
     component:OpcionesComponent,
-    children:[]
+    canActivate:[AuthenticationGuard]
+   
   },
   {
     path: 'cartera', redirectTo:'dashboard-cartera/inicio' , pathMatch:'full' 

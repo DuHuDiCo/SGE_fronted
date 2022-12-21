@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     }else{
       this.authentication.authentication(this.jwtRequest).subscribe(
         (data:any)=>{
-          console.log(data);
+          
           Swal.fire({
             position:'top-end',
             icon:'success',
@@ -35,6 +35,10 @@ export class LoginComponent implements OnInit {
             showConfirmButton: false,
             timer:2000
           })
+          
+          this.authentication.setTokenLocalStorage(data.token)
+          this.authentication.setUsernameLocalStorage(data.username)
+          this.authentication.setRolesLocalStorage(data.roles)
           this.router.navigate(['opciones'])
         },
         (error:any)=>{
@@ -52,15 +56,5 @@ export class LoginComponent implements OnInit {
   }
 
 
-  public username(){
-    this.authentication.getUser().subscribe(
-      (data:any)=>{
-        console.log(data)
-      },
-      (error:any)=>{
-        console.log(error)
-      }
-    );
-  }
-
+  
 }
