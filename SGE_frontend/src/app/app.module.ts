@@ -29,6 +29,8 @@ import { SidebarCarteraComponent } from './Pages/Cartera/pages/componentesCarter
 import { SidebarConsignacionesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/sidebar-consignaciones/sidebar-consignaciones.component';
 import { SidebarAdministracionComponent } from './Pages/Administracion/pages/componenetesAdminstracion/sidebar-administracion/sidebar-administracion.component';
 import { AsignarRolesComponent } from './Pages/Administracion//pages/componenetesAdminstracion/asignar-roles/asignar-roles.component';
+import { DashboardSSTComponent } from './Pages/SST/pages/dashboard-sst/dashboard-sst.component';
+import { SidebarSstComponent } from './Pages/SST/pages/componentes_SST/sidebar-sst/sidebar-sst.component';
 
 
 
@@ -55,6 +57,9 @@ import { AsignarRolesComponent } from './Pages/Administracion//pages/componenete
     SidebarConsignacionesComponent,
     SidebarAdministracionComponent,
     AsignarRolesComponent,
+    DashboardSSTComponent,
+    SidebarSstComponent,
+
 
   ],
   imports: [
