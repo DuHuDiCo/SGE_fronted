@@ -33,6 +33,9 @@ import { DashboardSSTComponent } from './Pages/SST/pages/dashboard-sst/dashboard
 import { SidebarSstComponent } from './Pages/SST/pages/componentes_SST/sidebar-sst/sidebar-sst.component';
 import { IncapacidadGComponent } from './Pages/SST/pages/componentes_SST/asistencia/incapacidad-g/incapacidad-g.component';
 
+import { HttpClientModule} from '@angular/common/http';
+import { RolesPerfilesDirective } from './directivas/roles-perfiles.directive';
+import { authInterceptorProviders } from './Interceptors/auth.interceptor';
 
 
 @NgModule({
@@ -63,13 +66,16 @@ import { IncapacidadGComponent } from './Pages/SST/pages/componentes_SST/asisten
     IncapacidadGComponent,
 
 
+    RolesPerfilesDirective,
+   
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

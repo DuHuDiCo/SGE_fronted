@@ -6,25 +6,27 @@
 <div class="caja">
 
     <ul class="options">
-        <li class="option">
-            <a [routerLink]="'/cartera'">
+
+        <li class="option" *appRolesPerfiles="'Cartera'">
+            <a [routerLink]="'/cartera'" >
                 <i class="fas fa-university"></i>
                 <span>Cartera</span>
             </a>
         </li>
-        <li class="option">
+
+        <li class="option" *appRolesPerfiles="'Caja'">
             <a href="#">
                 <i class="fas fa-laptop"></i>
                 <span>Caja</span>
             </a>
         </li>
-        <li class="option">
+        <li class="option" *appRolesPerfiles="'Archivos'">
             <a href="#">
                 <i class="fas fa-archive"></i>
                 <span>Archivos</span>
             </a>
         </li>
-        <li class="option">
+        <li class="option" *appRolesPerfiles="'Ventas'">
             <a href="#">
                 <i class="fas fa-money-check-alt"></i>
                 <span>Ventas</span>
@@ -32,26 +34,26 @@
         </li>
 
 
-        <li class="option">
+        <li class="option" *appRolesPerfiles="'Servicios'">
             <a href="#">
                 <i class="fas fa-phone"></i>
                 <span>Servicios</span>
             </a>
         </li>
-        <li class="option">
+        <li class="option" *appRolesPerfiles="'Consignaciones'">
             <a [routerLink]="'/consignaciones'">
                 <i class="fas fa-hand-holding-usd"></i>
                 <span>Consignaciones</span>
             </a>
         </li>
-        <li class="option">
+        <li class="option"  *appRolesPerfiles="'Administrador'">
             <a [routerLink]="'/administracion'">
                 <i class="fas fa-user-cog"></i>
                 <span>Administración</span>
             </a>
         </li>
-        <li class="option">
-            <a >
+        <li class="option" *appRolesPerfiles="'Sst'">
+            <a [routerLink]="'/administracion'">
                 <i class="fas fa-heartbeat"></i>
                 <span>SST</span>
             </a>
