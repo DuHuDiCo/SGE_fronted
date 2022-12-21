@@ -31,6 +31,7 @@ import { SidebarAdministracionComponent } from './Pages/Administracion/pages/com
 import { AsignarRolesComponent } from './Pages/Administracion//pages/componenetesAdminstracion/asignar-roles/asignar-roles.component';
 import { DashboardSSTComponent } from './Pages/SST/pages/dashboard-sst/dashboard-sst.component';
 import { SidebarSstComponent } from './Pages/SST/pages/componentes_SST/sidebar-sst/sidebar-sst.component';
+import { IncapacidadGComponent } from './Pages/SST/pages/componentes_SST/asistencia/incapacidad-g/incapacidad-g.component';
 
 
 
@@ -59,6 +60,7 @@ import { SidebarSstComponent } from './Pages/SST/pages/componentes_SST/sidebar-s
     AsignarRolesComponent,
     DashboardSSTComponent,
     SidebarSstComponent,
+    IncapacidadGComponent,
 
 
   ],
