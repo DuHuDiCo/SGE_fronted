@@ -36,6 +36,14 @@ import { IncapacidadGComponent } from './Pages/SST/pages/componentes_SST/asisten
 import { HttpClientModule} from '@angular/common/http';
 import { RolesPerfilesDirective } from './directivas/roles-perfiles.directive';
 import { authInterceptorProviders } from './Interceptors/auth.interceptor';
+import { IncapacidadArlComponent } from './Pages/SST/pages/componentes_SST/asistencia/incapacidad-arl/incapacidad-arl.component';
+import { AccidentesComponent } from './Pages/SST/pages/componentes_SST/reportes/accidentes/accidentes.component';
+import { IncidentesComponent } from './Pages/SST/pages/componentes_SST/reportes/incidentes/incidentes.component';
+import { ObservacionesComponent } from './Pages/SST/pages/componentes_SST/inspeccion/observaciones/observaciones.component';
+import { EvidenciasComponent } from './Pages/SST/pages/componentes_SST/Copasst/evidencias/evidencias.component';
+import { CoEvidenciaComponent } from './Pages/SST/pages/componentes_SST/comite/co-evidencia/co-evidencia.component';
+import { Evalucion1Component } from './Pages/SST/pages/componentes_SST/Evaluaciones/evalucion1/evalucion1.component';
+
 
 
 @NgModule({
@@ -67,6 +75,14 @@ import { authInterceptorProviders } from './Interceptors/auth.interceptor';
 
 
     RolesPerfilesDirective,
+        IncapacidadArlComponent,
+        AccidentesComponent,
+        IncidentesComponent,
+        ObservacionesComponent,
+        EvidenciasComponent,
+        CoEvidenciaComponent,
+        Evalucion1Component,
+
    
   ],
   imports: [

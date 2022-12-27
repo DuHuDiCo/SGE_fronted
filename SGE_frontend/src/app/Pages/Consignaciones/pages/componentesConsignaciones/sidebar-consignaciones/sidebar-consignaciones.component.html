@@ -10,21 +10,46 @@
     <hr style="color: white;">
     <ul class="nav flex-column ">
 
-        <li class="nav-item">
-            <button class="nav-link active" routerLink="/dashboard-consignaciones/ingresar" aria-current="page"><i class="fa-solid fa-building-columns"></i>&nbsp; Ingresar Consignaciones</button>
+        <li class="mb-1">
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+                Consignaciones
+            </button>
+    
+            <div class="collapse" id="getting-started-collapse">
+                <ul class="list-unstyled fw-normal pb-1 small">
+                    <li> <button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/ingresar"><i class="fas fa-pen"></i>&nbsp; Ingresar</button></li>
+
+                    <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-consignaciones/consultar"><i class="fas fa-search"></i>
+                        &nbsp; Consultar</button></li>
+                    
+                    <li><button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/reportes"><i class="fas fa-times-circle"></i>
+                            &nbsp; Reportes</button></li>
+                </ul>
+            </div>
         </li>
-        <li class="nav-item">
-            <button class="nav-link active" routerLink="/dashboard-consignaciones/consultar" aria-current="page"><i class="fa-solid fa-calendar-days"></i>&nbsp; Consultar</button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link active" routerLink="/dashboard-consignaciones/reportes" aria-current="page"><i class="fa-solid fa-chart-simple"></i>&nbsp; Reportes</button>
-        </li>
-        
     </ul>
     <hr style="color: white;">
     <ul class="nav flex-column ">
+        <li class="mb-1">
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse-i" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+                Informes
+            </button>
+    
+            <div class="collapse" id="getting-started-collapse-i">
+                <ul class="list-unstyled fw-normal pb-1 small">
+                    <li> <button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/ingresar"><i class="fas fa-pen"></i>&nbsp; xxx</button></li>
 
-        
+                    <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-consignaciones/consultar"><i class="fas fa-search"></i>
+                        &nbsp; xxx</button></li>
+                    
+                    <li><button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/reportes"><i class="fas fa-times-circle"></i>
+                            &nbsp; xxxx</button></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <hr style="color: white;">
+    <ul class="nav flex-column ">
         
         <li class="nav-item">
             <button class="nav-link active" aria-current="page"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</button>

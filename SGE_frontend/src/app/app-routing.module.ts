@@ -19,6 +19,14 @@ import { ConsultasComponent } from './Pages/Consignaciones/pages/componentesCons
 import { IngresarComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ingresar/ingresar.component';
 import { ReportesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/reportes/reportes.component';
 import { DashboarConsignacionesComponent } from './Pages/Consignaciones/pages/dashboar-consignaciones/dashboar-consignaciones.component';
+import { IncapacidadArlComponent } from './Pages/SST/pages/componentes_SST/asistencia/incapacidad-arl/incapacidad-arl.component';
+import { IncapacidadGComponent } from './Pages/SST/pages/componentes_SST/asistencia/incapacidad-g/incapacidad-g.component';
+import { EvidenciasComponent } from './Pages/SST/pages/componentes_SST/Copasst/evidencias/evidencias.component';
+import { Evalucion1Component } from './Pages/SST/pages/componentes_SST/Evaluaciones/evalucion1/evalucion1.component';
+import { ObservacionesComponent } from './Pages/SST/pages/componentes_SST/inspeccion/observaciones/observaciones.component';
+import { AccidentesComponent } from './Pages/SST/pages/componentes_SST/reportes/accidentes/accidentes.component';
+import { IncidentesComponent } from './Pages/SST/pages/componentes_SST/reportes/incidentes/incidentes.component';
+import { DashboardSSTComponent } from './Pages/SST/pages/dashboard-sst/dashboard-sst.component';
 
 
 
@@ -110,6 +118,45 @@ const routes: Routes = [
     ]
   },
 
+  {path: 'sst', redirectTo:'dashboard-sst' , pathMatch:'full' },
+  {
+    path:"dashboard-sst",
+    component:DashboardSSTComponent,
+    children:[
+      {
+        path:'incapacidad-g',
+        component:IncapacidadGComponent
+      },
+      {
+        path:'incapacidad-arl',
+        component:IncapacidadArlComponent
+      },
+      {
+        path:'accidentes',
+        component:AccidentesComponent
+      },
+      {
+        path:'incidentes',
+        component:IncidentesComponent
+      },
+      {
+        path:'observaciones',
+        component:ObservacionesComponent
+      },
+      {
+        path:'evidencia',
+        component:EvidenciasComponent
+      },
+      {
+        path:'co-evidencias',
+        component:EvidenciasComponent
+      },
+      {
+        path:'evaluacion1',
+        component:Evalucion1Component
+      }
+    ]
+  }
 
 
 

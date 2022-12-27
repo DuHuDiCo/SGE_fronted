@@ -125,7 +125,19 @@ button:hover{
     background: #D60303 ;
 }
 
+.imagen{
 
+    max-height: 410px;
+    border-radius: 5px 5px 0 0;
+}
+.imagen img {
+    display: block;
+    object-fit: cover;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 20px;
+    border-radius: 30%;
+}
 
 @media (min-width: 1200px){
 .container, .container-lg, .container-md, .container-sm, .container-xl {

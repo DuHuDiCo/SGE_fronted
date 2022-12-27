@@ -9,16 +9,21 @@
     <h2 style="color: white; font-size: 1.2em;font-weight: bold;" class="text-center">Departamento Adminsitracion</h2>
     <hr style="color: white;">
     <ul class="nav flex-column ">
-        <li class="nav-item">
-            <button class="nav-link active" [routerLink]="'/administracion'" aria-current="page"><i class="fa-solid fa-house-user"></i>&nbsp; Inicio</button>
+
+        <li class="mb-1">
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+                Gestion
+            </button>
+    
+            <div class="collapse" id="getting-started-collapse">
+                <ul class="list-unstyled fw-normal pb-1 small">
+                    <li> <button class="nav-link active" aria-current="page" [routerLink]="'/dashboard-administracion/gestionUsuarios'"><i class="fas fa-user-cog"></i>&nbsp; Usuarios y Roles</button></li>
+
+                    <li><button class="nav-link active" aria-current="page" [routerLink]="'/dashboard-administracion/crearUsuarios'"><i class="fas fa-user-plus"></i>
+                        &nbsp; Crear Usuario</button></li>
+                </ul>
+            </div>
         </li>
-        <li class="nav-item">
-            <button class="nav-link active" [routerLink]="'/dashboard-administracion/gestionUsuarios'" aria-current="page"><i class="fa-solid fa-building-columns"></i>&nbsp; Gestion Usuarios</button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link active" [routerLink]="'/dashboard-administracion/crearUsuarios'" aria-current="page"><i class="fa-solid fa-calendar-days"></i>&nbsp; Crear Usuarios</button>
-        </li>
-        
         
     </ul>
     <hr style="color: white;">
