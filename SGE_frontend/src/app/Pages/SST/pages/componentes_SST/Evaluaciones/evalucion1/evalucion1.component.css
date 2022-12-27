@@ -133,10 +133,12 @@ button:hover{
 .imagen img {
     display: block;
     object-fit: cover;
-    margin: 0 auto;
     overflow: hidden;
     padding: 20px;
     border-radius: 30%;
+    width: 150px;
+    position: sticky;
+    left: 813px;
 }
 
 @media (min-width: 1200px){
