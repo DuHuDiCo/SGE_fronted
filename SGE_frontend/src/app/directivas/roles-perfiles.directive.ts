@@ -1,5 +1,5 @@
 import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { RolUsuario } from '../models/rol-usuario';
+import { RolUsuario } from '../Models/rol-usuario';
 import { AuthenticationService } from '../Services/authentication/authentication.service';
 
 @Directive({

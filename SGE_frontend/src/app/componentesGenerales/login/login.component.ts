@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Type } from '@angular/core';
 import { Router } from '@angular/router';
+import { Datos } from 'src/app/Models/Login';
+
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import Swal from 'sweetalert2';
 
@@ -9,10 +11,13 @@ import Swal from 'sweetalert2';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  
+  
+  
 
-  jwtRequest={
-    username:"",
-    password:""
+  jwtRequest:Datos={
+    username: '',
+    password: ''
   }
 
   constructor(private router:Router, private authentication:AuthenticationService) { }
