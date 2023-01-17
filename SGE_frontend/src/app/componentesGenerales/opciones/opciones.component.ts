@@ -30,7 +30,7 @@ export class OpcionesComponent implements OnInit {
   ngOnInit(): void {
     this.rolesUsuario = this.authService.getRoles();
     
-    console.log(this.authService.getRoles());
+
     
     this.validarRoles()
   }
