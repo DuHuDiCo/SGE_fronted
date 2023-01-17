@@ -1,8 +1,11 @@
 import { Component, OnInit, Type } from '@angular/core';
 import { Router } from '@angular/router';
-import { Datos } from 'src/app/Models/Login';
+import Login from 'src/app/Models/Login';
+
+import { Token } from 'src/app/Models/Token';
 
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { JwtRequest } from 'src/app/Types/Login';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -15,7 +18,7 @@ export class LoginComponent implements OnInit {
   
   
 
-  jwtRequest:Datos={
+  jwtRequest:JwtRequest={
     username: '',
     password: ''
   }
@@ -30,7 +33,9 @@ export class LoginComponent implements OnInit {
     if(this.jwtRequest.username == '' || this.jwtRequest.password == ''){
       Swal.fire("Error", "Error, Datos Incorrectos", "error");
     }else{
-      this.authentication.authentication(this.jwtRequest).subscribe(
+      const login = new Login(this.jwtRequest.username, this.jwtRequest.password);
+     
+      this.authentication.authentication(login).subscribe(
         (data:any)=>{
           
           Swal.fire({
@@ -47,6 +52,13 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['opciones'])
         },
         (error:any)=>{
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Datos Incorrectos!',
+            
+          
+          })
           console.log(error);
           
         }

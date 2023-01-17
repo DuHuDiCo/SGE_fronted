@@ -1,25 +1,35 @@
 export default class Login {
-    constructor(private username:string, private password:string){}
 
-    set setUsername(username:string){
-        this.username = username;
+    private username: string
+    private password: string
+
+    
+    constructor(username: string, password: string) {
+        this.username = username
+        this.password = password
     }
 
-    get getUsername(){
+    public get_username(): string {
         return this.username;
     }
 
-    
-    set setPassword(password:string){
-        this.password = password;
+    public set_username(_username: string): void {
+        this.username = _username;
     }
 
-    get getPassword(){
+    public get_password(): string {
         return this.password;
     }
+
+    public set_password(_password: string): void {
+        this.password = _password;
+    }
+
+
+
+
+
+
+
 }
 
-export type Datos = {
-    username:"",
-    password:""
-}

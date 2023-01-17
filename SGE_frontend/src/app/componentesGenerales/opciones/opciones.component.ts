@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+
+import Roles from 'src/app/Models/Roles';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { RolesUsuario } from 'src/app/Types/Roles';
 
 @Component({
   selector: 'app-opciones',
@@ -8,9 +11,9 @@ import { AuthenticationService } from 'src/app/Services/authentication/authentic
 })
 export class OpcionesComponent implements OnInit {
 
-  rolesUsuario: any = []
+  rolesUsuario: Roles[] = []
 
-  roles = {
+  roles:RolesUsuario = {
     cartera: false,
     caja: false,
     archivos: false,
@@ -18,7 +21,7 @@ export class OpcionesComponent implements OnInit {
     servicios: false,
     consignaciones: false,
     administracion: false,
-    sst: false,
+    sst: false
   }
 
 
@@ -27,6 +30,7 @@ export class OpcionesComponent implements OnInit {
   ngOnInit(): void {
     this.rolesUsuario = this.authService.getRoles();
     
+    console.log(this.authService.getRoles());
     
     this.validarRoles()
   }
@@ -34,6 +38,7 @@ export class OpcionesComponent implements OnInit {
 
   public validarRoles() {
     for (var rol of this.rolesUsuario) {
+      
       switch (rol.rol) {
         case "Cartera":
           this.roles.cartera = true
