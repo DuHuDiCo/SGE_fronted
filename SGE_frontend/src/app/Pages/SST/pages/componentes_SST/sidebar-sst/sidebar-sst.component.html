@@ -1,5 +1,5 @@
 <div class="offcanvas offcanvas-start size bg" tabindex="-1" id="offcanvasWithBackdrop"
-    aria-labelledby="offcanvasWithBackdropLabel">
+    aria-labelledby="offcanvasWithBackdropLabel" style="overflow-y: auto;overflow-x: hidden;">
     <div class="offcanvas-header ">
         <i class="fas fa-user mr30" style="color: white; height: 70px; width: 50px;"></i>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"
@@ -8,19 +8,24 @@
     </div>
     <h2 style="color: white; font-size: 1.2em;font-weight: bold;" class="text-center">SST</h2>
     <hr style="color: white;">
+
     <ul class="nav flex-column ">
 
         <li class="mb-1">
-            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#getting-started-collapse" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
                 Asistencia
             </button>
-    
+
             <div class="collapse" id="getting-started-collapse">
                 <ul class="list-unstyled fw-normal pb-1 small">
-                    <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/incapacidad-g"><i class="far fa-file-alt"></i>&nbsp; Incapacidad General</button></li>
+                    <li> <button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-sst/incapacidad-g"><i class="far fa-file-alt"></i>&nbsp;
+                            Incapacidad General</button></li>
 
-                    <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/incapacidad-arl"><i class="fas fa-paste"></i>
-                        &nbsp; Incapacidad laboral</button></li>
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-sst/incapacidad-arl"><i class="fas fa-paste"></i>
+                            &nbsp; Incapacidad laboral</button></li>
                 </ul>
             </div>
         </li>
@@ -28,15 +33,21 @@
 
 
         <li class="mb-1">
-            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse-r" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#getting-started-collapse-r" aria-expanded="false"><i
+                    class="fas fa-sort-down"></i>&nbsp;
                 Reportes
             </button>
-    
+
             <div class="collapse" id="getting-started-collapse-r">
                 <ul class="list-unstyled fw-normal pb-1 small">
-                    <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/incidentes"><i class="fas fa-exclamation-circle"></i>&nbsp; Incidentes</button></li>
+                    <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/incidentes"><i
+                                class="fas fa-exclamation-circle"></i>&nbsp;
+                            Incidentes</button></li>
 
-                    <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/accidentes"><i class="fas fa-exclamation-triangle"></i>&nbsp; Accidentes</button></li>
+                    <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/accidentes"><i
+                                class="fas fa-exclamation-triangle"></i>&nbsp;
+                            Accidentes</button></li>
                 </ul>
             </div>
         </li>
@@ -45,71 +56,93 @@
 
 
         <li class="mb-1">
-            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse-a" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#getting-started-collapse-a" aria-expanded="false"><i
+                    class="fas fa-sort-down"></i>&nbsp;
                 Inspecciones
             </button>
-    
+
             <div class="collapse" id="getting-started-collapse-a">
                 <ul class="list-unstyled fw-normal pb-1 small">
-                    <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/observaciones"><i class="far fa-file-alt"></i>&nbsp; Observaciones </button></li>
+                    <li> <button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-sst/observaciones"><i class="far fa-file-alt"></i>&nbsp;
+                            Observaciones </button></li>
                 </ul>
             </div>
         </li>
 
         <li class="mb-1">
-            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse-b" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#getting-started-collapse-b" aria-expanded="false"><i
+                    class="fas fa-sort-down"></i>&nbsp;
                 Brigadistas
             </button>
 
             <div class="collapse" id="getting-started-collapse-b">
                 <ul class="list-unstyled fw-normal pb-1 small">
-                    <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/observaciones"><i class="far fa-file-alt"></i>&nbsp; Observaciones </button></li>
+                    <li> <button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-sst/observaciones"><i class="far fa-file-alt"></i>&nbsp;
+                            Observaciones </button></li>
                 </ul>
             </div>
         </li>
 
 
         <li class="mb-1">
-            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse-co" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#getting-started-collapse-co" aria-expanded="false"><i
+                    class="fas fa-sort-down"></i>&nbsp;
                 Copasst
             </button>
-    
+
             <div class="collapse" id="getting-started-collapse-co">
                 <ul class="list-unstyled fw-normal pb-1 small">
-                    <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/evidencia"><i class="far fa-file-alt"></i>&nbsp; Evidencia</button></li>
+                    <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/evidencia"><i
+                                class="far fa-file-alt"></i>&nbsp;
+                            Evidencia</button></li>
                 </ul>
             </div>
         </li>
 
         <li class="mb-1">
-            <button class="btn d-inline-flex align-items-center rounded collapsed " data-bs-toggle="collapse" data-bs-target="#getting-started-collapse-cca" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
-                Comité convivencia 
+            <button class="btn d-inline-flex align-items-center rounded collapsed " data-bs-toggle="collapse"
+                data-bs-target="#getting-started-collapse-cca" aria-expanded="false"><i
+                    class="fas fa-sort-down"></i>&nbsp;
+                Comité convivencia
             </button>
-    
+
             <div class="collapse" id="getting-started-collapse-cca">
                 <ul class="list-unstyled fw-normal pb-1 small">
-                    <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/co-evidencias"><i class="far fa-file-alt"></i>&nbsp; Evidencias</button></li>
+                    <li> <button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-sst/co-evidencias"><i class="far fa-file-alt"></i>&nbsp;
+                            Evidencias</button></li>
                 </ul>
             </div>
         </li>
 
-        
+
         <li class="mb-1">
-            <button class="btn d-inline-flex align-items-center rounded collapsed " data-bs-toggle="collapse" data-bs-target="#getting-started-collapse-eo" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
-                Evaluaciones Ocupacionales 
+            <button class="btn d-inline-flex align-items-center rounded collapsed " data-bs-toggle="collapse"
+                data-bs-target="#getting-started-collapse-eo" aria-expanded="false"><i
+                    class="fas fa-sort-down"></i>&nbsp;
+                Evaluaciones Ocupacionales
             </button>
-    
+
             <div class="collapse" id="getting-started-collapse-eo">
                 <ul class="list-unstyled fw-normal pb-1 small">
-                    <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/evaluacion1"><i class="far fa-file-alt"></i>&nbsp; Evidencia #1</button></li>
+                    <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/evaluacion1"><i
+                                class="far fa-file-alt"></i>&nbsp; Evidencia
+                            #1</button></li>
                 </ul>
             </div>
         </li>
 
 
         <li class="nav-item">
-            <button class="nav-link active" aria-current="page"><i class="fa-solid fa-calendar-days"></i>&nbsp; Calendario</button>
+            <button class="nav-link active" aria-current="page"><i class="fa-solid fa-calendar-days"></i>&nbsp;
+                Calendario</button>
         </li>
     </ul>
+
     <hr style="color: white;">
 </div>
