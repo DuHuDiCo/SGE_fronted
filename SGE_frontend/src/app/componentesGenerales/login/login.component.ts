@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
    
   }
 
-  public iniciarSesion(){
+  public iniciarSesion():void{
     if(this.jwtRequest.username == '' || this.jwtRequest.password == ''){
       Swal.fire("Error", "Error, Datos Incorrectos", "error");
     }else{

@@ -36,7 +36,7 @@ export class OpcionesComponent implements OnInit {
   }
 
 
-  public validarRoles() {
+  public validarRoles():void {
     for (var rol of this.rolesUsuario) {
       
       switch (rol.rol) {

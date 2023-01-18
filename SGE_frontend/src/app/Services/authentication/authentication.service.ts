@@ -19,21 +19,21 @@ export class AuthenticationService {
     return this.http.get(`${baseUrl}/users/getUser/dudico`);
   }
 
-  public setTokenLocalStorage(token:any){
+  public setTokenLocalStorage(token:any):void{
     localStorage.setItem("Token",token);
   }
 
-  public setUsernameLocalStorage(username:string){
+  public setUsernameLocalStorage(username:string):void{
     localStorage.setItem("Username", username)
   }
 
-  public setRolesLocalStorage(username:string[]){
+  public setRolesLocalStorage(username:string[]):void{
     localStorage.setItem("Roles", JSON.stringify(username))
   }
 
-  public getToken(){
+  public getToken():string | null{
     var token:string| null =  localStorage.getItem("Token")
-   
+    return token;
   }
 
   
@@ -53,13 +53,13 @@ export class AuthenticationService {
   }
 
 
-  public logout(){
+  public logout():void{
     localStorage.removeItem("Token")
     localStorage.removeItem("Username")
     localStorage.removeItem("Roles")
   }
 
-  public isLoggedIn(){
+  public isLoggedIn():boolean{
     var token:string | null = localStorage.getItem("Token");
     var username:string | null = localStorage.getItem("Username");
     var roles:string | null = localStorage.getItem("Roles");

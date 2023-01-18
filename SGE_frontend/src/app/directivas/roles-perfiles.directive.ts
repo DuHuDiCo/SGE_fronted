@@ -1,5 +1,6 @@
 import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { RolUsuario } from '../Models/rol-usuario';
+import Roles from '../Models/Roles';
 import { AuthenticationService } from '../Services/authentication/authentication.service';
 
 @Directive({
@@ -7,10 +8,10 @@ import { AuthenticationService } from '../Services/authentication/authentication
 })
 export class RolesPerfilesDirective implements OnInit {
 
-  rolesUser: any = [];
-  rol = "";
+  rolesUser: Roles[] = [];
+  rol:string = "";
 
-  rolesString: any = []
+  rolesString: string[] = []
 
 
   constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private authService: AuthenticationService) { }
@@ -21,7 +22,7 @@ export class RolesPerfilesDirective implements OnInit {
   ngOnInit(): void {
     this.rolesUser = this.authService.getRoles();
     this.convertirString();
-    console.log(this.rol);
+    
 
     if (this.rolesString[0] == "Administrador") {
       this.viewContainer.createEmbeddedView(this.templateRef);
@@ -42,8 +43,8 @@ export class RolesPerfilesDirective implements OnInit {
 
   }
 
-  private convertirString() {
-    this.rolesUser.forEach((x: any) => {
+  private convertirString():void {
+    this.rolesUser.forEach((x: Roles) => {
       this.rolesString.push(x.rol)
     });
 
