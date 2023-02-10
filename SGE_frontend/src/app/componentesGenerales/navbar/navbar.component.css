@@ -19,8 +19,10 @@
     position: relative;
 }
 
+/* .row{
+    background: #adb5bd;
+} */
 .search{
-
     width: 250px;
     height: 48px;
     margin-left: 200px;
@@ -72,10 +74,10 @@ svg#persona {
 @media(max-width : 700px){
     .nav{
     height: auto;
-    width: 70px;
+    /* width: 70px; */
     left: 0;
-    margin: 100px 0;
-    display: grid;
+    /* margin: 100px 0; */
+    /* display: grid; */
     grid-template-columns: auto auto auto;}
 
     

@@ -1,0 +1,46 @@
+<div class="offcanvas offcanvas-start size bg" tabindex="-1" id="offcanvasWithBackdrop"
+    aria-labelledby="offcanvasWithBackdropLabel">
+    <div class="offcanvas-header ">
+        <i class="fas fa-user mr30" style="color: white; height: 70px; width: 50px;"></i>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"
+            style="background-color: white;"></button>
+
+    </div>
+    <h2 style="color: white; font-size: 1.2em;font-weight: bold;" class="text-center">Ventas</h2>
+    <hr style="color: white;">
+    <ul class="nav flex-column ">
+
+        <li class="mb-1">
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+                Proceso
+            </button>
+    
+            <div class="collapse" id="getting-started-collapse">
+                <ul class="list-unstyled fw-normal pb-1 small">
+                    <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-ventas/proceso-ventas"><i class="far fa-file-alt"></i>&nbsp; Incapacidad General</button></li>
+
+                    <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/incapacidad-arl"><i class="fas fa-paste"></i>
+                        &nbsp; Incapacidad laboral</button></li>
+                </ul>
+            </div>
+        </li>
+
+
+
+        <li class="mb-1">
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse-r" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+                Reportes
+            </button>
+    
+            <div class="collapse" id="getting-started-collapse-r">
+                <ul class="list-unstyled fw-normal pb-1 small">
+                    <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/incidentes"><i class="fas fa-exclamation-circle"></i>&nbsp; Incidentes</button></li>
+
+                    <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-sst/accidentes"><i class="fas fa-exclamation-triangle"></i>&nbsp; Accidentes</button></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <hr style="color: white;">
+</div>
+

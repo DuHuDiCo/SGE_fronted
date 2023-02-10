@@ -1,0 +1,60 @@
+.contenedor{
+    top: 30px;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    gap: 5px;
+    margin: 10px auto;
+    justify-items: center;
+    align-items: center;
+    /* background: rgb(197, 37, 37); */
+    margin-bottom: 40px;
+}
+
+.card{
+    height: 250px;
+    width: 90%;
+    overflow: hidden;
+    margin: auto;
+    padding: 10px 10px;
+    border-radius: 2%;
+    border: 1px solid #fff;
+    transition: all .4s ease-in-out;
+    box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.card:hover{
+    height: 450px;
+    width: 98%;
+    /* top: 5px; */
+    position: relative;
+    margin-bottom: 40px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.5);
+}
+
+.card-encabezado img {
+    position: relative;
+    display: block;
+    height: 100px;
+    width: 200px;
+    /* border-top: 8px solid #fff;
+    border-bottom: 8px solid #fff; */
+    margin: 10px auto;
+    transition: all 0.3s ease;
+}
+
+@media screen and (max-width: 600px) {
+    .contenedor {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 825px) {
+    .contenedor {
+
+        gap: 5px;
+    }
+}

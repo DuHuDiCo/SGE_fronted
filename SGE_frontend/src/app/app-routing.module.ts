@@ -9,7 +9,8 @@ import { CrearUsuariosComponent } from './Pages/Administracion/pages/componenete
 import { GestionUsuariosComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/gestion-usuarios.component';
 
 import { RolesUsuarioComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/roles-usuario/roles-usuario.component';
-
+import { CrearCreditoComponent } from './Pages/Creditos/Componentes_creditos/crear-credito/crear-credito.component';
+import { VerCreditosComponent } from './Pages/Creditos/Componentes_creditos/ver-creditos/ver-creditos.component';
 
 import { DashboardAdminComponent } from './Pages/Administracion/pages/dashboard-admin/dashboard-admin.component';
 import { EstadisticasDashboardComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas-dashboard/estadisticas-dashboard.component';
@@ -19,6 +20,9 @@ import { ConsultasComponent } from './Pages/Consignaciones/pages/componentesCons
 import { IngresarComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ingresar/ingresar.component';
 import { ReportesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/reportes/reportes.component';
 import { DashboarConsignacionesComponent } from './Pages/Consignaciones/pages/dashboar-consignaciones/dashboar-consignaciones.component';
+
+
+import { DashboardCreditosComponent } from './Pages/Creditos/dashboard-creditos/dashboard-creditos.component';
 import { IncapacidadArlComponent } from './Pages/SST/pages/componentes_SST/asistencia/incapacidad-arl/incapacidad-arl.component';
 import { IncapacidadGComponent } from './Pages/SST/pages/componentes_SST/asistencia/incapacidad-g/incapacidad-g.component';
 import { EvidenciasComponent } from './Pages/SST/pages/componentes_SST/Copasst/evidencias/evidencias.component';
@@ -27,6 +31,11 @@ import { ObservacionesComponent } from './Pages/SST/pages/componentes_SST/inspec
 import { AccidentesComponent } from './Pages/SST/pages/componentes_SST/reportes/accidentes/accidentes.component';
 import { IncidentesComponent } from './Pages/SST/pages/componentes_SST/reportes/incidentes/incidentes.component';
 import { DashboardSSTComponent } from './Pages/SST/pages/dashboard-sst/dashboard-sst.component';
+import { CreditosCreadosComponent } from './Pages/Creditos/Componentes_creditos/creditos-creados/creditos-creados.component';
+import { DashboardArchivosComponent } from './Pages/Archivos/dashboard-archivos/dashboard-archivos.component';
+import { ArchivosExsComponent } from './Pages/Archivos/componentes_archivos/archivos-exs/archivos-exs.component';
+import { DashboardVentasComponent } from './Pages/Ventas/dashboard-ventas/dashboard-ventas.component';
+import { ProcesoVentasComponent } from './Pages/Ventas/componentesVentas/proceso-ventas/proceso-ventas.component';
 
 
 
@@ -42,7 +51,6 @@ const routes: Routes = [
     path:'opciones', 
     component:OpcionesComponent,
     canActivate:[AuthenticationGuard]
-   
   },
   {
     path: 'cartera', redirectTo:'dashboard-cartera/inicio' , pathMatch:'full' 
@@ -55,7 +63,6 @@ const routes: Routes = [
       {
         path:"gestion",
         component:GestionComponent,
-       
       },
       {
         path:"inicio",
@@ -67,10 +74,11 @@ const routes: Routes = [
     path:"perfil-usuario",
     component:PerfilUsuarioComponent,
     children:[]
-  }  
-  ,
-  {path: 'consignaciones', redirectTo:'dashboard-consignaciones/consultar' , pathMatch:'full' }
-  ,
+  },
+
+
+
+  {path: 'consignaciones', redirectTo:'dashboard-consignaciones/consultar' , pathMatch:'full' },
   {
     path:'dashboard-consignaciones',
     component:DashboarConsignacionesComponent,
@@ -92,9 +100,10 @@ const routes: Routes = [
       },
     ]
   },
-  {path: 'administracion', redirectTo:'dashboard-administracion/gestionUsuarios' , pathMatch:'full' }
-  
-  ,
+
+
+
+  {path: 'administracion', redirectTo:'dashboard-administracion/gestionUsuarios' , pathMatch:'full' },
   {
     path:"dashboard-administracion",
     component:DashboardAdminComponent,
@@ -117,6 +126,8 @@ const routes: Routes = [
       
     ]
   },
+
+
 
   {path: 'sst', redirectTo:'dashboard-sst' , pathMatch:'full' },
   {
@@ -156,9 +167,52 @@ const routes: Routes = [
         component:Evalucion1Component
       }
     ]
+  },
+
+  {path: 'Creditos', redirectTo:'dashboard-creditos' , pathMatch:'full' },
+  {
+    path:"dashboard-creditos",
+    component:DashboardCreditosComponent,
+    children:[
+      {
+        path:'ver-creditos',
+        component:VerCreditosComponent
+      },
+      {
+        path:'crear-credito',
+        component:CrearCreditoComponent
+      },
+      {
+        path:'creditos-creados',
+        component:CreditosCreadosComponent
+      },
+    ]
+  },
+
+  {path: 'Archivos', redirectTo:'dashboard-archivos' , pathMatch:'full' },
+  {
+    path:"dashboard-archivos",
+    component:DashboardArchivosComponent,
+    children:[
+      {
+        path:'archivos-exs',
+        component:ArchivosExsComponent
+      },
+    ]
+  },
+
+
+  {path: 'Ventas', redirectTo:'dashboard-ventas' , pathMatch:'full' },
+  {
+    path:"dashboard-ventas",
+    component:DashboardVentasComponent,
+    children:[
+      {
+        path:'proceso-ventas',
+        component:ProcesoVentasComponent
+      },
+    ]
   }
-
-
 
 ];
 
