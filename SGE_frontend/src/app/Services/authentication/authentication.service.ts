@@ -57,6 +57,7 @@ export class AuthenticationService {
     localStorage.removeItem("Token")
     localStorage.removeItem("Username")
     localStorage.removeItem("Roles")
+    
   }
 
   public isLoggedIn():boolean{

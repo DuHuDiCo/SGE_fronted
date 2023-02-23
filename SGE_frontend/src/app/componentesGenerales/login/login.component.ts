@@ -50,6 +50,8 @@ export class LoginComponent implements OnInit {
           this.authentication.setUsernameLocalStorage(data.username)
           this.authentication.setRolesLocalStorage(data.roles)
           this.router.navigate(['opciones'])
+          console.log(data);
+          
         },
         (error:any)=>{
           Swal.fire({
