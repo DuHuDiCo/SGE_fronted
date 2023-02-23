@@ -34,15 +34,17 @@
     transition: .3s;
     background: #a0a3a5;
     box-shadow: 5px 3px 8px #6c757d, -1px -1px 9px 5px #6c757d;
+    animation: fadein 0.4s linear;
 }
 
     .option a:hover {
         width: 130px;
-        height: 110px;
+        height: 120px;
         color: #ff0000;
         background: #fff;
         padding: 20px;
         cursor: pointer;
+        animation: fadein 0.4s linear;
     }
 
     a {

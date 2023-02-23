@@ -36,6 +36,10 @@ import { DashboardArchivosComponent } from './Pages/Archivos/dashboard-archivos/
 import { ArchivosExsComponent } from './Pages/Archivos/componentes_archivos/archivos-exs/archivos-exs.component';
 import { DashboardVentasComponent } from './Pages/Ventas/dashboard-ventas/dashboard-ventas.component';
 import { ProcesoVentasComponent } from './Pages/Ventas/componentesVentas/proceso-ventas/proceso-ventas.component';
+import { ListaChequeoComponent } from './Pages/SST/pages/componentes_SST/inspeccion/lista-chequeo/lista-chequeo.component';
+import { ReportesSstComponent } from './Pages/SST/pages/componentes_SST/inspeccion/reportes-sst/reportes-sst.component';
+import { ResultadosSstComponent } from './Pages/SST/pages/componentes_SST/inspeccion/resultados-sst/resultados-sst.component';
+import { EstadisticasComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas/estadisticas.component';
 
 
 
@@ -67,6 +71,10 @@ const routes: Routes = [
       {
         path:"inicio",
         component:EstadisticasDashboardComponent
+      },
+      {
+        path:"estadisticas",
+        component:EstadisticasComponent
       }
     ]
   },
@@ -165,7 +173,19 @@ const routes: Routes = [
       {
         path:'evaluacion1',
         component:Evalucion1Component
-      }
+      },
+      {
+        path:'lista-chequeo',
+        component:ListaChequeoComponent
+      },
+      {
+        path:'reportes-sst',
+        component:ReportesSstComponent
+      },
+      {
+        path:'resultados-sst',
+        component:ResultadosSstComponent
+      },
     ]
   },
 

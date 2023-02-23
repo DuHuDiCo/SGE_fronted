@@ -22,7 +22,6 @@ let slider = document.querySelectorAll('.screen-box');
 let index = 0;
 
 
-
 function next(){
     slider[index].classList.remove('active');
     index = (index + 1) % slider.length;

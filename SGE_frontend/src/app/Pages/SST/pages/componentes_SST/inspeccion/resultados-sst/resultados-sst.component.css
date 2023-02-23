@@ -1,0 +1,139 @@
+.container{
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin: 40px auto;
+    margin-top: 50px;
+    border-radius: 10px;
+    padding: 5px;
+    background: #dfe2e5;
+    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+}
+    
+        h2 {
+            text-align: center;
+    
+            text-transform: uppercase;
+            display:inline-block;
+            margin: 40px 8px 10px 8px; 
+            color: #f81010;
+        }
+        
+    #main-container{
+        margin: 150px auto;
+        width: 700px;
+        
+    }
+    
+    table{
+        background-color: #fff;
+        text-align: left;
+        border-collapse: collapse;
+        width: 150%;
+        
+    }
+    
+    th, td{
+        padding: 30px;
+    }
+    
+    thead{
+        background-color: #212121;
+        border-bottom: solid 5px #8f0909;
+        color: white;
+    }
+    
+    tr:hover td{
+        background-color: #5d6863a6;
+        color: #fff;
+    
+    }
+    
+    input[type=button], input[type=submit], input[type=reset] {
+        margin: auto;
+        padding: 10px;
+        color: #fff;
+        background-color: #c50e0e;;
+        cursor: pointer;
+        border-radius: 20px;
+    
+    }
+    
+    input#exportar{
+        margin: auto;
+        padding: 10px;
+        color: #fff;
+        background-color: #c7a32c;;
+        cursor: pointer;
+        border-radius: 20px;
+    
+    }
+    
+    input#traer{
+        margin: auto;
+        padding: 10px;
+        color: #fff;
+        background-color: #212121;;
+        cursor: pointer;
+        border-radius: 20px;
+    }
+    
+    input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
+    background-color: #212121;
+    }
+    
+    @media screen and (max-width: 640px) {
+        table {
+            width: 350px;
+        }
+        .iconos ul li {
+            margin-top: 10px;
+        }
+        .iconos ul li.google {
+            margin-left: 60px;
+        }
+        input[type=button]{
+            width: 35px;
+        }
+       
+    }
+    
+    .iconos ul li{
+        float: left;
+    
+    } 
+    
+    .iconos ul{
+        list-style: none;
+    }  
+    
+    .footer-content{
+        display: flex;
+        flex-direction: column;
+        flex-direction: column;
+    } 
+    
+    
+    .card{
+        padding: 60px;
+        display: flex;
+        background: #dfe2e5;
+    }
+    
+    
+    
+    .listado-numeros ul li{
+        margin: 0 10px;
+        cursor: pointer;
+        float: left;
+        position: relative;
+    }
+    
+    .listado-numeros ul{
+        list-style: none;
+    }
+    
+    li.active{
+        background: #212121;
+        color: #fff;
+    }

@@ -59,6 +59,13 @@ import { SidebarArchivosComponent } from './Pages/Archivos/componentes_archivos/
 import { DashboardVentasComponent } from './Pages/Ventas/dashboard-ventas/dashboard-ventas.component';
 import { SidebarVentasComponent } from './Pages/Ventas/componentesVentas/sidebar-ventas/sidebar-ventas.component';
 import { ProcesoVentasComponent } from './Pages/Ventas/componentesVentas/proceso-ventas/proceso-ventas.component';
+import { ResultadosSstComponent } from './Pages/SST/pages/componentes_SST/inspeccion/resultados-sst/resultados-sst.component';
+import { ReportesSstComponent } from './Pages/SST/pages/componentes_SST/inspeccion/reportes-sst/reportes-sst.component';
+import { ListaChequeoComponent } from './Pages/SST/pages/componentes_SST/inspeccion/lista-chequeo/lista-chequeo.component';
+import { DashboardServiciosComponent } from './Pages/Servicios/dashboard-servicios/dashboard-servicios.component';
+import { SidebarServiciosComponent } from './Pages/Servicios/sidebar-servicios/sidebar-servicios.component';
+import { EstadisticasComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas/estadisticas.component';
+
 
 
 
@@ -121,6 +128,14 @@ import { ProcesoVentasComponent } from './Pages/Ventas/componentesVentas/proceso
     SidebarArchivosComponent,
     DashboardVentasComponent,
     ProcesoVentasComponent,
+    ResultadosSstComponent,
+    ReportesSstComponent,
+    ListaChequeoComponent,
+    DashboardServiciosComponent,
+    SidebarServiciosComponent,
+    EstadisticasComponent,
+
+
   
 
   ],

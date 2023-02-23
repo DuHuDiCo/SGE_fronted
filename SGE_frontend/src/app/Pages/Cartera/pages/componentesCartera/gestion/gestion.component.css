@@ -103,14 +103,17 @@ background-color: #212121;
 } 
 
 
-
+.listado-numeros {
+    margin: 0 40px;
+    position: relative;
+    align-items: center;
+}
 .listado-numeros ul li{
     margin: 0 10px;
     cursor: pointer;
     float: left;
     position: relative;
 }
-
 .listado-numeros ul{
     list-style: none;
 }

@@ -1,0 +1,51 @@
+
+header{
+    text-align: center;
+    background: #b90a0a;
+    color: #fff;
+    padding: 10px 0;
+    box-shadow: 0 35px 60px 0 rgb(255, 255, 255);
+    border-radius: 8px;
+}
+
+#icon {
+    width:20%;
+    display: block;
+    margin: auto;
+    padding: 10px;
+}
+.container{
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+}
+
+label:hover{
+    background: #cec0fc;
+}
+
+.btn-dark{
+    display: block;
+    margin: auto;
+    padding: 10px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+form{
+    display: block;
+    padding: 7px;
+    border-radius: 7px;
+    border: 2px dashed rgb(0, 0, 0);
+    margin-bottom: 3px;
+}
+
+li.list-group-item {
+    min-height: calc(1.5em + 1rem + 2px);
+    padding: .5rem 1rem;
+    font-size: 1.25rem;
+    border-radius: .5rem;
+}
+
