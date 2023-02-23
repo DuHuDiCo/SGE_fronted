@@ -13,7 +13,7 @@ export class OpcionesComponent implements OnInit {
 
   rolesUsuario: Roles[] = []
 
-  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'Administrador', 'SST']
+  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SuperAdministrador', 'SST']
 
   roles: RolesUsuario = {
     cartera: false,

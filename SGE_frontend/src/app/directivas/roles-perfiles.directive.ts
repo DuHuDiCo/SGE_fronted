@@ -24,7 +24,7 @@ export class RolesPerfilesDirective implements OnInit {
     this.convertirString();
     
 
-    if (this.rolesString[0] == "SuperAdministrador" ) {
+    if (this.rolesString[0] == "SuperAdministrador" || this.rolesString[0] == "Administrador" ) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
       if (this.verificarRol(this.rol)) {
