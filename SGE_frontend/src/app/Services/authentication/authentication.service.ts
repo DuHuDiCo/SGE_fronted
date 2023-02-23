@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import Login from 'src/app/Models/Login';
 import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
@@ -9,7 +10,7 @@ export class AuthenticationService {
 
   constructor(private http:HttpClient) { }
 
-  public authentication(jwtRequest:any){
+  public authentication(jwtRequest:Login){
     return this.http.post(`${baseUrl}/generate-token`, jwtRequest);
   }
 
@@ -18,31 +19,31 @@ export class AuthenticationService {
     return this.http.get(`${baseUrl}/users/getUser/dudico`);
   }
 
-  public setTokenLocalStorage(token:any){
+  public setTokenLocalStorage(token:any):void{
     localStorage.setItem("Token",token);
   }
 
-  public setUsernameLocalStorage(username:any){
+  public setUsernameLocalStorage(username:string):void{
     localStorage.setItem("Username", username)
   }
 
-  public setRolesLocalStorage(username:any[]){
+  public setRolesLocalStorage(username:string[]):void{
     localStorage.setItem("Roles", JSON.stringify(username))
   }
 
-  public getToken(){
-    var token =  localStorage.getItem("Token")
-   
+  public getToken():string | null{
+    var token:string| null =  localStorage.getItem("Token")
+    return token;
   }
 
   
   public getUsername(){
-    var user = localStorage.getItem("Username")
+    var user:string | null = localStorage.getItem("Username")
     
   }
   
   public getRoles(){
-    var roles = localStorage.getItem("Roles")
+    var roles: string | null = localStorage.getItem("Roles")
     if(roles != null){
       return JSON.parse(roles);
     }else{
@@ -52,16 +53,17 @@ export class AuthenticationService {
   }
 
 
-  public logout(){
+  public logout():void{
     localStorage.removeItem("Token")
     localStorage.removeItem("Username")
     localStorage.removeItem("Roles")
+    
   }
 
-  public isLoggedIn(){
-    var token = localStorage.getItem("Token");
-    var username = localStorage.getItem("Username");
-    var roles = localStorage.getItem("Roles");
+  public isLoggedIn():boolean{
+    var token:string | null = localStorage.getItem("Token");
+    var username:string | null = localStorage.getItem("Username");
+    var roles:string | null = localStorage.getItem("Roles");
     if(token == undefined || token == null  || username == undefined || username == null || roles == undefined || roles == null){
       this.logout()
       return false
