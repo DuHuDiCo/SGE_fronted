@@ -1,4 +1,4 @@
-h1{
+.titulo{
     text-align: center;
 }
 
@@ -54,7 +54,7 @@ h1{
     box-shadow: inset 10px 10px 20px #adb5bd, inset -10px -10px 20px #ffffff;
 }
 
-input{
+.input-usuario{
     border: none;
     outline: none;
     background: none;
@@ -62,13 +62,14 @@ input{
     margin: 13px 10px;
     border-bottom: 10px;
 }
-select{
+.form-select{
     border: none;
     outline: none;
 
 }
 
-button{
+
+.guardar{
     display: block;
     object-fit: cover;
     margin: 15px auto;
@@ -86,7 +87,6 @@ button{
     margin-bottom: 30px;
     box-shadow: 10px 10px 20px #707274, -2px 0px 10px 4px #707274;
 }
-
-button:hover{
+.guardar:hover{
     background: #D60303 ;
 }

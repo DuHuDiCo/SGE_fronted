@@ -1,5 +1,5 @@
 <div class="imagen">
-    <a (click)="logout()"><i style="color: #960010;" class="fa-solid fa-right-from-bracket" id="cerrar" ></i> </a>
+    <a class="close" (click)="logout()"><i style="color: #960010;" class="fa-solid fa-right-from-bracket" id="cerrar" ></i> </a>
 </div>
 
 
@@ -8,27 +8,27 @@
     <ul class="options">
 
         <li class="option" *appRolesPerfiles="rolesArray[0]">
-            <a [routerLink]="'/cartera'" >
+            <a class="session" [routerLink]="'/cartera'" >
                 <i class="fas fa-university"></i>
                 <span>Cartera</span>
             </a>
         </li>
 
         <li class="option" *appRolesPerfiles="rolesArray[1]">
-            <a href="#">
+            <a class="session" href="#">
                 <i class="fas fa-laptop"></i>
                 <span>Caja</span>
             </a>
         </li>
 
         <li class="option" *appRolesPerfiles="'Archivos'">
-            <a [routerLink]="'/Archivos'">
+            <a class="session" [routerLink]="'/Archivos'">
                 <i class="fas fa-archive"></i>
                 <span>Archivos</span>
             </a>
 
         <li class="option" *appRolesPerfiles="'SST'">
-            <a [routerLink]="'/Creditos'">
+            <a class="session" [routerLink]="'/Creditos'">
                 <i class="fas fa-credit-card"></i>
                 <span>Creditos</span>
             </a>
@@ -38,7 +38,7 @@
         
 
         <li class="option" *appRolesPerfiles="rolesArray[3]">
-            <a href="#">
+            <a class="session" href="#">
 
                 <i class="fas fa-money-check-alt"></i>
                 <span>Ventas</span>
@@ -47,25 +47,25 @@
 
 
         <li class="option" *appRolesPerfiles="rolesArray[4]">
-            <a href="#">
+            <a class="session" href="#">
                 <i class="fas fa-phone"></i>
                 <span>Servicios</span>
             </a>
         </li>
         <li class="option" *appRolesPerfiles="rolesArray[5]">
-            <a [routerLink]="'/consignaciones'">
+            <a class="session" [routerLink]="'/consignaciones'">
                 <i class="fas fa-hand-holding-usd"></i>
                 <span>Consignaciones</span>
             </a>
         </li>
         <li class="option"  *appRolesPerfiles="rolesArray[6]">
-            <a [routerLink]="'/administracion'">
+            <a class="session" [routerLink]="'/administracion'">
                 <i class="fas fa-user-cog"></i>
                 <span>Administración</span>
             </a>
         </li>
         <li class="option" *appRolesPerfiles="rolesArray[7]">
-            <a [routerLink]="'/sst'">
+            <a class="session" [routerLink]="'/sst'">
                 <i class="fas fa-heartbeat"></i>
                 <span>SST</span>
             </a>

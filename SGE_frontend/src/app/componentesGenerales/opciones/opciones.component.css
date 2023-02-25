@@ -48,7 +48,7 @@
     }
 
     a {
-        color: #811919;
+        /* color: #811919; */
         font-size: 50px;
     }
     /* .option a:hover .fas{
@@ -96,8 +96,17 @@ span {
     cursor: pointer;
 }
 
-/* Tablet */
+/* clases de los vinculos (colores de las rutas) */
+    .close{
+        color: #811919;
 
+    }
+    .session{
+        color: #811919;
+}
+
+
+/* Tablet */
 @media_table (max-width:1000px){
     .caja {
         display: flex;

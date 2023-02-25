@@ -1,6 +1,4 @@
-body{
-    background-color: red;
-}
+
 
 .container{
     margin-top: 30px;
@@ -58,11 +56,6 @@ border-bottom: 20px;
 @keyframes rotate {
 100% {transform: rotate(360deg);}
 } 
-
-
-/* iconos */
-
-
 
 
 input#exportar{

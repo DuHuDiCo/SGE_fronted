@@ -1,11 +1,11 @@
 
 
-h1{
+.titulo{
     text-align: center;
     color: #000000;
 }
 
-input{
+.form-control{
     border: none;
     outline: none;
     background: none;
