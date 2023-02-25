@@ -37,21 +37,22 @@
     animation: fadein 0.4s linear;
 }
 
-    .option a:hover {
-        width: 130px;
-        height: 120px;
-        color: #ff0000;
-        background: #fff;
-        padding: 20px;
-        cursor: pointer;
-        animation: fadein 0.4s linear;
-    }
+.option a:hover {
+    width: 130px;
+    height: 120px;
+    color: #ff0000;
+    background: #fff;
+    padding: 20px;
+    cursor: pointer;
+    animation: fadein 0.4s linear;
+}
 
-    a {
-        /* color: #811919; */
-        font-size: 50px;
-    }
-    /* .option a:hover .fas{
+.options {
+    /* color: #811919; */
+    font-size: 50px;
+}
+
+/* .option a:hover .fas{
         padding: 50px;
     } */
 
@@ -61,22 +62,22 @@
     transition: .1s;
 }
 
-    .option a span{
-        position: absolute;
-        color: #fff;
-        background: #000;
-        font-family: 'Rubik';
-        top: 10px;
-        
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 5px;
-        border-radius: 5px;
-        font-weight: 200;
-        visibility: hidden;
-        opacity: 0;
-        transition: .3s;
-    }
+.option a span {
+    position: absolute;
+    color: #fff;
+    background: #000;
+    font-family: 'Rubik';
+    top: 10px;
+
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: 200;
+    visibility: hidden;
+    opacity: 0;
+    transition: .3s;
+}
 
 .option a:hover span {
     top: 100px;
@@ -89,7 +90,15 @@ span {
     font-size: 20px;
 }
 
-#cerrar{
+
+.btnAdminGeneral{
+    text-decoration: none;
+    font-size: 20px;
+    color: #960010;
+}
+
+
+#cerrar {
     width: 3%;
     margin-left: 1250px;
     overflow: hidden;
@@ -97,17 +106,18 @@ span {
 }
 
 /* clases de los vinculos (colores de las rutas) */
-    .close{
-        color: #811919;
+.close {
+    color: #811919;
+    font-size: 50px;
+}
 
-    }
-    .session{
-        color: #811919;
+.session {
+    color: #811919;
 }
 
 
 /* Tablet */
-@media_table (max-width:1000px){
+@media_table (max-width:1000px) {
     .caja {
         display: flex;
         justify-content: center;
@@ -118,6 +128,7 @@ span {
         height: auto;
         background: #fff;
     }
+
     .options {
         display: flex;
         list-style: none;
@@ -138,13 +149,13 @@ span {
         padding: 30px;
     }
 
-    
+
 }
 
 
 /* Movil */
 
-@media_movil (max-width:390px){
+@media_movil (max-width:390px) {
     .caja {
         display: flex;
         width: 100%;
@@ -154,6 +165,7 @@ span {
         height: auto;
         background: #fff;
     }
+
     .options {
         display: flex;
         list-style: none;

@@ -1,0 +1,25 @@
+
+.titulo{
+    text-align: center;
+    color: #000;
+}
+.bg-danger {
+    background-color: #dc3545!important;
+    border-radius: 50%;
+}
+
+.container{
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin: 40px auto;
+    margin-top: 30px;
+    border-radius: 15px;
+    background: #dfe2e5;
+    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+}
+
+.form-check-input:checked {
+    background-color: #9e212d;
+    border-color: #dee2e6;
+}

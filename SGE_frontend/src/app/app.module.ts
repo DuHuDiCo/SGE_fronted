@@ -65,6 +65,10 @@ import { ListaChequeoComponent } from './Pages/SST/pages/componentes_SST/inspecc
 import { DashboardServiciosComponent } from './Pages/Servicios/dashboard-servicios/dashboard-servicios.component';
 import { SidebarServiciosComponent } from './Pages/Servicios/sidebar-servicios/sidebar-servicios.component';
 import { EstadisticasComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas/estadisticas.component';
+import { DashboardSuperAdminComponent } from './Pages/AdminGeneral/dashboard-super-admin/dashboard-super-admin.component';
+import { SidebarAdminGeneralComponent } from './Pages/AdminGeneral/componentes/sidebar-admin-general/sidebar-admin-general.component';
+import { SystemRolesComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-roles/system-roles.component';
+import { SystemPermisosComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-permisos/system-permisos.component';
 
 
 
@@ -134,6 +138,10 @@ import { EstadisticasComponent } from './Pages/Cartera/pages/componentesCartera/
     DashboardServiciosComponent,
     SidebarServiciosComponent,
     EstadisticasComponent,
+    DashboardSuperAdminComponent,
+    SidebarAdminGeneralComponent,
+    SystemRolesComponent,
+    SystemPermisosComponent,
 
 
   

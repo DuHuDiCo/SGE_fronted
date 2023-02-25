@@ -12,6 +12,7 @@ import { RolesUsuario } from 'src/app/Types/Roles';
 export class OpcionesComponent implements OnInit {
 
   rolesUsuario: Roles[] = []
+  role:string = ''
 
   rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SuperAdministrador', 'SST']
 
@@ -32,7 +33,7 @@ export class OpcionesComponent implements OnInit {
   ngOnInit(): void {
     this.rolesUsuario = this.authService.getRoles();
 
-
+    this.role = this.rolesUsuario[0].rol
 
     this.validarRoles()
   }

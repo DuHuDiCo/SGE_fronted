@@ -40,6 +40,9 @@ import { ListaChequeoComponent } from './Pages/SST/pages/componentes_SST/inspecc
 import { ReportesSstComponent } from './Pages/SST/pages/componentes_SST/inspeccion/reportes-sst/reportes-sst.component';
 import { ResultadosSstComponent } from './Pages/SST/pages/componentes_SST/inspeccion/resultados-sst/resultados-sst.component';
 import { EstadisticasComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas/estadisticas.component';
+import { DashboardSuperAdminComponent } from './Pages/AdminGeneral/dashboard-super-admin/dashboard-super-admin.component';
+import { SystemRolesComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-roles/system-roles.component';
+import { SystemPermisosComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-permisos/system-permisos.component';
 
 
 
@@ -231,6 +234,22 @@ const routes: Routes = [
         path:'proceso-ventas',
         component:ProcesoVentasComponent
       },
+    ]
+  },
+
+  {path: 'AdminGeneral', redirectTo:'dashboard-admin-general/system-roles' , pathMatch:'full' },
+  {
+    path:"dashboard-admin-general",
+    component:DashboardSuperAdminComponent,
+    children:[
+      {
+        path:'system-roles',
+        component: SystemRolesComponent
+      },
+      {
+        path:'system-permisos',
+        component: SystemPermisosComponent
+      }
     ]
   }
 
