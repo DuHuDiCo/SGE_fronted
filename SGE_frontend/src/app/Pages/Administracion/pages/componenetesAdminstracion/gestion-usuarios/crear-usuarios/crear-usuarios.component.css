@@ -71,7 +71,7 @@
     padding: 13px;
     box-shadow: inset 2px 7px 20px 9px #adb5bd, inset 1px -6px 20px #adb5bd;
 }
-input{
+.form-control{
     border: none;
     outline: none;
     background: none;

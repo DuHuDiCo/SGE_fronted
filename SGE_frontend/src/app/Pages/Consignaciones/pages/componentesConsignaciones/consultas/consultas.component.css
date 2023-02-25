@@ -54,7 +54,7 @@
     box-shadow: inset 10px 10px 20px #adb5bd, inset -10px -10px 20px #ffffffd2;
 }
 
-.campo{
+.search,.campo{
     border: none;
     outline: none;
     background: none;
