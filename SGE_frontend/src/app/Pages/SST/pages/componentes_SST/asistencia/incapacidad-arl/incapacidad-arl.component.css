@@ -106,7 +106,7 @@ svg{
     /* margin: 2px 15px -5px 15px; */
 }
 
-button{
+.guardar_sst{
     display: block;
     object-fit: cover;
     margin: 15px auto;
@@ -125,7 +125,7 @@ button{
     box-shadow: 10px 10px 20px #707274, -2px 0px 10px 4px #707274;
 }
 
-button:hover{
+.guardar_sst:hover{
     background: #D60303 ;
 }
 

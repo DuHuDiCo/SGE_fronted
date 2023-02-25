@@ -28,7 +28,7 @@
     box-shadow: inset 10px 10px 20px #adb5bd, inset -10px -10px 20px #ffffffd2;
 }
 
-table{
+.tbl{
     background: #dfe2e5;
     text-align: left;
     border-collapse: collapse;
@@ -39,7 +39,7 @@ th, td{
     padding: 20px;
 }
 
-thead{
+.indicador{
     border-bottom: solid 5px #961c1c;
     color: rgb(0, 0, 0);
     width: 100%;
@@ -53,9 +53,10 @@ tr:hover td{
 
 /* estilo de los botos  */
 
-button{
+.btn-danger{
     background: #8d1515;
     cursor: pointer;
+    color: #Fff;
     outline: none;
     border: #f70606;
     border-radius: 18px;
@@ -64,12 +65,12 @@ button{
     box-shadow: 10px 10px 20px #707274, -2px 0px 10px 4px #707274;
 }
 
-button:hover{
+.btn-danger:hover{
     background: #D60303 ;
 }
 
 
-input{
+.contend{
     border: none;
     outline: none;
     background: none;
@@ -84,7 +85,6 @@ input{
 input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
 background-color: #212121;
 }
-
 
 
 .estructura ul li{
@@ -118,7 +118,7 @@ background-color: #212121;
     list-style: none;
 }
 
-li.active{
+.active{
     background: #212121;
     color: #fff;
 }

@@ -1,11 +1,10 @@
 
-h1{
+.titulo{
     text-align: center;
 }
 
-header{
+.box{
     text-align: center;
-
     color: #000;
     position: relative;
     border-radius: 10px;
@@ -14,7 +13,7 @@ header{
 }
 
 
-button{
+.btn-archivos{
     position: relative;
     overflow: hidden;
     padding: 10px;
@@ -30,7 +29,7 @@ button{
     box-shadow: 10px 10px 20px #707274, -2px 0px 10px 4px #707274;
 }
 
-button:hover{
+.btn-archivos:hover{
     background: #d40000;
 }
 
@@ -55,7 +54,7 @@ button:hover{
     box-shadow: inset 10px 10px 20px #adb5bd, inset -10px -10px 20px #ffffffd2;
 }
 
-input{
+.campo{
     border: none;
     outline: none;
     background: none;
