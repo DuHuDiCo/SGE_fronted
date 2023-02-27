@@ -153,7 +153,8 @@ import { SystemPermisosComponent } from './Pages/AdminGeneral/componentes/RoleyP
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+   
   ],
 
 

@@ -8,3 +8,7 @@ export type RolesUsuario = {
     administracion: boolean,
     sst: boolean,
 }
+
+export type RolSystem ={
+    role:string
+}

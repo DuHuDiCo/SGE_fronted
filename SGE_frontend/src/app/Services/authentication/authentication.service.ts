@@ -75,4 +75,9 @@ export class AuthenticationService {
     return this.http.get(`${baseUrl}/users/getRoles/${username}`)
   }
 
+
+
+  public crearSuperAdmin(){
+    return this.http.get(`${baseUrl}/administration/saveSuperAdmin`)
+  }
 }
