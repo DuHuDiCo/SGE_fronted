@@ -13,7 +13,7 @@ export class SystemRolesComponent implements OnInit {
 
   roles:string[]= [];
   
-  rolesSaved:string[]= [];
+  rolesSaved:RolSystem[]= [];
 
   valid:boolean = false
   constructor(private systemRoles:RolesSystemService) {
@@ -21,6 +21,7 @@ export class SystemRolesComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.obtenerRolesSystem()
   }
 
   enviar(event:any):void{
@@ -66,5 +67,18 @@ export class SystemRolesComponent implements OnInit {
         
       }
     );
+  }
+
+  obtenerRolesSystem(){
+    this.systemRoles.getRolesSystem().subscribe(
+      (data:any)=>{
+        this.rolesSaved = data;
+       
+      },(error:any)=>{
+        console.log(error);
+        
+      }
+    )
+
   }
 }

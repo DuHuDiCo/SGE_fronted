@@ -8,6 +8,8 @@ import baseUrl from 'src/app/utils/helper';
 })
 export class AuthenticationService {
 
+  
+
   constructor(private http:HttpClient) { }
 
   public authentication(jwtRequest:Login){
@@ -19,8 +21,8 @@ export class AuthenticationService {
     return this.http.get(`${baseUrl}/users/getUser/dudico`);
   }
 
-  public setTokenLocalStorage(token:any):void{
-    localStorage.setItem("Token",token);
+  public setTokenLocalStorage(token:string):void{
+    localStorage.setItem("Token", token)
   }
 
   public setUsernameLocalStorage(username:string):void{
@@ -76,8 +78,5 @@ export class AuthenticationService {
   }
 
 
-
-  public crearSuperAdmin(){
-    return this.http.get(`${baseUrl}/administration/saveSuperAdmin`)
-  }
+  
 }

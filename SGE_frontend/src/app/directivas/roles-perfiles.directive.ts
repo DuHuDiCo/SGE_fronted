@@ -2,6 +2,7 @@ import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angula
 import { RolUsuario } from '../Models/rol-usuario';
 import Roles from '../Models/Roles';
 import { AuthenticationService } from '../Services/authentication/authentication.service';
+import { ROLES } from '../Types/Roles';
 
 @Directive({
   selector: '[appRolesPerfiles]'
@@ -26,7 +27,7 @@ export class RolesPerfilesDirective implements OnInit {
 
     
 
-    if (this.rolesString[0] == "SuperAdministrador" || this.rolesString[0] == "Administrador" ) {
+    if (this.rolesString[0] == ROLES.SuperAdministration || this.rolesString[0] == ROLES.Administration ) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
       if (this.verificarRol(this.rol)) {

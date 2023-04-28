@@ -14,66 +14,67 @@ import Swal from 'sweetalert2';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  
-  
-  
 
-  jwtRequest:JwtRequest={
+
+
+
+  jwtRequest: JwtRequest = {
     username: '',
     password: ''
   }
 
-  constructor(private router:Router, private authentication:AuthenticationService) { }
+  constructor(private router: Router, private authentication: AuthenticationService) { }
 
   ngOnInit(): void {
-   
+
   }
 
-  public iniciarSesion():void{
-    if(this.jwtRequest.username == '' || this.jwtRequest.password == ''){
+  public iniciarSesion(): void {
+    if (this.jwtRequest.username == '' || this.jwtRequest.password == '') {
       Swal.fire("Error", "Error, Datos Incorrectos", "error");
-    }else{
+    } else {
       const login = new Login(this.jwtRequest.username, this.jwtRequest.password);
-     
+
       this.authentication.authentication(login).subscribe(
-        (data:any)=>{
-          
+        (data: any) => {
+
+
           Swal.fire({
-            position:'top-end',
-            icon:'success',
-            title:'Inicio Sesion Exitoso',
+            position: 'top-end',
+            icon: 'success',
+            title: 'Inicio Sesion Exitoso',
             showConfirmButton: false,
-            timer:2000
+            timer: 2000
           })
-          
+
           this.authentication.setTokenLocalStorage(data.token)
           this.authentication.setUsernameLocalStorage(data.username)
           this.authentication.setRolesLocalStorage(data.roles)
+
+
           this.router.navigate(['opciones'])
-          console.log(data);
-          
         },
-        (error:any)=>{
+        (error: any) => {
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: 'Datos Incorrectos!',
-            
-          
+
+
           })
           console.log(error);
-          
+
         }
       )
-      
+
     }
 
 
-   
- 
- 
+
+
+
   }
 
 
-  
+
 }

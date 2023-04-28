@@ -10,5 +10,15 @@ export type RolesUsuario = {
 }
 
 export type RolSystem ={
-    role:string
+    rol:string
+}
+
+
+export enum ROLES{
+    SuperAdministration = "SuperAdministration",
+    Administration = "Administration",
+    Cartera = "Cartera",
+    Caja = "Caja",
+    Creditos = "Creditos",
+    Ventas = "Ventas"
 }

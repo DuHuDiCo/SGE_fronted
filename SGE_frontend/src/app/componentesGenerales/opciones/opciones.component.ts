@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import Roles from 'src/app/Models/Roles';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
-import { RolesUsuario } from 'src/app/Types/Roles';
+import { ROLES, RolesUsuario } from 'src/app/Types/Roles';
 
 @Component({
   selector: 'app-opciones',
@@ -12,84 +12,24 @@ import { RolesUsuario } from 'src/app/Types/Roles';
 export class OpcionesComponent implements OnInit {
 
   rolesUsuario: Roles[] = []
-  role:string = ''
+  
 
-  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SuperAdministrador', 'SST']
 
-  roles: RolesUsuario = {
-    cartera: false,
-    caja: false,
-    archivos: false,
-    ventas: false,
-    servicios: false,
-    consignaciones: false,
-    administracion: false,
-    sst: false
-  }
+  role =ROLES.Administration;
+
+  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SuperAdministration', 'SST']
+
+  
 
 
   constructor(private authService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.rolesUsuario = this.authService.getRoles();
-
-    this.role = this.rolesUsuario[0].rol
-
-    this.validarRoles()
+    
   }
 
 
-  public validarRoles(): void {
-    for (var rol of this.rolesUsuario) {
-
-      switch (rol.rol) {
-        case "Cartera":
-          this.roles.cartera = true
-          break;
-        case "Caja":
-          this.roles.caja = true
-          break;
-        case "Archivos":
-          this.roles.archivos = true
-          break;
-        case "Ventas":
-          this.roles.ventas = true
-          break;
-        case "Servicios":
-          this.roles.servicios = true
-          break;
-        case "Consignaciones":
-          this.roles.consignaciones = true
-          break;
-        case "Sst":
-          this.roles.sst = true
-          break;
-        case "Administrador":
-          this.roles.cartera = true;
-          this.roles.caja = true;
-          this.roles.archivos = true;
-          this.roles.ventas = true;
-          this.roles.servicios = true
-          this.roles.consignaciones = true;
-          this.roles.administracion = false;
-          this.roles.sst = true;
-          break
-        case "SuperAdministrador":
-          this.roles.cartera = true;
-          this.roles.caja = true;
-          this.roles.archivos = true;
-          this.roles.ventas = true;
-          this.roles.servicios = true
-          this.roles.consignaciones = true;
-          this.roles.administracion = true;
-          this.roles.sst = true;
-          break;
-        default:
-          this.authService.logout()
-
-      }
-    }
-  }
+  
 
 
 

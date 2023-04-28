@@ -1,8 +1,8 @@
 <div class="container-fluid">
 
     <div class="row">
-        <div *ngIf="role == 'SuperAdministrador'">
-            <a [routerLink]="'/AdminGeneral'" href="#" class="btnAdminGeneral">Administración General</a>
+        <div *appRolesPerfiles="role">
+            <a [routerLink]="'/AdminGeneral'"  href="#" class="btnAdminGeneral">Administración General</a>
         </div>
         <div class="imagen">
             <a class="close" (click)="logout()"><i style="color: #960010;" class="fa-solid fa-right-from-bracket"
@@ -11,7 +11,7 @@
     </div>
 
     <div class="row">
-        <div class="caja">
+        <div class="caja ">
 
             <ul class="options">
 
