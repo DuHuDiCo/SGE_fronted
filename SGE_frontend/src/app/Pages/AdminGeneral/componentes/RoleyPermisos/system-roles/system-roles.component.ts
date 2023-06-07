@@ -11,72 +11,80 @@ import Swal from 'sweetalert2';
 export class SystemRolesComponent implements OnInit {
 
 
-  roles:string[]= [];
-  
-  rolesSaved:RolSystem[]= [];
+  roles: string[] = [];
 
-  valid:boolean = false
-  constructor(private systemRoles:RolesSystemService) {
-    
-   }
+  rolesSaved: RolSystem[] = [];
+
+  valid: boolean = false
+
+
+  constructor(private systemRoles: RolesSystemService) {
+
+  }
 
   ngOnInit(): void {
     this.obtenerRolesSystem()
   }
 
-  enviar(event:any):void{
+  enviar(event: any): void {
     var rol = event.srcElement.value.toUpperCase()
-    if(event.keyCode == 13){
+    if (event.keyCode == 13) {
 
-      if(rol != ''){
-        if(!this.roles.includes(rol)){
-        
+      if (rol != '') {
+        if (!this.roles.includes(rol)) {
+
           this.roles.push(rol)
-          
+
           event.srcElement.value = ''
           this.valid = false
-          
-        }else{
+
+        } else {
           this.valid = true
         }
       }
-     
-      
-      
+
+
+
     }
   }
 
-  quitarRol(rol:string){
-    this.roles = this.roles.filter(r=> r != rol);
+  quitarRol(rol: string) {
+    this.roles = this.roles.filter(r => r != rol);
   }
 
-  guardarRoles(){
-    this.systemRoles.saveRoles(this.roles).subscribe(
-      (data:any)=>{
+  guardarRoles() {
 
-        console.log(data);
-        Swal.fire({
-          position:'top-end',
-          icon:'success',
-          title:'Inicio Sesion Exitoso',
-          showConfirmButton: false,
-          timer:2000
-        })
-      },(error:any)=>{
-        console.log(error);
-        
-      }
-    );
+    setTimeout(() => {
+      this.systemRoles.saveRoles(this.roles).subscribe(
+        (data: any) => {
+
+          console.log(data);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Roles Guardados Exitosamente',
+            showConfirmButton: false,
+            timer: 2000
+          })
+          window.location.reload()
+        }, (error: any) => {
+          console.log(error);
+
+        }
+      );
+    }, 3000);
+
   }
 
-  obtenerRolesSystem(){
+  obtenerRolesSystem() {
     this.systemRoles.getRolesSystem().subscribe(
-      (data:any)=>{
+      (data: any) => {
         this.rolesSaved = data;
-       
-      },(error:any)=>{
+        console.log(data);
+
+      }, (error: any) => {
         console.log(error);
-        
+
       }
     )
 

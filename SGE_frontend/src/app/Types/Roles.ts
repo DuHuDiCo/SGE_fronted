@@ -10,6 +10,7 @@ export type RolesUsuario = {
 }
 
 export type RolSystem ={
+    idRole:number
     rol:string
 }
 

@@ -7,12 +7,12 @@ import baseUrl from 'src/app/utils/helper';
 })
 export class RolesSystemService {
 
-  urlDev = "http://localhost:8003/api/v1"
+  
 
   constructor(private http:HttpClient) { }
 
   public saveRoles(roles:string []){
-    return this.http.post(`${baseUrl}/administration/saveRoles`, roles)
+    return this.http.post(`${baseUrl}/roles/saveRoles`, roles)
   }
 
   public getRolesSystem(){
@@ -21,11 +21,5 @@ export class RolesSystemService {
   
   }
 
-  public validarSiExiste(username:string){
-    return this.http.get(`${this.urlDev}/administration/getSuperAdmin/${username}`)
-  }
-
-  public crearSuperAdmin(){
-    return this.http.get(`${this.urlDev}/administration/saveSuperAdmin`)
-  }
+  
 }
