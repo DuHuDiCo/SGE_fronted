@@ -43,6 +43,9 @@ import { EstadisticasComponent } from './Pages/Cartera/pages/componentesCartera/
 import { DashboardSuperAdminComponent } from './Pages/AdminGeneral/dashboard-super-admin/dashboard-super-admin.component';
 import { SystemRolesComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-roles/system-roles.component';
 import { SystemPermisosComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-permisos/system-permisos.component';
+
+import { AgregarVariosClientesComponent } from './Pages/AdminGeneral/Clientes/agregar-varios-clientes/agregar-varios-clientes/agregar-varios-clientes.component';
+
 import { BuscarClientesComponent } from './Pages/AdminGeneral/Clientes/buscar-clientes/buscar-clientes.component';
 import { AgregarClienteComponent } from './Pages/AdminGeneral/Clientes/agregar-cliente/agregar-cliente.component';
 
@@ -260,13 +263,24 @@ const routes: Routes = [
         path:'system-permisos',
         component: SystemPermisosComponent
       },
+
+
+      {
+        path:'agregar-varios-clientes',
+        component: AgregarVariosClientesComponent
+      }  
+      ,
       {
         path: 'buscar-cliente',
         component: BuscarClientesComponent
+
       },
       {
         path: 'agregar-cliente',
         component: AgregarClienteComponent
+
+
+
       }
     ]
   }
