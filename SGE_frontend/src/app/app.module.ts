@@ -69,6 +69,7 @@ import { DashboardSuperAdminComponent } from './Pages/AdminGeneral/dashboard-sup
 import { SidebarAdminGeneralComponent } from './Pages/AdminGeneral/componentes/sidebar-admin-general/sidebar-admin-general.component';
 import { SystemRolesComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-roles/system-roles.component';
 import { SystemPermisosComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-permisos/system-permisos.component';
+import { BuscarClientesComponent } from './Pages/AdminGeneral/Clientes/buscar-clientes/buscar-clientes.component';
 
 
 
@@ -142,6 +143,7 @@ import { SystemPermisosComponent } from './Pages/AdminGeneral/componentes/RoleyP
     SidebarAdminGeneralComponent,
     SystemRolesComponent,
     SystemPermisosComponent,
+    BuscarClientesComponent,
 
 
   
