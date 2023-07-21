@@ -44,6 +44,7 @@ import { DashboardSuperAdminComponent } from './Pages/AdminGeneral/dashboard-sup
 import { SystemRolesComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-roles/system-roles.component';
 import { SystemPermisosComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-permisos/system-permisos.component';
 import { BuscarClientesComponent } from './Pages/AdminGeneral/Clientes/buscar-clientes/buscar-clientes.component';
+import { AgregarClienteComponent } from './Pages/AdminGeneral/Clientes/agregar-cliente/agregar-cliente.component';
 
 
 
@@ -67,6 +68,7 @@ const routes: Routes = [
   {
     path:"dashboard-cartera",
     component:DashboardComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:"gestion",
@@ -94,6 +96,7 @@ const routes: Routes = [
   {
     path:'dashboard-consignaciones',
     component:DashboarConsignacionesComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'ingresar',
@@ -119,6 +122,7 @@ const routes: Routes = [
   {
     path:"dashboard-administracion",
     component:DashboardAdminComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'gestionUsuarios',
@@ -145,6 +149,7 @@ const routes: Routes = [
   {
     path:"dashboard-sst",
     component:DashboardSSTComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'incapacidad-g',
@@ -197,6 +202,7 @@ const routes: Routes = [
   {
     path:"dashboard-creditos",
     component:DashboardCreditosComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'ver-creditos',
@@ -217,6 +223,7 @@ const routes: Routes = [
   {
     path:"dashboard-archivos",
     component:DashboardArchivosComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'archivos-exs',
@@ -230,6 +237,7 @@ const routes: Routes = [
   {
     path:"dashboard-ventas",
     component:DashboardVentasComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'proceso-ventas',
@@ -242,6 +250,7 @@ const routes: Routes = [
   {
     path:"dashboard-admin-general",
     component:DashboardSuperAdminComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'system-roles',
@@ -254,6 +263,10 @@ const routes: Routes = [
       {
         path: 'buscar-cliente',
         component: BuscarClientesComponent
+      },
+      {
+        path: 'agregar-cliente',
+        component: AgregarClienteComponent
       }
     ]
   }

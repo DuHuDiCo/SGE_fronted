@@ -34,7 +34,7 @@
                 <ul class="list-unstyled fw-normal pb-1 small">
                     <li> <button class="nav-link active" aria-current="page" [routerLink] = "'buscar-cliente'"><i class="fa-solid fa-magnifying-glass"></i>&nbsp; Buscar Clientes </button></li>
 
-                    <li><button class="nav-link active" aria-current="page"  [routerLink]=""><i class="fas fa-user-plus"></i>
+                    <li><button class="nav-link active" aria-current="page"  [routerLink]="'agregar-cliente'"><i class="fas fa-user-plus"></i>
                         &nbsp; Agregar Un Cliente</button></li>
 
                         <li><button class="nav-link active" aria-current="page"  [routerLink]=""><i class="fas fa-user-plus"></i>
@@ -48,7 +48,7 @@
     <ul class="nav flex-column ">
 
         <li class="nav-item">
-            <button class="nav-link active" aria-current="page"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</button>
+            <button (click)="logout()" class="nav-link active" aria-current="page"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</button>
         </li>
     </ul>
 
