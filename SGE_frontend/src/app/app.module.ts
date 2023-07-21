@@ -69,7 +69,11 @@ import { DashboardSuperAdminComponent } from './Pages/AdminGeneral/dashboard-sup
 import { SidebarAdminGeneralComponent } from './Pages/AdminGeneral/componentes/sidebar-admin-general/sidebar-admin-general.component';
 import { SystemRolesComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-roles/system-roles.component';
 import { SystemPermisosComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-permisos/system-permisos.component';
+
 import { AgregarVariosClientesComponent } from './Pages/AdminGeneral/Clientes/agregar-varios-clientes/agregar-varios-clientes/agregar-varios-clientes.component';
+
+import { BuscarClientesComponent } from './Pages/AdminGeneral/Clientes/buscar-clientes/buscar-clientes.component';
+
 
 
 
@@ -143,7 +147,11 @@ import { AgregarVariosClientesComponent } from './Pages/AdminGeneral/Clientes/ag
     SidebarAdminGeneralComponent,
     SystemRolesComponent,
     SystemPermisosComponent,
+
     AgregarVariosClientesComponent,
+
+    BuscarClientesComponent,
+
 
 
   
