@@ -8,6 +8,11 @@
     border-radius: 50%;
 }
 
+.pagination ::ng-deep .ngx-pagination .current {
+    background: #960010
+}
+
+
 .container {
     text-align: center;
     position: relative;

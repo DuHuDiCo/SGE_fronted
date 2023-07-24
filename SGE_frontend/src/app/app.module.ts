@@ -46,7 +46,7 @@ import { DashboardSSTComponent } from './Pages/SST/pages/dashboard-sst/dashboard
 import { DashboardCreditosComponent } from './Pages/Creditos/dashboard-creditos/dashboard-creditos.component';
 import { DashboarConsignacionesComponent } from './Pages/Consignaciones/pages/dashboar-consignaciones/dashboar-consignaciones.component';
 import { EstadisticasDashboardComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas-dashboard/estadisticas-dashboard.component';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 import { CrearCreditoComponent } from './Pages/Creditos/Componentes_creditos/crear-credito/crear-credito.component';
@@ -161,6 +161,7 @@ import { DashboardCajaComponent } from './Pages/Caja/dashboard-caja/dashboard-ca
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    NgxPaginationModule
 
   ],
 
