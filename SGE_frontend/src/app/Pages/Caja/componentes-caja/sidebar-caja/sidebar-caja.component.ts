@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { windowTime } from 'rxjs';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 
 @Component({
-  selector: 'app-sidebar-servicios',
-  templateUrl: './sidebar-servicios.component.html',
-  styleUrls: ['./sidebar-servicios.component.css']
+  selector: 'app-sidebar-caja',
+  templateUrl: './sidebar-caja.component.html',
+  styleUrls: ['./sidebar-caja.component.css']
 })
-export class SidebarServiciosComponent implements OnInit {
+export class SidebarCajaComponent implements OnInit {
 
   constructor(private authService:AuthenticationService) { }
 
