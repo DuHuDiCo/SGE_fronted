@@ -1,0 +1,36 @@
+/* styles.css o tu hoja de estilos */
+.floating-button {
+    position: fixed;
+    bottom: 30px; /* Ajusta la distancia desde la parte inferior según tus necesidades */
+    right: 40px; /* Ajusta la distancia desde la derecha según tus necesidades */
+    background-color: #c50e0e; /* Color del botón, puedes cambiarlo según tu diseño */
+    color: #fff; /* Color del texto dentro del botón */
+    border: none;
+    border-radius: 50%;
+    width: 80px; /* Ajusta el tamaño del botón según tus necesidades */
+    height: 80px; /* Ajusta el tamaño del botón según tus necesidades */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* styles.css o tu hoja de estilos */
+@keyframes fadeInFromBottom {
+    0% {
+      transform: translateY(50px); /* Desplazamiento hacia abajo */
+      opacity: 0; /* Opacidad inicial */
+    }
+    100% {
+      transform: translateY(0); /* Sin desplazamiento vertical */
+      opacity: 1; /* Opacidad final */
+    }
+  }
+  
+  .floating-button {
+      /* Estilos anteriores del botón */
+      animation: fadeInFromBottom 1s ease forwards; /* Agrega la animación personalizada */
+  }
+  
+  

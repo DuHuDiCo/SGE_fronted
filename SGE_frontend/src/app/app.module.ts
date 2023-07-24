@@ -73,6 +73,7 @@ import { SystemPermisosComponent } from './Pages/AdminGeneral/componentes/RoleyP
 import { AgregarVariosClientesComponent } from './Pages/AdminGeneral/Clientes/agregar-varios-clientes/agregar-varios-clientes/agregar-varios-clientes.component';
 
 import { BuscarClientesComponent } from './Pages/AdminGeneral/Clientes/buscar-clientes/buscar-clientes.component';
+import { BotonGeneralComponent } from './componentesGenerales/boton-general/boton-general.component';
 
 
 
@@ -151,6 +152,7 @@ import { BuscarClientesComponent } from './Pages/AdminGeneral/Clientes/buscar-cl
     AgregarVariosClientesComponent,
 
     BuscarClientesComponent,
+      BotonGeneralComponent,
 
 
 
