@@ -1,15 +1,30 @@
 <div class="container-fluid">
 
-    <div class="row">
-        <div *appRolesPerfiles="role">
-            <a [routerLink]="'/AdminGeneral'"  href="#" class="btnAdminGeneral">Administración General</a>
+    <div class="container">
+        <div class="row" style="margin-top: 2%;">
+          <div class="col-md-4 d-flex align-items-center">
+            <div *appRolesPerfiles="role">
+              <a [routerLink]="'/AdminGeneral'" href="#" class="btn btnAdminGeneral">
+                <i style="color: #960010;" class="fa-solid fa-gears"></i>
+                <span style="margin-left: 10px;"><b>Administración General</b></span>
+              </a>
+            </div>
+          </div>
+      
+          <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <img src="../../../assets/H_electro.svg" alt="" srcset="" width="230px" height="230px">
+          </div>
+      
+          <div class="col-md-4 d-flex justify-content-end align-items-center">
+            <div>
+              <a class="close" (click)="logout()">
+                <i style="color: #960010;" class="fa-solid fa-right-from-bracket" id="cerrar"></i>
+              </a>
+            </div>
+          </div>
         </div>
-        <div class="imagen">
-            <a class="close" (click)="logout()"><i style="color: #960010;" class="fa-solid fa-right-from-bracket"
-                    id="cerrar"></i> </a>
-        </div>
-    </div>
-
+      </div>
+      
     <div class="row">
         <div class="caja ">
 
@@ -42,9 +57,6 @@
                     </a>
                 </li>
 
-
-
-
                 <li class="option" *appRolesPerfiles="rolesArray[3]">
                     <a class="session" href="#">
 
@@ -52,7 +64,6 @@
                         <span>Ventas</span>
                     </a>
                 </li>
-
 
                 <li class="option" *appRolesPerfiles="rolesArray[4]">
                     <a class="session" href="#">
