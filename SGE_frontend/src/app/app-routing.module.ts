@@ -48,6 +48,9 @@ import { AgregarVariosClientesComponent } from './Pages/AdminGeneral/Clientes/ag
 
 import { BuscarClientesComponent } from './Pages/AdminGeneral/Clientes/buscar-clientes/buscar-clientes.component';
 import { AgregarClienteComponent } from './Pages/AdminGeneral/Clientes/agregar-cliente/agregar-cliente.component';
+import { DashboardCajaComponent } from './Pages/Caja/dashboard-caja/dashboard-caja.component';
+import { DashboardServiciosComponent } from './Pages/Servicios/dashboard-servicios/dashboard-servicios.component';
+
 
 
 
@@ -92,6 +95,16 @@ const routes: Routes = [
     component:PerfilUsuarioComponent,
     children:[]
   },
+
+  {
+    path: 'caja', redirectTo:'dashboard-caja' , pathMatch:'full' 
+  },
+
+  {
+    path: 'dashboard-caja',
+    component: DashboardCajaComponent,
+    canActivate:[AuthenticationGuard],
+  },  
 
 
 
@@ -248,6 +261,14 @@ const routes: Routes = [
       },
     ]
   },
+
+  {path: 'servicios', redirectTo:'dashboard-servicios' , pathMatch:'full' },
+  {
+    path: 'dashboard-servicios',
+    component: DashboardServiciosComponent,
+    canActivate:[AuthenticationGuard],
+  },
+
 
   {path: 'AdminGeneral', redirectTo:'dashboard-admin-general/system-roles' , pathMatch:'full' },
   {
