@@ -10,7 +10,7 @@ import { NavbarComponent } from './componentesGenerales/navbar/navbar.component'
 import { FormsModule } from '@angular/forms';
 import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/perfil-usuario.component';
 import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/gestion/gestion.component';
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RolesPerfilesDirective } from './directivas/roles-perfiles.directive';
 import { authInterceptorProviders } from './Interceptors/auth.interceptor';
 
@@ -73,11 +73,10 @@ import { SystemPermisosComponent } from './Pages/AdminGeneral/componentes/RoleyP
 import { AgregarVariosClientesComponent } from './Pages/AdminGeneral/Clientes/agregar-varios-clientes/agregar-varios-clientes/agregar-varios-clientes.component';
 
 import { BuscarClientesComponent } from './Pages/AdminGeneral/Clientes/buscar-clientes/buscar-clientes.component';
+import { BotonGeneralComponent } from './componentesGenerales/boton-general/boton-general.component';
 
-
-
-
-
+import { SidebarCajaComponent } from './Pages/Caja/componentes-caja/sidebar-caja/sidebar-caja.component';
+import { DashboardCajaComponent } from './Pages/Caja/dashboard-caja/dashboard-caja.component';
 
 
 
@@ -125,7 +124,7 @@ import { BuscarClientesComponent } from './Pages/AdminGeneral/Clientes/buscar-cl
     DashboarConsignacionesComponent,
     DashboardSSTComponent,
     DashboardAdminComponent,
-
+    DashboardCajaComponent,
 
 
     CrearCreditoComponent,
@@ -151,11 +150,9 @@ import { BuscarClientesComponent } from './Pages/AdminGeneral/Clientes/buscar-cl
     AgregarVariosClientesComponent,
 
     BuscarClientesComponent,
+    BotonGeneralComponent,
 
-
-
-  
-
+    SidebarCajaComponent,
   ],
 
 
@@ -164,7 +161,7 @@ import { BuscarClientesComponent } from './Pages/AdminGeneral/Clientes/buscar-cl
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-   
+
   ],
 
 
