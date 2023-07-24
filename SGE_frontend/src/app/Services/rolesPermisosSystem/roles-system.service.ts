@@ -16,9 +16,11 @@ export class RolesSystemService {
   }
 
   public getRolesSystem(){
-    return this.http.get(`${baseUrl}/roles/getAllRoles`)
-  
-  
+    return this.http.get(`${baseUrl}/roles/getAllRoles`) 
+  }
+
+  public deleteRole(idRole:number){
+    return this.http.delete(`${baseUrl}/roles/deleteRole/${idRole}`)
   }
 
   
