@@ -13,13 +13,15 @@ import Swal from 'sweetalert2';
 })
 export class SystemPermisosComponent implements OnInit {
 
+  page: number = 1;
+  totalItems:number = 0
+
   permissions: Permission[] = []
 
   permisosAdded: string[] = []
   valid: boolean = false;
   rolesSaved:RolSystem[]= [];
   roleId:number = 0
-
 
 
   constructor(private permissionService: PermissionsSystemService, private systemRoles: RolesSystemService) { }
@@ -34,7 +36,7 @@ export class SystemPermisosComponent implements OnInit {
     this.permissionService.getAllPermissions().subscribe(
       (data: any) => {
         this.permissions = data.content;
-        console.log(this.permissions);
+        console.log(data);
         
       }, (error: any) => {
         console.log(error);
@@ -64,6 +66,35 @@ export class SystemPermisosComponent implements OnInit {
 
   quitarPermiso(permiso:string){
     this.permisosAdded = this.permisosAdded.filter(p=> p != permiso);
+  }
+
+  eliminarPermiso(idPermission:number){
+
+    Swal.fire({
+      title:'Eliminar Permiso',
+      text:'¿Estas seguro de eliminar el Permiso?',
+      icon:'warning',
+      showCancelButton: true,
+      confirmButtonColor:'#3085d6',
+      cancelButtonColor:'#d33',
+      confirmButtonText:'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if(result.isConfirmed){
+        var ids = []
+        ids.push(idPermission)
+        this.permissionService.deletePermissions(this.roleId, ids).subscribe(
+          (data) => {
+            this.permissions = this.permissions.filter((permissions) => permissions.idPermission != idPermission);
+            Swal.fire('Examen Eliminado', 'El Permiso ha sido Eliminado Exitosamente','success')
+          },
+          (error) => {
+            Swal.fire('Error al Eliminar el Permiso','error')
+          }
+        )
+      }
+    })
+
   }
 
 
@@ -111,6 +142,7 @@ export class SystemPermisosComponent implements OnInit {
           timer:2000
         })
         console.log(data);
+        window.location.reload()
         
       },(error:any)=>{
         console.log(error);
