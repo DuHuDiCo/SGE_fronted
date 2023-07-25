@@ -54,6 +54,7 @@ import { DashboardServiciosComponent } from './Pages/Servicios/dashboard-servici
 import { RolesUsuariosGuardarComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/roles-usuarios-guardar/roles-usuarios-guardar.component';
 import { DashboardPerfilComponent } from './Pages/Perfil/dashboard/dashboard-perfil/dashboard-perfil.component';
 import { CreateUsuarioComponent } from './Pages/AdminGeneral/Usuarios/create-usuario/create-usuario.component';
+import { ConfiguracionPerfilComponent } from './Pages/Perfil/configuracion-perfil/configuracion-perfil.component';
 
 
 
@@ -119,6 +120,13 @@ const routes: Routes = [
     path: 'dashboard-perfil',
     component: DashboardPerfilComponent,
     canActivate:[AuthenticationGuard],
+    children:[
+      {
+        path: 'configuracion-perfil',
+        component: ConfiguracionPerfilComponent
+      }
+    ]
+   
   },
 
 
