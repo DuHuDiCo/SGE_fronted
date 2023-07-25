@@ -46,7 +46,7 @@ import { DashboardSSTComponent } from './Pages/SST/pages/dashboard-sst/dashboard
 import { DashboardCreditosComponent } from './Pages/Creditos/dashboard-creditos/dashboard-creditos.component';
 import { DashboarConsignacionesComponent } from './Pages/Consignaciones/pages/dashboar-consignaciones/dashboar-consignaciones.component';
 import { EstadisticasDashboardComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas-dashboard/estadisticas-dashboard.component';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 import { CrearCreditoComponent } from './Pages/Creditos/Componentes_creditos/crear-credito/crear-credito.component';
@@ -79,8 +79,11 @@ import { SidebarCajaComponent } from './Pages/Caja/componentes-caja/sidebar-caja
 import { DashboardCajaComponent } from './Pages/Caja/dashboard-caja/dashboard-caja.component';
 
 import { RolesUsuariosGuardarComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/roles-usuarios-guardar/roles-usuarios-guardar.component';
+import { CreateUsuarioComponent } from './Pages/AdminGeneral/Usuarios/create-usuario/create-usuario.component';
+import { DashboardPerfilComponent } from './Pages/Perfil/dashboard/dashboard-perfil/dashboard-perfil.component';
+import { SidebarPerfilComponent } from './Pages/Perfil/componentes/sidebar-perfil/sidebar-perfil.component';
 
-import { CreateUsuarioComponent } from './pages/AdminGeneral/Usuarios/create-usuario/create-usuario.component';
+
 
 
 
@@ -159,9 +162,11 @@ import { CreateUsuarioComponent } from './pages/AdminGeneral/Usuarios/create-usu
 
     SidebarCajaComponent,
 
-      RolesUsuariosGuardarComponent,
+    RolesUsuariosGuardarComponent,
 
-      CreateUsuarioComponent,
+    CreateUsuarioComponent,
+    SidebarPerfilComponent,
+    DashboardPerfilComponent,
 
   ],
 

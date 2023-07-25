@@ -52,8 +52,9 @@ import { DashboardCajaComponent } from './Pages/Caja/dashboard-caja/dashboard-ca
 import { DashboardServiciosComponent } from './Pages/Servicios/dashboard-servicios/dashboard-servicios.component';
 
 import { RolesUsuariosGuardarComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/roles-usuarios-guardar/roles-usuarios-guardar.component';
+import { DashboardPerfilComponent } from './Pages/Perfil/dashboard/dashboard-perfil/dashboard-perfil.component';
+import { CreateUsuarioComponent } from './Pages/AdminGeneral/Usuarios/create-usuario/create-usuario.component';
 
-import { CreateUsuarioComponent } from './pages/AdminGeneral/Usuarios/create-usuario/create-usuario.component';
 
 
 
@@ -109,7 +110,16 @@ const routes: Routes = [
     path: 'dashboard-caja',
     component: DashboardCajaComponent,
     canActivate:[AuthenticationGuard],
-  },  
+  },
+
+  {
+    path: 'perfil', redirectTo:'dashboard-perfil' , pathMatch:'full' 
+  },
+  {
+    path: 'dashboard-perfil',
+    component: DashboardPerfilComponent,
+    canActivate:[AuthenticationGuard],
+  },
 
 
 

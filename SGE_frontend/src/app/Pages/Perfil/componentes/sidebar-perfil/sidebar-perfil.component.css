@@ -1,0 +1,68 @@
+.size {
+    width: 250px;
+
+}
+
+#offcanvasWithBackdrop{
+    overflow-y: scroll;
+}
+
+
+.bg {
+    background-color: #212121;
+}
+
+.bgw {
+    background-color: white;
+}
+
+.mr30 {
+    margin-left: 80px;
+}
+
+li button {
+    background-color: #f7f6f6;
+    margin: 5px;
+    margin-left: 40px;
+    margin-right: 40px;
+    color: black;
+    text-shadow: 1px 5px 10px black;
+}
+
+.logout {
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 30px;
+}
+
+
+@media(max-width : 700px) {
+    .offcanvas offcanvas-start size bg {
+        height: auto;
+        width: 70px;
+        left: 0;
+        margin: 100px 0;
+        display: grid;
+        grid-template-columns: auto auto auto;
+    }
+
+    .offcanvas offcanvas-start size bg button {
+        height: 70px;
+        display: grid;
+    }
+
+    .offcanvas offcanvas-start size bg button i {
+        margin-left: -10px;
+    }
+
+    button:hover {
+        width: 200px;
+        background: inherit;
+    }
+}
+
+li button{
+    width: 170px;
+}
