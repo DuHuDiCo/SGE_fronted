@@ -50,7 +50,11 @@ import { BuscarClientesComponent } from './Pages/AdminGeneral/Clientes/buscar-cl
 import { AgregarClienteComponent } from './Pages/AdminGeneral/Clientes/agregar-cliente/agregar-cliente.component';
 import { DashboardCajaComponent } from './Pages/Caja/dashboard-caja/dashboard-caja.component';
 import { DashboardServiciosComponent } from './Pages/Servicios/dashboard-servicios/dashboard-servicios.component';
+
+import { RolesUsuariosGuardarComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/roles-usuarios-guardar/roles-usuarios-guardar.component';
+
 import { CreateUsuarioComponent } from './pages/AdminGeneral/Usuarios/create-usuario/create-usuario.component';
+
 
 
 
@@ -145,16 +149,22 @@ const routes: Routes = [
         path:'gestionUsuarios',
         component:GestionUsuariosComponent
         
-        
       },
       {
         path:'crearUsuarios',
         component:CrearUsuariosComponent
+      
       }
       ,
       {
         path:'rolesUsuario/:usuarioId',
         component: RolesUsuarioComponent
+
+      },
+      {
+        path:'rolesUsuariosGuardados',
+        component: RolesUsuariosGuardarComponent
+
       }
       
     ]
