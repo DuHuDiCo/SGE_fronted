@@ -115,15 +115,15 @@
 
             <!-- Perfil -->
             <div class="dropdown ms-3 flex-shrink-0"> <!-- Agregamos la clase flex-shrink-0 -->
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                <a class="nav-link dropdown-toggle option " href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <i class="fas fa-user-alt" id="persona"></i>
                 </a>
-                <ul class="dropdown-menu p-user">
-                    <li><a class="dropdown-item" [routerLink]="'/perfil'"><i class="fa-regular fa-user"></i>&nbsp; Perfil</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-gear"></i>&nbsp; Configuracion</a></li>
+                <ul class="dropdown-menu p-user ">
+                    <li ><a class="dropdown-item hover-lista" [routerLink]="'/perfil'"><i class="fa-regular fa-user"></i>&nbsp; Perfil</a></li>
+                    <li><a class="dropdown-item hover-lista" href="#"><i class="fa-solid fa-gear"></i>&nbsp; Configuracion</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" (click) = "logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i>&nbsp; Logout</a></li>
+                    <li><a class="dropdown-item hover-lista" (click) = "logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i>&nbsp; Logout</a></li>
                 </ul>
             </div>
         </div>

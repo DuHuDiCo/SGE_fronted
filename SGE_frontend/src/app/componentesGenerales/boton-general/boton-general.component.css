@@ -3,7 +3,7 @@
     position: fixed;
     bottom: 30px; /* Ajusta la distancia desde la parte inferior según tus necesidades */
     right: 40px; /* Ajusta la distancia desde la derecha según tus necesidades */
-    background-color: #c50e0e; /* Color del botón, puedes cambiarlo según tu diseño */
+    background-color: #960010; /* Color del botón, puedes cambiarlo según tu diseño */
     color: #fff; /* Color del texto dentro del botón */
     border: none;
     border-radius: 50%;
@@ -15,6 +15,10 @@
     justify-content: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 999; /* Valor alto para mantener el botón al frente */
+}
+
+.floating-button:hover{
+  background-color: #c50e0e;
 }
 
 /* styles.css o tu hoja de estilos */
