@@ -54,7 +54,11 @@ import { DashboardServiciosComponent } from './Pages/Servicios/dashboard-servici
 import { RolesUsuariosGuardarComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/roles-usuarios-guardar/roles-usuarios-guardar.component';
 import { DashboardPerfilComponent } from './Pages/Perfil/dashboard/dashboard-perfil/dashboard-perfil.component';
 import { CreateUsuarioComponent } from './Pages/AdminGeneral/Usuarios/create-usuario/create-usuario.component';
+
 import { ConfiguracionPerfilComponent } from './Pages/Perfil/configuracion-perfil/configuracion-perfil.component';
+
+import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/datos-perfil.component';
+
 
 
 
@@ -114,7 +118,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'perfil', redirectTo:'dashboard-perfil' , pathMatch:'full' 
+    path: 'perfil', redirectTo:'dashboard-perfil/datos' , pathMatch:'full' 
   },
   {
     path: 'dashboard-perfil',
@@ -122,11 +126,18 @@ const routes: Routes = [
     canActivate:[AuthenticationGuard],
     children:[
       {
+
         path: 'configuracion-perfil',
         component: ConfiguracionPerfilComponent
       }
     ]
    
+
+        path:"datos",
+        component: DatosPerfilComponent,
+      },
+    ]
+
   },
 
 
