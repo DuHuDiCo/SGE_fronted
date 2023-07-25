@@ -82,6 +82,7 @@ import { RolesUsuariosGuardarComponent } from './Pages/Administracion/pages/comp
 import { CreateUsuarioComponent } from './Pages/AdminGeneral/Usuarios/create-usuario/create-usuario.component';
 import { DashboardPerfilComponent } from './Pages/Perfil/dashboard/dashboard-perfil/dashboard-perfil.component';
 import { SidebarPerfilComponent } from './Pages/Perfil/componentes/sidebar-perfil/sidebar-perfil.component';
+import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/datos-perfil.component';
 
 
 
@@ -167,6 +168,7 @@ import { SidebarPerfilComponent } from './Pages/Perfil/componentes/sidebar-perfi
     CreateUsuarioComponent,
     SidebarPerfilComponent,
     DashboardPerfilComponent,
+    DatosPerfilComponent,
 
   ],
 
