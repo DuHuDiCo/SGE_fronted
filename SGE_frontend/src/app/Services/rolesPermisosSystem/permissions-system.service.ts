@@ -18,4 +18,8 @@ export class PermissionsSystemService {
   savePermissions(permisos:string [], id:number){
     return this.http.post(`${baseUrl}/permissions/addPermissionsToRole/${id}`, permisos)
   }
+
+  deletePermissions(idPermission:number, ids:any){
+    return this.http.delete(`${baseUrl}/permissions/deletePermissionsOfRole/${idPermission}`, ids);
+  }
 }

@@ -46,7 +46,7 @@ import { DashboardSSTComponent } from './Pages/SST/pages/dashboard-sst/dashboard
 import { DashboardCreditosComponent } from './Pages/Creditos/dashboard-creditos/dashboard-creditos.component';
 import { DashboarConsignacionesComponent } from './Pages/Consignaciones/pages/dashboar-consignaciones/dashboar-consignaciones.component';
 import { EstadisticasDashboardComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas-dashboard/estadisticas-dashboard.component';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 import { CrearCreditoComponent } from './Pages/Creditos/Componentes_creditos/crear-credito/crear-credito.component';
@@ -77,7 +77,11 @@ import { BotonGeneralComponent } from './componentesGenerales/boton-general/boto
 
 import { SidebarCajaComponent } from './Pages/Caja/componentes-caja/sidebar-caja/sidebar-caja.component';
 import { DashboardCajaComponent } from './Pages/Caja/dashboard-caja/dashboard-caja.component';
+
 import { RolesUsuariosGuardarComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/roles-usuarios-guardar/roles-usuarios-guardar.component';
+
+import { CreateUsuarioComponent } from './pages/AdminGeneral/Usuarios/create-usuario/create-usuario.component';
+
 
 
 
@@ -154,7 +158,11 @@ import { RolesUsuariosGuardarComponent } from './Pages/Administracion/pages/comp
     BotonGeneralComponent,
 
     SidebarCajaComponent,
+
       RolesUsuariosGuardarComponent,
+
+      CreateUsuarioComponent,
+
   ],
 
 
@@ -163,6 +171,7 @@ import { RolesUsuariosGuardarComponent } from './Pages/Administracion/pages/comp
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    NgxPaginationModule
 
   ],
 

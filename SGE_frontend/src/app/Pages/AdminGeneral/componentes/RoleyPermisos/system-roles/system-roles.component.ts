@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 })
 export class SystemRolesComponent implements OnInit {
 
+  page: number = 1;
 
   roles: string[] = [];
 
@@ -87,6 +88,33 @@ export class SystemRolesComponent implements OnInit {
 
       }
     )
+
+  }
+
+  eliminarRol(idRole:number){
+
+    Swal.fire({
+      title:'Eliminar Rol',
+      text:'¿Estas seguro de eliminar el Rol?',
+      icon:'warning',
+      showCancelButton: true,
+      confirmButtonColor:'#3085d6',
+      cancelButtonColor:'#d33',
+      confirmButtonText:'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.systemRoles.deleteRole(idRole).subscribe(
+          (data) => {
+            this.roles = this.roles.filter((rol:any) => rol.idRole != idRole);
+            Swal.fire('Rol Eliminado', 'El Rol ha sido Eliminado Exitosamente','success')
+          },
+          (error) => {
+            Swal.fire('Error al Eliminar el Rol','error')            
+          }
+        )
+      }
+    })
 
   }
 }
