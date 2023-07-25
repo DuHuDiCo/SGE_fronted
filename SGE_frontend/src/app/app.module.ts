@@ -77,6 +77,7 @@ import { BotonGeneralComponent } from './componentesGenerales/boton-general/boto
 
 import { SidebarCajaComponent } from './Pages/Caja/componentes-caja/sidebar-caja/sidebar-caja.component';
 import { DashboardCajaComponent } from './Pages/Caja/dashboard-caja/dashboard-caja.component';
+import { CreateUsuarioComponent } from './pages/AdminGeneral/Usuarios/create-usuario/create-usuario.component';
 
 
 
@@ -153,6 +154,7 @@ import { DashboardCajaComponent } from './Pages/Caja/dashboard-caja/dashboard-ca
     BotonGeneralComponent,
 
     SidebarCajaComponent,
+      CreateUsuarioComponent,
   ],
 
 
