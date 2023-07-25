@@ -129,10 +129,8 @@ const routes: Routes = [
 
         path: 'configuracion-perfil',
         component: ConfiguracionPerfilComponent
-      }
-    ]
-   
-
+      },
+      {
         path:"datos",
         component: DatosPerfilComponent,
       },
