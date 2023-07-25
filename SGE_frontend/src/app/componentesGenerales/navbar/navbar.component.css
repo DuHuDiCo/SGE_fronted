@@ -57,6 +57,10 @@ svg#persona {
     color: #191919;
 }
 
+.p-user{
+    cursor: pointer;
+}
+
 
 
 .perfil{
