@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
+import { RolesUser } from 'src/app/Types/Roles';
+import { Usuario } from 'src/app/Types/Usuario';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-usuario',
@@ -7,13 +11,91 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateUsuarioComponent implements OnInit {
 
-  rol:boolean = false;
+  constructor(private userAgService: UsuarioAgService) { }
 
-  constructor() { }
+  usuario: Usuario = {
+    username: "",
+    email: "",
+    password: "",
+    nombres: "",
+    apellidos: "",
+    tipo_documento: "",
+    numero_documento: "",
+    celular: "",
+    fecha_nacimiento: new Date(),
+    roles: []
+  }
 
-  gestionRoles(){
+  roles:RolesUser = {
+    rol: "",
+    permisos : []
+  }
+
+  guardarUsuario(){
+    if(this.usuario.username.trim() == '' || this.usuario.username.trim() == null){
+      Swal.fire('Error', 'Debe de ingresar el Username', 'error')
+      return
+    }
     this.rol = true;
   }
+
+
+
+  rol: boolean = false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   validar = {
     cartera: false,
@@ -85,16 +167,16 @@ export class CreateUsuarioComponent implements OnInit {
   };
 
   select = {
-    cartera:false,
-    caja:false,
-    ventas:false,
-    servicios:false,
-    consignaciones:false,
-    administracion:false,
-    archivo:false,
+    cartera: false,
+    caja: false,
+    ventas: false,
+    servicios: false,
+    consignaciones: false,
+    administracion: false,
+    archivo: false,
   };
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   validarCheck(rol: any) {
     switch (rol) {
@@ -133,7 +215,7 @@ export class CreateUsuarioComponent implements OnInit {
           this.objectGeneral.caja.p6 = false;
         }
         break;
-        
+
       case 'ventas':
         if (this.select.ventas == true) {
           this.objectGeneral.ventas.p1 = true;
@@ -151,7 +233,7 @@ export class CreateUsuarioComponent implements OnInit {
           this.objectGeneral.ventas.p6 = false;
         }
         break;
-        
+
       case 'servicios':
         if (this.select.servicios == true) {
           this.objectGeneral.servicios.p1 = true;
@@ -169,7 +251,7 @@ export class CreateUsuarioComponent implements OnInit {
           this.objectGeneral.servicios.p6 = false;
         }
         break;
-        
+
       case 'archivo':
         if (this.select.archivo == true) {
           this.objectGeneral.archivo.p1 = true;
@@ -187,7 +269,7 @@ export class CreateUsuarioComponent implements OnInit {
           this.objectGeneral.archivo.p6 = false;
         }
         break;
-        
+
       case 'consignaciones':
         if (this.select.consignaciones == true) {
           this.objectGeneral.consignaciones.p1 = true;
@@ -205,7 +287,7 @@ export class CreateUsuarioComponent implements OnInit {
           this.objectGeneral.consignaciones.p6 = false;
         }
         break;
-        
+
       case 'administracion':
         if (this.select.administracion == true) {
           this.objectGeneral.administracion.p1 = true;
@@ -223,7 +305,7 @@ export class CreateUsuarioComponent implements OnInit {
           this.objectGeneral.administracion.p6 = false;
         }
         break;
-        
+
       default:
         break;
     }

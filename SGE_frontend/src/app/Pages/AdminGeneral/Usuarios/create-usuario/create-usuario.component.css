@@ -98,6 +98,7 @@
     box-shadow: inset 2px 7px 20px 9px #adb5bd, inset 1px -6px 20px #adb5bd;
 }
 .input1{
+    text-align: center;
     border: none;
     outline: none;
     background: none;
