@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 550px;
+    min-height: 150px;
     height: auto;
     background: #fff;
     
@@ -116,6 +116,7 @@ span {
 
 
 /* Tablet */
+
 @media_table (max-width:1000px) {
     .caja {
         display: flex;
@@ -131,8 +132,8 @@ span {
     .options {
         display: flex;
         list-style: none;
-        /* padding: 0; */
-        margin: 0 0 0 200px;
+         /* padding: 0; 
+         margin: 0 0 0 200px; */
     }
 
     .option a {
@@ -149,25 +150,20 @@ span {
     }
 
 
-}
+} 
 
 
 /* Movil */
 
-@media_movil (max-width:390px) {
-    .caja {
-        display: flex;
-        width: 100%;
-        margin: 0 40px;
-        align-items: center;
-        min-height: 550px;
-        height: auto;
-        background: #fff;
+@media (max-width: 767px) {
+    .options {
+        /* Eliminamos el margen para que los elementos ocupen toda la fila */
+        margin: 0;
     }
 
-    .options {
-        display: flex;
-        list-style: none;
-        margin: 0 0 0 40px;
+    /* Utilizamos la clase col-6 para que se muestren en 2 columnas por fila */
+    .col-sm-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
     }
 }
