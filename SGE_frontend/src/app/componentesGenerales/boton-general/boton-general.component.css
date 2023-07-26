@@ -37,5 +37,57 @@
       /* Estilos anteriores del botón */
       animation: fadeInFromBottom 1s ease forwards; /* Agrega la animación personalizada */
   }
+
+  /* Estilos anteriores del botón */
+/* ... */
+
+/* Ajustar el tamaño del icono y centrarlo en el contenedor */
+.floating-button .icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px; /* Ajusta el tamaño del contenedor del icono según tus necesidades */
+}
+
+.floating-button .icon-container i {
+  font-size: 40px; /* Ajusta el tamaño del icono según tus necesidades */
+}
+
+/* Nueva animación para el hover del icono */
+@keyframes iconShrink {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.7); /* Cambia el valor para ajustar el tamaño del icono en el hover */
+  }
+}
+
+/* Aplicar la animación al icono en el hover */
+.floating-button:hover .icon-container {
+  animation: iconShrink 0.3s ease forwards;
+  padding-bottom: 30px;
+}
+
+/* Estilos para el texto que aparece en el hover */
+/* Estilos para el texto que aparece en el hover */
+.floating-button .text-container {
+  text-align: center; /* Centrar el texto */
+  opacity: 0; /* El texto estará oculto inicialmente */
+  transition: opacity 0.3s ease; /* Agregamos una transición suave para que aparezca */
+  position: absolute; /* Posicionamos el texto */
+  bottom: 0; /* Lo colocamos en la parte inferior del contenedor del botón */
+  width: 100%; /* Ocupa todo el ancho del botón */
+}
+
+/* Mostramos el texto cuando el botón está en hover */
+.floating-button:hover .text-container {
+  opacity: 1; /* Mostramos el texto */
+  padding-bottom: 15px;
+  font-size: 1.1em;
+}
+
+
+
   
   
