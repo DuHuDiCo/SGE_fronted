@@ -48,7 +48,7 @@
         padding: 0px;
         -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
         background: #dfe2e5;
-        box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+        box-shadow: 5px 5px 5px #707274, -14px -9px 10px 5px #ffffff;
         text-align: center;
     }
     
@@ -79,7 +79,7 @@
         width: 90%;
         margin: 10px auto;
         background: #ecf0f3ea;
-        box-shadow: inset 10px 10px 20px #adb5bd, inset -10px -10px 20px #ffffffd2;
+        box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
     }
     
     svg{
