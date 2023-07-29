@@ -14,6 +14,11 @@ export type RolSystem ={
     rol:string
 }
 
+export type RolesUser = {
+    rol: string,
+    permisos : string[]
+}
+
 
 export enum ROLES{
     SuperAdministration = "SuperAdministration",

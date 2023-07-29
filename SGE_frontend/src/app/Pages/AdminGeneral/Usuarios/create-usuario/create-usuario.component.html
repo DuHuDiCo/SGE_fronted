@@ -9,22 +9,28 @@
         <div class="col-md-6">
             <label for="text">Username</label>
             <div class="usuario">
+
                 <i class="fa-solid fa-user-secret"></i>
                 <input type="text" class="input-usuario input1" placeholder="Username">
             </div>
             <label for="text">Contraseña</label>
             <div class="usuario">
                 <i class="fa-solid fa-key"></i>
-                <input type="password" class="input-usuario input1" placeholder="Contraseña">
+
+                <input [(ngModel)] = "usuario.username" name="username" type="text" class="input-usuario input1" placeholder="Username">
             </div>
         </div>
 
         
+      
+
+
         <div class="col-md-6">
             <label for="text">Nombre</label>
             <div class="usuario">
                 <i class="fa-solid fa-signature"></i>
                 <input type="text" class="input-usuario input1" placeholder="Nombre">
+
             </div>
                 <label for="text">Apellido</label>
                 <div class="usuario">
@@ -33,7 +39,7 @@
                 </div>
         </div>
 
-        
+
     </div>
 
 
@@ -41,7 +47,7 @@
         <div class="col">
             <label for="select">Seleccione su Tipo de Documento</label>
             <div class="selecionar">
-                <select class="form-select">
+                <select [(ngModel)] = "usuario.tipo_documento" name="tipo_documento" class="form-select">
                     <option selected>Opciones</option>
                     <option value="1">Cedula de Ciudadania</option>
                     <option value="2">Cedula de Extranjeria</option>
@@ -51,8 +57,10 @@
         <div class="col">
             <label for="text">N° Documento</label>
             <div class="usuario">
+
                 <i class="fa-solid fa-address-card"></i>
                 <input type="text" class="input-pass input1" placeholder="Documento">
+
             </div>
         </div>
 
@@ -61,17 +69,21 @@
 
     <div class="row align-items-center">
         <div class="col">
+
             <label for="email">Correo</label>
             <div class="usuario">
                 <i class="fa-solid fa-envelope"></i>
                 <input type="text" class="input-usuario input1" placeholder="Correo">
+
             </div>
         </div>
         <div class="col">
             <label for="number">Telefono</label>
             <div class="usuario">
+
                 <i class="fa-solid fa-phone"></i>
                 <input type="number" class="input-usuario input1" placeholder="Telefono Celular">
+
             </div>
         </div>
 
@@ -81,12 +93,12 @@
         <div class="col">
             <label for="email">Fecha</label>
             <div class="usuario">
-                <input type="date" class="input-usuario input1">
+                <input [(ngModel)] = "usuario.fecha_nacimiento" name="fecha_nacimiento" type="date" class="input-usuario input1">
             </div>
         </div>
     </div>
 
-    <button (click) = "gestionRoles()" class="btn-guardar">Gestionar Roles</button>
+    <button (click) = "guardarUsuario()" class="btn-guardar">Gestionar Roles</button>
 </div>
 
 
