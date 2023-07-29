@@ -20,7 +20,7 @@
     padding: 15px;
     margin: 15px auto;
     background: #ecf0f3;
-    box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 
 }
 
@@ -29,7 +29,7 @@
     text-align: center;
     margin: 15px auto;
     padding: 10px;
-    box-shadow: inset 10px 10px 20px #adb5bd, inset -10px -10px 20px #adb5bd;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 
 .container{

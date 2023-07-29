@@ -16,7 +16,7 @@
     margin-top: 30px;
     border-radius: 15px;
     background: #dfe2e5;
-    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+    box-shadow: 5px 5px 5px #707274, -14px -9px 10px 5px #ffffff;
 }
 
 .form-check-input:checked {
@@ -31,7 +31,7 @@
     padding: 15px;
     margin: 15px auto;
     background: #ecf0f3;
-    box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
+    box-shadow: 5px 5px 5px #707274, 10px 10px 10px 0px #ffffff;
 
 }
 
