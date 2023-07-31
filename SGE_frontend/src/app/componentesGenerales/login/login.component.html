@@ -1,22 +1,33 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
 
-<div class="wrapper fadeInDown">
-    <div id="formContent">
+            <div class="wrapper fadeInDown">
+                <div id="formContent">
 
-        <div class="fadeIn first">
-            <img src="../../assets/logo-Principal.png" id="icon" alt="User Icon" />
-            <b><h1>Iniciar sesión</h1></b>
+                    <div class="fadeIn first">
+                        <img src="../../assets/logo-Principal.png" id="icon" alt="User Icon" />
+                        <b>
+                            <h1>Iniciar sesión</h1>
+                        </b>
+                    </div>
+                    <!-- Login Form -->
+                    <form (ngSubmit)="iniciarSesion()">
+                        <div class="usuario">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" id="login" class="fadeIn second" name="username" placeholder="usuario"
+                                [(ngModel)]="jwtRequest.username">
+                        </div>
+                        <div class="contraseña">
+                            <i class="fa-solid fa-key"></i>
+                            <input type="password" id="password" class="fadeIn third" name="password"
+                                placeholder="contraseña" [(ngModel)]="jwtRequest.password">
+                        </div>
+                        <input type="submit" class="fadeIn fourth" value="Entrar">
+                    </form>
+                </div>
+            </div>
+
         </div>
-        <!-- Login Form -->
-        <form (ngSubmit)="iniciarSesion()">
-            <div class="usuario">
-                <i class="fa-solid fa-user"></i>
-                <input type="text" id="login" class="fadeIn second" name="username" placeholder="usuario" [(ngModel)]="jwtRequest.username">
-            </div>
-            <div class="contraseña">
-                <i class="fa-solid fa-key"></i>
-                <input type="password" id="password" class="fadeIn third" name="password" placeholder="contraseña" [(ngModel)]="jwtRequest.password">
-            </div>
-            <input type="submit" class="fadeIn fourth" value="Entrar" >
-        </form>
     </div>
 </div>

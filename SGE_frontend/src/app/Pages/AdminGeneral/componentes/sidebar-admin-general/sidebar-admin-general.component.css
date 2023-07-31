@@ -3,6 +3,10 @@
 
 }
 
+#offcanvasWithBackdrop{
+    overflow-y: scroll;
+}
+
 .bg {
     background-color: #212121;
 }
