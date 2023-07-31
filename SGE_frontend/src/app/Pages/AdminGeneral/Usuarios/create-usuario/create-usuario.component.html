@@ -9,37 +9,42 @@
         <div class="col-md-6">
             <label for="text">Username</label>
             <div class="usuario">
+
+                <i class="fa-solid fa-user-secret"></i>
+                <input type="text" class="input-usuario input1" placeholder="Username">
+            </div>
+            <label for="text">Contraseña</label>
+            <div class="usuario">
+                <i class="fa-solid fa-key"></i>
+
                 <input [(ngModel)] = "usuario.username" name="username" type="text" class="input-usuario input1" placeholder="Username">
             </div>
         </div>
 
         
+      
+
+
         <div class="col-md-6">
-            <label for="text">Email</label>
+            <label for="text">Nombre</label>
             <div class="usuario">
-                <input [(ngModel)] = "usuario.email" name="email" type="email" class="input-usuario input1" placeholder="Correo">
+                <i class="fa-solid fa-signature"></i>
+                <input type="text" class="input-usuario input1" placeholder="Nombre">
+
             </div>
+                <label for="text">Apellido</label>
+                <div class="usuario">
+                    <i class="fa-solid fa-signature"></i>
+                    <input type="text" class="input-usuario input1" placeholder="Apellido">
+                </div>
         </div>
 
-        
-        <div class="col">
-            <label for="text">Nombres</label>
-            <div class="usuario">
-                <input [(ngModel)] = "usuario.nombres" name="nombres" type="text" class="input-usuario input1" placeholder="Nombres">
-            </div>
-        </div>
 
-        <div class="col">
-            <label for="text">Apellidos</label>
-            <div class="usuario">
-                <input [(ngModel)] = "usuario.apellidos" name="apellidos" type="text" class="input-usuario input1" placeholder="Apellidos">
-            </div>
-        </div>
     </div>
 
 
     <div class="row align-items-start">
-        <div class="col">
+        <div class="col-md-6 col-12">
             <label for="select">Seleccione su Tipo de Documento</label>
             <div class="selecionar">
                 <select [(ngModel)] = "usuario.tipo_documento" name="tipo_documento" class="form-select">
@@ -49,15 +54,13 @@
                 </select>
             </div>
         </div>
-        <div class="col">
+        <div class="col-md-6 col-12">
             <label for="text">N° Documento</label>
             <div class="usuario">
-                <svg class="svg-icon" viewBox="0 0 20 20">
-                    <path
-                        d="M8.749,9.934c0,0.247-0.202,0.449-0.449,0.449H4.257c-0.247,0-0.449-0.202-0.449-0.449S4.01,9.484,4.257,9.484H8.3C8.547,9.484,8.749,9.687,8.749,9.934 M7.402,12.627H4.257c-0.247,0-0.449,0.202-0.449,0.449s0.202,0.449,0.449,0.449h3.145c0.247,0,0.449-0.202,0.449-0.449S7.648,12.627,7.402,12.627 M8.3,6.339H4.257c-0.247,0-0.449,0.202-0.449,0.449c0,0.247,0.202,0.449,0.449,0.449H8.3c0.247,0,0.449-0.202,0.449-0.449C8.749,6.541,8.547,6.339,8.3,6.339 M18.631,4.543v10.78c0,0.248-0.202,0.45-0.449,0.45H2.011c-0.247,0-0.449-0.202-0.449-0.45V4.543c0-0.247,0.202-0.449,0.449-0.449h16.17C18.429,4.094,18.631,4.296,18.631,4.543 M17.732,4.993H2.46v9.882h15.272V4.993z M16.371,13.078c0,0.247-0.202,0.449-0.449,0.449H9.646c-0.247,0-0.449-0.202-0.449-0.449c0-1.479,0.883-2.747,2.162-3.299c-0.434-0.418-0.714-1.008-0.714-1.642c0-1.197,0.997-2.246,2.133-2.246s2.134,1.049,2.134,2.246c0,0.634-0.28,1.224-0.714,1.642C15.475,10.331,16.371,11.6,16.371,13.078M11.542,8.137c0,0.622,0.539,1.348,1.235,1.348s1.235-0.726,1.235-1.348c0-0.622-0.539-1.348-1.235-1.348S11.542,7.515,11.542,8.137 M15.435,12.629c-0.214-1.273-1.323-2.246-2.657-2.246s-2.431,0.973-2.644,2.246H15.435z">
-                    </path>
-                </svg>
-                <input [(ngModel)] = "usuario.numero_documento" name="numero_documento" type="text" class="input-pass input1" placeholder="Documento">
+
+                <i class="fa-solid fa-address-card"></i>
+                <input type="text" class="input-pass input1" placeholder="Documento">
+
             </div>
         </div>
 
@@ -65,21 +68,22 @@
     </div>
 
     <div class="row align-items-center">
-        <div class="col">
-            <label for="email">Contraseña</label>
+        <div class="col-md-6 col-12">
+
+            <label for="email">Correo</label>
             <div class="usuario">
-                <input [(ngModel)] = "usuario.password" name="password" type="password" class="input-usuario input1" placeholder="Contraseña">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="text" class="input-usuario input1" placeholder="Correo">
+
             </div>
         </div>
         <div class="col">
             <label for="number">Telefono</label>
             <div class="usuario">
-                <svg class="svg-icon" viewBox="0 0 20 20">
-                    <path
-                        d="M13.372,1.781H6.628c-0.696,0-1.265,0.569-1.265,1.265v13.91c0,0.695,0.569,1.265,1.265,1.265h6.744c0.695,0,1.265-0.569,1.265-1.265V3.045C14.637,2.35,14.067,1.781,13.372,1.781 M13.794,16.955c0,0.228-0.194,0.421-0.422,0.421H6.628c-0.228,0-0.421-0.193-0.421-0.421v-0.843h7.587V16.955z M13.794,15.269H6.207V4.731h7.587V15.269z M13.794,3.888H6.207V3.045c0-0.228,0.194-0.421,0.421-0.421h6.744c0.228,0,0.422,0.194,0.422,0.421V3.888z">
-                    </path>
-                </svg>
-                <input [(ngModel)] = "usuario.celular" name="celular" type="number" class="input-usuario input1" placeholder="Telefono Celular">
+
+                <i class="fa-solid fa-phone"></i>
+                <input type="number" class="input-usuario input1" placeholder="Telefono Celular">
+
             </div>
         </div>
 
