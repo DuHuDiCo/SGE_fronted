@@ -5,7 +5,7 @@
 
 .tabla{
     background: #dfe2e5;
-    text-align: left;
+    text-align: center;
     border-collapse: collapse;
     width: 100%; 
 }
@@ -70,7 +70,7 @@ tr:hover td{
     outline: none;
     border: #cbced1;
     border-radius: 18px;
-    height: 50px;
+    height: auto;
     margin-bottom: 30px;
     box-shadow: 2px 2px 2px #707274, -2px 0px 2px 0px #707274;
 }
@@ -84,4 +84,26 @@ a{
     color: #f8f9fa;
     text-decoration: auto;
     
+}
+
+.table-container {
+    overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 460px;
+    }
+
+    .buscador{
+        margin-left: 100px;
+    }
+
+    .roles{
+        height: auto;
+        width: auto;
+        padding: auto;
+    }
+
 }

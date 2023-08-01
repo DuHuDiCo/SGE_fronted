@@ -103,3 +103,12 @@ svg#persona {
     justify-content: center; /* Alinea los elementos del menú hacia el centro */
   }
   
+  @media (max-width: 767px) {
+    .noti {
+      margin-left: 5px; /* Adjust the margin for small screens */
+    }
+  
+    svg#persona {
+      height: 20px; /* Adjust the height for small screens */
+    }
+  }

@@ -45,14 +45,14 @@
 }
 
 .selecionar,
-.seleciona,.fecha,.buscador{
+.seleciona{
     border-radius: 25px;
     text-align: center;
-    width: 90%;
     margin: 10px auto;
     background: #ecf0f3ea;
-    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
+
+
 
 .campo{
     border: none;
@@ -65,10 +65,42 @@
 .placeholder{
     background: #000000d8;
 }
-.form-select{
+
+.form-control{
     border-radius: 25px;
     text-align: center;
+    width: 90%;
+    padding: 15px;
     margin: 15px auto;
-    padding: 10px;
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+}
+
+/* Media query para dispositivos móviles */
+@media (max-width: 850px) {
+    .campo {
+        width: 345px; /* Ancho del input al 100% */
+        text-align: center; /* Texto centrado */
+    }
+}
+
+@media (max-width: 845px) {
+    .campo {
+        width: 100px; /* Ancho del input al 100% */
+        text-align: center; /* Texto centrado */
+    }
+}
+
+@media (max-width: 770px) {
+    .campo {
+        width: 345px; /* Ancho del input al 100% */
+        text-align: center; /* Texto centrado */
+    }
+}
+
+/* Media query para dispositivos móviles */
+@media (max-width: 576px) {
+    .campo {
+        width: 220px; /* Ancho del input al 100% */
+        text-align: center; /* Texto centrado */
+    }
 }
