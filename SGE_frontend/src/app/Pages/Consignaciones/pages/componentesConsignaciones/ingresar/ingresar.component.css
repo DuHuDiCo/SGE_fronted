@@ -56,6 +56,7 @@
 
 .input-usuario{
     border: none;
+    text-align: center;
     outline: none;
     background: none;
     font-size: 15px;
@@ -79,7 +80,7 @@
     color: #fff;
     background: #9C1717;
     cursor: pointer;
-    width: 30%;
+    width: auto;
     outline: none;
     border: #cbced1;
     border-radius: 18px;
@@ -96,4 +97,11 @@
     padding: 8px 12px;
     border-radius: 4px;
     cursor: pointer;
+}
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 400px;
+    }
 }
