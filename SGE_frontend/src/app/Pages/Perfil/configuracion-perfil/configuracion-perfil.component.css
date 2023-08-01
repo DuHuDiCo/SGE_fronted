@@ -47,7 +47,7 @@ input{
     color: #fff;
     background: #9C1717;
     cursor: pointer;
-    width: 20%;
+    width: auto;
     outline: none;
     border: #cbced1;
     border-radius: 18px;
@@ -58,4 +58,15 @@ input{
 
 .btn-guardar:hover{
     background: #D60303 ;
+}
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 400px;
+    }
+
+    .usuario, .contraseña{
+        width: auto;
+    }
 }
