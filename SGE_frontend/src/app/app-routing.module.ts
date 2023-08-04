@@ -70,13 +70,13 @@ const routes: Routes = [
   {
     path:'login', 
     component:LoginComponent,
-    canActivate: [LoginGuard]
+    // canActivate: [LoginGuard]
   },
 
   {
     path:'opciones', 
     component:OpcionesComponent,
-    canActivate:[AuthenticationGuard]
+    // canActivate:[AuthenticationGuard]
   },
   {
     path: 'cartera', redirectTo:'dashboard-cartera/inicio' , pathMatch:'full' 
@@ -85,7 +85,7 @@ const routes: Routes = [
   {
     path:"dashboard-cartera",
     component:DashboardComponent,
-    canActivate:[AuthenticationGuard],
+    // canActivate:[AuthenticationGuard],
     children:[
       {
         path:"gestion",
@@ -114,7 +114,7 @@ const routes: Routes = [
   {
     path: 'dashboard-caja',
     component: DashboardCajaComponent,
-    canActivate:[AuthenticationGuard],
+    // canActivate:[AuthenticationGuard],
   },
 
   {
@@ -123,7 +123,7 @@ const routes: Routes = [
   {
     path: 'dashboard-perfil',
     component: DashboardPerfilComponent,
-    canActivate:[AuthenticationGuard],
+    // canActivate:[AuthenticationGuard],
     children:[
       {
 
@@ -144,7 +144,7 @@ const routes: Routes = [
   {
     path:'dashboard-consignaciones',
     component:DashboarConsignacionesComponent,
-    canActivate:[AuthenticationGuard],
+    // canActivate:[AuthenticationGuard],
     children:[
       {
         path:'ingresar',
@@ -170,7 +170,7 @@ const routes: Routes = [
   {
     path:"dashboard-administracion",
     component:DashboardAdminComponent,
-    canActivate:[AuthenticationGuard],
+    // canActivate:[AuthenticationGuard],
     children:[
       {
         path:'gestionUsuarios',
@@ -203,7 +203,7 @@ const routes: Routes = [
   {
     path:"dashboard-sst",
     component:DashboardSSTComponent,
-    canActivate:[AuthenticationGuard],
+    // canActivate:[AuthenticationGuard],
     children:[
       {
         path:'incapacidad-g',
@@ -256,7 +256,7 @@ const routes: Routes = [
   {
     path:"dashboard-creditos",
     component:DashboardCreditosComponent,
-    canActivate:[AuthenticationGuard],
+    // canActivate:[AuthenticationGuard],
     children:[
       {
         path:'ver-creditos',
@@ -277,7 +277,7 @@ const routes: Routes = [
   {
     path:"dashboard-archivos",
     component:DashboardArchivosComponent,
-    canActivate:[AuthenticationGuard],
+    // canActivate:[AuthenticationGuard],
     children:[
       {
         path:'archivos-exs',
@@ -291,7 +291,7 @@ const routes: Routes = [
   {
     path:"dashboard-ventas",
     component:DashboardVentasComponent,
-    canActivate:[AuthenticationGuard],
+    // canActivate:[AuthenticationGuard],
     children:[
       {
         path:'proceso-ventas',
@@ -304,7 +304,7 @@ const routes: Routes = [
   {
     path: 'dashboard-servicios',
     component: DashboardServiciosComponent,
-    canActivate:[AuthenticationGuard],
+    // canActivate:[AuthenticationGuard],
   },
 
 
@@ -312,7 +312,7 @@ const routes: Routes = [
   {
     path:"dashboard-admin-general",
     component:DashboardSuperAdminComponent,
-    canActivate:[AuthenticationGuard],
+    // canActivate:[AuthenticationGuard],
     children:[
       {
         path:'system-roles',
