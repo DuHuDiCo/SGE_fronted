@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AgregarUnClienteService } from 'src/app/Services/clientes/agregar-un-cliente.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -9,97 +10,120 @@ import Swal from 'sweetalert2';
 })
 export class AgregarClienteComponent implements OnInit {
 
-  nombres: string = '';
-  apellidos: string = '';
-  tipoDocumento: string = '';
-  numeroDocumento: string = '';
-  fechaNacimiento: string = '';
-  lugarNacimiento: string = '';
-  telefono: string = '';
-  direccion: string = '';
-  ciudad: string = '';
-  departamento: string = '';
-  pais: string = '';
-  correoElectronico: string = '';
-  tipoCliente: string = '';
+  datos = {
+    nombres: '',
+    apellidos: '',
+    tipoDocumento: '',
+    numeroDocumento: '',
+    fechaNacimiento: '',
+    lugarNacimiento: '',
+    telefono: '',
+    direccion: '',
+    ciudad: '',
+    departamento: '',
+    pais: '',
+    correoElectronico: '',
+    tipoCliente: ''
+  }
+  
+  router: any;
 
-
-  constructor() { }
+  constructor(private agregarCliente: AgregarUnClienteService) { }
   ngOnInit(): void {
     throw new Error('Method not implemented.');
   }
 
-
   guardarClientes() {
 
-    if (this.nombres == '' || this.nombres == null) {
+    if (this.datos.nombres == '' || this.datos.nombres == null) {
       Swal.fire('Error', 'Debe colocar el Nombre del Cliente', 'error')
       return
     }
 
-    if (this.apellidos == '' || this.apellidos == null) {
+    if (this.datos.apellidos == '' || this.datos.apellidos == null) {
       Swal.fire('Error', 'Debe colocar el Apellido del Cliente', 'error')
       return
     }
 
-    if (this.tipoDocumento == '' || this.tipoDocumento == null) {
+    if (this.datos.tipoDocumento == '' || this.datos.tipoDocumento == null) {
       Swal.fire('Error', 'Debe colocar elTtipo de Documento', 'error')
       return
     }
 
-    if (this.numeroDocumento == '' || this.numeroDocumento == null) {
+    if (this.datos.numeroDocumento == '' || this.datos.numeroDocumento == null) {
       Swal.fire('Error', 'Digite el Numero de Documento del Cliente', 'error')
       return
     }
 
-    if (this.fechaNacimiento == '' || this.fechaNacimiento == null) {
+    if (this.datos.fechaNacimiento == '' || this.datos.fechaNacimiento == null) {
       Swal.fire('Error', 'Debe colocar la Fecha de Nacimiento', 'error')
       return
     }
 
-    if (this.lugarNacimiento == '' || this.lugarNacimiento == null) {
+    if (this.datos.lugarNacimiento == '' || this.datos.lugarNacimiento == null) {
       Swal.fire('Error', 'Debe colocar el Lugar de Nacimiento', 'error')
       return
     }
 
-    if (this.telefono == '' || this.telefono == null) {
+    if (this.datos.telefono == '' || this.datos.telefono == null) {
       Swal.fire('Error', 'Digite el Telefono del Cliente', 'error')
       return
     }
 
-    if (this.direccion == '' || this.direccion == null) {
+    if (this.datos.direccion == '' || this.datos.direccion == null) {
       Swal.fire('Error', 'Debe colocar el Lugar de Nacimiento', 'error')
       return
     }
 
-    if (this.ciudad == '' || this.ciudad == null) {
+    if (this.datos.ciudad == '' || this.datos.ciudad == null) {
       Swal.fire('Error', 'Debe colocar la Cuidad', 'error')
       return
     }
 
-    if (this.departamento == '' || this.departamento == null) {
+    if (this.datos.departamento == '' || this.datos.departamento == null) {
       Swal.fire('Error', 'Debe colocar el Departamento', 'error')
       return
     }
 
-    if (this.pais == '' || this.pais == null) {
+    if (this.datos.pais == '' || this.datos.pais == null) {
       Swal.fire('Error', 'Debe colocar el Pais', 'error')
       return
     }
 
-    if (this.correoElectronico == '' || this.correoElectronico == null) {
+    if (this.datos.correoElectronico == '' || this.datos.correoElectronico == null) {
       Swal.fire('Error', 'Debe colocar el Correo Electronico', 'error')
       return
     }
 
-    if (this.tipoCliente == '' || this.tipoCliente == null) {
+    if (this.datos.tipoCliente == '' || this.datos.tipoCliente == null) {
       Swal.fire('Error', 'Debe colocar el Tipo de Cliente', 'error')
       return
     }
-    else () => {
-      Swal.fire('Guardado', 'Cliente Guardado con Exito', 'success')
-      return
-    }
-  }
 
+    this.agregarCliente.guardarClientes(this.datos).subscribe(
+      (data: any) => {
+        console.log(data);
+        Swal.fire('Guardado', 'Cliente guardado con Exito', 'success');
+        this.datos = {
+          nombres: '',
+          apellidos: '',
+          tipoDocumento: '',
+          numeroDocumento: '',
+          fechaNacimiento: '',
+          lugarNacimiento: '',
+          telefono: '',
+          direccion: '',
+          ciudad: '',
+          departamento: '',
+          pais: '',
+          correoElectronico: '',
+          tipoCliente: ''
+        }
+        this.router.navigate(['/AdminGeneral/Clientes/agregar-cliente'])
+      },
+      (error) => {
+        Swal.fire('Error', 'Error al guardar el cliente', 'error')
+      }
+    )
+  }
 }

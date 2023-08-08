@@ -11,7 +11,7 @@
                 <label for="text">Nombres</label>
                 <div class="usuario">
                     <i class="fa-solid fa-signature"></i>
-                    <input type="text" class="input-usuario" placeholder="Nombres">
+                    <input type="text" class="input-usuario" placeholder="Nombres" required matInput  >
                 </div>
             </form>
         </div>
@@ -82,7 +82,7 @@
     <div class="row align-items-start">
         <div class="col">
             <form (ngSubmit)="guardarClientes()">
-                <label for="select">Seleccione el Tipo de CLiente</label>
+                <label for="select">Seleccione el Tipo de Cliente</label>
                 <div class="selecionar">
                     <select class="form-select">
                         <option selected>Opciones</option>
@@ -90,94 +90,107 @@
                         <option value="2">Codeudor</option>
                     </select>
                 </div>
+            </form>
 
-                <div class="row align-items-center">
-                    <div class="col-md-6 col-12">
+            <div class="row align-items-center">
+                <div class="col-md-6 col-12">
+                    <form (ngSubmit)="guardarClientes()">
                         <label for="email">Direccion</label>
                         <div class="usuario">
                             <i class="fa-solid fa-map-location-dot"></i>
                             <input type="text" class="input-usuario" placeholder="Direccion">
                         </div>
-                    </div>
+                    </form>
+                </div>
 
-                    <div class="col-md-6 col-12">
+                <div class="col-md-6 col-12">
+                    <form (ngSubmit)="guardarClientes()">
                         <label for="email">Cuidad</label>
                         <div class="usuario">
                             <i class="fa-solid fa-building"></i>
                             <input type="text" class="input-usuario" placeholder="Cuidad">
                         </div>
-                    </div>
+                    </form>
+                </div>
 
-                    <div class="col-md-6 col-12">
+                <div class="col-md-6 col-12">
+                    <form (ngSubmit)="guardarClientes()">
                         <label for="email">Departamento</label>
                         <div class="usuario">
                             <i class="fa-solid fa-city"></i>
                             <input type="text" class="input-usuario" placeholder="Departamento">
                         </div>
-                    </div>
+                    </form>
+                </div>
 
-                    <div class="col-md-6 col-12">
+                <div class="col-md-6 col-12">
+                    <form (ngSubmit)="guardarClientes()">
                         <label for="email">Pais</label>
                         <div class="usuario">
                             <i class="fa-solid fa-earth-americas"></i>
                             <input type="text" class="input-usuario" placeholder="Pais">
                         </div>
-                    </div>
+                    </form>
+                </div>
 
-                    <div class="col-md-6 col-12">
+                <div class="col-md-6 col-12">
+                    <form (ngSubmit)="guardarClientes()">
                         <label for="number">Telefono</label>
                         <div class="usuario">
                             <i class="fa-solid fa-square-phone"></i>
                             <input type="number" class="input-usuario" placeholder="Telefono Celular">
                         </div>
-                    </div>
+                    </form>
+                </div>
 
-                    <div class="col-md-6 col-12">
+                <div class="col-md-6 col-12">
+                    <form (ngSubmit)="guardarClientes()">
                         <label for="email">Correo</label>
                         <div class="usuario">
                             <i class="fa-solid fa-envelope"></i>
                             <input type="email" class="input-usuario" placeholder="Email">
                         </div>
-                    </div>
-
-                    <div class="usuario" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">REFERENCIAS PERSONALES</h5>
-                            <div class="container2">
-                                <input type="text" class="input-usuario" placeholder="Nombre Completo">
-                            </div>
-                            <div class="container2">
-                                <input type="text" class="input-usuario" placeholder="Telefono">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="usuario" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">REFERENCIAS COMERCIALES</h5>
-                            <div class="container2">
-                                <input type="text" class="input-usuario" placeholder="Nombre Completo">
-                            </div>
-                            <div class="container2">
-                                <input type="text" class="input-usuario" placeholder="Telefono">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="usuario" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">REFERENCIAS FAMILIARES</h5>
-                            <div class="container2">
-                                <input type="text" class="input-usuario" placeholder="Nombre Completo">
-                            </div>
-                            <div class="container2">
-                                <input type="text" class="input-usuario" placeholder="Telefono">
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="btn-guardar">Guardar</button>
+                    </form>
                 </div>
-            </form>
+
+                <div class="usuario" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">REFERENCIAS PERSONALES</h5>
+                        <div class="container2">
+                            <input type="text" class="input-usuario" placeholder="Nombre Completo">
+                        </div>
+                        <div class="container2">
+                            <input type="text" class="input-usuario" placeholder="Telefono">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="usuario" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">REFERENCIAS COMERCIALES</h5>
+                        <div class="container2">
+                            <input type="text" class="input-usuario" placeholder="Nombre Completo">
+                        </div>
+                        <div class="container2">
+                            <input type="text" class="input-usuario" placeholder="Telefono">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="usuario" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">REFERENCIAS FAMILIARES</h5>
+                        <div class="container2">
+                            <input type="text" class="input-usuario" placeholder="Nombre Completo">
+                        </div>
+                        <div class="container2">
+                            <input type="text" class="input-usuario" placeholder="Telefono">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-guardar">Guardar</button>
+            </div>
+
         </div>
     </div>
