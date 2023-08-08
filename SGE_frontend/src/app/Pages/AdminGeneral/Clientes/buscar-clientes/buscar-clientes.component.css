@@ -70,8 +70,9 @@
 }
 
 .table-container {
-    overflow-x: auto; /* Enable horizontal scrolling */
-}
+
+    overflow: auto; /* Aplica desbordamiento vertical y horizontal */
+
 
 .btn-guardar{
     display: block;
