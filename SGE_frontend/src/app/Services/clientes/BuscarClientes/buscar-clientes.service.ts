@@ -12,4 +12,12 @@ export class BuscarClientesService {
   public listarClientes(){
     return this.http.get(`${baseUrl}/clientes/all`)
   }
+
+  public filtrarClientes(cedula:string){
+    return this.http.get(`${baseUrl}/clientes/find/${cedula}`)
+  }
+
+  public eliminarCliente(idCliente: Number, username:string | null){
+    return this.http.delete(`${baseUrl}/clientes/delete/${idCliente}/?username=${username}`)
+  }
 }

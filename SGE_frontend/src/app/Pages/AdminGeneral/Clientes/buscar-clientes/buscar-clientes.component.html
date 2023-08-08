@@ -11,7 +11,8 @@
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-md-2 col-form-label mt-4">Cliente:</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control inputs" id="staticEmail" value="" ngModel name="role">
+                        <input [(ngModel)]="cedula" type="text" class="form-control inputs" id="staticEmail" ngModel
+                            name="cedula" (keyup.enter)="filtrar()">
                     </div>
 
                     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -32,7 +33,7 @@
             </form>
         </div>
     </div>
-    
+
     <div class="row mt-5">
         <div class="col-md-10 offset-md-1">
             <div class="table-container">
@@ -43,17 +44,6 @@
                             <th>Apellidos</th>
                             <th>Tipo Doc</th>
                             <th># Doc</th>
-                            <!-- <th>Fecha Nacimiento</th>
-                            <th>Lugar Nacimiento</th>
-                            <th>Fecha Expedicion Doc</th>
-                            <th>Lugar Expedicion Doc</th>
-                            <th>Teléfono</th>
-                            <th>Direccion</th>
-                            <th>Correo</th>
-                            <th>Tipo Cliente</th>
-                            <th>Referencias Comerciales</th>
-                            <th>Referencias Personales</th>
-                            <th>Referencias Familiares</th> -->
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -63,24 +53,11 @@
                             <th>{{ c.apellidos }}</th>
                             <th>{{ c.tipoDocumento }}</th>
                             <th>{{ c.numeroDocumento }}</th>
-                            <!-- <th>{{ c.fechaNacimiento }}</th>
-                            <th>{{ c.lugarNacimiento }}</th>
-                            <th>{{ c.fechaExpedicionDocumento }}</th>
-                            <th>{{ c.lugarExpedicionDocumento }}</th>
-                            <th>{{ c.telefonos[0].indicativo + ' ' + c.telefonos[0].numero  }}</th>
-                            <th>{{ c.direcciones[0].direccion + ' ' + c.direcciones[0].pais + ', ' + c.direcciones[0].departamento + '-' + c.direcciones[0].ciudad }}</th>
-                            <th>{{ c.correosElectronicos[0].email }}</th>
-                            <th>{{ c.tipoClientes[0].tipoClienteId }}</th>
-                            <th></th>
-                            <th></th>
-                            <th></th> -->
-
                             <td>
-                                <button class="btn btn-success btn-sm me-3"><i
-                                        class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn btn-info btn-sm me-3"><i class="fa-regular fa-eye" data-bs-toggle="modal"
+                                [attr.data-bs-target]="'#verDetallesModal' + i"></i></button>
 
-                                <button class="btn btn-info btn-sm"><i class="fa-regular fa-eye" data-bs-toggle="modal"
-                                        [attr.data-bs-target]="'#verDetallesModal' + i"></i></button>
+                                <button (click)="eliminarCliente(c.idCliente)" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -102,37 +79,74 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="card-text"><strong>Fecha Nacimiento:</strong> {{ c.fechaNacimiento | date }}</p>
-                    <p class="card-text"><strong>Lugar De Nacimiento:</strong> {{ c.lugarNacimiento }}</p>
-                    <p class="card-text"><strong>Fecha Exp Doc:</strong> {{ c.fechaExpedicionDocumento }}</p>
-                    <p class="card-text"><strong>Lugar De Exp:</strong> {{ c.lugarExpedicionDocumento }}</p>
-                    <h6 class="fw-bold">Teléfonos:</h6>
-                    <ul>
-                        <p *ngFor="let telefono of c.telefonos">{{ telefono.indicativo }} {{ telefono.numero }}</p>
-                    </ul>
-                    <h6 class="fw-bold">Direcciones:</h6>
-                    <ul>
-                        <p *ngFor="let direccion of c.direcciones">{{ direccion.direccion + ' ' + direccion.pais + ', ' + direccion.departamento + ' - ' + direccion.ciudad }}</p>
-                    </ul>
-                    <h6 class="fw-bold">Correos:</h6>
-                    <ul>
-                        <p *ngFor="let correo of c.correosElectronicos">{{ correo.email }}</p>
-                    </ul>
-                    <h6 class="fw-bold">Referencias Comerciales:</h6>
-                    <ul>
-                        <p *ngFor="let r of c.referenciasComerciales">{{ r.nombreCompleto }} <br> {{ r.telefono }}</p>
-                    </ul>
-
-                    <h6 class="fw-bold">Referencias Personales:</h6>
-                    <ul>
-                        <p *ngFor="let r of c.referenciasPersonales">{{ r.nombreCompleto }} <br> {{ r.telefono }}</p>
-                    </ul>
-
-                    <h6 class="fw-bold">Referencias Familiares:</h6>
-                    <ul>
-                        <p *ngFor="let r of c.referenciasFamiliares">{{ r.nombreCompleto }} <br> {{ r.telefono }}</p>
-                    </ul>
+                    <table class="table">
+                        <tr>
+                            <td><strong>Fecha Nacimiento:</strong></td>
+                            <td>{{ c.fechaNacimiento | date }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lugar De Nacimiento:</strong></td>
+                            <td>{{ c.lugarNacimiento }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha Exp Doc:</strong></td>
+                            <td>{{ c.fechaExpedicionDocumento }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lugar De Exp:</strong></td>
+                            <td>{{ c.lugarExpedicionDocumento }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Teléfonos:</td>
+                            <td>
+                                <ul>
+                                    <li *ngFor="let telefono of c.telefonos">{{ telefono.indicativo }} {{ telefono.numero }}</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Direcciones:</td>
+                            <td>
+                                <ul>
+                                    <li *ngFor="let direccion of c.direcciones">{{ direccion.direccion + ' ' + direccion.pais + ', ' + direccion.departamento + ' - ' + direccion.ciudad }}</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Correos:</td>
+                            <td>
+                                <ul>
+                                    <li *ngFor="let correo of c.correosElectronicos">{{ correo.email }}</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Referencias Comerciales:</td>
+                            <td>
+                                <ul>
+                                    <li *ngFor="let r of c.referenciasComerciales">{{ r.nombreCompleto }} <br> {{ r.telefono }}</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Referencias Personales:</td>
+                            <td>
+                                <ul>
+                                    <li *ngFor="let r of c.referenciasPersonales">{{ r.nombreCompleto }} <br> {{ r.telefono }}</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Referencias Familiares:</td>
+                            <td>
+                                <ul>
+                                    <li *ngFor="let r of c.referenciasFamiliares">{{ r.nombreCompleto }} <br> {{ r.telefono }}</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
+                
             </div>
         </div>
     </div>
