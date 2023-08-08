@@ -9,14 +9,17 @@
         <div class="col">
             <label for="text">Username</label>
             <div class="usuario">
+
                 <i class="fa-solid fa-user-secret"></i>
                 <input type="text" class="input-usuario input1" placeholder="Username">
+
             </div>
         </div>
 
         <div class="col">
             <label for="text">Contraseña</label>
             <div class="usuario">
+
                 <i class="fa-solid fa-key"></i>
                 <input type="password" class="input-usuario input1" placeholder="Contraseña">
             </div>
@@ -28,38 +31,41 @@
             <div class="usuario">
                 <i class="fa-solid fa-signature"></i>
                 <input type="text" class="input-usuario" placeholder="Nombre">
+
             </div>
-        </div>
+
 
         <div class="col">
             <label for="text">Apellido</label>
             <div class="usuario">
                 <i class="fa-solid fa-signature"></i>
                 <input type="text" class="input-usuario" placeholder="Apellido">
-            </div>
-        </div>
-    </div>
 
-    <div class="row align-items-start">
-        <div class="col">
-            <label for="select">Seleccione su tipo de documento</label>
-            <div class="selecionar">
-                <select class="form-select">
-                    <option selected>Opciones</option>
-                    <option value="1">Cedula de ciudadania</option>
-                    <option value="2">Cedula de extrangeria</option>
-                </select>
             </div>
         </div>
+
+        <div class="row align-items-start">
+            <div class="col">
+                <label for="select">Seleccione su tipo de documento</label>
+                <div class="selecionar">
+                    <select class="form-select">
+                        <option selected>Opciones</option>
+                        <option value="1">Cedula de ciudadania</option>
+                        <option value="2">Cedula de extrangeria</option>
+                    </select>
+                </div>
+            </div>
+
 
         <div class="col">
             <label for="text">Documento</label>
             <div class="usuario">
                 <i class="fa-solid fa-address-card"></i>
                 <input type="text" class="input-pass" placeholder="Documento">
+
             </div>
         </div>
-    </div>
+
 
     <div class="row align-items-center">
         <div class="col">
@@ -67,30 +73,32 @@
             <div class="usuario">
                 <i class="fa-solid fa-envelope"></i>
                 <input type="text" class="input-usuario" placeholder="Email">
+
             </div>
-        </div>
+
 
         <div class="col">
             <label for="number">Celular</label>
             <div class="usuario">
                 <i class="fa-solid fa-phone"></i>
                 <input type="number" class="input-usuario" placeholder="Celular">
+
             </div>
-        </div>
 
-    </div>
-
-
-    <div class="row align-items-end">
-        <div class="col">
-            <label for="date">Fecha de nacimiento:</label>
-            <div class="fecha">
-                <input type="date" class="form-control" placeholder="Fecha" aria-label="Fecha">
-            </div>
         </div>
 
 
+        <div class="row align-items-end">
+            <div class="col">
+                <label for="date">Fecha de nacimiento:</label>
+                <div class="fecha">
+                    <input type="date" class="form-control" placeholder="Fecha" aria-label="Fecha">
+                </div>
+            </div>
 
+
+
+        </div>
+        <button class="btn-guardar" (click) = "guardarUsuario()" >Gestionar
+            Roles</button>
     </div>
-    <button class="btn-guardar" [routerLink]="'/dashboard-administracion/rolesUsuariosGuardados'">Gestionar Roles</button>
-</div>
