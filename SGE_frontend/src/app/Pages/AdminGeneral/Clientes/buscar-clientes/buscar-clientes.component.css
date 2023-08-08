@@ -69,9 +69,7 @@
     color: white;
 }
 
-.table-container {
-    overflow-x: auto; /* Enable horizontal scrolling */
-}
+
 
 .btn-guardar{
     display: block;
