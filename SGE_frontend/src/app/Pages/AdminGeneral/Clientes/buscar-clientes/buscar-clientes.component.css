@@ -69,6 +69,10 @@
     color: white;
 }
 
+.table-container {
+    overflow: auto; /* Aplica desbordamiento vertical y horizontal */
+}
+
 .btn-guardar{
     display: block;
     object-fit: cover;

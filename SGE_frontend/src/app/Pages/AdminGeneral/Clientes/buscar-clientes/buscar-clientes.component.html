@@ -33,33 +33,150 @@
         </div>
     </div>
 
+    <!-- <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="card-container">
+                    <div class="row">
+                        <div class="col-md-4 mb-4" *ngFor="let c of cliente; let i = index">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ c.nombres }} {{ c.apellidos }}</h5>
+                                    <p class="card-text"><strong>Tipo Documento:</strong> {{ c.tipoDocumento }}</p>
+                                    <p class="card-text"><strong>Número Documento:</strong> {{ c.numeroDocumento }}</p>
+                                    <p class="card-text"><strong>Fecha Nacimiento:</strong> {{ c.fechaNacimiento | date }}</p>
+                                    <p class="card-text"><strong>Lugar De Nacimiento:</strong> {{ c.lugarNacimiento }}</p><p class="card-text"><strong>Fecha Exp Doc:</strong> {{ c.fechaExpedicionDocumento }}</p>
+                                    <p class="card-text"><strong>Lugar De Exp:</strong> {{ c.lugarExpedicionDocumento }}</p>
+                                    <p class="card-text"><strong>Teléfono:</strong> {{ c.telefonos[0].indicativo + ' ' + c.telefonos[0].numero }}</p>
+                                    <p class="card-text"><strong>Direccion:</strong> {{ c.direcciones[0].direccion + ' ' + c.direcciones[0].pais + ', ' + c.direcciones[0].departamento + '-' + c.direcciones[0].ciudad }}</p>
+                                    <p class="card-text"><strong>Correo:</strong> {{ c.correosElectronicos[0].email }}</p>
+
+                                    <div class="accordion" [attr.id]="'accordionExample' + i">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapseThree' + i" aria-expanded="false" [attr.aria-controls]="'collapseThree' + i">
+                                                    Ver Todos Los Datos
+                                                </button>
+                                            </h2>
+                                            <div [attr.id]="'collapseThree' + i" class="accordion-collapse collapse" [attr.data-bs-parent]="'#accordionExample' + i">
+                                                <div class="accordion-body">
+                                                    <h6>Teléfonos:</h6>
+                                                <ul>
+                                                    <li *ngFor="let telefono of c.telefonos">{{ telefono.indicativo }} {{ telefono.numero }}</li>
+                                                </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
     <div class="row mt-5">
         <div class="col-md-10 offset-md-1">
-            <table class="table">
-                <thead class="table table-dark">
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Tipo Doc</th>
-                        <th># Doc</th>
-                        <th>Direccion</th>
-                        <th>Teléfono</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>Alejandro</th>
-                        <th>Franco</th>
-                        <th>C.C</th>
-                        <th>1002345684</th>
-                        <th>Cra 56 #34-51</th>
-                        <th>302361245</th>
-                        <td><button class="btn btn-success btn-sm"><i class="fa-solid fa-pen-to-square"></i></button></td>
-                    </tr>
-                </tbody>
+            <div class="table-container">
+                <table class="table">
+                    <thead class="table table-dark">
+                        <tr class="align-middle">
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Tipo Doc</th>
+                            <th># Doc</th>
+                            <!-- <th>Fecha Nacimiento</th>
+                            <th>Lugar Nacimiento</th>
+                            <th>Fecha Expedicion Doc</th>
+                            <th>Lugar Expedicion Doc</th>
+                            <th>Teléfono</th>
+                            <th>Direccion</th>
+                            <th>Correo</th>
+                            <th>Tipo Cliente</th>
+                            <th>Referencias Comerciales</th>
+                            <th>Referencias Personales</th>
+                            <th>Referencias Familiares</th> -->
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let c of cliente; let i = index" class="align-middle">
+                            <th>{{ c.nombres }}</th>
+                            <th>{{ c.apellidos }}</th>
+                            <th>{{ c.tipoDocumento }}</th>
+                            <th>{{ c.numeroDocumento }}</th>
+                            <!-- <th>{{ c.fechaNacimiento }}</th>
+                            <th>{{ c.lugarNacimiento }}</th>
+                            <th>{{ c.fechaExpedicionDocumento }}</th>
+                            <th>{{ c.lugarExpedicionDocumento }}</th>
+                            <th>{{ c.telefonos[0].indicativo + ' ' + c.telefonos[0].numero  }}</th>
+                            <th>{{ c.direcciones[0].direccion + ' ' + c.direcciones[0].pais + ', ' + c.direcciones[0].departamento + '-' + c.direcciones[0].ciudad }}</th>
+                            <th>{{ c.correosElectronicos[0].email }}</th>
+                            <th>{{ c.tipoClientes[0].tipoClienteId }}</th>
+                            <th></th>
+                            <th></th>
+                            <th></th> -->
 
-            </table>
+                            <td>
+                                <button class="btn btn-success btn-sm me-3"><i
+                                        class="fa-solid fa-pen-to-square"></i></button>
+
+                                <button class="btn btn-info btn-sm"><i class="fa-regular fa-eye" data-bs-toggle="modal"
+                                        [attr.data-bs-target]="'#verDetallesModal' + i"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+            <br>
+
         </div>
     </div>
-</div>
+
+    <!-- Modales para ver detalles -->
+    <div class="modal fade" *ngFor="let c of cliente; let i = index" [id]="'verDetallesModal' + i" tabindex="-1"
+        aria-labelledby="verDetallesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verDetallesModalLabel">Detalles del Cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="card-text"><strong>Fecha Nacimiento:</strong> {{ c.fechaNacimiento | date }}</p>
+                    <p class="card-text"><strong>Lugar De Nacimiento:</strong> {{ c.lugarNacimiento }}</p>
+                    <p class="card-text"><strong>Fecha Exp Doc:</strong> {{ c.fechaExpedicionDocumento }}</p>
+                    <p class="card-text"><strong>Lugar De Exp:</strong> {{ c.lugarExpedicionDocumento }}</p>
+                    <h6 class="fw-bold">Teléfonos:</h6>
+                    <ul>
+                        <p *ngFor="let telefono of c.telefonos">{{ telefono.indicativo }} {{ telefono.numero }}</p>
+                    </ul>
+                    <h6 class="fw-bold">Direcciones:</h6>
+                    <ul>
+                        <p *ngFor="let direccion of c.direcciones">{{ direccion.direccion + ' ' + direccion.pais + ', ' + direccion.departamento + ' - ' + direccion.ciudad }}</p>
+                    </ul>
+                    <h6 class="fw-bold">Correos:</h6>
+                    <ul>
+                        <p *ngFor="let correo of c.correosElectronicos">{{ correo.email }}</p>
+                    </ul>
+                    <h6 class="fw-bold">Referencias Comerciales:</h6>
+                    <ul>
+                        <p *ngFor="let r of c.referenciasComerciales">{{ r.nombreCompleto }} <br> {{ r.telefono }}</p>
+                    </ul>
+
+                    <h6 class="fw-bold">Referencias Personales:</h6>
+                    <ul>
+                        <p *ngFor="let r of c.referenciasPersonales">{{ r.nombreCompleto }} <br> {{ r.telefono }}</p>
+                    </ul>
+
+                    <h6 class="fw-bold">Referencias Familiares:</h6>
+                    <ul>
+                        <p *ngFor="let r of c.referenciasFamiliares">{{ r.nombreCompleto }} <br> {{ r.telefono }}</p>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
