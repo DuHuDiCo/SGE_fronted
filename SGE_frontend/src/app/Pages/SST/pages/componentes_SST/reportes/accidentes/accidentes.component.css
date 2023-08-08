@@ -89,6 +89,7 @@
 }
 input{
     border: none;
+    text-align: center;
     outline: none;
     background: none;
     font-size: 15px;
@@ -129,5 +130,12 @@ button:hover{
 @media (min-width: 1200px){
 .container, .container-lg, .container-md, .container-sm, .container-xl {
     max-width: 1000px;
+    }
+}
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 400px;
     }
 }

@@ -122,3 +122,10 @@ background-color: #212121;
     background: #212121;
     color: #fff;
 }
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 400px;
+    }
+}

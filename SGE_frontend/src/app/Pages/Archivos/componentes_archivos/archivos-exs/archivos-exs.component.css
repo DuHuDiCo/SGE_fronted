@@ -71,6 +71,14 @@
     }
 }
 
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 400px;
+    }
+}
+
+
 
 
 
@@ -83,7 +91,7 @@
 
 
 /* Estilos para darle un espaciado al contenedor y para darle estilo a las felchas de siguiente y atras  */
-.min-screen .screen-box{
+/* .min-screen .screen-box{
     display: none;
 }
 
@@ -140,7 +148,7 @@
     height: 4.5rem;
     width: 4.5rem;
     /* color: #ecb709; */
-    color: #D60303;
+    /* color: #D60303;
     border-radius: 50%;
     line-height: 4rem;
     font-size: 3rem;
@@ -167,6 +175,6 @@
         left: 20px;
         padding: 2px 20px;
     }
-}
+} */ 
 
 

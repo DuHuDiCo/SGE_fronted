@@ -13,3 +13,10 @@
 table{
     border-radius: 5px;
 }
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 400px;
+    }
+}

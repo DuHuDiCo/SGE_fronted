@@ -132,3 +132,10 @@ svg{
     max-width: 1000px;
     }
 }
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 400px;
+    }
+}
