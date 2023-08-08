@@ -109,7 +109,20 @@ svg{
     background: #D60303 ;
 }
 
-
+.referencias{
+    object-fit: cover;
+    margin: 15px auto;
+    margin-top: 25px;
+    color: #fff;
+    background: #9C1717;
+    cursor: pointer;
+    width: 20%;
+    border: #cbced1;
+    border-radius: 18px;
+    height: 50px;
+    margin-bottom: 30px;
+    box-shadow: 2px 2px 2px #707274, -2px 0px 2px 0px #707274;
+}
 
 @media (min-width: 1200px){
 .container, .container-lg, .container-md, .container-sm, .container-xl {

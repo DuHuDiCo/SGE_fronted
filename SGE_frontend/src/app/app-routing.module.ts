@@ -65,6 +65,7 @@ import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/da
 
 
 
+
 const routes: Routes = [
   {path: '', redirectTo:'login' , pathMatch:'full' },
   {
