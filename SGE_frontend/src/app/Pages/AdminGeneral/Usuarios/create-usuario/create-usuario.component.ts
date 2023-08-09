@@ -11,10 +11,12 @@ import Swal from 'sweetalert2';
 })
 export class CreateUsuarioComponent implements OnInit {
 
-  constructor(private userAgService: UsuarioAgService, private usuarioagService:UsuarioAgService) { }
+  constructor(private usuarioagService:UsuarioAgService) { }
 
   rolePermissionsVisibility: { [role: string]: boolean } = {};
   selectedRolePermissions: { [role: string]: string[] } = {};
+
+  rol: boolean = false;
 
 
   selectedRole: string | null = null;
@@ -40,7 +42,7 @@ export class CreateUsuarioComponent implements OnInit {
   }
 
   ngOnInit(): void { 
-    this.userAgService.listarRoles().subscribe(
+    this.usuarioagService.listarRoles().subscribe(
       (data:any) => {
         this.IterarRol = data;
         console.log(this.IterarRol)
@@ -133,10 +135,54 @@ export class CreateUsuarioComponent implements OnInit {
     this.selectedRolePermissions[role] = selectedPermissions;
   }
 
-  
-  
-  
+  crearUsuario(){
 
-  rol: boolean = false;
+   
+    
+
+    // if(this.usuario.roles.length === 0 || this.usuario.roles === null){
+    //   Swal.fire('Error', 'Debe añadir Minimamente un rol ', 'error');
+    // }
+
+    // if (!this.usuario.roles[0] || this.usuario.roles[0].rol == '' || this.usuario.roles[0].rol == null){
+    //   Swal.fire('Error', 'Debe añadir Minimamente un rol ', 'error');
+    //   return;
+    // }
+    
+    // if (!this.usuario.roles[0].permisos[0] || this.usuario.roles[0].permisos[0] == ''  || this.usuario.roles[0].permisos[0] == null){
+    //   Swal.fire('Error', 'Debe añadir Minimamente un Permiso ', 'error');
+    //   return;
+    // }
+
+    var rolesKey = Object.keys(this.selectedRolePermissions)
+
+   
+    for (const rol of rolesKey) {
+      var r:RolesUser = {
+        "rol": rol,
+        "permisos": []
+      }
+      this.usuario.roles.push(r);
+    }
+    
+   console.log(this.rolePermissionsVisibility);
+   console.log(this.selectedRolePermissions);
+   
+    console.log(this.usuario);
+    
+
+
+    // this.usuarioagService.crearUsuario(this.usuario).subscribe(
+    //   (data) => {
+    //     console.log(data);
+    //     Swal.fire('Usuario Creado','El usuario ha sido Creado Con Exito', 'success')
+    //     this.rol = false;
+    //   },
+    //   (error) => {
+    //     console.log(error)
+    //     Swal.fire('Error al Crear El usuario','Error al Crear El usuario', 'error')
+    //   }
+    // )
+  }
 
 }
