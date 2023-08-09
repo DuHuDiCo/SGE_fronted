@@ -12,6 +12,9 @@ import Swal from 'sweetalert2';
 export class BuscarClientesComponent implements OnInit {
 
   cliente: Cliente[] = []
+  
+
+  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
 
   cedula: string = ''
 
@@ -70,13 +73,13 @@ export class BuscarClientesComponent implements OnInit {
         this.clienteService.eliminarCliente(idCliente, username).subscribe(
           (data:any) => {
             this.cliente = this.cliente.filter((cliente:Cliente) => cliente.idCliente != idCliente);
-            Swal.fire('Examen Eliminado', 'El examen ha sido Eliminado Exitosamente','success')
+            Swal.fire('Cliente Eliminado', 'El Cliente ha sido Eliminado Exitosamente','success')
           },
           (error) => {
             console.log(error
               );
             
-            Swal.fire('Error al Eliminar el examen','error')
+            Swal.fire('Error al Eliminar el Cliente','error')
           }
         )
       }
