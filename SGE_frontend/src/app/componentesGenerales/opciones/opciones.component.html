@@ -16,7 +16,7 @@
 
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-2 col-sm-6">
+            <div class="col-md-2 col-sm-6" *appRolesPerfiles="rolesArray[6].toUpperCase()">
                 <div class="caja">
                     <ul class="options">
                         <li [routerLink]="'/AdminGeneral'" class="option">
@@ -28,10 +28,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-2 col-sm-6">
+            <div class="col-md-2 col-sm-6" *appRolesPerfiles="rolesArray[0]">
                 <div class="caja">
                     <ul class="options">
-                        <li class="option" *appRolesPerfiles="rolesArray[0]">
+                        <li class="option">
                             <a class="session" [routerLink]="'/cartera'">
                                 <i class="fas fa-university"></i>
                                 <span>Cartera</span>
@@ -40,10 +40,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-2 col-sm-6">
+            <div class="col-md-2 col-sm-6" *appRolesPerfiles="rolesArray[1]">
                 <div class="caja">
                     <ul class="options">
-                        <li class="option" *appRolesPerfiles="rolesArray[1]">
+                        <li class="option">
                             <a class="session" [routerLink]="'/caja'">
                                 <i class="fas fa-laptop"></i>
                                 <span>Caja</span>
@@ -52,10 +52,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-2 col-sm-6">
+            <div class="col-md-2 col-sm-6" *appRolesPerfiles="'Archivos'">
                 <div class="caja">
                     <ul class="options">
-                        <li class="option" *appRolesPerfiles="'Archivos'">
+                        <li class="option">
                             <a class="session" [routerLink]="'/Archivos'">
                                 <i class="fas fa-archive"></i>
                                 <span>Archivos</span>
@@ -64,10 +64,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-2 col-sm-6">
+            <div class="col-md-2 col-sm-6" *appRolesPerfiles="'SST'">
                 <div class="caja">
                     <ul class="options">
-                        <li class="option" *appRolesPerfiles="'SST'">
+                        <li class="option">
                             <a class="session" [routerLink]="'/Creditos'">
                                 <i class="fas fa-credit-card"></i>
                                 <span>Creditos</span>
@@ -76,10 +76,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-2 col-sm-6">
+            <div class="col-md-2 col-sm-6" *appRolesPerfiles="rolesArray[3]">
                 <div class="caja">
                     <ul class="options">
-                        <li class="option" *appRolesPerfiles="rolesArray[3]">
+                        <li class="option">
                             <a class="session" [routerLink]="'/Ventas'">
                                 <i class="fas fa-money-check-alt"></i>
                                 <span>Ventas</span>
@@ -88,10 +88,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-2 col-sm-6">
+            <div class="col-md-2 col-sm-6" *appRolesPerfiles="rolesArray[4]">
                 <div class="caja">
                     <ul class="options">
-                        <li class="option" *appRolesPerfiles="rolesArray[4]">
+                        <li class="option">
                             <a class="session" [routerLink]="'/servicios'">
                                 <i class="fas fa-phone"></i>
                                 <span>Servicios</span>
@@ -100,10 +100,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-2 col-sm-6">
+            <div class="col-md-2 col-sm-6" *appRolesPerfiles="rolesArray[5]">
                 <div class="caja">
                     <ul class="options">
-                        <li class="option" *appRolesPerfiles="rolesArray[5]">
+                        <li class="option">
                             <a class="session" [routerLink]="'/consignaciones'">
                                 <i class="fas fa-hand-holding-usd"></i>
                                 <span>Consignaciones</span>
@@ -112,10 +112,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-2 col-sm-6">
+            <div class="col-md-2 col-sm-6" *appRolesPerfiles="rolesArray[6]">
                 <div class="caja">
                     <ul class="options">
-                        <li class="option" *appRolesPerfiles="rolesArray[6]">
+                        <li class="option">
                             <a class="session" [routerLink]="'/administracion'">
                                 <i class="fas fa-user-cog"></i>
                                 <span>Administración</span>
@@ -124,10 +124,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-2 col-sm-6">
+            <div class="col-md-2 col-sm-6" *appRolesPerfiles="rolesArray[7]">
                 <div class="caja">
                     <ul class="options">
-                        <li class="option" *appRolesPerfiles="rolesArray[7]">
+                        <li class="option">
                             <a class="session" [routerLink]="'/sst'">
                                 <i class="fas fa-heartbeat"></i>
                                 <span>SST</span>
