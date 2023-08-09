@@ -14,4 +14,8 @@ export class UsuarioAgService {
     return this.http.post(`${baseUrl}/usuarios/save`, usuario)
   }
 
+  public listarRoles(){
+    return this.http.get(`${baseUrl}/roles/getAllRoles`)
+  }
+
 }
