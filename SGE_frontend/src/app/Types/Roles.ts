@@ -14,6 +14,17 @@ export type RolSystem ={
     rol:string
 }
 
+export type Roles = {
+    idRole:number,
+    rol:string,
+    permissions: [
+        {
+            idPermission: number,
+            permission: string
+        }
+    ]
+}
+
 export type RolesUser = {
     rol: string,
     permisos : string[]
