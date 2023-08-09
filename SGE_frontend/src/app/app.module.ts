@@ -7,7 +7,7 @@ import { OpcionesComponent } from './componentesGenerales/opciones/opciones.comp
 import { SidebarComponent } from './componentesGenerales/sidebar/sidebar.component';
 import { DashboardComponent } from './Pages/Cartera/pages/dashboard/dashboard.component';
 import { NavbarComponent } from './componentesGenerales/navbar/navbar.component';
-import { FormsModule } from '@angular/forms';
+
 import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/perfil-usuario.component';
 import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/gestion/gestion.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -85,6 +85,7 @@ import { SidebarPerfilComponent } from './Pages/Perfil/componentes/sidebar-perfi
 
 import { ConfiguracionPerfilComponent } from './Pages/Perfil/configuracion-perfil/configuracion-perfil.component';
 import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/datos-perfil.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -179,9 +180,10 @@ import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/da
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
+    
     HttpClientModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    FormsModule
 
   ],
 

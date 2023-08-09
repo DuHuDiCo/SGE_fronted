@@ -6,191 +6,140 @@
     <div class="subtitulo">Ingresar los datos del Nuevo Cliente</div>
 
     <div class="row align-items-start">
-        <div class="col">
-            <form (ngSubmit)="guardarClientes()">
+        <form (ngSubmit)="guardarClientes()">
+            <div class="col">
                 <label for="text">Nombres</label>
                 <div class="usuario">
                     <i class="fa-solid fa-signature"></i>
-                    <input type="text" class="input-usuario" placeholder="Nombres" required matInput  >
+                    <input type="text" class="input-usuario" placeholder="Nombres" required>
                 </div>
-            </form>
-        </div>
+            </div>
 
-        <div class="col">
-            <form (ngSubmit)="guardarClientes()">
+
+            <div class="col">
                 <label for="text">Apellidos</label>
                 <div class="usuario">
                     <i class="fa-solid fa-signature"></i>
-                    <input type="text" class="input-usuario" placeholder="Apellidos">
+                    <input type="text" class="input-usuario" placeholder="Apellidos" required>
                 </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="row align-items-start">
-        <div class="col-md-6 col-12">
-            <form (ngSubmit)="guardarClientes()">
-                <label for="select">Seleccione su Tipo de Documento</label>
-                <div class="selecionar">
-                    <select class="form-select">
-                        <option selected>Opciones</option>
-                        <option value="1">Cedula de Ciudadania</option>
-                        <option value="2">Cedula de Extranjeria</option>
-                    </select>
-                </div>
-
-                <div class="col">
-                    <label for="text">Fecha de Nacimiento</label>
-                    <div class="usuario">
-                        <i class="fa-regular fa-calendar-days"></i>
-                        <input type="text" class="input-pass" placeholder="Fecha de Nacimiento">
-                    </div>
-
-                    <label for="text">Lugar de Nacimiento</label>
-                    <div class="usuario">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <input type="text" class="input-pass" placeholder="Lugar de Nacimiento">
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="col-md-6 col-12">
-            <form (ngSubmit)="guardarClientes()">
-                <label for="text">N° Documento</label>
-                <div class="usuario">
-                    <i class="fa-solid fa-address-card"></i>
-                    <input type="text" class="input-pass" placeholder="Documento">
-                </div>
-
-
-                <label for="text">Fecha de Expedicion del Documento</label>
-                <div class="usuario">
-                    <i class="fa-regular fa-calendar-days"></i>
-                    <input type="text" class="input-pass" placeholder="Fecha de Expedicion">
-                </div>
-
-                <label for="text">Lugar de Expedicion del Documento</label>
-                <div class="usuario">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <input type="text" class="input-pass" placeholder="Lugar de Expedicion">
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="row align-items-start">
-        <div class="col">
-            <form (ngSubmit)="guardarClientes()">
-                <label for="select">Seleccione el Tipo de Cliente</label>
-                <div class="selecionar">
-                    <select class="form-select">
-                        <option selected>Opciones</option>
-                        <option value="1">Titular</option>
-                        <option value="2">Codeudor</option>
-                    </select>
-                </div>
-            </form>
-
-            <div class="row align-items-center">
-                <div class="col-md-6 col-12">
-                    <form (ngSubmit)="guardarClientes()">
-                        <label for="email">Direccion</label>
-                        <div class="usuario">
-                            <i class="fa-solid fa-map-location-dot"></i>
-                            <input type="text" class="input-usuario" placeholder="Direccion">
-                        </div>
-                    </form>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <form (ngSubmit)="guardarClientes()">
-                        <label for="email">Cuidad</label>
-                        <div class="usuario">
-                            <i class="fa-solid fa-building"></i>
-                            <input type="text" class="input-usuario" placeholder="Cuidad">
-                        </div>
-                    </form>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <form (ngSubmit)="guardarClientes()">
-                        <label for="email">Departamento</label>
-                        <div class="usuario">
-                            <i class="fa-solid fa-city"></i>
-                            <input type="text" class="input-usuario" placeholder="Departamento">
-                        </div>
-                    </form>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <form (ngSubmit)="guardarClientes()">
-                        <label for="email">Pais</label>
-                        <div class="usuario">
-                            <i class="fa-solid fa-earth-americas"></i>
-                            <input type="text" class="input-usuario" placeholder="Pais">
-                        </div>
-                    </form>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <form (ngSubmit)="guardarClientes()">
-                        <label for="number">Telefono</label>
-                        <div class="usuario">
-                            <i class="fa-solid fa-square-phone"></i>
-                            <input type="number" class="input-usuario" placeholder="Telefono Celular">
-                        </div>
-                    </form>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <form (ngSubmit)="guardarClientes()">
-                        <label for="email">Correo</label>
-                        <div class="usuario">
-                            <i class="fa-solid fa-envelope"></i>
-                            <input type="email" class="input-usuario" placeholder="Email">
-                        </div>
-                    </form>
-                </div>
-
-                <div class="usuario" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">REFERENCIAS PERSONALES</h5>
-                        <div class="container2">
-                            <input type="text" class="input-usuario" placeholder="Nombre Completo">
-                        </div>
-                        <div class="container2">
-                            <input type="text" class="input-usuario" placeholder="Telefono">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="usuario" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">REFERENCIAS COMERCIALES</h5>
-                        <div class="container2">
-                            <input type="text" class="input-usuario" placeholder="Nombre Completo">
-                        </div>
-                        <div class="container2">
-                            <input type="text" class="input-usuario" placeholder="Telefono">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="usuario" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">REFERENCIAS FAMILIARES</h5>
-                        <div class="container2">
-                            <input type="text" class="input-usuario" placeholder="Nombre Completo">
-                        </div>
-                        <div class="container2">
-                            <input type="text" class="input-usuario" placeholder="Telefono">
-                        </div>
-                    </div>
-                </div>
-
-                <button class="btn-guardar">Guardar</button>
             </div>
 
-        </div>
+
+
+            <div class="row align-items-start">
+                <div class="col-md-6 col-12">
+                    <label for="select">Seleccione su Tipo de Documento</label>
+                    <input required>
+                    <div class="selecionar">
+                        <select class="form-select">
+                            <option selected>Opciones</option>
+                            <option value="1">Cedula de Ciudadania</option>
+                            <option value="2">Cedula de Extranjeria</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <label for="text">N° Documento</label>
+                        <div class="usuario">
+                            <i class="fa-solid fa-address-card"></i>
+                            <input type="text" class="input-pass" placeholder="Documento" required matInput>
+                        </div>
+
+                        <div class="col">
+                            <label for="text">Fecha de Nacimiento</label>
+                            <div class="usuario">
+                                <i class="fa-regular fa-calendar-days"></i>
+                                <input type="text" class="input-pass" placeholder="Fecha de Nacimiento" required
+                                    matInput>
+                            </div>
+
+                            <label for="text">Lugar de Nacimiento</label>
+                            <div class="usuario">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <input type="text" class="input-pass" placeholder="Lugar de Nacimiento" required
+                                    matInput>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label for="text">Fecha de Expedicion del Documento</label>
+                    <div class="usuario">
+                        <i class="fa-regular fa-calendar-days"></i>
+                        <input type="text" class="input-pass" placeholder="Fecha de Expedicion">
+                    </div>
+
+                    <label for="text">Lugar de Expedicion del Documento</label>
+                    <div class="usuario">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <input type="text" class="input-pass" placeholder="Lugar de Expedicion">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-start">
+                <div class="col">
+                    <label for="select">Seleccione el Tipo de Cliente</label>
+                    <div class="selecionar">
+                        <select class="form-select">
+                            <option selected>Opciones</option>
+                            <option value="1">Titular</option>
+                            <option value="2">Codeudor</option>
+                        </select>
+                    </div>
+
+                    <div class="row align-items-center">
+                        <div class="col-md-6 col-12">
+                            <label for="email">Direccion</label>
+                            <div class="usuario">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                                <input type="text" class="input-usuario" placeholder="Direccion">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                            <label for="email">Cuidad</label>
+                            <div class="usuario">
+                                <i class="fa-solid fa-building"></i>
+                                <input type="text" class="input-usuario" placeholder="Cuidad">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                            <label for="email">Departamento</label>
+                            <div class="usuario">
+                                <i class="fa-solid fa-city"></i>
+                                <input type="text" class="input-usuario" placeholder="Departamento">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                            <label for="email">Pais</label>
+                            <div class="usuario">
+                                <i class="fa-solid fa-earth-americas"></i>
+                                <input type="text" class="input-usuario" placeholder="Pais">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                            <label for="number">Telefono</label>
+                            <div class="usuario">
+                                <i class="fa-solid fa-square-phone"></i>
+                                <input type="number" class="input-usuario" placeholder="Telefono Celular">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                            <label for="email">Correo</label>
+                            <div class="usuario">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="email" class="input-usuario" placeholder="Email">
+                            </div>
+                        </div>
+
+                        <button class="btn-guardar">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
+</div>
