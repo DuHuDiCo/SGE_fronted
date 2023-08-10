@@ -27,10 +27,10 @@ export class RolesPerfilesDirective implements OnInit {
 
     
 
-    if (this.rolesString[0] == ROLES.SuperAdministration || this.rolesString[0] == ROLES.Administration ) {
+    if (this.rolesString[0] == ROLES.SuperAdministration.toUpperCase() || this.rolesString[0] == ROLES.Administration ) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
-      if (this.verificarRol(this.rol)) {
+      if (this.verificarRol(this.rol.toUpperCase())) {
         this.viewContainer.createEmbeddedView(this.templateRef);
       }
       

@@ -9,34 +9,31 @@
         <div class="col-md-6">
             <label for="text">Username</label>
             <div class="usuario">
-
                 <i class="fa-solid fa-user-secret"></i>
-                <input type="text" class="input-usuario input1" placeholder="Username">
+                <input [(ngModel)]="usuario.username" type="text" class="input-usuario input1" placeholder="Username">
             </div>
             <label for="text">Contraseña</label>
             <div class="usuario">
                 <i class="fa-solid fa-key"></i>
 
-                <input [(ngModel)] = "usuario.username" name="username" type="text" class="input-usuario input1" placeholder="Username">
+                <input [(ngModel)]="usuario.password" name="username" type="password" class="input-usuario input1"
+                    placeholder="Contraseña">
             </div>
         </div>
-
-        
-      
-
-
         <div class="col-md-6">
             <label for="text">Nombre</label>
             <div class="usuario">
                 <i class="fa-solid fa-signature"></i>
-                <input type="text" class="input-usuario input1" placeholder="Nombre">
+                <input [(ngModel)]="usuario.nombres" name="nombres" type="text" class="input-usuario input1"
+                    placeholder="Nombre">
 
             </div>
-                <label for="text">Apellido</label>
-                <div class="usuario">
-                    <i class="fa-solid fa-signature"></i>
-                    <input type="text" class="input-usuario input1" placeholder="Apellido">
-                </div>
+            <label for="text">Apellido</label>
+            <div class="usuario">
+                <i class="fa-solid fa-signature"></i>
+                <input [(ngModel)]="usuario.apellidos" name="apellidos" type="text" class="input-usuario input1"
+                    placeholder="Apellido">
+            </div>
         </div>
 
 
@@ -47,7 +44,7 @@
         <div class="col-md-6 col-12">
             <label for="select">Seleccione su Tipo de Documento</label>
             <div class="selecionar">
-                <select [(ngModel)] = "usuario.tipo_documento" name="tipo_documento" class="form-select">
+                <select [(ngModel)]="usuario.tipo_documento" name="tipo_documento" class="form-select">
                     <option selected>Opciones</option>
                     <option value="1">Cedula de Ciudadania</option>
                     <option value="2">Cedula de Extranjeria</option>
@@ -57,10 +54,9 @@
         <div class="col-md-6 col-12">
             <label for="text">N° Documento</label>
             <div class="usuario">
-
                 <i class="fa-solid fa-address-card"></i>
-                <input type="text" class="input-pass input1" placeholder="Documento">
-
+                <input [(ngModel)]="usuario.numero_documento" name="numero_documento" type="number"
+                    class="input-pass input1" placeholder="Documento">
             </div>
         </div>
 
@@ -73,7 +69,8 @@
             <label for="email">Correo</label>
             <div class="usuario">
                 <i class="fa-solid fa-envelope"></i>
-                <input type="text" class="input-usuario input1" placeholder="Correo">
+                <input [(ngModel)]="usuario.email" name="email" type="email" class="input-usuario input1"
+                    placeholder="Correo">
 
             </div>
         </div>
@@ -82,7 +79,8 @@
             <div class="usuario">
 
                 <i class="fa-solid fa-phone"></i>
-                <input type="number" class="input-usuario input1" placeholder="Telefono Celular">
+                <input [(ngModel)]="usuario.celular" name="celular" type="number" class="input-usuario input1"
+                    placeholder="Telefono Celular">
 
             </div>
         </div>
@@ -93,12 +91,13 @@
         <div class="col">
             <label for="email">Fecha</label>
             <div class="usuario">
-                <input [(ngModel)] = "usuario.fecha_nacimiento" name="fecha_nacimiento" type="date" class="input-usuario input1">
+                <input [(ngModel)]="usuario.fecha_nacimiento" name="fecha_nacimiento" type="date"
+                    class="input-usuario input1">
             </div>
         </div>
     </div>
 
-    <button (click) = "guardarUsuario()" class="btn-guardar">Gestionar Roles</button>
+    <button (click)="guardarUsuario()" class="btn-guardar">Gestionar Roles</button>
 </div>
 
 
@@ -107,60 +106,45 @@
         <h1 class="titulo">Permisos Generales</h1>
     </header>
 
- 
+
     <table class="table">
-        <tbody>
+        <tbody *ngFor="let r of IterarRol">
             <tr>
-                <th scope="text">Cartera</th>
+                <th scope="text">{{ r.rol }}</th>
                 <td>
                     <div class="form-check form-switch">
                         <label class="form-check-label" for="flexSwitchCheckDefault">Activar Rol</label>
-                        <input  class="form-check-input input" type="checkbox" name="cartera" [checked]="false"
-                            [(ngModel)]="validar.cartera">
+                        <input class="form-check-input input" type="checkbox" (click)="activarRol(r.rol)">
                     </div>
                 </td>
-                <input  name="p2" [(ngModel)]="select.cartera" (change)="validarCheck('cartera')" [checked]="false"   class="form-check-input input" name="seleccionarTodos" id="option-all" type="checkbox" >
+                <input [checked]="selectedRolePermissions[r.rol]?.length === r.permissions.length"
+                    (click)="seleccionarTodosPermisos(r.rol)" class="form-check-input input" name="seleccionarTodos"
+                    id="option-all" type="checkbox">
                 <label class="form-check-label" for="option-all">Seleccionar Todos los Permisos</label>
             </tr>
 
-            <tr *ngIf="validar.cartera">
-                <div  class="row">
-                    <div class="col-md-3">
-                        <div class="form-check">
-                            <input  class="form-check-input" name="p1"  [(ngModel)]="objectGeneral.cartera.p1" [checked]="false" type="checkbox" value="" id="option-a">
-                            <label class="form-check-label"  for="option-a">Default</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input"  name="p2" [(ngModel)]="objectGeneral.cartera.p2" [checked]="false" type="checkbox" value="" id="option-b">
-                            <label class="form-check-label" for="option-b">Default</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input"  name="p3" [(ngModel)]="objectGeneral.cartera.p3" [checked]="false" type="checkbox" value="" id="option-c">
-                            <label class="form-check-label" for="option-c">Default</label>
-                        </div>
+            <tr *ngIf="rolePermissionsVisibility[r.rol]">
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-check" *ngFor="let pr of r.permissions">
+                      <input
+                        [checked]="selectedRolePermissions[r.rol]?.includes(pr.permission)"
+                        (click)="handlePermissionSelection(r.rol, pr.permission)"
+                        class="form-check-input input"
+                        type="checkbox"
+                        [id]="'permiso-' + r.rol + '-' + pr.permission"
+                      >
+                      <label [for]="'permiso-' + r.rol + '-' + pr.permission" class="form-check-label">{{ pr.permission | lowercase }}</label>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-check">
-                            <input class="form-check-input"  name="p4" [(ngModel)]="objectGeneral.cartera.p4" [checked]="false" type="checkbox" value="" id="option-d">
-                            <label class="form-check-label" for="option-d">Default</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input"  name="p5" [(ngModel)]="objectGeneral.cartera.p5" [checked]="false" type="checkbox" value="" id="option-e">
-                            <label class="form-check-label" for="option-e">Default</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input"  name="p6" [(ngModel)]="objectGeneral.cartera.p6" [checked]="false" type="checkbox" value="" id="option-f">
-                            <label class="form-check-label" for="option-f">Default</label>
-                        </div>
-                    </div>
+                  </div>
                 </div>
-            </tr>
+              </tr>
+              
 
 
-            
+
 
         </tbody>
     </table>
     <button class="btn-guardar">Guardar</button>
 </div>
-
