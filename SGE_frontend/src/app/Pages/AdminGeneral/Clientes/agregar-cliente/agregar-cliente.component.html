@@ -6,12 +6,12 @@
     <div class="subtitulo">Ingresar los datos del Nuevo Cliente</div>
 
     <div class="row align-items-start">
-        <form (ngSubmit)="guardarClientes()">
+        <form >
             <div class="col">
                 <label for="text">Nombres</label>
                 <div class="usuario">
                     <i class="fa-solid fa-signature"></i>
-                    <input type="text" class="input-usuario" placeholder="Nombres" required>
+                    <input type="text" class="input-usuario" placeholder="Nombres" [(ngModel)]="cliente.nombres" >
                 </div>
             </div>
 

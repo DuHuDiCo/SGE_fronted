@@ -86,6 +86,7 @@ import { SidebarPerfilComponent } from './Pages/Perfil/componentes/sidebar-perfi
 import { ConfiguracionPerfilComponent } from './Pages/Perfil/configuracion-perfil/configuracion-perfil.component';
 import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/datos-perfil.component';
 import { FormsModule } from '@angular/forms';
+import { AgregarClienteModule } from './moduls/agregar-cliente/agregar-cliente.module';
 
 
 
@@ -179,11 +180,12 @@ import { FormsModule } from '@angular/forms';
 
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     
     HttpClientModule,
     NgxPaginationModule,
-    FormsModule
+    AgregarClienteModule
 
   ],
 
