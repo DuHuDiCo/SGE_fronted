@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AgregarUnClienteService } from 'src/app/Services/clientes/agregar-un-cliente.service';
 import { Cliente } from 'src/app/Types/ClienteDTO';
+
 import Swal from 'sweetalert2';
 
 @Component({

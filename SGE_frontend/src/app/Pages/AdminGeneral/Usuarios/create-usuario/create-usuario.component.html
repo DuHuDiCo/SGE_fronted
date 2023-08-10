@@ -117,7 +117,7 @@
                         <input class="form-check-input input" type="checkbox" (click)="activarRol(r.rol)">
                     </div>
                 </td>
-                <input [checked]="selectedRolePermissions[r.rol]?.length === r.permissions.length"
+                <input [checked]="selectedRolePermissions[r.rol].length === r.permissions.length"
                     (click)="seleccionarTodosPermisos(r.rol)" class="form-check-input input" name="seleccionarTodos"
                     id="option-all" type="checkbox">
                 <label class="form-check-label" for="option-all">Seleccionar Todos los Permisos</label>
@@ -128,7 +128,7 @@
                   <div class="col-md-3">
                     <div class="form-check" *ngFor="let pr of r.permissions">
                       <input
-                        [checked]="selectedRolePermissions[r.rol]?.includes(pr.permission)"
+                        [checked]="selectedRolePermissions[r.rol].includes(pr.permission)"
                         (click)="handlePermissionSelection(r.rol, pr.permission)"
                         class="form-check-input input"
                         type="checkbox"
