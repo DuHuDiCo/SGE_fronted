@@ -3,18 +3,54 @@
         <div class="col-md-6 offset-md-3">
             <h1 class="titulo">Agregar Varios Clientes</h1>
             <div class="row">
+                <label for="">Delimitante</label>
+                    <select [(ngModel)]="delimitante" name="delimitante" id="" class="form-select m-2">
+                        <option value="">Seleccionar</option>
+                        <option value=",">Coma( , )</option>
+                        <option value=";">Punto Y Coma( ; )</option>
+                        <option value="|">Barra( | )</option>
+                        <option value="    ">Tab</option>
+                        <option value=" ">Espacio</option>
+                    </select>
                 <div class="col">
                     <div class="input-group mb-3">
-                        <input type="file" class="form-control input-usuario" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                        <input (change)="obtenerArchivo($event)" type="file" class="form-control input-usuario" style="border: 1px solid black;">
                     </div>
                 </div>
             </div>
             
             <div class="row mt-3">
                 <div class="col">
-                    <button class="btn-guardar">Subir</button>
+                    <button (click)="subirArchivos()"  class="btn-guardar">Subir</button>
                 </div>
             </div>
         </div>
     </div>
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Errores en Validacion</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h4>El programa ha detectado los siguientes errores:</h4>
+
+          <div class="row">
+            <div class="col-md-12">
+                <p *ngFor="let e of excepciones">{{ e }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
