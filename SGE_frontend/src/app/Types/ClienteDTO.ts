@@ -27,6 +27,5 @@ export type Cliente = {
     email: string,
     
   },
-  tipoCliente: number,
   username: string,
 }

@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
   templateUrl: './agregar-cliente.component.html',
   styleUrls: ['./agregar-cliente.component.css']
 })
+
 export class AgregarClienteComponent implements OnInit {
 
   cliente: Cliente = {
@@ -35,7 +36,6 @@ export class AgregarClienteComponent implements OnInit {
     correoElectronico: {
       email: "",
     },
-    tipoCliente: 0,
     username: "",
 
   }
@@ -43,8 +43,10 @@ export class AgregarClienteComponent implements OnInit {
   router: any;
 
   constructor(private agregarCliente: AgregarUnClienteService) { }
+
+
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    
   }
 
   guardarClientes() {
@@ -59,8 +61,13 @@ export class AgregarClienteComponent implements OnInit {
       return
     }
 
+    if (this.cliente.username == ''|| this.cliente.username == null) {
+      Swal.fire('Error', 'Debe colocar el Usuario', 'error')
+      return
+    }
+
     if (this.cliente.tipoDocumento == '' || this.cliente.tipoDocumento == null) {
-      Swal.fire('Error', 'Debe colocar el Tipo de Documento', 'error')
+      Swal.fire('Error', 'Debe colocar el Tipo de Documento del Cliente', 'error')
       return
     }
 
@@ -94,6 +101,11 @@ export class AgregarClienteComponent implements OnInit {
       return
     }
 
+    if (this.cliente.telefono.indicativo == '' || this.cliente.telefono.indicativo == null) {
+      Swal.fire('Error', 'Digite el Indicativo del Telefono', 'error')
+      return
+    }
+
     if (this.cliente.direccion.direccion == '' || this.cliente.direccion.direccion == null || this.cliente.direccion.ciudad == null || this.cliente.direccion.departamento == null || this.cliente.direccion.pais == null) {
       Swal.fire('Error', 'Debe colocar la Ubicacion', 'error')
       return
@@ -101,11 +113,6 @@ export class AgregarClienteComponent implements OnInit {
 
     if (this.cliente.correoElectronico.email == '' || this.cliente.correoElectronico == null) {
       Swal.fire('Error', 'Debe colocar el Correo Electronico', 'error')
-      return
-    }
-
-    if (this.cliente.tipoCliente == 0 || this.cliente.tipoCliente == null) {
-      Swal.fire('Error', 'Debe colocar el Tipo de Cliente', 'error')
       return
     }
 
@@ -136,13 +143,11 @@ export class AgregarClienteComponent implements OnInit {
           correoElectronico: {
             email: "",
           },
-          tipoCliente: 0,
           username: "",
         }
-        this.router.navigate(['/AdminGeneral/Clientes/agregar-cliente'])
       },
       (error) => {
-        Swal.fire('Error', 'Error al guardar el cliente', 'error')
+        Swal.fire('ERROR', 'Error al Guardar el Cliente', 'error')
       }
     )
   }

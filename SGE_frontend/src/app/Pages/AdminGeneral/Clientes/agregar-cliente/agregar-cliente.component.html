@@ -6,140 +6,335 @@
     <div class="subtitulo">Ingresar los datos del Nuevo Cliente</div>
 
     <div class="row align-items-start">
-        <form >
-            <div class="col">
+        <div class="row">
+            <div class="col-md-6">
                 <label for="text">Nombres</label>
                 <div class="usuario">
                     <i class="fa-solid fa-signature"></i>
-                    <input type="text" class="input-usuario" placeholder="Nombres" [(ngModel)]="cliente.nombres" >
+                    <input type="text" class="input-usuario" placeholder="Nombres" [(ngModel)]="cliente.nombres">
                 </div>
             </div>
 
-
-            <div class="col">
+            <div class="col-md-6">
                 <label for="text">Apellidos</label>
                 <div class="usuario">
                     <i class="fa-solid fa-signature"></i>
-                    <input type="text" class="input-usuario" placeholder="Apellidos" required>
+                    <input type="text" class="input-usuario" placeholder="Apellidos" [(ngModel)]="cliente.apellidos">
                 </div>
             </div>
+        </div>
 
-
-
-            <div class="row align-items-start">
-                <div class="col-md-6 col-12">
-                    <label for="select">Seleccione su Tipo de Documento</label>
-                    <input required>
-                    <div class="selecionar">
-                        <select class="form-select">
-                            <option selected>Opciones</option>
-                            <option value="1">Cedula de Ciudadania</option>
-                            <option value="2">Cedula de Extranjeria</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-6 col-12">
-                        <label for="text">N° Documento</label>
-                        <div class="usuario">
-                            <i class="fa-solid fa-address-card"></i>
-                            <input type="text" class="input-pass" placeholder="Documento" required matInput>
-                        </div>
-
-                        <div class="col">
-                            <label for="text">Fecha de Nacimiento</label>
-                            <div class="usuario">
-                                <i class="fa-regular fa-calendar-days"></i>
-                                <input type="text" class="input-pass" placeholder="Fecha de Nacimiento" required
-                                    matInput>
-                            </div>
-
-                            <label for="text">Lugar de Nacimiento</label>
-                            <div class="usuario">
-                                <i class="fa-solid fa-location-dot"></i>
-                                <input type="text" class="input-pass" placeholder="Lugar de Nacimiento" required
-                                    matInput>
-                            </div>
-                        </div>
-                    </div>
-
-                    <label for="text">Fecha de Expedicion del Documento</label>
-                    <div class="usuario">
-                        <i class="fa-regular fa-calendar-days"></i>
-                        <input type="text" class="input-pass" placeholder="Fecha de Expedicion">
-                    </div>
-
-                    <label for="text">Lugar de Expedicion del Documento</label>
-                    <div class="usuario">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <input type="text" class="input-pass" placeholder="Lugar de Expedicion">
-                    </div>
-                </div>
-            </div>
-
-            <div class="row align-items-start">
-                <div class="col">
-                    <label for="select">Seleccione el Tipo de Cliente</label>
-                    <div class="selecionar">
-                        <select class="form-select">
-                            <option selected>Opciones</option>
-                            <option value="1">Titular</option>
-                            <option value="2">Codeudor</option>
-                        </select>
-                    </div>
-
-                    <div class="row align-items-center">
-                        <div class="col-md-6 col-12">
-                            <label for="email">Direccion</label>
-                            <div class="usuario">
-                                <i class="fa-solid fa-map-location-dot"></i>
-                                <input type="text" class="input-usuario" placeholder="Direccion">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-12">
-                            <label for="email">Cuidad</label>
-                            <div class="usuario">
-                                <i class="fa-solid fa-building"></i>
-                                <input type="text" class="input-usuario" placeholder="Cuidad">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-12">
-                            <label for="email">Departamento</label>
-                            <div class="usuario">
-                                <i class="fa-solid fa-city"></i>
-                                <input type="text" class="input-usuario" placeholder="Departamento">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-12">
-                            <label for="email">Pais</label>
-                            <div class="usuario">
-                                <i class="fa-solid fa-earth-americas"></i>
-                                <input type="text" class="input-usuario" placeholder="Pais">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-12">
-                            <label for="number">Telefono</label>
-                            <div class="usuario">
-                                <i class="fa-solid fa-square-phone"></i>
-                                <input type="number" class="input-usuario" placeholder="Telefono Celular">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-12">
-                            <label for="email">Correo</label>
-                            <div class="usuario">
-                                <i class="fa-solid fa-envelope"></i>
-                                <input type="email" class="input-usuario" placeholder="Email">
-                            </div>
-                        </div>
-
-                        <button class="btn-guardar">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </form>
+        <div class="col">
+            <label for="text">Tipo de Documento</label>
+            <i class="fa-solid fa-address-card"></i>
+            <select name="tipoDocumento" id="" class="form-select" [(ngModel)]="cliente.tipoDocumento">
+                <option value="">Seleccionar</option>
+                <option value="CC">C.C</option>
+                <option value="CE">C.E</option>
+            </select>
+        </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <label for="text">N° Documento</label>
+            <div class="usuario">
+                <i class="fa-solid fa-address-card"></i>
+                <input type="number" class="input-pass" maxlength="10" placeholder="Documento" [(ngModel)]="cliente.numeroDocumento">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="text">Fecha de Nacimiento</label>
+            <div class="usuario">
+                <i class="fa-regular fa-calendar-days"></i>
+                <input type="date" class="input-pass" placeholder="Fecha de Nacimiento"
+                    [(ngModel)]="cliente.fechaNacimiento">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="text">Lugar de Nacimiento</label>
+            <div class="usuario">
+                <i class="fa-solid fa-location-dot"></i>
+                <input type="text" class="input-pass" placeholder="Lugar de Nacimiento"
+                    [(ngModel)]="cliente.lugarNacimiento">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="text">Fecha de Expedicion del Documento</label>
+            <div class="usuario">
+                <i class="fa-regular fa-calendar-days"></i>
+                <input type="date" class="input-pass" placeholder="Fecha de Expedicion"
+                    [(ngModel)]="cliente.fechaExpedicionDocumento">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="text">Lugar de Expedicion del Documento</label>
+            <div class="usuario">
+                <i class="fa-solid fa-location-dot"></i>
+                <input type="text" class="input-pass" placeholder="Lugar de Expedicion"
+                    [(ngModel)]="cliente.lugarExpedicionDocumento">
+            </div>
+
+            <label for="text">Tipo de Telefono</label>
+            <select class="form-select" required aria-label="select example" [(ngModel)]="cliente.telefono.indicativo">
+                <option value="">Tipo de telefono</option>
+                <option value="1">Telefono Fijo</option>
+                <option value="2">Telefono Celular</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="number">Telefono De Contacto</label>
+            <div class="usuario">
+                <i class="fa-solid fa-square-phone"></i>
+                <input type="number" class="input-usuario" placeholder="Telefono Fijo"
+                    [(ngModel)]="cliente.telefono.numero">
+            </div>
+
+            <label for="text">Indicativo de Telefono Celular</label>
+            <select class="form-select" required aria-label="select example">
+                <option value="Selecionar">Selecionar</option>
+                <option value="1">+57</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <label for="email">Direccion</label>
+            <div class="usuario">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <input type="text" class="input-usuario" placeholder="Direccion"
+                    [(ngModel)]="cliente.direccion.direccion">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="usuario">Username</label>
+            <div class="usuario">
+                <i class="fa-solid fa-signature"></i>
+                <input type="email" class="input-usuario" placeholder="UserName" [(ngModel)]="cliente.username">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <label for="text">Ciudad</label>
+            <i class="fa-solid fa-building"></i>
+            <select name="tipoCliente" id="" class="form-select" [(ngModel)]="cliente.direccion.ciudad">
+                <option value="">Seleccionar</option>
+                <option value="Bogota">Bogota</option>
+                <option value="Medellin">Medellin</option>
+                <option value="Cali">Cali</option>
+                <option value="Barranquilla">Barranquilla</option>
+                <option value="Cartagena">Cartagena</option>
+                <option value="Soacha">Soacha</option>
+                <option value="Cucuta">Cucuta</option>
+                <option value="Soledad">Soledad</option>
+                <option value="Bucaramanga">Bucaramanga</option>
+                <option value="Bello">Bello</option>
+                <option value="Valledupar">Valledupar</option>
+                <option value="Villavicencio">Villavicencio</option>
+                <option value="Santa Marta">Santa Marta</option>
+                <option value="Ibague">Ibague</option>
+                <option value="Monteria">Monteria</option>
+                <option value="Pereira">Pereira</option>
+                <option value="Manizales">Manizales</option>
+                <option value="Pasto">Pasto</option>
+                <option value="Neiva">Neiva</option>
+                <option value="Palmira">Palmira</option>
+                <option value="Popayan">Popayan</option>
+                <option value="Buenaventura">Buenaventura</option>
+                <option value="Armenia">Armenia</option>
+                <option value="Floridablanca">Floridablanca</option>
+                <option value="Sincelejo">Sincelejo</option>
+                <option value="Itagui">Itagui</option>
+                <option value="Tumaco">Tumaco</option>
+                <option value="Envigado">Envigado</option>
+                <option value="Dosquebradas">Dosquebradas</option>
+                <option value="Tulua">Tulua</option>
+                <option value="Barrancabermeja">Barrancabermeja</option>
+                <option value="Riohacha">Riohacha</option>
+                <option value="Uribia">Uribia</option>
+                <option value="Maicao">Maicao</option>
+                <option value="Piedecuesta">Piedecuesta</option>
+                <option value="Tunja">Tunja</option>
+                <option value="Yopal">Yopal</option>
+                <option value="Florencia">Florencia</option>
+                <option value="Giron">Giron</option>
+                <option value="Facatativá">Facatativá</option>
+                <option value="Jamundi">Jamundi</option>
+                <option value="Fusagasugá">Fusagasugá</option>
+                <option value="Mosquera">Mosquera</option>
+                <option value="Chia">Chia</option>
+                <option value="Zipaquira">Zipaquira</option>
+                <option value="Rionegro">Rionegro</option>
+                <option value="Malambo">Malambo</option>
+                <option value="Magangue">Magangue</option>
+                <option value="Madrid">Madrid</option>
+                <option value="Cartago">Cartago</option>
+                <option value="Turbo">Turbo</option>
+                <option value="Quibdo">Quibdo</option>
+                <option value="Apartado">Apartado</option>
+                <option value="Sogamoso">Sogamoso</option>
+                <option value="Ocaña">Ocaña</option>
+                <option value="Pitalito">Pitalito</option>
+                <option value="Buga">Buga</option>
+                <option value="Duitama">Duitama</option>
+                <option value="Cienaga">Cienaga</option>
+                <option value="Aguachica">Aguachica</option>
+                <option value="Girardot">Girardot</option>
+                <option value="Lorica">Lorica</option>
+                <option value="Turbaco">Turbaco</option>
+                <option value="Ipiales">Ipiales</option>
+                <option value="Funza">Funza</option>
+                <option value="Santander de Quilichao">Santander de Quilichao</option>
+                <option value="Villa del Rosario">Villa del Rosario</option>
+                <option value="Sahagún">Sahagún</option>
+                <option value="Yumbo">Yumbo</option>
+                <option value="Cerete">Cerete</option>
+                <option value="Sabanalarga">Sabanalarga</option>
+                <option value="Cajica">Cajica</option>
+                <option value="Arauca">Arauca</option>
+                <option value="Caucasia">Caucasia</option>
+                <option value="Los patios">Los patios</option>
+                <option value="Manaure">Manaure</option>
+                <option value="Tierralta">Tierralta</option>
+                <option value="Candelaria">Candelaria</option>
+                <option value="Acacías">Acacías</option>
+                <option value="Sabaneta">Sabaneta</option>
+                <option value="Montelíbano">Montelíbano</option>
+                <option value="Caldas">Caldas</option>
+                <option value="Copacabana">Copacabana</option>
+                <option value="Cumaribo">Cumaribo</option>
+                <option value="Santa Rosa de Cabal">Santa Rosa de Cabal</option>
+                <option value="La Estrella">La Estrella</option>
+                <option value="Calarcá">Calarcá</option>
+                <option value="Zona Bananera">Zona Bananera</option>
+                <option value="Arjona">Arjona</option>
+                <option value="La Dorada">La Dorada</option>
+                <option value="Garzon">Garzon</option>
+                <option value="El Carmen de Bolívar">El Carmen de Bolívar</option>
+                <option value="Corozal">Corozal</option>
+                <option value="Fundación">Fundación</option>
+                <option value="Granada">Granada</option>
+                <option value="El Banco">El Banco</option>
+                <option value="Espinal">Espinal</option>
+                <option value="Puerto Asís">Puerto Asís</option>
+                <option value="Baranoa">Baranoa</option>
+                <option value="Galapa">Galapa</option>
+                <option value="Villamaría">Villamaría</option>
+                <option value="Agustín Codazzi">Agustín Codazzi</option>
+                <option value="Plato">Plato</option>
+                <option value="Planeta Rica">Planeta Rica</option>
+                <option value="Saravena">Saravena</option>
+                <option value="El Carmen de Viboral">El Carmen de Viboral</option>
+                <option value="La Plata">La Plata</option>
+                <option value="Chigorodó">Chigorodó</option>
+                <option value="San Marcos">San Marcos</option>
+                <option value="Ciénaga de Oro">Ciénaga de Oro</option>
+                <option value="Mocoa">Mocoa</option>
+                <option value="San Gil">San Gil</option>
+                <option value="Guarne">Guarne</option>
+                <option value="Tibú">Tibú</option>
+                <option value="San José del Guaviare">San José del Guaviare</option>
+                <option value="San Andrés">San Andrés</option>
+                <option value="Florida">Florida</option>
+                <option value="Chiquinquirá">Chiquinquirá</option>
+                <option value="Arauquita">Arauquita</option>
+                <option value="El Cerrito">El Cerrito</option>
+                <option value="Girardota">Girardota</option>
+                <option value="Barbosa">Barbosa</option>
+                <option value="Barbacoas">Barbacoas</option>
+                <option value="Riosucio Choco">Riosucio Choco</option>
+                <option value="El Bagre">El Bagre</option>
+                <option value="Tuchín">Tuchín</option>
+                <option value="Puerto Colombia">Puerto Colombia</option>
+                <option value="Pamplona">Pamplona</option>
+                <option value="El Tambo">El Tambo</option>
+                <option value="San Vicente del Caguán">San Vicente del Caguán</option>
+                <option value="San Pelayo">San Pelayo</option>
+                <option value="Chinchiná">Chinchiná</option>
+                <option value="Carepa">Carepa</option>
+                <option value="La Jagua de Ibirico">La Jagua de Ibirico</option>
+                <option value="Riosucio Caldas">Riosucio Caldas</option>
+                <option value="Leticia">Leticia</option>
+                <option value="San Onofre">San Onofre</option>
+                <option value="San Juan del Cesar">San Juan del Cesar</option>
+                <option value="Ubaté">Ubaté</option>
+                <option value="Tame">Tame</option>
+                <option value="Chaparral">Chaparral</option>
+                <option value="Sampués">Sampués</option>
+                <option value="Tocancipá">Tocancipá</option>
+                <option value="María La Baja">María La Baja</option>
+
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="text">Departamento</label>
+            <i class="fa-solid fa-city"></i>
+            <select name="tipoCliente" id="" class="form-select" [(ngModel)]="cliente.direccion.departamento">
+                <option value="">Seleccionar</option>
+                <option value="Amazonas">Amazonas</option>
+                <option value="Antioquia">Antioquia</option>
+                <option value="Arauca">Arauca</option>
+                <option value="Antlantico">Antlantico</option>
+                <option value="Bogota">Bogota D.C</option>
+                <option value="Bolivar">Bolivar</option>
+                <option value="Boyaca">Boyaca</option>
+                <option value="Caldas">Caldas</option>
+                <option value="Caqueta">Caqueta</option>
+                <option value="Casanare">Casanare</option>
+                <option value="Cauca">Cauca</option>
+                <option value="Cesar">Cesar</option>
+                <option value="Choco">Choco</option>
+                <option value="Cordoba">Cordoba</option>
+                <option value="Cundinamarca">Cundinamarca</option>
+                <option value="Guania">Guania</option>
+                <option value="Guavira">Guaviare</option>
+                <option value="Huila">Huila</option>
+                <option value="La Guajira">La Guajira</option>
+                <option value="Magdalena">Magdalena</option>
+                <option value="Meta">Meta</option>
+                <option value="Nariño">Nariño</option>
+                <option value="Norte de Santander">Norte de Santander</option>
+                <option value="Putumayo">Putumayo</option>
+                <option value="Quindio">Quindio</option>
+                <option value="Risaralda">Risaralda</option>
+                <option value="San Andres y Providencia">San Andres y Providencia</option>
+                <option value="Santader">Santander</option>
+                <option value="Sucre">Sucre</option>
+                <option value="Tolima">Tolima</option>
+                <option value="Valle del Cauca">Valle del Cauca</option>
+                <option value="Vaupes">Vaupes</option>
+                <option value="Vichada">Vichada</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="text">Pais</label>
+            <i class="fa-solid fa-earth-americas"></i>
+            <select name="tipoCliente" id="" class="form-select" [(ngModel)]="cliente.direccion.pais">
+                <option value="">Seleccionar</option>
+                <option value="Colombia">Colombia</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="email">Correo</label>
+            <div class="usuario">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" class="input-usuario" placeholder="Email"
+                    [(ngModel)]="cliente.correoElectronico.email">
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-guardar" (click)="guardarClientes()">Guardar</button>
 </div>
