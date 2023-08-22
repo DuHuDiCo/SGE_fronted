@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AgregarUnClienteService } from 'src/app/Services/clientes/agregar-un-cliente.service';
 import { Cliente } from 'src/app/Types/ClienteDTO';
 
@@ -40,13 +41,13 @@ export class AgregarClienteComponent implements OnInit {
 
   }
 
-  router: any;
 
-  constructor(private agregarCliente: AgregarUnClienteService) { }
+
+  constructor(private agregarCliente: AgregarUnClienteService, private router:Router) { }
 
 
   ngOnInit(): void {
-    
+
   }
 
   guardarClientes() {
@@ -61,7 +62,7 @@ export class AgregarClienteComponent implements OnInit {
       return
     }
 
-    if (this.cliente.username == ''|| this.cliente.username == null) {
+    if (this.cliente.username == '' || this.cliente.username == null) {
       Swal.fire('Error', 'Debe colocar el Usuario', 'error')
       return
     }
@@ -71,8 +72,8 @@ export class AgregarClienteComponent implements OnInit {
       return
     }
 
-    if (this.cliente.numeroDocumento == '' || this.cliente.numeroDocumento == null) {
-      Swal.fire('Error', 'Digite el Numero de Documento del Cliente', 'error')
+    if (this.cliente.numeroDocumento == '' || this.cliente.numeroDocumento == null || this.cliente.numeroDocumento.length > 10) {
+      Swal.fire('Error', 'Error al Ingresar el Numero de Documento del Cliente', 'error')
       return
     }
 
@@ -96,8 +97,8 @@ export class AgregarClienteComponent implements OnInit {
       return
     }
 
-    if (this.cliente.telefono.numero == '' || this.cliente.telefono.numero == null) {
-      Swal.fire('Error', 'Digite el Telefono del Cliente', 'error')
+    if (this.cliente.telefono.numero == '' || this.cliente.telefono.numero == null || this.cliente.telefono.numero.length > 10) {
+      Swal.fire('Error', 'Error al Ingresar el Numero del Cliente', 'error')
       return
     }
 
@@ -145,10 +146,12 @@ export class AgregarClienteComponent implements OnInit {
           },
           username: "",
         }
+        this.router.navigate(['/dashboard-admin-general/buscar-cliente'])
       },
       (error) => {
         Swal.fire('ERROR', 'Error al Guardar el Cliente', 'error')
       }
     )
   }
+
 }

@@ -40,7 +40,8 @@
             <label for="text">N° Documento</label>
             <div class="usuario">
                 <i class="fa-solid fa-address-card"></i>
-                <input type="number" class="input-pass" maxlength="10" placeholder="Documento" [(ngModel)]="cliente.numeroDocumento">
+                <input type="number" id="numeroDocumentoMax" maxlength="10" placeholder="Documento"
+                    [(ngModel)]="cliente.numeroDocumento">
             </div>
         </div>
 
@@ -91,7 +92,7 @@
             <label for="number">Telefono De Contacto</label>
             <div class="usuario">
                 <i class="fa-solid fa-square-phone"></i>
-                <input type="number" class="input-usuario" placeholder="Telefono Fijo"
+                <input type="number" class="input-usuario" placeholder="Telefono Fijo" maxlength="10"
                     [(ngModel)]="cliente.telefono.numero">
             </div>
 
@@ -272,7 +273,6 @@
                 <option value="Sampués">Sampués</option>
                 <option value="Tocancipá">Tocancipá</option>
                 <option value="María La Baja">María La Baja</option>
-
             </select>
         </div>
 
