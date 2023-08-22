@@ -79,7 +79,7 @@ export class BuscarClientesComponent implements OnInit {
             console.log(error
               );
             
-            Swal.fire('Error al Eliminar el Cliente','error')
+            Swal.fire('Error','Error al Eliminar el Cliente','error')
           }
         )
       }

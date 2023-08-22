@@ -9,15 +9,17 @@ export class BuscarClientesService {
 
   constructor(private http:HttpClient) { }
 
+  Url = "http://192.168.1.171:8004/api/v1";
+
   public listarClientes(){
-    return this.http.get(`${baseUrl}/clientes/all`)
+    return this.http.get(`${this.Url}/clientes/all`)
   }
 
   public filtrarClientes(cedula:string){
-    return this.http.get(`${baseUrl}/clientes/find/${cedula}`)
+    return this.http.get(`${this.Url}/clientes/find/${cedula}`)
   }
 
   public eliminarCliente(idCliente: Number, username:string | null){
-    return this.http.delete(`${baseUrl}/clientes/delete/${idCliente}/?username=${username}`)
+    return this.http.delete(`${this.Url}/clientes/delete/${idCliente}?username=${username}`)
   }
 }

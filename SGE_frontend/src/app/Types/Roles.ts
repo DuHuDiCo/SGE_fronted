@@ -32,7 +32,7 @@ export type RolesUser = {
 
 
 export enum ROLES{
-    SuperAdministration = "SuperAdministration",
+    SuperAdministration = "SUPERADMINISTRADOR",
     Administration = "Administration",
     Cartera = "Cartera",
     Caja = "Caja",
