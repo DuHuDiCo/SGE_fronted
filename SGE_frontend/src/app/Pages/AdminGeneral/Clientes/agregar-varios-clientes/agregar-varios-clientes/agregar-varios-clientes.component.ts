@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { AgregarVariosClientesService } from 'src/app/Services/clientes/AgregarVarios/agregar-varios-clientes.service';
+import { Cliente } from 'src/app/Types/Cliente';
 import { nuevosClientes } from 'src/app/Types/NuevosClientes';
 import baseUrl from 'src/app/utils/helper';
 import Swal from 'sweetalert2';
@@ -24,6 +25,7 @@ export class AgregarVariosClientesComponent implements OnInit{
   excepciones:string[] = []
   clientes:nuevosClientes[] = []
   cambios:string[] = []
+  cliente:Cliente[] = []
 
   mostrarClientes:boolean = false;
  
@@ -49,7 +51,6 @@ export class AgregarVariosClientesComponent implements OnInit{
     }
     this.variosClientes.subirArchivo(this.formdata, this.delimitante, username).subscribe(
       (data:any) => {
-        console.log(data);
         if(data.Exceptions.length > 0){
           this.excepciones = data.Exceptions
           this.clientes = data.Clientes
@@ -68,10 +69,15 @@ export class AgregarVariosClientesComponent implements OnInit{
   guardarCambios(){
     this.variosClientes.guardarArchivo(this.clientes).subscribe(
       (data:any) => {
-        this.clientes = data
-        console.log(data);
+        this.cliente = data
+        Swal.fire('Cliente Guardado exito', 'Cliente Guardado con exito', 'success')
+        setTimeout(() => {
+        location.reload()
+        }, 2000);
+        console.log(data)
       }, (error:any) => {
         console.log(error)
+        Swal.fire('Error', 'Error al guardar el Cliente', 'error')
       }
     )
   }
