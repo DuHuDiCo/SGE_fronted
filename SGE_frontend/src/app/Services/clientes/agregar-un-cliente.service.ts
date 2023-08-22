@@ -10,6 +10,6 @@ export class AgregarUnClienteService {
   constructor(private http:HttpClient) { }
 
   public guardarClientes(guardarClientes: any){
-    return this.http.post(`${baseUrl}/clientes/save`, guardarClientes)
+    return this.http.post(`http://192.168.1.171:8004/api/v1/clientes/save`, guardarClientes)
   }
 }
