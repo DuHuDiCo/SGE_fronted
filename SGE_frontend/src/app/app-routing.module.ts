@@ -58,6 +58,8 @@ import { CreateUsuarioComponent } from './Pages/AdminGeneral/Usuarios/create-usu
 import { ConfiguracionPerfilComponent } from './Pages/Perfil/configuracion-perfil/configuracion-perfil.component';
 
 import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/datos-perfil.component';
+import { BuscarUsuariosService } from './Services/BuscarUsuarios/buscar-usuarios.service';
+
 
 
 
@@ -342,6 +344,10 @@ const routes: Routes = [
       {
         path: 'crear-usuario',
         component: CreateUsuarioComponent
+      },
+      {
+        path: 'buscar-usuario',
+        component: BuscarUsuariosService
       }
     ]
   }

@@ -14,7 +14,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { RolesPerfilesDirective } from './directivas/roles-perfiles.directive';
 import { authInterceptorProviders } from './Interceptors/auth.interceptor';
 
-
 import { ConsultasComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/consultas/consultas.component';
 import { IngresarComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ingresar/ingresar.component';
 import { ReportesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/reportes/reportes.component';
@@ -22,7 +21,6 @@ import { GestionUsuariosComponent } from './Pages/Administracion/pages/componene
 import { CrearUsuariosComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/crear-usuarios.component';
 import { RolesUsuarioComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/roles-usuario/roles-usuario.component';
 import { AsignarRolesComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/asignar-roles/asignar-roles.component';
-
 
 import { IncapacidadGComponent } from './Pages/SST/pages/componentes_SST/asistencia/incapacidad-g/incapacidad-g.component';
 import { IncapacidadArlComponent } from './Pages/SST/pages/componentes_SST/asistencia/incapacidad-arl/incapacidad-arl.component';
@@ -33,13 +31,11 @@ import { EvidenciasComponent } from './Pages/SST/pages/componentes_SST/Copasst/e
 import { CoEvidenciaComponent } from './Pages/SST/pages/componentes_SST/comite/co-evidencia/co-evidencia.component';
 import { Evalucion1Component } from './Pages/SST/pages/componentes_SST/Evaluaciones/evalucion1/evalucion1.component';
 
-
 import { SidebarSstComponent } from './Pages/SST/pages/componentes_SST/sidebar-sst/sidebar-sst.component';
 import { SidebarCarteraComponent } from './Pages/Cartera/pages/componentesCartera/sidebar-cartera/sidebar-cartera.component';
 import { SidebarConsignacionesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/sidebar-consignaciones/sidebar-consignaciones.component';
 import { SidebarAdministracionComponent } from './Pages/Administracion/pages/componenetesAdminstracion/sidebar-administracion/sidebar-administracion.component';
 import { SidebarCreditoComponent } from './Pages/Creditos/sidebar-credito/sidebar-credito.component';
-
 
 import { DashboardAdminComponent } from './Pages/Administracion/pages/dashboard-admin/dashboard-admin.component';
 import { DashboardSSTComponent } from './Pages/SST/pages/dashboard-sst/dashboard-sst.component';
@@ -47,7 +43,6 @@ import { DashboardCreditosComponent } from './Pages/Creditos/dashboard-creditos/
 import { DashboarConsignacionesComponent } from './Pages/Consignaciones/pages/dashboar-consignaciones/dashboar-consignaciones.component';
 import { EstadisticasDashboardComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas-dashboard/estadisticas-dashboard.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-
 
 import { CrearCreditoComponent } from './Pages/Creditos/Componentes_creditos/crear-credito/crear-credito.component';
 import { VerCreditosComponent } from './Pages/Creditos/Componentes_creditos/ver-creditos/ver-creditos.component';
@@ -87,6 +82,9 @@ import { ConfiguracionPerfilComponent } from './Pages/Perfil/configuracion-perfi
 import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/datos-perfil.component';
 import { FormsModule } from '@angular/forms';
 import { AgregarClienteModule } from './moduls/agregar-cliente/agregar-cliente.module';
+import { BuscarUsuariosComponent } from './Pages/AdminGeneral/Usuarios/listar-usuarios/listar-usuarios.component';
+
+
 
 
 
@@ -174,6 +172,7 @@ import { AgregarClienteModule } from './moduls/agregar-cliente/agregar-cliente.m
     DashboardPerfilComponent,
     ConfiguracionPerfilComponent,
     DatosPerfilComponent,
+    BuscarUsuariosComponent,
 
   ],
 
