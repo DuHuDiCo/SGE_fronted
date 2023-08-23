@@ -13,7 +13,7 @@ export class BuscarUsuariosService {
     return this.http.get(`${baseUrl}/usuarios/all`)
   }
 
-  public filtrarUsuarios(nombres: string) {
+  public filtrarUsuarios(nombres:string) {
     return this.http.get(`${baseUrl}/usuarios/find/${nombres}`)
   }
 

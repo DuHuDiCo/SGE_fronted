@@ -13,6 +13,10 @@ export class BuscarUsuariosComponent implements OnInit {
 
   usuario: Usuario[] = []
 
+  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
+
+  cedula: string = ''
+
   constructor(private usuarioService: BuscarUsuariosService, private authService: AuthenticationService) { }
 
   ngOnInit(): void {
@@ -34,8 +38,8 @@ export class BuscarUsuariosComponent implements OnInit {
   
   public filtrarUsuarios() {
     this.usuario = [];
-    if (this.usuario) {
-      this.usuarioService.filtrarUsuarios().subscribe(
+    if (this.cedula) {
+      this.usuarioService.filtrarUsuarios(this.cedula).subscribe(
         (data: any) => {
           this.usuario.push(data);
           console.log(this.usuario);
@@ -65,7 +69,7 @@ export class BuscarUsuariosComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.usuarioService.eliminarUsuario(idUsuario : Number).subscribe(
+        this.usuarioService.eliminarUsuario(idUsuario, username).subscribe(
           (data: any) => {
             this.usuario = this.usuario.filter((usuario: Usuario) => usuario.idUsuario != idUsuario);
             Swal.fire('Usuario Eliminado', 'El Usuario ha sido Eliminado Exitosamente', 'success')

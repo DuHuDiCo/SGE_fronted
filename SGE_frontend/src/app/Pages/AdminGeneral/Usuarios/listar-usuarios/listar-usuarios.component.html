@@ -1,8 +1,8 @@
 <div class="container">
     <header class="mt-5">
-        <h1 class="titulo">Buscar Clientes</h1>
+        <h1 class="titulo">Buscar Usuarios</h1>
     </header>
-    <span>Ingresar el Nombre del Cliente Que deseas Buscar</span>
+    <span>Ingresar el Nombre del Usuario Que deseas Buscar</span>
     <br><br>
 
     <div class="row">
@@ -12,7 +12,7 @@
                     <label for="staticEmail" class="col-md-2 col-form-label mt-4">Cliente:</label>
                     <div class="col-md-10">
                         <input [(ngModel)]="cedula" type="text" class="form-control inputs" id="staticEmail" ngModel
-                            name="cedula" (keyup.enter)="filtrar()">
+                            name="cedula" (keyup.enter)="filtrarUsuarios()">
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
                         <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -47,17 +47,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let c of cliente; let i = index" class="align-middle">
+                        <tr *ngFor="let c of usuario; let i = index" class="align-middle">
                             <th>{{ c.nombres }}</th>
                             <th>{{ c.apellidos }}</th>
-                            <th>{{ c.tipoDocumento }}</th>
-                            <th>{{ c.numeroDocumento }}</th>
+                            <th>{{ c.tipo_documento }}</th>
+                            <th>{{ c.numero_documento }}</th>
                             <td>
                                 <button class="btn btn-info btn-sm me-3"><i class="fa-regular fa-eye"
                                         data-bs-toggle="modal"
                                         [attr.data-bs-target]="'#verDetallesModal' + i"></i></button>
 
-                                <button *appRolesPerfiles="rolesArray[6]" (click)="eliminarCliente(c.idCliente)"
+                                <button *appRolesPerfiles="rolesArray[6]" (click)="eliminarUsuario(c.idUsuario)"
                                     class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
                             </td>
                         </tr>
@@ -69,48 +69,25 @@
     </div>
 
     <!-- Modales para ver detalles -->
-    <div class="modal fade" *ngFor="let c of cliente; let i = index" [id]="'verDetallesModal' + i" tabindex="-1"
+    <div class="modal fade" *ngFor="let c of usuario; let i = index" [id]="'verDetallesModal' + i" tabindex="-1"
         aria-labelledby="verDetallesModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="verDetallesModalLabel">Detalles del Cliente</h5>
+                    <h5 class="modal-title" id="verDetallesModalLabel">Detalles del Usuario</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <table class="table">
                         <tr>
                             <td><strong>Fecha Nacimiento:</strong></td>
-                            <td>{{ c.fechaNacimiento | date }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Lugar De Nacimiento:</strong></td>
-                            <td>{{ c.lugarNacimiento }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Fecha Exp Doc:</strong></td>
-                            <td>{{ c.fechaExpedicionDocumento }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Lugar De Exp:</strong></td>
-                            <td>{{ c.lugarExpedicionDocumento }}</td>
+                            <td>{{ c.fecha_nacimiento | date }}</td>
                         </tr>
                         <tr>
                             <td class="fw-bold">Teléfonos:</td>
                             <td>
                                 <ul>
-                                    <li *ngFor="let telefono of c.telefonos">{{ telefono.indicativo }} {{
-                                        telefono.numero }}</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Direcciones:</td>
-                            <td>
-                                <ul>
-                                    <li *ngFor="let direccion of c.direcciones">{{ direccion.direccion + ' ' +
-                                        direccion.pais + ', ' + direccion.departamento + ' - ' + direccion.ciudad }}
-                                    </li>
+                                    <li *ngFor="let telefono of c.celular">{{ telefono }}</li>
                                 </ul>
                             </td>
                         </tr>
@@ -118,13 +95,12 @@
                             <td class="fw-bold">Correos:</td>
                             <td>
                                 <ul>
-                                    <li *ngFor="let correo of c.correosElectronicos">{{ correo.email }}</li>
+                                    <li *ngFor="let correo of c.email">{{ correo }}</li>
                                 </ul>
                             </td>
                         </tr>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
