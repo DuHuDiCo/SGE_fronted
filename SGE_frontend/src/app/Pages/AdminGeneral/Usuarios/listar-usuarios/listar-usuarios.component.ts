@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BuscarUsuariosService } from 'src/app/Services/BuscarUsuarios/buscar-usuarios.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
-import { Usuario } from 'src/app/Types/Usuario';
+import { Usuarios } from 'src/app/Types/Usuarios';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 })
 export class BuscarUsuariosComponent implements OnInit {
 
-  usuario: Usuario[] = []
+  usuarios: Usuarios[] = []
 
   rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
 
@@ -26,8 +26,8 @@ export class BuscarUsuariosComponent implements OnInit {
   private listarUsuarios() {
     this.usuarioService.listarUsuarios().subscribe(
       (data: any) => {
-        this.usuario = data;
-        console.log(this.usuario);
+        this.usuarios = data;
+        console.log(this.usuarios);
       },
       (error: any) => {
         console.log(error);
@@ -35,18 +35,18 @@ export class BuscarUsuariosComponent implements OnInit {
       }
     );
   }
-  
+
   public filtrarUsuarios() {
-    this.usuario = [];
+    this.usuarios = [];
     if (this.cedula) {
       this.usuarioService.filtrarUsuarios(this.cedula).subscribe(
         (data: any) => {
-          this.usuario.push(data);
-          console.log(this.usuario);
+          this.usuarios.push(data);
+          console.log(this.usuarios);
         },
         (error: any) => {
           console.log(error);
-          Swal.fire('ERROR','Error al filtrar los Clientes','error');
+          Swal.fire('ERROR', 'Error al filtrar los Clientes', 'error');
         }
       );
     } else {
@@ -71,7 +71,7 @@ export class BuscarUsuariosComponent implements OnInit {
       if (result.isConfirmed) {
         this.usuarioService.eliminarUsuario(idUsuario, username).subscribe(
           (data: any) => {
-            this.usuario = this.usuario.filter((usuario: Usuario) => usuario.idUsuario != idUsuario);
+            this.usuarios = this.usuarios.filter((usuario: Usuarios) => usuario.idUsuario != idUsuario);
             Swal.fire('Usuario Eliminado', 'El Usuario ha sido Eliminado Exitosamente', 'success')
           },
           (error: any) => {

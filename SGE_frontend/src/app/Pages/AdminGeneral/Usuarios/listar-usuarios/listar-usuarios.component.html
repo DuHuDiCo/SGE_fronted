@@ -47,7 +47,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let c of usuario; let i = index" class="align-middle">
+                        <tr *ngFor="let c of usuarios; let i = index" class="align-middle">
                             <th>{{ c.nombres }}</th>
                             <th>{{ c.apellidos }}</th>
                             <th>{{ c.tipo_documento }}</th>
@@ -69,7 +69,7 @@
     </div>
 
     <!-- Modales para ver detalles -->
-    <div class="modal fade" *ngFor="let c of usuario; let i = index" [id]="'verDetallesModal' + i" tabindex="-1"
+    <div class="modal fade" *ngFor="let c of usuarios; let i = index" [id]="'verDetallesModal' + i" tabindex="-1"
         aria-labelledby="verDetallesModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
