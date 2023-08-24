@@ -332,7 +332,7 @@ input[type=text]:placeholder {
 /* color del titulo de inicio */
 h1 {
     color: #000000;
-    font-family: 'Rubik';
+    font-family: 'Roboto';
     font-style: initial;
     margin-bottom: 10px;
     padding: 20px;
@@ -350,7 +350,7 @@ h1 {
 
 ::placeholder {
     font-size: larger;
-    font-family: 'Rubik';
+    font-family: 'Roboto';
 
     color: #494747;
 }

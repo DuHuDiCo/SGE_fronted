@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { DatosContacto } from 'src/app/Types/DatosCliente';
 import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
@@ -21,5 +22,9 @@ export class BuscarClientesService {
 
   public eliminarCliente(idCliente: Number, username:string | null){
     return this.http.delete(`${this.Url}/clientes/delete/${idCliente}?username=${username}`)
+  }
+
+  public updateDatos(datos:DatosContacto){
+    return this.http.put(`${this.Url}/clientes/updateDatosContacto`, datos)
   }
 }

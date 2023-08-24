@@ -69,6 +69,10 @@
     color: white;
 }
 
+.pointer{
+    cursor: pointer;
+    color: #960010;
+}
 
 
 .btn-guardar{

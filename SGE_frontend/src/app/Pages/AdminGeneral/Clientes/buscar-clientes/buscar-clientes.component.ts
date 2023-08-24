@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { BuscarClientesService } from 'src/app/Services/clientes/BuscarClientes/buscar-clientes.service';
 import { Cliente } from 'src/app/Types/Cliente';
+import { DatosContacto, Direccion } from 'src/app/Types/DatosCliente';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,10 +14,31 @@ export class BuscarClientesComponent implements OnInit {
 
   cliente: Cliente[] = []
 
-
   rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
 
   cedula: string = ''
+
+  telefono: boolean = false
+  direccion: boolean = false
+  correo: boolean = false
+
+  datos:DatosContacto = {
+    cedulaCliente: this.cedula,
+    telefonos: [],
+    direcciones: [],
+    correos: []
+  }
+
+  newTelefono:string = ''
+  newDireccion:Direccion = {
+    "direccion": "",
+    "ciudad": "",
+    "departamento": "",
+    "pais": ""
+  }
+  newCorreo:string = ''
+
+
 
   constructor(private clienteService: BuscarClientesService, private authService: AuthenticationService) { }
 
@@ -32,7 +54,7 @@ export class BuscarClientesComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-        Swal.fire('Error al cargar los clientes');
+        Swal.fire('Error', 'Error al cargar los clientes', 'error');
       }
     );
   }
@@ -47,7 +69,7 @@ export class BuscarClientesComponent implements OnInit {
         },
         (error) => {
           console.log(error);
-          Swal.fire('Error al filtrar los Clientes');
+          Swal.fire('Error', 'Error al filtrar los Clientes', 'error');
         }
       );
     } else {
@@ -85,6 +107,110 @@ export class BuscarClientesComponent implements OnInit {
       }
     })
 
+  }
+
+  botones(accion: string) {
+    switch (accion) {
+
+      case "abrirTelefono":
+        this.telefono = true
+        break;
+
+      case "abrirDireccion":
+        this.direccion = true
+        break;
+
+      case "abrirCorreo":
+        this.correo = true
+        break;
+
+      case "cerrarTelefono":
+        this.telefono = false
+        break;
+      case "cerrarDireccion":
+        this.direccion = false
+        break;
+      case "cerrarCorreo":
+        this.correo = false
+        break;
+    }
+  }
+  
+
+  guardarDatos(boton:string){
+
+    this.datos.telefonos = [];
+    this.datos.direcciones = [];
+    this.datos.correos = [];
+
+
+    this.validarCampos()
+
+    console.log(this.datos);
+
+    this.clienteService.updateDatos(this.datos).subscribe(
+      (data:any) => {
+        this.limpiarCampos(boton);
+        this.actualizarEnVista(data);
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  validarCampos(){
+    if(this.telefono === true){
+      if(this.newTelefono == null || this.newTelefono == ''){
+        console.log('Telefono Vacio');
+        return
+      } else {
+        this.datos.telefonos.push(this.newTelefono)
+      }
+    }
+
+    if(this.correo === true){
+      if(this.newCorreo == null || this.newCorreo == ''){
+        console.log('Correo Vacio');
+        return
+      } else {
+        this.datos.correos.push(this.newCorreo)
+      }
+    }
+  }
+
+  limpiarCampos(boton:string){
+    switch (boton) {
+      case "confirmarTel":
+        this.newTelefono  = ''
+        this.telefono = false
+        break;
+
+        case "confirmarDirec":
+          this.newDireccion = {
+            "direccion": "",
+            "ciudad": "",
+            "departamento": "",
+            "pais": ""
+          }
+          this.direccion = false
+          break;
+
+          case "confirmarCorreo":
+            this.newCorreo  = ''
+            this.correo = false
+            break;
+    }
+  }
+
+  actualizarEnVista(data:any){
+    var clienteFound = this.cliente.find((c:any) => c.numeroDocumento == data.numeroDocumento)
+    if(clienteFound?.telefonos != undefined){
+      clienteFound.telefonos = data.telefonos
+    }
+
+    if(clienteFound?.correosElectronicos != undefined){
+      clienteFound.correosElectronicos = data.correosElectronicos
+    }
   }
 }
 
