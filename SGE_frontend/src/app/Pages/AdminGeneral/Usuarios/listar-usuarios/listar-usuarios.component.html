@@ -11,7 +11,7 @@
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-md-2 col-form-label mt-4">Cliente:</label>
                     <div class="col-md-10">
-                        <input [(ngModel)]="cedula" type="text" class="form-control inputs" id="staticEmail" ngModel
+                        <input [(ngModel)]="nombre" type="text" class="form-control inputs" id="staticEmail" ngModel
                             name="cedula" (keyup.enter)="filtrarUsuarios()">
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -41,8 +41,8 @@
                         <tr class="align-middle">
                             <th>Nombres</th>
                             <th>Apellidos</th>
-                            <th>Tipo Doc</th>
-                            <th># Doc</th>
+                            <th>Telefono</th>
+                            <th>Correo</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -50,13 +50,9 @@
                         <tr *ngFor="let c of usuarios; let i = index" class="align-middle">
                             <th>{{ c.nombres }}</th>
                             <th>{{ c.apellidos }}</th>
-                            <th>{{ c.tipo_documento }}</th>
-                            <th>{{ c.numero_documento }}</th>
+                            <th>{{ c.celular }}</th>
+                            <th>{{ c.email }}</th>
                             <td>
-                                <button class="btn btn-info btn-sm me-3"><i class="fa-regular fa-eye"
-                                        data-bs-toggle="modal"
-                                        [attr.data-bs-target]="'#verDetallesModal' + i"></i></button>
-
                                 <button *appRolesPerfiles="rolesArray[6]" (click)="eliminarUsuario(c.idUsuario)"
                                     class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
                             </td>
@@ -65,42 +61,5 @@
                 </table>
             </div>
             <br>
-        </div>
-    </div>
-
-    <!-- Modales para ver detalles -->
-    <div class="modal fade" *ngFor="let c of usuarios; let i = index" [id]="'verDetallesModal' + i" tabindex="-1"
-        aria-labelledby="verDetallesModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="verDetallesModalLabel">Detalles del Usuario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <table class="table">
-                        <tr>
-                            <td><strong>Fecha Nacimiento:</strong></td>
-                            <td>{{ c.fecha_nacimiento | date }}</td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Teléfonos:</td>
-                            <td>
-                                <ul>
-                                    <li *ngFor="let telefono of c.celular">{{ telefono }}</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Correos:</td>
-                            <td>
-                                <ul>
-                                    <li *ngFor="let correo of c.email">{{ correo }}</li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
         </div>
     </div>
