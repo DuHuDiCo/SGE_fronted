@@ -59,6 +59,7 @@ import { ConfiguracionPerfilComponent } from './Pages/Perfil/configuracion-perfi
 
 import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/datos-perfil.component';
 import { BuscarUsuariosService } from './Services/BuscarUsuarios/buscar-usuarios.service';
+import { BuscarUsuariosComponent } from './Pages/AdminGeneral/Usuarios/listar-usuarios/listar-usuarios.component';
 
 
 
@@ -347,7 +348,7 @@ const routes: Routes = [
       },
       {
         path: 'buscar-usuario',
-        component: BuscarUsuariosService
+        component: BuscarUsuariosComponent
       }
     ]
   }
