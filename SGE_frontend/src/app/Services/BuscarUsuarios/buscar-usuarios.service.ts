@@ -10,7 +10,7 @@ export class BuscarUsuariosService {
   constructor(private http: HttpClient) { }
 
   public listarUsuarios() {
-    return this.http.get(`${baseUrl}/users/all`)
+    return this.http.get(`${baseUrl}/users/getAll`)
   }
 
   public filtrarUsuarios(nombres:string) {
