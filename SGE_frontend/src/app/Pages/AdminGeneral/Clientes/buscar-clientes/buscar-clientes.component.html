@@ -2,7 +2,7 @@
     <header class="mt-5">
         <h1 class="titulo">Buscar Clientes</h1>
     </header>
-    <span>Ingresar el Nombre del Cliente Que deseas Buscar</span>
+    <span>Ingresar la cedula del Cliente Que deseas Buscar</span>
     <br><br>
 
     <div class="row">
@@ -72,14 +72,46 @@
     <!-- Modales para ver detalles -->
     <div class="modal fade" *ngFor="let c of cliente; let i = index" [id]="'verDetallesModal' + i" tabindex="-1"
         aria-labelledby="verDetallesModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="verDetallesModalLabel">Detalles del Cliente</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table">
+
+                    <div class="card">
+                        <div class="card-header">
+                            Información General
+                        </div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-6">
+                                <div class="card text-center">
+                                    <div class="card-header">Información Personal</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p><strong>Fecha de Nacimiento:</strong> {{ c.fechaNacimiento | date }}</p>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                  </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card text-center">
+                                    <div class="card-header">Datos De Contacto</div>
+                                    <div class="card-body">
+                                      <h4 class="card-title">Title</h4>
+                                      <p class="card-text">Body</p>
+                                    </div>
+                                  </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <!-- <table class="table">
                         <tr>
                             <td><strong>Fecha Nacimiento:</strong></td>
                             <td>{{ c.fechaNacimiento | date }}</td>
@@ -100,7 +132,7 @@
                             <td class="fw-bold">Teléfonos:</td>
                             <td>
                                 <ul>
-                                    <li *ngFor="let telefono of c.telefonos">{{ telefono.indicativo }} {{ telefono.numero }}</li>
+                                    <p *ngFor="let telefono of c.telefonos"><span *ngIf="telefono.isCurrent">{{ telefono.indicativo }} {{ telefono.numero }}</span></p>
                                 </ul>
                             </td>
                         </tr>
@@ -120,31 +152,7 @@
                                 </ul>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="fw-bold">Referencias Comerciales:</td>
-                            <td>
-                                <ul>
-                                    <li *ngFor="let r of c.referenciasComerciales">{{ r.nombreCompleto }} <br> {{ r.telefono }}</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Referencias Personales:</td>
-                            <td>
-                                <ul>
-                                    <li *ngFor="let r of c.referenciasPersonales">{{ r.nombreCompleto }} <br> {{ r.telefono }}</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Referencias Familiares:</td>
-                            <td>
-                                <ul>
-                                    <li *ngFor="let r of c.referenciasFamiliares">{{ r.nombreCompleto }} <br> {{ r.telefono }}</li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </table>
+                    </table> -->
                 </div>
                 
             </div>
