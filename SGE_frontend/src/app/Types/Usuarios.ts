@@ -1,6 +1,6 @@
 import { RolesUser } from "./Roles"
 
-export type Usuarios = {
+export type users = {
     idUsuario: Number,
     username: string,
     email: string,
