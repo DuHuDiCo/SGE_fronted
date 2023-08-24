@@ -15,7 +15,7 @@ export class BuscarUsuariosComponent implements OnInit {
 
   rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
 
-  cedula: string = ''
+  nombre: string = ''
 
   constructor(private usuariosService: BuscarUsuariosService, private authService: AuthenticationService) { }
 
@@ -38,8 +38,8 @@ export class BuscarUsuariosComponent implements OnInit {
 
   public filtrarUsuarios() {
     this.usuarios = [];
-    if (this.cedula) {
-      this.usuariosService.filtrarUsuarios(this.cedula).subscribe(
+    if (this.nombre) {
+      this.usuariosService.filtrarUsuarios(this.nombre).subscribe(
         (data: any) => {
           this.usuarios.push(data);
           console.log(this.usuarios);
