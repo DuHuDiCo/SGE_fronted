@@ -17,7 +17,18 @@ export class BuscarClientesComponent implements OnInit {
   @ViewChild('mySelect')
   mySelect!: ElementRef<HTMLSelectElement>;
 
+  pageTelefono: number = 1;
+  pageDireccion: number = 1;
+  pageCorreo: number = 1;
+
   cliente: Cliente[] = []
+
+  datosPersonales:any = {
+    fechaNacimiento: '',
+    lugarNacimiento: '',
+    fechaExpedicionDocumento: '',
+    lugarExpedicionDocumento: ''
+  }
 
   rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
 
@@ -33,6 +44,10 @@ export class BuscarClientesComponent implements OnInit {
     direcciones: [],
     correos: []
   }
+
+  telefonos:any[] = []
+  direcciones:any[] = []
+  correos:any[] = []
 
   idDep:number = 0
 
@@ -61,6 +76,9 @@ export class BuscarClientesComponent implements OnInit {
     this.clienteService.listarClientes().subscribe(
       (data: any) => {
         this.cliente = data;
+        this.telefonos = data.telefonos
+        this.direcciones = data.direcciones
+        this.correos = data.correosElectronicos
         console.log(this.cliente);
       },
       (error) => {
@@ -284,6 +302,18 @@ export class BuscarClientesComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  metodo(cliente:Cliente){
+    this.datos.cedulaCliente = cliente.numeroDocumento
+    this.telefonos = cliente.telefonos
+    this.direcciones = cliente.direcciones
+    this.correos = cliente.correosElectronicos
+    this.datosPersonales.fechaNacimiento = cliente.fechaNacimiento
+    this.datosPersonales.lugarNacimiento = cliente.lugarNacimiento
+    this.datosPersonales.fechaExpedicionDocumento = cliente.fechaExpedicionDocumento
+    this.datosPersonales.lugarExpedicionDocumento = cliente.lugarExpedicionDocumento
+
   }
 
 }
