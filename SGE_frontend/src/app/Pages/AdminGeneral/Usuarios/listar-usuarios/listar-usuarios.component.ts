@@ -4,6 +4,7 @@ import { AuthenticationService } from 'src/app/Services/authentication/authentic
 import { users } from 'src/app/Types/Usuarios';
 import Swal from 'sweetalert2';
 
+
 @Component({
   selector: 'app-listar-usuarios',
   templateUrl: './listar-usuarios.component.html',
@@ -16,6 +17,13 @@ export class BuscarUsuariosComponent implements OnInit {
   rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
 
   nombre: string = ''
+
+  datos = {
+    usernameUsuarios: '',
+    password: '',
+    datoToDelete: '',
+    
+  }
 
   constructor(private usuariosService: BuscarUsuariosService, private authService: AuthenticationService) { }
 
@@ -54,40 +62,73 @@ export class BuscarUsuariosComponent implements OnInit {
     }
   }
 
-  public eliminarUsuario(idUsuario: Number) {
+  public desactivarUsuario(datos: any) {
 
     let username = this.authService.getUsername()
 
+    if (this.datos.password == '' || this.datos.password == null) {
+      Swal.fire('ERROR', 'Debe colocar la Contraseña', 'error')
+      return
+    }
+
     Swal.fire({
-      title: 'Eliminar El Usuario',
-      text: '¿Estas seguro de eliminar el Usuario?',
+      title: 'Deasctivar El Cliente',
+      text: '¿Estas seguro de Desactivar el Cliente?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
+      confirmButtonText: 'Desactivar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.usuariosService.eliminarUsuario(idUsuario, username).subscribe(
+        this.usuariosService.desactivarUsuario().subscribe(
           (data: any) => {
-            this.usuarios = this.usuarios.filter((usuario: users) => usuario.idUsuario != idUsuario);
-            Swal.fire('Usuario Eliminado', 'El Usuario ha sido Eliminado Exitosamente', 'success')
+            Swal.fire('Usuario Desactivado', 'El Usuario ha sido Desactivado Exitosamente', 'success')
           },
           (error: any) => {
             console.log(error
             );
+            Swal.fire('ERROR', 'Error al Desactivar el Usuario', 'error')
+          }
+        )
+      }
+    })
+  }
 
-            Swal.fire('ERROR', 'Error al Eliminar el Usuario', 'error')
+
+  public activarUsuario(datos: any) {
+
+    let username = this.authService.getUsername()
+
+    if (this.datos.password == '' || this.datos.password == null) {
+      Swal.fire('ERROR', 'Debe colocar la Contraseña', 'error')
+      return
+    }
+
+    Swal.fire({
+      title: 'Activar El Cliente',
+      text: '¿Estas seguro de Activar el Cliente?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Activar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.usuariosService.activarUsuario().subscribe(
+          (data: any) => {
+            Swal.fire('Usuario Activado', 'El Usuario ha sido Activado Exitosamente', 'success')
+          },
+          (error: any) => {
+            console.log(error
+            );
+            Swal.fire('ERROR', 'Error al Activar el Usuario', 'error')
           }
         )
       }
     })
   }
 }
-
-
-
-
-
 

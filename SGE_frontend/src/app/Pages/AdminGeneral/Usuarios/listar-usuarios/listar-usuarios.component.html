@@ -12,7 +12,7 @@
                     <label for="staticEmail" class="col-md-2 col-form-label mt-4">Cliente:</label>
                     <div class="col-md-10">
                         <input [(ngModel)]="nombre" type="text" class="form-control inputs" id="staticEmail" ngModel
-                            name="cedula" (keyup.enter)="filtrarUsuarios()">
+                            name="nombre" (keyup.enter)="filtrarUsuarios()">
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
                         <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -39,27 +39,108 @@
                 <table class="table">
                     <thead class="table table-dark">
                         <tr class="align-middle">
+                            <th>Username</th>
                             <th>Nombres</th>
                             <th>Apellidos</th>
                             <th>Telefono</th>
-                            <th>Correo</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let c of usuarios; let i = index" class="align-middle">
+                            <th>{{ c.username }}</th>
                             <th>{{ c.nombres }}</th>
                             <th>{{ c.apellidos }}</th>
                             <th>{{ c.celular }}</th>
-                            <th>{{ c.email }}</th>
+                            <th>{{ c.status ? 'Activado' : 'Desactivado'}}</th>
                             <td>
-                                <button *appRolesPerfiles="rolesArray[6]" (click)="eliminarUsuario(c.idUsuario)"
-                                    class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+                                <button *ngIf="!c.status" type="button" class="btn btn-info btn-sm me-3"
+                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+                                    Activar
+                                </button>
+
+                                <ng-container *ngIf="c.status">
+                                    <button *appRolesPerfiles="rolesArray[6]" type="button"
+                                        class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop">
+                                        Desactivar
+                                    </button>
+                                </ng-container>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <br>
+        </div>
+    </div>
+
+    <!-- Modales para ver detalles 
+    <div class="modal fade" *ngFor="let c of usuarios; let i = index" [id]="'verDetallesModal' + i" tabindex="-1"
+        aria-labelledby="verDetallesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verDetallesModalLabel">Detalles del Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <!-- Modal Desactivar -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">DESACTIVAR USUARIO</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Quiere Desactivar este Usuario?
+                </div>
+                <div>
+                    <h5 class="modal-title">Ingresar Contraseña</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="password">Contraseña:</label>
+                    <input [(ngModel)]="datos.password" type="password" id="password" name="password">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" (click)="desactivarUsuario(datos)">Desactivar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Activar -->
+    <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">ACTIVAR USUARIO</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Quiere Activar este Usuario?
+                </div>
+                <div>
+                    <h5 class="modal-title">Ingresar Contraseña</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="password">Contraseña:</label>
+                    <input [(ngModel)]="datos.password" type="password" id="password" name="password">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" (click)="activarUsuario(datos)">Activar</button>
+                </div>
+            </div>
         </div>
     </div>
