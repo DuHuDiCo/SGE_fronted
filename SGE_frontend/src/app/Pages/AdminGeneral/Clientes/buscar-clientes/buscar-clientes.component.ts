@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { BuscarClientesService } from 'src/app/Services/clientes/BuscarClientes/buscar-clientes.service';
+import { Ciudad } from 'src/app/Types/Ciudades';
 import { Cliente } from 'src/app/Types/Cliente';
 import { DatosContacto, Direccion } from 'src/app/Types/DatosCliente';
+import { Departamento } from 'src/app/Types/Departamento';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,6 +13,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./buscar-clientes.component.css']
 })
 export class BuscarClientesComponent implements OnInit {
+
+  @ViewChild('mySelect')
+  mySelect!: ElementRef<HTMLSelectElement>;
 
   cliente: Cliente[] = []
 
@@ -29,6 +34,12 @@ export class BuscarClientesComponent implements OnInit {
     correos: []
   }
 
+  idDep:number = 0
+
+  ciudades:Ciudad[] = []
+
+  department:Departamento[] = []
+
   newTelefono:string = ''
   newDireccion:Direccion = {
     "direccion": "",
@@ -40,7 +51,7 @@ export class BuscarClientesComponent implements OnInit {
 
 
 
-  constructor(private clienteService: BuscarClientesService, private authService: AuthenticationService) { }
+  constructor(private clienteService: BuscarClientesService, private authService: AuthenticationService, private renderer: Renderer2, private elementRef: ElementRef ) { }
 
   ngOnInit(): void {
     this.listarClientes();
@@ -118,6 +129,7 @@ export class BuscarClientesComponent implements OnInit {
 
       case "abrirDireccion":
         this.direccion = true
+        this.listarDep();
         break;
 
       case "abrirCorreo":
@@ -143,6 +155,10 @@ export class BuscarClientesComponent implements OnInit {
     this.datos.direcciones = [];
     this.datos.correos = [];
 
+    var depa = this.department.find((d:any) => d.id == this.idDep)
+    if(depa != null){
+      this.newDireccion.departamento = depa.name
+    }
 
     this.validarCampos()
 
@@ -161,19 +177,45 @@ export class BuscarClientesComponent implements OnInit {
   validarCampos(){
     if(this.telefono === true){
       if(this.newTelefono == null || this.newTelefono == ''){
-        console.log('Telefono Vacio');
+        Swal.fire('Error', 'Si desea Agregar un Nuevo Teléfono debe de llenar el campo', 'error')
         return
       } else {
         this.datos.telefonos.push(this.newTelefono)
+        Swal.fire('Felicidades', 'El Teléfono ha sido agregado con éxito', 'success')
+      }
+    }
+    if(this.direccion === true){
+      if(this.newDireccion.pais == '' || this.newDireccion.pais == null){
+        Swal.fire('Error', 'Debe de llenar El Pais', 'error')
+        return
+      }
+      
+      if(this.newDireccion.departamento == '' || this.newDireccion.departamento == null){
+        Swal.fire('Error', 'Debe de llenar El Departamento', 'error')
+        return
+      }
+      if(this.newDireccion.ciudad == '' || this.newDireccion.ciudad == null){
+        Swal.fire('Error', 'Debe de llenar La Ciudad', 'error')
+        return
+      }
+      if(this.newDireccion.direccion == '' || this.newDireccion.direccion == null){
+        Swal.fire('Error', 'Debe de llenar la Direccion', 'error')
+        return
+      }
+      else {
+        this.datos.direcciones.push(this.newDireccion)
+        Swal.fire('Felicidades', 'La Nueva Direccion ha sido agregada con éxito', 'success')
       }
     }
 
+
     if(this.correo === true){
       if(this.newCorreo == null || this.newCorreo == ''){
-        console.log('Correo Vacio');
+        Swal.fire('Error', 'Si desea Agregar un Nuevo Correo debe de llenar el campo', 'error')
         return
       } else {
         this.datos.correos.push(this.newCorreo)
+        Swal.fire('Felicidades', 'El Correo ha sido agregado con éxito', 'success')
       }
     }
   }
@@ -208,10 +250,42 @@ export class BuscarClientesComponent implements OnInit {
       clienteFound.telefonos = data.telefonos
     }
 
+    if(clienteFound?.direcciones != undefined){
+      clienteFound.direcciones = data.direcciones
+    }
+
     if(clienteFound?.correosElectronicos != undefined){
       clienteFound.correosElectronicos = data.correosElectronicos
     }
   }
+
+  listarDep(){
+    this.clienteService.listarDepartamentos().subscribe(
+      (data:any) => {
+        this.department = data
+        console.log(data);
+      }, (error:any) => {
+        console.log(error);
+        Swal.fire('Error', 'Error al cargar los departamentos', 'error');
+      }
+    )
+  }
+
+  listarCiudadByDep(){
+    if(this.idDep > 0){
+      this.renderer.removeAttribute(this.mySelect.nativeElement, 'disabled');
+    } else {
+      this.renderer.setAttribute(this.mySelect.nativeElement, 'disabled', 'true');
+    }
+    this.clienteService.listarCiudadByDepartamento(this.idDep).subscribe(
+      (data:any) => {
+        this.ciudades = data
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
 }
 
 

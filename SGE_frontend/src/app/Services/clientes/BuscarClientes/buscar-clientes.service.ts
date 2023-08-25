@@ -27,4 +27,12 @@ export class BuscarClientesService {
   public updateDatos(datos:DatosContacto){
     return this.http.put(`${this.Url}/clientes/updateDatosContacto`, datos)
   }
+
+  listarDepartamentos(){
+    return this.http.get(`https://api-colombia.com/api/v1/Department/`)
+  }
+
+  listarCiudadByDepartamento(id:number){
+    return this.http.get(`https://api-colombia.com/api/v1/Department/${id}/cities`)
+  }
 }
