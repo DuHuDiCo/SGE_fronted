@@ -14,14 +14,14 @@
                     <!-- Login Form -->
                     <form (ngSubmit)="iniciarSesion()">
                         <div class="usuario">
-                            <i class="fa-solid fa-user"></i>
-                            <input type="text" id="login" class="fadeIn second" name="username" placeholder="usuario"
+                            <i class="fa-solid fa-user icon"></i>
+                            <input type="text" id="login" class="fadeIn second" name="username" placeholder="Usuario"
                                 [(ngModel)]="jwtRequest.username">
                         </div>
                         <div class="contraseña">
-                            <i class="fa-solid fa-key"></i>
+                            <i class="fa-solid fa-key icon"></i>
                             <input type="password" id="password" class="fadeIn third" name="password"
-                                placeholder="contraseña" [(ngModel)]="jwtRequest.password">
+                                placeholder="Contraseña" [(ngModel)]="jwtRequest.password">
                         </div>
                         <input type="submit" class="fadeIn fourth" value="Entrar">
                     </form>

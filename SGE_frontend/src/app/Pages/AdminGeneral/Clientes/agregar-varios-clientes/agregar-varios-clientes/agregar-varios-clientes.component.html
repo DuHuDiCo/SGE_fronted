@@ -2,21 +2,24 @@
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <h1 class="titulo">Agregar Varios Clientes</h1>
-            <div class="row">
-                <label for="">Delimitante</label>
-                    <select [(ngModel)]="delimitante" name="delimitante" id="" class="form-select m-2">
-                        <option value="">Seleccionar</option>
-                        <option value=",">Coma( , )</option>
-                        <option value=";">Punto Y Coma( ; )</option>
-                        <option value="|">Barra( | )</option>
-                        <option value="    ">Tab</option>
-                        <option value=" ">Espacio</option>
-                    </select>
-                <div class="col">
-                    <div class="input-group mb-3">
-                        <input (change)="obtenerArchivo($event)" type="file" class="form-control input-usuario" style="border: 1px solid black;">
-                    </div>
+            <div class="row text-center">
+              <div class="col-md-12">
+                <label for="text">Delimitante</label>
+                <select [(ngModel)]="delimitante" name="delimitante" id="" class="form-select m-2">
+                    <option value="">Seleccionar</option>
+                    <option value=",">Coma( , )</option>
+                    <option value=";">Punto Y Coma( ; )</option>
+                    <option value="|">Barra( | )</option>
+                    <option value="    ">Tab</option>
+                    <option value=" ">Espacio</option>
+                </select>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <input (change)="obtenerArchivo($event)" type="file" class="form-control input-usuario" style="border: 1px solid black;">
                 </div>
+            </div>
+              </div>
+                
             </div>
             
             <div class="row mt-3">
