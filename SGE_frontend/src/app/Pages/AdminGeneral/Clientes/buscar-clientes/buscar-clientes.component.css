@@ -69,6 +69,14 @@
     color: white;
 }
 
+.pointer{
+    cursor: pointer;
+    color: #960010;
+}
+
+.pagination ::ng-deep .ngx-pagination .current {
+    background: #960010
+}
 
 
 .btn-guardar{

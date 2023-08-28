@@ -1,5 +1,5 @@
 *{
-    font-family: 'Rubik';
+    font-family: 'Roboto';
 }
 
 /* Boton modal */
@@ -195,7 +195,7 @@
     
 ::placeholder {
 font-size:larger;
-font-family: 'Rubik';
+font-family: 'Roboto';
 
 color: #9c9c9c;
     }

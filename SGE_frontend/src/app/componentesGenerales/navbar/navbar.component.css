@@ -105,7 +105,17 @@ svg#persona {
   
   @media (max-width: 767px) {
     .noti {
-      margin-left: 5px; /* Adjust the margin for small screens */
+      margin-left: 400px; /* Adjust the margin for small screens */
+    }
+  
+    svg#persona {
+      height: 20px; /* Adjust the height for small screens */
+    }
+  }
+
+  @media (max-width: 576px ) {
+    .noti {
+      margin-left: 50px; /* Adjust the margin for small screens */
     }
   
     svg#persona {

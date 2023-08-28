@@ -88,6 +88,7 @@ svg {
 }
 
 input {
+    text-align: center;
     border: none;
     outline: none;
     background: none;
@@ -332,7 +333,7 @@ input[type=text]:placeholder {
 /* color del titulo de inicio */
 h1 {
     color: #000000;
-    font-family: 'Rubik';
+    font-family: 'Roboto';
     font-style: initial;
     margin-bottom: 10px;
     padding: 20px;
@@ -350,7 +351,9 @@ h1 {
 
 ::placeholder {
     font-size: larger;
-    font-family: 'Rubik';
+    align-items: center;
+    text-align: center;
+    font-family: 'Roboto';
 
     color: #494747;
 }
@@ -366,4 +369,19 @@ h1 {
     .wrapper {
       padding: 30px; /* Adjust the padding for mobile-sized screens */
     }
+
+    .usuario,
+    .contraseña {
+    margin-top: 5px;
+    border-radius: 25px;
+    text-align: center;
+    width: 80%;
+    
+    }
+
+    .icon{
+        margin-top: 15px;
+    }
+
+    
 }  
