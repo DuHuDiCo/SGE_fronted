@@ -10,15 +10,19 @@ export class BuscarUsuariosService {
   constructor(private http: HttpClient) { }
 
   public listarUsuarios() {
-    return this.http.get(`${baseUrl}/usuarios/all`)
+    return this.http.get(`${baseUrl}/users/getAll`)
   }
 
   public filtrarUsuarios(nombres:string) {
-    return this.http.get(`${baseUrl}/usuarios/find/${nombres}`)
+    return this.http.get(`${baseUrl}/users/find/${nombres}`)
   }
 
-  public eliminarUsuario(idUsuario: Number, username: string | null) {
-    return this.http.delete(`${baseUrl}/usuarios/delete/${idUsuario}?username=${username}`)
+  public desactivarUsuario() {
+    return this.http.delete(`${baseUrl}/users/delete/`)
+  }
+
+  public activarUsuario() {
+    return this.http.delete(`${baseUrl}/users/activate/`)
   }
 }
 
