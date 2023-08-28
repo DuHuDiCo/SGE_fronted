@@ -1,6 +1,7 @@
 export type DatosContacto = {
+    username:string
     cedulaCliente:string,
-    telefonos:string[],
+    telefonos:Telefono[],
     correos:string[],
     direcciones:Direccion[]
 }
@@ -10,4 +11,9 @@ export type Direccion = {
     ciudad:string,
     departamento:string,
     pais:string
+}
+
+export type Telefono = {
+    indicativo: string,
+    numero: string
 }

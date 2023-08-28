@@ -117,20 +117,27 @@
                                             <div class="row">
                                                 <div  class="col-md-12">
                                                     <section *ngIf="!telefono">
-                                                        <span *ngFor="let telefono of telefonos"><p *ngIf="telefono.isCurrent"><button class="btn" (click)="botones('abrirTelefono')"><i class="fa-solid fa-plus pointer"></i>&nbsp;</button><strong>Teléfono:</strong>
+                                                        <span *ngFor="let telefono of telefonoTrue"><p><button class="btn" (click)="botones('abrirTelefono')"><i class="fa-solid fa-plus pointer"></i>&nbsp;</button><strong>Teléfono:</strong>
                                                             +{{ telefono.indicativo }} {{
                                                                 telefono.numero }}
                                                         </p></span>
                                                     </section>
                                                     <div *ngIf="telefono" class="mb-3">
-                                                        <input [(ngModel)]="newTelefono" type="tel" class="form-control text-center" name="newTelefono" placeholder="Ingrese el Nuevo Teléfono">
+                                                        <div class="row">
+                                                            <div class="col-md-5">
+                                                                <input [(ngModel)]="newTelefono.indicativo" type="tel" class="form-control text-center" name="indicativo" placeholder="Ingrese el Indicativo">
+                                                            </div>
+                                                            <div class="col-md-7">
+                                                                <input [(ngModel)]="newTelefono.numero" type="tel" class="form-control text-center" name="numero" placeholder="Ingrese el Nuevo Teléfono">
+                                                            </div>
+                                                        </div>
                                                         <button (click)="guardarDatos('confirmarTel')" class="btn btn-success mt-3">Confirmar</button>
                                                         <button (click)="botones('cerrarTelefono')" class="btn btn-danger ms-2 mt-3">Cancelar</button>
                                                         
                                                     </div>
                                                     <section *ngIf="!direccion">
-                                                        <span *ngFor="let direccion of direcciones"><p *ngIf="direccion.isCurrent"><button class="btn" (click)="botones('abrirDireccion')"><i class="fa-solid fa-plus pointer"></i>&nbsp;</button>
-                                                            <strong>Dirección:</strong>{{
+                                                        <span *ngFor="let direccion of direccionTrue"><p><button class="btn" (click)="botones('abrirDireccion')"><i class="fa-solid fa-plus pointer"></i>&nbsp;</button>
+                                                            <strong>Dirección:</strong> {{
                                                                 direccion.direccion + ' ' +
                                                                 direccion.pais + ', ' + direccion.departamento + ' - ' +
                                                                 direccion.ciudad }}</p></span>
@@ -163,8 +170,8 @@
                                                         <button (click)="botones('cerrarDireccion')" class="btn btn-danger ms-2 mt-3">Cancelar</button>
                                                     </div>
                                                     <section *ngIf="!correo">
-                                                        <span *ngFor="let correo of correos"><p *ngIf="correo.isCurrent"><button class="btn" (click)="botones('abrirCorreo')"><i class="fa-solid fa-plus pointer"></i>&nbsp;</button>
-                                                            <strong>Correo:</strong>{{
+                                                        <span *ngFor="let correo of correoTrue"><p><button class="btn" (click)="botones('abrirCorreo')"><i class="fa-solid fa-plus pointer"></i>&nbsp;</button>
+                                                            <strong>Correo:</strong> {{
                                                                 correo.email }}
                                                         </p></span>
                                                     </section>
@@ -183,7 +190,7 @@
                             <hr class="border-top" style="background-color: black;">
 
                             <!-- ACORDEON TELEFONOS -->
-                            <div class="accordion" id="accordionTelefono">
+                            <div *ngIf="!telefonoEmpty" class="accordion" id="accordionTelefono">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button"
@@ -206,13 +213,14 @@
                                                     </thead>
                                                     <tbody>
                                                       <tr *ngFor="let telefono of telefonos | paginate: { itemsPerPage: 5, currentPage: pageTelefono, id: 'telefono' }">
-                                                        <td *ngIf="!telefono.isCurrent">+{{ telefono.indicativo }} {{ telefono.numero }}</td>
-                                                        <td *ngIf="!telefono.isCurrent">{{ telefono.fechaCreacion | date:"dd/MM/yyyy"}} A las {{ telefono.fechaCreacion | date:"shortTime"}}</td>
+                                                        <td>+{{ telefono.indicativo }} {{ telefono.numero }}</td>
+                                                        <td>{{ telefono.fechaCreacion | date:"dd/MM/yyyy"}} A las {{ telefono.fechaCreacion | date:"shortTime"}}</td>
+                                                        <td>{{ telefono.createBy }}</td>
                                                       </tr>
                                                     </tbody>
                                                   </table>
-                                                  <div class="row">
-                                                    <div class="col-md-8 offset-4">
+                                                  <div class="row text-center">
+                                                    <div class="col-md-12 d-flex justify-content-center">
                                                         <pagination-controls id="telefono" class="pagination" (pageChange)="pageTelefono = $event;" previousLabel="Anterior"
                                                         nextLabel="Siguiente"></pagination-controls>
                                                     </div>
@@ -226,7 +234,7 @@
                             </div>
 
                             <!-- ACORDEON DIRECCIONES -->
-                            <div class="accordion" id="accordionDireccion">
+                            <div *ngIf="!direccionEmpty" class="accordion" id="accordionDireccion">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button"
@@ -252,17 +260,17 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr *ngFor="let direccion of direcciones | paginate: { itemsPerPage: 5, currentPage: pageDireccion, id: 'direccion' }">
-                                                            <td *ngIf="!direccion.isCurrent">{{ direccion.direccion }}</td>
-                                                            <td *ngIf="!direccion.isCurrent">{{ direccion.pais }}</td>
-                                                            <td *ngIf="!direccion.isCurrent">{{ direccion.departamento }}</td>
-                                                            <td *ngIf="!direccion.isCurrent">{{ direccion.ciudad }}</td>
-                                                            <td *ngIf="!direccion.isCurrent">{{ direccion.fechaCreacion | date:"dd/MM/yyyy" }} A las {{ direccion.fechaCreacion | date:"shortTime"}}</td>
-                                                            <td *ngIf="!direccion.isCurrent"></td>
+                                                            <td>{{ direccion.direccion }}</td>
+                                                            <td>{{ direccion.pais }}</td>
+                                                            <td>{{ direccion.departamento }}</td>
+                                                            <td>{{ direccion.ciudad }}</td>
+                                                            <td>{{ direccion.fechaCreacion | date:"dd/MM/yyyy" }} A las {{ direccion.fechaCreacion | date:"shortTime"}}</td>
+                                                            <td>{{ direccion.createBy }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                                <div class="row">
-                                                    <div class="col-md-8 offset-4">
+                                                <div class="row text-center">
+                                                    <div class="col-md-12 d-flex justify-content-center">
                                                         <pagination-controls id="direccion" class="pagination" (pageChange)="pageDireccion = $event;" previousLabel="Anterior"
                                                         nextLabel="Siguiente"></pagination-controls>
                                                     </div>
@@ -274,7 +282,7 @@
                             </div>
 
                             <!-- ACORDEON CORREOS -->
-                            <div class="accordion" id="accordionCorreos">
+                            <div *ngIf="!correoEmpty" class="accordion" id="accordionCorreos">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button"
@@ -297,14 +305,14 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr *ngFor="let correo of correos | paginate: { itemsPerPage: 5, currentPage: pageCorreo, id: 'correo' }">
-                                                            <td *ngIf="!correo.isCurrent">{{ correo.email }}</td>
-                                                            <td *ngIf="!correo.isCurrent">{{ correo.fechaCreacion | date:"dd/MM/yyyy" }} A las {{ correo.fechaCreacion | date:"shortTime" }}</td>
-                                                            <td *ngIf="!correo.isCurrent"></td>
+                                                            <td>{{ correo.email }}</td>
+                                                            <td>{{ correo.fechaCreacion | date:"dd/MM/yyyy" }} A las {{ correo.fechaCreacion | date:"shortTime" }}</td>
+                                                            <td>{{ correo.createBy }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                                <div class="row">
-                                                    <div class="col-md-8 offset-4">
+                                                <div class="row text-center">
+                                                    <div class="col-md-12 d-flex justify-content-center">
                                                         <pagination-controls  id="correo" class="pagination" (pageChange)="pageCorreo = $event;" previousLabel="Anterior"
                                                         nextLabel="Siguiente"></pagination-controls>
                                                     </div>

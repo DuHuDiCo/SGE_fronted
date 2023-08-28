@@ -3,7 +3,7 @@ import { AuthenticationService } from 'src/app/Services/authentication/authentic
 import { BuscarClientesService } from 'src/app/Services/clientes/BuscarClientes/buscar-clientes.service';
 import { Ciudad } from 'src/app/Types/Ciudades';
 import { Cliente } from 'src/app/Types/Cliente';
-import { DatosContacto, Direccion } from 'src/app/Types/DatosCliente';
+import { DatosContacto, Direccion, Telefono } from 'src/app/Types/DatosCliente';
 import { Departamento } from 'src/app/Types/Departamento';
 import Swal from 'sweetalert2';
 
@@ -39,6 +39,7 @@ export class BuscarClientesComponent implements OnInit {
   correo: boolean = false
 
   datos:DatosContacto = {
+    username: '',
     cedulaCliente: this.cedula,
     telefonos: [],
     direcciones: [],
@@ -49,13 +50,24 @@ export class BuscarClientesComponent implements OnInit {
   direcciones:any[] = []
   correos:any[] = []
 
+  correoTrue:any[] = []
+  telefonoTrue:any[] = []
+  direccionTrue:any[] = []
+
+  telefonoEmpty:boolean = false
+  direccionEmpty:boolean = false
+  correoEmpty:boolean = false
+
   idDep:number = 0
 
   ciudades:Ciudad[] = []
 
   department:Departamento[] = []
 
-  newTelefono:string = ''
+  newTelefono:Telefono = {
+    "indicativo": "",
+    "numero": ""
+  }
   newDireccion:Direccion = {
     "direccion": "",
     "ciudad": "",
@@ -72,6 +84,7 @@ export class BuscarClientesComponent implements OnInit {
     this.listarClientes();
   }
 
+  //METODO PARA LISTAR CLIENTES
   private listarClientes() {
     this.clienteService.listarClientes().subscribe(
       (data: any) => {
@@ -88,6 +101,7 @@ export class BuscarClientesComponent implements OnInit {
     );
   }
 
+  //METODO PARA FILTRAR UN CLIENTE POR SU CEDULA
   public filtrar() {
     this.cliente = [];
     if (this.cedula) {
@@ -106,6 +120,7 @@ export class BuscarClientesComponent implements OnInit {
     }
   }
 
+  //METODO PARA ELIMINAR UN CLIENTE
   public eliminarCliente(idCliente: Number) {
 
     let username = this.authService.getUsername()
@@ -130,7 +145,11 @@ export class BuscarClientesComponent implements OnInit {
             console.log(error
             );
 
-            Swal.fire('Error', 'Error al Eliminar el Cliente', 'error')
+            if(error = error.error.text){
+              Swal.fire('Error', 'Error al Eliminar el Cliente, Solo los SuperAdministradores Pueden eliminar clientes', 'error')
+            }
+
+            
           }
         )
       }
@@ -138,6 +157,7 @@ export class BuscarClientesComponent implements OnInit {
 
   }
 
+  //METODO PARA ABRIR Y CERRAR LOS INPUTS
   botones(accion: string) {
     switch (accion) {
 
@@ -165,8 +185,15 @@ export class BuscarClientesComponent implements OnInit {
         break;
     }
   }
+
+    acordeon() {
+      this.telefonoEmpty = this.telefonos.length === 0;
+      this.direccionEmpty = this.direcciones.length === 0;
+      this.correoEmpty = this.correos.length === 0;
+  }
   
 
+  //METODO PARA GUARDAR LOS DATOS
   guardarDatos(boton:string){
 
     this.datos.telefonos = [];
@@ -182,20 +209,34 @@ export class BuscarClientesComponent implements OnInit {
 
     console.log(this.datos);
 
+    var username = this.authService.getUsername()
+    if(username == null || username == ''){
+      return
+    } 
+    this.datos.username = username
+
     this.clienteService.updateDatos(this.datos).subscribe(
       (data:any) => {
         this.limpiarCampos(boton);
         this.actualizarEnVista(data);
+        this.acordeon()
       }, (error:any) => {
         console.log(error);
       }
     )
   }
 
+  //VALIDACIONES DE LOS INPUTS
   validarCampos(){
     if(this.telefono === true){
-      if(this.newTelefono == null || this.newTelefono == ''){
-        Swal.fire('Error', 'Si desea Agregar un Nuevo Teléfono debe de llenar el campo', 'error')
+      const telefonoInd = this.newTelefono.indicativo.trim();
+      if(this.newTelefono.indicativo.trim() == '' || isNaN(parseInt(telefonoInd))){
+        Swal.fire('Error', 'Digite el indicativo o utilice datos Válidos', 'error')
+        return
+      } 
+      const telefonoNum = this.newTelefono.numero.trim();
+      if(this.newTelefono.numero.trim() == '' || isNaN(parseInt(telefonoNum)) || this.newTelefono.numero.trim().length > 10 || this.newTelefono.numero.trim().length < 10){
+        Swal.fire('Error', 'Digite el Numero o utilice datos Válidos', 'error')
         return
       } else {
         this.datos.telefonos.push(this.newTelefono)
@@ -203,20 +244,20 @@ export class BuscarClientesComponent implements OnInit {
       }
     }
     if(this.direccion === true){
-      if(this.newDireccion.pais == '' || this.newDireccion.pais == null){
+      if(this.newDireccion.pais.trim() == '' || this.newDireccion.pais.trim() == null){
         Swal.fire('Error', 'Debe de llenar El Pais', 'error')
         return
       }
       
-      if(this.newDireccion.departamento == '' || this.newDireccion.departamento == null){
+      if(this.newDireccion.departamento.trim() == '' || this.newDireccion.departamento.trim() == null){
         Swal.fire('Error', 'Debe de llenar El Departamento', 'error')
         return
       }
-      if(this.newDireccion.ciudad == '' || this.newDireccion.ciudad == null){
+      if(this.newDireccion.ciudad.trim() == '' || this.newDireccion.ciudad.trim() == null){
         Swal.fire('Error', 'Debe de llenar La Ciudad', 'error')
         return
       }
-      if(this.newDireccion.direccion == '' || this.newDireccion.direccion == null){
+      if(this.newDireccion.direccion.trim() == '' || this.newDireccion.direccion.trim() == null){
         Swal.fire('Error', 'Debe de llenar la Direccion', 'error')
         return
       }
@@ -228,8 +269,12 @@ export class BuscarClientesComponent implements OnInit {
 
 
     if(this.correo === true){
-      if(this.newCorreo == null || this.newCorreo == ''){
+      if(this.newCorreo.trim() == null || this.newCorreo.trim() == ''){
         Swal.fire('Error', 'Si desea Agregar un Nuevo Correo debe de llenar el campo', 'error')
+        return
+      }
+      if(!this.newCorreo.trim().includes('@')){
+        Swal.fire('Error', 'Debe de ingresar un Correo Electronico Válido', 'error')
         return
       } else {
         this.datos.correos.push(this.newCorreo)
@@ -238,10 +283,14 @@ export class BuscarClientesComponent implements OnInit {
     }
   }
 
+  //METODO PARA LIMPIAR LOS CAMPOS
   limpiarCampos(boton:string){
     switch (boton) {
       case "confirmarTel":
-        this.newTelefono  = ''
+        this.newTelefono  = {
+          "indicativo": '',
+          "numero": ''
+        }
         this.telefono = false
         break;
 
@@ -262,21 +311,30 @@ export class BuscarClientesComponent implements OnInit {
     }
   }
 
+  //METODO PARA ACTUALIZAR LOS DATOS EN EL MODAL
   actualizarEnVista(data:any){
     var clienteFound = this.cliente.find((c:any) => c.numeroDocumento == data.numeroDocumento)
     if(clienteFound?.telefonos != undefined){
       clienteFound.telefonos = data.telefonos
+      this.telefonoTrue = data.telefonos.filter((t:any) => t.isCurrent != false)
+      this.telefonos = data.telefonos.filter((t:any) => t.isCurrent != true)
     }
+    
 
     if(clienteFound?.direcciones != undefined){
       clienteFound.direcciones = data.direcciones
+      this.direccionTrue = data.direcciones.filter((d:any) => d.isCurrent != false)
+      this.direcciones = data.direcciones.filter((t:any) => t.isCurrent != true)
     }
 
     if(clienteFound?.correosElectronicos != undefined){
       clienteFound.correosElectronicos = data.correosElectronicos
+      this.correoTrue = data.correosElectronicos.filter((cor:any) => cor.isCurrent != false)
+      this.correos = data.correosElectronicos.filter((t:any) => t.isCurrent != true)
     }
   }
 
+  // LISTAR DEPARTAMENTOS
   listarDep(){
     this.clienteService.listarDepartamentos().subscribe(
       (data:any) => {
@@ -289,6 +347,7 @@ export class BuscarClientesComponent implements OnInit {
     )
   }
 
+  //LISTAR CIUDADES POR DEPARTAMENTO
   listarCiudadByDep(){
     if(this.idDep > 0){
       this.renderer.removeAttribute(this.mySelect.nativeElement, 'disabled');
@@ -304,17 +363,33 @@ export class BuscarClientesComponent implements OnInit {
     )
   }
 
+  //METODO PARA TRAER DATOS DEL CLIENTE
   metodo(cliente:Cliente){
     this.datos.cedulaCliente = cliente.numeroDocumento
     this.telefonos = cliente.telefonos
+    if(this.telefonos != undefined){
+      this.telefonoTrue = this.telefonos.filter((telTrue:any) => telTrue.isCurrent != false)
+      this.telefonos = this.telefonos.filter((tel:any) => tel.isCurrent != true)
+    }
     this.direcciones = cliente.direcciones
+    if(this.direcciones != undefined){
+      this.direccionTrue = this.direcciones.filter((dirTrue:any) => dirTrue.isCurrent != false)
+      this.direcciones = this.direcciones.filter((dir:any) => dir.isCurrent != true)
+    }
     this.correos = cliente.correosElectronicos
+    if(this.correos != undefined){
+      this.correoTrue = this.correos.filter((corTrue:any) => corTrue.isCurrent != false)
+      this.correos = this.correos.filter((cor:any) => cor.isCurrent != true)
+    }
     this.datosPersonales.fechaNacimiento = cliente.fechaNacimiento
     this.datosPersonales.lugarNacimiento = cliente.lugarNacimiento
     this.datosPersonales.fechaExpedicionDocumento = cliente.fechaExpedicionDocumento
     this.datosPersonales.lugarExpedicionDocumento = cliente.lugarExpedicionDocumento
+    this.acordeon();
 
   }
+
+
 
 }
 
