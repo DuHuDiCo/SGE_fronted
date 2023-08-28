@@ -36,7 +36,7 @@
 
     <div class="row mt-5">
         <div class="col-md-10 offset-md-1">
-            <div class="table-container">
+            <div class="table-responsive">
                 <table class="table">
                     <thead class="table table-dark">
                         <tr class="align-middle">
@@ -48,31 +48,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let c of cliente; let i = index" class="align-middle">
-                            <th>{{ c.nombres }}</th>
-                            <th>{{ c.apellidos }}</th>
-                            <th>{{ c.tipoDocumento }}</th>
-                            <th>{{ c.numeroDocumento }}</th>
-                            <td>
-                                <button class="btn btn-info btn-sm me-3"><i class="fa-regular fa-eye"
+                        <tr *ngFor="let c of cliente" class="align-middle">
+                            <td>{{ c.nombres }}</td>
+                            <td>{{ c.apellidos }}</td>
+                            <td>{{ c.tipoDocumento }}</td>
+                            <td>{{ c.numeroDocumento }}</td>
+                            <td class="d-flex justify-content-between justify-content-md-center align-items-center">
+                                <button (click)="metodo(c)" class="btn btn-info btn-sm me-3"><i class="fa-regular fa-eye"
                                         data-bs-toggle="modal"
-                                        [attr.data-bs-target]="'#verDetallesModal' + i"></i></button>
-
+                                        [attr.data-bs-target]="'#verDetallesModal'"></i></button>
+                            
                                 <button *appRolesPerfiles="rolesArray[6]" (click)="eliminarCliente(c.idCliente)"
                                     class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
                             </td>
+                            
                         </tr>
                     </tbody>
-
                 </table>
             </div>
             <br>
-
         </div>
     </div>
+    
 
     <!-- Modales para ver detalles -->
-    <div class="modal fade" *ngFor="let c of cliente; let i = index" [id]="'verDetallesModal' + i" tabindex="-1"
+    <div class="modal fade" id="verDetallesModal" tabindex="-1"
         aria-labelledby="verDetallesModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -86,104 +86,240 @@
                         <div class="card-header">
                             Información General
                         </div>
+                        <!-- INFORMACION PERSONAL -->
                         <div class="card-body">
-                          <div class="row">
-                            <div class="col-md-6">
-                                <div class="card text-center">
-                                    <div class="card-header">Información Personal</div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <p><strong>Fecha de Nacimiento:</strong> {{ c.fechaNacimiento | date }}</p>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 mt-2">
+                                    <div class="card text-center">
+                                        <div class="card-header">Información Personal</div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p><strong>Fecha de Nacimiento:</strong> {{ datosPersonales.fechaNacimiento | date
+                                                        }}</p>
+                                                    <p><strong>Lugar De Nacimiento:</strong> {{ datosPersonales.lugarNacimiento }}</p>
+                                                    <p><strong>Fecha Exp Doc:</strong> {{ datosPersonales.fechaExpedicionDocumento }}
+                                                    </p>
+                                                    <p><strong>Lugar De Exp:</strong> {{ datosPersonales.lugarExpedicionDocumento }}
+                                                    </p>
+                                                </div>
+
                                             </div>
                                         </div>
-                                        
                                     </div>
-                                  </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card text-center">
-                                    <div class="card-header">Datos De Contacto</div>
-                                    <div class="card-body">
-                                      <h4 class="card-title">Title</h4>
-                                      <p class="card-text">Body</p>
+                                </div>
+
+                                <!-- DATOS DE CONTACTO -->
+                                <div class="col-md-6 col-sm-12 mt-2">
+                                    <div class="card text-center">
+                                        <div class="card-header">Datos de Contacto</div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div  class="col-md-12">
+                                                    <section *ngIf="!telefono">
+                                                        <span *ngFor="let telefono of telefonos"><p *ngIf="telefono.isCurrent"><button class="btn" (click)="botones('abrirTelefono')"><i class="fa-solid fa-plus pointer"></i>&nbsp;</button><strong>Teléfono:</strong>
+                                                            +{{ telefono.indicativo }} {{
+                                                                telefono.numero }}
+                                                        </p></span>
+                                                    </section>
+                                                    <div *ngIf="telefono" class="mb-3">
+                                                        <input [(ngModel)]="newTelefono" type="tel" class="form-control text-center" name="newTelefono" placeholder="Ingrese el Nuevo Teléfono">
+                                                        <button (click)="guardarDatos('confirmarTel')" class="btn btn-success mt-3">Confirmar</button>
+                                                        <button (click)="botones('cerrarTelefono')" class="btn btn-danger ms-2 mt-3">Cancelar</button>
+                                                        
+                                                    </div>
+                                                    <section *ngIf="!direccion">
+                                                        <span *ngFor="let direccion of direcciones"><p *ngIf="direccion.isCurrent"><button class="btn" (click)="botones('abrirDireccion')"><i class="fa-solid fa-plus pointer"></i>&nbsp;</button>
+                                                            <strong>Dirección:</strong>{{
+                                                                direccion.direccion + ' ' +
+                                                                direccion.pais + ', ' + direccion.departamento + ' - ' +
+                                                                direccion.ciudad }}</p></span>
+                                                    </section>
+                                                    <div *ngIf="direccion" class="mb-3">
+                                                        <div class="col-md-12">
+                                                            <select class="form-select text-center mt-2" [(ngModel)]="newDireccion.pais" name="pais" aria-label="Default select example">
+                                                                <option value="Colombia" selected>Colombia</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <select (change)="listarCiudadByDep()" [(ngModel)]="idDep" name="idDep" class="form-select mt-2" aria-label="Default select example">
+                                                                    <option value="0" selected>Seleccione el departamento</option>
+                                                                    <option *ngFor="let d of department" value="{{ d.id }}">{{ d.name }}</option>
+                                                                  </select>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <select #mySelect [(ngModel)]="newDireccion.ciudad" name="ciudad" class="form-select mt-2" aria-label="Default select example" disabled>
+                                                                    <option selected>Seleccione la ciudad</option>
+                                                                    <option *ngFor="let c of ciudades"> {{ c.name }} </option>
+                                                                  </select>
+                                                            </div>
+                                                        </div>
+                                                            <input [(ngModel)]="newDireccion.direccion" name="direccion" type="text" class="form-control text-center mt-2" placeholder="Ingrese la Nueva Dirección">
+                                                            
+                                                        
+                                                        
+                                                        <button (click)="guardarDatos('confirmarDirec')" class="btn btn-success mt-3">Confirmar</button>
+                                                        <button (click)="botones('cerrarDireccion')" class="btn btn-danger ms-2 mt-3">Cancelar</button>
+                                                    </div>
+                                                    <section *ngIf="!correo">
+                                                        <span *ngFor="let correo of correos"><p *ngIf="correo.isCurrent"><button class="btn" (click)="botones('abrirCorreo')"><i class="fa-solid fa-plus pointer"></i>&nbsp;</button>
+                                                            <strong>Correo:</strong>{{
+                                                                correo.email }}
+                                                        </p></span>
+                                                    </section>
+                                                    <div *ngIf="correo" class="mb-3">
+                                                        <input [(ngModel)]="newCorreo" type="email" class="form-control text-center" name="newCorreo" placeholder="Ingrese el Nuevo Correo Electronico">
+                                                        <button (click)="guardarDatos('confirmarCorreo')" class="btn btn-success mt-3">Confirmar</button>
+                                                        <button (click)="botones('cerrarCorreo')" class="btn btn-danger ms-2 mt-3">Cancelar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                  </div>
+                                </div>
                             </div>
-                          </div>
+
+                            <hr class="border-top" style="background-color: black;">
+
+                            <!-- ACORDEON TELEFONOS -->
+                            <div class="accordion" id="accordionTelefono">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                            aria-expanded="false" aria-controls="collapseOne">
+                                            Historial De Teléfonos
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse"
+                                        data-bs-parent="#accordionTelefono">
+                                        <div class="accordion-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered align-middle">
+                                                    <thead class="table-dark">
+                                                      <tr>
+                                                        <th>Teléfono</th>
+                                                        <th>Fecha Creacion</th>
+                                                        <th>Creado Por</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                      <tr *ngFor="let telefono of telefonos | paginate: { itemsPerPage: 5, currentPage: pageTelefono, id: 'telefono' }">
+                                                        <td *ngIf="!telefono.isCurrent">+{{ telefono.indicativo }} {{ telefono.numero }}</td>
+                                                        <td *ngIf="!telefono.isCurrent">{{ telefono.fechaCreacion | date:"dd/MM/yyyy"}} A las {{ telefono.fechaCreacion | date:"shortTime"}}</td>
+                                                      </tr>
+                                                    </tbody>
+                                                  </table>
+                                                  <div class="row">
+                                                    <div class="col-md-8 offset-4">
+                                                        <pagination-controls id="telefono" class="pagination" (pageChange)="pageTelefono = $event;" previousLabel="Anterior"
+                                                        nextLabel="Siguiente"></pagination-controls>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+
+                            <!-- ACORDEON DIRECCIONES -->
+                            <div class="accordion" id="accordionDireccion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                            aria-expanded="false" aria-controls="collapseTwo">
+                                            Historial De Direcciones
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse"
+                                        data-bs-parent="#accordionDirecciones">
+                                        <div class="accordion-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered align-middle">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th>Direccion</th>
+                                                            <th>Pais</th>
+                                                            <th>Departamento</th>
+                                                            <th>Ciudad</th>
+                                                            <th>Fecha Creacion</th>
+                                                            <th>Creado Por</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let direccion of direcciones | paginate: { itemsPerPage: 5, currentPage: pageDireccion, id: 'direccion' }">
+                                                            <td *ngIf="!direccion.isCurrent">{{ direccion.direccion }}</td>
+                                                            <td *ngIf="!direccion.isCurrent">{{ direccion.pais }}</td>
+                                                            <td *ngIf="!direccion.isCurrent">{{ direccion.departamento }}</td>
+                                                            <td *ngIf="!direccion.isCurrent">{{ direccion.ciudad }}</td>
+                                                            <td *ngIf="!direccion.isCurrent">{{ direccion.fechaCreacion | date:"dd/MM/yyyy" }} A las {{ direccion.fechaCreacion | date:"shortTime"}}</td>
+                                                            <td *ngIf="!direccion.isCurrent"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="row">
+                                                    <div class="col-md-8 offset-4">
+                                                        <pagination-controls id="direccion" class="pagination" (pageChange)="pageDireccion = $event;" previousLabel="Anterior"
+                                                        nextLabel="Siguiente"></pagination-controls>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ACORDEON CORREOS -->
+                            <div class="accordion" id="accordionCorreos">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                            aria-expanded="false" aria-controls="collapseThree">
+                                            Historial De Correos Electrónicos
+                                        </button>
+                                    </h2>
+                                    <div id="collapseThree" class="accordion-collapse collapse"
+                                        data-bs-parent="#accordionCorreos">
+                                        <div class="accordion-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered align-middle">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th>Email</th>
+                                                            <th>Fecha Creación</th>
+                                                            <th>Creado Por</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let correo of correos | paginate: { itemsPerPage: 5, currentPage: pageCorreo, id: 'correo' }">
+                                                            <td *ngIf="!correo.isCurrent">{{ correo.email }}</td>
+                                                            <td *ngIf="!correo.isCurrent">{{ correo.fechaCreacion | date:"dd/MM/yyyy" }} A las {{ correo.fechaCreacion | date:"shortTime" }}</td>
+                                                            <td *ngIf="!correo.isCurrent"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="row">
+                                                    <div class="col-md-8 offset-4">
+                                                        <pagination-controls  id="correo" class="pagination" (pageChange)="pageCorreo = $event;" previousLabel="Anterior"
+                                                        nextLabel="Siguiente"></pagination-controls>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                    <!-- <table class="table">
-                        <tr>
-                            <td><strong>Fecha Nacimiento:</strong></td>
-                            <td>{{ c.fechaNacimiento | date }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Lugar De Nacimiento:</strong></td>
-                            <td>{{ c.lugarNacimiento }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Fecha Exp Doc:</strong></td>
-                            <td>{{ c.fechaExpedicionDocumento }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Lugar De Exp:</strong></td>
-                            <td>{{ c.lugarExpedicionDocumento }}</td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Teléfonos:</td>
-                            <td>
-                                <ul>
-                                    <li *ngFor="let telefono of c.telefonos">{{ telefono.indicativo }} {{
-                                        telefono.numero }}</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Direcciones:</td>
-                            <td>
-                                <ul>
-                                    <li *ngFor="let direccion of c.direcciones">{{ direccion.direccion + ' ' +
-                                        direccion.pais + ', ' + direccion.departamento + ' - ' + direccion.ciudad }}
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Correos:</td>
-                            <td>
-                                <ul>
-                                    <li *ngFor="let correo of c.correosElectronicos">{{ correo.email }}</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Referencias Comerciales:</td>
-                            <td>
-                                <ul>
-                                    <li *ngFor="let r of c.referenciasComerciales">{{ r.nombreCompleto }} <br> {{ r.telefono }}</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Referencias Personales:</td>
-                            <td>
-                                <ul>
-                                    <li *ngFor="let r of c.referenciasPersonales">{{ r.nombreCompleto }} <br> {{ r.telefono }}</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Referencias Familiares:</td>
-                            <td>
-                                <ul>
-                                    <li *ngFor="let r of c.referenciasFamiliares">{{ r.nombreCompleto }} <br> {{ r.telefono }}</li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </table>
-                    -->
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
+

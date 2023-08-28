@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { BuscarClientesService } from 'src/app/Services/clientes/BuscarClientes/buscar-clientes.service';
 import { AgregarUnClienteService } from 'src/app/Services/clientes/agregar-un-cliente.service';
+import { Ciudad } from 'src/app/Types/Ciudades';
 import { Cliente } from 'src/app/Types/ClienteDTO';
+import { Departamento } from 'src/app/Types/Departamento';
 
 import Swal from 'sweetalert2';
 
@@ -12,6 +15,9 @@ import Swal from 'sweetalert2';
 })
 
 export class AgregarClienteComponent implements OnInit {
+
+  @ViewChild('depart')
+  mySelect!: ElementRef<HTMLSelectElement>;
 
   cliente: Cliente = {
     nombres: "",
@@ -41,13 +47,17 @@ export class AgregarClienteComponent implements OnInit {
 
   }
 
+  department:Departamento[] = []
 
+  ciudades:Ciudad[] = []
 
-  constructor(private agregarCliente: AgregarUnClienteService, private router:Router) { }
+  idDep:number = 0
+
+  constructor(private agregarCliente: AgregarUnClienteService, private router:Router, private clienteService:BuscarClientesService, private renderer: Renderer2, private elementRef: ElementRef) { }
 
 
   ngOnInit(): void {
-
+    this.listarDep()
   }
 
   guardarClientes() {
@@ -119,6 +129,10 @@ export class AgregarClienteComponent implements OnInit {
 
     this.agregarCliente.guardarClientes(this.cliente).subscribe(
       (data: any) => {
+        var depa = this.department.find((d:any) => d.id == this.idDep)
+        if(depa != null){
+          this.cliente.direccion.departamento = depa.name
+        }
         console.log(data);
         Swal.fire('Guardado', 'Cliente guardado con Exito', 'success');
         this.cliente = {
@@ -150,6 +164,33 @@ export class AgregarClienteComponent implements OnInit {
       },
       (error) => {
         Swal.fire('ERROR', 'Error al Guardar el Cliente', 'error')
+      }
+    )
+  }
+
+  listarDep(){
+    this.clienteService.listarDepartamentos().subscribe(
+      (data:any) => {
+        this.department = data
+        console.log(data);
+      }, (error:any) => {
+        console.log(error);
+        Swal.fire('Error', 'Error al cargar los departamentos', 'error');
+      }
+    )
+  }
+
+  listarCiudadByDep(){
+    if(this.idDep > 0){
+      this.renderer.removeAttribute(this.mySelect.nativeElement, 'disabled');
+    } else {
+      this.renderer.setAttribute(this.mySelect.nativeElement, 'disabled', 'true');
+    }
+    this.clienteService.listarCiudadByDepartamento(this.idDep).subscribe(
+      (data:any) => {
+        this.ciudades = data
+      }, (error:any) => {
+        console.log(error);
       }
     )
   }

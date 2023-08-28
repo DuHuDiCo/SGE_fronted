@@ -55,11 +55,6 @@ li button {
     .offcanvas offcanvas-start size bg button i {
         margin-left: -10px;
     }
-
-    button:hover {
-        width: 200px;
-        background: inherit;
-    }
 }
 
 li button{
