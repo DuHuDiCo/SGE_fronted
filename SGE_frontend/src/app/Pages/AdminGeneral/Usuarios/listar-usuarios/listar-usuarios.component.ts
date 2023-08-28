@@ -18,13 +18,6 @@ export class BuscarUsuariosComponent implements OnInit {
 
   nombre: string = ''
 
-  datos = {
-    usernameUsuarios: '',
-    password: '',
-    datoToDelete: '',
-    
-  }
-
   constructor(private usuariosService: BuscarUsuariosService, private authService: AuthenticationService) { }
 
   ngOnInit(): void {
@@ -62,46 +55,54 @@ export class BuscarUsuariosComponent implements OnInit {
     }
   }
 
-  public desactivarUsuario(datos: any) {
+  datos = {
+    usernameUsuarios: '',
+    password: '',
+    datoToDelete: ''
+  }
 
-    let username = this.authService.getUsername()
-
-    if (this.datos.password == '' || this.datos.password == null) {
-      Swal.fire('ERROR', 'Debe colocar la Contraseña', 'error')
-      return
+  public desactivarUsuario() {
+    let username = this.authService.getUsername();
+    if (!this.datos.password || this.datos.password.trim() === '') {
+      Swal.fire('ERROR', 'Debe colocar la Contraseña', 'error');
+      return;
     }
 
     Swal.fire({
-      title: 'Deasctivar El Cliente',
-      text: '¿Estas seguro de Desactivar el Cliente?',
+      title: 'Desactivar El Cliente',
+      text: '¿Estás seguro de Desactivar el Cliente?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Desactivar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.usuariosService.desactivarUsuario().subscribe(
-          (data: any) => {
-            Swal.fire('Usuario Desactivado', 'El Usuario ha sido Desactivado Exitosamente', 'success')
-          },
-          (error: any) => {
-            console.log(error
-            );
-            Swal.fire('ERROR', 'Error al Desactivar el Usuario', 'error')
-          }
-        )
+        this.usuariosService.desactivarUsuario(this.datos.usernameUsuarios,
+          this.datos.password,
+          this.datos.datoToDelete).subscribe(
+            (data: any) => {
+              Swal.fire('Usuario Desactivado', 'El Usuario ha sido Desactivado Exitosamente', 'success');
+            },
+            (error: any) => {
+              console.log(error);
+              Swal.fire('ERROR', 'Error al Desactivar el Usuario', 'error');
+            }
+          );
       }
-    })
+    });
   }
+
+
+
 
 
   public activarUsuario(datos: any) {
 
     let username = this.authService.getUsername()
 
-    if (this.datos.password == '' || this.datos.password == null) {
+    if (this.datos.password == '' || this.datos.password.trim() === '') {
       Swal.fire('ERROR', 'Debe colocar la Contraseña', 'error')
       return
     }
