@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BuscarUsuariosService } from 'src/app/Services/BuscarUsuarios/buscar-usuarios.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { Datos } from 'src/app/Types/DatosUsuarios';
 import { users } from 'src/app/Types/Usuarios';
 import Swal from 'sweetalert2';
 
@@ -12,17 +13,25 @@ import Swal from 'sweetalert2';
 })
 export class BuscarUsuariosComponent implements OnInit {
 
+  ngOnInit(): void {
+    this.listarUsuarios();
+  }
+
   usuarios: users[] = []
 
   rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
 
   nombre: string = ''
 
-  constructor(private usuariosService: BuscarUsuariosService, private authService: AuthenticationService) { }
-
-  ngOnInit(): void {
-    this.listarUsuarios();
+  datos: Datos = {
+    usernameUsuarios: '',
+    password: '',
+    datoToDelete: {
+      usuarios: ''
+    }
   }
+
+  constructor(private usuariosService: BuscarUsuariosService, private authService: AuthenticationService) { }
 
   private listarUsuarios() {
     this.usuariosService.listarUsuarios().subscribe(
@@ -55,14 +64,14 @@ export class BuscarUsuariosComponent implements OnInit {
     }
   }
 
-  datos = {
-    usernameUsuarios: '',
-    password: '',
-    datoToDelete: ''
-  }
-
   public desactivarUsuario() {
     let username = this.authService.getUsername();
+
+    if (!this.datos.usernameUsuarios || this.datos.usernameUsuarios == null) {
+      Swal.fire('ERROR', 'Debe colocar el UserName', 'error');
+      return;
+    }
+
     if (!this.datos.password || this.datos.password.trim() === '') {
       Swal.fire('ERROR', 'Debe colocar la Contraseña', 'error');
       return;
@@ -79,17 +88,22 @@ export class BuscarUsuariosComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.usuariosService.desactivarUsuario(this.datos.usernameUsuarios,
-          this.datos.password,
-          this.datos.datoToDelete).subscribe(
-            (data: any) => {
-              Swal.fire('Usuario Desactivado', 'El Usuario ha sido Desactivado Exitosamente', 'success');
-            },
-            (error: any) => {
-              console.log(error);
-              Swal.fire('ERROR', 'Error al Desactivar el Usuario', 'error');
+        this.usuariosService.desactivarUsuario(this.datos).subscribe(
+          (data: any) => {
+            Swal.fire('Usuario Desactivado', 'El Usuario ha sido Desactivado Exitosamente', 'success');
+            this.datos = {
+              usernameUsuarios: "",
+              password: "",
+              datoToDelete: {
+                usuarios: ""
+              }
             }
-          );
+          },
+          (error: any) => {
+            console.log(error);
+            Swal.fire('ERROR', 'Error al Desactivar el Usuario', 'error');
+          }
+        );
       }
     });
   }
@@ -101,6 +115,11 @@ export class BuscarUsuariosComponent implements OnInit {
   public activarUsuario(datos: any) {
 
     let username = this.authService.getUsername()
+
+    if (!this.datos.usernameUsuarios || this.datos.usernameUsuarios == null) {
+      Swal.fire('ERROR', 'Debe colocar el UserName', 'error');
+      return;
+    }
 
     if (this.datos.password == '' || this.datos.password.trim() === '') {
       Swal.fire('ERROR', 'Debe colocar la Contraseña', 'error')
@@ -118,9 +137,16 @@ export class BuscarUsuariosComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.usuariosService.activarUsuario().subscribe(
+        this.usuariosService.activarUsuario(this.datos).subscribe(
           (data: any) => {
-            Swal.fire('Usuario Activado', 'El Usuario ha sido Activado Exitosamente', 'success')
+            Swal.fire('Usuario Activado', 'El Usuario ha sido Activado Exitosamente', 'success');
+            this.datos = {
+              usernameUsuarios: "",
+              password: "",
+              datoToDelete: {
+                usuarios: ""
+              }
+            }
           },
           (error: any) => {
             console.log(error

@@ -104,15 +104,19 @@
                     ¿Quiere Desactivar este Usuario?
                 </div>
                 <div>
-                    <h5 class="modal-title">Ingresar Contraseña</h5>
+                    <h5 class="modal-title">Ingresar los Datos</h5>
                 </div>
                 <div class="modal-body">
-                    <label for="username">Username:</label>
-                    <input [(ngModel)]="datos.usernameUsuarios" type="text" id="username" name="username">
+                    <div class="form-group">
+                      <label for="username">Username:</label>
+                      <input [(ngModel)]="datos.usernameUsuarios" type="text" id="username" name="username" class="form-control">
+                    </div>
                     
-                    <label for="password">Contraseña:</label>
-                    <input [(ngModel)]="datos.password" type="password" id="password" name="password" class="mt-4">
-                </div>
+                    <div class="form-group">
+                      <label for="password">Contraseña:</label>
+                      <input [(ngModel)]="datos.password" type="password" id="password" name="password" class="form-control">
+                    </div>
+                  </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cerrar</button>
                     <button type="button" class="btn btn-primary" (click)="desactivarUsuario()">Desactivar</button>
@@ -134,14 +138,20 @@
                     ¿Quiere Activar este Usuario?
                 </div>
                 <div>
-                    <h5 class="modal-title">Ingresar Contraseña</h5>
+                    <h5 class="modal-title">Ingresar los Datos</h5>
                 </div>
                 <div class="modal-body">
-                    <label for="password">Username:</label>
-                    <input [(ngModel)]="datos.usernameUsuarios" type="text" id="username" name="username">
-                    <label for="password">Contraseña:</label>
-                    <input [(ngModel)]="datos.password" type="password" id="password" name="password">
-                </div>
+                    <div class="form-group">
+                      <label for="username">Username:</label>
+                      <input [(ngModel)]="datos.usernameUsuarios" type="text" id="username" name="username" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="password">Contraseña:</label>
+                      <input [(ngModel)]="datos.password" type="password" id="password" name="password" class="form-control">
+                    </div>
+                  </div>
+                  
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cerrar</button>
                     <button type="button" class="btn btn-primary" (click)="activarUsuario(datos)">Activar</button>

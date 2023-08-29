@@ -17,12 +17,12 @@ export class BuscarUsuariosService {
     return this.http.get(`${baseUrl}/users/find/${nombres}`)
   }
 
-  public desactivarUsuario(usernameUsuarios:string, password:string, datoToDelete:string) {
-    return this.http.delete(`${baseUrl}/users/delete/?username=${usernameUsuarios}&password=${password}&datoToDelete=${datoToDelete}`)
+  public desactivarUsuario(desactivarUsuario:any) {
+    return this.http.delete(`${baseUrl}/users/delete/`,desactivarUsuario)
   }
 
-  public activarUsuario() {
-    return this.http.delete(`${baseUrl}/users/activate/`)
+  public activarUsuario(activarUsuario:any) {
+    return this.http.delete(`${baseUrl}/users/activate/`,activarUsuario)
   }
 }
 
