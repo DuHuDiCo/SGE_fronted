@@ -110,7 +110,7 @@ export class SystemRolesComponent implements OnInit {
             Swal.fire('Rol Eliminado', 'El Rol ha sido Eliminado Exitosamente','success')
           },
           (error) => {
-            Swal.fire('Error al Eliminar el Rol','error')            
+            Swal.fire('ERROR','Error al Eliminar el Rol','error')            
           }
         )
       }
