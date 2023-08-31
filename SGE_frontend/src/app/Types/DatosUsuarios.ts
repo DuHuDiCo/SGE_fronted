@@ -1,7 +1,5 @@
 export type Datos = {
-    usernameUsuarios:string,
-    password:string,
-    datoToDelete:{
-        usuarios: string
-    }
+    username:string,
+    passwordUser:string,
+    datoToDelete: string
 }
