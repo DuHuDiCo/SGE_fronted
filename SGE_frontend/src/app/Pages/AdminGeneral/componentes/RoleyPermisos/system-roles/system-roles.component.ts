@@ -108,6 +108,7 @@ export class SystemRolesComponent implements OnInit {
           (data) => {
             this.roles = this.roles.filter((rol:any) => rol.idRole != idRole);
             Swal.fire('Rol Eliminado', 'El Rol ha sido Eliminado Exitosamente','success')
+            window.location.reload()
           },
           (error) => {
             Swal.fire('ERROR','Error al Eliminar el Rol','error')            
