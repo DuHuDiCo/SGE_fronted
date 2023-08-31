@@ -55,13 +55,14 @@
                             <th>{{ c.celular }}</th>
                             <th>{{ c.status ? 'Activado' : 'Desactivado'}}</th>
                             <td>
-                                <button *ngIf="!c.status" type="button" class="btn btn-info btn-sm me-3"
-                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+                                <button (click)="datos.datoToDelete=c.username" *ngIf="!c.status" type="button"
+                                    class="btn btn-info btn-sm me-3" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop2">
                                     Activar
                                 </button>
 
                                 <ng-container *ngIf="c.status">
-                                    <button *appRolesPerfiles="rolesArray[6]" type="button"
+                                    <button (click)="datos.datoToDelete=c.username" type="button"
                                         class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop">
                                         Desactivar
@@ -108,15 +109,11 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                      <label for="username">Username:</label>
-                      <input [(ngModel)]="datos.usernameUsuarios" type="text" id="username" name="username" class="form-control">
+                        <label for="password">Contraseña:</label>
+                        <input [(ngModel)]="datos.passwordUser" type="password" id="password" name="password"
+                            class="form-control">
                     </div>
-                    
-                    <div class="form-group">
-                      <label for="password">Contraseña:</label>
-                      <input [(ngModel)]="datos.password" type="password" id="password" name="password" class="form-control">
-                    </div>
-                  </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cerrar</button>
                     <button type="button" class="btn btn-primary" (click)="desactivarUsuario()">Desactivar</button>
@@ -142,19 +139,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                      <label for="username">Username:</label>
-                      <input [(ngModel)]="datos.usernameUsuarios" type="text" id="username" name="username" class="form-control">
+                        <label for="password">Contraseña:</label>
+                        <input [(ngModel)]="datos.passwordUser" type="password" id="password" name="password"
+                            class="form-control">
                     </div>
-                    
-                    <div class="form-group">
-                      <label for="password">Contraseña:</label>
-                      <input [(ngModel)]="datos.password" type="password" id="password" name="password" class="form-control">
-                    </div>
-                  </div>
-                  
+                </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" (click)="activarUsuario(datos)">Activar</button>
+                    <button type="button" class="btn btn-primary" (click)="activarUsuario()">Activar</button>
                 </div>
             </div>
         </div>

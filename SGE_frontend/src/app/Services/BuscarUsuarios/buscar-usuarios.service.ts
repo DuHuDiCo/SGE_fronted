@@ -13,16 +13,17 @@ export class BuscarUsuariosService {
     return this.http.get(`${baseUrl}/users/getAll`)
   }
 
-  public filtrarUsuarios(nombres:string) {
+  public filtrarUsuarios(nombres: string) {
     return this.http.get(`${baseUrl}/users/find/${nombres}`)
   }
 
-  public desactivarUsuario(desactivarUsuario:any) {
-    return this.http.delete(`${baseUrl}/users/delete/`,desactivarUsuario)
+  public desactivarUsuario(usuario: any) {
+    return this.http.post(`${baseUrl}/users/delete`, usuario);
   }
 
-  public activarUsuario(activarUsuario:any) {
-    return this.http.delete(`${baseUrl}/users/activate/`,activarUsuario)
+
+  public activarUsuario(usuario: any) {
+    return this.http.post(`${baseUrl}/users/activate`, usuario)
   }
 }
 
