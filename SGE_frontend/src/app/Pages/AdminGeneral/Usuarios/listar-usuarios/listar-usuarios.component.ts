@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Injectable } from '@angular/core';
 import { BuscarUsuariosService } from 'src/app/Services/BuscarUsuarios/buscar-usuarios.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Datos } from 'src/app/Types/DatosUsuarios';
 import { users } from 'src/app/Types/Usuarios';
-import { BehaviorSubject } from 'rxjs';
 import Swal from 'sweetalert2';
 
 
@@ -14,30 +12,12 @@ import Swal from 'sweetalert2';
   styleUrls: ['./listar-usuarios.component.css']
 })
 
-@Injectable({
-  providedIn: 'root'
-})
-export class DataService {
-  private dataSubject = new BehaviorSubject<users[]>([]);
-  data$ = this.dataSubject.asObservable();
 
-  updateData(data: users[]) {
-    this.dataSubject.next(data);
-  }
-}
 
 export class BuscarUsuariosComponent implements OnInit {
 
-
-
-  constructor(private dataService: DataService) { }
-
   ngOnInit(): void {
     this.listarUsuarios();
-
-    this.dataService.data$.subscribe((data) => {
-      this.usuarios = data;
-    });
   }
 
   usuarios: users[] = []
@@ -121,7 +101,7 @@ export class BuscarUsuariosComponent implements OnInit {
               passwordUser: "",
               datoToDelete: ""
             };
-            this.dataService.updateData(newData);
+            window.location.reload()
           },
           (error: any) => {
             console.log(error);
@@ -167,7 +147,7 @@ export class BuscarUsuariosComponent implements OnInit {
               passwordUser: "",
               datoToDelete: ""
             };
-            this.dataService.updateData(newData);
+            window.location.reload()
           },
           (error: any) => {
             console.log(error
