@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
+import { Roles, RolesUser } from 'src/app/Types/Roles';
 
 @Component({
   selector: 'app-roles-usuario',
@@ -6,220 +8,60 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./roles-usuario.component.css']
 })
 export class RolesUsuarioComponent implements OnInit {
-  validar = {
-    cartera: false,
-    ventas: false,
-    servicios: false,
-    consignaciones: false,
-    caja: false,
-    administracion: false,
-    archivo: false,
-  };
 
-  objectGeneral = {
-    cartera: {
-      p1: false,
-      p2: false,
-      p3: false,
-      p4: false,
-      p5: false,
-      p6: false,
-    },
-    ventas: {
-      p1: false,
-      p2: false,
-      p3: false,
-      p4: false,
-      p5: false,
-      p6: false,
-    },
-    servicios: {
-      p1: false,
-      p2: false,
-      p3: false,
-      p4: false,
-      p5: false,
-      p6: false,
-    },
-    consignaciones: {
-      p1: false,
-      p2: false,
-      p3: false,
-      p4: false,
-      p5: false,
-      p6: false,
-    },
-    caja: {
-      p1: false,
-      p2: false,
-      p3: false,
-      p4: false,
-      p5: false,
-      p6: false,
-    },
-    administracion: {
-      p1: false,
-      p2: false,
-      p3: false,
-      p4: false,
-      p5: false,
-      p6: false,
-    },
-    archivo: {
-      p1: false,
-      p2: false,
-      p3: false,
-      p4: false,
-      p5: false,
-      p6: false,
-    },
-  };
+  constructor(private userAgService: UsuarioAgService, private usuarioagService: UsuarioAgService) { }
 
-  select = {
-    cartera:false,
-    caja:false,
-    ventas:false,
-    servicios:false,
-    consignaciones:false,
-    administracion:false,
-    archivo:false,
-  };
+  rolePermissionsVisibility: { [role: string]: boolean } = {};
+  selectedRolePermissions: { [role: string]: string[] } = {};
 
-  constructor() {}
+  selectedRole:string [] = []
 
-  ngOnInit(): void {}
+  IterarRol: Roles[] = []
 
-  validarCheck(rol: any) {
-    switch (rol) {
-      case 'cartera':
-        if (this.select.cartera == true) {
-          this.objectGeneral.cartera.p1 = true;
-          this.objectGeneral.cartera.p2 = true;
-          this.objectGeneral.cartera.p3 = true;
-          this.objectGeneral.cartera.p4 = true;
-          this.objectGeneral.cartera.p5 = true;
-          this.objectGeneral.cartera.p6 = true;
-        } else if (this.select.cartera == false) {
-          this.objectGeneral.cartera.p1 = false;
-          this.objectGeneral.cartera.p2 = false;
-          this.objectGeneral.cartera.p3 = false;
-          this.objectGeneral.cartera.p4 = false;
-          this.objectGeneral.cartera.p5 = false;
-          this.objectGeneral.cartera.p6 = false;
-        }
-        break;
-
-      case 'caja':
-        if (this.select.caja == true) {
-          this.objectGeneral.caja.p1 = true;
-          this.objectGeneral.caja.p2 = true;
-          this.objectGeneral.caja.p3 = true;
-          this.objectGeneral.caja.p4 = true;
-          this.objectGeneral.caja.p5 = true;
-          this.objectGeneral.caja.p6 = true;
-        } else if (this.select.caja == false) {
-          this.objectGeneral.caja.p1 = false;
-          this.objectGeneral.caja.p2 = false;
-          this.objectGeneral.caja.p3 = false;
-          this.objectGeneral.caja.p4 = false;
-          this.objectGeneral.caja.p5 = false;
-          this.objectGeneral.caja.p6 = false;
-        }
-        break;
-        
-      case 'ventas':
-        if (this.select.ventas == true) {
-          this.objectGeneral.ventas.p1 = true;
-          this.objectGeneral.ventas.p2 = true;
-          this.objectGeneral.ventas.p3 = true;
-          this.objectGeneral.ventas.p4 = true;
-          this.objectGeneral.ventas.p5 = true;
-          this.objectGeneral.ventas.p6 = true;
-        } else if (this.select.ventas == false) {
-          this.objectGeneral.ventas.p1 = false;
-          this.objectGeneral.ventas.p2 = false;
-          this.objectGeneral.ventas.p3 = false;
-          this.objectGeneral.ventas.p4 = false;
-          this.objectGeneral.ventas.p5 = false;
-          this.objectGeneral.ventas.p6 = false;
-        }
-        break;
-        
-      case 'servicios':
-        if (this.select.servicios == true) {
-          this.objectGeneral.servicios.p1 = true;
-          this.objectGeneral.servicios.p2 = true;
-          this.objectGeneral.servicios.p3 = true;
-          this.objectGeneral.servicios.p4 = true;
-          this.objectGeneral.servicios.p5 = true;
-          this.objectGeneral.servicios.p6 = true;
-        } else if (this.select.servicios == false) {
-          this.objectGeneral.servicios.p1 = false;
-          this.objectGeneral.servicios.p2 = false;
-          this.objectGeneral.servicios.p3 = false;
-          this.objectGeneral.servicios.p4 = false;
-          this.objectGeneral.servicios.p5 = false;
-          this.objectGeneral.servicios.p6 = false;
-        }
-        break;
-        
-      case 'archivo':
-        if (this.select.archivo == true) {
-          this.objectGeneral.archivo.p1 = true;
-          this.objectGeneral.archivo.p2 = true;
-          this.objectGeneral.archivo.p3 = true;
-          this.objectGeneral.archivo.p4 = true;
-          this.objectGeneral.archivo.p5 = true;
-          this.objectGeneral.archivo.p6 = true;
-        } else if (this.select.archivo == false) {
-          this.objectGeneral.archivo.p1 = false;
-          this.objectGeneral.archivo.p2 = false;
-          this.objectGeneral.archivo.p3 = false;
-          this.objectGeneral.archivo.p4 = false;
-          this.objectGeneral.archivo.p5 = false;
-          this.objectGeneral.archivo.p6 = false;
-        }
-        break;
-        
-      case 'consignaciones':
-        if (this.select.consignaciones == true) {
-          this.objectGeneral.consignaciones.p1 = true;
-          this.objectGeneral.consignaciones.p2 = true;
-          this.objectGeneral.consignaciones.p3 = true;
-          this.objectGeneral.consignaciones.p4 = true;
-          this.objectGeneral.consignaciones.p5 = true;
-          this.objectGeneral.consignaciones.p6 = true;
-        } else if (this.select.consignaciones == false) {
-          this.objectGeneral.consignaciones.p1 = false;
-          this.objectGeneral.consignaciones.p2 = false;
-          this.objectGeneral.consignaciones.p3 = false;
-          this.objectGeneral.consignaciones.p4 = false;
-          this.objectGeneral.consignaciones.p5 = false;
-          this.objectGeneral.consignaciones.p6 = false;
-        }
-        break;
-        
-      case 'administracion':
-        if (this.select.administracion == true) {
-          this.objectGeneral.administracion.p1 = true;
-          this.objectGeneral.administracion.p2 = true;
-          this.objectGeneral.administracion.p3 = true;
-          this.objectGeneral.administracion.p4 = true;
-          this.objectGeneral.administracion.p5 = true;
-          this.objectGeneral.administracion.p6 = true;
-        } else if (this.select.administracion == false) {
-          this.objectGeneral.administracion.p1 = false;
-          this.objectGeneral.administracion.p2 = false;
-          this.objectGeneral.administracion.p3 = false;
-          this.objectGeneral.administracion.p4 = false;
-          this.objectGeneral.administracion.p5 = false;
-          this.objectGeneral.administracion.p6 = false;
-        }
-        break;
-        
-      default:
-        break;
-    }
+  role: RolesUser = {
+    rol: "",
+    permisos: []
   }
 
+  ngOnInit(): void {
+    this.userAgService.listarRoles().subscribe(
+      (data: any) => {
+        this.IterarRol = data;
+        console.log(this.IterarRol)
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
+
+  seleccionarTodosPermisos(role: string) {
+    
+    const selectedRole = this.IterarRol.find(r => r.rol === role);
+  
+    if (selectedRole) {
+      const rolePermissions = selectedRole.permissions.map(pr => pr.permission);
+  
+      const allSelected = rolePermissions.every(permission =>
+        this.selectedRolePermissions[role]?.includes(permission)
+      );
+
+      if (allSelected) {
+        this.selectedRolePermissions[role] = [];
+      } else {
+        this.selectedRolePermissions[role] = [...rolePermissions];
+      }
+    }
+  }
+  
+
+  activarRol(rol: string) {
+
+    if (this.selectedRole.includes(rol)) {
+      var position = this.selectedRole.indexOf(rol)
+      this.selectedRole.splice(position, 1)
+    } else {
+      this.selectedRole.push(rol)
+    }
+  }
 }

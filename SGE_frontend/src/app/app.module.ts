@@ -19,7 +19,6 @@ import { IngresarComponent } from './Pages/Consignaciones/pages/componentesConsi
 import { ReportesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/reportes/reportes.component';
 import { GestionUsuariosComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/gestion-usuarios.component';
 import { CrearUsuariosComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/crear-usuarios.component';
-import { RolesUsuarioComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/roles-usuario/roles-usuario.component';
 import { AsignarRolesComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/asignar-roles/asignar-roles.component';
 
 import { IncapacidadGComponent } from './Pages/SST/pages/componentes_SST/asistencia/incapacidad-g/incapacidad-g.component';
@@ -83,6 +82,7 @@ import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/da
 import { FormsModule } from '@angular/forms';
 import { AgregarClienteModule } from './moduls/agregar-cliente/agregar-cliente.module';
 import { BuscarUsuariosComponent } from './Pages/AdminGeneral/Usuarios/listar-usuarios/listar-usuarios.component';
+import { RolesUsuarioComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/roles-usuario/roles-usuario.component';
 
 
 
