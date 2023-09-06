@@ -11,10 +11,14 @@ export class RolesUsuarioComponent implements OnInit {
 
   constructor(private userAgService: UsuarioAgService, private usuarioagService: UsuarioAgService) { }
 
-  rolePermissionsVisibility: { [role: string]: boolean } = {};
   selectedRolePermissions: { [role: string]: string[] } = {};
 
-  selectedRole:string [] = []
+  selectedRole: string[] = []
+
+  permisosUsuarios = {
+    idRole: '',
+    Permissions: ''
+  }
 
   IterarRol: Roles[] = []
 
@@ -36,24 +40,40 @@ export class RolesUsuarioComponent implements OnInit {
   }
 
   seleccionarTodosPermisos(role: string) {
-    
-    const selectedRole = this.IterarRol.find(r => r.rol === role);
-  
-    if (selectedRole) {
-      const rolePermissions = selectedRole.permissions.map(pr => pr.permission);
-  
-      const allSelected = rolePermissions.every(permission =>
-        this.selectedRolePermissions[role]?.includes(permission)
-      );
+    // Buscar el rol correspondiente en el arreglo IterarRol
+    const roleObj = this.IterarRol.find(r => r.rol === role);
 
-      if (allSelected) {
-        this.selectedRolePermissions[role] = [];
+    if (roleObj) {
+      const selectedPermissions = roleObj.permissions.map(pr => pr.permission);
+
+      if (this.todosLosPermisosEstanSeleccionados(role)) {
+
+        this.deseleccionarPermisos(role);
       } else {
-        this.selectedRolePermissions[role] = [...rolePermissions];
+
+        this.seleccionarPermisos(role, selectedPermissions);
       }
     }
   }
-  
+
+  private todosLosPermisosEstanSeleccionados(role: string): boolean {
+
+    return (
+      this.selectedRolePermissions[role]?.length ===
+      this.IterarRol.find(r => r.rol === role)?.permissions.length
+    );
+  }
+
+  private seleccionarPermisos(role: string, permissions: string[]): void {
+
+    this.selectedRolePermissions[role] = permissions.slice();
+  }
+
+  private deseleccionarPermisos(role: string): void {
+
+    this.selectedRolePermissions[role] = [];
+  }
+
 
   activarRol(rol: string) {
 
