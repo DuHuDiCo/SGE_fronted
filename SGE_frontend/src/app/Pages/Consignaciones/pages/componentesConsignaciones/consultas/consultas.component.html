@@ -39,13 +39,14 @@
             </div>
         </div>
     </header><br><br>
-        <div class="table-responsive"><table class="table caption-top">
+    <div class="table-responsive align-middle text-center">
+        <table class="table table-bordered align-middle text-center">
             <thead>
                 <tr>
-                    <th scope="col">Numero Recibo</th>
-                    <th scope="col">Documento</th>
+                    <th scope="col">Número Recibo</th>
+                    <th scope="col">Cédula</th>
                     <th scope="col">Nombre Cliente</th>
-                    <th scope="col">Fecha</th>
+                    <th scope="col">Fecha Pago</th>
                     <th scope="col">Fecha Creacion</th>
                     <th scope="col">Valor</th>
                     <th scope="col">Estado</th>
@@ -65,9 +66,69 @@
                     <td>Activo</td>
                     <td>Andes</td>
                     <td>BBVA</td>
-                    <td>° | ¬ </td>
+                    <td class="d-flex justify-content-between">
+                        <button class="btn btn-sm btn-primary"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn btn-info btn-sm ms-2"><i class="fa-regular fa-eye"></i></button>
+                        <button class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"><i class="fa-regular fa-image"></i></button>
+                        <button class="btn btn-sm btn-secondary ms-2"  data-bs-toggle="modal" data-bs-target="#modalInfo"><i class="fa-solid fa-circle-info"></i></button>
+                    </td>
+
                 </tr>
             </tbody>
-        </table></div>
+        </table>
     </div>
+</div>
 
+<!-- Modal Info-->
+<div class="modal fade" id="modalInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Detalles del Proceso</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 class="fw-bold">Sede: ANDES</h6>
+
+                    <table class="table table-bordered text-center align-middle mt-3">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Fecha Actualización</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Recibo</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>22/02/2023</td>
+                            <td>Pendiente</td>
+                            <td>Carolina Jaramillo</td>
+                            <td>8877</td>
+                          </tr>
+                        </tbody>
+                      </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="modalImage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="../../../../../../assets/logo-Principal.png" style="height: 100px; width: 100px;">
+        </div>
+      </div>
+    </div>
+  </div>
