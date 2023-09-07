@@ -11,9 +11,10 @@ export class RolesUsuarioComponent implements OnInit {
 
   constructor(private userAgService: UsuarioAgService, private usuarioagService: UsuarioAgService) { }
 
-  selectedRolePermissions: { [role: string]: string[] } = {};
+
 
   selectedRole: string[] = []
+  selectedPermisos: string[] = []
 
   permisosUsuarios = {
     idRole: '',
@@ -39,31 +40,6 @@ export class RolesUsuarioComponent implements OnInit {
     )
   }
 
-  seleccionarTodosPermisos(role: string) {
-    const rolePermissions = this.IterarRol.find(r => r.rol === role)?.permissions;
-
-    if (rolePermissions) {
-      if (this.selectedRolePermissions[role]?.length === rolePermissions.length) {
-        this.selectedRolePermissions[role] = []; 
-      } else {
-        this.selectedRolePermissions[role] = rolePermissions.map(pr => pr.permission);
-      }
-    }
-  }
-
-  handlePermissionSelection(role: string, permission: string) {
-    const selectedPermissions = this.selectedRolePermissions[role] || [];
-
-    const permissionIndex = selectedPermissions.indexOf(permission);
-
-    if (permissionIndex === -1) {
-      selectedPermissions.push(permission);
-    } else {
-      selectedPermissions.splice(permissionIndex, 1);
-    }
-
-    this.selectedRolePermissions[role] = selectedPermissions;
-  }
 
   activarRol(rol: string) {
 
@@ -75,6 +51,18 @@ export class RolesUsuarioComponent implements OnInit {
     }
   }
 
-  rol: boolean = false;
-  
+  seleccionarAllRoles(rol: string) {
+    const role = this.IterarRol.find((r: any) => r.rol == rol)
+    if (role != null) {
+      role.permissions.forEach((permi: any) => {
+        this.selectedPermisos.push(permi.permission)
+      });
+    }
+
+    console.log(this.selectedPermisos);
+    
+
+  }
+
+
 }

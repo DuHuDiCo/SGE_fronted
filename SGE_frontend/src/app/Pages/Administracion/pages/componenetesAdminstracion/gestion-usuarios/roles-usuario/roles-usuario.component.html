@@ -18,13 +18,12 @@
                 <td>
                     <div class="form-check form-switch">
                         <label class="form-check-label" for="flexSwitchCheckDefault">Activar Rol</label>
-                        <input (click)="activarRol(r.rol)" class="form-check-input input" type="checkbox">
+                        <input (click)="activarRol(r.rol)"  class="form-check-input input" type="checkbox">
                     </div>
                 </td>
                 <td *ngIf="selectedRole.includes(r.rol)">
-                    <input (click)="seleccionarTodosPermisos(r.rol)"  class="form-check-input input"
-                        name="seleccionarTodos" id="option-all" type="checkbox">
-                    <label class="form-check-label" for="option-all">Seleccionar Todos los Permisos</label>
+                    <input   class="form-check-input input" name="seleccionarTodos" id="option-all" type="checkbox" (click)="seleccionarAllRoles(r.rol)">
+                    <label class="form-check-label"  for="option-all">Seleccionar Todos los Permisos</label>
                 </td>
             </tr>
 
@@ -33,7 +32,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-check" *ngFor="let pr of r.permissions">
-                                <input class="form-check-input input" type="checkbox"
+                                <input class="form-check-input input" type="checkbox" [checked]="selectedPermisos.includes(pr.permission)"
                                     [id]="'permiso-' + r.rol + '-' + pr.permission">
                                 <label [for]="'permiso-' + r.rol + '-' + pr.permission" class="form-check-label">{{
                                     pr.permission | uppercase }}</label>
