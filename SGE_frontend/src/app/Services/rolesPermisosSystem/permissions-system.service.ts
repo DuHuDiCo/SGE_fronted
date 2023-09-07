@@ -20,6 +20,6 @@ export class PermissionsSystemService {
   }
 
   deletePermissions(idPermission:number, ids:any){
-    return this.http.delete(`${baseUrl}/permissions/deletePermissionsOfRole/${idPermission}`, ids);
+    return this.http.post(`${baseUrl}/permissions/deletePermissionsOfRole/${idPermission}`, ids);
   }
 }

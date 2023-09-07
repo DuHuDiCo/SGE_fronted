@@ -112,7 +112,7 @@ export class CreateUsuarioComponent implements OnInit {
 
     if (rolePermissions) {
       if (this.selectedRolePermissions[role]?.length === rolePermissions.length) {
-        this.selectedRolePermissions[role] = []; // Deseleccionar todos los permisos
+        this.selectedRolePermissions[role] = []; 
       } else {
         this.selectedRolePermissions[role] = rolePermissions.map(pr => pr.permission);
       }
