@@ -40,40 +40,30 @@ export class RolesUsuarioComponent implements OnInit {
   }
 
   seleccionarTodosPermisos(role: string) {
-    // Buscar el rol correspondiente en el arreglo IterarRol
-    const roleObj = this.IterarRol.find(r => r.rol === role);
+    const rolePermissions = this.IterarRol.find(r => r.rol === role)?.permissions;
 
-    if (roleObj) {
-      const selectedPermissions = roleObj.permissions.map(pr => pr.permission);
-
-      if (this.todosLosPermisosEstanSeleccionados(role)) {
-
-        this.deseleccionarPermisos(role);
+    if (rolePermissions) {
+      if (this.selectedRolePermissions[role]?.length === rolePermissions.length) {
+        this.selectedRolePermissions[role] = []; 
       } else {
-
-        this.seleccionarPermisos(role, selectedPermissions);
+        this.selectedRolePermissions[role] = rolePermissions.map(pr => pr.permission);
       }
     }
   }
 
-  private todosLosPermisosEstanSeleccionados(role: string): boolean {
+  handlePermissionSelection(role: string, permission: string) {
+    const selectedPermissions = this.selectedRolePermissions[role] || [];
 
-    return (
-      this.selectedRolePermissions[role]?.length ===
-      this.IterarRol.find(r => r.rol === role)?.permissions.length
-    );
+    const permissionIndex = selectedPermissions.indexOf(permission);
+
+    if (permissionIndex === -1) {
+      selectedPermissions.push(permission);
+    } else {
+      selectedPermissions.splice(permissionIndex, 1);
+    }
+
+    this.selectedRolePermissions[role] = selectedPermissions;
   }
-
-  private seleccionarPermisos(role: string, permissions: string[]): void {
-
-    this.selectedRolePermissions[role] = permissions.slice();
-  }
-
-  private deseleccionarPermisos(role: string): void {
-
-    this.selectedRolePermissions[role] = [];
-  }
-
 
   activarRol(rol: string) {
 
@@ -84,4 +74,7 @@ export class RolesUsuarioComponent implements OnInit {
       this.selectedRole.push(rol)
     }
   }
+
+  rol: boolean = false;
+  
 }
