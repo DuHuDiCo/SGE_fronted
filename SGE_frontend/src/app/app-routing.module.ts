@@ -74,7 +74,7 @@ const routes: Routes = [
   {
     path:'login', 
     component:LoginComponent,
-    canActivate: [LoginGuard]
+    // canActivate: [LoginGuard]
   },
 
   {
@@ -148,7 +148,7 @@ const routes: Routes = [
   {
     path:'dashboard-consignaciones',
     component:DashboarConsignacionesComponent,
-    canActivate:[AuthenticationGuard],
+    // canActivate:[AuthenticationGuard],
     children:[
       {
         path:'ingresar',

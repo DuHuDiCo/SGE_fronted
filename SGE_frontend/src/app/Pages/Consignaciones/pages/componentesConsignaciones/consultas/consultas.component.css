@@ -66,13 +66,45 @@
     background: #000000d8;
 }
 
-.form-control{
+.usuario{
     border-radius: 25px;
     text-align: center;
-    width: 90%;
-    padding: 15px;
-    margin: 15px auto;
+    width: 100%;
+    margin: 10px auto;
+    background: #ecf0f3;
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+}
+
+.c{
+    border-radius: 25px;
+    text-align: center;
+    margin: 15px auto;
+    padding: 10px;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+}
+
+
+.form-select{
+    border-radius: 25px;
+    text-align: center;
+    margin: 15px auto;
+    padding: 10px;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+}
+
+.input-usuario{
+    border: none;
+    text-align: center;
+    outline: none;
+    background: none;
+    font-size: 15px;
+    margin: 13px 10px;
+    border-bottom: 10px;
+}
+.form-select{
+    border: none;
+    outline: none;
+
 }
 
 /* Media query para dispositivos móviles */
