@@ -18,23 +18,23 @@
                 <td>
                     <div class="form-check form-switch">
                         <label class="form-check-label" for="flexSwitchCheckDefault">Activar Rol</label>
-                        <input (click)="activarRol(r.rol)"  class="form-check-input input" type="checkbox">
+                        <input (click)="activarRol(r.idRole)"  class="form-check-input input" type="checkbox">
                     </div>
                 </td>
-                <td *ngIf="selectedRole.includes(r.rol)">
-                    <input   class="form-check-input input" name="seleccionarTodos" id="option-all" type="checkbox" (click)="seleccionarAllRoles(r.rol)">
+                <td *ngIf="selectedRole.includes(r.idRole)" >
+                    <input  class="form-check-input input" name="seleccionarTodos" id="option-all" type="checkbox" (click)="seleccionarAllRoles( r.idRole)">
                     <label class="form-check-label"  for="option-all">Seleccionar Todos los Permisos</label>
                 </td>
             </tr>
 
-            <tr *ngIf="selectedRole.includes(r.rol)">
+            <tr *ngIf="selectedRole.includes(r.idRole)">
                 <td colspan="3">
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-check" *ngFor="let pr of r.permissions">
-                                <input class="form-check-input input" type="checkbox" [checked]="selectedPermisos.includes(pr.permission)"
-                                    [id]="'permiso-' + r.rol + '-' + pr.permission">
-                                <label [for]="'permiso-' + r.rol + '-' + pr.permission" class="form-check-label">{{
+                                <input class="form-check-input input" type="checkbox" (click)="selecionarPermiso(pr.idPermission, r.idRole)" [checked]="selectedPermisos.includes(pr.idPermission)"
+                                    >
+                                <label  class="form-check-label">{{
                                     pr.permission | uppercase }}</label>
                             </div>
                         </div>
@@ -44,5 +44,5 @@
 
         </tbody>
     </table>
-    <button class="btn-guardar">Guardar</button>
+    <button (click)="guardar()" class="btn-guardar">Guardar</button>
 </div>
