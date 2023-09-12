@@ -60,6 +60,9 @@ import { ConfiguracionPerfilComponent } from './Pages/Perfil/configuracion-perfi
 import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/datos-perfil.component';
 import { BuscarUsuariosService } from './Services/BuscarUsuarios/buscar-usuarios.service';
 import { BuscarUsuariosComponent } from './Pages/AdminGeneral/Usuarios/listar-usuarios/listar-usuarios.component';
+import { BancosComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/bancos/bancos.component';
+import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/sucursales/sucursales.component';
+import { EstadosComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados/estados.component';
 
 
 
@@ -74,7 +77,7 @@ const routes: Routes = [
   {
     path:'login', 
     component:LoginComponent,
-    // canActivate: [LoginGuard]
+    canActivate: [LoginGuard]
   },
 
   {
@@ -148,7 +151,7 @@ const routes: Routes = [
   {
     path:'dashboard-consignaciones',
     component:DashboarConsignacionesComponent,
-    // canActivate:[AuthenticationGuard],
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'ingresar',
@@ -163,7 +166,18 @@ const routes: Routes = [
       {
         path:'reportes',
         component:ReportesComponent
-        
+      },
+      {
+        path:'bancos',
+        component:BancosComponent
+      },
+      {
+        path:'sucursales',
+        component:SucursalesComponent
+      },
+      {
+        path:'estados',
+        component: EstadosComponent
       },
     ]
   },

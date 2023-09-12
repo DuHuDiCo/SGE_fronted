@@ -1,0 +1,56 @@
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h5 class="text-center titulo">Crear Tipo De Pago</h5>
+        <p class="text-center mt-3">Ingrese un Nuevo Tipo de Pago, este sera la forma por la que el cliente realiza el pago
+            de su obligacion.</p>
+        <input type="text" class="form-control text-center mt-4" placeholder="Ingrese un Tipo De Pago">
+        <button class="btn btn-success guardar mt-4 mb-5">Guardar</button>
+    </div>
+    <div class="col-md-6">
+        <h5 class="text-center titulo">Crear Un Banco</h5>
+        <p class="text-center">Ingrese un Nuevo Banco, este sera la entidad por la cual el cliente realizo la consignacion.
+        </p>
+        <div class="row text-center">
+            <div class="col-md-6">
+                <input type="text" class="form-control text-center" placeholder="Ingrese un Tipo De Pago">
+            </div>
+            <div class="col-md-6">
+                <select class="form-select">
+                    <option selected>Tipo de Pago</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn btn-success guardar mt-3">Guardar</button>
+    </div>
+</div>
+
+
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="table-responsive align-middle text-center">
+            <table class="table table-bordered align-middle text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Banco</th>
+                        <th scope="col">Tipo De Pago</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Bancolombia</td>
+                        <td>Transferencia</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#modalEditar"><i class="fa-solid fa-pen"></i></button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
