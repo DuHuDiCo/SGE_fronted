@@ -26,13 +26,11 @@
     margin: 0;
     padding: 0;
 }
-*{
-    margin: 0;
-}
+
 .usuario,.file{
     border-radius: 25px;
     text-align: center;
-    width: 90%;
+    width: 100%;
     margin: 10px auto;
     background: #ecf0f3;
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;

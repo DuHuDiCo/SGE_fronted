@@ -8,9 +8,9 @@
                 <input type="date" class="form-control" placeholder="Fecha" aria-label="Fecha">
             </div>
         </div>
-        <div class="col-sm-6">
+        <div *appRolesPerfiles="rolesArray[6]" class="col-sm-6">
             <div class="seleccionar text-center">
-                <label><strong>Estado</strong></label>
+                <label><strong>Nombre</strong></label>
                 <select class="form-select" aria-label="Default select example">
                     <option selected>Yeimar Sanchez</option>
                     <option value="1">One</option>
@@ -21,14 +21,15 @@
         </div></div>
     </header><br>
 
-    <div class="table-responsive"><table class="table caption-top">
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle">
         <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Numero Archivo</th>
                 <th scope="col">Nombre Usuario</th>
                 <th scope="col">Fecha</th>
-                <th scope="col">Accion</th>
+                <th scope="col">Acciones</th>
             </tr>
         </thead>
         <tbody style = "color:rgb(0, 0, 0) ;">
@@ -37,16 +38,27 @@
                 <td>Reporte_2022_09_Contabilidad.pdf</td>
                 <td>Valentina Suarez</td>
                 <td>02/02/2002</td>
-                <td>* ° |</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Reporte_2023_07_Contabilidad.pdf</td>
-                <td>Juan Correa</td>
-                <td>24/07/2023</td>
-                <td>* ° |</td>
+                <td>
+                    <button class="btn btn-info btn-sm ms-2" (click)="mostrarPDF()" data-bs-toggle="modal" data-bs-target="#modalIframe"><i class="fa-regular fa-eye"></i></button>
+                </td>
             </tr>
         </tbody>
     </table></div>
-
-
+     
+<!-- Modal Embed -->
+<div class="modal fade" id="modalIframe" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">PDF Reporte</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <embed #pdfEmbed  type="application/pdf" width="1100px" height="1000px">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>

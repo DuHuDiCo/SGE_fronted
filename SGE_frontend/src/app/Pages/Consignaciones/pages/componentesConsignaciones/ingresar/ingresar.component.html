@@ -1,47 +1,71 @@
 
-    <strong><h1 class="titulo">Ingresar Nuevas Consignaciones</h1><br></strong>
-            <div class="row align-items-start">
-                <div class="row align-items-end">
-                    <div class="col-md-6 col-12">
-                        <div class="usuario">
-                            <select class="form-select" required aria-label="select example">
-                            <option value="">Tipo de Documento</option>
-                            <option value="1">Pasaporte extranjero</option>
-                            <option value="2">Cedula de Ciudadania</option>
-                            <option value="2">Pasaporte nacional</option>
-                            </select>
+    <h1 class="titulo">Ingresar Nuevas Consignaciones</h1><br>
+    <hr class="border-4">
+            <div class="row align-items-center">
+                <div class="row align-items-center">
+                    <div class="col-md-12 col-12">
+                        <div class="usuario mt-4">
+                            <input [(ngModel)]="consignacion.numeroRecibo" name="numeroRecibo" type="text" class="input-usuario" placeholder="Número Del Recibo">
                         </div>
                     </div>
-                    
-                <div class="col-md-6 col-12">
-                    <div class="usuario">
-                        <input type="number" class="input-usuario" placeholder="Valor">
+                    <div class="col-md-6 col-12">
+                        <div class="usuario">
+                            <input [(ngModel)]="consignacion.valor" name="valor" type="text" class="input-usuario" placeholder="Valor">
+                        </div>
                     </div>
-                </div>
+                    <div class="col-md-6 col-12">
+                        <div class="usuario">
+                            <input [(ngModel)]="consignacion.fechaPago" name="fechaPago" type="date" class="input-usuario"> 
+                        </div>
+                    </div>
             </div>
 
         <div class="row align-items-center">
-            <div class="col-md-6 col-12">
+            <div class="col-md-11 col-12">
                 <div class="usuario">
-                    <input type="search" class="input-usuario" placeholder="Digite documento "> 
+                    <input [(ngModel)]="consignacion.cedula" name="cedula" type="search" class="input-usuario" placeholder="Cédula Cliente"> 
                 </div>
             </div>
-
-            <div class="col-md-6 col-12">
-                <div class="usuario">
-                    <input type="date" class="input-usuario"> 
-                </div>
+            <div class="col-md-1 col-12">
+                <button class="btn btn-success btn-lg" data-bs-toggle="collapse" href="#clienteCollapse"><i class="fa-solid fa-magnifying-glass"></i></button>    
             </div>
+            <div class="collapse mt-2 mb-4" id="clienteCollapse">
+                <hr class="border-4">
+                <table class="table table-hover text-center mt-3">
+                    <thead>
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Valor Obligación</th>
+                        <th scope="col">Fecha Obligación</th>
+                        <th scope="col">Sede</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                </label>
+                              </div>
+                        </th>
+                        <td>Duván</td>
+                        <td>10000</td>
+                        <td>22/02/2022</td>
+                        <td>RioNegro</td>
+                      </tr>
+                    </tbody>
+                  </table> 
+            </div>
+             
         </div>
 
         <div class="row align-items-end">
             <div class="col-md-6 col-12">
                 <div class="usuario">
-                    <select class="form-select" required aria-label="select example">
-                    <option value="">Tipo de Consignacion</option>
-                    <option value="1">Efectivo</option>
-                    <option value="2">Virtual</option>
-                    <option value="3">Cheque</option>
+                    <select [(ngModel)]="consignacion.idPlataforma" name="idPlataforma" class="form-select" required aria-label="select example">
+                    <option value="1">Banco</option>
                     </select>
                 </div>
             </div>
@@ -50,14 +74,36 @@
             <div class="col-md-6 col-12" >
                 <div class = "file">
                     <div class="input-group mb-3">
-                        <input type="file" class="form-control" id="inputGroupFile01">
+                        <input [(ngModel)]="consignacion.base64" name="base64" type="file" class="form-control" id="inputGroupFile01">
                       </div>
                 </div>
             </div>
         </div>
         
     <div style="text-align: center;">
-        <button class="guardar" type="button" >Guardar Consignaciones</button>
+        <button (click)="guardarConsignacion()" class="guardar" type="button">Guardar Consignaciones</button>
     </div><br>
+    
+    <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">¿Deseas Agregar Una Observación?</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-floating">
+                <textarea [(ngModel)]="consignacion.observaciones" name="observaciones" class="form-control" placeholder="Observacion" id="floatingTextarea2" style="height: 100px"></textarea>
+                <label for="floatingTextarea2">Observaciones</label>
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+          <button type="button" class="btn btn-primary" (click)="validarObs()">Si</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 

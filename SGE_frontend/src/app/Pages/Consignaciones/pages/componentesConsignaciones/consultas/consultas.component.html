@@ -29,23 +29,24 @@
             </div>
             <div class="col-md-3 col-12">
                 <div class="fecha">
-                    <input class="campo form-control" type="date" placeholder="Fecha">
+                    <input class="c form-control" type="date" placeholder="Fecha">
                 </div>
             </div>
             <div class="col-md-3 col-12">
                 <div class="buscador">
-                    <input class="campo form-control" type="search" placeholder="Buscar">
+                    <input class="c form-control" type="search" placeholder="Buscar">
                 </div>
             </div>
         </div>
     </header><br><br>
-        <div class="table-responsive"><table class="table caption-top">
+    <div class="table-responsive align-middle text-center">
+        <table class="table table-bordered align-middle text-center">
             <thead>
                 <tr>
-                    <th scope="col">Numero Recibo</th>
-                    <th scope="col">Documento</th>
+                    <th scope="col">Número Recibo</th>
+                    <th scope="col">Cédula</th>
                     <th scope="col">Nombre Cliente</th>
-                    <th scope="col">Fecha</th>
+                    <th scope="col">Fecha Pago</th>
                     <th scope="col">Fecha Creacion</th>
                     <th scope="col">Valor</th>
                     <th scope="col">Estado</th>
@@ -65,9 +66,213 @@
                     <td>Activo</td>
                     <td>Andes</td>
                     <td>BBVA</td>
-                    <td>° | ¬ </td>
+                    <td class="d-flex justify-content-between">
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"><i class="fa-regular fa-eye"></i></button>
+                        <button class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"><i class="fa-regular fa-image"></i></button>
+                        <button class="btn btn-sm btn-secondary ms-2"  data-bs-toggle="modal" data-bs-target="#modalInfo"><i class="fa-solid fa-circle-info"></i></button>
+                    </td>
+
                 </tr>
             </tbody>
-        </table></div>
+        </table>
     </div>
+</div>
 
+<!-- Modal Info-->
+<div class="modal fade" id="modalInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Detalles del Proceso</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 class="fw-bold">Sede: ANDES</h6>
+
+                    <table class="table table-bordered text-center align-middle mt-3">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Fecha Actualización</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Recibo</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>22/02/2023</td>
+                            <td>Pendiente</td>
+                            <td>Carolina Jaramillo</td>
+                            <td>8877</td>
+                          </tr>
+                        </tbody>
+                      </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+  
+  <!-- Modal Imagen-->
+  <div class="modal fade" id="modalImage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="../../../../../../assets/logo-Principal.png" style="height: 100px; width: 100px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Ver Mas-->
+<div class="modal fade" id="modalVer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Historial De Observaciones</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <h6 class="fw-bold ms-3">Crear Nueva Observación</h6>
+            <form class="row">
+                <div class="col-md-9">
+                  <input type="password" class="form-control" placeholder="Observación">
+                </div>
+                <div class="col-md-2">
+                  <button type="submit" class="btn btn-success me-2">Crear</button>
+                </div>
+              </form>
+
+                <table class="table table-bordered text-center align-middle mt-3">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Observación</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Usuario</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>Popular</td>
+                        <td>2023-05-12</td>
+                        <td>Mazo Cortes Blanca</td>
+                      </tr>
+                    </tbody>
+                  </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+</div>
+</div>
+
+  <!-- Modal Editar-->
+  <div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Consignación</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row align-items-center">
+                <div class="row align-items-center">
+                    <div class="col-md-12 col-12">
+                        <div class="usuario mt-4">
+                            <input name="numeroRecibo" type="text" class="input-usuario" placeholder="Número Del Recibo">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="usuario">
+                            <input name="valor" type="text" class="input-usuario" placeholder="Valor">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="usuario">
+                            <input name="fechaPago" type="date" class="input-usuario"> 
+                        </div>
+                    </div>
+            </div>
+
+        <div class="row align-items-center">
+            <div class="col-md-10 col-12">
+                <div class="usuario">
+                    <input name="cedula" type="search" class="input-usuario" placeholder="Cédula Cliente"> 
+                </div>
+            </div>
+            <div class="col-md-2 col-12">
+                <button class="btn btn-success btn-lg" data-bs-toggle="collapse" href="#clienteCollapse"><i class="fa-solid fa-magnifying-glass"></i></button>    
+            </div>
+            <div class="collapse mt-2 mb-4" id="clienteCollapse">
+                <hr class="border-4">
+                <table class="table table-hover text-center mt-3">
+                    <thead>
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Valor Obligación</th>
+                        <th scope="col">Fecha Obligación</th>
+                        <th scope="col">Sede</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                </label>
+                              </div>
+                        </th>
+                        <td>Duván</td>
+                        <td>10000</td>
+                        <td>22/02/2022</td>
+                        <td>RioNegro</td>
+                      </tr>
+                    </tbody>
+                  </table> 
+            </div>
+             
+        </div>
+
+        <div class="row align-items-end">
+            <div class="col-md-6 col-12">
+                <div class="usuario">
+                    <select name="idPlataforma" class="form-select" required aria-label="select example">
+                    <option value="1">Banco</option>
+                    </select>
+                </div>
+            </div>
+            
+
+            <div class="col-md-6 col-12" >
+                <div class = "file">
+                    <div class="input-group mb-3">
+                        <input name="base64" type="file" class="form-control">
+                      </div>
+                </div>
+            </div>
+        </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button class="btn btn-primary" type="button">Actualizar</button>
+
+          </div>
+      </div>
+  </div>
+  </div>
