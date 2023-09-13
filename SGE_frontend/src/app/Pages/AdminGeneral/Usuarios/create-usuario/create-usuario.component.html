@@ -1,4 +1,4 @@
-<div *ngIf="!rol" class="container">
+<div *ngIf="!role" class="container">
     <div class="imagen-portada">
         <img src="../../../../../assets/H_electro.svg" alt="">
     </div>
@@ -97,42 +97,51 @@
 </div>
 
 
-<div *ngIf="rol" class="container">
+<div class="container">
     <header>
         <h1 class="titulo">Permisos Generales</h1>
     </header>
 
-
     <table class="table">
-        <tbody *ngFor="let r of IterarRol">
+        <thead>
             <tr>
-                <th scope="text">{{ r.rol }}</th>
+                <th>Rol</th>
+                <th>Activar Rol</th>
+                <th>Seleccionar Todos los Permisos</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let r of IterarRol;let i = index;">
+            <tr>
+                <td>{{ r.rol | uppercase }}</td>
+
                 <td>
                     <div class="form-check form-switch">
                         <label class="form-check-label" for="flexSwitchCheckDefault">Activar Rol</label>
-                        <input class="form-check-input input" type="checkbox" (click)="activarRol(r.rol)">
+                        <input (click)="activarRol(r.idRole)"  class="form-check-input input" type="checkbox">
                     </div>
                 </td>
-                <input [checked]="selectedRolePermissions[r.rol].length === r.permissions.length"
-                    (click)="seleccionarTodosPermisos(r.rol)" class="form-check-input input" name="seleccionarTodos"
-                    id="option-all" type="checkbox">
-                <label class="form-check-label" for="option-all">Seleccionar Todos los Permisos</label>
+                <td *ngIf="selectedRole.includes(r.idRole)" >
+                    <button class="btn_check" (click)="seleccionarAllRoles( r.idRole)"><input  class="form-check-input input" name="seleccionarTodos"  [id]="'check'+r.idRole"  type="checkbox" disabled ></button>
+                    <label class="form-check-label"  for="option-all">Seleccionar Todos los Permisos</label>
+                </td>
             </tr>
 
-            <tr *ngIf="rolePermissionsVisibility[r.rol]">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-check" *ngFor="let pr of r.permissions">
-                            <input [checked]="selectedRolePermissions[r.rol].includes(pr.permission)"
-                                (click)="handlePermissionSelection(r.rol, pr.permission)" class="form-check-input input"
-                                type="checkbox" [id]="'permiso-' + r.rol + '-' + pr.permission">
-                            <label [for]="'permiso-' + r.rol + '-' + pr.permission" class="form-check-label">{{
-                                pr.permission | lowercase }}</label>
+            <tr *ngIf="selectedRole.includes(r.idRole)">
+                <td colspan="3">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-check" *ngFor="let pr of r.permissions">
+                                <input class="form-check-input input" type="checkbox" (click)="selecionarPermiso(pr.idPermission, r.idRole)" [checked]="selectedPermisos.includes(pr.idPermission)"
+                                >
+                                <label  class="form-check-label">{{
+                                    pr.permission | uppercase }}</label>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </td>
             </tr>
+
         </tbody>
     </table>
-    <button class="btn-guardar">Guardar</button>
+    <button (click)="guardar()" class="btn-guardar">Guardar</button>
 </div>
