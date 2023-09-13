@@ -11,7 +11,7 @@
                 <th>Seleccionar Todos los Permisos</th>
             </tr>
         </thead>
-        <tbody *ngFor="let r of IterarRol">
+        <tbody *ngFor="let r of IterarRol;let i = index;">
             <tr>
                 <td>{{ r.rol | uppercase }}</td>
 
@@ -22,7 +22,8 @@
                     </div>
                 </td>
                 <td *ngIf="selectedRole.includes(r.idRole)" >
-                    <input  class="form-check-input input" name="seleccionarTodos" id="option-all" type="checkbox" (click)="seleccionarAllRoles( r.idRole)">
+                    
+                    <button class="btn_check" (click)="seleccionarAllRoles( r.idRole)"><input  class="form-check-input input" name="seleccionarTodos"  [id]="'check'+r.idRole"  type="checkbox" disabled ></button>
                     <label class="form-check-label"  for="option-all">Seleccionar Todos los Permisos</label>
                 </td>
             </tr>
@@ -33,7 +34,7 @@
                         <div class="col-md-3">
                             <div class="form-check" *ngFor="let pr of r.permissions">
                                 <input class="form-check-input input" type="checkbox" (click)="selecionarPermiso(pr.idPermission, r.idRole)" [checked]="selectedPermisos.includes(pr.idPermission)"
-                                    >
+                                >
                                 <label  class="form-check-label">{{
                                     pr.permission | uppercase }}</label>
                             </div>
