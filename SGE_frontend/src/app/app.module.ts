@@ -83,6 +83,7 @@ import { FormsModule } from '@angular/forms';
 import { AgregarClienteModule } from './moduls/agregar-cliente/agregar-cliente.module';
 import { BuscarUsuariosComponent } from './Pages/AdminGeneral/Usuarios/listar-usuarios/listar-usuarios.component';
 import { RolesUsuarioComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/roles-usuario/roles-usuario.component';
+import { RolesUsuariosComponent } from './pages/AdminGeneral/usuarios/roles-usuarios/roles-usuarios.component';
 
 
 
@@ -173,6 +174,7 @@ import { RolesUsuarioComponent } from './Pages/Administracion/pages/componenetes
     ConfiguracionPerfilComponent,
     DatosPerfilComponent,
     BuscarUsuariosComponent,
+    RolesUsuariosComponent,
 
   ],
 

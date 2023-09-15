@@ -22,7 +22,7 @@
                     </div>
                 </td>
                 <td *ngIf="selectedRole.includes(r.idRole)" >
-                    <button class="btn_check" (click)="seleccionarAllRoles( r.idRole)"><input  class="form-check-input input" name="seleccionarTodos"  [id]="'check'+r.idRole"  type="checkbox"></button>
+                    <button class="btn_check" (click)="seleccionarAllRoles( r.idRole)"><input  class="form-check-input input" name="seleccionarTodos"  [id]="'check'+r.idRole"  type="checkbox" ></button>
                     <label class="form-check-label"  for="option-all">Seleccionar Todos los Permisos</label>
                 </td>
             </tr>
