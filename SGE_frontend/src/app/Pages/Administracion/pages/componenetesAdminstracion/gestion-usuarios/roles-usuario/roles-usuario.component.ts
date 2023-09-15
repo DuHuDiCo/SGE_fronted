@@ -59,22 +59,14 @@ export class RolesUsuarioComponent implements OnInit {
       this.selectedRole.push(rol)
 
     }
-
-
-
   }
 
   seleccionarAllRoles(rol: number) {
-
-
-
-
 
     const role = this.IterarRol.find((r: any) => r.idRole == rol)
     if (role != null) {
 
       if (this.selectedPermisos.length > 0) {
-
 
         var newPermisos: any = []
 
@@ -108,15 +100,12 @@ export class RolesUsuarioComponent implements OnInit {
 
           if (this.usuario.roles.some((r: any) => r.id == rol)) {
 
-            var find = this.usuario.roles.find((r:any)=>r.id == rol)
+            var find = this.usuario.roles.find((r: any) => r.id == rol)
             find.permisos = []
-            
-           
-
 
             role.permissions.forEach(element => {
 
-              if(!this.selectedPermisos.includes(element.idPermission)){
+              if (!this.selectedPermisos.includes(element.idPermission)) {
                 this.selectedPermisos.push(element.idPermission)
               }
               find.permisos.push(element.idPermission)
@@ -125,7 +114,7 @@ export class RolesUsuarioComponent implements OnInit {
             var check = document.getElementById('check' + rol)
 
             check?.setAttribute('checked', "true")
-            
+
 
           } else {
             var rDto = {
@@ -142,7 +131,6 @@ export class RolesUsuarioComponent implements OnInit {
               if (!this.selectedPermisos.includes(p.idPermission)) {
                 this.selectedPermisos.push(p.idPermission)
 
-
                 rolesNoinclu.push(p.idPermission)
 
               }
@@ -150,42 +138,25 @@ export class RolesUsuarioComponent implements OnInit {
 
             console.log(rolesNoinclu);
 
-
-
-
             this.usuario.roles.forEach((r: any) => {
 
               if (r.id == rol) {
-
                 rolesNoinclu.forEach((p: any) => {
                   r.permisos.push(p)
                 });
               }
-
-
             });
-
-
             this.selectedPermisos.forEach(element => {
               this.check.push(element)
             });
             var check = document.getElementById('check' + rol)
 
             check?.setAttribute('checked', "true")
-
-
           }
-
-
         }
-
-
       } else {
 
         var check = document.getElementById('check' + rol)
-
-
-
 
         check?.setAttribute('checked', "true")
 
@@ -198,7 +169,6 @@ export class RolesUsuarioComponent implements OnInit {
               if (this.selectedPermisos.includes(p)) {
                 var position = this.selectedPermisos.indexOf(p)
                 this.selectedPermisos.splice(position, 1)
-
               }
             });
 
@@ -213,9 +183,6 @@ export class RolesUsuarioComponent implements OnInit {
             vali.permisos = role.permissions
 
           }
-
-
-
         } else {
 
           var roles: any = []
@@ -234,17 +201,10 @@ export class RolesUsuarioComponent implements OnInit {
           this.usuario.roles.push(roleDto)
 
         }
-
       }
-
-
-
-
-
     }
 
     console.log(this.check);
-
 
   }
 
@@ -289,8 +249,6 @@ export class RolesUsuarioComponent implements OnInit {
             }
           });
           this.check.push(permiso)
-
-
         }
       } else {
         this.selectedPermisos.push(permiso)
@@ -307,14 +265,13 @@ export class RolesUsuarioComponent implements OnInit {
         });
 
         this.usuario.roles.forEach((r: any) => {
-          if(r.id == rol){
+          if (r.id == rol) {
             if (r.permisos.length == role.permissions.length) {
-           
+
               var check = document.getElementById('check' + rol)
               check?.setAttribute("checked", "true");
             }
           }
-          
         });
 
         this.usuario.roles.push(rolDto)
@@ -322,27 +279,18 @@ export class RolesUsuarioComponent implements OnInit {
         this.check.push(permiso)
 
       }
-
     }
-
-
-
-
-
   }
 
 
   guardar() {
     console.log(this.usuario);
 
-  }
 
+  }
 
   contieneTodosValores(arrayPrincipal: any[], valoresAComprobar: any[]): boolean {
     // Comprueba si cada valor en valoresAComprobar está presente en arrayPrincipal
     return valoresAComprobar.every(valor => arrayPrincipal.some(valor));
   }
-
-
-
 }

@@ -1,4 +1,4 @@
-<div *ngIf="!rol" class="container">
+<div *ngIf="!role" class="container">
     <div class="imagen-portada">
         <img src="../../../../../assets/H_electro.svg" alt="">
     </div>
@@ -97,42 +97,3 @@
 </div>
 
 
-<div *ngIf="rol" class="container">
-    <header>
-        <h1 class="titulo">Permisos Generales</h1>
-    </header>
-
-
-    <table class="table">
-        <tbody *ngFor="let r of IterarRol">
-            <tr>
-                <th scope="text">{{ r.rol }}</th>
-                <td>
-                    <div class="form-check form-switch">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Activar Rol</label>
-                        <input class="form-check-input input" type="checkbox" (click)="activarRol(r.rol)">
-                    </div>
-                </td>
-                <input [checked]="selectedRolePermissions[r.rol].length === r.permissions.length"
-                    (click)="seleccionarTodosPermisos(r.rol)" class="form-check-input input" name="seleccionarTodos"
-                    id="option-all" type="checkbox">
-                <label class="form-check-label" for="option-all">Seleccionar Todos los Permisos</label>
-            </tr>
-
-            <tr *ngIf="rolePermissionsVisibility[r.rol]">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-check" *ngFor="let pr of r.permissions">
-                            <input [checked]="selectedRolePermissions[r.rol].includes(pr.permission)"
-                                (click)="handlePermissionSelection(r.rol, pr.permission)" class="form-check-input input"
-                                type="checkbox" [id]="'permiso-' + r.rol + '-' + pr.permission">
-                            <label [for]="'permiso-' + r.rol + '-' + pr.permission" class="form-check-label">{{
-                                pr.permission | lowercase }}</label>
-                        </div>
-                    </div>
-                </div>
-            </tr>
-        </tbody>
-    </table>
-    <button class="btn-guardar">Guardar</button>
-</div>
