@@ -3,9 +3,9 @@
         <h5 class="titulo">Ingresar Un Nuevo Estado de Consignación</h5>
         <p>Ingrese un Estado de Consignacion, este valor indicara en que parte del proceso se encontrara una
             consignacion.</p>
-        <input type="text" class="form-control" placeholder="Ingrese un Estado de Consignación">
+        <input [(ngModel)]="estado.estado" name="estado" type="text" class="form-control" placeholder="Ingrese un Estado de Consignación">
         <div class="text-center">
-            <button class="btn btn-primary guardar">Guardar</button>
+            <button (click)="validateEstado()" class="btn btn-primary guardar">Guardar</button>
         </div>
     </div>
 </div>
@@ -22,9 +22,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Pendiente</td>
+                    <tr *ngFor="let e of estadoA; let i = index">
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>{{ e.estado }}</td>
                         <td>
                             <button class="btn btn-sm btn-primary"><i class="fa-solid fa-pen"></i></button>
                         </td>
