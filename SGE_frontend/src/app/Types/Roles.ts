@@ -31,6 +31,11 @@ export type RolesUser = {
 }
 
 
+export type RolDto = {
+    id:number,
+    permisos:number[]
+}
+
 export enum ROLES{
     SuperAdministration = "SUPERADMINISTRADOR",
     Administration = "Administration",

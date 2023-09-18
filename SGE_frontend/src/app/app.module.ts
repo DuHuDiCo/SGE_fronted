@@ -83,6 +83,7 @@ import { FormsModule } from '@angular/forms';
 import { AgregarClienteModule } from './moduls/agregar-cliente/agregar-cliente.module';
 import { BuscarUsuariosComponent } from './Pages/AdminGeneral/Usuarios/listar-usuarios/listar-usuarios.component';
 import { RolesUsuarioComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/roles-usuario/roles-usuario.component';
+
 import { BancosComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/bancos/bancos.component';
 import { EstadosComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados/estados.component';
 import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/sucursales/sucursales.component';
@@ -176,6 +177,7 @@ import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesCon
     ConfiguracionPerfilComponent,
     DatosPerfilComponent,
     BuscarUsuariosComponent,
+
     BancosComponent,
     EstadosComponent,
     SucursalesComponent,
