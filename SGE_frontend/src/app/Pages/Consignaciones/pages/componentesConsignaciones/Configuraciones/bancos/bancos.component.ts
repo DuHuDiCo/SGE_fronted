@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BancoServiceService } from 'src/app/Services/Consignaciones/banco-service.service';
+import { BancoServiceService } from 'src/app/Services/Consignaciones/Bancos/banco-service.service';
 import { Banco, Plataforma } from 'src/app/Types/Banco';
 import { tipoPago } from 'src/app/Types/TipoPago';
 import Swal from 'sweetalert2';

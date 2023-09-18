@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EstadoServiceService } from 'src/app/Services/Consignaciones/estado-service.service';
+import { data, error } from 'jquery';
+import { EstadoServiceService } from 'src/app/Services/Consignaciones/Estado/estado-service.service';
 import { Estado } from 'src/app/Types/Estado';
 import Swal from 'sweetalert2';
 
@@ -21,6 +22,11 @@ export class EstadosComponent implements OnInit {
     idEstado: 0
   }
 
+  modal:Estado = {
+    idEstado: 0,
+    estado: ''
+  }
+
   estadoA:Estado[] = []
 
   validateEstado(){
@@ -40,6 +46,9 @@ export class EstadosComponent implements OnInit {
           estado: '',
           idEstado: 0
         }
+        setTimeout(() => {
+          window.location.reload()
+        }, 3000);
       }, (error:any) => {
         Swal.fire('Error', 'Error al Guardar el Estado', 'error')
         this.estado = {
@@ -57,6 +66,34 @@ export class EstadosComponent implements OnInit {
       }, (error:any) => {
         console.log(error);
         Swal.fire('Error', 'Error al cargar los estados', 'error')
+      }
+    )
+  }
+
+  getEstadoById(id:number){
+    this.estadoService.getEstadoById(id).subscribe(
+      (data:any) => {
+        this.modal.estado = data.estado
+        this.modal.idEstado = id
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  updateEstado(){
+
+    console.log(this.modal);
+    
+    this.estadoService.updateEstado(this.modal).subscribe(
+      (data:any) => {
+        Swal.fire('Felicidades', 'Estado Actualizado Exitosamente', 'success')
+        setTimeout(() => {
+          window.location.reload()
+        }, 3000);
+      }, (error:any) => {
+        Swal.fire('Error', 'Error Al Actualizar el Estado', 'error')
+        console.log(error);
       }
     )
   }

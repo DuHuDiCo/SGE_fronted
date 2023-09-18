@@ -41,8 +41,7 @@ export class AuthenticationService {
   
   public getUsername(){
     var user:string | null = localStorage.getItem("Username")
-    return user
-    
+    return user 
   }
   
   public getRoles(){

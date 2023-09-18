@@ -26,7 +26,7 @@
                         <th scope="row">{{ i + 1 }}</th>
                         <td>{{ e.estado }}</td>
                         <td>
-                            <button class="btn btn-sm btn-primary"><i class="fa-solid fa-pen"></i></button>
+                            <button (click)="getEstadoById(e.idEstado)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen"></i></button>
                         </td>
 
                     </tr>
@@ -35,3 +35,28 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Estado</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <input [(ngModel)]="modal.estado" name="estado" type="text" class="form-control text-center" placeholder="Ingrese un Estado">
+                    </div>
+                </div>
+                <button (click)="updateEstado()" class="btn btn-success guardar mt-3">Actualizar</button>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
