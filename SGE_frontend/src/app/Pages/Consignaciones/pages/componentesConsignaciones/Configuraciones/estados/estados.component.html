@@ -1,0 +1,37 @@
+<div class="row text-center justify-content-center">
+    <div class="col-md-6">
+        <h5 class="titulo">Ingresar Un Nuevo Estado de Consignación</h5>
+        <p>Ingrese un Estado de Consignacion, este valor indicara en que parte del proceso se encontrara una
+            consignacion.</p>
+        <input [(ngModel)]="estado.estado" name="estado" type="text" class="form-control" placeholder="Ingrese un Estado de Consignación">
+        <div class="text-center">
+            <button (click)="validateEstado()" class="btn btn-primary guardar">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="table-responsive align-middle text-center">
+            <table class="table table-bordered align-middle text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let e of estadoA; let i = index">
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>{{ e.estado }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary"><i class="fa-solid fa-pen"></i></button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

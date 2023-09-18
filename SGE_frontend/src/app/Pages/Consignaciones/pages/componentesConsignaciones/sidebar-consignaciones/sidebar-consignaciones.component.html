@@ -30,6 +30,29 @@
     </ul>
     <hr style="color: white;">
     <ul class="nav flex-column ">
+
+        <li class="mb-1">
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#configuraciones" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+                Configuraciones
+            </button>
+    
+            <div class="collapse" id="configuraciones" data-bs-dismiss="offcanvas">
+                <ul class="list-unstyled fw-normal pb-1 small">
+
+                    <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-consignaciones/bancos"><i class="fa-solid fa-building-columns"></i>
+                    &nbsp; Bancos</button></li>
+                    
+                    <li><button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/sucursales"><i class="fa-solid fa-location-dot"></i>
+                    &nbsp; Sucursales</button></li>
+
+                    <li><button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/estados"><i class="fa-solid fa-spinner"></i>
+                    &nbsp; Estados</button></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <hr style="color: white;">
+    <ul class="nav flex-column ">
         <li class="mb-1">
             <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse-i" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
                 Informes
