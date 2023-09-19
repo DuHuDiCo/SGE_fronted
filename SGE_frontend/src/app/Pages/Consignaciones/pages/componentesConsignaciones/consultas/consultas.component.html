@@ -56,21 +56,21 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
+                <tr *ngFor="let c of con">
+                    <th scope="row">{{ c.numeroRecibo }}</th>
                     <td>11111</td>
                     <td>Otto</td>
-                    <td>02/02/2002</td>
-                    <td>02/02/2002</td>
-                    <td>$ 100.000</td>
-                    <td>Activo</td>
+                    <td>{{ c.fechaPago }}</td>
+                    <td>{{ c.fechaCreacion | date: 'short' }}</td>
+                    <td>$ {{ c.valor | number}}</td>
+                    <td>{{ c.actualizaciones[0].estado.estado }}</td>
                     <td>Andes</td>
-                    <td>BBVA</td>
+                    <td>{{ c.plataforma.bancos.nombreBanco }} - {{ c.plataforma.bancos.tipoPago[0].tipoPago }}</td>
                     <td class="d-flex justify-content-between">
-                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen"></i></button>
+                        <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen"></i></button>
                         <button class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"><i class="fa-regular fa-eye"></i></button>
-                        <button class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"><i class="fa-regular fa-image"></i></button>
-                        <button class="btn btn-sm btn-secondary ms-2"  data-bs-toggle="modal" data-bs-target="#modalInfo"><i class="fa-solid fa-circle-info"></i></button>
+                        <button (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"><i class="fa-regular fa-image"></i></button>
+                        <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-secondary ms-2"  data-bs-toggle="modal" data-bs-target="#modalInfo"><i class="fa-solid fa-circle-info"></i></button>
                     </td>
 
                 </tr>
@@ -102,11 +102,11 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>22/02/2023</td>
-                            <td>Pendiente</td>
-                            <td>Carolina Jaramillo</td>
+                          <tr *ngFor="let a of actu.actualizaciones; let i = index">
+                            <th scope="row">{{ i + 1 }}</th>
+                            <td>{{ a.fechaActualizacion }}</td>
+                            <td>{{ a.estado.estado }}</td>
+                            <td>{{ a.usuarioId }}</td>
                             <td>8877</td>
                           </tr>
                         </tbody>
@@ -127,7 +127,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <img src="../../../../../../assets/logo-Principal.png" style="height: 100px; width: 100px;">
+          <img src="{{ base64 }}" style="height: 700px; width: 466px;">
         </div>
       </div>
     </div>
@@ -163,11 +163,11 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>Popular</td>
-                        <td>2023-05-12</td>
-                        <td>Mazo Cortes Blanca</td>
+                      <tr *ngFor="let o of con; let i = index">
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>{{ o.observaciones[0] }}</td>
+                        <td>{{ o.observaciones[0] }}</td>
+                        <td>{{ o.observaciones[0] }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -193,17 +193,17 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="row align-items-center">
                     <div class="col-md-12 col-12">
                         <div class="usuario mt-4">
-                            <input name="numeroRecibo" type="text" class="input-usuario" placeholder="Número Del Recibo">
+                            <input [(ngModel)]="modal.numeroRecibo" name="numeroRecibo" type="text" class="input-usuario" placeholder="Número Del Recibo">
                         </div>
                     </div>
                     <div class="col-md-6 col-12">
                         <div class="usuario">
-                            <input name="valor" type="text" class="input-usuario" placeholder="Valor">
+                            <input [(ngModel)]="modal.valor" name="valor" type="text" class="input-usuario" placeholder="Valor">
                         </div>
                     </div>
                     <div class="col-md-6 col-12">
                         <div class="usuario">
-                            <input name="fechaPago" type="date" class="input-usuario"> 
+                            <input [(ngModel)]="modal.fechaPago" name="fechaPago" type="date" class="input-usuario"> 
                         </div>
                     </div>
             </div>
@@ -211,18 +211,17 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="row align-items-center">
             <div class="col-md-10 col-12">
                 <div class="usuario">
-                    <input name="cedula" type="search" class="input-usuario" placeholder="Cédula Cliente"> 
+                    <input [(ngModel)]="cedula" name="cedula" type="search" class="input-usuario" placeholder="Cédula Cliente"> 
                 </div>
             </div>
             <div class="col-md-2 col-12">
-                <button class="btn btn-success btn-lg" data-bs-toggle="collapse" href="#clienteCollapse"><i class="fa-solid fa-magnifying-glass"></i></button>    
+                <button class="btn btn-success btn-lg"><i class="fa-solid fa-magnifying-glass"></i></button>    
             </div>
-            <div class="collapse mt-2 mb-4" id="clienteCollapse">
+            <div class="mt-2 mb-4">
                 <hr class="border-4">
                 <table class="table table-hover text-center mt-3">
                     <thead>
-                      <tr>
-                        <th scope="col"></th>
+                      <tr >
                         <th scope="col">Nombre</th>
                         <th scope="col">Valor Obligación</th>
                         <th scope="col">Fecha Obligación</th>
@@ -231,13 +230,6 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                </label>
-                              </div>
-                        </th>
                         <td>Duván</td>
                         <td>10000</td>
                         <td>22/02/2022</td>
@@ -246,20 +238,16 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     </tbody>
                   </table> 
             </div>
-             
         </div>
-
         <div class="row align-items-end">
-            <div class="col-md-6 col-12">
+            <div class="col-md-12 col-12">
                 <div class="usuario">
-                    <select name="idPlataforma" class="form-select" required aria-label="select example">
-                    <option value="1">Banco</option>
+                    <select (change)="cambiarPago($event)" [(ngModel)]="modal.idPlataforma" name="idPlataforma" class="form-select" required aria-label="select example">
+                    <option *ngFor="let p of plataforma"  value="{{ p.idPlataforma }}">{{ p.bancos.nombreBanco }} - {{ p.bancos.tipoPago[0].tipoPago }}</option>
                     </select>
                 </div>
             </div>
-            
-
-            <div class="col-md-6 col-12" >
+            <div class="col-md-12 col-12" >
                 <div class = "file">
                     <div class="input-group mb-3">
                         <input name="base64" type="file" class="form-control">
@@ -270,7 +258,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-              <button class="btn btn-primary" type="button">Actualizar</button>
+              <button (click)="validateNewConsignacion()" class="btn btn-primary" type="button">Actualizar</button>
 
           </div>
       </div>
