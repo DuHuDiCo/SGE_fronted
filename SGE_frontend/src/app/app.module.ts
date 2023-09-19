@@ -87,6 +87,7 @@ import { RolesUsuarioComponent } from './Pages/Administracion/pages/componenetes
 import { BancosComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/bancos/bancos.component';
 import { EstadosComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados/estados.component';
 import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/sucursales/sucursales.component';
+import { RolesUsuariosComponent } from './Pages/AdminGeneral/Usuarios/roles-usuarios/roles-usuarios.component';
 
 
 
@@ -170,6 +171,7 @@ import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesCon
     SidebarCajaComponent,
 
     RolesUsuariosGuardarComponent,
+    RolesUsuariosComponent,
 
     CreateUsuarioComponent,
     SidebarPerfilComponent,
@@ -180,7 +182,7 @@ import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesCon
 
     BancosComponent,
     EstadosComponent,
-    SucursalesComponent,
+    SucursalesComponent
 
   ],
 

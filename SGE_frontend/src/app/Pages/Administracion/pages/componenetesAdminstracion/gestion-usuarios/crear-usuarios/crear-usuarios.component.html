@@ -31,11 +31,11 @@
 
 
             </div>
-                <label for="text">Apellido</label>
-                <div class="usuario">
-                    <i class="fa-solid fa-signature"></i>
-                    <input type="text" class="input-usuario input1" placeholder="Apellido">
-                </div>
+            <label for="text">Apellido</label>
+            <div class="usuario">
+                <i class="fa-solid fa-signature"></i>
+                <input type="text" class="input-usuario input1" placeholder="Apellido">
+            </div>
         </div>
 
 
@@ -90,26 +90,17 @@
                 <i class="fa-solid fa-phone"></i>
 
                 <input type="number" class="input-usuario input1" placeholder="Telefono Celular">
-
-
-            </div>
-
-        </div>
-
-    <div class="row align-items-center">
-        <div class="col">
-            <label for="email">Fecha</label>
-            <div class="usuario">
-                <input name="fecha_nacimiento" type="date" class="input-usuario input1">
             </div>
         </div>
+
+        <div class="row align-items-center">
+            <div class="col">
+                <label for="email">Fecha</label>
+                <div class="usuario">
+                    <input name="fecha_nacimiento" type="date" class="input-usuario input1">
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-guardar" [routerLink]="'/dashboard-administracion/rolesUsuariosGuardados'">Gestionar Roles</button>
     </div>
-
-
-    <button class="btn-guardar" [routerLink]="'/dashboard-administracion/rolesUsuariosGuardados'">Gestionar Roles</button>
-
-
-
-    </div>
-    
-

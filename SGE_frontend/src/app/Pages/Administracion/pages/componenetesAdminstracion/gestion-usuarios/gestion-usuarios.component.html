@@ -54,10 +54,12 @@
                             <th>{{ c.apellidos }}</th>
                             <th>{{ c.celular }}</th>
                             <th>{{ c.status ? 'Activado' : 'Desactivado'}}</th>
-                            <td>
-                                <button type="button" class="btn btn-sm"
+
+                            <td class="d-flex justify-content-between justify-content-md-center align-items-center">
+
+                                <button type="button" class="btn btn-sm me-3"
                                     style="background-color: #960010; color: white;"
-                                    routerLink="/dashboard-administracion/rolesUsuario/1"><i
+                                    [routerLink]="'/dashboard-administracion/rolesUsuariosGuardados'"><i
                                         class="fa-solid fa-gear"></i>
                                 </button>
 

@@ -11,8 +11,6 @@ export class RolesUsuarioComponent implements OnInit {
 
   constructor(private userAgService: UsuarioAgService, private usuarioagService: UsuarioAgService) { }
 
-
-
   selectedRole: number[] = []
   selectedPermisos: number[] = []
 

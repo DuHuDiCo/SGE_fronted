@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
 import { Roles, RolesUser } from 'src/app/Types/Roles';
 import { Usuario } from 'src/app/Types/Usuario';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-roles-usuarios',
@@ -10,12 +11,10 @@ import { Usuario } from 'src/app/Types/Usuario';
 })
 export class RolesUsuariosComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userAgService: UsuarioAgService) { }
 
   rolePermissionsVisibility: { [role: string]: boolean } = {};
   selectedRolePermissions: { [role: string]: string[] } = {};
-
-
 
   selectedRole: number[] = []
   selectedPermisos: number[] = []
@@ -39,8 +38,6 @@ export class RolesUsuariosComponent implements OnInit {
     permisos: []
   }
 
-
-
   usuarios: Usuario = {
     username: "",
     email: "",
@@ -60,6 +57,15 @@ export class RolesUsuariosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userAgService.listarRoles().subscribe(
+      (data: any) => {
+        this.IterarRol = data;
+        console.log(this.IterarRol)
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 
   activarRol(rol: number) {
@@ -71,7 +77,6 @@ export class RolesUsuariosComponent implements OnInit {
     } else {
       this.check = []
       this.selectedRole.push(rol)
-
     }
   }
 
@@ -92,7 +97,6 @@ export class RolesUsuariosComponent implements OnInit {
         });
 
         console.log(newPermisos);
-
 
         if (newPermisos.length == role.permissions.length) {
           newPermisos.forEach((x: any) => {
@@ -219,7 +223,6 @@ export class RolesUsuariosComponent implements OnInit {
     }
 
     console.log(this.check);
-
   }
 
   selecionarPermiso(permiso: number, rol: number) {
@@ -291,16 +294,48 @@ export class RolesUsuariosComponent implements OnInit {
         this.usuario.roles.push(rolDto)
         console.log(this.selectedPermisos);
         this.check.push(permiso)
-
       }
     }
   }
 
+  guardarUsuario() {
+    if (this.usuario.username.trim() == '' || this.usuario.username.trim() == null) {
+      Swal.fire('Error', 'Debe de ingresar el Username', 'error')
+      return
+    }
+    if (this.usuario.nombres.trim() == '' || this.usuario.nombres.trim() == null) {
+      Swal.fire('Error', 'Debe de ingresar los Nombres', 'error')
+      return
+    }
+    if (this.usuario.password.trim() == '' || this.usuario.password.trim() == null) {
+      Swal.fire('Error', 'Debe de ingresar la Contraseña', 'error')
+      return
+    }
+    if (this.usuario.apellidos.trim() == '' || this.usuario.apellidos.trim() == null) {
+      Swal.fire('Error', 'Debe de ingresar los Apellidos', 'error')
+      return
+    }
+    if (this.usuario.tipo_documento.trim() == '' || this.usuario.tipo_documento.trim() == null) {
+      Swal.fire('Error', 'Debe de ingresar el Tipo De Doc', 'error')
+      return
+    }
+    if (typeof this.usuario.numero_documento === 'string' && this.usuario.numero_documento.trim() === '') {
+      Swal.fire('Error', 'Debe ingresar el Numero de Doc', 'error');
+      return;
+    }
 
-  guardar() {
-    console.log(this.usuario);
-
-
+    if (this.usuario.email.trim() == '' || this.usuario.email.trim() == null) {
+      Swal.fire('Error', 'Debe de ingresar el Email', 'error')
+      return
+    }
+    if (typeof this.usuario.celular === 'string' && this.usuario.celular.trim() == '') {
+      Swal.fire('Error', 'Debe de ingresar el Celular', 'error')
+      return
+    }
+    if (this.usuario.fecha_nacimiento instanceof Date || this.usuario.fecha_nacimiento == null) {
+      Swal.fire('Error', 'Debe ingresar la Fecha de Nacimiento', 'error');
+      return;
+    }
   }
 
   contieneTodosValores(arrayPrincipal: any[], valoresAComprobar: any[]): boolean {
