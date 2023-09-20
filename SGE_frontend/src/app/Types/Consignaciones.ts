@@ -56,34 +56,124 @@ export type Cuotas = {
   ]
 }
 
-export type Obligacion = {
-    idCuentasPorCobrar: number,
-    numeroObligacion: string,
-    cliente: string,
-    totalCuotas: number,
-    periodicidad: number,
-    valorCuota: number,
-    saldoInicial: number,
-    diasVencidos: number,
-    capital: number,
-    saldoVencido: number,
-    interesesTotales: number,
-    interesesVencidos: number,
-    otrosCobros: number,
-    saldoMora: number,
-    saldoTotal: number,
-    observacion: string,
-    id_venta: number,
-    tipoCuentaPorCobrar: {
-      tipoCuentaPorCobrar: number,
-      tipoCuenta: string
-    },
-    estado: {
-      idEstado: number,
-      estado: string
-    },
-    asesores:Asesores [],
-    coutas:Cuotas []
+export type Obligacion =  {
+  idCuentasPorCobrar: number,
+  numeroObligacion: string,
+  cliente: {
+    idCliente: number,
+    nombres: string,
+    apellidos: string,
+    tipoDocumento: string,
+    numeroDocumento: string,
+    fechaNacimiento: Date,
+    lugarNacimiento: string,
+    fechaExpedicionDocumento: Date,
+    lugarExpedicionDocumento: string,
+    fechaCreacion: Date,
+    usuarioId: number,
+    telefonos: [
+      {
+        idTelefono: number,
+        indicativo: string,
+        numero: string,
+        isCurrent: true,
+        fechaCreacion: Date,
+        createBy: string
+      }
+    ],
+    direcciones: [
+      {
+        idDireccion: number,
+        direccion: string,
+        ciudad: string,
+        departamento: string,
+        pais: string,
+        isCurrent: true,
+        fechaCreacion: Date,
+        createBy: string
+      }
+    ],
+    correosElectronicos: [
+      {
+        idCorreoElectronico: number,
+        email: string,
+        fechaCreacion: Date,
+        isCurrent: true,
+        createBy: string
+      }
+    ]
+  },
+  totalCuotas: number,
+  periodicidad: number,
+  valorCuota: number,
+  saldoInicial: number,
+  diasVencidos: number,
+  capital: number,
+  saldoVencido: number,
+  interesesTotales: number,
+  interesesVencidos: number,
+  otrosCobros: number,
+  saldoMora: number,
+  saldoTotal: number,
+  observacion: string,
+  id_venta: number,
+  fechaObligacion: Date,
+  tipoCuentaPorCobrar: {
+    tipoCuentaPorCobrar: number,
+    tipoCuenta: string
+  },
+  estado: {
+    idEstado: number,
+    estado: string
+  },
+  asesores: [
+    {
+      idAsesorCartera: number,
+      usuarioId: number
+    }
+  ],
+  coutas: [
+    {
+      idPlanPagos: number,
+      numeroCuota: number,
+      fechaVencimiento: Date,
+      valorCuota: number,
+      descripcion: string,
+      capital: number,
+      intereses: number,
+      saldoCapital: number,
+      saldoIntereses: number,
+      saldoCuota: number,
+      otrosCobros: number,
+      pagos: [
+        {
+          idDiscriminacionPagos: number,
+          cuotas: string,
+          pago: {
+            idPagos: number,
+            fechaPago: Date,
+            fechaEmision: Date,
+            valor: number,
+            interesCorriente: number,
+            capital: number,
+            interesMora: number,
+            diasVencidos: number,
+            discriminacion: [
+              string
+            ]
+          },
+          valorCuota: number,
+          valorCapital: number,
+          valorInteresCorriente: number,
+          valorInteresMora: number,
+          valorOtrosCobros: number,
+          saldoCapital: number,
+          saldoInteresesCorrientes: number,
+          saldoInteresesMora: number
+        }
+      ]
+    }
+  ]
 }
 
 export type Con = {
@@ -107,13 +197,13 @@ export type Con = {
     bancos: {
       idBancos: number,
       nombreBanco: string,
-      tipoPago:tipoPago []
+      tipoPago: tipoPago[]
     }
   },
   observaciones: Observacion[],
-  obligaciones: Obg[],
-  actualizaciones: Actualizaciones[],
-  fileReportes: Reportes[]
+  cuentasCobrar: CuentasPorCobrar[],
+  actualizaciones:Actualizaciones [],
+  fileReportes:Reportes []
 }
 
 export type tipoPago = {
@@ -150,4 +240,79 @@ export type Reportes = {
   fechaReporte: Date,
   usuarioId: number,
   tipoReporte: string
+}
+
+export type Correos = {
+  idCorreoElectronico: number,
+  email: string,
+  fechaCreacion: Date,
+  isCurrent: true,
+  createBy: string
+}
+
+export type Direcciones = {
+  idDireccion: number,
+  direccion: string,
+  ciudad: string,
+  departamento: string,
+  pais: string,
+  isCurrent: true,
+  fechaCreacion: Date,
+  createBy: string
+}
+
+export type Telefonos = {
+  idTelefono: number,
+  indicativo: string,
+  numero: string,
+  isCurrent: true,
+  fechaCreacion: Date,
+  createBy: string
+}
+
+export type CuentasPorCobrar = {
+  idCuentasPorCobrar: number,
+  numeroObligacion: string,
+  cliente: {
+    idCliente: number,
+    nombres: string,
+    apellidos: string,
+    tipoDocumento: string,
+    numeroDocumento: string,
+    fechaNacimiento: Date,
+    lugarNacimiento: string,
+    fechaExpedicionDocumento: Date,
+    lugarExpedicionDocumento: string,
+    fechaCreacion: Date,
+    usuarioId: number,
+    telefonos: Telefonos[],
+    direcciones:Direcciones [],
+    correosElectronicos:Correos []
+  },
+  totalCuotas: number,
+  periodicidad: number,
+  valorCuota: number,
+  saldoInicial: number,
+  diasVencidos: number,
+  capital: number,
+  saldoVencido: number,
+  interesesTotales: number,
+  interesesVencidos: number,
+  otrosCobros: number,
+  saldoMora: number,
+  saldoTotal: number,
+  fechaObligacion: Date,
+  observacion: string,
+  id_venta: number,
+  tipoCuentaPorCobrar: {
+    tipoCuentaPorCobrar: number,
+    tipoCuenta: string,
+    cuentasPorCobrar: string
+  },
+  estado: {
+    idEstado: number,
+    estado: string
+  },
+  asesores:Asesores [],
+  coutas:Cuotas []
 }

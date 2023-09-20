@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { BancoServiceService } from 'src/app/Services/Consignaciones/Bancos/banco-service.service';
 import { ConsultarService } from 'src/app/Services/Consignaciones/Consultar/consultar.service';
+import { IngresarService } from 'src/app/Services/Consignaciones/IngresarConsignaciones/ingresar.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Plataforma } from 'src/app/Types/Banco';
-import { Con, Consignacion } from 'src/app/Types/Consignaciones';
+import { Con, Consignacion, Obligacion } from 'src/app/Types/Consignaciones';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -54,7 +56,67 @@ export class ConsultasComponent implements OnInit {
       }
     },
     observaciones: [],
-    obligaciones: [],
+    cuentasCobrar: [],
+    actualizaciones: [],
+    fileReportes: []
+  }
+
+  cuentasPorCobrar:Con = {
+    idConsignacion: 0,
+    numeroRecibo: '',
+    valor: 0,
+    fechaPago: new Date,
+    fechaCreacion: new Date,
+    isSelected: true,
+    usuarioId: 0,
+    comprobantes: {
+      idComprobante: 0,
+      nombreArchivo: '',
+      rutaArchivo: '',
+      fechaCreacion: new Date,
+      usuarioId: 0,
+      dataURI: ''
+    },
+    plataforma: {
+      idPlataforma: 0,
+      bancos: {
+        idBancos: 0,
+        nombreBanco: '',
+        tipoPago: []
+      }
+    },
+    observaciones: [],
+    cuentasCobrar: [],
+    actualizaciones: [],
+    fileReportes: []
+  }
+
+  detalle:Con = {
+    idConsignacion: 0,
+    numeroRecibo: '',
+    valor: 0,
+    fechaPago: new Date,
+    fechaCreacion: new Date,
+    isSelected: true,
+    usuarioId: 0,
+    comprobantes: {
+      idComprobante: 0,
+      nombreArchivo: '',
+      rutaArchivo: '',
+      fechaCreacion: new Date,
+      usuarioId: 0,
+      dataURI: ''
+    },
+    plataforma: {
+      idPlataforma: 0,
+      bancos: {
+        idBancos: 0,
+        nombreBanco: '',
+        tipoPago: []
+      }
+    },
+    observaciones: [],
+    cuentasCobrar: [],
     actualizaciones: [],
     fileReportes: []
   }
@@ -63,7 +125,9 @@ export class ConsultasComponent implements OnInit {
 
   base64:string = ''
 
-  constructor(private authService:AuthenticationService, private consultarService:ConsultarService, private bancoService:BancoServiceService) { }
+  check:boolean = false
+
+  constructor(private authService:AuthenticationService, private consultarService:ConsultarService, private bancoService:BancoServiceService, private ingresarService:IngresarService,  private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.getRoles()
@@ -84,13 +148,35 @@ export class ConsultasComponent implements OnInit {
       return
     }
     if(this.modal.obligaciones.length <= 0 || this.modal.obligaciones == null){
-      Swal.fire('Error', 'Debe de Tener al Menos Una Obligación Seleccionada', 'error')
-      return
+      if(this.cuentasPorCobrar.cuentasCobrar.length <= 0 || this.cuentasPorCobrar.cuentasCobrar == null){
+        Swal.fire('Error', 'Debe de Tener al Menos Una Obligación Seleccionada', 'error')
+        return
+      }
     }
     if(this.modal.idPlataforma == 0 || this.modal.idPlataforma == null){
       Swal.fire('Error', 'Seleccione Una Plataforma', 'error')
       return
     }
+    console.log(this.modal);
+
+    var user = this.authService.getUsername()
+
+    if(user == null || user == undefined){
+      return
+    }
+     this.modal.username = user
+
+    this.consultarService.updateConsignacion(this.modal).subscribe(
+      (data:any) => {
+        Swal.fire('Felicidades', 'Consignación Actualizada Con éxito', 'success')
+        setTimeout(() => {
+          window.location.reload()
+        }, 3000);
+      }, (error:any) => {
+        Swal.fire('Error', 'Error al Actualizar La Consignación', 'error')
+        console.log(error);
+      }
+    )
   }
 
   getRoles(){
@@ -111,7 +197,7 @@ export class ConsultasComponent implements OnInit {
   getConsignaciones(p:string){
     this.consultarService.getAllConsignaciones(p).subscribe(
       (data:any) => {
-        this.con = data
+        this.con = data.content
         console.log(data);
       }, (error:any) => {
         console.log(error);
@@ -126,16 +212,20 @@ export class ConsultasComponent implements OnInit {
   getConsignacionById(id:number){
     this.consultarService.getConsignacionById(id).subscribe(
       (data:any) => {
+        this.cuentasPorCobrar.cuentasCobrar = []
+
         this.modal.idConsignacion = id
         this.modal.numeroRecibo = data.numeroRecibo
         this.modal.valor = data.valor
         this.modal.fechaPago = data.fechaPago
-        this.modal.obligaciones = data.obligaciones
         this.modal.idPlataforma  = data.plataforma.idPlataforma
         this.modal.base64  = data.base64
 
         this.actu = data
+        this.cuentasPorCobrar = data
+        this.detalle = data
         console.log(data);
+        console.log(this.modal);
       }, (error:any) => {
         console.log(error);
       }
@@ -157,6 +247,74 @@ export class ConsultasComponent implements OnInit {
     this.modal.idPlataforma = valor
   }
 
+  getObligacionByCedula(){
+    const cedula = this.cedula.trim()
+    if(this.cedula.trim() == '' || isNaN(parseInt(cedula))){
+      Swal.fire('Error', 'Debe de Ingresar una Cédula Válida', 'error')
+      return
+    }
+    this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
+      (data:any) => {
+        this.cuentasPorCobrar.cuentasCobrar = data
 
+        if(this.cuentasPorCobrar.cuentasCobrar.length > 0){
+          this.check = true
+          return
+        }
 
+        if(this.cuentasPorCobrar.cuentasCobrar.length <= 0){
+          Swal.fire('Error', 'Digite Una Cédula Válida', 'error')
+          this.cedula = ''
+          return
+        }
+        
+      }, (error:any) => {
+        Swal.fire('Error', 'Error Al Traer Las Obligaciones', 'error')
+        this.check = false
+        this.cedula = ''
+        console.log(error);
+      }
+    )
+  }
+
+  checkBox(obligacion:string){
+    this.modal.obligaciones = []
+    if(this.modal.obligaciones.includes(obligacion)){
+      var position = this.modal.obligaciones.indexOf(obligacion)
+      this.modal.obligaciones.splice(position, 1)
+    } else {
+      this.modal.obligaciones.push(obligacion)
+    }
+    
+  }
+
+  public obtenerFile(event: any) {
+    var archivo = event.target.files[0];
+    this.extraerBase64(archivo).then((file: any) => {
+      this.modal.base64 = file.base;
+      console.log(this.modal);
+    })
+  }
+
+  public extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
+    try {
+      const unsafeImg = window.URL.createObjectURL($event);
+      const image = this.sanitizer.bypassSecurityTrustUrl(unsafeImg);
+      const reader = new FileReader();
+      reader.readAsDataURL($event);
+      reader.onload = () => {
+        resolve({
+          base: reader.result
+        });
+      };
+      reader.onerror = error => {
+        resolve({
+          base: null
+        });
+      };
+
+    } catch (e) {
+      return null;
+    }
+  })
 }

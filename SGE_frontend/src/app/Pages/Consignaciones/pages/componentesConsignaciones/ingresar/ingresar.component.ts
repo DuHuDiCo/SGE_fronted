@@ -152,6 +152,7 @@ export class IngresarComponent implements OnInit {
         }
         if(this.obligacion.length <= 0){
           Swal.fire('Error', 'Digite Una Cédula Válida', 'error')
+          this.tabla = false
           this.cedula = ''
           return
         }

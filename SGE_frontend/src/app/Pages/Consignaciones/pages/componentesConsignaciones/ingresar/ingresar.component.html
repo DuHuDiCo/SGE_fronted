@@ -50,9 +50,9 @@
                                 </label>
                               </div>
                         </th>
-                        <td>{{ o.cliente }}</td>
+                        <td>{{ o.cliente.nombres }} {{ o.cliente.apellidos }}</td>
                         <td>{{ o.capital }}</td>
-                        <td>{{ o.saldoMora }}</td>
+                        <td>{{ o.fechaObligacion | date:'short' }}</td>
                         <td>{{ o.id_venta }}</td>
                       </tr>
                     </tbody>

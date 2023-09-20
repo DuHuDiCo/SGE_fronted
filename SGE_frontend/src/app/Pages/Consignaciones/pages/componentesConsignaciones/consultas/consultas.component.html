@@ -43,6 +43,7 @@
         <table class="table table-bordered align-middle text-center">
             <thead>
                 <tr>
+                    <th scope="col">#</th>
                     <th scope="col">Número Recibo</th>
                     <th scope="col">Cédula</th>
                     <th scope="col">Nombre Cliente</th>
@@ -56,7 +57,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let c of con">
+                <tr *ngFor="let c of con; let i = index">
+                    <th scope="row">{{ i + 1 }}</th>
                     <th scope="row">{{ c.numeroRecibo }}</th>
                     <td>11111</td>
                     <td>Otto</td>
@@ -68,7 +70,7 @@
                     <td>{{ c.plataforma.bancos.nombreBanco }} - {{ c.plataforma.bancos.tipoPago[0].tipoPago }}</td>
                     <td class="d-flex justify-content-between">
                         <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"><i class="fa-regular fa-eye"></i></button>
+                        <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"><i class="fa-regular fa-eye"></i></button>
                         <button (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"><i class="fa-regular fa-image"></i></button>
                         <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-secondary ms-2"  data-bs-toggle="modal" data-bs-target="#modalInfo"><i class="fa-solid fa-circle-info"></i></button>
                     </td>
@@ -163,11 +165,11 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let o of con; let i = index">
+                      <tr *ngFor="let d of detalle.observaciones; let i = index">
                         <th scope="row">{{ i + 1 }}</th>
-                        <td>{{ o.observaciones[0] }}</td>
-                        <td>{{ o.observaciones[0] }}</td>
-                        <td>{{ o.observaciones[0] }}</td>
+                        <td>{{ d.detalle }}</td>
+                        <td>{{ d.fechaCreacion }}</td>
+                        <td>{{ d.usuarioId }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -215,13 +217,14 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 </div>
             </div>
             <div class="col-md-2 col-12">
-                <button class="btn btn-success btn-lg"><i class="fa-solid fa-magnifying-glass"></i></button>    
+                <button (click)="getObligacionByCedula()" class="btn btn-success btn-lg"><i class="fa-solid fa-magnifying-glass"></i></button>    
             </div>
             <div class="mt-2 mb-4">
                 <hr class="border-4">
-                <table class="table table-hover text-center mt-3">
+                <table class="table table-hover text-center align-middle mt-3">
                     <thead>
-                      <tr >
+                      <tr class="align-middle">
+                        <th *ngIf="check" scope="col"></th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Valor Obligación</th>
                         <th scope="col">Fecha Obligación</th>
@@ -229,16 +232,24 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Duván</td>
-                        <td>10000</td>
-                        <td>22/02/2022</td>
-                        <td>RioNegro</td>
+                      <tr *ngFor="let cc of cuentasPorCobrar.cuentasCobrar">
+                        <td *ngIf="check">
+                            <div class="form-check">
+                                <input (click)="checkBox(cc.numeroObligacion)" [checked]="modal.obligaciones.includes(cc.numeroObligacion)" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                </label>
+                              </div>
+                        </td>
+                        <td>{{ cc.cliente.nombres }} {{ cc.cliente.apellidos }}</td>
+                        <td>{{ cc.capital }}</td>
+                        <td>{{ cc.fechaObligacion  | date:'short' }}</td>
+                        <td>{{ cc.id_venta }}</td>
                       </tr>
                     </tbody>
                   </table> 
             </div>
         </div>
+    </div>
         <div class="row align-items-end">
             <div class="col-md-12 col-12">
                 <div class="usuario">
@@ -250,7 +261,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="col-md-12 col-12" >
                 <div class = "file">
                     <div class="input-group mb-3">
-                        <input name="base64" type="file" class="form-control">
+                        <input (change)="obtenerFile($event)" name="base64" type="file" class="form-control">
                       </div>
                 </div>
             </div>

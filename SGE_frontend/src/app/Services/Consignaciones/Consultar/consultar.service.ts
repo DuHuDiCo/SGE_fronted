@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Consignacion } from 'src/app/Types/Consignaciones';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,10 @@ export class ConsultarService {
 
   getConsignacionById(id:number){
     return this.http.get(`${this.url}/consignacion/getConsignacionById/${id}`)
+  }
+
+  updateConsignacion(consignacion:Consignacion){
+    return this.http.put(`${this.url}/consignacion/editarConsignacion`, consignacion)
   }
 
 }
