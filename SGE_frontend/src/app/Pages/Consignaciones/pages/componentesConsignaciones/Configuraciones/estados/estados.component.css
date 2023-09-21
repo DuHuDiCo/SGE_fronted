@@ -16,6 +16,10 @@
     box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
 }
 
+.pagination ::ng-deep .ngx-pagination .current {
+    background: #960010
+}
+
 
 .abs-center {
     margin: 35px;

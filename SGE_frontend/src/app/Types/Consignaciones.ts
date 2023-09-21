@@ -218,6 +218,12 @@ export type Observacion = {
   usuarioId: number
 }
 
+export type ObservacionDto = {
+  detalle: string,
+  username: string,
+  idConsignacion: number
+}
+
 export type Obg = {
   idCuentaCobrar: number,
   idObligacion: number

@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 })
 export class EstadosComponent implements OnInit {
 
+  page:number = 1
+
   constructor(private estadoService:EstadoServiceService) { }
 
   ngOnInit(): void {
