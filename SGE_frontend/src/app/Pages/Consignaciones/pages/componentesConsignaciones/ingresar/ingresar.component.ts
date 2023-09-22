@@ -25,6 +25,7 @@ export class IngresarComponent implements OnInit {
   cedula:string = ''
 
   tabla:boolean = false
+  crearConsignacion:boolean = false
 
   consignacion:Consignacion = {
     idConsignacion: 0,
@@ -148,6 +149,7 @@ export class IngresarComponent implements OnInit {
         this.obligacion = data
         if(this.obligacion.length > 0){
           this.tabla = true
+          console.log(data);
           return
         }
         if(this.obligacion.length <= 0){
@@ -156,6 +158,8 @@ export class IngresarComponent implements OnInit {
           this.cedula = ''
           return
         }
+        
+        
         
       }, (error:any) => {
         Swal.fire('Error', 'Error Al Traer Las Obligaciones', 'error')

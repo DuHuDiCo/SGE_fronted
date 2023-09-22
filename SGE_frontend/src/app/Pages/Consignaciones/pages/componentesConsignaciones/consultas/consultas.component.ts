@@ -64,7 +64,7 @@ export class ConsultasComponent implements OnInit {
     observaciones: [],
     cuentasCobrar: [],
     actualizaciones: [],
-    fileReportes: []
+    fileReportes: [],
   }
   cuentasPorCobrar:Con = {
     idConsignacion: 0,
@@ -93,7 +93,7 @@ export class ConsultasComponent implements OnInit {
     observaciones: [],
     cuentasCobrar: [],
     actualizaciones: [],
-    fileReportes: []
+    fileReportes: [],
   }
   detalle:Con = {
     idConsignacion: 0,
@@ -122,7 +122,7 @@ export class ConsultasComponent implements OnInit {
     observaciones: [],
     cuentasCobrar: [],
     actualizaciones: [],
-    fileReportes: []
+    fileReportes: [],
   }
   observacionDto:ObservacionDto = {
     detalle: '',
@@ -144,6 +144,7 @@ export class ConsultasComponent implements OnInit {
   crearObs:boolean = false
   buscarObli:boolean = false
   editarCon:boolean = false
+  spinner:boolean = true
 
 
   private proSubscription!: Subscription;
@@ -224,6 +225,7 @@ export class ConsultasComponent implements OnInit {
   getConsignaciones(p:string){
     this.consultarService.getAllConsignaciones(p, this.page, this.size).subscribe(
       (data:any) => {
+        this.spinner = false
         this.con = data.content
         this.paginas = new Array(data.totalPages)
         this.last = data.last
@@ -419,9 +421,9 @@ export class ConsultasComponent implements OnInit {
         (data:any) => {
           Swal.fire('Felicidades', 'Observacion Guardada Con Éxito', 'success')
           this.crearObs = false
-          setTimeout(() => {
-            window.location.reload()
-          }, 3000);
+          this.detalle.observaciones.push(data)
+          console.log(data);
+          
         }, (error:any) => {
           console.log(error);
           this.crearObs = false

@@ -1,3 +1,5 @@
+import { Usuario } from "./Usuario"
+
 export type Consignacion = {
   idConsignacion: number,
   numeroRecibo: string,
@@ -126,6 +128,10 @@ export type Obligacion =  {
     idEstado: number,
     estado: string
   },
+  sede: {
+    idSede: number,
+    nombreSede: string
+  }
   asesores: [
     {
       idAsesorCartera: number,
@@ -215,7 +221,7 @@ export type Observacion = {
   idObservacion: number,
   detalle: string,
   fechaCreacion: Date,
-  usuarioId: number
+  usuario:any
 }
 
 export type ObservacionDto = {
@@ -232,7 +238,7 @@ export type Obg = {
 export type Actualizaciones =  {
   idActualizacion: number,
   fechaActualizacion: Date,
-  usuarioId: number,
+  usuario: Usuario,
   estado: {
     idEstado: number,
     estado: string
@@ -318,6 +324,10 @@ export type CuentasPorCobrar = {
   estado: {
     idEstado: number,
     estado: string
+  },
+  sede: {
+    idSede: number,
+    nombreSede: string
   },
   asesores:Asesores [],
   coutas:Cuotas []

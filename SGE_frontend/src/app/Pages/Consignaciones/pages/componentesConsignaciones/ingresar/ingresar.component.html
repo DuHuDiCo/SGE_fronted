@@ -53,7 +53,7 @@
                         <td>{{ o.cliente.nombres }} {{ o.cliente.apellidos }}</td>
                         <td>{{ o.capital }}</td>
                         <td>{{ o.fechaObligacion | date:'short' }}</td>
-                        <td>{{ o.id_venta }}</td>
+                        <td>{{ o.sede.nombreSede }}</td>
                       </tr>
                     </tbody>
                   </table> 
@@ -100,8 +100,11 @@
               </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" (click)="guardarConObs('NO')" data-bs-dismiss="modal">No</button>
-          <button type="button" class="btn btn-primary" (click)="guardarConObs('SI')">Si</button>
+          <button *ngIf="!crearConsignacion" type="button" class="btn btn-danger" (click)="guardarConObs('NO')" data-bs-dismiss="modal">No</button>
+          <button *ngIf="!crearConsignacion" type="button" class="btn btn-primary" (click)="guardarConObs('SI')">Si</button>
+          <button *ngIf="crearConsignacion" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
+            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+        </button>
         </div>
       </div>
     </div>

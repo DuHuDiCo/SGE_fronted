@@ -12,6 +12,9 @@ import Swal from 'sweetalert2';
 export class EstadosComponent implements OnInit {
 
   page:number = 1
+  spinner:boolean = true
+  crearEstado:boolean = false
+  editarEstado:boolean = false
 
   constructor(private estadoService:EstadoServiceService) { }
 
@@ -37,13 +40,17 @@ export class EstadosComponent implements OnInit {
       return
     }
 
-    this.save()
+    this.crearEstado = true
+    setTimeout(() => {
+      this.save()      
+    }, 3000);
   }
 
   save(){
     this.estadoService.saveEstado(this.estado).subscribe(
       (data:any) => {
         Swal.fire('Felicidades', 'El Estado se ha Guardado Con éxito', 'success')
+        this.crearEstado = false
         this.estado = {
           estado: '',
           idEstado: 0
@@ -53,6 +60,7 @@ export class EstadosComponent implements OnInit {
         }, 3000);
       }, (error:any) => {
         Swal.fire('Error', 'Error al Guardar el Estado', 'error')
+        this.crearEstado = false
         this.estado = {
           estado: '',
           idEstado: 0
@@ -64,6 +72,7 @@ export class EstadosComponent implements OnInit {
   getAllEstado(){
     this.estadoService.getAll().subscribe(
       (data:any) => {
+        this.spinner = false
         this.estadoA = data
       }, (error:any) => {
         console.log(error);
@@ -84,17 +93,17 @@ export class EstadosComponent implements OnInit {
   }
 
   updateEstado(){
-
-    console.log(this.modal);
-    
+    this.editarEstado = true
     this.estadoService.updateEstado(this.modal).subscribe(
       (data:any) => {
         Swal.fire('Felicidades', 'Estado Actualizado Exitosamente', 'success')
+        this.editarEstado = false
         setTimeout(() => {
           window.location.reload()
         }, 3000);
       }, (error:any) => {
         Swal.fire('Error', 'Error Al Actualizar el Estado', 'error')
+        this.editarEstado = false
         console.log(error);
       }
     )

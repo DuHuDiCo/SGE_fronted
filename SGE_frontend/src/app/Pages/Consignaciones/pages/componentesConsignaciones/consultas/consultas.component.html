@@ -24,7 +24,7 @@
                         <option value="3">Three</option>
                     </select>
                 </div>
-            </div>
+            </div> 
             <div class="col-md-3 col-12">
                 <div class="fecha">
                     <input class="c form-control" type="date" placeholder="Fecha">
@@ -37,13 +37,18 @@
             </div>
         </div>
     </header><br><br>
-    <div class="table-responsive align-middle text-center">
+    <div *ngIf="spinner" class="text-center">
+      <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
+        <span class="visually-hidden"></span>
+      </div>
+    </div>
+    <div *ngIf="!spinner" class="table-responsive align-middle text-center">
         <table class="table table-bordered align-middle text-center">
             <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Número Recibo</th>
-                    <th scope="col">Cédula</th>
+                    <th scope="col">Documento</th>
                     <th scope="col">Nombre Cliente</th>
                     <th scope="col">Fecha Pago</th>
                     <th scope="col">Fecha Creacion</th>
@@ -58,13 +63,13 @@
                 <tr *ngFor="let c of con; let i = index">
                     <th scope="row">{{ cont + i }}</th>
                     <th scope="row">{{ c.numeroRecibo }}</th>
-                    <td>{{ c.cuentasCobrar[0].cliente.tipoDocumento }} - {{ c.cuentasCobrar[0].cliente.numeroDocumento }}</td>
+                    <td>{{ c.cuentasCobrar[0].cliente.numeroDocumento }}</td>
                     <td>{{ c.cuentasCobrar[0].cliente.nombres }} {{ c.cuentasCobrar[0].cliente.apellidos }}</td>
-                    <td>{{ c.fechaPago }}</td>
-                    <td>{{ c.fechaCreacion | date: 'short' }}</td>
+                    <td>{{ c.fechaPago | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ c.fechaCreacion | date: 'dd/MM/yyyy' }}, {{ c.fechaCreacion | date: 'shortTime' }}</td>
                     <td>$ {{ c.valor | number}}</td>
                     <td>{{ c.actualizaciones[0].estado.estado }}</td>
-                    <td>Andes</td>
+                    <td>{{ c.cuentasCobrar[0].sede.nombreSede }}</td>
                     <td>{{ c.plataforma.bancos.nombreBanco }} - {{ c.plataforma.bancos.tipoPago[0].tipoPago }}</td>
                     <td class="d-flex justify-content-between">
                         <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen"></i></button>
@@ -77,7 +82,8 @@
             </tbody>
         </table>
         <div class="row justify-content-center">
-            <div class="col-md-4">
+          <div class="col-md-3"></div>
+            <div class="col-md-5" >
                 <nav aria-label="...">
                     <ul class="pagination">
                       <li class="page-item">
@@ -103,8 +109,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h6 class="fw-bold">Sede: ANDES</h6>
-
                     <table class="table table-bordered text-center align-middle mt-3">
                         <thead>
                           <tr>
@@ -119,7 +123,7 @@
                             <th scope="row">{{ i + 1 }}</th>
                             <td>{{ a.fechaActualizacion | date: 'short' }}</td>
                             <td>{{ a.estado.estado }}</td>
-                            <td>{{ a.usuarioId }}</td>
+                            <td>{{ a.usuario.nombres }} {{ a.usuario.apellidos }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -181,8 +185,8 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                       <tr *ngFor="let d of detalle.observaciones; let i = index">
                         <th scope="row">{{ i + 1 }}</th>
                         <td>{{ d.detalle }}</td>
-                        <td>{{ d.fechaCreacion }}</td>
-                        <td>{{ d.usuarioId }}</td>
+                        <td>{{ d.fechaCreacion | date: 'short' }}</td>
+                        <td>{{ d.usuario.nombres }} {{ d.usuario.apellidos }}</td>
                       </tr> 
                     </tbody>
                   </table>

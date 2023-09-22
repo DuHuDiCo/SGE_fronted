@@ -5,12 +5,21 @@
             consignacion.</p>
         <input [(ngModel)]="estado.estado" name="estado" type="text" class="form-control" placeholder="Ingrese un Estado de Consignación">
         <div class="text-center">
-            <button (click)="validateEstado()" class="btn btn-primary guardar">Guardar</button>
+            <button *ngIf="!crearEstado" (click)="validateEstado()" class="btn btn-primary guardar">Guardar</button>
+            <button *ngIf="crearEstado" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
+                <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+            </button>
         </div>
     </div>
 </div>
 
-<div class="row mt-4">
+<div *ngIf="spinner" class="text-center">
+    <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
+      <span class="visually-hidden"></span>
+    </div>
+  </div>
+
+<div *ngIf="!spinner" class="row mt-4">
     <div class="col-md-12">
         <div class="table-responsive align-middle text-center">
             <table class="table table-bordered align-middle text-center">
@@ -52,7 +61,10 @@
                         <input [(ngModel)]="modal.estado" name="estado" type="text" class="form-control text-center" placeholder="Ingrese un Estado">
                     </div>
                 </div>
-                <button (click)="updateEstado()" class="btn btn-success guardar mt-3">Actualizar</button>
+                <button *ngIf="!editarEstado" (click)="updateEstado()" class="btn btn-success guardar mt-3">Actualizar</button>
+                <button *ngIf="editarEstado" type="button" class="btn btn-danger guardar" style="background-color: #960010;border-color: #960010;">
+                    <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                </button>
             </div>
         </div>
         <div class="modal-footer">
