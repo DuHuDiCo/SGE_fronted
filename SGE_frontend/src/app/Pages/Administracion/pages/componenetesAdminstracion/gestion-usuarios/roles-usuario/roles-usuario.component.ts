@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
 import { Roles, RolesUser } from 'src/app/Types/Roles';
 import { Usuario } from 'src/app/Types/Usuario';
@@ -11,7 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class RolesUsuarioComponent implements OnInit {
 
-  constructor(private userAgService: UsuarioAgService, private usuarioagService: UsuarioAgService) { }
+  constructor(private userAgService: UsuarioAgService, private usuarioagService: UsuarioAgService, private authService: AuthenticationService) { }
 
   selectedRole: number[] = []
   selectedPermisos: number[] = []
@@ -297,7 +298,13 @@ export class RolesUsuarioComponent implements OnInit {
 
 
   guardarUsuario() {
-    this.userAgService.crearUsuario(this.usuarios).subscribe(
+
+    let username = this.authService.getUsername();
+
+    if (username != null || username != undefined) {
+      console.log(this.usuario);
+      
+       this.userAgService.crearUsuario(this.usuarios, username).subscribe(
       (data:any) =>{
           Swal.fire('GUARDADO','El usuario guardado','success');
       },
@@ -306,6 +313,8 @@ export class RolesUsuarioComponent implements OnInit {
         Swal.fire('ERROR','Error Guardar Usuario','error')
       }
     )
+    }
+   
   }
 
   contieneTodosValores(arrayPrincipal: any[], valoresAComprobar: any[]): boolean {

@@ -12,8 +12,8 @@ export class UsuarioAgService {
 
   constructor(private http:HttpClient) { }
 
-  public crearUsuario(usuario:Usuario){
-    return this.http.post(`${baseUrl}/usuarios/save/${usuario}`,usuario)
+  public crearUsuario(usuario:Usuario, username:string){
+    return this.http.post(`${baseUrl}/usuarios/save/${username}`,usuario)
   }
 
   public listarRoles(){
