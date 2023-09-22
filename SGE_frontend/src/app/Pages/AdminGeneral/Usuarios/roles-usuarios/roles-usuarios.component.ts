@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
+import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
 import { Roles, RolesUser } from 'src/app/Types/Roles';
 import { Usuario } from 'src/app/Types/Usuario';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-roles-usuarios',
@@ -10,12 +12,10 @@ import { Usuario } from 'src/app/Types/Usuario';
 })
 export class RolesUsuariosComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userAgService: UsuarioAgService, private authService: AuthenticationService) { }
 
   rolePermissionsVisibility: { [role: string]: boolean } = {};
   selectedRolePermissions: { [role: string]: string[] } = {};
-
-
 
   selectedRole: number[] = []
   selectedPermisos: number[] = []
@@ -39,8 +39,6 @@ export class RolesUsuariosComponent implements OnInit {
     permisos: []
   }
 
-
-
   usuarios: Usuario = {
     username: "",
     email: "",
@@ -60,6 +58,17 @@ export class RolesUsuariosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userAgService.listarRoles().subscribe(
+      (data: any) => {
+        this.IterarRol = data;
+        console.log(this.IterarRol)
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+
+    this.usuario.usuario = this.userAgService.getUsuario()
   }
 
   activarRol(rol: number) {
@@ -71,7 +80,6 @@ export class RolesUsuariosComponent implements OnInit {
     } else {
       this.check = []
       this.selectedRole.push(rol)
-
     }
   }
 
@@ -92,7 +100,6 @@ export class RolesUsuariosComponent implements OnInit {
         });
 
         console.log(newPermisos);
-
 
         if (newPermisos.length == role.permissions.length) {
           newPermisos.forEach((x: any) => {
@@ -219,7 +226,6 @@ export class RolesUsuariosComponent implements OnInit {
     }
 
     console.log(this.check);
-
   }
 
   selecionarPermiso(permiso: number, rol: number) {
@@ -291,16 +297,25 @@ export class RolesUsuariosComponent implements OnInit {
         this.usuario.roles.push(rolDto)
         console.log(this.selectedPermisos);
         this.check.push(permiso)
-
       }
     }
   }
 
+  guardarUsuario() {
 
-  guardar() {
-    console.log(this.usuario);
+    let username = this.authService.getUsername();
 
+    this.usuario.username = username
 
+    this.userAgService.crearUsuario(this.usuario).subscribe(
+      (data:any) =>{
+          Swal.fire('GUARDADO','El usuario guardado','success');
+      },
+      (error:any) =>{
+        console.log(error);
+        Swal.fire('ERROR','Error Guardar Usuario','error')
+      }
+    )
   }
 
   contieneTodosValores(arrayPrincipal: any[], valoresAComprobar: any[]): boolean {

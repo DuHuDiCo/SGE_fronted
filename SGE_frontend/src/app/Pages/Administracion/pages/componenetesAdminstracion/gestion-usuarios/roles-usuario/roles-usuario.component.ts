@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
 import { Roles, RolesUser } from 'src/app/Types/Roles';
+import { Usuario } from 'src/app/Types/Usuario';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-roles-usuario',
@@ -10,8 +12,6 @@ import { Roles, RolesUser } from 'src/app/Types/Roles';
 export class RolesUsuarioComponent implements OnInit {
 
   constructor(private userAgService: UsuarioAgService, private usuarioagService: UsuarioAgService) { }
-
-
 
   selectedRole: number[] = []
   selectedPermisos: number[] = []
@@ -29,6 +29,19 @@ export class RolesUsuarioComponent implements OnInit {
   }
 
   IterarRol: Roles[] = []
+
+  usuarios: Usuario = {
+    username: "",
+    email: "",
+    password: "",
+    nombres: "",
+    apellidos: "",
+    tipo_documento: "",
+    numero_documento: "",
+    celular: "",
+    fecha_nacimiento: new Date(),
+    roles: []
+  }
 
   role: RolesUser = {
     rol: "",
@@ -283,10 +296,16 @@ export class RolesUsuarioComponent implements OnInit {
   }
 
 
-  guardar() {
-    console.log(this.usuario);
-
-
+  guardarUsuario() {
+    this.userAgService.crearUsuario(this.usuarios).subscribe(
+      (data:any) =>{
+          Swal.fire('GUARDADO','El usuario guardado','success');
+      },
+      (error:any) =>{
+        console.log(error);
+        Swal.fire('ERROR','Error Guardar Usuario','error')
+      }
+    )
   }
 
   contieneTodosValores(arrayPrincipal: any[], valoresAComprobar: any[]): boolean {

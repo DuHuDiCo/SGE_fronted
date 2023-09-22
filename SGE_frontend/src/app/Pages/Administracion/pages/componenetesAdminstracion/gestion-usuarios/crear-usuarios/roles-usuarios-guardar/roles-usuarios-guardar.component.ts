@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
+import { Roles, RolesUser } from 'src/app/Types/Roles';
 
 @Component({
   selector: 'app-roles-usuarios-guardar',
@@ -7,221 +9,285 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RolesUsuariosGuardarComponent implements OnInit {
 
-    validar = {
-      cartera: false,
-      ventas: false,
-      servicios: false,
-      consignaciones: false,
-      caja: false,
-      administracion: false,
-      archivo: false,
-    };
-  
-    objectGeneral = {
-      cartera: {
-        p1: false,
-        p2: false,
-        p3: false,
-        p4: false,
-        p5: false,
-        p6: false,
-      },
-      ventas: {
-        p1: false,
-        p2: false,
-        p3: false,
-        p4: false,
-        p5: false,
-        p6: false,
-      },
-      servicios: {
-        p1: false,
-        p2: false,
-        p3: false,
-        p4: false,
-        p5: false,
-        p6: false,
-      },
-      consignaciones: {
-        p1: false,
-        p2: false,
-        p3: false,
-        p4: false,
-        p5: false,
-        p6: false,
-      },
-      caja: {
-        p1: false,
-        p2: false,
-        p3: false,
-        p4: false,
-        p5: false,
-        p6: false,
-      },
-      administracion: {
-        p1: false,
-        p2: false,
-        p3: false,
-        p4: false,
-        p5: false,
-        p6: false,
-      },
-      archivo: {
-        p1: false,
-        p2: false,
-        p3: false,
-        p4: false,
-        p5: false,
-        p6: false,
-      },
-    };
-  
-    select = {
-      cartera:false,
-      caja:false,
-      ventas:false,
-      servicios:false,
-      consignaciones:false,
-      administracion:false,
-      archivo:false,
-    };
-  
-    constructor() {}
-  
-    ngOnInit(): void {}
-  
-    validarCheck(rol: any) {
-      switch (rol) {
-        case 'cartera':
-          if (this.select.cartera == true) {
-            this.objectGeneral.cartera.p1 = true;
-            this.objectGeneral.cartera.p2 = true;
-            this.objectGeneral.cartera.p3 = true;
-            this.objectGeneral.cartera.p4 = true;
-            this.objectGeneral.cartera.p5 = true;
-            this.objectGeneral.cartera.p6 = true;
-          } else if (this.select.cartera == false) {
-            this.objectGeneral.cartera.p1 = false;
-            this.objectGeneral.cartera.p2 = false;
-            this.objectGeneral.cartera.p3 = false;
-            this.objectGeneral.cartera.p4 = false;
-            this.objectGeneral.cartera.p5 = false;
-            this.objectGeneral.cartera.p6 = false;
-          }
-          break;
-  
-        case 'caja':
-          if (this.select.caja == true) {
-            this.objectGeneral.caja.p1 = true;
-            this.objectGeneral.caja.p2 = true;
-            this.objectGeneral.caja.p3 = true;
-            this.objectGeneral.caja.p4 = true;
-            this.objectGeneral.caja.p5 = true;
-            this.objectGeneral.caja.p6 = true;
-          } else if (this.select.caja == false) {
-            this.objectGeneral.caja.p1 = false;
-            this.objectGeneral.caja.p2 = false;
-            this.objectGeneral.caja.p3 = false;
-            this.objectGeneral.caja.p4 = false;
-            this.objectGeneral.caja.p5 = false;
-            this.objectGeneral.caja.p6 = false;
-          }
-          break;
-          
-        case 'ventas':
-          if (this.select.ventas == true) {
-            this.objectGeneral.ventas.p1 = true;
-            this.objectGeneral.ventas.p2 = true;
-            this.objectGeneral.ventas.p3 = true;
-            this.objectGeneral.ventas.p4 = true;
-            this.objectGeneral.ventas.p5 = true;
-            this.objectGeneral.ventas.p6 = true;
-          } else if (this.select.ventas == false) {
-            this.objectGeneral.ventas.p1 = false;
-            this.objectGeneral.ventas.p2 = false;
-            this.objectGeneral.ventas.p3 = false;
-            this.objectGeneral.ventas.p4 = false;
-            this.objectGeneral.ventas.p5 = false;
-            this.objectGeneral.ventas.p6 = false;
-          }
-          break;
-          
-        case 'servicios':
-          if (this.select.servicios == true) {
-            this.objectGeneral.servicios.p1 = true;
-            this.objectGeneral.servicios.p2 = true;
-            this.objectGeneral.servicios.p3 = true;
-            this.objectGeneral.servicios.p4 = true;
-            this.objectGeneral.servicios.p5 = true;
-            this.objectGeneral.servicios.p6 = true;
-          } else if (this.select.servicios == false) {
-            this.objectGeneral.servicios.p1 = false;
-            this.objectGeneral.servicios.p2 = false;
-            this.objectGeneral.servicios.p3 = false;
-            this.objectGeneral.servicios.p4 = false;
-            this.objectGeneral.servicios.p5 = false;
-            this.objectGeneral.servicios.p6 = false;
-          }
-          break;
-          
-        case 'archivo':
-          if (this.select.archivo == true) {
-            this.objectGeneral.archivo.p1 = true;
-            this.objectGeneral.archivo.p2 = true;
-            this.objectGeneral.archivo.p3 = true;
-            this.objectGeneral.archivo.p4 = true;
-            this.objectGeneral.archivo.p5 = true;
-            this.objectGeneral.archivo.p6 = true;
-          } else if (this.select.archivo == false) {
-            this.objectGeneral.archivo.p1 = false;
-            this.objectGeneral.archivo.p2 = false;
-            this.objectGeneral.archivo.p3 = false;
-            this.objectGeneral.archivo.p4 = false;
-            this.objectGeneral.archivo.p5 = false;
-            this.objectGeneral.archivo.p6 = false;
-          }
-          break;
-          
-        case 'consignaciones':
-          if (this.select.consignaciones == true) {
-            this.objectGeneral.consignaciones.p1 = true;
-            this.objectGeneral.consignaciones.p2 = true;
-            this.objectGeneral.consignaciones.p3 = true;
-            this.objectGeneral.consignaciones.p4 = true;
-            this.objectGeneral.consignaciones.p5 = true;
-            this.objectGeneral.consignaciones.p6 = true;
-          } else if (this.select.consignaciones == false) {
-            this.objectGeneral.consignaciones.p1 = false;
-            this.objectGeneral.consignaciones.p2 = false;
-            this.objectGeneral.consignaciones.p3 = false;
-            this.objectGeneral.consignaciones.p4 = false;
-            this.objectGeneral.consignaciones.p5 = false;
-            this.objectGeneral.consignaciones.p6 = false;
-          }
-          break;
-          
-        case 'administracion':
-          if (this.select.administracion == true) {
-            this.objectGeneral.administracion.p1 = true;
-            this.objectGeneral.administracion.p2 = true;
-            this.objectGeneral.administracion.p3 = true;
-            this.objectGeneral.administracion.p4 = true;
-            this.objectGeneral.administracion.p5 = true;
-            this.objectGeneral.administracion.p6 = true;
-          } else if (this.select.administracion == false) {
-            this.objectGeneral.administracion.p1 = false;
-            this.objectGeneral.administracion.p2 = false;
-            this.objectGeneral.administracion.p3 = false;
-            this.objectGeneral.administracion.p4 = false;
-            this.objectGeneral.administracion.p5 = false;
-            this.objectGeneral.administracion.p6 = false;
-          }
-          break;
-          
-        default:
-          break;
-      }
-    }
-  
+  constructor(private userAgService: UsuarioAgService) { }
+
+  selectedRole: number[] = []
+  selectedPermisos: number[] = []
+
+  usuario: any = {
+    "usuario": {},
+    "roles": []
   }
 
+  check: any[] = []
+
+  permisosUsuarios = {
+    idRole: '',
+    Permissions: ''
+  }
+
+  IterarRol: Roles[] = []
+
+  role: RolesUser = {
+    rol: "",
+    permisos: []
+  }
+
+  ngOnInit(): void {
+    this.userAgService.listarRoles().subscribe(
+      (data: any) => {
+        this.IterarRol = data;
+        console.log(this.IterarRol)
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  activarRol(rol: number) {
+
+    if (this.selectedRole.includes(rol)) {
+      var position = this.selectedRole.indexOf(rol)
+      this.selectedRole.splice(position, 1)
+      this.usuario.roles = this.usuario.roles.filter((r: any) => r.id != rol)
+    } else {
+      this.check = []
+      this.selectedRole.push(rol)
+
+    }
+  }
+
+  seleccionarAllRoles(rol: number) {
+
+    const role = this.IterarRol.find((r: any) => r.idRole == rol)
+    if (role != null) {
+
+      if (this.selectedPermisos.length > 0) {
+
+        var newPermisos: any = []
+
+        role.permissions.forEach((element: any) => {
+          var position = this.selectedPermisos.indexOf(element.idPermission)
+          if (element.idPermission == this.selectedPermisos[position]) {
+            newPermisos.push(element.idPermission)
+          }
+        });
+
+        console.log(newPermisos);
+
+
+        if (newPermisos.length == role.permissions.length) {
+          newPermisos.forEach((x: any) => {
+            var position = this.selectedPermisos.indexOf(x)
+            this.selectedPermisos.splice(position, 1)
+          });
+
+          this.usuario.roles.forEach((r: any) => {
+            if (r.id == rol) {
+              r.permisos = []
+            }
+          });
+
+          var check = document.getElementById('check' + rol)
+
+
+          check?.removeAttribute("checked")
+        } else {
+
+          if (this.usuario.roles.some((r: any) => r.id == rol)) {
+
+            var find = this.usuario.roles.find((r: any) => r.id == rol)
+            find.permisos = []
+
+            role.permissions.forEach(element => {
+
+              if (!this.selectedPermisos.includes(element.idPermission)) {
+                this.selectedPermisos.push(element.idPermission)
+              }
+              find.permisos.push(element.idPermission)
+            });
+
+            var check = document.getElementById('check' + rol)
+
+            check?.setAttribute('checked', "true")
+
+
+          } else {
+            var rDto = {
+              "id": rol,
+              "permisos": []
+            }
+
+            this.usuario.roles.push(rDto)
+            var rolesNoinclu: any = []
+
+            role.permissions.forEach((p: any) => {
+
+
+              if (!this.selectedPermisos.includes(p.idPermission)) {
+                this.selectedPermisos.push(p.idPermission)
+
+                rolesNoinclu.push(p.idPermission)
+
+              }
+            })
+
+            console.log(rolesNoinclu);
+
+            this.usuario.roles.forEach((r: any) => {
+
+              if (r.id == rol) {
+                rolesNoinclu.forEach((p: any) => {
+                  r.permisos.push(p)
+                });
+              }
+            });
+            this.selectedPermisos.forEach(element => {
+              this.check.push(element)
+            });
+            var check = document.getElementById('check' + rol)
+
+            check?.setAttribute('checked', "true")
+          }
+        }
+      } else {
+
+        var check = document.getElementById('check' + rol)
+
+        check?.setAttribute('checked', "true")
+
+        var vali = this.usuario.roles.find((r: any) => r.id == rol)
+
+        if (vali != null || vali != undefined) {
+          if (vali.permisos.length > 0) {
+
+            vali.permisos.forEach((p: any) => {
+              if (this.selectedPermisos.includes(p)) {
+                var position = this.selectedPermisos.indexOf(p)
+                this.selectedPermisos.splice(position, 1)
+              }
+            });
+
+            vali.permisos = []
+
+          } else {
+            role.permissions.forEach(element => {
+              this.selectedPermisos.push(element.idPermission)
+              this.check.push(element.idPermission)
+            });
+
+            vali.permisos = role.permissions
+
+          }
+        } else {
+
+          var roles: any = []
+
+          role.permissions.forEach((p: any) => {
+            this.selectedPermisos.push(p.idPermission)
+            roles.push(p.idPermission)
+            this.check.push(p.idPermission)
+          });
+
+          var roleDto = {
+            "id": rol,
+            "permisos": roles
+          }
+
+          this.usuario.roles.push(roleDto)
+
+        }
+      }
+    }
+
+    console.log(this.check);
+
+  }
+
+  selecionarPermiso(permiso: number, rol: number) {
+    const role = this.IterarRol.find((r: any) => r.idRole == rol)
+
+    if (role != null || role != undefined) {
+      const vali = this.usuario.roles.find((r: any) => r.id == rol)
+
+      if (vali != null || vali != undefined) {
+        if (this.selectedPermisos.includes(permiso)) {
+          var position = this.selectedPermisos.indexOf(permiso)
+          this.selectedPermisos.splice(position, 1)
+
+          this.usuario.roles.forEach((r: any) => {
+            if (r.id == rol) {
+              var position = r.permisos.indexOf(permiso)
+              r.permisos.splice(position, 1)
+            }
+
+            if (r.permisos.length != role.permissions.length) {
+
+              var check = document.getElementById('check' + rol)
+              check?.removeAttribute("checked")
+            }
+          });
+
+        } else {
+          this.selectedPermisos.push(permiso)
+          console.log(this.selectedPermisos);
+
+          this.usuario.roles.forEach((r: any) => {
+
+            if (r.id == rol) {
+
+              r.permisos.push(permiso)
+            }
+
+            if (r.permisos.length == role.permissions.length) {
+              var check = document.getElementById('check' + rol)
+              check?.setAttribute("checked", "true");
+            }
+          });
+          this.check.push(permiso)
+        }
+      } else {
+        this.selectedPermisos.push(permiso)
+
+        var rolDto: any = {
+          "id": rol,
+          "permisos": []
+        }
+
+        role.permissions.forEach(element => {
+          if (this.selectedPermisos.includes(element.idPermission)) {
+            rolDto.permisos.push(element.idPermission)
+          }
+        });
+
+        this.usuario.roles.forEach((r: any) => {
+          if (r.id == rol) {
+            if (r.permisos.length == role.permissions.length) {
+
+              var check = document.getElementById('check' + rol)
+              check?.setAttribute("checked", "true");
+            }
+          }
+        });
+
+        this.usuario.roles.push(rolDto)
+        console.log(this.selectedPermisos);
+        this.check.push(permiso)
+
+      }
+    }
+  }
+
+
+  guardar() {
+    console.log(this.usuario);
+
+
+  }
+
+  contieneTodosValores(arrayPrincipal: any[], valoresAComprobar: any[]): boolean {
+    // Comprueba si cada valor en valoresAComprobar está presente en arrayPrincipal
+    return valoresAComprobar.every(valor => arrayPrincipal.some(valor));
+  }
+}

@@ -41,6 +41,12 @@
                             <th>{{ c.celular }}</th>
                             <th>{{ c.status ? 'Activado' : 'Desactivado'}}</th>
                             <td>
+                                <button type="button" class="btn btn-sm me-3"
+                                    style="background-color: #960010; color: white;"
+                                    [routerLink]="'/dashboard-admin-general/roles-usuario'"><i
+                                        class="fa-solid fa-gear"></i>
+                                </button>
+
                                 <button (click)="datos.datoToDelete=c.username" *ngIf="!c.status" type="button"
                                     class="btn btn-sm" style="background-color: #ff2424; color: white;" data-bs-toggle="modal"
                                     data-bs-target="#staticBackdrop2"><i class="fa-solid fa-unlock"></i>

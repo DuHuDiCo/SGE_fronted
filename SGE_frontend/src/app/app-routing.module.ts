@@ -63,6 +63,7 @@ import { BuscarUsuariosComponent } from './Pages/AdminGeneral/Usuarios/listar-us
 import { BancosComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/bancos/bancos.component';
 import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/sucursales/sucursales.component';
 import { EstadosComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados/estados.component';
+import { RolesUsuariosComponent } from './Pages/AdminGeneral/Usuarios/roles-usuarios/roles-usuarios.component';
 
 
 
@@ -156,12 +157,10 @@ const routes: Routes = [
       {
         path:'ingresar',
         component:IngresarComponent
-        
       },
       {
         path:'consultar',
         component:ConsultasComponent
-        
       },
       {
         path:'reportes',
@@ -199,24 +198,14 @@ const routes: Routes = [
         path:'crearUsuarios',
         component:CrearUsuariosComponent
       
-      }
-      ,
-      {
-        path:'rolesUsuario/:usuarioId',
-        component: RolesUsuarioComponent
-
       },
       {
         path:'rolesUsuariosGuardados',
         component: RolesUsuariosGuardarComponent
-
       }
-      
     ]
   },
-
-
-
+  
   {path: 'sst', redirectTo:'dashboard-sst' , pathMatch:'full' },
   {
     path:"dashboard-sst",
@@ -340,8 +329,6 @@ const routes: Routes = [
         path:'system-permisos',
         component: SystemPermisosComponent
       },
-
-
       {
         path:'agregar-varios-clientes',
         component: AgregarVariosClientesComponent
@@ -363,6 +350,10 @@ const routes: Routes = [
       {
         path: 'buscar-usuario',
         component: BuscarUsuariosComponent
+      },
+      {
+        path: 'roles-usuario',
+        component: RolesUsuariosComponent
       }
     ]
   }

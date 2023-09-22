@@ -1,4 +1,4 @@
-<div  class="container">
+<div class="container">
     <div class="imagen-portada">
         <img src="../../../../../assets/H_electro.svg" alt="">
     </div>
@@ -10,13 +10,13 @@
             <label for="text">Username</label>
             <div class="usuario">
                 <i class="fa-solid fa-user-secret"></i>
-                <input [(ngModel)]="usuario.username" type="text" class="input-usuario input1" placeholder="Username">
+                <input [(ngModel)]="usuarios.username" type="text" class="input-usuario input1" placeholder="Username">
             </div>
 
             <label for="text">Contraseña</label>
             <div class="usuario">
                 <i class="fa-solid fa-key"></i>
-                <input [(ngModel)]="usuario.password" name="username" type="password" class="input-usuario input1"
+                <input [(ngModel)]="usuarios.password" name="username" type="password" class="input-usuario input1"
                     placeholder="Contraseña">
             </div>
         </div>
@@ -25,7 +25,7 @@
             <label for="text">Nombre</label>
             <div class="usuario">
                 <i class="fa-solid fa-signature"></i>
-                <input [(ngModel)]="usuario.nombres" name="nombres" type="text" class="input-usuario input1"
+                <input [(ngModel)]="usuarios.nombres" name="nombres" type="text" class="input-usuario input1"
                     placeholder="Nombre">
 
             </div>
@@ -33,7 +33,7 @@
             <label for="text">Apellido</label>
             <div class="usuario">
                 <i class="fa-solid fa-signature"></i>
-                <input [(ngModel)]="usuario.apellidos" name="apellidos" type="text" class="input-usuario input1"
+                <input [(ngModel)]="usuarios.apellidos" name="apellidos" type="text" class="input-usuario input1"
                     placeholder="Apellido">
             </div>
         </div>
@@ -44,10 +44,10 @@
         <div class="col-md-6 col-12">
             <label for="select">Seleccione su Tipo de Documento</label>
             <div class="selecionar">
-                <select [(ngModel)]="usuario.tipo_documento" name="tipo_documento" class="form-select">
-                    <option selected>Opciones</option>
-                    <option value="1">Cedula de Ciudadania</option>
-                    <option value="2">Cedula de Extranjeria</option>
+                <select [(ngModel)]="usuarios.tipo_documento" name="tipo_documento" class="form-select">
+                    <option value="">Opciones</option>
+                    <option value="C.C">Cedula de Ciudadania</option>
+                    <option value="C.E">Cedula de Extranjeria</option>
                 </select>
             </div>
         </div>
@@ -56,7 +56,7 @@
             <label for="text">N° Documento</label>
             <div class="usuario">
                 <i class="fa-solid fa-address-card"></i>
-                <input [(ngModel)]="usuario.numero_documento" name="numero_documento" type="number"
+                <input [(ngModel)]="usuarios.numero_documento" name="numero_documento" type="number"
                     class="input-pass input1" placeholder="Documento">
             </div>
         </div>
@@ -67,7 +67,7 @@
             <label for="email">Correo</label>
             <div class="usuario">
                 <i class="fa-solid fa-envelope"></i>
-                <input [(ngModel)]="usuario.email" name="email" type="email" class="input-usuario input1"
+                <input [(ngModel)]="usuarios.email" name="email" type="email" class="input-usuario input1"
                     placeholder="Correo">
 
             </div>
@@ -77,7 +77,7 @@
             <label for="number">Telefono</label>
             <div class="usuario">
                 <i class="fa-solid fa-phone"></i>
-                <input [(ngModel)]="usuario.celular" name="celular" type="number" class="input-usuario input1"
+                <input [(ngModel)]="usuarios.celular" name="celular" type="number" class="input-usuario input1"
                     placeholder="Telefono Celular">
             </div>
         </div>
@@ -87,7 +87,7 @@
         <div class="col">
             <label for="email">Fecha</label>
             <div class="usuario">
-                <input [(ngModel)]="usuario.fecha_nacimiento" name="fecha_nacimiento" type="date"
+                <input [(ngModel)]="usuarios.fecha_nacimiento" name="fecha_nacimiento" type="date"
                     class="input-usuario input1">
             </div>
         </div>
@@ -95,5 +95,3 @@
 
     <button (click)="guardarUsuario()" class="btn-guardar">Gestionar Roles</button>
 </div>
-
-
