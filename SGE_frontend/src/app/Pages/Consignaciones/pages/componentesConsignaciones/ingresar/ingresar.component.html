@@ -23,13 +23,13 @@
         <div class="row align-items-center">
             <div class="col-md-11 col-12">
                 <div class="usuario">
-                    <input [(ngModel)]="consignacion.cedula" name="cedula" type="search" class="input-usuario" placeholder="Cédula Cliente"> 
+                    <input [(ngModel)]="cedula" name="cedula" type="search" class="input-usuario" placeholder="Cédula Cliente"> 
                 </div>
             </div>
             <div class="col-md-1 col-12">
-                <button class="btn btn-success btn-lg" data-bs-toggle="collapse" href="#clienteCollapse"><i class="fa-solid fa-magnifying-glass"></i></button>    
+                <button (click)="getObligacionByCedula()" class="btn btn-success btn-lg"><i class="fa-solid fa-magnifying-glass"></i></button>    
             </div>
-            <div class="collapse mt-2 mb-4" id="clienteCollapse">
+            <div *ngIf="tabla" class="mt-2 mb-4">
                 <hr class="border-4">
                 <table class="table table-hover text-center mt-3">
                     <thead>
@@ -42,18 +42,18 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
+                      <tr *ngFor="let o of obligacion">
                         <th scope="row">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <input (click)="check(o.numeroObligacion)" [checked]="consignacion.obligaciones.includes(o.numeroObligacion)" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                 </label>
                               </div>
                         </th>
-                        <td>Duván</td>
-                        <td>10000</td>
-                        <td>22/02/2022</td>
-                        <td>RioNegro</td>
+                        <td>{{ o.cliente.nombres }} {{ o.cliente.apellidos }}</td>
+                        <td>{{ o.capital }}</td>
+                        <td>{{ o.fechaObligacion | date:'short' }}</td>
+                        <td>{{ o.sede.nombreSede }}</td>
                       </tr>
                     </tbody>
                   </table> 
@@ -65,7 +65,8 @@
             <div class="col-md-6 col-12">
                 <div class="usuario">
                     <select [(ngModel)]="consignacion.idPlataforma" name="idPlataforma" class="form-select" required aria-label="select example">
-                    <option value="1">Banco</option>
+                    <option value="0">Elija Una Plataforma</option>
+                    <option *ngFor="let p of plataforma" value="{{ p.idPlataforma }}">{{ p.bancos.nombreBanco }} - {{ p.bancos.tipoPago[0].tipoPago }}</option>
                     </select>
                 </div>
             </div>
@@ -74,7 +75,7 @@
             <div class="col-md-6 col-12" >
                 <div class = "file">
                     <div class="input-group mb-3">
-                        <input [(ngModel)]="consignacion.base64" name="base64" type="file" class="form-control" id="inputGroupFile01">
+                        <input (change)="obtenerFile($event)" [(ngModel)]="consignacion.base64" name="base64" type="file" class="form-control" accept=".png, .jpg">
                       </div>
                 </div>
             </div>
@@ -99,8 +100,11 @@
               </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-          <button type="button" class="btn btn-primary" (click)="validarObs()">Si</button>
+          <button *ngIf="!crearConsignacion" type="button" class="btn btn-danger" (click)="guardarConObs('NO')" data-bs-dismiss="modal">No</button>
+          <button *ngIf="!crearConsignacion" type="button" class="btn btn-primary" (click)="guardarConObs('SI')">Si</button>
+          <button *ngIf="crearConsignacion" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
+            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+        </button>
         </div>
       </div>
     </div>

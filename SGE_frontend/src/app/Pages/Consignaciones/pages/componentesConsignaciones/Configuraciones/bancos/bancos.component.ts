@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BancoServiceService } from 'src/app/Services/Consignaciones/banco-service.service';
+import { BancoServiceService } from 'src/app/Services/Consignaciones/Bancos/banco-service.service';
 import { Banco, Plataforma } from 'src/app/Types/Banco';
 import { tipoPago } from 'src/app/Types/TipoPago';
 import Swal from 'sweetalert2';
@@ -38,6 +38,10 @@ export class BancosComponent implements OnInit {
 
   datosPlatform:any[] = []
 
+  spinner:boolean = true
+  crearTipoPago:boolean = false
+  crearBanco:boolean = false
+
   constructor(private bancoService:BancoServiceService) { }
 
   ngOnInit(): void {
@@ -51,13 +55,17 @@ export class BancosComponent implements OnInit {
       return
     }
 
-    this.saveTipoPago()
+    this.crearTipoPago = true
+    setTimeout(() => {
+      this.saveTipoPago()      
+    }, 3000);
   }
 
   saveTipoPago(){
     this.bancoService.save(this.datosT).subscribe(
       (data:any) => {
         Swal.fire('Felicidades', 'Tipo de Pago Guardado Exitosamente', 'success'),
+        this.crearTipoPago = false
         this.datosT = {
           tipoPago: '',
           idTipoPago: 0
@@ -65,6 +73,7 @@ export class BancosComponent implements OnInit {
       }, (error:any) => {
         console.log(error);
         Swal.fire('Error', 'Error al Crear el tipo de Pago', 'error')
+        this.crearTipoPago = false
         this.datosT = {
           tipoPago: '',
           idTipoPago: 0
@@ -93,13 +102,17 @@ export class BancosComponent implements OnInit {
       Swal.fire('Error', 'Seleccione el Tipo De Pago', 'error')
       return
     }
-    this.saveBanco()
+    this.crearBanco = true
+    setTimeout(() => {
+      this.saveBanco()      
+    }, 3000);
   }
 
   saveBanco(){
     this.bancoService.saveBanco(this.datosP).subscribe(
       (data:any) => {
         Swal.fire('Felicidades', 'El Banco ha sido Creado Exitosamente', 'success')
+        this.crearBanco = false
         this.datosP = {
           idPlataforma: 0,
           bancoDto: {
@@ -113,6 +126,7 @@ export class BancosComponent implements OnInit {
         }, 2000);
       }, (error:any) => {
         Swal.fire('Error', 'Error Al Guardar El Banco', 'error')
+        this.crearBanco = false
         this.datosP = {
           idPlataforma: 0,
           bancoDto: {
@@ -129,8 +143,7 @@ export class BancosComponent implements OnInit {
     this.bancoService.getBancos().subscribe(
       (data:any) => {
         this.datosPlatform = data
-        console.log(data);
-        
+        this.spinner = false
       }, (error:any) => {
         console.log(error);
       }

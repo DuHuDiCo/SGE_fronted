@@ -18,4 +18,12 @@ export class EstadoServiceService {
   getAll(){
     return this.http.get(`${this.url}/estado/getAllEstados`)
   }
+
+  getEstadoById(idEstado:number){
+    return this.http.get(`${this.url}/estado/getEstadoById/${idEstado}`)
+  }
+
+  updateEstado(estado:Estado){
+    return this.http.put(`${this.url}/estado/editarEstado`, estado)
+  }
 }

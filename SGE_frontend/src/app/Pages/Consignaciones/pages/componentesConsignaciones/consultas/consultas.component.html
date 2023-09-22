@@ -10,23 +10,21 @@
             <div class="col-md-3 col-12">
                 <div class="seleciona">
                     <select class="form-select form-control">
-                        <option selected>Seleccionar</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option value="0">Seleccionar un Estado</option>
+                        <option *ngFor="let e of estadoA" value=" {{e.idEstado}} ">{{ e.estado }}</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-3 col-12">
                 <div class="selecionar">
                     <select class="form-select form-control">
-                        <option selected>Sede</option>
+                        <option selected>Seleccione Una Sede</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
                         <option value="3">Three</option>
                     </select>
                 </div>
-            </div>
+            </div> 
             <div class="col-md-3 col-12">
                 <div class="fecha">
                     <input class="c form-control" type="date" placeholder="Fecha">
@@ -34,17 +32,23 @@
             </div>
             <div class="col-md-3 col-12">
                 <div class="buscador">
-                    <input class="c form-control" type="search" placeholder="Buscar">
+                    <input class="c form-control" type="search" placeholder="Digite Una Cédula">
                 </div>
             </div>
         </div>
     </header><br><br>
-    <div class="table-responsive align-middle text-center">
+    <div *ngIf="spinner" class="text-center">
+      <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
+        <span class="visually-hidden"></span>
+      </div>
+    </div>
+    <div *ngIf="!spinner" class="table-responsive align-middle text-center">
         <table class="table table-bordered align-middle text-center">
             <thead>
                 <tr>
+                    <th scope="col">#</th>
                     <th scope="col">Número Recibo</th>
-                    <th scope="col">Cédula</th>
+                    <th scope="col">Documento</th>
                     <th scope="col">Nombre Cliente</th>
                     <th scope="col">Fecha Pago</th>
                     <th scope="col">Fecha Creacion</th>
@@ -56,26 +60,42 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>11111</td>
-                    <td>Otto</td>
-                    <td>02/02/2002</td>
-                    <td>02/02/2002</td>
-                    <td>$ 100.000</td>
-                    <td>Activo</td>
-                    <td>Andes</td>
-                    <td>BBVA</td>
+                <tr *ngFor="let c of con; let i = index">
+                    <th scope="row">{{ cont + i }}</th>
+                    <th scope="row">{{ c.numeroRecibo }}</th>
+                    <td>{{ c.cuentasCobrar[0].cliente.numeroDocumento }}</td>
+                    <td>{{ c.cuentasCobrar[0].cliente.nombres }} {{ c.cuentasCobrar[0].cliente.apellidos }}</td>
+                    <td>{{ c.fechaPago | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ c.fechaCreacion | date: 'dd/MM/yyyy' }}, {{ c.fechaCreacion | date: 'shortTime' }}</td>
+                    <td>$ {{ c.valor | number}}</td>
+                    <td>{{ c.actualizaciones[0].estado.estado }}</td>
+                    <td>{{ c.cuentasCobrar[0].sede.nombreSede }}</td>
+                    <td>{{ c.plataforma.bancos.nombreBanco }} - {{ c.plataforma.bancos.tipoPago[0].tipoPago }}</td>
                     <td class="d-flex justify-content-between">
-                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"><i class="fa-regular fa-eye"></i></button>
-                        <button class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"><i class="fa-regular fa-image"></i></button>
-                        <button class="btn btn-sm btn-secondary ms-2"  data-bs-toggle="modal" data-bs-target="#modalInfo"><i class="fa-solid fa-circle-info"></i></button>
+                        <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen"></i></button>
+                        <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"><i class="fa-regular fa-eye"></i></button>
+                        <button (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"><i class="fa-regular fa-image"></i></button>
+                        <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-secondary ms-2"  data-bs-toggle="modal" data-bs-target="#modalInfo"><i class="fa-solid fa-circle-info"></i></button>
                     </td>
 
                 </tr>
             </tbody>
         </table>
+        <div class="row justify-content-center">
+          <div class="col-md-3"></div>
+            <div class="col-md-5" >
+                <nav aria-label="...">
+                    <ul class="pagination">
+                      <li class="page-item">
+                        <a class="page-link" (click)="back()" style="cursor: pointer;">Anterior</a>
+                      </li>
+                      <li class="page-item" *ngFor="let p of paginas; let i = index"><a (click)="goToPage(i)" class="page-link" style="cursor: pointer;">{{ i + 1 }}</a></li>
+                      <li class="page-item">
+                        <a class="page-link" (click)="next()" style="cursor: pointer;">Siguiente</a>
+                      </li>
+                    </ul>
+                  </nav>
+            </div>
     </div>
 </div>
 
@@ -89,8 +109,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h6 class="fw-bold">Sede: ANDES</h6>
-
                     <table class="table table-bordered text-center align-middle mt-3">
                         <thead>
                           <tr>
@@ -98,16 +116,14 @@
                             <th scope="col">Fecha Actualización</th>
                             <th scope="col">Estado</th>
                             <th scope="col">Usuario</th>
-                            <th scope="col">Recibo</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>22/02/2023</td>
-                            <td>Pendiente</td>
-                            <td>Carolina Jaramillo</td>
-                            <td>8877</td>
+                          <tr *ngFor="let a of actu.actualizaciones; let i = index">
+                            <th scope="row">{{ i + 1 }}</th>
+                            <td>{{ a.fechaActualizacion | date: 'short' }}</td>
+                            <td>{{ a.estado.estado }}</td>
+                            <td>{{ a.usuario.nombres }} {{ a.usuario.apellidos }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -127,7 +143,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <img src="../../../../../../assets/logo-Principal.png" style="height: 100px; width: 100px;">
+          <img src="{{ base64 }}" style="height: 700px; width: 466px;">
         </div>
       </div>
     </div>
@@ -146,10 +162,13 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <h6 class="fw-bold ms-3">Crear Nueva Observación</h6>
             <form class="row">
                 <div class="col-md-9">
-                  <input type="password" class="form-control" placeholder="Observación">
+                  <input [(ngModel)]="observacionDto.detalle" name="detalle" type="text" class="form-control" placeholder="Observación">
                 </div>
                 <div class="col-md-2">
-                  <button type="submit" class="btn btn-success me-2">Crear</button>
+                  <button *ngIf="!crearObs" (click)="saveObservacion()" type="submit" class="btn btn-success me-2">Crear</button>
+                  <button *ngIf="crearObs" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
+                    <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                  </button>
                 </div>
               </form>
 
@@ -163,12 +182,12 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>Popular</td>
-                        <td>2023-05-12</td>
-                        <td>Mazo Cortes Blanca</td>
-                      </tr>
+                      <tr *ngFor="let d of detalle.observaciones; let i = index">
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>{{ d.detalle }}</td>
+                        <td>{{ d.fechaCreacion | date: 'short' }}</td>
+                        <td>{{ d.usuario.nombres }} {{ d.usuario.apellidos }}</td>
+                      </tr> 
                     </tbody>
                   </table>
         </div>
@@ -193,17 +212,17 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="row align-items-center">
                     <div class="col-md-12 col-12">
                         <div class="usuario mt-4">
-                            <input name="numeroRecibo" type="text" class="input-usuario" placeholder="Número Del Recibo">
+                            <input [(ngModel)]="modal.numeroRecibo" name="numeroRecibo" type="text" class="input-usuario" placeholder="Número Del Recibo">
                         </div>
                     </div>
                     <div class="col-md-6 col-12">
                         <div class="usuario">
-                            <input name="valor" type="text" class="input-usuario" placeholder="Valor">
+                            <input [(ngModel)]="modal.valor" name="valor" type="text" class="input-usuario" placeholder="Valor">
                         </div>
                     </div>
                     <div class="col-md-6 col-12">
                         <div class="usuario">
-                            <input name="fechaPago" type="date" class="input-usuario"> 
+                            <input [(ngModel)]="modal.fechaPago" name="fechaPago" type="date" class="input-usuario"> 
                         </div>
                     </div>
             </div>
@@ -211,18 +230,21 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="row align-items-center">
             <div class="col-md-10 col-12">
                 <div class="usuario">
-                    <input name="cedula" type="search" class="input-usuario" placeholder="Cédula Cliente"> 
+                    <input [(ngModel)]="cedula" name="cedula" type="search" class="input-usuario" placeholder="Cédula Cliente"> 
                 </div>
             </div>
             <div class="col-md-2 col-12">
-                <button class="btn btn-success btn-lg" data-bs-toggle="collapse" href="#clienteCollapse"><i class="fa-solid fa-magnifying-glass"></i></button>    
+                <button *ngIf="!buscarObli" (click)="getObligacionByCedula()" class="btn btn-success btn-lg"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button *ngIf="buscarObli" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
+                    <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                  </button> 
             </div>
-            <div class="collapse mt-2 mb-4" id="clienteCollapse">
+            <div class="mt-2 mb-4">
                 <hr class="border-4">
-                <table class="table table-hover text-center mt-3">
+                <table class="table table-hover text-center align-middle mt-3">
                     <thead>
-                      <tr>
-                        <th scope="col"></th>
+                      <tr class="align-middle">
+                        <th *ngIf="check" scope="col"></th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Valor Obligación</th>
                         <th scope="col">Fecha Obligación</th>
@@ -230,39 +252,36 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row">
+                      <tr *ngFor="let cc of cuentasPorCobrar.cuentasCobrar">
+                        <td *ngIf="check">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <input (click)="checkBox(cc.numeroObligacion)" [checked]="modal.obligaciones.includes(cc.numeroObligacion)" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                 </label>
                               </div>
-                        </th>
-                        <td>Duván</td>
-                        <td>10000</td>
-                        <td>22/02/2022</td>
-                        <td>RioNegro</td>
+                        </td>
+                        <td>{{ cc.cliente.nombres }} {{ cc.cliente.apellidos }}</td>
+                        <td>{{ cc.capital }}</td>
+                        <td>{{ cc.fechaObligacion  | date:'short' }}</td>
+                        <td>{{ cc.id_venta }}</td>
                       </tr>
                     </tbody>
                   </table> 
             </div>
-             
         </div>
-
+    </div>
         <div class="row align-items-end">
-            <div class="col-md-6 col-12">
+            <div class="col-md-12 col-12">
                 <div class="usuario">
-                    <select name="idPlataforma" class="form-select" required aria-label="select example">
-                    <option value="1">Banco</option>
+                    <select (change)="cambiarPago($event)" [(ngModel)]="modal.idPlataforma" name="idPlataforma" class="form-select" required aria-label="select example">
+                    <option *ngFor="let p of plataforma"  value="{{ p.idPlataforma }}">{{ p.bancos.nombreBanco }} - {{ p.bancos.tipoPago[0].tipoPago }}</option>
                     </select>
                 </div>
             </div>
-            
-
-            <div class="col-md-6 col-12" >
+            <div class="col-md-12 col-12" >
                 <div class = "file">
                     <div class="input-group mb-3">
-                        <input name="base64" type="file" class="form-control">
+                        <input (change)="obtenerFile($event)" name="base64" type="file" class="form-control">
                       </div>
                 </div>
             </div>
@@ -270,7 +289,10 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-              <button class="btn btn-primary" type="button">Actualizar</button>
+              <button *ngIf="!editarCon" (click)="validateNewConsignacion()" class="btn btn-primary" type="button">Actualizar</button>
+              <button *ngIf="editarCon" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
+                <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+              </button>
 
           </div>
       </div>

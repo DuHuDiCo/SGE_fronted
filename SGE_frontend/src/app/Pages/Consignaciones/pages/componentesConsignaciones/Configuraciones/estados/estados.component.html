@@ -5,12 +5,21 @@
             consignacion.</p>
         <input [(ngModel)]="estado.estado" name="estado" type="text" class="form-control" placeholder="Ingrese un Estado de Consignación">
         <div class="text-center">
-            <button (click)="validateEstado()" class="btn btn-primary guardar">Guardar</button>
+            <button *ngIf="!crearEstado" (click)="validateEstado()" class="btn btn-primary guardar">Guardar</button>
+            <button *ngIf="crearEstado" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
+                <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+            </button>
         </div>
     </div>
 </div>
 
-<div class="row mt-4">
+<div *ngIf="spinner" class="text-center">
+    <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
+      <span class="visually-hidden"></span>
+    </div>
+  </div>
+
+<div *ngIf="!spinner" class="row mt-4">
     <div class="col-md-12">
         <div class="table-responsive align-middle text-center">
             <table class="table table-bordered align-middle text-center">
@@ -22,16 +31,45 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let e of estadoA; let i = index">
-                        <th scope="row">{{ i + 1 }}</th>
+                    <tr *ngFor="let e of estadoA | paginate: { itemsPerPage: 5 , currentPage: page} ; let i = index">
+                        <th scope="row">{{ (page - 1) * 5 + i + 1 }}</th>
                         <td>{{ e.estado }}</td>
                         <td>
-                            <button class="btn btn-sm btn-primary"><i class="fa-solid fa-pen"></i></button>
+                            <button (click)="getEstadoById(e.idEstado)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen"></i></button>
                         </td>
 
                     </tr>
                 </tbody>
             </table>
+            <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Estado</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <input [(ngModel)]="modal.estado" name="estado" type="text" class="form-control text-center" placeholder="Ingrese un Estado">
+                    </div>
+                </div>
+                <button *ngIf="!editarEstado" (click)="updateEstado()" class="btn btn-success guardar mt-3">Actualizar</button>
+                <button *ngIf="editarEstado" type="button" class="btn btn-danger guardar" style="background-color: #960010;border-color: #960010;">
+                    <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Consignacion } from 'src/app/Types/Consignaciones';
+import { DomSanitizer } from '@angular/platform-browser';
+import { BancoServiceService } from 'src/app/Services/Consignaciones/Bancos/banco-service.service';
+import { IngresarService } from 'src/app/Services/Consignaciones/IngresarConsignaciones/ingresar.service';
+import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { Plataforma } from 'src/app/Types/Banco';
+import { Consignacion, Obligacion } from 'src/app/Types/Consignaciones';
 import Swal from 'sweetalert2';
 
 declare var $: any;
@@ -11,29 +16,40 @@ declare var $: any;
 })
 export class IngresarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private ingresarService:IngresarService, private authService:AuthenticationService , private bancoService:BancoServiceService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
+    this.getPlataforma()
   }
 
+  cedula:string = ''
+
+  tabla:boolean = false
+  crearConsignacion:boolean = false
+
   consignacion:Consignacion = {
+    idConsignacion: 0,
     numeroRecibo: '',
-    valor: '',
+    valor: 0,
     fechaPago: new Date,
     idPlataforma: 0,
     observaciones: '',
-    cedula: '',
-    base64: ''
+    obligaciones: [],
+    base64: '',
+    username: ''
   }
 
-  validarCampos(){
+  obligacion:Obligacion[] = []
+
+  plataforma:any[] = []
+
+  guardarConsignacion(){
     const recibo = this.consignacion.numeroRecibo.trim()
     if(this.consignacion.numeroRecibo.trim() == '' || isNaN(parseInt(recibo))){
       Swal.fire('Error', 'Debe de Ingresar el Número del Recibo', 'error')
       return
     }
-    const valor = this.consignacion.valor
-    if(this.consignacion.valor == '' || isNaN(parseInt(valor))){
+    if(this.consignacion.valor == 0 || this.consignacion.valor == null){
       Swal.fire('Error', 'Debe de Ingresar el Valor de la Consignación', 'error')
       return
     }
@@ -41,9 +57,8 @@ export class IngresarComponent implements OnInit {
       Swal.fire('Error', 'Debe de Ingresar la fecha de Pago', 'error')
       return
     }
-    const cedula = this.consignacion.cedula.trim()
-    if(this.consignacion.cedula.trim() == '' || isNaN(parseInt(cedula))){
-      Swal.fire('Error', 'Debe de Ingresar una Cédula Válida', 'error')
+    if(this.consignacion.obligaciones.length <= 0){
+      Swal.fire('Error', 'Debe de Seleccionar al menos una Obligación', 'error')
       return
     }
     if(this.consignacion.idPlataforma == 0 || this.consignacion.idPlataforma == null){
@@ -51,28 +66,160 @@ export class IngresarComponent implements OnInit {
       return
     }
     if(this.consignacion.base64.trim() == '' || this.consignacion.base64 == null){
-      Swal.fire('Error', 'Debe de Ingresar una Cédula Válida', 'error')
+      Swal.fire('Error', 'Debe de Seleccionar Un Archivo', 'error')
       return
-    } else {
-      this.showModal()
     }
+    
+    var user = this.authService.getUsername()
+
+    if(user == null || user == undefined){
+      return
+    }
+     this.consignacion.username = user
+
+     this.showModal()
   }
 
-  guardarConsignacion(){
-    this.validarCampos()
+  guardarConObs(dato:string){
+
+    if(dato == 'SI'){
+      if(this.consignacion.observaciones.trim() == '' || this.consignacion.observaciones.trim() == null){
+        Swal.fire('Error', 'Si quieres guardar una consignación debes de llenar el campo', 'error')
+        return
+      }
+
+      this.ingresarService.saveConsignacion(this.consignacion).subscribe(
+        (data:any) => {
+          Swal.fire('Felicidades', 'Su Consignación se ha Guardado con Éxito', 'success')
+          this.consignacion = {
+            idConsignacion: 0,
+            numeroRecibo: '',
+            valor: 0,
+            fechaPago: new Date,
+            idPlataforma: 0,
+            observaciones: '',
+            obligaciones: [],
+            base64: '',
+            username: ''
+          }
+          
+        }, (error:any) => {
+          Swal.fire('Error', 'Error al Guardar La Consignación', 'error')
+          console.log(error);
+        }
+      )
+    } else {
+      this.ingresarService.saveConsignacion(this.consignacion).subscribe(
+        (data:any) => {
+          Swal.fire('Felicidades', 'Su Consignación se ha Guardado con Éxito', 'success')
+          this.consignacion = {
+            idConsignacion: 0,
+            numeroRecibo: '',
+            valor: 0,
+            fechaPago: new Date,
+            idPlataforma: 0,
+            observaciones: '',
+            obligaciones: [],
+            base64: '',
+            username: ''
+          }
+        }, (error:any) => {
+          Swal.fire('Error', 'Error al Guardar La Consignación', 'error')
+          console.log(error);
+        }
+      )
+    }
+    
   }
 
   showModal() {
     $('#myModal').modal('show');
   }
 
-  validarObs(){
-    if(this.consignacion.observaciones.trim() == '' || this.consignacion.observaciones.trim() == null){
-      Swal.fire('Error', 'Si quieres guardar una consignación debes de llenar el campo', 'error')
+  getObligacionByCedula(){
+
+    const cedula = this.cedula.trim()
+    if(this.cedula.trim() == '' || isNaN(parseInt(cedula))){
+      Swal.fire('Error', 'Debe de Ingresar una Cédula Válida', 'error')
       return
     }
-    console.log(this.consignacion);
+
+    this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
+      (data:any) => {
+        this.obligacion = data
+        if(this.obligacion.length > 0){
+          this.tabla = true
+          console.log(data);
+          return
+        }
+        if(this.obligacion.length <= 0){
+          Swal.fire('Error', 'Digite Una Cédula Válida', 'error')
+          this.tabla = false
+          this.cedula = ''
+          return
+        }
+        
+        
+        
+      }, (error:any) => {
+        Swal.fire('Error', 'Error Al Traer Las Obligaciones', 'error')
+        this.cedula = ''
+        console.log(error);
+      }
+    )
+  }
+
+  public obtenerFile(event: any) {
+    var archivo = event.target.files[0];
+    this.extraerBase64(archivo).then((file: any) => {
+      this.consignacion.base64 = file.base;
+      console.log(this.consignacion);
+    })
+  }
+
+  public extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
+    try {
+      const unsafeImg = window.URL.createObjectURL($event);
+      const image = this.sanitizer.bypassSecurityTrustUrl(unsafeImg);
+      const reader = new FileReader();
+      reader.readAsDataURL($event);
+      reader.onload = () => {
+        resolve({
+          base: reader.result
+        });
+      };
+      reader.onerror = error => {
+        resolve({
+          base: null
+        });
+      };
+
+    } catch (e) {
+      return null;
+    }
+  })
+
+  check(obligacion:string){
+    if(this.consignacion.obligaciones.includes(obligacion)){
+      var position = this.consignacion.obligaciones.indexOf(obligacion)
+      this.consignacion.obligaciones.splice(position, 1)
+    } else {
+      this.consignacion.obligaciones.push(obligacion)
+    }
     
   }
+
+  getPlataforma(){
+    this.bancoService.getBancos().subscribe(
+      (data:any) => {
+        this.plataforma = data
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+
+
 
 }
