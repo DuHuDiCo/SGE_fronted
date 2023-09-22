@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
 import { Roles, RolesUser } from 'src/app/Types/Roles';
 import { Usuario } from 'src/app/Types/Usuario';
@@ -11,7 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class RolesUsuariosComponent implements OnInit {
 
-  constructor(private userAgService: UsuarioAgService) { }
+  constructor(private userAgService: UsuarioAgService, private authService: AuthenticationService) { }
 
   rolePermissionsVisibility: { [role: string]: boolean } = {};
   selectedRolePermissions: { [role: string]: string[] } = {};
@@ -66,6 +67,8 @@ export class RolesUsuariosComponent implements OnInit {
         console.log(error);
       }
     )
+
+    this.usuario.usuario = this.userAgService.getUsuario()
   }
 
   activarRol(rol: number) {
@@ -299,43 +302,20 @@ export class RolesUsuariosComponent implements OnInit {
   }
 
   guardarUsuario() {
-    if (this.usuario.username.trim() == '' || this.usuario.username.trim() == null) {
-      Swal.fire('Error', 'Debe de ingresar el Username', 'error')
-      return
-    }
-    if (this.usuario.nombres.trim() == '' || this.usuario.nombres.trim() == null) {
-      Swal.fire('Error', 'Debe de ingresar los Nombres', 'error')
-      return
-    }
-    if (this.usuario.password.trim() == '' || this.usuario.password.trim() == null) {
-      Swal.fire('Error', 'Debe de ingresar la Contraseña', 'error')
-      return
-    }
-    if (this.usuario.apellidos.trim() == '' || this.usuario.apellidos.trim() == null) {
-      Swal.fire('Error', 'Debe de ingresar los Apellidos', 'error')
-      return
-    }
-    if (this.usuario.tipo_documento.trim() == '' || this.usuario.tipo_documento.trim() == null) {
-      Swal.fire('Error', 'Debe de ingresar el Tipo De Doc', 'error')
-      return
-    }
-    if (typeof this.usuario.numero_documento === 'string' && this.usuario.numero_documento.trim() === '') {
-      Swal.fire('Error', 'Debe ingresar el Numero de Doc', 'error');
-      return;
-    }
 
-    if (this.usuario.email.trim() == '' || this.usuario.email.trim() == null) {
-      Swal.fire('Error', 'Debe de ingresar el Email', 'error')
-      return
-    }
-    if (typeof this.usuario.celular === 'string' && this.usuario.celular.trim() == '') {
-      Swal.fire('Error', 'Debe de ingresar el Celular', 'error')
-      return
-    }
-    if (this.usuario.fecha_nacimiento instanceof Date || this.usuario.fecha_nacimiento == null) {
-      Swal.fire('Error', 'Debe ingresar la Fecha de Nacimiento', 'error');
-      return;
-    }
+    let username = this.authService.getUsername();
+
+    this.usuario.username = username
+
+    this.userAgService.crearUsuario(this.usuario).subscribe(
+      (data:any) =>{
+          Swal.fire('GUARDADO','El usuario guardado','success');
+      },
+      (error:any) =>{
+        console.log(error);
+        Swal.fire('ERROR','Error Guardar Usuario','error')
+      }
+    )
   }
 
   contieneTodosValores(arrayPrincipal: any[], valoresAComprobar: any[]): boolean {

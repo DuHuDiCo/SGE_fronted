@@ -21,7 +21,6 @@ export class BuscarUsuariosService {
     return this.http.post(`${baseUrl}/users/delete`, usuario);
   }
 
-
   public activarUsuario(usuario: any) {
     return this.http.post(`${baseUrl}/users/activate`, usuario)
   }

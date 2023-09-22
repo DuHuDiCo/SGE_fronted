@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
 import { Roles, RolesUser } from 'src/app/Types/Roles';
 import { Usuario } from 'src/app/Types/Usuario';
@@ -11,7 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class CreateUsuarioComponent implements OnInit {
 
-  constructor(private userAgService: UsuarioAgService, private usuarioagService: UsuarioAgService) { }
+  constructor(private userAgService: UsuarioAgService, private usuarioagService: UsuarioAgService, private router: Router) { }
 
   rolePermissionsVisibility: { [role: string]: boolean } = {};
   selectedRolePermissions: { [role: string]: string[] } = {};
@@ -69,42 +70,49 @@ export class CreateUsuarioComponent implements OnInit {
   }
 
   guardarUsuario() {
-    if (this.usuario.username.trim() == '' || this.usuario.username.trim() == null) {
+     
+    if (this.usuarios.username.trim() == '' || this.usuarios.username.trim() == null) {
       Swal.fire('Error', 'Debe de ingresar el Username', 'error')
       return
     }
-    if (this.usuario.nombres.trim() == '' || this.usuario.nombres.trim() == null) {
+    if (this.usuarios.nombres.trim() == '' || this.usuarios.nombres.trim() == null) {
       Swal.fire('Error', 'Debe de ingresar los Nombres', 'error')
       return
     }
-    if (this.usuario.password.trim() == '' || this.usuario.password.trim() == null) {
+    if (this.usuarios.password.trim() == '' || this.usuarios.password.trim() == null) {
       Swal.fire('Error', 'Debe de ingresar la Contraseña', 'error')
       return
     }
-    if (this.usuario.apellidos.trim() == '' || this.usuario.apellidos.trim() == null) {
+    if (this.usuarios.apellidos.trim() == '' || this.usuarios.apellidos.trim() == null) {
       Swal.fire('Error', 'Debe de ingresar los Apellidos', 'error')
       return
     }
-    if (this.usuario.tipo_documento.trim() == '' || this.usuario.tipo_documento.trim() == null) {
+    if (this.usuarios.tipo_documento.trim() == '' || this.usuarios.tipo_documento.trim() == null) {
       Swal.fire('Error', 'Debe de ingresar el Tipo De Doc', 'error')
       return
     }
-    if (typeof this.usuario.numero_documento === 'string' && this.usuario.numero_documento.trim() === '') {
+    if (typeof this.usuarios.numero_documento === 'string' && this.usuarios.numero_documento.trim() === '') {
       Swal.fire('Error', 'Debe ingresar el Numero de Doc', 'error');
       return;
     }
 
-    if (this.usuario.email.trim() == '' || this.usuario.email.trim() == null) {
+    if (this.usuarios.email.trim() == '' || this.usuarios.email.trim() == null) {
       Swal.fire('Error', 'Debe de ingresar el Email', 'error')
       return
     }
-    if (typeof this.usuario.celular === 'string' && this.usuario.celular.trim() == '') {
+    if (typeof this.usuarios.celular === 'string' && this.usuarios.celular.trim() == '') {
       Swal.fire('Error', 'Debe de ingresar el Celular', 'error')
       return
     }
-    if (this.usuario.fecha_nacimiento instanceof Date || this.usuario.fecha_nacimiento == null) {
+    if (this.usuarios.fecha_nacimiento instanceof Date || this.usuarios.fecha_nacimiento == null) {
       Swal.fire('Error', 'Debe ingresar la Fecha de Nacimiento', 'error');
       return;
     }
+
+    this.userAgService.setUsuario(this.usuarios)
+
+    this.router.navigate(['/dashboard-admin-general/roles-usuario'])
+    
+  
   }
 }

@@ -18,12 +18,14 @@
                 <td>
                     <div class="form-check form-switch">
                         <label class="form-check-label" for="flexSwitchCheckDefault">Activar Rol</label>
-                        <input (click)="activarRol(r.idRole)"  class="form-check-input input" type="checkbox">
+                        <input (click)="activarRol(r.idRole)" class="form-check-input input" type="checkbox">
                     </div>
                 </td>
-                <td *ngIf="selectedRole.includes(r.idRole)" >
-                    <button class="btn_check" (click)="seleccionarAllRoles( r.idRole)"><input  class="form-check-input input" name="seleccionarTodos"  [id]="'check'+r.idRole"  type="checkbox"></button>
-                    <label class="form-check-label"  for="option-all">Seleccionar Todos los Permisos</label>
+                <td *ngIf="selectedRole.includes(r.idRole)">
+                    <button class="btn_check" (click)="seleccionarAllRoles( r.idRole)"><input
+                            class="form-check-input input" name="seleccionarTodos" [id]="'check'+r.idRole"
+                            type="checkbox"></button>
+                    <label class="form-check-label" for="option-all">Seleccionar Todos los Permisos</label>
                 </td>
             </tr>
 
@@ -32,9 +34,10 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-check" *ngFor="let pr of r.permissions">
-                                <input class="form-check-input input" type="checkbox" (click)="selecionarPermiso(pr.idPermission, r.idRole)" [checked]="selectedPermisos.includes(pr.idPermission)"
-                                >
-                                <label  class="form-check-label">{{
+                                <input class="form-check-input input" type="checkbox"
+                                    (click)="selecionarPermiso(pr.idPermission, r.idRole)"
+                                    [checked]="selectedPermisos.includes(pr.idPermission)">
+                                <label class="form-check-label">{{
                                     pr.permission | uppercase }}</label>
                             </div>
                         </div>
@@ -44,5 +47,5 @@
 
         </tbody>
     </table>
-    <button (click)="guardar()" class="btn-guardar">Guardar</button>
+    <button (click)="guardarUsuario()" class="btn-guardar">Guardar</button>
 </div>
