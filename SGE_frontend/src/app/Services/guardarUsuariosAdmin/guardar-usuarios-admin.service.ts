@@ -8,10 +8,20 @@ import baseUrl from 'src/app/utils/helper';
 })
 export class GuardarUsuariosAdminService {
 
+  usuario:any = {}
+
   constructor(private http:HttpClient) { }
 
-  public crearUsuario(usuario:Usuario){
-    return this.http.post(`${baseUrl}/usuarios/save`, usuario)
+  public crearUsuario(usuario:Usuario,username:string){
+    return this.http.post(`${baseUrl}/usuarios/save${username}`, usuario)
+  }
+
+  setUsuario(user:any){
+    this.usuario = user
+  }
+
+  getUsuario(){
+    return this.usuario;
   }
 
 }

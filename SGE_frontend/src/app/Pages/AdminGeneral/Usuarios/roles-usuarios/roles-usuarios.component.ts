@@ -318,8 +318,6 @@ export class RolesUsuariosComponent implements OnInit {
       //   }
       // )
     }
-
-
   }
 
   contieneTodosValores(arrayPrincipal: any[], valoresAComprobar: any[]): boolean {

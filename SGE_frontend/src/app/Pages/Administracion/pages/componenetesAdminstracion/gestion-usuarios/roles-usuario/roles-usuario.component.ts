@@ -296,26 +296,26 @@ export class RolesUsuarioComponent implements OnInit {
     }
   }
 
-
   guardarUsuario() {
 
     let username = this.authService.getUsername();
 
     if (username != null || username != undefined) {
+      
       console.log(this.usuario);
       
-       this.userAgService.crearUsuario(this.usuarios, username).subscribe(
-      (data:any) =>{
-          Swal.fire('GUARDADO','El usuario guardado','success');
-      },
-      (error:any) =>{
-        console.log(error);
-        Swal.fire('ERROR','Error Guardar Usuario','error')
-      }
-    )
+      this.userAgService.crearUsuario(this.usuario, username).subscribe(
+        (data: any) => {
+           Swal.fire('GUARDADO', 'El usuario guardado', 'success');
+         },
+         (error: any) => {
+           console.log(error);
+           Swal.fire('ERROR', 'Error Guardar Usuario', 'error')
+        }
+       )
     }
-   
   }
+
 
   contieneTodosValores(arrayPrincipal: any[], valoresAComprobar: any[]): boolean {
     // Comprueba si cada valor en valoresAComprobar está presente en arrayPrincipal

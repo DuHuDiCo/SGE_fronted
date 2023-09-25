@@ -64,17 +64,9 @@ export class CrearUsuariosComponent implements OnInit {
       return
     }
 
-    this.rol = true;
+    this.guardarUsuariosAdmin.setUsuario(this.usuario)
   }
 
-
-
-  rol: boolean = false;
-
-
-
   ngOnInit(): void {}
-
-  
 
 }
