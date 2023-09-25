@@ -65,11 +65,20 @@ export class RolesUsuariosComponent implements OnInit {
     //   this.router.navigate(['/dashboard-admin-general/crear-usuario'])
     // }
 
-    this.obtenerRolesYPermisos();
+    var user = this.userService.getUsuarioGeneral();
+    
+    
+    
+    if(Object.keys(user).length != 0){
+     
+      this.obtenerRolesYPermisos(user);
+    }
+    
 
     this.userAgService.listarRoles().subscribe(
       (data: any) => {
         this.IterarRol = data;
+        
         console.log(this.IterarRol)
       },
       (error) => {
@@ -352,9 +361,8 @@ export class RolesUsuariosComponent implements OnInit {
   }
 
 
-  obtenerRolesYPermisos() {
-    var user = this.userService.getUsuarioGeneral();
-    console.log(user.roles);
+  obtenerRolesYPermisos(user:any) {
+   
 
     var rolDto: any = {
       "id": "",
