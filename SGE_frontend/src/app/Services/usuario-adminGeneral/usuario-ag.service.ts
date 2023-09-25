@@ -13,7 +13,7 @@ export class UsuarioAgService {
   constructor(private http:HttpClient) { }
 
   public crearUsuario(usuario:Usuario, username:string){
-    return this.http.post(`${baseUrl}/usuarios/save/${username}`,usuario)
+    return this.http.post(`${baseUrl}/users/save/${username}`,usuario)
   }
 
   public listarRoles(){

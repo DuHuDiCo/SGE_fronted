@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { BuscarUsuariosService } from 'src/app/Services/BuscarUsuarios/buscar-usuarios.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
 import { Roles, RolesUser } from 'src/app/Types/Roles';
@@ -12,7 +14,7 @@ import Swal from 'sweetalert2';
 })
 export class RolesUsuariosComponent implements OnInit {
 
-  constructor(private userAgService: UsuarioAgService, private authService: AuthenticationService) { }
+  constructor(private userAgService: UsuarioAgService, private authService: AuthenticationService, private router: Router, private userService: BuscarUsuariosService) { }
 
   rolePermissionsVisibility: { [role: string]: boolean } = {};
   selectedRolePermissions: { [role: string]: string[] } = {};
@@ -58,6 +60,13 @@ export class RolesUsuariosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.usuario.usuario = this.userAgService.getUsuario()
+    // if(this.usuario.usuario.username == null || this.usuario.usuario.username == ""){
+    //   this.router.navigate(['/dashboard-admin-general/crear-usuario'])
+    // }
+
+    this.obtenerRolesYPermisos();
+
     this.userAgService.listarRoles().subscribe(
       (data: any) => {
         this.IterarRol = data;
@@ -68,7 +77,7 @@ export class RolesUsuariosComponent implements OnInit {
       }
     )
 
-    this.usuario.usuario = this.userAgService.getUsuario()
+
   }
 
   activarRol(rol: number) {
@@ -271,32 +280,40 @@ export class RolesUsuariosComponent implements OnInit {
           this.check.push(permiso)
         }
       } else {
-        this.selectedPermisos.push(permiso)
 
-        var rolDto: any = {
-          "id": rol,
-          "permisos": []
+        if (this.selectedPermisos.includes(permiso)) {
+          var position = this.selectedPermisos.indexOf(permiso)
+          this.selectedPermisos.splice(position, 1)
+
+        } else {
+          this.selectedPermisos.push(permiso)
+
+          var rolDto: any = {
+            "id": rol,
+            "permisos": []
+          }
+
+          role.permissions.forEach(element => {
+            if (this.selectedPermisos.includes(element.idPermission)) {
+              rolDto.permisos.push(element.idPermission)
+            }
+          });
+
+          this.usuario.roles.forEach((r: any) => {
+            if (r.id == rol) {
+              if (r.permisos.length == role.permissions.length) {
+
+                var check = document.getElementById('check' + rol)
+                check?.setAttribute("checked", "true");
+              }
+            }
+          });
+
+          this.usuario.roles.push(rolDto)
+          console.log(this.selectedPermisos);
+          this.check.push(permiso)
         }
 
-        role.permissions.forEach(element => {
-          if (this.selectedPermisos.includes(element.idPermission)) {
-            rolDto.permisos.push(element.idPermission)
-          }
-        });
-
-        this.usuario.roles.forEach((r: any) => {
-          if (r.id == rol) {
-            if (r.permisos.length == role.permissions.length) {
-
-              var check = document.getElementById('check' + rol)
-              check?.setAttribute("checked", "true");
-            }
-          }
-        });
-
-        this.usuario.roles.push(rolDto)
-        console.log(this.selectedPermisos);
-        this.check.push(permiso)
       }
     }
   }
@@ -307,10 +324,17 @@ export class RolesUsuariosComponent implements OnInit {
 
     if (username != null || username != undefined) {
       console.log(this.usuario);
-      
+
+
+
       // this.userAgService.crearUsuario(this.usuario, username).subscribe(
       //   (data: any) => {
       //     Swal.fire('GUARDADO', 'El usuario guardado', 'success');
+      //     setTimeout(() => {
+      //       this.router.navigate(['/dashboard-admin-general/buscar-usuario'])
+      //     }, 2000);
+      //     console.log(data);
+
       //   },
       //   (error: any) => {
       //     console.log(error);
@@ -323,6 +347,32 @@ export class RolesUsuariosComponent implements OnInit {
   contieneTodosValores(arrayPrincipal: any[], valoresAComprobar: any[]): boolean {
     // Comprueba si cada valor en valoresAComprobar está presente en arrayPrincipal
     return valoresAComprobar.every(valor => arrayPrincipal.some(valor));
+  }
+
+
+  obtenerRolesYPermisos() {
+    var user = this.userService.getUsuarioGeneral();
+    console.log(user.roles);
+
+    var rolDto: any = {
+      "id": "",
+      "permisos": []
+    }
+
+    user.roles.forEach((r: any) => {
+      this.selectedRole.push(r.idRol)
+      rolDto.id = r.idRol
+      r.permisos.forEach((p: any) => {
+        this.selectedPermisos.push(p.permiso)
+        rolDto.permisos.push(p.permiso)
+      });
+    });
+
+
+    this.usuario.roles.push(rolDto)
+
+
+
   }
 }
 
