@@ -9,6 +9,7 @@ import { AuthenticationService } from 'src/app/Services/authentication/authentic
 import { Plataforma } from 'src/app/Types/Banco';
 import { Con, Consignacion, Obligacion, ObservacionDto } from 'src/app/Types/Consignaciones';
 import { Estado } from 'src/app/Types/Estado';
+import { Sede } from 'src/app/Types/Sede';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -22,6 +23,7 @@ export class ConsultasComponent implements OnInit {
   roles:string[] = []
   plataforma:any[] = []
   con:Con[] = []
+  sedes:Sede[] = []
   estadoA:Estado[] = []
   paginas!:Array<number>
 
@@ -135,7 +137,9 @@ export class ConsultasComponent implements OnInit {
   base64:string = ''
   check:boolean = false
   page: number = 0
+  pages: number = 0
   size: number = 10
+  sizes: number = 10
   cont: number = 1
   isCon:boolean = false
   last: boolean = false
@@ -145,6 +149,9 @@ export class ConsultasComponent implements OnInit {
   buscarObli:boolean = false
   editarCon:boolean = false
   spinner:boolean = true
+  estado:any = null
+  fecha:any = null
+  sede:any = null
 
 
   private proSubscription!: Subscription;
@@ -155,6 +162,7 @@ export class ConsultasComponent implements OnInit {
     this.getRoles()
     this.getPlataforma()
     this.getAllEstado()
+    this.getSede()
   }
 
   validateNewConsignacion(){
@@ -295,6 +303,7 @@ export class ConsultasComponent implements OnInit {
       this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
         (data:any) => {
           this.cuentasPorCobrar.cuentasCobrar = data
+          this.con = data.content
   
           if(this.cuentasPorCobrar.cuentasCobrar.length > 0){
             this.check = true
@@ -439,6 +448,32 @@ export class ConsultasComponent implements OnInit {
       }, (error:any) => {
         console.log(error);
         Swal.fire('Error', 'Error al cargar los estados', 'error')
+      }
+    )
+  }
+
+  filter(){
+
+    if(this.estado == null && this.fecha == null && this.sede == null){
+      Swal.fire('Error', 'Debe de Seleccionar Al Menos Un Dato', 'error')
+      return
+    }
+
+    this.consultarService.filter(this.estado, this.fecha, this.sede, this.pages, this.sizes).subscribe(
+      (data:any) => {
+        this.con = data.content
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  getSede(){
+    this.consultarService.getAllSede().subscribe(
+      (data:any) => {
+        this.sede = data
+      }, (error:any) => {
+        console.log(error);
       }
     )
   }

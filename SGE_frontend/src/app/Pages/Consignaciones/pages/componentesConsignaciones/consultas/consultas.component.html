@@ -9,31 +9,33 @@
         <div class="row">
             <div class="col-md-3 col-12">
                 <div class="seleciona">
-                    <select class="form-select form-control">
-                        <option value="0">Seleccionar un Estado</option>
+                    <select [(ngModel)]="estado" name="estado" class="form-select form-control" (keyup.enter)="filter()">
+                        <option value="0" selected>Seleccionar un Estado</option>
                         <option *ngFor="let e of estadoA" value=" {{e.idEstado}} ">{{ e.estado }}</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-3 col-12">
                 <div class="selecionar">
-                    <select class="form-select form-control">
-                        <option selected>Seleccione Una Sede</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <select [(ngModel)]="sede" name="sede" class="form-select form-control" (keyup.enter)="filter()">
+                        <option value="0" selected>Seleccione Una Sede</option>
+                        <option *ngFor="let s of sede" value="{{ s.idSede }}">{{ s.nombreSede }}</option>
                     </select>
                 </div>
             </div> 
             <div class="col-md-3 col-12">
                 <div class="fecha">
-                    <input class="c form-control" type="date" placeholder="Fecha">
+                    <input [(ngModel)]="fecha" name="fecha" class="c form-control" type="date" placeholder="Fecha" (keyup.enter)="filter()">
                 </div>
             </div>
             <div class="col-md-3 col-12">
-                <div class="buscador">
-                    <input class="c form-control" type="search" placeholder="Digite Una Cédula">
-                </div>
+                    <!-- <input class="c form-control" type="search" placeholder="Digite Una Cédula"> -->
+                    <form action="" class="search-bar">
+                      <input [(ngModel)]="cedula" name="cedula" type="search" name="search" pattern=".*\S.*" required (keyup.enter)="getObligacionByCedula()">
+                      <button class="search-btn" type="submit" >
+                        <span>Search</span>
+                      </button>
+                    </form>
             </div>
         </div>
     </header><br><br>
