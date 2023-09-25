@@ -7,6 +7,8 @@ import baseUrl from 'src/app/utils/helper';
 })
 export class BuscarUsuariosService {
 
+  usuarioGeneral:any = {}
+
   constructor(private http: HttpClient) { }
 
   public listarUsuarios() {
@@ -14,7 +16,7 @@ export class BuscarUsuariosService {
   }
 
   public filtrarUsuarios(nombres: string) {
-    return this.http.get(`${baseUrl}/users/find/${nombres}`)
+    return this.http.get(`${baseUrl}/users/find?nombre=${nombres}`)
   }
 
   public desactivarUsuario(usuario: any) {
@@ -23,6 +25,14 @@ export class BuscarUsuariosService {
 
   public activarUsuario(usuario: any) {
     return this.http.post(`${baseUrl}/users/activate`, usuario)
+  }
+
+  setUsuarioGeneral(usuario:any){
+    this.usuarioGeneral = usuario;
+  }
+
+  getUsuarioGeneral(){
+    return this.usuarioGeneral;
   }
 }
 

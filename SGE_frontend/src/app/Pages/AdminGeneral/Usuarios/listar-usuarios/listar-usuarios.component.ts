@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BuscarUsuariosService } from 'src/app/Services/BuscarUsuarios/buscar-usuarios.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
 import { Datos } from 'src/app/Types/DatosUsuarios';
 import { users } from 'src/app/Types/Usuarios';
 import Swal from 'sweetalert2';
@@ -32,7 +34,7 @@ export class BuscarUsuariosComponent implements OnInit {
     datoToDelete: ''
   }
 
-  constructor(private usuariosService: BuscarUsuariosService, private authService: AuthenticationService) { }
+  constructor(private usuariosService: BuscarUsuariosService, private authService: AuthenticationService, private router:Router) { }
 
   private listarUsuarios() {
     this.usuariosService.listarUsuarios().subscribe(
@@ -52,7 +54,7 @@ export class BuscarUsuariosComponent implements OnInit {
     if (this.nombre) {
       this.usuariosService.filtrarUsuarios(this.nombre).subscribe(
         (data: any) => {
-          this.usuarios.push(data);
+          this.usuarios = data
           console.log(this.usuarios);
         },
         (error: any) => {
@@ -158,5 +160,15 @@ export class BuscarUsuariosComponent implements OnInit {
       }
     })
   }
+
+
+
+  enviarUsuarioToRoles(id:Number){
+    var user = this.usuarios.find((u:any)=>u.idUsuario == id)
+    this.usuariosService.setUsuarioGeneral(user);
+
+    this.router.navigate(['/dashboard-admin-general/roles-usuario'])
+  }
+
 }
 
