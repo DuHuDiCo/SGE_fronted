@@ -363,6 +363,7 @@ export class RolesUsuariosComponent implements OnInit {
 
   obtenerRolesYPermisos(user:any) {
    
+    this.usuario.usuario = user
 
     var rolDto: any = {
       "id": "",
