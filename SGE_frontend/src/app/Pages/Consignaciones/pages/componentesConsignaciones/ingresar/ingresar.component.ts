@@ -171,9 +171,16 @@ export class IngresarComponent implements OnInit {
 
   public obtenerFile(event: any) {
     var archivo = event.target.files[0];
+
+    if(archivo.size > 1048576){
+      Swal.fire('Error', 'El Archivo Es Demasiado Pesado', 'error')
+      this.consignacion.base64 = ''
+      return
+    }
+
     this.extraerBase64(archivo).then((file: any) => {
       this.consignacion.base64 = file.base;
-      console.log(this.consignacion);
+      console.log(archivo);
     })
   }
 

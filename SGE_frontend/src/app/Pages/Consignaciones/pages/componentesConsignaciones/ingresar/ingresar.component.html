@@ -75,7 +75,7 @@
             <div class="col-md-6 col-12" >
                 <div class = "file">
                     <div class="input-group mb-3">
-                        <input (change)="obtenerFile($event)" [(ngModel)]="consignacion.base64" name="base64" type="file" class="form-control" accept=".png, .jpg">
+                        <input (change)="obtenerFile($event)" [(ngModel)]="consignacion.base64" name="base64" type="file" class="form-control" accept=".png, .jpg" max="1048576">
                       </div>
                 </div>
             </div>
