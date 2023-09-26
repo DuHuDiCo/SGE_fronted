@@ -370,7 +370,7 @@ export class RolesUsuariosComponent implements OnInit {
     }
 
     user.roles.forEach((r: any) => {
-      console.log(r);
+      
       
       this.selectedRole.push(r.rol_id)
       rolDto.id = r.rol_id
