@@ -68,8 +68,8 @@ export class RolesUsuariosComponent implements OnInit {
     var user = this.userService.getUsuarioGeneral();
     
     
-    
     if(Object.keys(user).length != 0){
+      
      
       this.obtenerRolesYPermisos(user);
     }
@@ -90,7 +90,7 @@ export class RolesUsuariosComponent implements OnInit {
   }
 
   activarRol(rol: number) {
-
+  alert(rol)
     if (this.selectedRole.includes(rol)) {
       var position = this.selectedRole.indexOf(rol)
       this.selectedRole.splice(position, 1)
@@ -362,6 +362,7 @@ export class RolesUsuariosComponent implements OnInit {
   obtenerRolesYPermisos(user:any) {
    
     this.usuario.usuario = user
+    
 
     var rolDto: any = {
       "id": "",
@@ -369,8 +370,10 @@ export class RolesUsuariosComponent implements OnInit {
     }
 
     user.roles.forEach((r: any) => {
-      this.selectedRole.push(r.idRol)
-      rolDto.id = r.idRol
+      console.log(r);
+      
+      this.selectedRole.push(r.rol_id)
+      rolDto.id = r.rol_id
       r.permisos.forEach((p: any) => {
         this.selectedPermisos.push(p.permiso)
         rolDto.permisos.push(p.permiso)
@@ -379,8 +382,10 @@ export class RolesUsuariosComponent implements OnInit {
 
 
     this.usuario.roles.push(rolDto)
-
-
+   
+    console.log(this.usuario.roles);
+    
+   
 
   }
 }
