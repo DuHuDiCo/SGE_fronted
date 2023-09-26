@@ -13,7 +13,7 @@ export class CrearUsuariosComponent implements OnInit {
 
   constructor(private guardarUsuariosAdmin: GuardarUsuariosAdminService) { }
 
-  usuario: Usuario = {
+  usuarios: Usuario = {
     username: "",
     email: "",
     password: "",
@@ -32,39 +32,35 @@ export class CrearUsuariosComponent implements OnInit {
   }
 
   guardarUsuario(){
-    if(this.usuario.username.trim() == '' || this.usuario.username.trim() == null){
+    if(this.usuarios.username.trim() == '' || this.usuarios.username.trim() == null){
       Swal.fire('Error', 'Debe de ingresar el Username', 'error')
       return
     }
-    if(this.usuario.password.trim() == '' || this.usuario.password.trim() == null){
-      Swal.fire('Error', 'Debe de ingresar la contraseña', 'error')
-      return
-    }
-    if(this.usuario.nombres.trim() == '' || this.usuario.nombres.trim() == null){
+    if(this.usuarios.nombres.trim() == '' || this.usuarios.nombres.trim() == null){
       Swal.fire('Error', 'Debe de ingresar el nombre', 'error')
       return
     }
-    if(this.usuario.apellidos.trim() == '' || this.usuario.apellidos.trim() == null){
+    if(this.usuarios.apellidos.trim() == '' || this.usuarios.apellidos.trim() == null){
       Swal.fire('Error', 'Debe de ingresar el apellido', 'error')
       return
     }
-    if(this.usuario.tipo_documento.trim() == '' || this.usuario.tipo_documento.trim() == null){
+    if(this.usuarios.tipo_documento.trim() == '' || this.usuarios.tipo_documento.trim() == null){
       Swal.fire('Error', 'Debe de ingresar el tipo de documento', 'error')
       return
     }
-    if(this.usuario.numero_documento.trim() == '' || this.usuario.numero_documento.trim() == null){
+    if(this.usuarios.numero_documento.trim() == '' || this.usuarios.numero_documento.trim() == null){
       Swal.fire('Error', 'Debe de ingresar el numero de documento', 'error')
       return
-    }    if(this.usuario.email.trim() == '' || this.usuario.email.trim() == null){
+    }    if(this.usuarios.email.trim() == '' || this.usuarios.email.trim() == null){
       Swal.fire('Error', 'Debe de ingresar el correo', 'error')
       return
     }
-    if(this.usuario.celular.trim() == '' || this.usuario.celular.trim() == null){
+    if(this.usuarios.celular.trim() == '' || this.usuarios.celular.trim() == null){
       Swal.fire('Error', 'Debe de ingresar el celular', 'error')
       return
     }
 
-    this.guardarUsuariosAdmin.setUsuario(this.usuario)
+    this.guardarUsuariosAdmin.setUsuario(this.usuarios)
   }
 
   ngOnInit(): void {}

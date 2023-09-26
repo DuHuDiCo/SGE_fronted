@@ -79,10 +79,6 @@ export class CreateUsuarioComponent implements OnInit {
       Swal.fire('Error', 'Debe de ingresar los Nombres', 'error')
       return
     }
-    if (this.usuarios.password.trim() == '' || this.usuarios.password.trim() == null) {
-      Swal.fire('Error', 'Debe de ingresar la Contraseña', 'error')
-      return
-    }
     if (this.usuarios.apellidos.trim() == '' || this.usuarios.apellidos.trim() == null) {
       Swal.fire('Error', 'Debe de ingresar los Apellidos', 'error')
       return
