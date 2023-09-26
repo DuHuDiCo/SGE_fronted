@@ -149,9 +149,11 @@ export class ConsultasComponent implements OnInit {
   buscarObli:boolean = false
   editarCon:boolean = false
   spinner:boolean = true
-  estado:any = null
-  fecha:any = null
-  sede:any = null
+  filtro:boolean = false
+
+  estado:string = 'null'
+  fecha:any = 'null'
+  sede:string = 'null'
 
 
   private proSubscription!: Subscription;
@@ -303,7 +305,6 @@ export class ConsultasComponent implements OnInit {
       this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
         (data:any) => {
           this.cuentasPorCobrar.cuentasCobrar = data
-          this.con = data.content
   
           if(this.cuentasPorCobrar.cuentasCobrar.length > 0){
             this.check = true
@@ -453,15 +454,26 @@ export class ConsultasComponent implements OnInit {
   }
 
   filter(){
-
-    if(this.estado == null && this.fecha == null && this.sede == null){
+    this.con = []
+    if(this.estado == 'null' && this.fecha == 'null' && this.sede == 'null'){
       Swal.fire('Error', 'Debe de Seleccionar Al Menos Un Dato', 'error')
       return
     }
-
     this.consultarService.filter(this.estado, this.fecha, this.sede, this.pages, this.sizes).subscribe(
       (data:any) => {
         this.con = data.content
+        console.log(data.content);
+
+        if(this.con = []){
+          Swal.fire('Error', 'No hay Datos Para Mostrar Con Este Filtro', 'error')
+          this.estado = 'null'
+          this.sede = 'null'
+          this.fecha = 'null'
+          this.filtro = false
+          this.getRoles()
+          return
+        }
+
       }, (error:any) => {
         console.log(error);
       }
@@ -471,10 +483,39 @@ export class ConsultasComponent implements OnInit {
   getSede(){
     this.consultarService.getAllSede().subscribe(
       (data:any) => {
-        this.sede = data
+        this.sedes = data
       }, (error:any) => {
         console.log(error);
       }
     )
+  }
+
+  getConsignacionByCedula(){
+    this.con = []
+    this.consultarService.getConsignacionByCedula(this.cedula).subscribe(
+      (data:any) => {
+        this.con = data
+        console.log(data);
+
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  change(event:any){
+    if(this.fecha == ''){
+      this.fecha = 'null'
+    }
+
+    if(this.estado != 'null' || this.fecha != 'null' || this.sede != 'null'){
+      if(this.fecha != "" || this.estado != 'null' || this.sede != 'null'){
+      this.filtro = true
+      } else {
+        this.filtro = false
+      }
+    } else {
+      this.filtro = false
+    }
   }
 }
