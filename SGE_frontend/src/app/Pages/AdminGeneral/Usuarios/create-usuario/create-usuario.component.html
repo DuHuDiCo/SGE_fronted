@@ -13,20 +13,23 @@
                 <input [(ngModel)]="usuarios.username" type="text" class="input-usuario input1" placeholder="Username">
             </div>
 
-            <label for="text">Contraseña</label>
-            <div class="usuario">
-                <i class="fa-solid fa-key"></i>
-                <input [(ngModel)]="usuarios.password" name="username" type="password" class="input-usuario input1"
-                    placeholder="Contraseña">
+            <div class="row align-items-center">
+                <div class="col">
+                    <label for="email">Nombres</label>
+                    <div class="usuario">
+                        <i class="fa-solid fa-signature"></i>
+                        <input [(ngModel)]="usuarios.nombres" name="nombres" type="text" class="input-usuario input1"
+                            placeholder="Nombres">
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="col-md-6">
-            <label for="text">Nombre</label>
+            <label for="text">Fecha</label>
             <div class="usuario">
-                <i class="fa-solid fa-signature"></i>
-                <input [(ngModel)]="usuarios.nombres" name="nombres" type="text" class="input-usuario input1"
-                    placeholder="Nombre">
+                <input [(ngModel)]="usuarios.fecha_nacimiento" name="fecha_nacimiento" type="date"
+                    class="input-usuario input1">
 
             </div>
 
@@ -83,15 +86,7 @@
         </div>
     </div>
 
-    <div class="row align-items-center">
-        <div class="col">
-            <label for="email">Fecha</label>
-            <div class="usuario">
-                <input [(ngModel)]="usuarios.fecha_nacimiento" name="fecha_nacimiento" type="date"
-                    class="input-usuario input1">
-            </div>
-        </div>
-    </div>
+
 
     <button (click)="guardarUsuario()" class="btn-guardar">Gestionar Roles</button>
 </div>

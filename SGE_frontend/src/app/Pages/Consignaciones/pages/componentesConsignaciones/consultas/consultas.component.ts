@@ -9,6 +9,7 @@ import { AuthenticationService } from 'src/app/Services/authentication/authentic
 import { Plataforma } from 'src/app/Types/Banco';
 import { Con, Consignacion, Obligacion, ObservacionDto } from 'src/app/Types/Consignaciones';
 import { Estado } from 'src/app/Types/Estado';
+import { Sede } from 'src/app/Types/Sede';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -22,6 +23,7 @@ export class ConsultasComponent implements OnInit {
   roles:string[] = []
   plataforma:any[] = []
   con:Con[] = []
+  sedes:Sede[] = []
   estadoA:Estado[] = []
   paginas!:Array<number>
 
@@ -135,7 +137,9 @@ export class ConsultasComponent implements OnInit {
   base64:string = ''
   check:boolean = false
   page: number = 0
+  pages: number = 0
   size: number = 10
+  sizes: number = 10
   cont: number = 1
   isCon:boolean = false
   last: boolean = false
@@ -145,6 +149,11 @@ export class ConsultasComponent implements OnInit {
   buscarObli:boolean = false
   editarCon:boolean = false
   spinner:boolean = true
+  filtro:boolean = false
+
+  estado:string = 'null'
+  fecha:any = 'null'
+  sede:string = 'null'
 
 
   private proSubscription!: Subscription;
@@ -155,6 +164,7 @@ export class ConsultasComponent implements OnInit {
     this.getRoles()
     this.getPlataforma()
     this.getAllEstado()
+    this.getSede()
   }
 
   validateNewConsignacion(){
@@ -441,5 +451,71 @@ export class ConsultasComponent implements OnInit {
         Swal.fire('Error', 'Error al cargar los estados', 'error')
       }
     )
+  }
+
+  filter(){
+    this.con = []
+    if(this.estado == 'null' && this.fecha == 'null' && this.sede == 'null'){
+      Swal.fire('Error', 'Debe de Seleccionar Al Menos Un Dato', 'error')
+      return
+    }
+    this.consultarService.filter(this.estado, this.fecha, this.sede, this.pages, this.sizes).subscribe(
+      (data:any) => {
+        this.con = data.content
+        console.log(data.content);
+
+        if(this.con = []){
+          Swal.fire('Error', 'No hay Datos Para Mostrar Con Este Filtro', 'error')
+          this.estado = 'null'
+          this.sede = 'null'
+          this.fecha = 'null'
+          this.filtro = false
+          this.getRoles()
+          return
+        }
+
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  getSede(){
+    this.consultarService.getAllSede().subscribe(
+      (data:any) => {
+        this.sedes = data
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  getConsignacionByCedula(){
+    this.con = []
+    this.consultarService.getConsignacionByCedula(this.cedula).subscribe(
+      (data:any) => {
+        this.con = data
+        console.log(data);
+
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  change(event:any){
+    if(this.fecha == ''){
+      this.fecha = 'null'
+    }
+
+    if(this.estado != 'null' || this.fecha != 'null' || this.sede != 'null'){
+      if(this.fecha != "" || this.estado != 'null' || this.sede != 'null'){
+      this.filtro = true
+      } else {
+        this.filtro = false
+      }
+    } else {
+      this.filtro = false
+    }
   }
 }
