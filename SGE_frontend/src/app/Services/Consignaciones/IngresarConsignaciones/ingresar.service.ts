@@ -9,8 +9,8 @@ export class IngresarService {
 
   constructor(private http:HttpClient) { }
 
-  url = 'http://192.168.1.186:8006/api/v1'
-  url2 = 'http://192.168.1.186:8007/api/v1'
+  url = 'http://192.168.1.183:8006/api/v1'
+  url2 = 'http://192.168.1.183:8007/api/v1'
 
   getObligacionByCedula(cedula:string){
     return this.http.get(`${this.url}/cartera/obligacionesByCedula?cedula=${cedula}`)

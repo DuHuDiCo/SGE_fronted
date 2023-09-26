@@ -8,7 +8,7 @@ import { tipoPago } from 'src/app/Types/TipoPago';
 })
 export class BancoServiceService {
 
-  url = 'http://192.168.1.186:8007/api/v1'
+  url = 'http://192.168.1.183:8007/api/v1'
 
   constructor(private http:HttpClient) { }
 

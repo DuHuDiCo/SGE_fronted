@@ -9,31 +9,38 @@
         <div class="row">
             <div class="col-md-3 col-12">
                 <div class="seleciona">
-                    <select class="form-select form-control">
-                        <option value="0">Seleccionar un Estado</option>
-                        <option *ngFor="let e of estadoA" value=" {{e.idEstado}} ">{{ e.estado }}</option>
+                    <select (change)="change($event)" [(ngModel)]="estado" name="estado" class="form-select form-control">
+                        <option value="null" selected>Seleccionar un Estado</option>
+                        <option *ngFor="let e of estadoA" value="{{e.estado}}">{{ e.estado }}</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-3 col-12">
                 <div class="selecionar">
-                    <select class="form-select form-control">
-                        <option selected>Seleccione Una Sede</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <select (change)="change($event)" [(ngModel)]="sede" name="sede" class="form-select form-control">
+                        <option value="null" selected>Seleccione Una Sede</option>
+                        <option *ngFor="let s of sedes" value="{{ s.nombreSede }}">{{ s.nombreSede }}</option>
                     </select>
                 </div>
             </div> 
             <div class="col-md-3 col-12">
                 <div class="fecha">
-                    <input class="c form-control" type="date" placeholder="Fecha">
+                    <input (change)="change($event)" [(ngModel)]="fecha" name="fecha" class="c form-control" type="date" placeholder="Fecha">
                 </div>
             </div>
             <div class="col-md-3 col-12">
-                <div class="buscador">
-                    <input class="c form-control" type="search" placeholder="Digite Una Cédula">
-                </div>
+                    <!-- <input class="c form-control" type="search" placeholder="Digite Una Cédula"> -->
+                    <form action="" class="search-bar">
+                      <input [(ngModel)]="cedula" name="cedula" type="search" name="search" pattern=".*\S.*" required (keyup.enter)="getConsignacionByCedula()">
+                      <button class="search-btn" type="submit" >
+                        <span>Search</span>
+                      </button>
+                    </form>
+            </div>
+            <div *ngIf="filtro" class="row">
+              <div class="col-md-12">
+                <button class="btn" (click)="filter()" style="background-color: #960010; color: white;">Filtrar</button>
+              </div>
             </div>
         </div>
     </header><br><br>
@@ -44,7 +51,7 @@
     </div>
     <div *ngIf="!spinner" class="table-responsive align-middle text-center">
         <table class="table table-bordered align-middle text-center">
-            <thead>
+            <thead class="align-middle">
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Número Recibo</th>
@@ -59,7 +66,7 @@
                     <th scope="col">Acciones</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="align-middle">
                 <tr *ngFor="let c of con; let i = index">
                     <th scope="row">{{ cont + i }}</th>
                     <th scope="row">{{ c.numeroRecibo }}</th>
@@ -71,7 +78,7 @@
                     <td>{{ c.actualizaciones[0].estado.estado }}</td>
                     <td>{{ c.cuentasCobrar[0].sede.nombreSede }}</td>
                     <td>{{ c.plataforma.bancos.nombreBanco }} - {{ c.plataforma.bancos.tipoPago[0].tipoPago }}</td>
-                    <td class="d-flex justify-content-between">
+                    <td class="d-flex align-middle">
                         <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen"></i></button>
                         <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"><i class="fa-regular fa-eye"></i></button>
                         <button (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"><i class="fa-regular fa-image"></i></button>

@@ -12,7 +12,7 @@ export class ConsultarService {
 
   public proSubject = new Subject<boolean>();
 
-  url = 'http://192.168.1.186:8007/api/v1'
+  url = 'http://192.168.1.183:8007/api/v1'
 
   getAllConsignaciones(estado:string, page:number, size:number){
     return this.http.get(`${this.url}/consignacion/getAllConsignaciones?estado=${estado}&page=${page}&size=${size}`)
@@ -28,6 +28,18 @@ export class ConsultarService {
 
   saveObservacion(observacion:ObservacionDto){
     return this.http.post(`${this.url}/observacion/save`, observacion)
+  }
+
+  filter(estado:string, fecha:string, sede:string, page:number, size:number){
+    return this.http.get(`${this.url}/consignacion/filtrarConsignaciones?estado=${estado}&fecha=${fecha}&sede=${sede}&page=${page}&size=${size}`)
+  }
+
+  getAllSede(){
+    return this.http.get(`http://192.168.1.183:8006/api/v1/sede/getAllSedes`)
+  }
+
+  getConsignacionByCedula(cedula:string){
+    return this.http.get(`${this.url}/consignacion/getConsignacionByCliente/${cedula}`)
   }
 
 }
