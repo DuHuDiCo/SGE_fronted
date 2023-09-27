@@ -27,4 +27,8 @@ export class UsuarioAgService {
   getUsuario(){
     return this.usuario;
   }
+
+  getUsuarioByUsername(username:string){
+    return this.http.get(`${baseUrl}/users/getUser/${username}`)
+  }
 }

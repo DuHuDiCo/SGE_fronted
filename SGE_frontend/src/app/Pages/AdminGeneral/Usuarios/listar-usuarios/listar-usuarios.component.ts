@@ -164,7 +164,10 @@ export class BuscarUsuariosComponent implements OnInit {
 
 
   enviarUsuarioToRoles(id:Number){
+    
     var user = this.usuarios.find((u:any)=>u.idUsuario == id)
+    
+    
     this.usuariosService.setUsuarioGeneral(user);
 
     this.router.navigate(['/dashboard-admin-general/roles-usuario'])
