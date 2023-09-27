@@ -472,14 +472,27 @@ export class ConsultasComponent implements OnInit {
       (data:any) => {
         this.con = data.content
         console.log(data.content);
-
-        if(this.con = []){
-          Swal.fire('Error', 'No hay Datos Para Mostrar Con Este Filtro', 'error')
-          this.estado = 'null'
-          this.sede = 'null'
-          this.fecha = 'null'
-          this.filtro = false
-          this.getRoles()
+        this.con.forEach((c:any) => {
+          c.actualizaciones = c.actualizaciones.filter((a:any) => a.isCurrent == true)
+        })
+        console.log(this.con);
+        
+        if(this.con.length <= 0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No hay Datos Con Este Filtro',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.estado = 'null'
+              this.sede = 'null'
+              this.fecha = 'null'
+              this.filtro = false
+              this.getRoles()
+            }
+          })
+          
           return
         }
 
