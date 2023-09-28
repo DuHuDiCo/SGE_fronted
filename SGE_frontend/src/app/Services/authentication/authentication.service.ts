@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import Login from 'src/app/Models/Login';
+import { ROLES } from 'src/app/Types/Roles';
 import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
@@ -51,6 +52,17 @@ export class AuthenticationService {
     }else{
       this.logout();
       return null;
+    }
+  }
+
+  public getRolesP(){
+    var roles = this.getRoles()
+    if(roles != null){
+      var rol = roles.find((r:any) => r.rol == ROLES.Consignaciones)
+      if(rol != null){
+        return rol
+      }
+      return null
     }
   }
 
