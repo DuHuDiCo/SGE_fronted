@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SedeService } from 'src/app/Services/Consignaciones/Sedes/sede.service';
+
 import { Sede } from 'src/app/Types/Sede';
 import Swal from 'sweetalert2';
 
