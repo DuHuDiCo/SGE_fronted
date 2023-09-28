@@ -47,13 +47,13 @@ export class AgregarClienteComponent implements OnInit {
 
   }
 
-  department:Departamento[] = []
+  department: Departamento[] = []
 
-  ciudades:Ciudad[] = []
+  ciudades: Ciudad[] = []
 
-  idDep:number = 0
+  idDep: number = 0
 
-  constructor(private agregarCliente: AgregarUnClienteService, private router:Router, private clienteService:BuscarClientesService, private renderer: Renderer2, private elementRef: ElementRef) { }
+  constructor(private agregarCliente: AgregarUnClienteService, private router: Router, private clienteService: BuscarClientesService, private renderer: Renderer2, private elementRef: ElementRef) { }
 
 
   ngOnInit(): void {
@@ -127,10 +127,10 @@ export class AgregarClienteComponent implements OnInit {
       return
     }
 
-    var depa = this.department.find((d:any) => d.id == this.idDep)
-        if(depa != null){
-          this.cliente.direccion.departamento = depa.name
-        }
+    var depa = this.department.find((d: any) => d.id == this.idDep)
+    if (depa != null) {
+      this.cliente.direccion.departamento = depa.name
+    }
 
     this.agregarCliente.guardarClientes(this.cliente).subscribe(
       (data: any) => {
@@ -169,30 +169,30 @@ export class AgregarClienteComponent implements OnInit {
     )
   }
 
-  listarDep(){
+  listarDep() {
     this.clienteService.listarDepartamentos().subscribe(
-      (data:any) => {
+      (data: any) => {
         this.department = data
         console.log(data);
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
         Swal.fire('Error', 'Error al cargar los departamentos', 'error');
       }
     )
   }
 
-  listarCiudadByDep(){
-    if(this.idDep > 0){
+  listarCiudadByDep() {
+    if (this.idDep > 0) {
       this.renderer.removeAttribute(this.mySelect.nativeElement, 'disabled');
     } else {
       this.renderer.setAttribute(this.mySelect.nativeElement, 'disabled', 'true');
     }
 
-    
+
     this.clienteService.listarCiudadByDepartamento(this.idDep).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.ciudades = data
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )

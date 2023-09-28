@@ -45,7 +45,7 @@
                         [(ngModel)]="cliente.numeroDocumento">
                 </div>
             </div>
-    
+
             <div class="col-md-6">
                 <label for="text">Fecha de Nacimiento</label>
                 <div class="usuario">
@@ -53,7 +53,7 @@
                         [(ngModel)]="cliente.fechaNacimiento">
                 </div>
             </div>
-    
+
             <div class="col-md-6">
                 <label for="text">Lugar de Nacimiento</label>
                 <div class="usuario">
@@ -62,7 +62,7 @@
                         [(ngModel)]="cliente.lugarNacimiento">
                 </div>
             </div>
-    
+
             <div class="col-md-6">
                 <label for="text">Fecha de Expedicion del Documento</label>
                 <div class="usuario">
@@ -70,7 +70,7 @@
                         [(ngModel)]="cliente.fechaExpedicionDocumento">
                 </div>
             </div>
-    
+
             <div class="col-md-6">
                 <label for="text">Lugar de Expedicion del Documento</label>
                 <div class="usuario">
@@ -78,15 +78,16 @@
                     <input type="text" class="input-pass" placeholder="Lugar de Expedicion"
                         [(ngModel)]="cliente.lugarExpedicionDocumento">
                 </div>
-    
+
                 <label for="text">Tipo de Telefono</label>
-                <select class="form-select" required aria-label="select example" [(ngModel)]="cliente.telefono.indicativo">
+                <select class="form-select" required aria-label="select example"
+                    [(ngModel)]="cliente.telefono.indicativo">
                     <option value="">Tipo de telefono</option>
                     <option value="1">Telefono Fijo</option>
                     <option value="2">Telefono Celular</option>
                 </select>
             </div>
-    
+
             <div class="col-md-6">
                 <label for="number">Telefono De Contacto</label>
                 <div class="usuario">
@@ -94,7 +95,7 @@
                     <input type="number" class="input-usuario" placeholder="Telefono Fijo" maxlength="10"
                         [(ngModel)]="cliente.telefono.numero">
                 </div>
-    
+
                 <label for="text">Indicativo de Telefono Celular</label>
                 <select class="form-select" required aria-label="select example">
                     <option value="Selecionar">Selecionar</option>
@@ -112,7 +113,7 @@
                         [(ngModel)]="cliente.direccion.direccion">
                 </div>
             </div>
-    
+
             <div class="col-md-6">
                 <label for="usuario">Username</label>
                 <div class="usuario">
@@ -126,7 +127,8 @@
             <div class="col-md-6">
                 <label for="text">Departamento</label>&nbsp;
                 <i class="fa-solid fa-city"></i>
-                <select (change)="listarCiudadByDep()" id="" class="form-select text-center" [(ngModel)]="idDep" name="idDep">
+                <select (change)="listarCiudadByDep()" id="" class="form-select text-center" [(ngModel)]="idDep"
+                    name="idDep">
                     <option value="0" selected>Seleccione un Departamento</option>
                     <option *ngFor="let d of department" value="{{ d.id }}">{{ d.name }}</option>
                 </select>
@@ -134,13 +136,14 @@
             <div class="col-md-6">
                 <label for="text">Ciudad</label>&nbsp;
                 <i class="fa-solid fa-building"></i>
-                <select #depart name="tipoCliente" id="" class="form-select" [(ngModel)]="cliente.direccion.ciudad" disabled>
+                <select #depart name="tipoCliente" id="" class="form-select" [(ngModel)]="cliente.direccion.ciudad"
+                    disabled>
                     <option value="">Seleccione una Ciudad</option>
                     <option *ngFor="let c of ciudades"> {{ c.name }} </option>
                 </select>
             </div>
 
-            
+
 
             <div class="col-md-6">
                 <label for="text">Pais</label>&nbsp;
@@ -150,7 +153,7 @@
                     <option value="Colombia">Colombia</option>
                 </select>
             </div>
-    
+
             <div class="col-md-6">
                 <label for="email">Correo</label>
                 <div class="usuario">
@@ -159,7 +162,7 @@
                         [(ngModel)]="cliente.correoElectronico.email">
                 </div>
             </div>
-    </div>
+        </div>
 
     </div>
 
