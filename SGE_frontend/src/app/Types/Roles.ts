@@ -40,6 +40,7 @@ export enum ROLES{
     SuperAdministration = "SUPERADMINISTRADOR",
     Administration = "Administration",
     Cartera = "Cartera",
+    Consignaciones = "CONSIGNACIONES",
     Caja = "Caja",
     Creditos = "Creditos",
     Ventas = "Ventas"
