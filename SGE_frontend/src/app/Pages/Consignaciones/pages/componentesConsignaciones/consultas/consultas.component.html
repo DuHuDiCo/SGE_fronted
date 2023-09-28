@@ -45,10 +45,79 @@
         </div>
       </div>
     </div>
-  </header><br><br>
-  <div *ngIf="spinner" class="text-center">
-    <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
-      <span class="visually-hidden"></span>
+    <div *ngIf="!spinner" class="table-responsive align-middle text-center">
+        <div *ngIf="cambios" class="row">
+            <div class="col-md-12">
+                <div class="text-right">
+                    <button (click)="cambiarConsignacion()" class="btn btn-primary mb-4">Guardar Cambios</button>
+                    <button (click)="cancelar()" class="btn btn-danger ms-2 mb-4">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered align-middle text-center">
+            <thead class="align-middle">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Número Recibo</th>
+                    <th scope="col">Documento</th>
+                    <th scope="col">Nombre Cliente</th>
+                    <th scope="col">Fecha Pago</th>
+                    <th scope="col">Fecha Creacion</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Sede</th>
+                    <th scope="col">Banco</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="align-middle">
+                <tr *ngFor="let c of con; let i = index">
+                    <th scope="row">{{ cont + i }}</th>
+                    <th scope="row">{{ c.numeroRecibo }}</th>
+                    <td>{{ c.cuentasCobrar[0].cliente.numeroDocumento }}</td>
+                    <td>{{ c.cuentasCobrar[0].cliente.nombres }} {{ c.cuentasCobrar[0].cliente.apellidos }}</td>
+                    <td>{{ c.fechaPago | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ c.fechaCreacion | date: 'dd/MM/yyyy' }}, {{ c.fechaCreacion | date: 'shortTime' }}</td>
+                    <td>$ {{ c.valor | number}}</td>
+                    <td>{{ c.actualizaciones[0].estado.estado }}</td>
+                    <td>{{ c.cuentasCobrar[0].sede.nombreSede }}</td>
+                    <td>{{ c.plataforma.bancos.nombreBanco }} - {{ c.plataforma.bancos.tipoPago[0].tipoPago }}</td>
+                    <td class="d-flex align-middle">
+                        <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen"></i></button>
+                        <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)" class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"><i class="fa-regular fa-eye"></i></button>
+                        <button *ngIf="botones[i]" class="btn btn-sm btn-danger ms-2"><i class="fa-solid fa-ban"></i></button>
+                        <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"><i class="fa-regular fa-image"></i></button>
+                        <button *ngIf="botones[i]" class="btn btn-sm btn-danger ms-2"><i class="fa-solid fa-ban"></i></button>
+                        <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-secondary ms-2"  data-bs-toggle="modal" data-bs-target="#modalInfo"><i class="fa-solid fa-circle-info"></i></button>
+                        <button *ngIf="botones[i]" class="btn btn-sm btn-danger ms-2"><i class="fa-solid fa-ban"></i></button>
+                        <button *ngIf="!botones[i]" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO')" class="btn btn-sm btn-warning ms-2"><i class="fa-solid fa-check"></i></button>
+                        <button *ngIf="botones[i]" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO')" class="btn btn-sm btn-danger ms-2"><i class="fa-solid fa-ban"></i></button>
+                        <button *ngIf="!botones[i]" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO')" class="btn btn-sm btn-warning ms-2"><i class="fa-solid fa-check"></i></button>
+                        <button *ngIf="botones[i]" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO')" class="btn btn-sm btn-danger ms-2"><i class="fa-solid fa-ban"></i></button>
+                        <button *ngIf="!botones[i]" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD')" class="btn btn-sm btn-warning ms-2"><i class="fa-solid fa-backward"></i></button>
+                        <button *ngIf="botones[i]" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD')" class="btn btn-sm btn-danger ms-2"><i class="fa-solid fa-ban"></i></button>
+                        <button *ngIf="!botones[i]" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'DEVUELTA CAJA')" class="btn btn-sm btn-warning ms-2"><i class="fa-solid fa-backward"></i></button>
+                        <button *ngIf="botones[i]" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'DEVUELTA CAJA')" class="btn btn-sm btn-danger ms-2"><i class="fa-solid fa-ban"></i></button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <div class="row justify-content-center">
+          <div class="col-md-3"></div>
+            <div class="col-md-5" >
+                <nav aria-label="...">
+                    <ul class="pagination">
+                      <li class="page-item">
+                        <a class="page-link" (click)="back()" style="cursor: pointer;">Anterior</a>
+                      </li>
+                      <li class="page-item" *ngFor="let p of paginas; let i = index"><a (click)="goToPage(i)" class="page-link" style="cursor: pointer;">{{ i + 1 }}</a></li>
+                      <li class="page-item">
+                        <a class="page-link" (click)="next()" style="cursor: pointer;">Siguiente</a>
+                      </li>
+                    </ul>
+                  </nav>
+            </div>
     </div>
   </div>
   <div *ngIf="!spinner" class="table-responsive align-middle text-center">

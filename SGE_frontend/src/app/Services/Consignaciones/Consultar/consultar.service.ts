@@ -42,4 +42,8 @@ export class ConsultarService {
     return this.http.get(`${this.url}/consignacion/getConsignacionByCliente/${cedula}`)
   }
 
+  cambiarEstadoConsignacion(cambioEstado:any){
+    return this.http.put(`${this.url}/consignacion/changeEstadoOfConsignacionToComprobadas`, cambioEstado)
+  }
+
 }
