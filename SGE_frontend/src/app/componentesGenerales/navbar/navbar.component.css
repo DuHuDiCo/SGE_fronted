@@ -102,6 +102,8 @@ svg#persona {
   .navbar-expand-lg .navbar-collapse {
     justify-content: center; /* Alinea los elementos del menú hacia el centro */
   }
+
+  
   
   @media (max-width: 767px) {
     .noti {

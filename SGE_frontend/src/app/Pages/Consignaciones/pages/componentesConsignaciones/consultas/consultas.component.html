@@ -1,52 +1,48 @@
 <div class="caja">
-    <h1 class="titulo">Consultar Consignaciones</h1><br>
+  <h1 class="titulo">Consultar Consignaciones</h1><br>
 
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end" id="btn btn-primary">
-        <button class="btn-archivos" type="button">Generar Archivos</button>
-    </div>
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end" id="btn btn-primary">
+    <button class="btn-archivos" type="button">Generar Archivos</button>
+  </div>
 
-    <header class="box">
-        <div class="row">
-            <div class="col-md-3 col-12">
-                <div class="seleciona">
-                    <select (change)="change($event)" [(ngModel)]="estado" name="estado" class="form-select form-control">
-                        <option value="null" selected>Seleccionar un Estado</option>
-                        <option *ngFor="let e of estadoA" value="{{e.estado}}">{{ e.estado }}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-3 col-12">
-                <div class="selecionar">
-                    <select (change)="change($event)" [(ngModel)]="sede" name="sede" class="form-select form-control">
-                        <option value="null" selected>Seleccione Una Sede</option>
-                        <option *ngFor="let s of sedes" value="{{ s.nombreSede }}">{{ s.nombreSede }}</option>
-                    </select>
-                </div>
-            </div> 
-            <div class="col-md-3 col-12">
-                <div class="fecha">
-                    <input (change)="change($event)" [(ngModel)]="fecha" name="fecha" class="c form-control" type="date" placeholder="Fecha">
-                </div>
-            </div>
-            <div class="col-md-3 col-12">
-                    <!-- <input class="c form-control" type="search" placeholder="Digite Una Cédula"> -->
-                    <form action="" class="search-bar">
-                      <input [(ngModel)]="cedula" name="cedula" type="search" name="search" pattern=".*\S.*" required (keyup.enter)="getConsignacionByCedula()">
-                      <button class="search-btn" type="submit" >
-                        <span>Search</span>
-                      </button>
-                    </form>
-            </div>
-            <div *ngIf="filtro" class="row">
-              <div class="col-md-12">
-                <button class="btn" (click)="filter()" style="background-color: #960010; color: white;">Filtrar</button>
-              </div>
-            </div>
+  <header class="box">
+    <div class="row">
+      <div class="col-md-3 col-12">
+        <div class="seleciona">
+          <select (change)="change($event)" [(ngModel)]="estado" name="estado" class="form-select form-control">
+            <option value="null" selected>Seleccionar un Estado</option>
+            <option *ngFor="let e of estadoA" value="{{e.estado}}">{{ e.estado }}</option>
+          </select>
         </div>
-    </header><br><br>
-    <div *ngIf="spinner" class="text-center">
-      <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
-        <span class="visually-hidden"></span>
+      </div>
+      <div class="col-md-3 col-12">
+        <div class="selecionar">
+          <select (change)="change($event)" [(ngModel)]="sede" name="sede" class="form-select form-control">
+            <option value="null" selected>Seleccione Una Sede</option>
+            <option *ngFor="let s of sedes" value="{{ s.nombreSede }}">{{ s.nombreSede }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3 col-12">
+        <div class="fecha">
+          <input (change)="change($event)" [(ngModel)]="fecha" name="fecha" class="c form-control" type="date"
+            placeholder="Fecha">
+        </div>
+      </div>
+      <div class="col-md-3 col-12">
+        <!-- <input class="c form-control" type="search" placeholder="Digite Una Cédula"> -->
+        <form action="" class="search-bar">
+          <input [(ngModel)]="cedula" name="cedula" type="search" name="search" pattern=".*\S.*" required
+            (keyup.enter)="getConsignacionByCedula()">
+          <button class="search-btn" type="submit">
+            <span>Search</span>
+          </button>
+        </form>
+      </div>
+      <div *ngIf="filtro" class="row">
+        <div class="col-md-12">
+          <button class="btn" (click)="filter()" style="background-color: #960010; color: white;">Filtrar</button>
+        </div>
       </div>
     </div>
     <div *ngIf="!spinner" class="table-responsive align-middle text-center">
@@ -123,46 +119,113 @@
                   </nav>
             </div>
     </div>
-</div>
+  </div>
+  <div *ngIf="!spinner" class="table-responsive align-middle text-center">
+    <table class="table table-bordered align-middle text-center">
+      <thead class="align-middle">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Número Recibo</th>
+          <th scope="col">Documento</th>
+          <th scope="col">Nombre Cliente</th>
+          <th scope="col">Fecha Pago</th>
+          <th scope="col">Fecha Creacion</th>
+          <th scope="col">Valor</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Sede</th>
+          <th scope="col">Banco</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="align-middle">
+        <tr *ngFor="let c of con; let i = index">
+          <th scope="row">{{ cont + i }}</th>
+          <th scope="row">{{ c.numeroRecibo }}</th>
+          <td>{{ c.cuentasCobrar[0].cliente.numeroDocumento }}</td>
+          <td>{{ c.cuentasCobrar[0].cliente.nombres }} {{ c.cuentasCobrar[0].cliente.apellidos }}</td>
+          <td>{{ c.fechaPago | date:'dd/MM/yyyy' }}</td>
+          <td>{{ c.fechaCreacion | date: 'dd/MM/yyyy' }}, {{ c.fechaCreacion | date: 'shortTime' }}</td>
+          <td>$ {{ c.valor | number}}</td>
+          <td>{{ c.actualizaciones[0].estado.estado }}</td>
+          <td>{{ c.cuentasCobrar[0].sede.nombreSede }}</td>
+          <td>{{ c.plataforma.bancos.nombreBanco }} - {{ c.plataforma.bancos.tipoPago[0].tipoPago }}</td>
+          <td class="d-flex align-middle">
+            <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-primary"
+              data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen"></i></button>
+            <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-info btn-sm ms-2"
+              data-bs-toggle="modal" data-bs-target="#modalVer"><i class="fa-regular fa-eye"></i></button>
+            <button (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
+              class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"><i
+                class="fa-regular fa-image"></i></button>
+            <button (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-secondary ms-2"
+              data-bs-toggle="modal" data-bs-target="#modalInfo"><i class="fa-solid fa-circle-info"></i></button>
+            <button class="btn btn-sm btn-warning ms-2"><i class="fa-solid fa-check"></i></button>
+            <button class="btn btn-sm btn-warning ms-2"><i class="fa-solid fa-check"></i></button>
+            <button class="btn btn-sm btn-warning ms-2"><i class="fa-solid fa-backward"></i></button>
+            <button class="btn btn-sm btn-warning ms-2"><i class="fa-solid fa-backward"></i></button>
+          </td>
 
-<!-- Modal Info-->
-<div class="modal fade" id="modalInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        </tr>
+      </tbody>
+    </table>
+    <div class="row justify-content-center">
+      <div class="col-md-3"></div>
+      <div class="col-md-5">
+        <nav aria-label="...">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" (click)="back()" style="cursor: pointer;">Anterior</a>
+            </li>
+            <li class="page-item" *ngFor="let p of paginas; let i = index"><a (click)="goToPage(i)" class="page-link"
+                style="cursor: pointer;">{{ i + 1 }}</a></li>
+            <li class="page-item">
+              <a class="page-link" (click)="next()" style="cursor: pointer;">Siguiente</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Info-->
+  <div class="modal fade" id="modalInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Detalles del Proceso</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                    <table class="table table-bordered text-center align-middle mt-3">
-                        <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Fecha Actualización</th>
-                            <th scope="col">Estado</th>
-                            <th scope="col">Usuario</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let a of actu.actualizaciones; let i = index">
-                            <th scope="row">{{ i + 1 }}</th>
-                            <td>{{ a.fechaActualizacion | date: 'short' }}</td>
-                            <td>{{ a.estado.estado }}</td>
-                            <td>{{ a.usuario.nombres }} {{ a.usuario.apellidos }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Detalles del Proceso</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body">
+          <table class="table table-bordered text-center align-middle mt-3">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Fecha Actualización</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Usuario</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let a of actu.actualizaciones; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ a.fechaActualizacion | date: 'short' }}</td>
+                <td>{{ a.estado.estado }}</td>
+                <td>{{ a.usuario.nombres }} {{ a.usuario.apellidos }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
     </div>
-</div>
-  
+  </div>
+
   <!-- Modal Imagen-->
-  <div class="modal fade" id="modalImage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal fade" id="modalImage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -176,151 +239,164 @@
   </div>
 
   <!-- Modal Ver Mas-->
-<div class="modal fade" id="modalVer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-aria-labelledby="staticBackdropLabel" aria-hidden="true">
-<div class="modal-dialog">
-    <div class="modal-content">
+  <div class="modal fade" id="modalVer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
         <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Historial De Observaciones</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Historial De Observaciones</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <h6 class="fw-bold ms-3">Crear Nueva Observación</h6>
-            <form class="row">
-                <div class="col-md-9">
-                  <input [(ngModel)]="observacionDto.detalle" name="detalle" type="text" class="form-control" placeholder="Observación">
-                </div>
-                <div class="col-md-2">
-                  <button *ngIf="!crearObs" (click)="saveObservacion()" type="submit" class="btn btn-success me-2">Crear</button>
-                  <button *ngIf="crearObs" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
-                    <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-                  </button>
-                </div>
-              </form>
+          <h6 class="fw-bold ms-3">Crear Nueva Observación</h6>
+          <form class="row">
+            <div class="col-md-9">
+              <input [(ngModel)]="observacionDto.detalle" name="detalle" type="text" class="form-control"
+                placeholder="Observación">
+            </div>
+            <div class="col-md-2">
+              <button *ngIf="!crearObs" (click)="saveObservacion()" type="submit"
+                class="btn btn-success me-2">Crear</button>
+              <button *ngIf="crearObs" type="button" class="btn btn-danger"
+                style="background-color: #960010;border-color: #960010;">
+                <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+              </button>
+            </div>
+          </form>
 
-                <table class="table table-bordered text-center align-middle mt-3">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Observación</th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Usuario</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let d of detalle.observaciones; let i = index">
-                        <th scope="row">{{ i + 1 }}</th>
-                        <td>{{ d.detalle }}</td>
-                        <td>{{ d.fechaCreacion | date: 'short' }}</td>
-                        <td>{{ d.usuario.nombres }} {{ d.usuario.apellidos }}</td>
-                      </tr> 
-                    </tbody>
-                  </table>
+          <table class="table table-bordered text-center align-middle mt-3">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Observación</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Usuario</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let d of detalle.observaciones; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ d.detalle }}</td>
+                <td>{{ d.fechaCreacion | date: 'short' }}</td>
+                <td>{{ d.usuario.nombres }} {{ d.usuario.apellidos }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>
+      </div>
     </div>
-</div>
-</div>
+  </div>
 
   <!-- Modal Editar-->
   <div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
       <div class="modal-content">
-          <div class="modal-header">
-              <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Consignación</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Consignación</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row align-items-center">
             <div class="row align-items-center">
-                <div class="row align-items-center">
-                    <div class="col-md-12 col-12">
-                        <div class="usuario mt-4">
-                            <input [(ngModel)]="modal.numeroRecibo" name="numeroRecibo" type="text" class="input-usuario" placeholder="Número Del Recibo">
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="usuario">
-                            <input [(ngModel)]="modal.valor" name="valor" type="text" class="input-usuario" placeholder="Valor">
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="usuario">
-                            <input [(ngModel)]="modal.fechaPago" name="fechaPago" type="date" class="input-usuario"> 
-                        </div>
-                    </div>
+              <div class="col-md-12 col-12">
+                <div class="usuario mt-4">
+                  <input [(ngModel)]="modal.numeroRecibo" name="numeroRecibo" type="text" class="input-usuario"
+                    placeholder="Número Del Recibo">
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="usuario">
+                  <input [(ngModel)]="modal.valor" name="valor" type="text" class="input-usuario" placeholder="Valor">
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="usuario">
+                  <input [(ngModel)]="modal.fechaPago" name="fechaPago" type="date" class="input-usuario">
+                </div>
+              </div>
             </div>
 
-        <div class="row align-items-center">
-            <div class="col-md-10 col-12">
+            <div class="row align-items-center">
+              <div class="col-md-10 col-12">
                 <div class="usuario">
-                    <input [(ngModel)]="cedula" name="cedula" type="search" class="input-usuario" placeholder="Cédula Cliente"> 
+                  <input [(ngModel)]="cedula" name="cedula" type="search" class="input-usuario"
+                    placeholder="Cédula Cliente">
                 </div>
-            </div>
-            <div class="col-md-2 col-12">
-                <button *ngIf="!buscarObli" (click)="getObligacionByCedula()" class="btn btn-success btn-lg"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <button *ngIf="buscarObli" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
-                    <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-                  </button> 
-            </div>
-            <div class="mt-2 mb-4">
+              </div>
+              <div class="col-md-2 col-12">
+                <button *ngIf="!buscarObli" (click)="getObligacionByCedula()" class="btn btn-success btn-lg"><i
+                    class="fa-solid fa-magnifying-glass"></i></button>
+                <button *ngIf="buscarObli" type="button" class="btn btn-danger"
+                  style="background-color: #960010;border-color: #960010;">
+                  <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                </button>
+              </div>
+              <div class="mt-2 mb-4">
                 <hr class="border-4">
                 <table class="table table-hover text-center align-middle mt-3">
-                    <thead>
-                      <tr class="align-middle">
-                        <th *ngIf="check" scope="col"></th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Valor Obligación</th>
-                        <th scope="col">Fecha Obligación</th>
-                        <th scope="col">Sede</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let cc of cuentasPorCobrar.cuentasCobrar">
-                        <td *ngIf="check">
-                            <div class="form-check">
-                                <input (click)="checkBox(cc.numeroObligacion)" [checked]="modal.obligaciones.includes(cc.numeroObligacion)" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                </label>
-                              </div>
-                        </td>
-                        <td>{{ cc.cliente.nombres }} {{ cc.cliente.apellidos }}</td>
-                        <td>{{ cc.capital }}</td>
-                        <td>{{ cc.fechaObligacion  | date:'short' }}</td>
-                        <td>{{ cc.id_venta }}</td>
-                      </tr>
-                    </tbody>
-                  </table> 
+                  <thead>
+                    <tr class="align-middle">
+                      <th *ngIf="check" scope="col"></th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Valor Obligación</th>
+                      <th scope="col">Fecha Obligación</th>
+                      <th scope="col">Sede</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let cc of cuentasPorCobrar.cuentasCobrar">
+                      <td *ngIf="check">
+                        <div class="form-check">
+                          <input (click)="checkBox(cc.numeroObligacion)"
+                            [checked]="modal.obligaciones.includes(cc.numeroObligacion)" class="form-check-input"
+                            type="checkbox" value="" id="flexCheckDefault">
+                          <label class="form-check-label" for="flexCheckDefault">
+                          </label>
+                        </div>
+                      </td>
+                      <td>{{ cc.cliente.nombres }} {{ cc.cliente.apellidos }}</td>
+                      <td>{{ cc.capital }}</td>
+                      <td>{{ cc.fechaObligacion | date:'short' }}</td>
+                      <td>{{ cc.id_venta }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-        </div>
-    </div>
-        <div class="row align-items-end">
+          </div>
+          <div class="row align-items-end">
             <div class="col-md-12 col-12">
-                <div class="usuario">
-                    <select (change)="cambiarPago($event)" [(ngModel)]="modal.idPlataforma" name="idPlataforma" class="form-select" required aria-label="select example">
-                    <option *ngFor="let p of plataforma"  value="{{ p.idPlataforma }}">{{ p.bancos.nombreBanco }} - {{ p.bancos.tipoPago[0].tipoPago }}</option>
-                    </select>
-                </div>
+              <div class="usuario">
+                <select (change)="cambiarPago($event)" [(ngModel)]="modal.idPlataforma" name="idPlataforma"
+                  class="form-select" required aria-label="select example">
+                  <option *ngFor="let p of plataforma" value="{{ p.idPlataforma }}">{{ p.bancos.nombreBanco }} - {{
+                    p.bancos.tipoPago[0].tipoPago }}</option>
+                </select>
+              </div>
             </div>
-            <div class="col-md-12 col-12" >
-                <div class = "file">
-                    <div class="input-group mb-3">
-                        <input (change)="obtenerFile($event)" name="base64" type="file" class="form-control">
-                      </div>
+            <div class="col-md-12 col-12">
+              <div class="file">
+                <div class="input-group mb-3">
+                  <input (change)="obtenerFile($event)" name="base64" type="file" class="form-control">
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-              <button *ngIf="!editarCon" (click)="validateNewConsignacion()" class="btn btn-primary" type="button">Actualizar</button>
-              <button *ngIf="editarCon" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
-                <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-              </button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button *ngIf="!editarCon" (click)="validateNewConsignacion()" class="btn btn-primary"
+            type="button">Actualizar</button>
+          <button *ngIf="editarCon" type="button" class="btn btn-danger"
+            style="background-color: #960010;border-color: #960010;">
+            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+          </button>
 
-          </div>
+        </div>
       </div>
-  </div>
+    </div>
   </div>

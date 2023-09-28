@@ -91,7 +91,7 @@
   .search-bar input {
     background: transparent;
     border-radius: 1.5em;
-    box-shadow: 0 0 0 0.4em #fff inset;
+    box-shadow: 0 0 0 0.4em #960010;
     padding: 0.75em;
     transform: translate(0.5em, 0.5em) scale(0.5);
     transform-origin: 100% 0;
@@ -110,7 +110,7 @@
     transform: scale(1);
   }
   .search-btn {
-    background: #fff;
+    background: #960010;
     border-radius: 0 0.75em 0.75em 0 / 0 1.5em 1.5em 0;
     padding: 0.75em;
     position: relative;
@@ -187,8 +187,6 @@
     }
   }
   
-
-
 .campo{
     border: none;
     outline: none;
