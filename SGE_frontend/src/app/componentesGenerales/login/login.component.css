@@ -224,7 +224,8 @@ input[type=text]:placeholder {
     align-items: center;
     min-height: 100vh;
     width: 100%;
-    background: url("https://imagizer.imageshack.com/img922/816/WnR5on.png") no-repeat;
+    
+    background: url("src/assets/H_electro.svg") no-repeat;
     background-position: center;
     background-size: cover;
   }
@@ -234,7 +235,8 @@ input[type=text]:placeholder {
     width: 450px;
     height: 450px;
     background: transparent;
-    border: 2px solid rgba(163, 152, 152, 0.5);
+    
+    border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     backdrop-filter: blur(15px);
     display: flex;
@@ -244,7 +246,7 @@ input[type=text]:placeholder {
   
   h2 {
     font-size: 2em;
-    color: #fff;
+    color: #000000;
     text-align: center;
   }
   
@@ -252,7 +254,7 @@ input[type=text]:placeholder {
     position: relative;
     margin: 30px 0;
     width: 300px;
-    border-bottom: 2px solid #fff;
+    border-bottom: 2px solid #000000;
   }
   
   .inputbox label {
@@ -260,7 +262,7 @@ input[type=text]:placeholder {
     top: 30%;
     left: 30px;
     transform: translateY(-50%);
-    color: #fff;
+    color: #000000;
     font-size: 1em;
     pointer-events: none;
     transition: 0.5s;
@@ -281,7 +283,7 @@ input[type=text]:placeholder {
     outline: none;
     font-size: 1em;
     padding: 0 35px 0 5px;
-    color: #fff;
+    color: #000000;
   }
   
   .forget {
@@ -289,7 +291,7 @@ input[type=text]:placeholder {
     justify-content: space-between;
     margin: 10px 0 15px;
     font-size: 0.9em;
-    color: #fff;
+    color: #000000;
   }
   
   .forget label:nth-child(2) {
