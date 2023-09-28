@@ -43,8 +43,6 @@ export class RolesPerfilesDirective implements OnInit {
   @Input()
   set appRolesPerfiles(val: string) {
     this.rol = val;
-
-
   }
 
   private convertirString():void {
