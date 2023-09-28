@@ -26,6 +26,7 @@ export class ConsultasComponent implements OnInit {
   sedes:Sede[] = []
   estadoA:Estado[] = []
   paginas!:Array<number>
+  botones!:Array<boolean>
 
   //OBJETOS
   modal:Consignacion = {
@@ -131,6 +132,11 @@ export class ConsultasComponent implements OnInit {
     username: '',
     idConsignacion: 0
   }
+  cambiarEstado:any = {
+    estado: '',
+    idConsignacion: [],
+    username: ''
+  }
 
   //VARIABLES
   cedula:string = ''
@@ -150,6 +156,7 @@ export class ConsultasComponent implements OnInit {
   editarCon:boolean = false
   spinner:boolean = true
   filtro:boolean = false
+  cambios:boolean = false
 
   estado:string = 'null'
   fecha:any = 'null'
@@ -241,6 +248,9 @@ export class ConsultasComponent implements OnInit {
         this.last = data.last
         this.first = data.first  
         this.consultarService.proSubject.next(true);
+
+        this.botones = new Array<boolean>(this.con.length).fill(false)
+        console.log(this.botones);
         console.log(data);
       }, (error:any) => {
         console.log(error);
@@ -268,8 +278,7 @@ export class ConsultasComponent implements OnInit {
         this.cuentasPorCobrar = data
         this.detalle = data
         this.observacionDto.idConsignacion = data.idConsignacion
-        console.log(data);
-        console.log(this.modal);
+        console.log(this.cambiarEstado);
       }, (error:any) => {
         console.log(error);
       }
@@ -463,14 +472,27 @@ export class ConsultasComponent implements OnInit {
       (data:any) => {
         this.con = data.content
         console.log(data.content);
-
-        if(this.con = []){
-          Swal.fire('Error', 'No hay Datos Para Mostrar Con Este Filtro', 'error')
-          this.estado = 'null'
-          this.sede = 'null'
-          this.fecha = 'null'
-          this.filtro = false
-          this.getRoles()
+        this.con.forEach((c:any) => {
+          c.actualizaciones = c.actualizaciones.filter((a:any) => a.isCurrent == true)
+        })
+        console.log(this.con);
+        
+        if(this.con.length <= 0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No hay Datos Con Este Filtro',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.estado = 'null'
+              this.sede = 'null'
+              this.fecha = 'null'
+              this.filtro = false
+              this.getRoles()
+            }
+          })
+          
           return
         }
 
@@ -518,4 +540,71 @@ export class ConsultasComponent implements OnInit {
       this.filtro = false
     }
   }
+
+  cambiarConsignacionTemporal(id:number, position:number, estado:string){
+
+    if(this.cambiarEstado.idConsignacion.includes(id)){
+      var position1 = this.cambiarEstado.idConsignacion.indexOf(id)
+      this.cambiarEstado.idConsignacion.splice(position1, 1)
+    } else {
+      this.cambiarEstado.idConsignacion.push(id)
+    }
+
+      if(this.cambiarEstado.idConsignacion.length > 0){
+        this.cambios = true
+      }
+      if(this.cambiarEstado.idConsignacion.length <= 0) {
+        this.cambios = false
+      }
+  
+      console.log(this.cambiarEstado);
+      
+  
+      if(this.botones[position]){
+        this.botones[position] = false
+      } else {
+        this.botones[position] = true
+      }
+  
+      var user = this.authService.getUsername()
+  
+      if(user == null || user == undefined){
+        return
+      }
+       this.cambiarEstado.username = user
+
+       this.cambiarEstado.estado = estado
+    
+  }
+
+  cambiarConsignacion(){
+    this.consultarService.cambiarEstadoConsignacion(this.cambiarEstado).subscribe(
+      (data:any) => {
+        Swal.fire('Felicidades', 'Cambio Realizado Con Éxito', 'success')
+        setTimeout(() => {
+          window.location.reload()      
+        }, 2000);
+      }, (error:any) => {
+        Swal.fire('Error', 'Error al Realizar El Cambio', 'error')
+        console.log(error);
+      }
+    )
+
+  }
+
+  cancelar(){
+    this.cambiarEstado = {
+      estado: '',
+      idConsignacion: [],
+      username: ''
+    }
+
+    Swal.fire('Felicidades', 'Cambios Cancelados Con Éxito', 'success')
+
+    setTimeout(() => {
+      window.location.reload()      
+    }, 2000);
+  }
+
+
 }

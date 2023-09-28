@@ -1,21 +1,10 @@
 <div class="row text-center justify-content-center">
     <div class="col-md-6">
         <h5 class="titulo">Ingresar Una Nueva Sede</h5>
-        <input type="text" class="form-control" placeholder="Sede">
-        <div class="row">
-            <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Municipio">
-            </div>
-            <div class="col-md-6">
-                <input type="tel" class="form-control" placeholder="Telefono">
-            </div>
-            <div class="col-md-12">
-                <input type="text" class="form-control" placeholder="Dato Personalizado">
-            </div>
+        <input [(ngModel)]="sedes.nombreSede" name="nombreSede" type="text" class="form-control" placeholder="Sede">
             <div class="text-center">
-                <button class="btn btn-primary guardar">Guardar Sede</button>
+                <button (click)="saveSede()" class="btn btn-primary guardar">Guardar Sede</button>
             </div>
-        </div>
     </div>
 </div>
 
@@ -27,24 +16,46 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nombre Sede</th>
-                        <th scope="col">Teléfono</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>ANDES</td>
-                        <td>3023671255</td>
+                    <tr *ngFor="let s of sede | paginate: { itemsPerPage: 5 , currentPage: page } ; let i = index">
+                        <th scope="row">{{ (page - 1) * 5 + i + 1 }}</th>
+                        <td>{{ s.nombreSede }}</td>
                         <td>
-                            <button class="btn btn-sm btn-primary"><i class="fa-solid fa-pen"></i></button>
-
-                            <button class="btn btn-sm btn-danger ms-2"><i class="fa-solid fa-trash-can"></i></button>
+                            <button (click)="getById(s.idSede)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editarModal"><i class="fa-solid fa-pen"></i></button>
                         </td>
-
                     </tr>
                 </tbody>
             </table>
+            <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
         </div>
     </div>
 </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="editarModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Sede</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row text-center justify-content-center">
+                <div class="col-md-6">
+                    <h5 class="titulo">Ingresar Una Nueva Sede</h5>
+                    <input [(ngModel)]="modal.nombreSede" name="nombreSede" type="text" class="form-control" placeholder="Sede">
+                        <div class="text-center">
+                            <button (click)="updateSede()" class="btn btn-primary guardar">Guardar Sede</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
