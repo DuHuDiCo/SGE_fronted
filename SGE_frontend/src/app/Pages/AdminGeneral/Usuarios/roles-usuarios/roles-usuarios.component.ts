@@ -332,24 +332,23 @@ export class RolesUsuariosComponent implements OnInit {
     let username = this.authService.getUsername();
 
     if (username != null || username != undefined) {
-      console.log(this.usuario);
+      
+      
 
+      this.userAgService.crearUsuario(this.usuario, username).subscribe(
+        (data: any) => {
+          Swal.fire('GUARDADO', 'El usuario guardado', 'success');
+          setTimeout(() => {
+            this.router.navigate(['/dashboard-admin-general/buscar-usuario'])
+          }, 2000);
+          console.log(data);
 
-
-      // this.userAgService.crearUsuario(this.usuario, username).subscribe(
-      //   (data: any) => {
-      //     Swal.fire('GUARDADO', 'El usuario guardado', 'success');
-      //     setTimeout(() => {
-      //       this.router.navigate(['/dashboard-admin-general/buscar-usuario'])
-      //     }, 2000);
-      //     console.log(data);
-
-      //   },
-      //   (error: any) => {
-      //     console.log(error);
-      //     Swal.fire('ERROR', 'Error Guardar Usuario', 'error')
-      //   }
-      // )
+        },
+        (error: any) => {
+          console.log(error);
+          Swal.fire('ERROR', 'Error Guardar Usuario', 'error')
+        }
+      )
     }
   }
 
@@ -372,8 +371,8 @@ export class RolesUsuariosComponent implements OnInit {
     user.roles.forEach((r: any) => {
       
       
-      this.selectedRole.push(r.rol_id)
-      rolDto.id = r.rol_id
+      this.selectedRole.push(r.rolId)
+      rolDto.id = r.rolId
       r.permisos.forEach((p: any) => {
         this.selectedPermisos.push(p.permiso)
         rolDto.permisos.push(p.permiso)

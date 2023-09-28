@@ -34,5 +34,6 @@ export class BuscarUsuariosService {
   getUsuarioGeneral(){
     return this.usuarioGeneral;
   }
+  
 }
 
