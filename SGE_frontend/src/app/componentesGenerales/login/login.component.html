@@ -1,25 +1,24 @@
 <section>
-    <div class="row">
-        <div class="col">
-            <!-- Login Form -->
-            <div class="form-box">
-                <div class="form-value">
-                    <form (ngSubmit)="iniciarSesion()" class="">
-                        <div class="inputbox">
-                            <input type="text" id="login" class="fadeIn second" name="username"
-                                [(ngModel)]="jwtRequest.username">
-                            <label for="">USUARIO</label>
-                        </div>
+    <div class="form-box">
+        <div class="form-value">
+            <form action="">
+                <h2>INICIAR SESION</h2>
+                <!-- Login Form -->
+                <form (ngSubmit)="iniciarSesion()" class="">
+                    <div class="inputbox">
+                        <input type="text" id="login" class="fadeIn second" name="username"
+                            [(ngModel)]="jwtRequest.username">
+                        <label for="">USUARIO</label>
+                    </div>
 
-                        <div class="inputbox">
-                            <input type="password" id="password" class="fadeIn third" name="password"
-                                [(ngModel)]="jwtRequest.password">
-                            <label for="">CONTRASEÑA</label>
-                        </div>
-                        <button>Entrar</button>
-                    </form>
-                </div>
-            </div>
+                    <div class="inputbox">
+                        <input type="password" id="password" class="fadeIn third" name="password"
+                            [(ngModel)]="jwtRequest.password">
+                        <label for="">CONTRASEÑA</label>
+                    </div>
+                    <button>Entrar</button>
+                </form>
+            </form>
         </div>
     </div>
 </section>

@@ -13,7 +13,7 @@ a {
 }
 
 
-h2 {
+h3 {
     text-align: center;
     font-size: 16px;
     font-weight: 600;
@@ -212,51 +212,51 @@ input[type=text]:placeholder {
     animation-fill-mode: both;
 }
 
+/* Formulario Trasnparente Inicio de Sesion */
 * {
     margin: 0;
     padding: 0;
     font-family: "Poppins", sans-serif;
-  }
-  
-  section {
+}
+
+section {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     width: 100%;
-    background: url("src/assets/H_electro.svg") no-repeat;
+    background: url("src/assets/imagen H_electro2.png") no-repeat;
     background-position: center;
     background-size: cover;
-  }
-  
-  .form-box {
+}
+
+.form-box {
     position: relative;
     width: 450px;
     height: 450px;
     background: transparent;
-    
     border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     backdrop-filter: blur(15px);
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  h2 {
+}
+
+h2 {
     font-size: 2em;
     color: #000000;
     text-align: center;
-  }
-  
-  .inputbox {
+}
+
+.inputbox {
     position: relative;
     margin: 30px 0;
     width: 300px;
     border-bottom: 2px solid #000000;
-  }
-  
-  .inputbox label {
+}
+
+.inputbox label {
     position: absolute;
     top: 30%;
     left: 30px;
@@ -265,16 +265,17 @@ input[type=text]:placeholder {
     font-size: 1em;
     pointer-events: none;
     transition: 0.5s;
-  }
-  
-  input:focus ~ label {
+}
+
+input:focus~label {
     top: -5px;
-  }
-  input:valid ~ label {
+}
+
+input:valid~label {
     top: -5px;
-  }
-  
-  .inputbox input {
+}
+
+.inputbox input {
     width: 100%;
     height: 50px;
     background: transparent;
@@ -283,39 +284,39 @@ input[type=text]:placeholder {
     font-size: 1em;
     padding: 0 35px 0 5px;
     color: #000000;
-  }
-  
-  .forget {
+}
+
+.forget {
     display: flex;
     justify-content: space-between;
     margin: 10px 0 15px;
     font-size: 0.9em;
     color: #000000;
-  }
-  
-  .forget label:nth-child(2) {
+}
+
+.forget label:nth-child(2) {
     order: 1;
-  }
-  
-  .forget label {
+}
+
+.forget label {
     display: flex;
     align-items: center;
-  }
-  
-  .forget label input[type="checkbox"] {
+}
+
+.forget label input[type="checkbox"] {
     margin-right: 6px;
-  }
-  
-  .forget label a {
+}
+
+.forget label a {
     color: #fff;
     text-decoration: none;
-  }
-  
-  .forget label a:hover {
+}
+
+.forget label a:hover {
     text-decoration: underline;
-  }
-  
-  button {
+}
+
+button {
     width: 100%;
     height: 40px;
     border-radius: 40px;
@@ -325,25 +326,25 @@ input[type=text]:placeholder {
     cursor: pointer;
     font-size: 1em;
     font-weight: 600;
-  }
-  
-  .register {
+}
+
+.register {
     font-size: 0.9em;
     color: #fff;
     text-align: center;
     margin: 25px 0 10px;
-  }
-  
-  .register p a {
+}
+
+.register p a {
     text-decoration: none;
     color: #fff;
     font-weight: 600;
-  }
-  
-  .register p a:hover {
+}
+
+.register p a:hover {
     text-decoration: underline;
-  }
-  
+}
+
 
 @-webkit-keyframes fadeInDown {
     0% {
@@ -500,21 +501,22 @@ h1 {
 
 @media (max-width: 576px) {
     .wrapper {
-      padding: 30px; /* Adjust the padding for mobile-sized screens */
+        padding: 30px;
+        /* Adjust the padding for mobile-sized screens */
     }
 
     .usuario,
     .contraseña {
-    margin-top: 5px;
-    border-radius: 25px;
-    text-align: center;
-    width: 80%;
-    
+        margin-top: 5px;
+        border-radius: 25px;
+        text-align: center;
+        width: 80%;
+
     }
 
-    .icon{
+    .icon {
         margin-top: 15px;
     }
 
-    
-}  
+
+}
