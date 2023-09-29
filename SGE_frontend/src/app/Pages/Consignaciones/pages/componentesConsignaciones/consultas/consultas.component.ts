@@ -226,6 +226,7 @@ export class ConsultasComponent implements OnInit {
 
   getRoles(){
     this.roles = this.authService.getRoles()
+    
     console.log(this.roles);
     var permiso:any  = {}
     this.roles.forEach((element:any) => {
