@@ -27,7 +27,9 @@ export class RolesPerfilesDirective implements OnInit {
 
     
 
+
     if (this.rolesString.includes(ROLES.SuperAdministration.toUpperCase()) || this.rolesString.includes(ROLES.Administration)) {
+
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
       if (this.verificarRol(this.rol.toUpperCase())) {
@@ -36,6 +38,7 @@ export class RolesPerfilesDirective implements OnInit {
       
     }
 
+    console.log(this.rolesString);
     
 
   }
@@ -47,7 +50,9 @@ export class RolesPerfilesDirective implements OnInit {
 
   private convertirString():void {
     this.rolesUser.forEach((x: Roles) => {
+      
       this.rolesString.push(x.rol)
+
     });
 
 
