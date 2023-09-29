@@ -8,7 +8,7 @@ import { EstadoServiceService } from 'src/app/Services/Consignaciones/Estado/est
 import { IngresarService } from 'src/app/Services/Consignaciones/IngresarConsignaciones/ingresar.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Plataforma } from 'src/app/Types/Banco';
-import { Con, Consignacion, Obligacion, ObservacionDto } from 'src/app/Types/Consignaciones';
+import { CambioEstado, Con, Consignacion, Obligacion, ObservacionDto } from 'src/app/Types/Consignaciones';
 import { Estado } from 'src/app/Types/Estado';
 import { Sede } from 'src/app/Types/Sede';
 import Swal from 'sweetalert2';
@@ -31,53 +31,53 @@ export class ConsultasComponent implements OnInit {
   botones!: Array<boolean>
   permisos: string[] = [
     // 0
-  "CREAR CONSIGNACIONES",
-  // 1
-  "CONSULTAR COMPROBADOS",
-  // 2
-  "CONSULTAR APLICADOS",
-  // 3
-  "COMPROBAR CONSIGNACIONES",
-  // 4
-  "APLICAR CONSIGNACIONES",
-  // 5
-  "EDITAR CONSIGNACIONES",
-  // 6
-  "FILTRAR ESTADO",
-  // 7
-  "FILTRAR SEDE",
-  // 8
-  "FILTRAR FECHA",
-  // 9
-  "FILTRAR CEDULA",
-  // 10
-  "GENERAR REPORTE PENDIENTES",
-  // 11
-  "GENERAR REPORTES COMPROBADAS",
-  // 12
-  "GENERAR REPORTE APLICADAS",
-  // 13
-  "VER OBSERVACIONES",
-  // 14
-  "VER COMPROBANTE",
-  // 15
-  "VER HISTORIAL",
-  // 16
-  "VER REPORTES GENERAL",
-  // 17
-  "VER REPORTES APLICADOS",
-  // 18
-  "VER REPORTES COMPROBADOS",
-  // 19
-  "VER REPORTES PENDIENTES",
-  // 20
-  "FILTRAR REPORTES FECHA",
-  // 21
-  "FILTRAR REPORTES USUARIO",
-  // 22
-  "CONFIGURACIONES",
-  // 23
-  "INFORMES"
+    "CREAR CONSIGNACIONES",
+    // 1
+    "CONSULTAR COMPROBADOS",
+    // 2
+    "CONSULTAR APLICADOS",
+    // 3
+    "COMPROBAR CONSIGNACIONES",
+    // 4
+    "APLICAR CONSIGNACIONES",
+    // 5
+    "EDITAR CONSIGNACIONES",
+    // 6
+    "FILTRAR ESTADO",
+    // 7
+    "FILTRAR SEDE",
+    // 8
+    "FILTRAR FECHA",
+    // 9
+    "FILTRAR CEDULA",
+    // 10
+    "GENERAR REPORTE PENDIENTES",
+    // 11
+    "GENERAR REPORTES COMPROBADAS",
+    // 12
+    "GENERAR REPORTE APLICADAS",
+    // 13
+    "VER OBSERVACIONES",
+    // 14
+    "VER COMPROBANTE",
+    // 15
+    "VER HISTORIAL",
+    // 16
+    "VER REPORTES GENERAL",
+    // 17
+    "VER REPORTES APLICADOS",
+    // 18
+    "VER REPORTES COMPROBADOS",
+    // 19
+    "VER REPORTES PENDIENTES",
+    // 20
+    "FILTRAR REPORTES FECHA",
+    // 21
+    "FILTRAR REPORTES USUARIO",
+    // 22
+    "CONFIGURACIONES",
+    // 23
+    "INFORMES"
   ]
 
   //OBJETOS
@@ -184,11 +184,14 @@ export class ConsultasComponent implements OnInit {
     username: '',
     idConsignacion: 0
   }
-  cambiarEstado: any = {
+  cambiarEstado: CambioEstado = {
     estado: '',
-    idConsignacion: [],
-    username: ''
+    idConsignacion: 0,
+    username: '',
+    observacion: ''
   }
+
+  cambioArray: CambioEstado[] = []
 
   //VARIABLES
   cedula: string = ''
@@ -213,6 +216,11 @@ export class ConsultasComponent implements OnInit {
   estado: string = 'null'
   fecha: any = 'null'
   sede: string = 'null'
+
+  estadoConsignacion: string = ''
+
+  posicionDevolver:number = 0
+  clickeado:string = ''
 
 
   private proSubscription!: Subscription;
@@ -284,6 +292,7 @@ export class ConsultasComponent implements OnInit {
     console.log(permiso);
     var arrayP = permiso.permiso.split(" ")
     var p = arrayP[1].substring(0, arrayP[1].length - 1)
+    this.estadoConsignacion = p
     console.log(p);
 
     this.getConsignaciones(p)
@@ -591,23 +600,38 @@ export class ConsultasComponent implements OnInit {
     }
   }
 
-  cambiarConsignacionTemporal(id: number, position: number, estado: string) {
+  cambiarConsignacionTemporal(id: number, position: number, estado: string, click:string) {
 
-    if (this.cambiarEstado.idConsignacion.includes(id)) {
-      var position1 = this.cambiarEstado.idConsignacion.indexOf(id)
-      this.cambiarEstado.idConsignacion.splice(position1, 1)
+    var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
+
+    this.clickeado = click
+
+    if (idC != null || idC != undefined) {
+      this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
+      console.log(this.cambioArray);
     } else {
-      this.cambiarEstado.idConsignacion.push(id)
+      this.cambiarEstado.idConsignacion = id
+
+      this.cambiarEstado.estado = estado
+
+      var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+      this.cambiarEstado.username = user
+
+      this.cambioArray.push(this.cambiarEstado)
+      this.cambiarEstado = {
+        estado: '',
+        idConsignacion: 0,
+        username: '',
+        observacion: ''
+      }
     }
 
-    if (this.cambiarEstado.idConsignacion.length > 0) {
-      this.cambios = true
-    }
-    if (this.cambiarEstado.idConsignacion.length <= 0) {
-      this.cambios = false
-    }
+    console.log(this.cambioArray);
 
-    console.log(this.cambiarEstado);
 
 
     if (this.botones[position]) {
@@ -615,6 +639,15 @@ export class ConsultasComponent implements OnInit {
     } else {
       this.botones[position] = true
     }
+  }
+
+  devolver(id: number, position: number, estado: string, clickeado:string) {
+
+    this.clickeado = clickeado
+
+    this.cambiarEstado.idConsignacion = id
+
+    this.cambiarEstado.estado = estado
 
     var user = this.authService.getUsername()
 
@@ -623,8 +656,32 @@ export class ConsultasComponent implements OnInit {
     }
     this.cambiarEstado.username = user
 
-    this.cambiarEstado.estado = estado
+    this.posicionDevolver = position
 
+    console.log(this.cambioArray)
+  }
+
+  agregarDevolucion() {
+    if (this.cambiarEstado.observacion.trim() == '' || this.cambiarEstado.observacion.trim() == null) {
+      Swal.fire('Error', 'Digite Una Observación', 'error')
+      return
+    }
+
+    if (this.botones[this.posicionDevolver]) {
+      this.botones[this.posicionDevolver] = false
+    } else {
+      this.botones[this.posicionDevolver] = true
+    }
+
+    this.cambioArray.push(this.cambiarEstado)
+    console.log(this.cambioArray);
+
+    this.cambiarEstado = {
+      estado: '',
+      idConsignacion: 0,
+      username: '',
+      observacion: ''
+    }
   }
 
   cambiarConsignacion() {
@@ -645,8 +702,9 @@ export class ConsultasComponent implements OnInit {
   cancelar() {
     this.cambiarEstado = {
       estado: '',
-      idConsignacion: [],
-      username: ''
+      idConsignacion: 0,
+      username: '',
+      observacion: ''
     }
 
     Swal.fire('Felicidades', 'Cambios Cancelados Con Éxito', 'success')
@@ -654,6 +712,17 @@ export class ConsultasComponent implements OnInit {
     setTimeout(() => {
       window.location.reload()
     }, 2000);
+  }
+
+  cancelarObservacion(){
+    this.cambiarEstado = {
+      estado: '',
+      idConsignacion: 0,
+      username: '',
+      observacion: ''
+    }
+
+    this.posicionDevolver = 0
   }
 
 

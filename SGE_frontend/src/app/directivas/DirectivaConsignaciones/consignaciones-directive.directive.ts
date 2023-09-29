@@ -12,16 +12,19 @@ export class ConsignacionesDirectiveDirective implements OnInit {
 
   ngOnInit(): void {
     var rol = this.authService.getRolesP()
-
+    
     if(rol != null || rol != undefined){
-      if(rol.permisos.includes(this.permiso)){
+      
+      var permisoObtenido = rol.permisos.find((p:any) => p.permiso == this.permiso)
+      if(permisoObtenido != null || permisoObtenido != undefined){
         this.viewContainer.createEmbeddedView(this.templateRef);
       }
     }
+
   }
 
   @Input()
-  set appRolesPerfiles(val: string) {
+  set appConsignacionesDirective(val: string) {
     this.permiso = val;
   }
 
