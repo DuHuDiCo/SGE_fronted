@@ -332,3 +332,10 @@ export type CuentasPorCobrar = {
   asesores:Asesores [],
   coutas:Cuotas []
 }
+
+export type CambioEstado = {
+  estado: string,
+  idConsignacion: number,
+  username: string,
+  observacion: string
+}

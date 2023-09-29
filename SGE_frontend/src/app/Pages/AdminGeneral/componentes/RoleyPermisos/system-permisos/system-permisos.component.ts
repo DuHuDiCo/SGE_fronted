@@ -104,7 +104,7 @@ export class SystemPermisosComponent implements OnInit {
     this.systemRoles.getRolesSystem().subscribe(
       (data: any) => {
         this.rolesSaved = data;
-        this.rolesSaved = this.rolesSaved.filter(r => r.rol != 'Administration')
+        // this.rolesSaved = this.rolesSaved.filter(r => r.rol != 'Administration')
         console.log(this.rolesSaved);
 
       }, (error: any) => {

@@ -9,7 +9,7 @@ export class SedeService {
 
   constructor(private http:HttpClient) { }
 
-  url = 'http://192.168.1.183:8006/api/v1'
+  url = 'http://192.168.1.241:8006/api/v1'
 
   getSedes(){
     return this.http.get(`${this.url}/sede/getAllSedes`)

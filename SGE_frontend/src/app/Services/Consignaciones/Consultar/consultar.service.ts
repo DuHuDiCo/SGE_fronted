@@ -35,7 +35,7 @@ export class ConsultarService {
   }
 
   getAllSede(){
-    return this.http.get(`http://192.168.1.183:8006/api/v1/sede/getAllSedes`)
+    return this.http.get(`http://192.168.1.241:8006/api/v1/sede/getAllSedes`)
   }
 
   getConsignacionByCedula(cedula:string){
