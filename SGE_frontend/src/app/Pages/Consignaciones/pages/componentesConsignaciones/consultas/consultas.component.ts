@@ -219,8 +219,8 @@ export class ConsultasComponent implements OnInit {
 
   estadoConsignacion: string = ''
 
-  posicionDevolver:number = 0
-  clickeado:string = ''
+  posicionDevolver: number = 0
+  clickeado: string = ''
 
 
   private proSubscription!: Subscription;
@@ -600,16 +600,17 @@ export class ConsultasComponent implements OnInit {
     }
   }
 
-  cambiarConsignacionTemporal(id: number, position: number, estado: string, click:string) {
+  cambiarConsignacionTemporal(id: number, position: number, estado: string) {
 
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
 
-    this.clickeado = click
-
     if (idC != null || idC != undefined) {
+
       this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
+      this.cambiarBotones(position, 'fa-xmark', 'fa-check', 'ACTIVAR')
       console.log(this.cambioArray);
     } else {
+      this.cambiarBotones(position, 'fa-check', 'fa-xmark', 'DESACTIVAR')
       this.cambiarEstado.idConsignacion = id
 
       this.cambiarEstado.estado = estado
@@ -632,18 +633,48 @@ export class ConsultasComponent implements OnInit {
 
     console.log(this.cambioArray);
 
-
-
-    if (this.botones[position]) {
-      this.botones[position] = false
-    } else {
-      this.botones[position] = true
-    }
+    // if (this.botones[position]) {
+    //   this.botones[position] = false
+    // } else {
+    //   this.botones[position] = true
+    // }
   }
 
-  devolver(id: number, position: number, estado: string, clickeado:string) {
+  cambiarBotones(position: number, claseEliminar: string, claseAgregar: string, accion:string) {
+    var btn_observaciones = document.getElementById(`btn_observaciones_${position}`)
+    var btn_comprobante = document.getElementById(`btn_comprobante_${position}`)
+    var btn_historial = document.getElementById(`btn_historial_${position}`)
+    var btn_comprobar = document.getElementById(`btn_comprobar_consignaciones_${position}`)
+    var btn_aplicar = document.getElementById(`btn_aplicar_consignaciones_${position}`)
+    var btn_devolver_comprobadas = document.getElementById(`btn_devolver_comprobadas_${position}`)
+    var btn_devolver_aplicadas = document.getElementById(`btn_devolver_aplicadas_${position}`)
 
-    this.clickeado = clickeado
+      if(accion == 'DESACTIVAR'){
+        var boton_observaciones = `<button *ngIf="!botones[i]"
+        class="btn btn-danger btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer" id="btn_observaciones_{{ i }}" disabled><i
+          class="fa-solid fa-ban"></i></button>`
+
+        var boton_comprobar = `<button *ngIf="!botones[i]" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO')"
+        class="btn btn-danger btn-sm ms-2" id="btn_comprobar_consignaciones_{{ i }}"><i
+          class="fa-solid fa-xmark"></i></button>`
+
+          if(btn_observaciones != null && btn_comprobar != null){
+            btn_observaciones.outerHTML = boton_observaciones
+            btn_comprobar.outerHTML = boton_comprobar
+          }
+      }
+      if(accion == 'ACTIVAR'){
+        btn_observaciones?.setAttribute('disabled', 'true')
+        btn_comprobante?.setAttribute('disabled', 'true')
+        btn_historial?.setAttribute('disabled', 'true')
+        btn_devolver_comprobadas?.setAttribute('disabled', 'true')
+        btn_devolver_aplicadas?.setAttribute('disabled', 'true')
+      }
+    }
+
+    
+
+  devolver(id: number, position: number, estado: string) {
 
     this.cambiarEstado.idConsignacion = id
 
@@ -714,7 +745,7 @@ export class ConsultasComponent implements OnInit {
     }, 2000);
   }
 
-  cancelarObservacion(){
+  cancelarObservacion() {
     this.cambiarEstado = {
       estado: '',
       idConsignacion: 0,
