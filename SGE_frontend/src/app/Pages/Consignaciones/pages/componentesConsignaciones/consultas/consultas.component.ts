@@ -284,8 +284,10 @@ export class ConsultasComponent implements OnInit {
     }, 2000);
   }
 
+
   getRoles() {
     var roles = this.authService.getRolesP()
+
     console.log(this.roles);
     var permiso: any = {}
     permiso = roles.permisos.find((pe: any) => pe.permiso.startsWith('CONSULTAR'))
@@ -307,6 +309,9 @@ export class ConsultasComponent implements OnInit {
         this.last = data.last
         this.first = data.first
         this.consultarService.proSubject.next(true);
+        this.con.forEach((c:any) => {
+          c.actualizaciones = c.actualizaciones.filter((a:any) => a.isCurrent == true)
+        })
 
         this.botones = new Array<boolean>(this.con.length).fill(false)
         console.log(this.botones);
