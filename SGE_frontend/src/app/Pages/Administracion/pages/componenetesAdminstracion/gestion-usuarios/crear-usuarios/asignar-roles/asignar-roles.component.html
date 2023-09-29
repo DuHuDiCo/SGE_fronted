@@ -1,10 +1,9 @@
-
 <div class="container">
     <header>
         <h1 class="titulo">Permisos Generales</h1>
     </header>
 
- 
+
     <table class="table">
         <tbody>
             <tr>
@@ -12,50 +11,53 @@
                 <td>
                     <div class="form-check form-switch">
                         <label class="form-check-label" for="flexSwitchCheckDefault">Activar Rol</label>
-                        <input  class="form-check-input" type="checkbox" name="cartera" [checked]="false"
+                        <input class="form-check-input" type="checkbox" name="cartera" [checked]="false"
                             [(ngModel)]="validar.cartera">
                     </div>
                 </td>
-                <input  name="p2" [(ngModel)]="select.cartera" (change)="validarCheck('cartera')" [checked]="false"   class="form-check-input" name="seleccionarTodos" id="option-all" type="checkbox" >
+                <input name="p2" [(ngModel)]="select.cartera" (change)="validarCheck('cartera')" [checked]="false"
+                    class="form-check-input" name="seleccionarTodos" id="option-all" type="checkbox">
                 <label class="form-check-label" for="option-all">Seleccionar Todos los Permisos</label>
             </tr>
 
             <tr *ngIf="validar.cartera">
-                <div  class="row">
+                <div class="row">
                     <div class="col-md-3">
                         <div class="form-check">
-                            <input  class="form-check-input" name="p1"  [(ngModel)]="objectGeneral.cartera.p1" [checked]="false" type="checkbox" value="" id="option-a" >
-                            <label class="form-check-label"  for="option-a">Default</label>
+                            <input class="form-check-input" name="p1" [(ngModel)]="objectGeneral.cartera.p1"
+                                [checked]="false" type="checkbox" value="" id="option-a">
+                            <label class="form-check-label" for="option-a">Default</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input"  name="p2" [(ngModel)]="objectGeneral.cartera.p2" [checked]="false" type="checkbox" value="" id="option-b">
+                            <input class="form-check-input" name="p2" [(ngModel)]="objectGeneral.cartera.p2"
+                                [checked]="false" type="checkbox" value="" id="option-b">
                             <label class="form-check-label" for="option-b">Default</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input"  name="p3" [(ngModel)]="objectGeneral.cartera.p3" [checked]="false" type="checkbox" value="" id="option-c">
+                            <input class="form-check-input" name="p3" [(ngModel)]="objectGeneral.cartera.p3"
+                                [checked]="false" type="checkbox" value="" id="option-c">
                             <label class="form-check-label" for="option-c">Default</label>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-check">
-                            <input class="form-check-input"  name="p4" [(ngModel)]="objectGeneral.cartera.p4" [checked]="false" type="checkbox" value="" id="option-d">
+                            <input class="form-check-input" name="p4" [(ngModel)]="objectGeneral.cartera.p4"
+                                [checked]="false" type="checkbox" value="" id="option-d">
                             <label class="form-check-label" for="option-d">Default</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input"  name="p5" [(ngModel)]="objectGeneral.cartera.p5" [checked]="false" type="checkbox" value="" id="option-e">
+                            <input class="form-check-input" name="p5" [(ngModel)]="objectGeneral.cartera.p5"
+                                [checked]="false" type="checkbox" value="" id="option-e">
                             <label class="form-check-label" for="option-e">Default</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input"  name="p6" [(ngModel)]="objectGeneral.cartera.p6" [checked]="false" type="checkbox" value="" id="option-f">
+                            <input class="form-check-input" name="p6" [(ngModel)]="objectGeneral.cartera.p6"
+                                [checked]="false" type="checkbox" value="" id="option-f">
                             <label class="form-check-label" for="option-f">Default</label>
                         </div>
                     </div>
                 </div>
             </tr>
-
-
-            
-
         </tbody>
     </table>
 </div>

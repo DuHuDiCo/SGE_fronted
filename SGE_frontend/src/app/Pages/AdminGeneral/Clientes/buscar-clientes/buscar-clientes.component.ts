@@ -23,7 +23,7 @@ export class BuscarClientesComponent implements OnInit {
 
   cliente: Cliente[] = []
 
-  datosPersonales:any = {
+  datosPersonales: any = {
     fechaNacimiento: '',
     lugarNacimiento: '',
     fechaExpedicionDocumento: '',
@@ -38,35 +38,35 @@ export class BuscarClientesComponent implements OnInit {
   direccion: boolean = false
   correo: boolean = false
 
-  datos:DatosContacto = {
+  datos: DatosContacto = {
     cedulaCliente: this.cedula,
     telefonos: [],
     direcciones: [],
     correos: []
   }
 
-  telefonos:any[] = []
-  direcciones:any[] = []
-  correos:any[] = []
+  telefonos: any[] = []
+  direcciones: any[] = []
+  correos: any[] = []
 
-  idDep:number = 0
+  idDep: number = 0
 
-  ciudades:Ciudad[] = []
+  ciudades: Ciudad[] = []
 
-  department:Departamento[] = []
+  department: Departamento[] = []
 
-  newTelefono:string = ''
-  newDireccion:Direccion = {
+  newTelefono: string = ''
+  newDireccion: Direccion = {
     "direccion": "",
     "ciudad": "",
     "departamento": "",
     "pais": ""
   }
-  newCorreo:string = ''
+  newCorreo: string = ''
 
 
 
-  constructor(private clienteService: BuscarClientesService, private authService: AuthenticationService, private renderer: Renderer2, private elementRef: ElementRef ) { }
+  constructor(private clienteService: BuscarClientesService, private authService: AuthenticationService, private renderer: Renderer2, private elementRef: ElementRef) { }
 
   ngOnInit(): void {
     this.listarClientes();
@@ -135,7 +135,6 @@ export class BuscarClientesComponent implements OnInit {
         )
       }
     })
-
   }
 
   botones(accion: string) {
@@ -165,16 +164,16 @@ export class BuscarClientesComponent implements OnInit {
         break;
     }
   }
-  
 
-  guardarDatos(boton:string){
+
+  guardarDatos(boton: string) {
 
     this.datos.telefonos = [];
     this.datos.direcciones = [];
     this.datos.correos = [];
 
-    var depa = this.department.find((d:any) => d.id == this.idDep)
-    if(depa != null){
+    var depa = this.department.find((d: any) => d.id == this.idDep)
+    if (depa != null) {
       this.newDireccion.departamento = depa.name
     }
 
@@ -183,18 +182,18 @@ export class BuscarClientesComponent implements OnInit {
     console.log(this.datos);
 
     this.clienteService.updateDatos(this.datos).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.limpiarCampos(boton);
         this.actualizarEnVista(data);
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  validarCampos(){
-    if(this.telefono === true){
-      if(this.newTelefono == null || this.newTelefono == ''){
+  validarCampos() {
+    if (this.telefono === true) {
+      if (this.newTelefono == null || this.newTelefono == '') {
         Swal.fire('Error', 'Si desea Agregar un Nuevo Teléfono debe de llenar el campo', 'error')
         return
       } else {
@@ -202,21 +201,21 @@ export class BuscarClientesComponent implements OnInit {
         Swal.fire('Felicidades', 'El Teléfono ha sido agregado con éxito', 'success')
       }
     }
-    if(this.direccion === true){
-      if(this.newDireccion.pais == '' || this.newDireccion.pais == null){
+    if (this.direccion === true) {
+      if (this.newDireccion.pais == '' || this.newDireccion.pais == null) {
         Swal.fire('Error', 'Debe de llenar El Pais', 'error')
         return
       }
-      
-      if(this.newDireccion.departamento == '' || this.newDireccion.departamento == null){
+
+      if (this.newDireccion.departamento == '' || this.newDireccion.departamento == null) {
         Swal.fire('Error', 'Debe de llenar El Departamento', 'error')
         return
       }
-      if(this.newDireccion.ciudad == '' || this.newDireccion.ciudad == null){
+      if (this.newDireccion.ciudad == '' || this.newDireccion.ciudad == null) {
         Swal.fire('Error', 'Debe de llenar La Ciudad', 'error')
         return
       }
-      if(this.newDireccion.direccion == '' || this.newDireccion.direccion == null){
+      if (this.newDireccion.direccion == '' || this.newDireccion.direccion == null) {
         Swal.fire('Error', 'Debe de llenar la Direccion', 'error')
         return
       }
@@ -227,8 +226,8 @@ export class BuscarClientesComponent implements OnInit {
     }
 
 
-    if(this.correo === true){
-      if(this.newCorreo == null || this.newCorreo == ''){
+    if (this.correo === true) {
+      if (this.newCorreo == null || this.newCorreo == '') {
         Swal.fire('Error', 'Si desea Agregar un Nuevo Correo debe de llenar el campo', 'error')
         return
       } else {
@@ -238,73 +237,73 @@ export class BuscarClientesComponent implements OnInit {
     }
   }
 
-  limpiarCampos(boton:string){
+  limpiarCampos(boton: string) {
     switch (boton) {
       case "confirmarTel":
-        this.newTelefono  = ''
+        this.newTelefono = ''
         this.telefono = false
         break;
 
-        case "confirmarDirec":
-          this.newDireccion = {
-            "direccion": "",
-            "ciudad": "",
-            "departamento": "",
-            "pais": ""
-          }
-          this.direccion = false
-          break;
+      case "confirmarDirec":
+        this.newDireccion = {
+          "direccion": "",
+          "ciudad": "",
+          "departamento": "",
+          "pais": ""
+        }
+        this.direccion = false
+        break;
 
-          case "confirmarCorreo":
-            this.newCorreo  = ''
-            this.correo = false
-            break;
+      case "confirmarCorreo":
+        this.newCorreo = ''
+        this.correo = false
+        break;
     }
   }
 
-  actualizarEnVista(data:any){
-    var clienteFound = this.cliente.find((c:any) => c.numeroDocumento == data.numeroDocumento)
-    if(clienteFound?.telefonos != undefined){
+  actualizarEnVista(data: any) {
+    var clienteFound = this.cliente.find((c: any) => c.numeroDocumento == data.numeroDocumento)
+    if (clienteFound?.telefonos != undefined) {
       clienteFound.telefonos = data.telefonos
     }
 
-    if(clienteFound?.direcciones != undefined){
+    if (clienteFound?.direcciones != undefined) {
       clienteFound.direcciones = data.direcciones
     }
 
-    if(clienteFound?.correosElectronicos != undefined){
+    if (clienteFound?.correosElectronicos != undefined) {
       clienteFound.correosElectronicos = data.correosElectronicos
     }
   }
 
-  listarDep(){
+  listarDep() {
     this.clienteService.listarDepartamentos().subscribe(
-      (data:any) => {
+      (data: any) => {
         this.department = data
         console.log(data);
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
         Swal.fire('Error', 'Error al cargar los departamentos', 'error');
       }
     )
   }
 
-  listarCiudadByDep(){
-    if(this.idDep > 0){
+  listarCiudadByDep() {
+    if (this.idDep > 0) {
       this.renderer.removeAttribute(this.mySelect.nativeElement, 'disabled');
     } else {
       this.renderer.setAttribute(this.mySelect.nativeElement, 'disabled', 'true');
     }
     this.clienteService.listarCiudadByDepartamento(this.idDep).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.ciudades = data
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  metodo(cliente:Cliente){
+  metodo(cliente: Cliente) {
     this.datos.cedulaCliente = cliente.numeroDocumento
     this.telefonos = cliente.telefonos
     this.direcciones = cliente.direcciones
