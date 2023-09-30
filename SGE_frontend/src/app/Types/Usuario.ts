@@ -10,5 +10,6 @@ export type Usuario = {
     numero_documento: string,
     celular: string,
     fecha_nacimiento: Date,
+    sede: string,
     roles : RolesUser[]
   }

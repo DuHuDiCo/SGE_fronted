@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SedeService } from 'src/app/Services/Consignaciones/Sedes/sede.service';
 import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
 import { Roles, RolesUser } from 'src/app/Types/Roles';
+import { Sede } from 'src/app/Types/Sede';
 import { Usuario } from 'src/app/Types/Usuario';
 import Swal from 'sweetalert2';
 
@@ -12,7 +14,7 @@ import Swal from 'sweetalert2';
 })
 export class CreateUsuarioComponent implements OnInit {
 
-  constructor(private userAgService: UsuarioAgService, private usuarioagService: UsuarioAgService, private router: Router) { }
+  constructor(private userAgService: UsuarioAgService, private usuarioagService: UsuarioAgService, private router: Router, private sede: SedeService) { }
 
   rolePermissionsVisibility: { [role: string]: boolean } = {};
   selectedRolePermissions: { [role: string]: string[] } = {};
@@ -34,11 +36,6 @@ export class CreateUsuarioComponent implements OnInit {
 
   IterarRol: Roles[] = []
 
-  role: RolesUser = {
-    rol: "",
-    permisos: []
-  }
-
   usuarios: Usuario = {
     username: "",
     email: "",
@@ -49,6 +46,7 @@ export class CreateUsuarioComponent implements OnInit {
     numero_documento: "",
     celular: "",
     fecha_nacimiento: new Date(),
+    sede: "",
     roles: []
   }
 
@@ -56,6 +54,8 @@ export class CreateUsuarioComponent implements OnInit {
     rol: "",
     permisos: []
   }
+
+  Sede: Sede[] = []
 
   ngOnInit(): void {
     this.userAgService.listarRoles().subscribe(
@@ -67,10 +67,12 @@ export class CreateUsuarioComponent implements OnInit {
         console.log(error);
       }
     )
+
+    this.obtenerSede()
   }
 
   guardarUsuario() {
-     
+
     if (this.usuarios.username.trim() == '' || this.usuarios.username.trim() == null) {
       Swal.fire('Error', 'Debe de ingresar el Username', 'error')
       return
@@ -81,6 +83,10 @@ export class CreateUsuarioComponent implements OnInit {
     }
     if (this.usuarios.apellidos.trim() == '' || this.usuarios.apellidos.trim() == null) {
       Swal.fire('Error', 'Debe de ingresar los Apellidos', 'error')
+      return
+    }
+    if (this.usuarios.sede.trim() == '' || this.usuarios.sede.trim() == null) {
+      Swal.fire('Error', 'Debe de ingresar la Sede', 'error')
       return
     }
     if (this.usuarios.tipo_documento.trim() == '' || this.usuarios.tipo_documento.trim() == null) {
@@ -104,11 +110,25 @@ export class CreateUsuarioComponent implements OnInit {
       Swal.fire('Error', 'Debe ingresar la Fecha de Nacimiento', 'error');
       return;
     }
+ 
 
     this.userAgService.setUsuario(this.usuarios)
 
     this.router.navigate(['/dashboard-admin-general/roles-usuario'])
-    
-  
+
   }
+
+  obtenerSede() {
+    this.sede.getSedes().subscribe(
+      (data: any) => {
+        this.Sede = data
+        console.log(data);
+      }, (error: any) => {
+        console.log(error);
+        Swal.fire('Error', 'Error al cargar las Sedes', 'error');
+      }
+    )
+  }
+
 }
+
