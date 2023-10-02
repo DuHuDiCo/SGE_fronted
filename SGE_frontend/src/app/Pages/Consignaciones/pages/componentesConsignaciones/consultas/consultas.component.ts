@@ -309,8 +309,8 @@ export class ConsultasComponent implements OnInit {
         this.last = data.last
         this.first = data.first
         this.consultarService.proSubject.next(true);
-        this.con.forEach((c:any) => {
-          c.actualizaciones = c.actualizaciones.filter((a:any) => a.isCurrent == true)
+        this.con.forEach((c: any) => {
+          c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
         })
 
         this.botones = new Array<boolean>(this.con.length).fill(false)
@@ -610,16 +610,17 @@ export class ConsultasComponent implements OnInit {
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
 
     if (idC != null || idC != undefined) {
-
       this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
-      this.cambiarBotones(position, 'fa-xmark', 'fa-check', 'ACTIVAR')
+      this.cambiarBotones(position, 'ACTIVAR', id, estado)
+      if (this.cambioArray.length > 0) {
+        this.cambios = true
+      } else {
+        this.cambios = false
+      }
       console.log(this.cambioArray);
     } else {
-      this.cambiarBotones(position, 'fa-check', 'fa-xmark', 'DESACTIVAR')
       this.cambiarEstado.idConsignacion = id
-
       this.cambiarEstado.estado = estado
-
       var user = this.authService.getUsername()
 
       if (user == null || user == undefined) {
@@ -634,50 +635,274 @@ export class ConsultasComponent implements OnInit {
         username: '',
         observacion: ''
       }
+
+      this.cambiarBotones(position, 'DESACTIVAR', id, estado)
+      this.cambios = true
     }
-
     console.log(this.cambioArray);
-
-    // if (this.botones[position]) {
-    //   this.botones[position] = false
-    // } else {
-    //   this.botones[position] = true
-    // }
   }
 
-  cambiarBotones(position: number, claseEliminar: string, claseAgregar: string, accion:string) {
+  cambiarDevolver(id: number, position: number, accion: string, estado: string) {
+    var btn_devolver_aplicadas
+    var btn_devolver_aplicadas_x
+    var btn_devolver_comprobadas
+    var btn_devolver_comprobadas_x
+    var btn_aplicar
+    var btn_comprobar
+
     var btn_observaciones = document.getElementById(`btn_observaciones_${position}`)
     var btn_comprobante = document.getElementById(`btn_comprobante_${position}`)
     var btn_historial = document.getElementById(`btn_historial_${position}`)
-    var btn_comprobar = document.getElementById(`btn_comprobar_consignaciones_${position}`)
-    var btn_aplicar = document.getElementById(`btn_aplicar_consignaciones_${position}`)
+    console.log(btn_observaciones);
+    console.log(btn_comprobante);
+    console.log(btn_historial);
+    console.log(btn_aplicar);
+    console.log(btn_comprobar);
+
+
+    if (this.validarPermiso('APLICAR')) {
+      btn_devolver_aplicadas = document.getElementById(`btn_devolver_aplicadas_${position}`)
+      btn_devolver_aplicadas_x = document.getElementById(`btn_devolver_aplicadas_x${position}`)
+      btn_aplicar = document.getElementById(`btn_aplicar_consignaciones_${position}`)
+    }
+
+    if (this.validarPermiso('COMPROBAR')) {
+      btn_devolver_comprobadas = document.getElementById(`btn_devolver_comprobadas_${position}`)
+      btn_devolver_comprobadas_x = document.getElementById(`btn_devolver_comprobadas_x${position}`)
+      btn_comprobar = document.getElementById(`btn_comprobar_consignaciones_${position}`)
+    }
+
+    if (accion == 'DESACTIVAR') {
+      alert('DESACTIVAR')
+      var boton_observaciones = `<button *ngIf="!botones[i]"
+        class="btn btn-danger btn-sm ms-2" id="btn_observaciones_${position}" disabled><i
+          class="fa-solid fa-ban"></i></button>`
+
+      var boton_historial = `<button *ngIf="!botones[i]"
+        class="btn btn-sm btn-danger ms-2" id="btn_historial_${position}" disabled><i
+          class="fa-solid fa-ban"></i></button>`
+
+      var boton_comprobante = `<button *ngIf="!botones[i]"
+        class="btn btn-sm btn-danger ms-2" id="btn_comprobante_${position}" disabled><i
+          class="fa-solid fa-ban"></i></button>`
+
+      var boton_comprobar = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+        class="btn btn-sm btn-danger ms-2" id="btn_comprobar_consignaciones_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
+
+      var boton_aplicar = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+        class="btn btn-sm btn-danger ms-2" id="btn_aplicar_consignaciones_${position}"><i class="fa-solid fa-ban"></i></button>`
+
+      if (btn_observaciones != null
+        && btn_historial != null && btn_comprobante != null) {
+        alert('IF 2')
+        btn_observaciones.outerHTML = boton_observaciones
+        btn_historial.outerHTML = boton_historial
+        btn_comprobante.outerHTML = boton_comprobante
+
+
+        if (this.validarPermiso('APLICAR')) {
+          if (btn_devolver_aplicadas != null && btn_devolver_aplicadas_x != null && btn_aplicar != null) {
+            btn_devolver_aplicadas_x.style.display = 'block'
+            btn_devolver_aplicadas.style.display = 'none'
+            btn_aplicar.outerHTML = boton_aplicar
+          }
+        }
+
+        if (this.validarPermiso('COMPROBAR')) {
+          if (btn_devolver_comprobadas != null && btn_devolver_comprobadas_x != null && btn_comprobar != null) {
+            btn_devolver_comprobadas_x.style.display = 'block'
+            btn_devolver_comprobadas.style.display = 'none'
+            btn_comprobar.outerHTML = boton_comprobar
+          }
+        }
+      }
+    }
+    if (accion == 'ACTIVAR') {
+      var boton_observaciones_activo = `<button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+        class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer" id="btn_observaciones_${position}"><i
+        class="fa-regular fa-eye"></i></button>`
+
+      var boton_historial_activo = `<button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+        class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo" id="btn_historial_${position}"><i
+          class="fa-solid fa-circle-info"></i></button>`
+
+      var boton_comprobante_activo = `<button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
+        class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage" id="btn_comprobante_${position}"><i
+          class="fa-regular fa-image"></i></button>`
+
+      var boton_comprobar_activo = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO')"
+        class="btn btn-sm btn-warning ms-2" id="btn_comprobar_consignaciones_${position}"><i class="fa-solid fa-check"></i></button>`
+
+      var boton_aplicar_activo = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO')"
+        class="btn btn-sm btn-warning ms-2" id="btn_aplicar_consignaciones_${position}"><i class="fa-solid fa-check"></i></button>`
+
+
+      if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
+        btn_observaciones.outerHTML = boton_observaciones_activo
+        btn_historial.outerHTML = boton_historial_activo
+        btn_comprobante.outerHTML = boton_comprobante_activo
+
+        if (this.validarPermiso('COMPROBAR')) {
+          if (btn_devolver_comprobadas != null && btn_devolver_comprobadas_x && btn_comprobar != null) {
+            btn_devolver_comprobadas_x.style.display = 'none'
+            btn_devolver_comprobadas.style.display = 'block'
+            btn_comprobar.outerHTML = boton_comprobar_activo
+
+          }
+        }
+
+        if (this.validarPermiso('APLICAR')) {
+          if (btn_devolver_aplicadas != null && btn_devolver_aplicadas_x && btn_aplicar != null) {
+            btn_devolver_aplicadas_x.style.display = 'none'
+            btn_devolver_aplicadas.style.display = 'block'
+            btn_aplicar.outerHTML = boton_aplicar_activo
+          }
+        }
+
+        var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
+
+        if (idC != null || idC != undefined) {
+          alert('ELIMINAR')
+          this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
+          if (this.cambioArray.length > 0) {
+            this.cambios = true
+          } else {
+            this.cambios = false
+          }
+        }
+
+      }
+    }
+  }
+
+  cambiarBotones(position: number, accion: string, id: number, estado: string) {
+
+    var btn_aplicar_x
+    var btn_aplicar
+    var btn_comprobar_x
+    var btn_comprobar
+
+    var btn_observaciones = document.getElementById(`btn_observaciones_${position}`)
+    var btn_comprobante = document.getElementById(`btn_comprobante_${position}`)
+    var btn_historial = document.getElementById(`btn_historial_${position}`)
     var btn_devolver_comprobadas = document.getElementById(`btn_devolver_comprobadas_${position}`)
     var btn_devolver_aplicadas = document.getElementById(`btn_devolver_aplicadas_${position}`)
 
-      if(accion == 'DESACTIVAR'){
-        var boton_observaciones = `<button *ngIf="!botones[i]"
-        class="btn btn-danger btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer" id="btn_observaciones_{{ i }}" disabled><i
-          class="fa-solid fa-ban"></i></button>`
 
-        var boton_comprobar = `<button *ngIf="!botones[i]" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO')"
-        class="btn btn-danger btn-sm ms-2" id="btn_comprobar_consignaciones_{{ i }}"><i
-          class="fa-solid fa-xmark"></i></button>`
 
-          if(btn_observaciones != null && btn_comprobar != null){
-            btn_observaciones.outerHTML = boton_observaciones
-            btn_comprobar.outerHTML = boton_comprobar
-          }
-      }
-      if(accion == 'ACTIVAR'){
-        btn_observaciones?.setAttribute('disabled', 'true')
-        btn_comprobante?.setAttribute('disabled', 'true')
-        btn_historial?.setAttribute('disabled', 'true')
-        btn_devolver_comprobadas?.setAttribute('disabled', 'true')
-        btn_devolver_aplicadas?.setAttribute('disabled', 'true')
-      }
+    if (this.validarPermiso('APLICAR')) {
+      btn_aplicar = document.getElementById(`btn_aplicar_consignaciones_${position}`)
+      btn_aplicar_x = document.getElementById(`btn_aplicar_consignaciones_x${position}`)
     }
 
-    
+    if (this.validarPermiso('COMPROBAR')) {
+      btn_comprobar = document.getElementById(`btn_comprobar_consignaciones_${position}`)
+      btn_comprobar_x = document.getElementById(`btn_comprobar_consignaciones_x${position}`)
+    }
+
+    if (accion == 'DESACTIVAR') {
+      var boton_observaciones = `<button *ngIf="!botones[i]"
+        class="btn btn-danger btn-sm ms-2" id="btn_observaciones_${position}" disabled><i
+          class="fa-solid fa-ban"></i></button>`
+
+      var boton_historial = `<button *ngIf="!botones[i]"
+        class="btn btn-sm btn-danger ms-2" id="btn_historial_${position}" disabled><i
+          class="fa-solid fa-ban"></i></button>`
+
+      var boton_comprobante = `<button *ngIf="!botones[i]"
+        class="btn btn-sm btn-danger ms-2" id="btn_comprobante_${position}" disabled><i
+          class="fa-solid fa-ban"></i></button>`
+
+      var boton_devolver_comprobadas = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+        class="btn btn-sm btn-danger ms-2" id="btn_devolver_comprobadas_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
+
+      var boton_devolver_aplicadas = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+        class="btn btn-sm btn-danger ms-2"><i class="fa-solid fa-ban" id="btn_devolver_aplicadas_${position}"></i></button>`
+
+      if (btn_observaciones != null && btn_comprobar != null && btn_comprobar_x != null
+        && btn_historial != null && btn_comprobante != null) {
+        btn_observaciones.outerHTML = boton_observaciones
+        btn_historial.outerHTML = boton_historial
+        btn_comprobante.outerHTML = boton_comprobante
+
+
+        if (this.validarPermiso('APLICAR')) {
+          if (btn_aplicar != null && btn_aplicar_x != null && btn_devolver_aplicadas != null) {
+            btn_aplicar_x.style.display = 'block'
+            btn_aplicar.style.display = 'none'
+            btn_devolver_aplicadas.outerHTML = boton_devolver_aplicadas
+
+          }
+        }
+
+        if (this.validarPermiso('COMPROBAR')) {
+          if (btn_comprobar != null && btn_comprobar_x != null && btn_devolver_comprobadas != null) {
+            btn_comprobar.style.display = 'none'
+            btn_comprobar_x.style.display = 'block'
+            btn_devolver_comprobadas.outerHTML = boton_devolver_comprobadas
+
+
+          }
+        }
+
+
+      }
+    }
+    if (accion == 'ACTIVAR') {
+      var boton_observaciones_activo = `<button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+        class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer" id="btn_observaciones_${position}"><i
+        class="fa-regular fa-eye"></i></button>`
+
+      var boton_historial_activo = `<button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+        class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo" id="btn_historial_${position}"><i
+          class="fa-solid fa-circle-info"></i></button>`
+
+      var boton_comprobante_activo = `<button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
+        class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage" id="btn_comprobante_${position}"><i
+          class="fa-regular fa-image"></i></button>`
+
+      var boton_devolver_comprobadas_activo = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+        (click)="devolver(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD')"
+        class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_comprobadas_${position}"><i class="fa-solid fa-backward"></i></button>`
+
+      var boton_devolver_aplicadas_activo = ` <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="devolver(c.idConsignacion, i, 'DEVUELTA CAJA')"
+        class="btn btn-sm btn-warning ms-2"><i class="fa-solid fa-backward" id="btn_devolver_aplicadas_${position}"></i></button>`
+
+      if (btn_observaciones != null && btn_historial != null && btn_comprobante != null && btn_comprobar != null && btn_comprobar_x != null) {
+        btn_observaciones.outerHTML = boton_observaciones_activo
+        btn_historial.outerHTML = boton_historial_activo
+        btn_comprobante.outerHTML = boton_comprobante_activo
+
+        if (this.validarPermiso('COMPROBAR')) {
+          if (btn_comprobar
+            != null && btn_comprobar_x != null && btn_devolver_comprobadas) {
+            btn_comprobar.style.display = 'block'
+            btn_comprobar_x.style.display = 'none'
+            btn_devolver_comprobadas.outerHTML = boton_devolver_comprobadas_activo
+          }
+
+        }
+
+        if (this.validarPermiso('APLICAR')) {
+          if (btn_aplicar != null && btn_aplicar_x != null && btn_devolver_aplicadas != null) {
+            btn_aplicar.style.display = 'block'
+            btn_aplicar_x.style.display = 'none'
+            btn_devolver_aplicadas.outerHTML = boton_devolver_aplicadas_activo
+          }
+        }
+
+      }
+    }
+  }
+
+  validarPermiso(permisos: string): boolean {
+    var roles = this.authService.getRolesP()
+    console.log(this.roles);
+    var permiso: any = {}
+    permiso = roles.permisos.find((pe: any) => pe.permiso.includes(permisos))
+    return permiso != null || permiso != undefined
+    console.log(permiso);
+  }
 
   devolver(id: number, position: number, estado: string) {
 
@@ -695,6 +920,7 @@ export class ConsultasComponent implements OnInit {
     this.posicionDevolver = position
 
     console.log(this.cambioArray)
+
   }
 
   agregarDevolucion() {
@@ -702,22 +928,41 @@ export class ConsultasComponent implements OnInit {
       Swal.fire('Error', 'Digite Una Observación', 'error')
       return
     }
+    var idC = this.cambioArray.find((c: any) => c.idConsignacion == this.cambiarEstado.idConsignacion)
 
-    if (this.botones[this.posicionDevolver]) {
-      this.botones[this.posicionDevolver] = false
+    if (idC != null || idC != undefined) {
+      alert('if 1')
+      this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != this.cambiarEstado.idConsignacion)
+      this.cambiarDevolver(this.cambiarEstado.idConsignacion, this.posicionDevolver, 'ACTIVAR', this.cambiarEstado.estado)
+      if (this.cambioArray.length > 0) {
+        this.cambios = true
+      } else {
+        this.cambios = false
+      }
+      console.log(this.cambioArray);
     } else {
-      this.botones[this.posicionDevolver] = true
-    }
+      alert('if 2')
+      this.cambiarDevolver(this.cambiarEstado.idConsignacion, this.posicionDevolver, 'DESACTIVAR', this.cambiarEstado.estado)
+      this.cambiarEstado.idConsignacion = this.cambiarEstado.idConsignacion
+      this.cambiarEstado.estado = this.cambiarEstado.estado
+      var user = this.authService.getUsername()
 
-    this.cambioArray.push(this.cambiarEstado)
+      if (user == null || user == undefined) {
+        return
+      }
+      this.cambiarEstado.username = user
+
+      this.cambioArray.push(this.cambiarEstado)
+      this.cambiarEstado = {
+        estado: '',
+        idConsignacion: 0,
+        username: '',
+        observacion: ''
+      }
+
+      this.cambios = true
+    }
     console.log(this.cambioArray);
-
-    this.cambiarEstado = {
-      estado: '',
-      idConsignacion: 0,
-      username: '',
-      observacion: ''
-    }
   }
 
   cambiarConsignacion() {
