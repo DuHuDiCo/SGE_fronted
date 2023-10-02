@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
 import { Roles, RolesUser } from 'src/app/Types/Roles';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-roles-usuarios-guardar',
@@ -9,7 +12,7 @@ import { Roles, RolesUser } from 'src/app/Types/Roles';
 })
 export class RolesUsuariosGuardarComponent implements OnInit {
 
-  constructor(private userAgService: UsuarioAgService) { }
+  constructor(private userAgService: UsuarioAgService, private router: Router, private authService: AuthenticationService) { }
 
   selectedRole: number[] = []
   selectedPermisos: number[] = []
@@ -281,9 +284,27 @@ export class RolesUsuariosGuardarComponent implements OnInit {
 
 
   guardar() {
-    console.log(this.usuario);
+    let username = this.authService.getUsername();
 
+    if (username != null || username != undefined) {
+      
+      
 
+      this.userAgService.crearUsuario(this.usuario, username).subscribe(
+        (data: any) => {
+          Swal.fire('GUARDADO', 'El usuario guardado', 'success');
+          setTimeout(() => {
+            this.router.navigate(['/dashboard-admin-general/buscar-usuario'])
+          }, 2000);
+          console.log(data);
+
+        },
+        (error: any) => {
+          console.log(error);
+          Swal.fire('ERROR', 'Error Guardar Usuario', 'error')
+        }
+      )
+    }
   }
 
   contieneTodosValores(arrayPrincipal: any[], valoresAComprobar: any[]): boolean {

@@ -225,7 +225,7 @@ section {
     align-items: center;
     min-height: 100vh;
     width: 100%;
-    background: url("src/assets/logo.png") no-repeat;
+    background: url("src/assets/H_electro.svg") no-repeat;
     background-position: center;
     background-size: cover;
 }
