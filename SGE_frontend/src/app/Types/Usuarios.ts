@@ -9,5 +9,6 @@ export type users = {
     apellidos: string,
     celular: string,
     status: string,
+    sede: string,
     roles : RolesUser[]
   }
