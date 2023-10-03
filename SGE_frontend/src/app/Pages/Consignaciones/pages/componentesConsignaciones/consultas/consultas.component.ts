@@ -120,6 +120,7 @@ export class ConsultasComponent implements OnInit {
     cuentasCobrar: [],
     actualizaciones: [],
     fileReportes: [],
+    sede: ''
   }
   cuentasPorCobrar: Con = {
     idConsignacion: 0,
@@ -149,6 +150,7 @@ export class ConsultasComponent implements OnInit {
     cuentasCobrar: [],
     actualizaciones: [],
     fileReportes: [],
+    sede: ''
   }
   detalle: Con = {
     idConsignacion: 0,
@@ -178,6 +180,7 @@ export class ConsultasComponent implements OnInit {
     cuentasCobrar: [],
     actualizaciones: [],
     fileReportes: [],
+    sede: ''
   }
   observacionDto: ObservacionDto = {
     detalle: '',
@@ -222,6 +225,8 @@ export class ConsultasComponent implements OnInit {
   posicionDevolver: number = 0
   clickeado: string = ''
 
+  sedeUser:string | null = ''
+
 
   private proSubscription!: Subscription;
 
@@ -234,6 +239,7 @@ export class ConsultasComponent implements OnInit {
     this.getSede()
   }
 
+  
   validateNewConsignacion() {
     if (this.modal.numeroRecibo.trim() == '' || this.modal.numeroRecibo.trim() == null) {
       Swal.fire('Error', 'Digite un Número de Recibo', 'error')
@@ -284,7 +290,6 @@ export class ConsultasComponent implements OnInit {
     }, 2000);
   }
 
-
   getRoles() {
     var roles = this.authService.getRolesP()
 
@@ -300,33 +305,67 @@ export class ConsultasComponent implements OnInit {
     this.getConsignaciones(p)
   }
 
-  getConsignaciones(p: string) {
-    this.consultarService.getAllConsignaciones(p, this.page, this.size).subscribe(
-      (data: any) => {
-        this.spinner = false
-        this.con = data.content
-        this.paginas = new Array(data.totalPages)
-        this.last = data.last
-        this.first = data.first
-        this.consultarService.proSubject.next(true);
-        this.con.forEach((c: any) => {
-          c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
-        })
+  getConsignaciones(p: string) { 
+    this.sedeUser = this.authService.getSede()
 
-        this.botones = new Array<boolean>(this.con.length).fill(false)
-        console.log(this.botones);
-        console.log(data);
-      }, (error: any) => {
-        console.log(error);
+    var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
       }
-    )
+      this.cambiarEstado.username = user
+
+    if(this.validarPermiso('CONSULTAR COMPROBADOS')){
+      this.consultarService.listarComprobados(user, this.page, this.size).subscribe(
+        (data:any) => {
+          this.spinner = false
+          this.con = data.content
+          this.paginas = new Array(data.totalPages)
+          this.last = data.last
+          this.first = data.first
+          this.consultarService.proSubject.next(true);
+          this.con.forEach((c: any) => {
+            c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
+          })
+          console.log(data);
+          
+          this.botones = new Array<boolean>(this.con.length).fill(false)
+        }, (error:any) => {
+          console.log(error);
+        }
+      )
+    }
+
+    if(this.validarPermiso('CONSULTAR PENDIENTES')){
+      this.consultarService.getAllConsignaciones(p, this.page, this.size).subscribe(
+        (data: any) => {
+          this.spinner = false
+          this.con = data.content
+          this.paginas = new Array(data.totalPages)
+          this.last = data.last
+          this.first = data.first
+          this.consultarService.proSubject.next(true);
+          this.con.forEach((c: any) => {
+            c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
+          })
+  
+          this.botones = new Array<boolean>(this.con.length).fill(false)
+          console.log(this.botones);
+          console.log(data);
+        }, (error: any) => {
+          console.log(error);
+        }
+      )
+    }
+   
   }
 
   img(dataURI: string) {
     this.base64 = dataURI
   }
 
-  getConsignacionById(id: number) {
+  public getConsignacionById(id: number) {
+    alert(id)
     this.consultarService.getConsignacionById(id).subscribe(
       (data: any) => {
         this.cuentasPorCobrar.cuentasCobrar = []
@@ -342,7 +381,7 @@ export class ConsultasComponent implements OnInit {
         this.cuentasPorCobrar = data
         this.detalle = data
         this.observacionDto.idConsignacion = data.idConsignacion
-        console.log(this.cambiarEstado);
+        console.log(data);
       }, (error: any) => {
         console.log(error);
       }
@@ -581,6 +620,9 @@ export class ConsultasComponent implements OnInit {
     this.consultarService.getConsignacionByCedula(this.cedula).subscribe(
       (data: any) => {
         this.con = data
+        this.con.forEach((element:any) => {
+          element.actualizaciones = element.actualizaciones.filter((a:any)=> a.isCurrent == true)
+        });
         console.log(data);
 
       }, (error: any) => {
@@ -653,11 +695,6 @@ export class ConsultasComponent implements OnInit {
     var btn_observaciones = document.getElementById(`btn_observaciones_${position}`)
     var btn_comprobante = document.getElementById(`btn_comprobante_${position}`)
     var btn_historial = document.getElementById(`btn_historial_${position}`)
-    console.log(btn_observaciones);
-    console.log(btn_comprobante);
-    console.log(btn_historial);
-    console.log(btn_aplicar);
-    console.log(btn_comprobar);
 
 
     if (this.validarPermiso('APLICAR')) {
@@ -690,10 +727,9 @@ export class ConsultasComponent implements OnInit {
         class="btn btn-sm btn-danger ms-2" id="btn_comprobar_consignaciones_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
 
       var boton_aplicar = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-        class="btn btn-sm btn-danger ms-2" id="btn_aplicar_consignaciones_${position}"><i class="fa-solid fa-ban"></i></button>`
+        class="btn btn-sm btn-danger ms-2" id="btn_aplicar_consignaciones_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
 
-      if (btn_observaciones != null
-        && btn_historial != null && btn_comprobante != null) {
+      if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
         alert('IF 2')
         btn_observaciones.outerHTML = boton_observaciones
         btn_historial.outerHTML = boton_historial
@@ -718,35 +754,38 @@ export class ConsultasComponent implements OnInit {
       }
     }
     if (accion == 'ACTIVAR') {
-      var boton_observaciones_activo = `<button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+      var boton_observaciones_activo = `<button *ngIf="!botones[i]"
         class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer" id="btn_observaciones_${position}"><i
         class="fa-regular fa-eye"></i></button>`
 
-      var boton_historial_activo = `<button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+      var boton_historial_activo = `<button *ngIf="!botones[i]"
         class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo" id="btn_historial_${position}"><i
           class="fa-solid fa-circle-info"></i></button>`
 
-      var boton_comprobante_activo = `<button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
-        class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage" id="btn_comprobante_${position}"><i
-          class="fa-regular fa-image"></i></button>`
+      var boton_comprobante_activo = `<button *ngIf="!botones[i]" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage" id="btn_comprobante_${position}"><i
+      class="fa-regular fa-image"></i></button>`
 
-      var boton_comprobar_activo = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO')"
+      var boton_comprobar_activo = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
         class="btn btn-sm btn-warning ms-2" id="btn_comprobar_consignaciones_${position}"><i class="fa-solid fa-check"></i></button>`
 
-      var boton_aplicar_activo = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO')"
+      var boton_aplicar_activo = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
         class="btn btn-sm btn-warning ms-2" id="btn_aplicar_consignaciones_${position}"><i class="fa-solid fa-check"></i></button>`
 
 
       if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
         btn_observaciones.outerHTML = boton_observaciones_activo
+        this.ponerEventoClick(id, `btn_observaciones_${position}`)
         btn_historial.outerHTML = boton_historial_activo
+        this.ponerEventoClick(id, `btn_historial_${position}`)
         btn_comprobante.outerHTML = boton_comprobante_activo
+        this.metodoImagen(id, `btn_comprobante_${position}`)
 
         if (this.validarPermiso('COMPROBAR')) {
           if (btn_devolver_comprobadas != null && btn_devolver_comprobadas_x && btn_comprobar != null) {
             btn_devolver_comprobadas_x.style.display = 'none'
             btn_devolver_comprobadas.style.display = 'block'
             btn_comprobar.outerHTML = boton_comprobar_activo
+            this.metodoCambiarTemporal(`btn_comprobar_consignaciones_${position}`, id, position, 'COMPROBADO')
 
           }
         }
@@ -756,11 +795,12 @@ export class ConsultasComponent implements OnInit {
             btn_devolver_aplicadas_x.style.display = 'none'
             btn_devolver_aplicadas.style.display = 'block'
             btn_aplicar.outerHTML = boton_aplicar_activo
+            this.metodoCambiarTemporal(`btn_aplicar_consignaciones_${position}`, id, position, 'APLICADO')
           }
         }
 
         var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
-
+        alert(idC?.idConsignacion)
         if (idC != null || idC != undefined) {
           alert('ELIMINAR')
           this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
@@ -817,10 +857,9 @@ export class ConsultasComponent implements OnInit {
         class="btn btn-sm btn-danger ms-2" id="btn_devolver_comprobadas_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
 
       var boton_devolver_aplicadas = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-        class="btn btn-sm btn-danger ms-2"><i class="fa-solid fa-ban" id="btn_devolver_aplicadas_${position}"></i></button>`
+        class="btn btn-sm btn-danger ms-2" id="btn_devolver_aplicadas_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
 
-      if (btn_observaciones != null && btn_comprobar != null && btn_comprobar_x != null
-        && btn_historial != null && btn_comprobante != null) {
+      if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
         btn_observaciones.outerHTML = boton_observaciones
         btn_historial.outerHTML = boton_historial
         btn_comprobante.outerHTML = boton_comprobante
@@ -849,36 +888,41 @@ export class ConsultasComponent implements OnInit {
       }
     }
     if (accion == 'ACTIVAR') {
-      var boton_observaciones_activo = `<button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+      alert(id)
+      alert(position)
+      var boton_observaciones_activo = `<button *ngIf="!botones[i]"
         class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer" id="btn_observaciones_${position}"><i
         class="fa-regular fa-eye"></i></button>`
 
-      var boton_historial_activo = `<button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+      var boton_historial_activo = `<button *ngIf="!botones[i]"
         class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo" id="btn_historial_${position}"><i
           class="fa-solid fa-circle-info"></i></button>`
 
-      var boton_comprobante_activo = `<button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
+      var boton_comprobante_activo = `<button *ngIf="!botones[i]"
         class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage" id="btn_comprobante_${position}"><i
           class="fa-regular fa-image"></i></button>`
 
       var boton_devolver_comprobadas_activo = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-        (click)="devolver(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD')"
         class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_comprobadas_${position}"><i class="fa-solid fa-backward"></i></button>`
 
-      var boton_devolver_aplicadas_activo = ` <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="devolver(c.idConsignacion, i, 'DEVUELTA CAJA')"
-        class="btn btn-sm btn-warning ms-2"><i class="fa-solid fa-backward" id="btn_devolver_aplicadas_${position}"></i></button>`
+      var boton_devolver_aplicadas_activo = ` <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="devolver(${id}, ${position}, 'DEVUELTA CAJA')"
+        class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_aplicadas_${position}"><i class="fa-solid fa-backward"></i></button>`
 
-      if (btn_observaciones != null && btn_historial != null && btn_comprobante != null && btn_comprobar != null && btn_comprobar_x != null) {
+      if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
         btn_observaciones.outerHTML = boton_observaciones_activo
+        this.ponerEventoClick(id, `btn_observaciones_${position}`)
         btn_historial.outerHTML = boton_historial_activo
+        this.ponerEventoClick(id, `btn_historial_${position}`)
         btn_comprobante.outerHTML = boton_comprobante_activo
+        this.metodoImagen(id, `btn_comprobante_${position}`)
+
 
         if (this.validarPermiso('COMPROBAR')) {
-          if (btn_comprobar
-            != null && btn_comprobar_x != null && btn_devolver_comprobadas) {
+          if (btn_comprobar != null && btn_comprobar_x != null && btn_devolver_comprobadas) {
             btn_comprobar.style.display = 'block'
             btn_comprobar_x.style.display = 'none'
             btn_devolver_comprobadas.outerHTML = boton_devolver_comprobadas_activo
+            this.metodoCambiarDevolver(`btn_devolver_comprobadas_${position}`, id, position, 'DEVUELTA CONTABILIDAD')
           }
 
         }
@@ -888,10 +932,33 @@ export class ConsultasComponent implements OnInit {
             btn_aplicar.style.display = 'block'
             btn_aplicar_x.style.display = 'none'
             btn_devolver_aplicadas.outerHTML = boton_devolver_aplicadas_activo
+            this.metodoCambiarDevolver(`btn_devolver_aplicadas_${position}`, id, position, 'DEVUELTA CAJA')
           }
         }
 
       }
+    }
+  }
+
+  ponerEventoClick(idConsignacion:number, idElemento:string){
+    var x = document.getElementById(idElemento)
+    x?.addEventListener('click', () => this.getConsignacionById(idConsignacion)); 
+  }
+
+  metodoCambiarTemporal(idElemento:string, idConsignacion:number, position:number, estado:string){
+    var x = document.getElementById(idElemento)
+    x?.addEventListener('click', () => this.cambiarConsignacionTemporal(idConsignacion, position, estado)); 
+  }
+
+  metodoCambiarDevolver(idElemento:string, idConsignacion:number, position:number, estado:string){
+    var x = document.getElementById(idElemento)
+    x?.addEventListener('click', () => this.devolver(idConsignacion, position, estado)); 
+  }
+
+  metodoImagen(idConsignacion:number, idElemento:string){
+    var comprobante = this.con.find((c:any) => c.idConsignacion == idConsignacion)
+    if(comprobante != null || comprobante != undefined){
+      this.base64 = comprobante.comprobantes.dataURI + ',' + comprobante.comprobantes.rutaArchivo
     }
   }
 
@@ -966,7 +1033,7 @@ export class ConsultasComponent implements OnInit {
   }
 
   cambiarConsignacion() {
-    this.consultarService.cambiarEstadoConsignacion(this.cambiarEstado).subscribe(
+    this.consultarService.cambiarEstadoConsignacion(this.cambioArray).subscribe(
       (data: any) => {
         Swal.fire('Felicidades', 'Cambio Realizado Con Éxito', 'success')
         setTimeout(() => {

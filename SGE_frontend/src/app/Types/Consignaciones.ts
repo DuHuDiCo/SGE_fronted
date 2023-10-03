@@ -6,7 +6,7 @@ export type Consignacion = {
   valor: number,
   fechaPago: Date,
   idPlataforma: number,
-  observaciones: string,
+  observaciones: string | null,
   obligaciones: string[],
   base64: string,
   username: string
@@ -185,6 +185,7 @@ export type Obligacion =  {
 export type Con = {
   idConsignacion: number,
   numeroRecibo: string,
+  sede:string,
   valor: number,
   fechaPago: Date,
   fechaCreacion: Date,
@@ -238,6 +239,7 @@ export type Obg = {
 export type Actualizaciones =  {
   idActualizacion: number,
   fechaActualizacion: Date,
+  isCurrent:boolean,
   usuario: Usuario,
   estado: {
     idEstado: number,

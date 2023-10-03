@@ -83,7 +83,7 @@ export class IngresarComponent implements OnInit {
   guardarConObs(dato:string){
 
     if(dato == 'SI'){
-      if(this.consignacion.observaciones.trim() == '' || this.consignacion.observaciones.trim() == null){
+      if(this.consignacion.observaciones?.trim() == '' || this.consignacion.observaciones?.trim() == null){
         Swal.fire('Error', 'Si quieres guardar una consignación debes de llenar el campo', 'error')
         return
       }
@@ -102,6 +102,9 @@ export class IngresarComponent implements OnInit {
             base64: '',
             username: ''
           }
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000);
           
         }, (error:any) => {
           Swal.fire('Error', 'Error al Guardar La Consignación', 'error')
@@ -109,6 +112,7 @@ export class IngresarComponent implements OnInit {
         }
       )
     } else {
+      this.consignacion.observaciones = null
       this.ingresarService.saveConsignacion(this.consignacion).subscribe(
         (data:any) => {
           Swal.fire('Felicidades', 'Su Consignación se ha Guardado con Éxito', 'success')
@@ -123,12 +127,17 @@ export class IngresarComponent implements OnInit {
             base64: '',
             username: ''
           }
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000);
         }, (error:any) => {
           Swal.fire('Error', 'Error al Guardar La Consignación', 'error')
           console.log(error);
         }
       )
     }
+    console.log(this.consignacion);
+    
     
   }
 

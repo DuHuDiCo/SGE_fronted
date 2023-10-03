@@ -1,7 +1,7 @@
 <div class="caja">
   <h1 class="titulo">Consultar Consignaciones</h1><br>
 
-  <div class="d-grid gap-2 d-md-flex justify-content-md-end" id="btn btn-primary">
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end" id="btn btn-primary" *appConsignacionesDirective="permisos[0]">
     <button class="btn-archivos" type="button">Generar Archivos</button>
   </div>
 
@@ -86,7 +86,7 @@
           <td>{{ c.fechaCreacion | date: 'dd/MM/yyyy' }}, {{ c.fechaCreacion | date: 'shortTime' }}</td>
           <td>$ {{ c.valor | number}}</td>
           <td>{{ c.actualizaciones[0].estado.estado }}</td>
-          <td>{{ c.cuentasCobrar[0].sede.nombreSede }}</td>
+          <td>{{ c.sede }}</td>
           <td>{{ c.plataforma.bancos.nombreBanco }} - {{ c.plataforma.bancos.tipoPago[0].tipoPago }}</td>
 
           <td class="d-flex align-middle">
@@ -129,12 +129,12 @@
 
             <!-- APLICAR CONSIGNACIONES -->
             <span *appConsignacionesDirective="permisos[4]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO')"
+              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado && c.sede == sedeUser" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO')"
                 class="btn btn-sm btn-warning ms-2" id="btn_aplicar_consignaciones_{{i}}"><i class="fa-solid fa-check"></i></button>
             </span>
             <span *appConsignacionesDirective="permisos[4]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO')"
-                class="btn btn-sm btn-danger ms-2" id="btn_aplicar_consignaciones_x{{i}}"  style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+                class="btn btn-sm btn-danger ms-2" id="btn_aplicar_consignaciones_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
             </span>
 
             <!-- DEVOLVER DE COMPROBADAS -->
@@ -151,11 +151,11 @@
 
             <!-- DEVOLVER APLICADAS -->
             <span *appConsignacionesDirective="permisos[4]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="devolver(c.idConsignacion, i, 'DEVUELTA CAJA')"
-                class="btn btn-sm btn-warning ms-2" id="btn_devolver_aplicadas_{{i}}"><i class="fa-solid fa-backward"></i></button>
+              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado && c.sede == sedeUser" (click)="devolver(c.idConsignacion, i, 'DEVUELTA CAJA')"
+                class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_aplicadas_{{i}}"><i class="fa-solid fa-backward"></i></button>
             </span>
             <span *appConsignacionesDirective="permisos[4]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="devolver(c.idConsignacion, i, 'DEVUELTA CAJA')"
+              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarDevolver(c.idConsignacion, i, 'ACTIVAR', 'DEVUELTA CAJA')"
                 class="btn btn-sm btn-danger ms-2" id="btn_devolver_aplicadas_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
             </span>
           </td>
