@@ -284,7 +284,7 @@ export class ConsultasComponent implements OnInit {
         }, (error: any) => {
           Swal.fire('Error', 'Error al Actualizar La Consignación', 'error')
           this.editarCon = false
-          console.log(error);
+          
         }
       )
     }, 2000);
@@ -293,14 +293,14 @@ export class ConsultasComponent implements OnInit {
   getRoles() {
     var roles = this.authService.getRolesP()
 
-    console.log(this.roles);
+    
     var permiso: any = {}
     permiso = roles.permisos.find((pe: any) => pe.permiso.startsWith('CONSULTAR'))
-    console.log(permiso);
+    
     var arrayP = permiso.permiso.split(" ")
     var p = arrayP[1].substring(0, arrayP[1].length - 1)
     this.estadoConsignacion = p
-    console.log(p);
+    
 
     this.getConsignaciones(p)
   }
@@ -327,11 +327,11 @@ export class ConsultasComponent implements OnInit {
           this.con.forEach((c: any) => {
             c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
           })
-          console.log(data);
+          
           
           this.botones = new Array<boolean>(this.con.length).fill(false)
         }, (error:any) => {
-          console.log(error);
+          
         }
       )
     }
@@ -350,10 +350,10 @@ export class ConsultasComponent implements OnInit {
           })
   
           this.botones = new Array<boolean>(this.con.length).fill(false)
-          console.log(this.botones);
-          console.log(data);
+          
+          
         }, (error: any) => {
-          console.log(error);
+          
         }
       )
     }
@@ -365,7 +365,6 @@ export class ConsultasComponent implements OnInit {
   }
 
   public getConsignacionById(id: number) {
-    alert(id)
     this.consultarService.getConsignacionById(id).subscribe(
       (data: any) => {
         this.cuentasPorCobrar.cuentasCobrar = []
@@ -381,9 +380,9 @@ export class ConsultasComponent implements OnInit {
         this.cuentasPorCobrar = data
         this.detalle = data
         this.observacionDto.idConsignacion = data.idConsignacion
-        console.log(data);
+        
       }, (error: any) => {
-        console.log(error);
+        
       }
     )
   }
@@ -393,7 +392,7 @@ export class ConsultasComponent implements OnInit {
       (data: any) => {
         this.plataforma = data
       }, (error: any) => {
-        console.log(error);
+        
       }
     )
   }
@@ -436,7 +435,7 @@ export class ConsultasComponent implements OnInit {
           this.check = false
           this.buscarObli = false
           this.cedula = ''
-          console.log(error);
+          
         }
       )
     }, 2000);
@@ -459,7 +458,7 @@ export class ConsultasComponent implements OnInit {
     var archivo = event.target.files[0];
     this.extraerBase64(archivo).then((file: any) => {
       this.modal.base64 = file.base;
-      console.log(this.modal);
+      
     })
   }
 
@@ -544,10 +543,10 @@ export class ConsultasComponent implements OnInit {
           Swal.fire('Felicidades', 'Observacion Guardada Con Éxito', 'success')
           this.crearObs = false
           this.detalle.observaciones.push(data)
-          console.log(data);
+          
 
         }, (error: any) => {
-          console.log(error);
+          
           this.crearObs = false
         }
       )
@@ -559,7 +558,7 @@ export class ConsultasComponent implements OnInit {
       (data: any) => {
         this.estadoA = data
       }, (error: any) => {
-        console.log(error);
+        
         Swal.fire('Error', 'Error al cargar los estados', 'error')
       }
     )
@@ -574,11 +573,11 @@ export class ConsultasComponent implements OnInit {
     this.consultarService.filter(this.estado, this.fecha, this.sede, this.pages, this.sizes).subscribe(
       (data: any) => {
         this.con = data.content
-        console.log(data.content);
+        
         this.con.forEach((c: any) => {
           c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
         })
-        console.log(this.con);
+        
 
         if (this.con.length <= 0) {
           Swal.fire({
@@ -600,7 +599,7 @@ export class ConsultasComponent implements OnInit {
         }
 
       }, (error: any) => {
-        console.log(error);
+        
       }
     )
   }
@@ -610,7 +609,7 @@ export class ConsultasComponent implements OnInit {
       (data: any) => {
         this.sedes = data
       }, (error: any) => {
-        console.log(error);
+        
       }
     )
   }
@@ -623,10 +622,10 @@ export class ConsultasComponent implements OnInit {
         this.con.forEach((element:any) => {
           element.actualizaciones = element.actualizaciones.filter((a:any)=> a.isCurrent == true)
         });
-        console.log(data);
+        
 
       }, (error: any) => {
-        console.log(error);
+        
       }
     )
   }
@@ -659,7 +658,7 @@ export class ConsultasComponent implements OnInit {
       } else {
         this.cambios = false
       }
-      console.log(this.cambioArray);
+      
     } else {
       this.cambiarEstado.idConsignacion = id
       this.cambiarEstado.estado = estado
@@ -681,7 +680,7 @@ export class ConsultasComponent implements OnInit {
       this.cambiarBotones(position, 'DESACTIVAR', id, estado)
       this.cambios = true
     }
-    console.log(this.cambioArray);
+    
   }
 
   cambiarDevolver(id: number, position: number, accion: string, estado: string) {
@@ -710,7 +709,7 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (accion == 'DESACTIVAR') {
-      alert('DESACTIVAR')
+      
       var boton_observaciones = `<button *ngIf="!botones[i]"
         class="btn btn-danger btn-sm ms-2" id="btn_observaciones_${position}" disabled><i
           class="fa-solid fa-ban"></i></button>`
@@ -730,7 +729,7 @@ export class ConsultasComponent implements OnInit {
         class="btn btn-sm btn-danger ms-2" id="btn_aplicar_consignaciones_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
 
       if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
-        alert('IF 2')
+        
         btn_observaciones.outerHTML = boton_observaciones
         btn_historial.outerHTML = boton_historial
         btn_comprobante.outerHTML = boton_comprobante
@@ -800,9 +799,9 @@ export class ConsultasComponent implements OnInit {
         }
 
         var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
-        alert(idC?.idConsignacion)
+        
         if (idC != null || idC != undefined) {
-          alert('ELIMINAR')
+          
           this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
           if (this.cambioArray.length > 0) {
             this.cambios = true
@@ -888,8 +887,8 @@ export class ConsultasComponent implements OnInit {
       }
     }
     if (accion == 'ACTIVAR') {
-      alert(id)
-      alert(position)
+      
+      
       var boton_observaciones_activo = `<button *ngIf="!botones[i]"
         class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer" id="btn_observaciones_${position}"><i
         class="fa-regular fa-eye"></i></button>`
@@ -964,11 +963,11 @@ export class ConsultasComponent implements OnInit {
 
   validarPermiso(permisos: string): boolean {
     var roles = this.authService.getRolesP()
-    console.log(this.roles);
+    
     var permiso: any = {}
     permiso = roles.permisos.find((pe: any) => pe.permiso.includes(permisos))
     return permiso != null || permiso != undefined
-    console.log(permiso);
+    
   }
 
   devolver(id: number, position: number, estado: string) {
@@ -986,7 +985,7 @@ export class ConsultasComponent implements OnInit {
 
     this.posicionDevolver = position
 
-    console.log(this.cambioArray)
+    
 
   }
 
@@ -998,7 +997,7 @@ export class ConsultasComponent implements OnInit {
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == this.cambiarEstado.idConsignacion)
 
     if (idC != null || idC != undefined) {
-      alert('if 1')
+      
       this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != this.cambiarEstado.idConsignacion)
       this.cambiarDevolver(this.cambiarEstado.idConsignacion, this.posicionDevolver, 'ACTIVAR', this.cambiarEstado.estado)
       if (this.cambioArray.length > 0) {
@@ -1006,9 +1005,9 @@ export class ConsultasComponent implements OnInit {
       } else {
         this.cambios = false
       }
-      console.log(this.cambioArray);
+      
     } else {
-      alert('if 2')
+      
       this.cambiarDevolver(this.cambiarEstado.idConsignacion, this.posicionDevolver, 'DESACTIVAR', this.cambiarEstado.estado)
       this.cambiarEstado.idConsignacion = this.cambiarEstado.idConsignacion
       this.cambiarEstado.estado = this.cambiarEstado.estado
@@ -1029,7 +1028,7 @@ export class ConsultasComponent implements OnInit {
 
       this.cambios = true
     }
-    console.log(this.cambioArray);
+    
   }
 
   cambiarConsignacion() {
@@ -1041,7 +1040,7 @@ export class ConsultasComponent implements OnInit {
         }, 2000);
       }, (error: any) => {
         Swal.fire('Error', 'Error al Realizar El Cambio', 'error')
-        console.log(error);
+        
       }
     )
 

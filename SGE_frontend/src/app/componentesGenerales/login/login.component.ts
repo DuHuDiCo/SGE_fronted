@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import Login from 'src/app/Models/Login';
 
 import { Token } from 'src/app/Models/Token';
+import { OpcionesService } from 'src/app/Services/Opciones/opciones.service';
 
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { JwtRequest } from 'src/app/Types/Login';
@@ -15,15 +16,12 @@ import Swal from 'sweetalert2';
 })
 export class LoginComponent implements OnInit {
 
-
-
-
   jwtRequest: JwtRequest = {
     username: '',
     password: ''
   }
 
-  constructor(private router: Router, private authentication: AuthenticationService) { }
+  constructor(private router: Router, private authentication: AuthenticationService, private opcionesService:OpcionesService) { }
 
   ngOnInit(): void {
 
@@ -52,8 +50,11 @@ export class LoginComponent implements OnInit {
           this.authentication.setRolesLocalStorage(data.roles)
           this.authentication.setSede(data.sede)
 
+          this.opcionesService.setUpdate(data.isUpdateable)
+
           this.router.navigate(['opciones'])
-          console.log(data);
+          
+
           
         },
         (error: any) => {
@@ -64,7 +65,7 @@ export class LoginComponent implements OnInit {
 
 
           })
-          console.log(error);
+          
 
         }
       )

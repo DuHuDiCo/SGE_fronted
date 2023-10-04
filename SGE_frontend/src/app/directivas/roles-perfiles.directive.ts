@@ -38,7 +38,7 @@ export class RolesPerfilesDirective implements OnInit {
       
     }
 
-    console.log(this.rolesString);
+    
     
 
   }

@@ -37,10 +37,10 @@ export class RolesUsuariosGuardarComponent implements OnInit {
     this.userAgService.listarRoles().subscribe(
       (data: any) => {
         this.IterarRol = data;
-        console.log(this.IterarRol)
+        
       },
       (error: any) => {
-        console.log(error);
+        
       }
     )
   }
@@ -74,7 +74,7 @@ export class RolesUsuariosGuardarComponent implements OnInit {
           }
         });
 
-        console.log(newPermisos);
+        
 
 
         if (newPermisos.length == role.permissions.length) {
@@ -133,7 +133,7 @@ export class RolesUsuariosGuardarComponent implements OnInit {
               }
             })
 
-            console.log(rolesNoinclu);
+            
 
             this.usuario.roles.forEach((r: any) => {
 
@@ -201,7 +201,7 @@ export class RolesUsuariosGuardarComponent implements OnInit {
       }
     }
 
-    console.log(this.check);
+    
 
   }
 
@@ -231,7 +231,7 @@ export class RolesUsuariosGuardarComponent implements OnInit {
 
         } else {
           this.selectedPermisos.push(permiso)
-          console.log(this.selectedPermisos);
+          
 
           this.usuario.roles.forEach((r: any) => {
 
@@ -272,7 +272,7 @@ export class RolesUsuariosGuardarComponent implements OnInit {
         });
 
         this.usuario.roles.push(rolDto)
-        console.log(this.selectedPermisos);
+        
         this.check.push(permiso)
 
       }
@@ -281,7 +281,7 @@ export class RolesUsuariosGuardarComponent implements OnInit {
 
 
   guardar() {
-    console.log(this.usuario);
+    
 
 
   }

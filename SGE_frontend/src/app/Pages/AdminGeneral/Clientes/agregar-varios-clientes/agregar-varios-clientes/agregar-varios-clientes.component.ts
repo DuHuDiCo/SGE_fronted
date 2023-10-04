@@ -61,7 +61,7 @@ export class AgregarVariosClientesComponent implements OnInit{
           return
         }
       },(error:any) => {
-        console.log(error);
+        
       }
     )
   }
@@ -74,9 +74,9 @@ export class AgregarVariosClientesComponent implements OnInit{
         setTimeout(() => {
         location.reload()
         }, 2000);
-        console.log(data)
+        
       }, (error:any) => {
-        console.log(error)
+        
         Swal.fire('Error', 'Error al guardar el Cliente', 'error')
       }
     )

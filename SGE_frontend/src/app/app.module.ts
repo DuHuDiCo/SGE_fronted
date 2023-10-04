@@ -89,6 +89,7 @@ import { EstadosComponent } from './Pages/Consignaciones/pages/componentesConsig
 import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/sucursales/sucursales.component';
 import { RolesUsuariosComponent } from './Pages/AdminGeneral/Usuarios/roles-usuarios/roles-usuarios.component';
 import { ConsignacionesDirectiveDirective } from './directivas/DirectivaConsignaciones/consignaciones-directive.directive';
+import { CambioContrasenaComponent } from './componentesGenerales/cambio-contrasena/cambio-contrasena.component';
 
 
 
@@ -184,7 +185,8 @@ import { ConsignacionesDirectiveDirective } from './directivas/DirectivaConsigna
     BancosComponent,
     EstadosComponent,
     SucursalesComponent,
-    ConsignacionesDirectiveDirective
+    ConsignacionesDirectiveDirective,
+    CambioContrasenaComponent,
 
   ],
 

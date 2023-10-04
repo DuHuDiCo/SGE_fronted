@@ -91,9 +91,11 @@
 
           <td class="d-flex align-middle">
             <!-- EDITAR CONSIGNACION -->
-            <button *appConsignacionesDirective="permisos[5]" (click)="getConsignacionById(c.idConsignacion)"
+            <span *appConsignacionesDirective="permisos[5]">
+              <button *ngIf="c.actualizaciones[0].estado.estado != 'APLICADO'" (click)="getConsignacionById(c.idConsignacion)"
               class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar" id="btn_editar_{{ i }}"><i
                 class="fa-solid fa-pen"></i></button>
+            </span>
 
             <!-- VER OBSERVACIONES -->
             <span *appConsignacionesDirective="permisos[13]">

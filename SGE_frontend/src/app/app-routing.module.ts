@@ -64,6 +64,7 @@ import { BancosComponent } from './Pages/Consignaciones/pages/componentesConsign
 import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/sucursales/sucursales.component';
 import { EstadosComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados/estados.component';
 import { RolesUsuariosComponent } from './Pages/AdminGeneral/Usuarios/roles-usuarios/roles-usuarios.component';
+import { CambioContrasenaComponent } from './componentesGenerales/cambio-contrasena/cambio-contrasena.component';
 
 
 
@@ -84,6 +85,11 @@ const routes: Routes = [
   {
     path:'opciones', 
     component:OpcionesComponent,
+    canActivate:[AuthenticationGuard]
+  },
+  {
+    path:'cambioContrasena', 
+    component:CambioContrasenaComponent,
     canActivate:[AuthenticationGuard]
   },
   {

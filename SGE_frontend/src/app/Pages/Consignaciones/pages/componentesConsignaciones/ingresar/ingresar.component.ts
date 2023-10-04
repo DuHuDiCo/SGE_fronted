@@ -108,7 +108,7 @@ export class IngresarComponent implements OnInit {
           
         }, (error:any) => {
           Swal.fire('Error', 'Error al Guardar La Consignación', 'error')
-          console.log(error);
+          
         }
       )
     } else {
@@ -132,11 +132,11 @@ export class IngresarComponent implements OnInit {
           }, 2000);
         }, (error:any) => {
           Swal.fire('Error', 'Error al Guardar La Consignación', 'error')
-          console.log(error);
+          
         }
       )
     }
-    console.log(this.consignacion);
+    
     
     
   }
@@ -158,7 +158,7 @@ export class IngresarComponent implements OnInit {
         this.obligacion = data
         if(this.obligacion.length > 0){
           this.tabla = true
-          console.log(data);
+          
           return
         }
         if(this.obligacion.length <= 0){
@@ -173,7 +173,7 @@ export class IngresarComponent implements OnInit {
       }, (error:any) => {
         Swal.fire('Error', 'Error Al Traer Las Obligaciones', 'error')
         this.cedula = ''
-        console.log(error);
+        
       }
     )
   }
@@ -189,7 +189,7 @@ export class IngresarComponent implements OnInit {
 
     this.extraerBase64(archivo).then((file: any) => {
       this.consignacion.base64 = file.base;
-      console.log(archivo);
+      
     })
   }
 
@@ -230,7 +230,7 @@ export class IngresarComponent implements OnInit {
       (data:any) => {
         this.plataforma = data
       }, (error:any) => {
-        console.log(error);
+        
       }
     )
   }

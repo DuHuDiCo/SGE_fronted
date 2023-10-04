@@ -12,3 +12,10 @@ export type Usuario = {
     fecha_nacimiento: Date,
     roles : RolesUser[]
   }
+
+export type NuevaContraseña = {
+  nombreUsuario:string,
+  contrasenaBase:string,
+  contrasenaActualizada:string,
+
+}
