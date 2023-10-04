@@ -59,7 +59,7 @@ export class SystemRolesComponent implements OnInit {
       this.systemRoles.saveRoles(this.roles).subscribe(
         (data: any) => {
 
-          console.log(data);
+          
           Swal.fire({
             position: 'top-end',
             icon: 'success',
@@ -69,7 +69,7 @@ export class SystemRolesComponent implements OnInit {
           })
           window.location.reload()
         }, (error: any) => {
-          console.log(error);
+          
 
         }
       );
@@ -80,10 +80,10 @@ export class SystemRolesComponent implements OnInit {
     this.systemRoles.getRolesSystem().subscribe(
       (data: any) => {
         this.rolesSaved = data;
-        console.log(data);
+        
 
       }, (error: any) => {
-        console.log(error);
+        
 
       }
     )

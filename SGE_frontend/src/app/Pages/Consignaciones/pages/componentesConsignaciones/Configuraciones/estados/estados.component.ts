@@ -75,7 +75,7 @@ export class EstadosComponent implements OnInit {
         this.spinner = false
         this.estadoA = data
       }, (error:any) => {
-        console.log(error);
+        
         Swal.fire('Error', 'Error al cargar los estados', 'error')
       }
     )
@@ -87,7 +87,7 @@ export class EstadosComponent implements OnInit {
         this.modal.estado = data.estado
         this.modal.idEstado = id
       }, (error:any) => {
-        console.log(error);
+        
       }
     )
   }
@@ -104,7 +104,7 @@ export class EstadosComponent implements OnInit {
       }, (error:any) => {
         Swal.fire('Error', 'Error Al Actualizar el Estado', 'error')
         this.editarEstado = false
-        console.log(error);
+        
       }
     )
   }

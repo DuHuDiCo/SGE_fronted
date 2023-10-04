@@ -54,10 +54,10 @@ export class RolesUsuarioComponent implements OnInit {
     this.userAgService.listarRoles().subscribe(
       (data: any) => {
         this.IterarRol = data;
-        console.log(this.IterarRol)
+        
       },
       (error) => {
-        console.log(error);
+        
       }
     )
   }
@@ -92,7 +92,7 @@ export class RolesUsuarioComponent implements OnInit {
           }
         });
 
-        console.log(newPermisos);
+        
 
 
         if (newPermisos.length == role.permissions.length) {
@@ -151,7 +151,7 @@ export class RolesUsuarioComponent implements OnInit {
               }
             })
 
-            console.log(rolesNoinclu);
+            
 
             this.usuario.roles.forEach((r: any) => {
 
@@ -219,7 +219,7 @@ export class RolesUsuarioComponent implements OnInit {
       }
     }
 
-    console.log(this.check);
+    
 
   }
 
@@ -249,7 +249,7 @@ export class RolesUsuarioComponent implements OnInit {
 
         } else {
           this.selectedPermisos.push(permiso)
-          console.log(this.selectedPermisos);
+          
 
           this.usuario.roles.forEach((r: any) => {
 
@@ -290,7 +290,7 @@ export class RolesUsuarioComponent implements OnInit {
         });
 
         this.usuario.roles.push(rolDto)
-        console.log(this.selectedPermisos);
+        
         this.check.push(permiso)
 
       }
@@ -303,14 +303,14 @@ export class RolesUsuarioComponent implements OnInit {
 
     if (username != null || username != undefined) {
       
-      console.log(this.usuario);
+      
       
       this.userAgService.crearUsuario(this.usuario, username).subscribe(
         (data: any) => {
            Swal.fire('GUARDADO', 'El usuario guardado', 'success');
          },
          (error: any) => {
-           console.log(error);
+           
            Swal.fire('ERROR', 'Error Guardar Usuario', 'error')
         }
        )

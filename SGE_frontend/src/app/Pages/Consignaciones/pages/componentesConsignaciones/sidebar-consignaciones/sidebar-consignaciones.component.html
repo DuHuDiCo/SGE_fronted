@@ -17,7 +17,7 @@
     
             <div class="collapse" id="getting-started-collapse" data-bs-dismiss="offcanvas">
                 <ul class="list-unstyled fw-normal pb-1 small">
-                    <li> <button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/ingresar"><i class="fas fa-pen"></i>&nbsp; Ingresar</button></li>
+                    <li *appConsignacionesDirective="permisos[0]"> <button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/ingresar"><i class="fas fa-pen"></i>&nbsp; Ingresar</button></li>
 
                     <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-consignaciones/consultar"><i class="fas fa-search"></i>
                         &nbsp; Consultar</button></li>
@@ -29,7 +29,7 @@
         </li>
     </ul>
     <hr style="color: white;">
-    <ul class="nav flex-column ">
+    <ul class="nav flex-column" *appConsignacionesDirective="permisos[22]">
 
         <li class="mb-1">
             <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#configuraciones" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
@@ -51,8 +51,8 @@
             </div>
         </li>
     </ul>
-    <hr style="color: white;">
-    <ul class="nav flex-column ">
+    <hr style="color: white;" *appConsignacionesDirective="permisos[22]">
+    <ul class="nav flex-column" *appConsignacionesDirective="permisos[23]">
         <li class="mb-1">
             <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse-i" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
                 Informes
@@ -71,7 +71,7 @@
             </div>
         </li>
     </ul>
-    <hr style="color: white;">
+    <hr style="color: white;" *appConsignacionesDirective="permisos[23]">
     <ul class="nav flex-column ">
         
         <li class="nav-item">

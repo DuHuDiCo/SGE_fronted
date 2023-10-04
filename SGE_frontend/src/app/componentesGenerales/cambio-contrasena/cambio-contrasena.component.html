@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <h3 class="mt-3">Cambia Tú Contraseña</h3>
+                <input [(ngModel)]="contrasena.contrasenaBase" name="contrasenaBase" type="password" class="form-control" placeholder="Contraseña Actual">
+            </div>
+            <div class="mb-3">
+                <input [(ngModel)]="contrasena.contrasenaActualizada" name="contrasenaActualizada" type="password" class="form-control" placeholder="Contraseña Nueva">
+            </div>
+
+            <button (click)="cambiarContrasena()" class="btn btn-guardar">Cambiar</button>
+        </div>
+    </div>
+</div>

@@ -80,10 +80,10 @@ export class RolesUsuariosComponent implements OnInit {
       (data: any) => {
         this.IterarRol = data;
         
-        console.log(this.IterarRol)
+        
       },
       (error) => {
-        console.log(error);
+        
       }
     )
 
@@ -91,7 +91,7 @@ export class RolesUsuariosComponent implements OnInit {
   }
 
   activarRol(rol: number) {
-  alert(rol)
+  
     if (this.selectedRole.includes(rol)) {
       var position = this.selectedRole.indexOf(rol)
       this.selectedRole.splice(position, 1)
@@ -118,7 +118,7 @@ export class RolesUsuariosComponent implements OnInit {
           }
         });
 
-        console.log(newPermisos);
+        
 
         if (newPermisos.length == role.permissions.length) {
           newPermisos.forEach((x: any) => {
@@ -176,7 +176,7 @@ export class RolesUsuariosComponent implements OnInit {
               }
             })
 
-            console.log(rolesNoinclu);
+            
 
             this.usuario.roles.forEach((r: any) => {
 
@@ -244,7 +244,7 @@ export class RolesUsuariosComponent implements OnInit {
       }
     }
 
-    console.log(this.check);
+    
   }
 
   selecionarPermiso(permiso: number, rol: number) {
@@ -273,7 +273,7 @@ export class RolesUsuariosComponent implements OnInit {
 
         } else {
           this.selectedPermisos.push(permiso)
-          console.log(this.selectedPermisos);
+          
 
           this.usuario.roles.forEach((r: any) => {
 
@@ -320,7 +320,7 @@ export class RolesUsuariosComponent implements OnInit {
           });
 
           this.usuario.roles.push(rolDto)
-          console.log(this.selectedPermisos);
+          
           this.check.push(permiso)
         }
 
@@ -342,11 +342,11 @@ export class RolesUsuariosComponent implements OnInit {
           setTimeout(() => {
             this.router.navigate(['/dashboard-admin-general/buscar-usuario'])
           }, 2000);
-          console.log(data);
+          
 
         },
         (error: any) => {
-          console.log(error);
+          
           Swal.fire('ERROR', 'Error Guardar Usuario', 'error')
         }
       )
@@ -383,7 +383,7 @@ export class RolesUsuariosComponent implements OnInit {
 
     this.usuario.roles.push(rolDto)
    
-    console.log(this.usuario.roles);
+    
     
    
 

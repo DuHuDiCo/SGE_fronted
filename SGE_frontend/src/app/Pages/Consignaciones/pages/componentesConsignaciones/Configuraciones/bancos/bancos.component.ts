@@ -71,7 +71,7 @@ export class BancosComponent implements OnInit {
           idTipoPago: 0
         }
       }, (error:any) => {
-        console.log(error);
+        
         Swal.fire('Error', 'Error al Crear el tipo de Pago', 'error')
         this.crearTipoPago = false
         this.datosT = {
@@ -86,7 +86,7 @@ export class BancosComponent implements OnInit {
     this.bancoService.getTipoPago().subscribe(
       (data:any) => {
         this.datosTipoP = data
-        console.log(this.datosTipoP);
+        
       }, (error:any) => {
         Swal.fire('Error', 'Error al Cargar los tipo de Pago', 'error')
       }
@@ -145,7 +145,7 @@ export class BancosComponent implements OnInit {
         this.datosPlatform = data
         this.spinner = false
       }, (error:any) => {
-        console.log(error);
+        
       }
     )
   }
@@ -157,9 +157,9 @@ export class BancosComponent implements OnInit {
         this.modal.bancoDto.nombreBanco = data.bancos.nombreBanco
         this.modal.bancoDto.idBanco = data.bancos.idBancos
         this.modal.bancoDto.idTipoPago = data.bancos.tipoPago[0].idTipoPago
-        console.log(data);
+        
       }, (error:any) => {
-        console.log(error);
+        
       }
     )
   }
@@ -185,7 +185,7 @@ export class BancosComponent implements OnInit {
         Swal.fire('Felicidades', 'El Banco ha sido Actualizado Exitosamente', 'success')
       }, (error:any) => {
         Swal.fire('Error', 'Error Al Editar El Banco', 'error')
-        console.log(error);
+        
       }
     )
   }
