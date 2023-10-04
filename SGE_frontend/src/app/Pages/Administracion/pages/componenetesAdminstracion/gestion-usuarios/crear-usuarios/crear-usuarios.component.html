@@ -41,6 +41,15 @@
         </div>
     </div>
 
+    <div class="col">
+        <label for="select">Seleccione la Sede</label>
+        <div class="selecionar">
+            <select [(ngModel)]="usuarios.sede" name="obtenerSede" class="form-select">
+                <option value="">Seleccione una Sede</option>
+                <option *ngFor="let c of Sede" value="{{c.nombreSede}}">{{c.nombreSede}}</option>
+            </select>
+        </div>
+    </div>
 
     <div class="row align-items-start">
         <div class="col-md-6 col-12">

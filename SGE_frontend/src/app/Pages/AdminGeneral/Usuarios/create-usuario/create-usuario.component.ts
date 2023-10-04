@@ -47,24 +47,24 @@ export class CreateUsuarioComponent implements OnInit {
     celular: "",
     fecha_nacimiento: new Date(),
     sede: "",
-    roles: []
-  }
+    roles: []
+  }
 
   roles: RolesUser = {
     rol: "",
     permisos: []
   }
 
-  Sede: Sede[] = []
+  Sede: Sede[] = []
 
   ngOnInit(): void {
     this.userAgService.listarRoles().subscribe(
       (data: any) => {
         this.IterarRol = data;
-        console.log(this.IterarRol)
+        
       },
       (error: any) => {
-        console.log(error);
+        
       }
     )
 
@@ -115,7 +115,7 @@ export class CreateUsuarioComponent implements OnInit {
     this.userAgService.setUsuario(this.usuarios)
 
     this.router.navigate(['/dashboard-admin-general/roles-usuario'])
-
+    
   }
 
   obtenerSede() {
@@ -126,9 +126,8 @@ export class CreateUsuarioComponent implements OnInit {
       }, (error: any) => {
         console.log(error);
         Swal.fire('Error', 'Error al cargar las Sedes', 'error');
-      }
-    )
-  }
-
+      }
+    )
+  }
 }
 

@@ -46,4 +46,8 @@ export class ConsultarService {
     return this.http.put(`${this.url}/consignacion/changeEstadoOfConsignacionToComprobadas`, cambioEstado)
   }
 
+  listarComprobados(username:string, page:number, size:number){
+    return this.http.get(`${this.url}/consignacion/consignacionesComprobadas?username=${username}&page=${page}&size=${size}`)
+  }
+
 }

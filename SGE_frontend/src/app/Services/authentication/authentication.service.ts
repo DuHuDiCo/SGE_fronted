@@ -66,11 +66,21 @@ export class AuthenticationService {
     }
   }
 
+  public setSede(sede:string){
+    localStorage.setItem("Sede", sede)
+  }
+
+  public getSede(){
+    var sede:string | null = localStorage.getItem("Sede")
+    return sede
+  }
+
 
   public logout():void{
     localStorage.removeItem("Token")
     localStorage.removeItem("Username")
     localStorage.removeItem("Roles")
+    localStorage.removeItem("Sede")
     
   }
 

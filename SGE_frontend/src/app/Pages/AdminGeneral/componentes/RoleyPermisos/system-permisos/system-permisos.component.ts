@@ -36,10 +36,10 @@ export class SystemPermisosComponent implements OnInit {
     this.permissionService.getAllPermissions().subscribe(
       (data: any) => {
         this.permissions = data.content;
-        console.log(data);
+        
 
       }, (error: any) => {
-        console.log(error);
+        
 
       }
     )
@@ -105,10 +105,10 @@ export class SystemPermisosComponent implements OnInit {
       (data: any) => {
         this.rolesSaved = data;
         // this.rolesSaved = this.rolesSaved.filter(r => r.rol != 'Administration')
-        console.log(this.rolesSaved);
+        
 
       }, (error: any) => {
-        console.log(error);
+        
 
       }
     )
@@ -116,8 +116,8 @@ export class SystemPermisosComponent implements OnInit {
 
   guardarPermisos() {
 
-    console.log(this.permisosAdded);
-    console.log(this.roleId);
+    
+    
 
 
     if (this.permisosAdded.length == 0 && this.roleId == 0) {
@@ -138,11 +138,11 @@ export class SystemPermisosComponent implements OnInit {
           showConfirmButton: false,
           timer: 2000
         })
-        console.log(data);
+        
         window.location.reload()
 
       }, (error: any) => {
-        console.log(error);
+        
 
       }
     )

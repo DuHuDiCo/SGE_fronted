@@ -35,10 +35,10 @@ export class GestionUsuariosComponent implements OnInit {
     this.usuariosService.listarUsuarios().subscribe(
       (data: any) => {
         this.usuarios = data;
-        console.log(this.usuarios);
+        
       },
       (error: any) => {
-        console.log(error);
+        
         Swal.fire('ERROR', 'Error al cargar los usuarios', 'error');
       }
     );
@@ -50,10 +50,10 @@ export class GestionUsuariosComponent implements OnInit {
       this.usuariosService.filtrarUsuarios(this.nombre).subscribe(
         (data: any) => {
           this.usuarios.push(data);
-          console.log(this.usuarios);
+          
         },
         (error: any) => {
-          console.log(error);
+          
           Swal.fire('ERROR', 'Error al filtrar los Usuarios', 'error');
         }
       );
@@ -101,7 +101,7 @@ export class GestionUsuariosComponent implements OnInit {
             window.location.reload()
           },
           (error: any) => {
-            console.log(error);
+            
             Swal.fire('ERROR', 'Error al Desactivar el Usuario', 'error');
           }
         );
@@ -147,8 +147,6 @@ export class GestionUsuariosComponent implements OnInit {
             window.location.reload()
           },
           (error: any) => {
-            console.log(error
-            );
             Swal.fire('ERROR', 'Error al Activar el Usuario', 'error')
           }
         )

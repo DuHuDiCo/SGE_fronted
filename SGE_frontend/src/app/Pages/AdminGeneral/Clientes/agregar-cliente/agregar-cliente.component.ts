@@ -134,7 +134,11 @@ export class AgregarClienteComponent implements OnInit {
 
     this.agregarCliente.guardarClientes(this.cliente).subscribe(
       (data: any) => {
-        console.log(data);
+        var depa = this.department.find((d:any) => d.id == this.idDep)
+        if(depa != null){
+          this.cliente.direccion.departamento = depa.name
+        }
+        
         Swal.fire('Guardado', 'Cliente guardado con Exito', 'success');
         this.cliente = {
           nombres: "",
@@ -173,9 +177,9 @@ export class AgregarClienteComponent implements OnInit {
     this.clienteService.listarDepartamentos().subscribe(
       (data: any) => {
         this.department = data
-        console.log(data);
-      }, (error: any) => {
-        console.log(error);
+        
+      }, (error:any) => {
+        
         Swal.fire('Error', 'Error al cargar los departamentos', 'error');
       }
     )
@@ -192,8 +196,8 @@ export class AgregarClienteComponent implements OnInit {
     this.clienteService.listarCiudadByDepartamento(this.idDep).subscribe(
       (data: any) => {
         this.ciudades = data
-      }, (error: any) => {
-        console.log(error);
+      }, (error:any) => {
+        
       }
     )
   }

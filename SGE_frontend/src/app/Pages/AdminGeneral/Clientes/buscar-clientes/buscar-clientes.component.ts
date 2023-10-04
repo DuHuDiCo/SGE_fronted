@@ -79,10 +79,10 @@ export class BuscarClientesComponent implements OnInit {
         this.telefonos = data.telefonos
         this.direcciones = data.direcciones
         this.correos = data.correosElectronicos
-        console.log(this.cliente);
+        
       },
       (error) => {
-        console.log(error);
+        
         Swal.fire('Error', 'Error al cargar los clientes', 'error');
       }
     );
@@ -94,10 +94,10 @@ export class BuscarClientesComponent implements OnInit {
       this.clienteService.filtrarClientes(this.cedula).subscribe(
         (data: any) => {
           this.cliente.push(data);
-          console.log(this.cliente);
+          
         },
         (error) => {
-          console.log(error);
+          
           Swal.fire('Error', 'Error al filtrar los Clientes', 'error');
         }
       );
@@ -127,8 +127,7 @@ export class BuscarClientesComponent implements OnInit {
             Swal.fire('Cliente Eliminado', 'El Cliente ha sido Eliminado Exitosamente', 'success')
           },
           (error) => {
-            console.log(error
-            );
+            
 
             Swal.fire('Error', 'Error al Eliminar el Cliente', 'error')
           }
@@ -179,14 +178,14 @@ export class BuscarClientesComponent implements OnInit {
 
     this.validarCampos()
 
-    console.log(this.datos);
+    
 
     this.clienteService.updateDatos(this.datos).subscribe(
       (data: any) => {
         this.limpiarCampos(boton);
         this.actualizarEnVista(data);
-      }, (error: any) => {
-        console.log(error);
+      }, (error:any) => {
+        
       }
     )
   }
@@ -280,9 +279,9 @@ export class BuscarClientesComponent implements OnInit {
     this.clienteService.listarDepartamentos().subscribe(
       (data: any) => {
         this.department = data
-        console.log(data);
-      }, (error: any) => {
-        console.log(error);
+        
+      }, (error:any) => {
+        
         Swal.fire('Error', 'Error al cargar los departamentos', 'error');
       }
     )
@@ -297,8 +296,8 @@ export class BuscarClientesComponent implements OnInit {
     this.clienteService.listarCiudadByDepartamento(this.idDep).subscribe(
       (data: any) => {
         this.ciudades = data
-      }, (error: any) => {
-        console.log(error);
+      }, (error:any) => {
+        
       }
     )
   }
