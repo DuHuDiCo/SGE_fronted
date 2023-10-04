@@ -51,6 +51,7 @@ export class RolesUsuariosComponent implements OnInit {
     numero_documento: "",
     celular: "",
     fecha_nacimiento: new Date(),
+    sede: "",
     roles: []
   }
 

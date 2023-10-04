@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SedeService } from 'src/app/Services/Consignaciones/Sedes/sede.service';
 import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
 import { Roles, RolesUser } from 'src/app/Types/Roles';
+import { Sede } from 'src/app/Types/Sede';
 import { Usuario } from 'src/app/Types/Usuario';
 import Swal from 'sweetalert2';
 
@@ -12,7 +14,7 @@ import Swal from 'sweetalert2';
 })
 export class CreateUsuarioComponent implements OnInit {
 
-  constructor(private userAgService: UsuarioAgService, private usuarioagService: UsuarioAgService, private router: Router) { }
+  constructor(private userAgService: UsuarioAgService, private usuarioagService: UsuarioAgService, private router: Router, private sede: SedeService) { }
 
   rolePermissionsVisibility: { [role: string]: boolean } = {};
   selectedRolePermissions: { [role: string]: string[] } = {};
@@ -49,13 +51,16 @@ export class CreateUsuarioComponent implements OnInit {
     numero_documento: "",
     celular: "",
     fecha_nacimiento: new Date(),
-    roles: []
-  }
+    sede: "",
+    roles: []
+  }
 
   roles: RolesUser = {
     rol: "",
     permisos: []
   }
+
+  Sede: Sede[] = []
 
   ngOnInit(): void {
     this.userAgService.listarRoles().subscribe(
@@ -67,6 +72,8 @@ export class CreateUsuarioComponent implements OnInit {
         
       }
     )
+
+    this.obtenerSede()
   }
 
   guardarUsuario() {
@@ -109,6 +116,17 @@ export class CreateUsuarioComponent implements OnInit {
 
     this.router.navigate(['/dashboard-admin-general/roles-usuario'])
     
-  
   }
+
+  obtenerSede() {
+    this.sede.getSedes().subscribe(
+      (data: any) => {
+        this.Sede = data
+        console.log(data);
+      }, (error: any) => {
+        console.log(error);
+        Swal.fire('Error', 'Error al cargar las Sedes', 'error');
+      }
+    )
+  }
 }
