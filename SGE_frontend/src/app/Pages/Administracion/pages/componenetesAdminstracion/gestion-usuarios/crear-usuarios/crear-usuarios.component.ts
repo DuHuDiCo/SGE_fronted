@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { SedeService } from 'src/app/Services/Consignaciones/Sedes/sede.service';
 import { GuardarUsuariosAdminService } from 'src/app/Services/guardarUsuariosAdmin/guardar-usuarios-admin.service';
 import { RolesUser } from 'src/app/Types/Roles';
+import { Sede } from 'src/app/Types/Sede';
 import { Usuario } from 'src/app/Types/Usuario';
 import Swal from 'sweetalert2';
 
@@ -11,7 +13,7 @@ import Swal from 'sweetalert2';
 })
 export class CrearUsuariosComponent implements OnInit {
 
-  constructor(private guardarUsuariosAdmin: GuardarUsuariosAdminService) { }
+  constructor(private guardarUsuariosAdmin: GuardarUsuariosAdminService, private sede: SedeService) { }
 
   usuarios: Usuario = {
     username: "",
@@ -22,6 +24,7 @@ export class CrearUsuariosComponent implements OnInit {
     tipo_documento: "",
     numero_documento: "",
     celular: "",
+    sede:"",
     fecha_nacimiento: new Date(),
     roles: []
   }
@@ -30,6 +33,8 @@ export class CrearUsuariosComponent implements OnInit {
     rol: "",
     permisos : []
   }
+
+  Sede: Sede [] = []
 
   guardarUsuario(){
     if(this.usuarios.username.trim() == '' || this.usuarios.username.trim() == null){
@@ -62,6 +67,18 @@ export class CrearUsuariosComponent implements OnInit {
 
     this.guardarUsuariosAdmin.setUsuario(this.usuarios)
   }
+
+  obtenerSede() {
+    this.sede.getSedes().subscribe(
+      (data: any) => {
+        this.Sede = data
+        console.log(data);
+      }, (error: any) => {
+        console.log(error);
+        Swal.fire('Error', 'Error al cargar las Sedes', 'error');
+      }
+    )
+  }
 
   ngOnInit(): void {}
 
