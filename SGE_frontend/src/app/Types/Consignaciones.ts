@@ -341,3 +341,10 @@ export type CambioEstado = {
   username: string,
   observacion: string
 }
+
+export type IsSelected = {
+  idConsignacion: number,
+  username: string,
+  opcion: string,
+  estado: string
+}

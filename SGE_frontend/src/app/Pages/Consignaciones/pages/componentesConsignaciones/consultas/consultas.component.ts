@@ -8,7 +8,7 @@ import { EstadoServiceService } from 'src/app/Services/Consignaciones/Estado/est
 import { IngresarService } from 'src/app/Services/Consignaciones/IngresarConsignaciones/ingresar.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Plataforma } from 'src/app/Types/Banco';
-import { CambioEstado, Con, Consignacion, Obligacion, ObservacionDto } from 'src/app/Types/Consignaciones';
+import { CambioEstado, Con, Consignacion, IsSelected, Obligacion, ObservacionDto } from 'src/app/Types/Consignaciones';
 import { Estado } from 'src/app/Types/Estado';
 import { Sede } from 'src/app/Types/Sede';
 import Swal from 'sweetalert2';
@@ -193,6 +193,12 @@ export class ConsultasComponent implements OnInit {
     username: '',
     observacion: ''
   }
+  isSelected:IsSelected = {
+    idConsignacion: 0,
+    username: '',
+    opcion: '',
+    estado: ''
+  }
 
   cambioArray: CambioEstado[] = []
 
@@ -229,6 +235,7 @@ export class ConsultasComponent implements OnInit {
   clickeado: string = ''
 
   sedeUser:string | null = ''
+  selected!:boolean
 
 
   private proSubscription!: Subscription;
@@ -325,6 +332,32 @@ export class ConsultasComponent implements OnInit {
         (data:any) => {
           this.spinner = false
           this.con = data.content
+
+          this.con.forEach((e:any, index:number) =>  {
+
+            if(e.isSelected){
+              var user = this.authService.getUsername()
+
+            if (user == null || user == undefined) {
+              return
+            }
+              var guardarArray:CambioEstado = {
+                estado: e.isSelecetedEstado,
+                idConsignacion: e.idConsignacion,
+                username: user,
+                observacion: ''
+              }
+
+              this.cambioArray.push(guardarArray) 
+              setTimeout(() => {
+                this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'APLICADO')
+                console.log(this.cambioArray);
+              }, 100);
+              
+
+            }
+          });
+
           this.paginas = new Array(data.totalPages)
           this.last = data.last
           this.first = data.first
@@ -336,6 +369,8 @@ export class ConsultasComponent implements OnInit {
             Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
             return
           }
+          console.log(data);
+          
           
           this.botones = new Array<boolean>(this.con.length).fill(false)
         }, (error:any) => {
@@ -694,6 +729,15 @@ export class ConsultasComponent implements OnInit {
 
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
 
+      this.isSelected.idConsignacion = id
+      this.isSelected.estado = estado
+
+      var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+
     if (idC != null || idC != undefined) {
       this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
       this.cambiarBotones(position, 'ACTIVAR', id, estado)
@@ -702,18 +746,23 @@ export class ConsultasComponent implements OnInit {
       } else {
         this.cambios = false
       }
+
+      this.isSelected.username = user
+
+      this.isSelected.opcion = 'DESELECCIONAR'
+
+      this.enviarIsSelected(this.isSelected)
       
     } else {
       this.cambiarEstado.idConsignacion = id
       this.cambiarEstado.estado = estado
-      var user = this.authService.getUsername()
-
-      if (user == null || user == undefined) {
-        return
-      }
       this.cambiarEstado.username = user
-
       this.cambioArray.push(this.cambiarEstado)
+
+      this.isSelected.username = user
+      this.isSelected.opcion = 'SELECCIONAR'
+      this.enviarIsSelected(this.isSelected)
+
       this.cambiarEstado = {
         estado: '',
         idConsignacion: 0,
@@ -725,6 +774,19 @@ export class ConsultasComponent implements OnInit {
       this.cambios = true
     }
     
+  }
+
+  enviarIsSelected(isSelected:IsSelected){
+    console.log(isSelected);
+    
+    this.consultarService.isSelected(isSelected).subscribe(
+      (data:any) => {
+        this.selected = data.isSelected
+        console.log(this.selected);
+      }, (error:any) => {
+        console.log(error); 
+      }
+    )
   }
 
   //METODO USADO EN EL HTML PARA LLAMAR LAS FUNCIONES DE CAMBIAR LOS BOTONES
@@ -856,6 +918,16 @@ export class ConsultasComponent implements OnInit {
           } else {
             this.cambios = false
           }
+
+          this.isSelected.idConsignacion = id
+
+          this.isSelected.estado = estado
+          
+          this.isSelected.username = this.cambiarEstado.username
+
+          this.isSelected.opcion = 'DESELECCIONAR'
+
+          this.enviarIsSelected(this.isSelected)
         }
 
       }
@@ -911,10 +983,16 @@ export class ConsultasComponent implements OnInit {
       var boton_devolver_aplicadas = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
         class="btn btn-sm btn-danger ms-2" id="btn_devolver_aplicadas_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
 
+      console.log(btn_observaciones);
+      console.log(btn_historial);
+      console.log(btn_comprobante);
+      
+
       if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
         btn_observaciones.outerHTML = boton_observaciones
         btn_historial.outerHTML = boton_historial
         btn_comprobante.outerHTML = boton_comprobante
+        
 
 
         if (this.validarPermiso('APLICAR')) {
@@ -998,7 +1076,6 @@ export class ConsultasComponent implements OnInit {
   devolver(id: number, position: number, estado: string) {
 
     this.cambiarEstado.idConsignacion = id
-
     this.cambiarEstado.estado = estado
 
     var user = this.authService.getUsername()
@@ -1009,8 +1086,6 @@ export class ConsultasComponent implements OnInit {
     this.cambiarEstado.username = user
 
     this.posicionDevolver = position
-
-    
 
   }
 
@@ -1059,8 +1134,12 @@ export class ConsultasComponent implements OnInit {
     }
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == this.cambiarEstado.idConsignacion)
 
+    console.log(idC);
+    
+      this.isSelected.idConsignacion = this.cambiarEstado.idConsignacion
+      this.isSelected.estado = this.cambiarEstado.estado
+
     if (idC != null || idC != undefined) {
-      
       this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != this.cambiarEstado.idConsignacion)
       this.cambiarDevolver(this.cambiarEstado.idConsignacion, this.posicionDevolver, 'ACTIVAR', this.cambiarEstado.estado)
       if (this.cambioArray.length > 0) {
@@ -1082,12 +1161,12 @@ export class ConsultasComponent implements OnInit {
       this.cambiarEstado.username = user
 
       this.cambioArray.push(this.cambiarEstado)
-      this.cambiarEstado = {
-        estado: '',
-        idConsignacion: 0,
-        username: '',
-        observacion: ''
-      }
+
+      this.isSelected.username = this.cambiarEstado.username
+      this.isSelected.opcion = 'SELECCIONAR'
+      this.enviarIsSelected(this.isSelected)
+
+
 
       this.cambios = true
     }

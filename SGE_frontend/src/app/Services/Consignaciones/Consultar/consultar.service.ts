@@ -50,4 +50,8 @@ export class ConsultarService {
     return this.http.get(`${this.url}/consignacion/consignacionesComprobadas?username=${username}&page=${page}&size=${size}`)
   }
 
+  isSelected(selected:any){
+    return this.http.put(`${this.url}/consignacion/isSelectedConsignacion`, selected)
+  }
+
 }
