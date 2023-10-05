@@ -81,6 +81,7 @@ export class AuthenticationService {
     localStorage.removeItem("Username")
     localStorage.removeItem("Roles")
     localStorage.removeItem("Sede")
+    localStorage.removeItem("Is_updateable")
     
   }
 

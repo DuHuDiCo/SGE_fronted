@@ -16,9 +16,11 @@ export class AuthenticationGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.authentication.isLoggedIn()) {
-      if(this.opcionesService.getUpdate()){
+      var update = this.opcionesService.getUpdate()
+      if(update != null && update == true){
         return true;
       }
+      
       this.router.navigate(['cambioContrasena'])
       return false;
     }

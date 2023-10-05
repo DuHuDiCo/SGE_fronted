@@ -198,6 +198,7 @@ export class ConsultasComponent implements OnInit {
 
   //VARIABLES
   cedula: string = ''
+  cedulaEditar: string = ''
   base64: string = ''
   check: boolean = false
   page: number = 0
@@ -215,6 +216,8 @@ export class ConsultasComponent implements OnInit {
   spinner: boolean = true
   filtro: boolean = false
   cambios: boolean = false
+  botonFiltrar:boolean = false
+  botonCambiarConsignacion:boolean = false
 
   estado: string = 'null'
   fecha: any = 'null'
@@ -239,7 +242,7 @@ export class ConsultasComponent implements OnInit {
     this.getSede()
   }
 
-  
+  //VALIDACION DE LOS CAMPOS DE CONSIGNACION PARA EDITAR
   validateNewConsignacion() {
     if (this.modal.numeroRecibo.trim() == '' || this.modal.numeroRecibo.trim() == null) {
       Swal.fire('Error', 'Digite un Número de Recibo', 'error')
@@ -290,6 +293,7 @@ export class ConsultasComponent implements OnInit {
     }, 2000);
   }
 
+  //OBTENER EL ROL Y PERMISO DEL USUARIO
   getRoles() {
     var roles = this.authService.getRolesP()
 
@@ -305,6 +309,7 @@ export class ConsultasComponent implements OnInit {
     this.getConsignaciones(p)
   }
 
+  //TRAER LAS CONSIGNACIONES CON VALIDACIONES SEGUN EL PERMISO
   getConsignaciones(p: string) { 
     this.sedeUser = this.authService.getSede()
 
@@ -327,7 +332,10 @@ export class ConsultasComponent implements OnInit {
           this.con.forEach((c: any) => {
             c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
           })
-          
+          if(this.con.length <= 0){
+            Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+            return
+          }
           
           this.botones = new Array<boolean>(this.con.length).fill(false)
         }, (error:any) => {
@@ -348,8 +356,12 @@ export class ConsultasComponent implements OnInit {
           this.con.forEach((c: any) => {
             c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
           })
-  
           this.botones = new Array<boolean>(this.con.length).fill(false)
+
+          if(this.con.length <= 0){
+            Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+            return
+          }
           
           
         }, (error: any) => {
@@ -364,6 +376,7 @@ export class ConsultasComponent implements OnInit {
     this.base64 = dataURI
   }
 
+  //OBTENER LA CONSIGNACION POR ID (PARA EDITAR Y OTRAS FUNCIONES)
   public getConsignacionById(id: number) {
     this.consultarService.getConsignacionById(id).subscribe(
       (data: any) => {
@@ -387,6 +400,7 @@ export class ConsultasComponent implements OnInit {
     )
   }
 
+  //TRAER TODAS LAS PLATAFORMAS
   getPlataforma() {
     this.bancoService.getBancos().subscribe(
       (data: any) => {
@@ -397,15 +411,17 @@ export class ConsultasComponent implements OnInit {
     )
   }
 
+  //METODO PARA CAMBIAR EL TIPO DE PAGO EN EL INPUT
   cambiarPago(event: any) {
     var valor = event.target.value
     this.modal.idPlataforma = valor
   }
 
+  //BUSCAR UNA OBLIGACION SEGUN LA CEDULA DEL CLIENTE
   getObligacionByCedula() {
 
-    const cedula = this.cedula.trim()
-    if (this.cedula.trim() == '' || isNaN(parseInt(cedula))) {
+    const cedula = this.cedulaEditar.trim()
+    if (cedula.trim() == '' || isNaN(parseInt(cedula))) {
       Swal.fire('Error', 'Debe de Ingresar una Cédula Válida', 'error')
       return
     }
@@ -413,7 +429,7 @@ export class ConsultasComponent implements OnInit {
     this.buscarObli = true
 
     setTimeout(() => {
-      this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
+      this.ingresarService.getObligacionByCedula(this.cedulaEditar).subscribe(
         (data: any) => {
           this.cuentasPorCobrar.cuentasCobrar = data
 
@@ -426,7 +442,7 @@ export class ConsultasComponent implements OnInit {
           if (this.cuentasPorCobrar.cuentasCobrar.length <= 0) {
             Swal.fire('Error', 'Digite Una Cédula Válida', 'error')
             this.buscarObli = false
-            this.cedula = ''
+            this.cedulaEditar = ''
             return
           }
 
@@ -434,7 +450,7 @@ export class ConsultasComponent implements OnInit {
           Swal.fire('Error', 'Error Al Traer Las Obligaciones', 'error')
           this.check = false
           this.buscarObli = false
-          this.cedula = ''
+          this.cedulaEditar = ''
           
         }
       )
@@ -443,6 +459,7 @@ export class ConsultasComponent implements OnInit {
 
   }
 
+  //MARCAR LOS CHECKBOXS
   checkBox(obligacion: string) {
     this.modal.obligaciones = []
     if (this.modal.obligaciones.includes(obligacion)) {
@@ -454,6 +471,7 @@ export class ConsultasComponent implements OnInit {
 
   }
 
+  //OBTENER EL ARCHIVO (EDITAR)
   public obtenerFile(event: any) {
     var archivo = event.target.files[0];
     this.extraerBase64(archivo).then((file: any) => {
@@ -462,6 +480,7 @@ export class ConsultasComponent implements OnInit {
     })
   }
 
+  //CONVERTIRLO A BASE64 (EDITAR)
   public extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
     try {
       const unsafeImg = window.URL.createObjectURL($event);
@@ -484,6 +503,8 @@ export class ConsultasComponent implements OnInit {
     }
   })
 
+  //METODOS PARA LA PAGINACION DESDE EL BACKEND
+  //PAGINA SIGUIENTE
   next() {
     if (!this.last) {
       this.page++
@@ -500,6 +521,7 @@ export class ConsultasComponent implements OnInit {
     }
   }
 
+  //PAGINA ANTERIOR
   back() {
     if (!this.first) {
       this.page--
@@ -516,11 +538,13 @@ export class ConsultasComponent implements OnInit {
     }
   }
 
+  //IR A UNA PAGINA ESPECIFICA
   goToPage(page: number) {
     this.page = page
     this.getRoles()
   }
 
+  //CREAR UNA OBSERVACION A UN CONSIGNACION DESDE EL MODAL VER MÁS
   saveObservacion() {
 
     if (this.observacionDto.detalle.trim() == '' || this.observacionDto.detalle.trim() == null) {
@@ -553,6 +577,7 @@ export class ConsultasComponent implements OnInit {
     }, 2000);
   }
 
+  //TRAER TODOS LOS ESTADOS
   getAllEstado() {
     this.estadoService.getAll().subscribe(
       (data: any) => {
@@ -564,46 +589,61 @@ export class ConsultasComponent implements OnInit {
     )
   }
 
+  //FILTRAR POR SEDE, ESTADO Y/O FECHA
   filter() {
     this.con = []
     if (this.estado == 'null' && this.fecha == 'null' && this.sede == 'null') {
       Swal.fire('Error', 'Debe de Seleccionar Al Menos Un Dato', 'error')
       return
     }
-    this.consultarService.filter(this.estado, this.fecha, this.sede, this.pages, this.sizes).subscribe(
-      (data: any) => {
-        this.con = data.content
-        
-        this.con.forEach((c: any) => {
-          c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
-        })
-        
-
-        if (this.con.length <= 0) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No hay Datos Con Este Filtro',
-            confirmButtonText: 'Ok',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.estado = 'null'
-              this.sede = 'null'
-              this.fecha = 'null'
-              this.filtro = false
-              this.getRoles()
-            }
+    this.botonFiltrar = true
+    this.spinner = true
+    setTimeout(() => {
+      this.consultarService.filter(this.estado, this.fecha, this.sede, this.pages, this.sizes).subscribe(
+        (data: any) => {
+          this.con = data.content
+          this.botonFiltrar = false
+          this.paginas = new Array(data.totalPages)
+          this.last = data.last
+          this.first = data.first
+          this.spinner = false
+          this.con.forEach((c: any) => {
+            c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
           })
-
-          return
+          console.log(data);
+          
+  
+          if (this.con.length <= 0) {
+            this.botonFiltrar = false
+            this.spinner = false
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No hay Datos Con Este Filtro',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.estado = 'null'
+                this.sede = 'null'
+                this.fecha = 'null'
+                this.filtro = false
+                this.getRoles()
+              }
+            })
+            
+            return
+          }
+  
+        }, (error: any) => {
+          this.botonFiltrar = false
+          this.spinner = false
         }
-
-      }, (error: any) => {
-        
-      }
-    )
+      )
+    }, 2000);
+    
   }
 
+  //TRAER TODAS LA SEDES
   getSede() {
     this.consultarService.getAllSede().subscribe(
       (data: any) => {
@@ -614,6 +654,7 @@ export class ConsultasComponent implements OnInit {
     )
   }
 
+  //FILTRAR UNA CONSIGNACION POR CEDULA DEL CLIENTE
   getConsignacionByCedula() {
     this.con = []
     this.consultarService.getConsignacionByCedula(this.cedula).subscribe(
@@ -630,15 +671,16 @@ export class ConsultasComponent implements OnInit {
     )
   }
 
+  //CHANGE PARA DETECTAR UN CAMBIO EN LOS SELECT DEL FILTRO Y OCULTAR EL BOTON DE FILTRADO
   change(event: any) {
     if (this.fecha == '') {
       this.fecha = 'null'
     }
 
     if (this.estado != 'null' || this.fecha != 'null' || this.sede != 'null') {
-      if (this.fecha != "" || this.estado != 'null' || this.sede != 'null') {
+      if (this.fecha != "" || this.estado != 'null' || this.sede != 'null' && this.cambioArray.length > 0) {
         this.filtro = true
-      } else {
+      } if(this.cambioArray.length > 0) {
         this.filtro = false
       }
     } else {
@@ -646,6 +688,8 @@ export class ConsultasComponent implements OnInit {
     }
   }
 
+  //METODO USADO EN EL HTML PARA LLAMAR LAS FUNCIONES DE CAMBIAR LOS BOTONES
+  //SOLO DE COMPROBAR Y APLICAR
   cambiarConsignacionTemporal(id: number, position: number, estado: string) {
 
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
@@ -683,6 +727,8 @@ export class ConsultasComponent implements OnInit {
     
   }
 
+  //METODO USADO EN EL HTML PARA LLAMAR LAS FUNCIONES DE CAMBIAR LOS BOTONES
+  //SOLO DE DEVOLVER CONTABILIDAD Y DEVOLVER CAJA
   cambiarDevolver(id: number, position: number, accion: string, estado: string) {
     var btn_devolver_aplicadas
     var btn_devolver_aplicadas_x
@@ -709,7 +755,9 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (accion == 'DESACTIVAR') {
-      
+      if(this.filtro){
+        this.filtro = false
+      }
       var boton_observaciones = `<button *ngIf="!botones[i]"
         class="btn btn-danger btn-sm ms-2" id="btn_observaciones_${position}" disabled><i
           class="fa-solid fa-ban"></i></button>`
@@ -814,6 +862,9 @@ export class ConsultasComponent implements OnInit {
     }
   }
 
+  //METODO QUE SE LLAMA EN "cambiarConsignacionTemporal" PARA REALIZAR
+  //TODOS LOS CAMBIOS DE BOTONES Y SUS RESPECTIVAS VALIDACIONES
+  //SOLO PARA COMPROBAR Y APLICAR
   cambiarBotones(position: number, accion: string, id: number, estado: string) {
 
     var btn_aplicar_x
@@ -828,7 +879,6 @@ export class ConsultasComponent implements OnInit {
     var btn_devolver_aplicadas = document.getElementById(`btn_devolver_aplicadas_${position}`)
 
 
-
     if (this.validarPermiso('APLICAR')) {
       btn_aplicar = document.getElementById(`btn_aplicar_consignaciones_${position}`)
       btn_aplicar_x = document.getElementById(`btn_aplicar_consignaciones_x${position}`)
@@ -840,6 +890,9 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (accion == 'DESACTIVAR') {
+      if(this.filtro){
+        this.filtro = false
+      }
       var boton_observaciones = `<button *ngIf="!botones[i]"
         class="btn btn-danger btn-sm ms-2" id="btn_observaciones_${position}" disabled><i
           class="fa-solid fa-ban"></i></button>`
@@ -939,37 +992,9 @@ export class ConsultasComponent implements OnInit {
     }
   }
 
-  ponerEventoClick(idConsignacion:number, idElemento:string){
-    var x = document.getElementById(idElemento)
-    x?.addEventListener('click', () => this.getConsignacionById(idConsignacion)); 
-  }
-
-  metodoCambiarTemporal(idElemento:string, idConsignacion:number, position:number, estado:string){
-    var x = document.getElementById(idElemento)
-    x?.addEventListener('click', () => this.cambiarConsignacionTemporal(idConsignacion, position, estado)); 
-  }
-
-  metodoCambiarDevolver(idElemento:string, idConsignacion:number, position:number, estado:string){
-    var x = document.getElementById(idElemento)
-    x?.addEventListener('click', () => this.devolver(idConsignacion, position, estado)); 
-  }
-
-  metodoImagen(idConsignacion:number, idElemento:string){
-    var comprobante = this.con.find((c:any) => c.idConsignacion == idConsignacion)
-    if(comprobante != null || comprobante != undefined){
-      this.base64 = comprobante.comprobantes.dataURI + ',' + comprobante.comprobantes.rutaArchivo
-    }
-  }
-
-  validarPermiso(permisos: string): boolean {
-    var roles = this.authService.getRolesP()
-    
-    var permiso: any = {}
-    permiso = roles.permisos.find((pe: any) => pe.permiso.includes(permisos))
-    return permiso != null || permiso != undefined
-    
-  }
-
+  //METODO QUE SE LLAMA EN "cambiarDevolver" PARA REALIZAR
+  //TODOS LOS CAMBIOS DE BOTONES Y SUS RESPECTIVAS VALIDACIONES
+  //SOLO PARA DEVOLVER CONTABILIDAD Y DEVOLVER CAJA
   devolver(id: number, position: number, estado: string) {
 
     this.cambiarEstado.idConsignacion = id
@@ -989,6 +1014,44 @@ export class ConsultasComponent implements OnInit {
 
   }
 
+  //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK DE TRAER POR ID
+  ponerEventoClick(idConsignacion:number, idElemento:string){
+    var x = document.getElementById(idElemento)
+    x?.addEventListener('click', () => this.getConsignacionById(idConsignacion)); 
+  }
+
+  //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK PARA VOLVER DE NUEVO AL BOTON ORIGINAL
+  metodoCambiarTemporal(idElemento:string, idConsignacion:number, position:number, estado:string){
+    var x = document.getElementById(idElemento)
+    x?.addEventListener('click', () => this.cambiarConsignacionTemporal(idConsignacion, position, estado)); 
+  }
+
+  //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK PARA VOLVER DE NUEVO AL BOTON ORIGINAL
+  metodoCambiarDevolver(idElemento:string, idConsignacion:number, position:number, estado:string){
+    var x = document.getElementById(idElemento)
+    x?.addEventListener('click', () => this.devolver(idConsignacion, position, estado)); 
+  }
+
+  //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK DE MOSTRAR EL COMPROBANTE
+  metodoImagen(idConsignacion:number, idElemento:string){
+    var comprobante = this.con.find((c:any) => c.idConsignacion == idConsignacion)
+    if(comprobante != null || comprobante != undefined){
+      this.base64 = comprobante.comprobantes.dataURI + ',' + comprobante.comprobantes.rutaArchivo
+    }
+  }
+
+  //METODO QUE SE UTILIZA EN ALGUNOS IF PARA EJECUTAR UNA ACCION SEGUN UN PERMISO ESPECIFICO
+  validarPermiso(permisos: string): boolean {
+    var roles = this.authService.getRolesP()
+    
+    var permiso: any = {}
+    permiso = roles.permisos.find((pe: any) => pe.permiso.includes(permisos))
+    return permiso != null || permiso != undefined
+    
+  }
+
+  //METODO PARA AGREGAR UNA DEVOLUCION (CONTABILIDAD O CAJA)
+  //AL ARRAY RESPECTIVO PARA GUARDARLOS SI ES NECESARIO
   agregarDevolucion() {
     if (this.cambiarEstado.observacion.trim() == '' || this.cambiarEstado.observacion.trim() == null) {
       Swal.fire('Error', 'Digite Una Observación', 'error')
@@ -1031,21 +1094,29 @@ export class ConsultasComponent implements OnInit {
     
   }
 
+  //METODO PARA CAMBIAR EL ESTADO DE LA CONSIGNACION
   cambiarConsignacion() {
-    this.consultarService.cambiarEstadoConsignacion(this.cambioArray).subscribe(
-      (data: any) => {
-        Swal.fire('Felicidades', 'Cambio Realizado Con Éxito', 'success')
-        setTimeout(() => {
-          window.location.reload()
-        }, 2000);
-      }, (error: any) => {
-        Swal.fire('Error', 'Error al Realizar El Cambio', 'error')
-        
-      }
-    )
+    this.botonCambiarConsignacion = true
+
+    setTimeout(() => {
+      this.consultarService.cambiarEstadoConsignacion(this.cambioArray).subscribe(
+        (data: any) => {
+          Swal.fire('Felicidades', 'Cambio Realizado Con Éxito', 'success')
+          this.botonCambiarConsignacion = false
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000);
+        }, (error: any) => {
+          Swal.fire('Error', 'Error al Realizar El Cambio', 'error')
+          this.botonCambiarConsignacion = false
+          
+        }
+      )
+    }, 2000);
 
   }
 
+  //METODO PARA CANCELAR TODOS LOS CAMBIOS
   cancelar() {
     this.cambiarEstado = {
       estado: '',
