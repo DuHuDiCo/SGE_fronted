@@ -348,3 +348,8 @@ export type IsSelected = {
   opcion: string,
   estado: string
 }
+
+export type ConRes = {
+  mensaje:string,
+  consigRes: Con[]
+}

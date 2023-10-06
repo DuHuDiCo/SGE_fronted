@@ -101,10 +101,53 @@
         </div>
         <div class="modal-footer">
           <button *ngIf="!crearConsignacion" type="button" class="btn btn-danger" (click)="guardarConObs('NO')" data-bs-dismiss="modal">No</button>
-          <button *ngIf="!crearConsignacion" type="button" class="btn btn-primary" (click)="guardarConObs('SI')">Si</button>
+          <button *ngIf="!crearConsignacion" type="button" class="btn btn-primary" (click)="guardarConObs('SI')" data-bs-dismiss="modal">Si</button>
           <button *ngIf="crearConsignacion" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
             <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
         </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalConfirmar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Consignaciones que Coinciden:</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-danger" role="alert">
+                La Consignación Que estas ingresando Coincide con las Siguientes Consignaciones: 
+              </div>
+
+              <table class="table table-bordered align-middle text-center">
+                <thead class="align-middle">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Número Recibo</th>
+                    <th scope="col">Nombre Cliente</th>
+                    <th scope="col">Fecha Pago</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Sede</th>
+                  </tr>
+                </thead>
+                <tbody class="align-middle">
+                  <tr *ngFor="let c of con.consigRes; let i = index">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <th scope="row">{{ c.numeroRecibo }}</th>
+                    <td>{{ c.cuentasCobrar[0].cliente.nombres }} {{ c.cuentasCobrar[0].cliente.apellidos }}</td>
+                    <td>{{ c.fechaPago | date:'dd/MM/yyyy' }}</td>
+                    <td>$ {{ c.valor | number}}</td>
+                    <td>{{ c.sede }}</td>          
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="confirmarObservacion()">Guardar De Todos Modos</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelarConsignacion()" data-bs-dismiss="modal">Cancelar</button>
         </div>
       </div>
     </div>
