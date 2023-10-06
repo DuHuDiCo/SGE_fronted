@@ -350,7 +350,16 @@ export class ConsultasComponent implements OnInit {
 
               this.cambioArray.push(guardarArray) 
               setTimeout(() => {
-                this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'APLICADO')
+                if(e.isSelecetedEstado.startsWith('DEVUELTA')){
+                  this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
+                } else {
+                  this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
+                }
+                if (this.cambioArray.length > 0) {
+                  this.cambios = true
+                } else {
+                  this.cambios = false
+                }
                 console.log(this.cambioArray);
               }, 100);
               
@@ -384,6 +393,43 @@ export class ConsultasComponent implements OnInit {
         (data: any) => {
           this.spinner = false
           this.con = data.content
+
+          this.con.forEach((e:any, index:number) =>  {
+
+            if(e.isSelected){
+              var user = this.authService.getUsername()
+
+            if (user == null || user == undefined) {
+              return
+            }
+              var guardarArray:CambioEstado = {
+                estado: e.isSelecetedEstado,
+                idConsignacion: e.idConsignacion,
+                username: user,
+                observacion: ''
+              }
+
+              this.cambioArray.push(guardarArray) 
+              setTimeout(() => {
+
+                if(e.isSelecetedEstado.startsWith('DEVUELTA')){
+                  this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
+                } else {
+                  this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
+                }
+
+                if (this.cambioArray.length > 0) {
+                  this.cambios = true
+                } else {
+                  this.cambios = false
+                }
+                console.log(this.cambioArray);
+              }, 100);
+              
+
+            }
+          });
+
           this.paginas = new Array(data.totalPages)
           this.last = data.last
           this.first = data.first
@@ -1197,12 +1243,31 @@ export class ConsultasComponent implements OnInit {
 
   //METODO PARA CANCELAR TODOS LOS CAMBIOS
   cancelar() {
-    this.cambiarEstado = {
-      estado: '',
-      idConsignacion: 0,
-      username: '',
-      observacion: ''
-    }
+    this.cambioArray.forEach((e:any) => {
+      var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+
+      this.isSelected = {
+        idConsignacion: e.idConsignacion,
+        username: user,
+        opcion: 'DESELECCIONAR',
+        estado: e.estado
+      }
+      
+
+      this.consultarService.isSelected(this.isSelected).subscribe(
+        (data:any) => { 
+           
+        }, (error:any) => {
+          console.log(error);
+        }
+      )
+    });
+
+    this.cambioArray = []
 
     Swal.fire('Felicidades', 'Cambios Cancelados Con Éxito', 'success')
 
