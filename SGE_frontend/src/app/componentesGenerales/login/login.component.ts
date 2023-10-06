@@ -51,6 +51,9 @@ export class LoginComponent implements OnInit {
           this.authentication.setSede(data.sede)
 
           this.opcionesService.setUpdate(data.isUpdateable)
+          this.authentication.setFecha(data.ultimaSesion)
+
+          
 
           this.router.navigate(['opciones'])
           

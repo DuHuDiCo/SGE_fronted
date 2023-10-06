@@ -75,6 +75,19 @@ export class AuthenticationService {
     return sede
   }
 
+  public setFecha(fecha:string){
+    localStorage.setItem("Fecha", fecha)
+  }
+
+  public getFecha(){
+    var fecha:string | null = localStorage.getItem("Fecha")
+    if(fecha != null || fecha != undefined){
+      var fechaDate = new Date(fecha)
+      return fechaDate
+    }
+    return null
+  }
+
 
   public logout():void{
     localStorage.removeItem("Token")
