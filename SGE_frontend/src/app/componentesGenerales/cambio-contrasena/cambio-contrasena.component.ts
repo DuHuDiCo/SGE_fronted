@@ -48,7 +48,7 @@ export class CambioContrasenaComponent implements OnInit {
         Swal.fire('Felicidades', 'Su Contraseña ha Sido Actualizada, inicie Sesion de Nuevo', 'success')
         setTimeout(() => {
           this.authService.logout()
-          window.location.reload()
+          this.router.navigate(['login'])
         }, 4000);
       }, (error:any) => {
         Swal.fire('Error', 'Error al Cambiar La Contraseña', 'error')

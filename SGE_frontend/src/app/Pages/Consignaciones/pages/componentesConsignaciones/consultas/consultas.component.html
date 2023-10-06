@@ -40,8 +40,15 @@
           </form>
         </div>
       <div *ngIf="filtro" class="row">
-        <div class="col-md-12">
-          <button class="btn" (click)="filter()" style="background-color: #960010; color: white;">Filtrar</button>
+        <div *ngIf="!botonFiltrar" class="col-md-12">
+          <button class="b btn" (click)="filter()">Filtrar</button>
+        </div>
+        <div *ngIf="botonFiltrar" class="col-md-12">
+          <button type="button" class="btn btn-danger"
+          style="background-color: #960010;border-color: #960010;">
+          Filtrando...
+          <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+        </button>
         </div>
       </div>
     </div>
@@ -55,8 +62,13 @@
     <div *ngIf="cambios" class="row">
       <div class="col-md-12">
         <div class="text-right">
-          <button (click)="cambiarConsignacion()" class="btn btn-primary mb-4">Guardar Cambios</button>
-          <button (click)="cancelar()" class="btn btn-danger ms-2 mb-4">Cancelar</button>
+          <button *ngIf="!botonCambiarConsignacion" (click)="cambiarConsignacion()" class="b btn mb-4">Guardar Cambios</button>
+          <button *ngIf="botonCambiarConsignacion" type="button" class="btn btn-danger mb-4"
+          style="background-color: #960010;border-color: #960010;">
+          Guardando...
+          <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+        </button>
+          <button (click)="cancelar()" class="btn btn-secondary ms-2 mb-4">Cancelar</button>
         </div>
       </div>
     </div>
@@ -126,7 +138,7 @@
             </span>
             <span *appConsignacionesDirective="permisos[3]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO')"
-                class="btn btn-sm btn-danger ms-2" id="btn_comprobar_consignaciones_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+                class="b btn btn-sm ms-2" id="btn_comprobar_consignaciones_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
             </span>
 
             <!-- APLICAR CONSIGNACIONES -->
@@ -136,7 +148,7 @@
             </span>
             <span *appConsignacionesDirective="permisos[4]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO')"
-                class="btn btn-sm btn-danger ms-2" id="btn_aplicar_consignaciones_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+                class="b btn btn-sm ms-2" id="btn_aplicar_consignaciones_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
             </span>
 
             <!-- DEVOLVER DE COMPROBADAS -->
@@ -148,7 +160,7 @@
             <span *appConsignacionesDirective="permisos[3]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
                 (click)="cambiarDevolver(c.idConsignacion, i, 'ACTIVAR', 'DEVUELTA CONTABILIDAD')"
-                class="btn btn-sm btn-danger ms-2" id="btn_devolver_comprobadas_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+                class="b btn btn-sm ms-2" id="btn_devolver_comprobadas_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
             </span>
 
             <!-- DEVOLVER APLICADAS -->
@@ -158,28 +170,29 @@
             </span>
             <span *appConsignacionesDirective="permisos[4]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarDevolver(c.idConsignacion, i, 'ACTIVAR', 'DEVUELTA CAJA')"
-                class="btn btn-sm btn-danger ms-2" id="btn_devolver_aplicadas_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+                class="b btn btn-sm ms-2" id="btn_devolver_aplicadas_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
             </span>
           </td>
 
-                </tr>
-            </tbody>
-        </table>
-        <div class="row justify-content-center">
-          <div class="col-md-3"></div>
-            <div class="col-md-5" >
-                <nav aria-label="...">
-                    <ul class="pagination">
-                      <li class="page-item">
-                        <a class="page-link" (click)="back()" style="cursor: pointer;">Anterior</a>
-                      </li>
-                      <li class="page-item" *ngFor="let p of paginas; let i = index"><a (click)="goToPage(i)" class="page-link" style="cursor: pointer;">{{ i + 1 }}</a></li>
-                      <li class="page-item">
-                        <a class="page-link" (click)="next()" style="cursor: pointer;">Siguiente</a>
-                      </li>
-                    </ul>
-                  </nav>
-            </div>
+        </tr>
+      </tbody>
+    </table>
+    <div class="row justify-content-center">
+      <div class="col-md-3"></div>
+      <div class="col-md-5">
+        <nav aria-label="...">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link b" (click)="back()" style="cursor: pointer;">Anterior</a>
+            </li>
+            <li class="page-item" *ngFor="let p of paginas; let i = index"><a (click)="goToPage(i)" class="page-link b"
+                style="cursor: pointer;">{{ i + 1 }}</a></li>
+            <li class="page-item">
+              <a class="page-link b" (click)="next()" style="cursor: pointer;">Siguiente</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
 </div>
 
@@ -243,18 +256,21 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <h6 class="fw-bold ms-3">Crear Nueva Observación</h6>
-            <form class="row">
-                <div class="col-md-9">
-                  <input [(ngModel)]="observacionDto.detalle" name="detalle" type="text" class="form-control" placeholder="Observación">
-                </div>
-                <div class="col-md-2">
-                  <button *ngIf="!crearObs" (click)="saveObservacion()" type="submit" class="btn btn-success me-2">Crear</button>
-                  <button *ngIf="crearObs" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
-                    <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-                  </button>
-                </div>
-              </form>
+          <h6 class="fw-bold ms-3">Crear Nueva Observación</h6>
+          <form class="row">
+            <div class="col-md-9">
+              <input [(ngModel)]="observacionDto.detalle" name="detalle" type="text" class="form-control"
+                placeholder="Observación">
+            </div>
+            <div class="col-md-2">
+              <button *ngIf="!crearObs" (click)="saveObservacion()" type="submit"
+                class="btn btn-success me-2">Crear</button>
+              <button *ngIf="crearObs" type="button" class="btn btn-danger"
+                style="background-color: #960010;border-color: #960010;">
+                <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+              </button>
+            </div>
+          </form>
 
                 <table class="table table-bordered text-center align-middle mt-3">
                     <thead>
@@ -314,16 +330,19 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="row align-items-center">
             <div class="col-md-10 col-12">
                 <div class="usuario">
-                    <input [(ngModel)]="cedula" name="cedula" type="search" class="input-usuario" placeholder="Cédula Cliente"> 
+                  <input [(ngModel)]="cedula" name="cedula" type="search" class="input-usuario"
+                    placeholder="Cédula Cliente">
                 </div>
-            </div>
-            <div class="col-md-2 col-12">
-                <button *ngIf="!buscarObli" (click)="getObligacionByCedula()" class="btn btn-success btn-lg"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <button *ngIf="buscarObli" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
-                    <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-                  </button> 
-            </div>
-            <div class="mt-2 mb-4">
+              </div>
+              <div class="col-md-2 col-12">
+                <button *ngIf="!buscarObli" (click)="getObligacionByCedula()" class="btn btn-success btn-lg"><i
+                    class="fa-solid fa-magnifying-glass"></i></button>
+                <button *ngIf="buscarObli" type="button" class="btn btn-danger"
+                  style="background-color: #960010;border-color: #960010;">
+                  <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                </button>
+              </div>
+              <div class="mt-2 mb-4">
                 <hr class="border-4">
                 <table class="table table-hover text-center align-middle mt-3">
                     <thead>
@@ -369,16 +388,41 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                       </div>
                 </div>
             </div>
+          </div>
         </div>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-              <button *ngIf="!editarCon" (click)="validateNewConsignacion()" class="btn btn-primary" type="button">Actualizar</button>
-              <button *ngIf="editarCon" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
-                <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-              </button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button *ngIf="!editarCon" (click)="validateNewConsignacion()" class="btn btn-primary"
+            type="button">Actualizar</button>
+          <button *ngIf="editarCon" type="button" class="btn btn-danger"
+            style="background-color: #960010;border-color: #960010;">
+            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+          </button>
 
-          </div>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Observaciones -->
+<div class="modal fade" id="modalObservacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar Observación</h1>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body">
+          <div class="form-floating">
+              <textarea [(ngModel)]="cambiarEstado.observacion" name="observacion" class="form-control" placeholder="Observacion" id="floatingTextarea2" style="height: 100px"></textarea>
+              <label for="floatingTextarea2">Observaciones</label>
+            </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        <button (click)="agregarDevolucion()" data-bs-dismiss="modal" type="button" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
   </div>
   </div>

@@ -12,12 +12,16 @@ export class OpcionesService {
   constructor(private http:HttpClient) { }
 
   setUpdate(update:boolean){
-    this.isUpdate = update	
+    localStorage.setItem("Is_updateable", update.toString())
   }
 
   getUpdate(){
-    return this.isUpdate
-  } 
+    var update = localStorage.getItem("Is_updateable")
+    if(update != null || update != undefined){
+      return JSON.parse(update.toLowerCase())
+    }
+    return null
+  }
 
   changePassowrd(contraseña:NuevaContraseña){
     return this.http.put(`http://192.168.1.171:9000/api/v1/users/changeFirstPassword`, contraseña)

@@ -28,9 +28,6 @@ export class OpcionesComponent implements OnInit {
   constructor(private authService: AuthenticationService, private opcionesService:OpcionesService, private router:Router) { }
 
   ngOnInit(): void {
-    if(!this.opcionesService.getUpdate()){
-      this.router.navigate(['cambioContrasena'])
-    }
   }
 
   logout(): void {
