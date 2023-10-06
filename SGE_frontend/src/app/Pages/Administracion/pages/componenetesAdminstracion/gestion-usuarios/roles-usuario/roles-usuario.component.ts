@@ -302,15 +302,12 @@ export class RolesUsuarioComponent implements OnInit {
     let username = this.authService.getUsername();
 
     if (username != null || username != undefined) {
-      
-      
-      
+        
       this.userAgService.crearUsuario(this.usuario, username).subscribe(
         (data: any) => {
            Swal.fire('GUARDADO', 'El usuario guardado', 'success');
          },
          (error: any) => {
-           
            Swal.fire('ERROR', 'Error Guardar Usuario', 'error')
         }
        )

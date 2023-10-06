@@ -77,6 +77,10 @@ export class CreateUsuarioComponent implements OnInit {
       Swal.fire('Error', 'Debe de ingresar el Username', 'error')
       return
     }
+    if (this.usuarios.fecha_nacimiento instanceof Date || this.usuarios.fecha_nacimiento == null) {
+      Swal.fire('Error', 'Debe ingresar la Fecha', 'error');
+      return;
+    }
     if (this.usuarios.nombres.trim() == '' || this.usuarios.nombres.trim() == null) {
       Swal.fire('Error', 'Debe de ingresar los Nombres', 'error')
       return
@@ -106,10 +110,7 @@ export class CreateUsuarioComponent implements OnInit {
       Swal.fire('Error', 'Debe de ingresar el Celular', 'error')
       return
     }
-    if (this.usuarios.fecha_nacimiento instanceof Date || this.usuarios.fecha_nacimiento == null) {
-      Swal.fire('Error', 'Debe ingresar la Fecha de Nacimiento', 'error');
-      return;
-    }
+
  
 
     this.userAgService.setUsuario(this.usuarios)

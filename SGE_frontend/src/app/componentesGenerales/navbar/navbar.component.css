@@ -21,6 +21,7 @@
 /* .row{
     background: #adb5bd;
 } */
+/*
 .search{
     width: 250px;
     height: 48px;
@@ -35,10 +36,11 @@
     border-radius: 30px;
 
 }
+*/
 
 .input-icon {
-    margin-left: 210px;
-    margin-top: 50px;
+  margin-left: 210px;
+  margin-top: 50px;
 	color: #191919;
 	position: absolute;
 	width: 20px;
