@@ -90,7 +90,6 @@ const routes: Routes = [
   {
     path:'cambioContrasena', 
     component:CambioContrasenaComponent,
-    canActivate:[AuthenticationGuard]
   },
   {
     path: 'cartera', redirectTo:'dashboard-cartera/inicio' , pathMatch:'full' 
