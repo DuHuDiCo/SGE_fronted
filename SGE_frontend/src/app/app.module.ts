@@ -90,6 +90,7 @@ import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesCon
 import { RolesUsuariosComponent } from './Pages/AdminGeneral/Usuarios/roles-usuarios/roles-usuarios.component';
 import { ConsignacionesDirectiveDirective } from './directivas/DirectivaConsignaciones/consignaciones-directive.directive';
 import { CambioContrasenaComponent } from './componentesGenerales/cambio-contrasena/cambio-contrasena.component';
+import { SubirArchivosComponent } from './Pages/Archivos/componentes_archivos/subir-archivos/subir-archivos.component';
 
 
 
@@ -187,6 +188,7 @@ import { CambioContrasenaComponent } from './componentesGenerales/cambio-contras
     SucursalesComponent,
     ConsignacionesDirectiveDirective,
     CambioContrasenaComponent,
+    SubirArchivosComponent,
 
   ],
 

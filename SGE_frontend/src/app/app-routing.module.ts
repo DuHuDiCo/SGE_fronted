@@ -65,6 +65,7 @@ import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesCon
 import { EstadosComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados/estados.component';
 import { RolesUsuariosComponent } from './Pages/AdminGeneral/Usuarios/roles-usuarios/roles-usuarios.component';
 import { CambioContrasenaComponent } from './componentesGenerales/cambio-contrasena/cambio-contrasena.component';
+import { SubirArchivosComponent } from './Pages/Archivos/componentes_archivos/subir-archivos/subir-archivos.component';
 
 
 
@@ -295,6 +296,10 @@ const routes: Routes = [
         path:'archivos-exs',
         component:ArchivosExsComponent
       },
+      {
+        path: 'subir-archivos',
+        component: SubirArchivosComponent
+      }
     ]
   },
 
