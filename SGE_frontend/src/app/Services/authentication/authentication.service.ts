@@ -95,7 +95,7 @@ export class AuthenticationService {
     localStorage.removeItem("Roles")
     localStorage.removeItem("Sede")
     localStorage.removeItem("Is_updateable")
-    
+    localStorage.removeItem("Fecha") 
   }
 
   public isLoggedIn():boolean{
