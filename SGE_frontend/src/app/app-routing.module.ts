@@ -66,6 +66,7 @@ import { EstadosComponent } from './Pages/Consignaciones/pages/componentesConsig
 import { RolesUsuariosComponent } from './Pages/AdminGeneral/Usuarios/roles-usuarios/roles-usuarios.component';
 import { CambioContrasenaComponent } from './componentesGenerales/cambio-contrasena/cambio-contrasena.component';
 import { SubirArchivosComponent } from './Pages/Archivos/componentes_archivos/subir-archivos/subir-archivos.component';
+import { TipoArchivoComponent } from './Pages/Archivos/componentes_archivos/tipo-archivo/tipo-archivo.component';
 
 
 
@@ -299,6 +300,10 @@ const routes: Routes = [
       {
         path: 'subir-archivos',
         component: SubirArchivosComponent
+      },
+      {
+        path: 'tipo-archivo',
+        component: TipoArchivoComponent
       }
     ]
   },
