@@ -80,6 +80,35 @@
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 
+.custom-card {
+    position: relative;
+    border: none;
+    transition: transform 0.3s ease; /* Agregamos una transición para el efecto de previsualización */
+    cursor: pointer; /* Cambiamos el cursor al pasar el mouse para indicar que es interactivo */
+    background-color: #f2f6fc;
+    color: black;
+    border: 1px solid #d8d9dc;
+}
+
+.custom-card .card-image {
+    height: 150px; /* Ajusta la altura deseada para mostrar solo una parte de la imagen */
+    background-size: cover;
+    overflow: hidden; /* Ocultamos cualquier parte de la imagen que se extienda más allá del área designada */
+    margin: 0 8px;
+    margin-top: 8px;
+    background-color: white;
+}
+
+.card-header{
+    border: none;
+}
+
+.custom-card:hover {
+    transform: scale(0.95); /* Reducimos ligeramente el tamaño de la tarjeta en el hover */
+    background-color: rgb(230, 231, 232);
+}
+
+
 .boton{
     display: block;
     object-fit: cover;
