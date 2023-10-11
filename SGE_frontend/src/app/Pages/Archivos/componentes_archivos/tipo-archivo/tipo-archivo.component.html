@@ -36,11 +36,14 @@
                     <th>{{ i + 1 }}</th>
                     <td>{{ t.tipoArchivo }}</td>
                     <td>
-                        <button (click)="getById(t.idTipoArchivo)" data-bs-toggle="modal" data-bs-target="#modalEditar" class="btn btn-sm btn-primary me-2"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button *ngIf="!botonEliminar" (click)="deleteTipoArchivo(t.idTipoArchivo)" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+                        <button (click)="getById(t.idTipoArchivo)" data-bs-toggle="modal" data-bs-target="#modalEditar"
+                            class="btn btn-sm btn-primary me-2"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button *ngIf="!botonEliminar" (click)="deleteTipoArchivo(t.idTipoArchivo)"
+                            class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
                         <button *ngIf="botonEliminar" type="button" class="btn btn-sm btn-danger"
                             style="background-color: #960010;border-color: #960010;">
-                            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                            <span class="spinner-border spinner-border-sm float-right" role="status"
+                                aria-hidden="true"></span>
                         </button>
                     </td>
                 </tr>
@@ -49,28 +52,35 @@
     </div>
     <br>
 </div>
-  
-  <!-- Modal Editar -->
-  <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+<!-- Modal Editar -->
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Tipo De Archivo</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="row align-items-center">
-                <div class="col-md-12 col-12">
-                  <div class="usuario mt-4">
-                    <input [(ngModel)]="modal.tipoArchivo" name="tipoArchivo" type="text" class="input-usuario"
-                      placeholder="Nombre">
-                  </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Tipo De Archivo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row align-items-center">
+                    <div class="col-md-12 col-12">
+                        <div class="usuario mt-4">
+                            <input [(ngModel)]="modal.tipoArchivo" name="tipoArchivo" type="text" class="input-usuario"
+                                placeholder="Nombre">
+                        </div>
+                    </div>    
                 </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button *ngIf="!botonEditar" (click)="update()" type="button" class="btn btn-primary"
+                        style="background-color: #960010; border-color: #960010;">Actualizar</button>
+                    <button *ngIf="botonEditar" type="button" class="btn btn-danger"
+                        style="background-color: #960010;border-color: #960010;">
+                        <span class="spinner-border spinner-border-sm float-right" role="status"
+                            aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button (click)="update()" type="button" class="btn btn-primary" style="background-color: #960010; border-color: #960010;">Actualizar</button>
-        </div>
-      </div>
     </div>
-  </div>

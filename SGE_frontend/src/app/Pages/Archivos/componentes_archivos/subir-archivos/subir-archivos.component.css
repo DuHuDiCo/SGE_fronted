@@ -1,8 +1,8 @@
 .container-t{
     text-align: center;
+    align-items: center;
     position: relative;
     overflow: hidden;
-    margin: 40px auto;
     margin-top: 70px;
     border-radius: 40px;
     background: #dfe2e5;
@@ -51,15 +51,18 @@
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 
-.input-usuario{
+.input-usuario {
     border: none;
     text-align: center;
     outline: none;
     background: none;
     font-size: 15px;
-    margin: 13px 10px;
+    margin: 13px auto; /* Cambia "10px" a "auto" para centrar horizontalmente */
     border-bottom: 10px;
+    max-width: 300px; /* Establece un ancho máximo para hacerlo más pequeño */
+    width: 100%; /* Asegúrate de que el ancho sea del 100% */
 }
+
 
 .file{
     border-radius: 25px;

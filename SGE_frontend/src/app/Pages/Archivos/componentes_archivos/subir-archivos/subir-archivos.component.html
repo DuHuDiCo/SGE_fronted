@@ -5,16 +5,40 @@
 </div>
 
 <div *ngIf="botonCedula" class="container container-t">
-    <div class="col-md-12 col-12" >
-        <h5 class="mt-4">Digite La Cédula Del Cliente</h5>
-        <div class="col-md-12 col-12">
-            <div class="usuario mt-4">
-                <input name="numeroRecibo" type="text" class="input-usuario" placeholder="Número De Documento">
+    <div class="row text-center">
+        <div class="col-md-12 col-12" >
+            <h5 class="mt-4">Digite La Cédula Del Cliente</h5>
+            <div class="col-md-12 col-12">
+                <div class="usuario mt-4">
+                    <input [(ngModel)]="cedula" name="cedula" type="text" class="input-usuario" placeholder="Número De Cédula">
+                </div>
             </div>
+            <div *ngIf="tabla" class="mt-2 mb-4">
+                <hr class="border-4">
+                <table class="table table-hover text-center mt-3">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Valor Obligación</th>
+                        <th scope="col">Fecha Obligación</th>
+                        <th scope="col">Sede</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let o of obligacion" (click)="numeroO(o.numeroObligacion, 'CEDULA')" style="cursor: pointer;">
+                        <td>{{ o.cliente.nombres }} {{ o.cliente.apellidos }}</td>
+                        <td>{{ o.capital }}</td>
+                        <td>{{ o.fechaObligacion | date:'short' }}</td>
+                        <td>{{ o.sede.nombreSede }}</td>
+                      </tr>
+                    </tbody>
+                  </table> 
+            </div>
+            <button *ngIf="!tabla" (click)="getObligacionByCedula()" class="boton">Consultar</button>
+            
         </div>
-        <button (click)="cambiarInputs('CEDULA')" class="boton">Consultar</button>
-        
     </div>
+    
 </div>
 
 <div [style]="{'display': display }" class="container container-t">
@@ -31,32 +55,32 @@
         <div class="col-md-12 col-12">
             <div *ngIf="botonFactura" class = "file">
                 <div class="input-group mb-3">
-                    <input name="base64" type="file" class="form-control" accept=".png, .jpg" max="1048576">
+                    <input (change)="obtenerFile($event, 'FACTURA')" type="file" class="form-control" accept=".png, .jpg" max="1048576">
                   </div>
             </div>
             <div *ngIf="botonCredito" class = "file">
                 <div class="input-group mb-3">
-                    <input name="base64" type="file" class="form-control" accept=".png, .jpg" max="1048576">
+                    <input (change)="obtenerFile($event, 'CREDITO')" type="file" class="form-control" accept=".png, .jpg" max="1048576">
                   </div>
             </div>
             <div *ngIf="botonAutorizacion" class = "file">
                 <div class="input-group mb-3">
-                    <input name="base64" type="file" class="form-control" accept=".png, .jpg" max="1048576">
+                    <input (change)="obtenerFile($event, 'AUTORIZACION')" type="file" class="form-control" accept=".png, .jpg" max="1048576">
                   </div>
             </div>
             <div *ngIf="datosPersonales" class = "file">
                 <div class="input-group mb-3">
-                    <input name="base64" type="file" class="form-control" accept=".png, .jpg" max="1048576">
+                    <input (change)="obtenerFile($event, 'DATOSPERSONALES')" type="file" class="form-control" accept=".png, .jpg" max="1048576">
                   </div>
             </div>
             <div *ngIf="botonCedulaCliente" class = "file">
                 <div class="input-group mb-3">
-                    <input name="base64" type="file" class="form-control" accept=".png, .jpg" max="1048576">
+                    <input (change)="obtenerFile($event, 'CEDULA')" type="file" class="form-control" accept=".png, .jpg" max="1048576">
                   </div>
             </div>
             <div *ngIf="botonPagare" class = "file">
                 <div class="input-group mb-3">
-                    <input name="base64" type="file" class="form-control" accept=".png, .jpg" max="1048576">
+                    <input (change)="obtenerFile($event, 'PAGARE')" type="file" class="form-control" accept=".png, .jpg" max="1048576">
                   </div>
             </div>
         </div>
@@ -69,9 +93,9 @@
     </div>
 </div>
 
-<div class="container">
+<div class="container" *ngIf="botonGuardar">
     <div class="container-t">
-        <h1 *ngIf="botonGuardar" class="text-center titulo">Este Es el Resumen de Los Archivos</h1>
+        <h1 class="text-center titulo">Este Es el Resumen de Los Archivos</h1>
         <div class="row">
             <div class="col-md-12">
                 <div class="table-responsive">
@@ -87,21 +111,24 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>Factura.pdf</td>
-                            <td>Solicitud.pdf</td>
-                            <td>autorizacion.pdf</td>
-                            <td>tratamiento.pdf</td>
-                            <td>cedula.pdf</td>
-                            <td>pagare.pdf</td>
-                          </tr>
-                        </tbody>
+                            <ng-container *ngFor="let a of nombresArchivos; let i = index">
+                              <tr *ngIf="i === 0">
+                                <td>{{ nombresArchivos[i] }}</td>
+                                <td>{{ nombresArchivos[i+1] }}</td>
+                                <td>{{ nombresArchivos[i+2] }}</td>
+                                <td>{{ nombresArchivos[i+3] }}</td>
+                                <td>{{ nombresArchivos[i+4] }}</td>
+                                <td>{{ nombresArchivos[i+5] }}</td>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                          
                       </table>
                 </div>
             </div>
         </div>
         
-        <button *ngIf="botonGuardar" class="boton">Guardar</button>
+        <button (click)="save()" class="boton">Guardar</button>
 
     </div>
     
