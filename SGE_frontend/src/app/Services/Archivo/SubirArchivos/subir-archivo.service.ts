@@ -14,4 +14,8 @@ export class SubirArchivoService {
   save(archivo:Archivo){
     return this.http.post(`${this.url}/archivo/saveArchivo`, archivo)
   }
+
+  filter(cedula:string){
+    return this.http.get(`${this.url}/archivo/getArchivosByCedula(${cedula}`)
+  }
 }
