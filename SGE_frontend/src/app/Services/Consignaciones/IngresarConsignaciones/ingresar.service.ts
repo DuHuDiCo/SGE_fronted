@@ -20,6 +20,10 @@ export class IngresarService {
     return this.http.post(`${this.url2}/consignacion/save`, consignacion)
   }
 
+  confirmarConsignacion(recibo:string, fechaPago:Date, valor:number, username:string){
+    return this.http.get(`${this.url2}/consignacion/confirmarConsignacion?recibo=${recibo}&fechaPago=${fechaPago}&valor=${valor}&username=${username}`)
+  }
+
 
 
 }

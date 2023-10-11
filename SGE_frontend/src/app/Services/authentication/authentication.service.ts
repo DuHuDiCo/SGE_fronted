@@ -75,6 +75,19 @@ export class AuthenticationService {
     return sede
   }
 
+  public setFecha(fecha:string){
+    localStorage.setItem("Fecha", fecha)
+  }
+
+  public getFecha(){
+    var fecha:string | null = localStorage.getItem("Fecha")
+    if(fecha != null || fecha != undefined){
+      var fechaDate = new Date(fecha)
+      return fechaDate
+    }
+    return null
+  }
+
 
   public logout():void{
     localStorage.removeItem("Token")
@@ -82,7 +95,7 @@ export class AuthenticationService {
     localStorage.removeItem("Roles")
     localStorage.removeItem("Sede")
     localStorage.removeItem("Is_updateable")
-    
+    localStorage.removeItem("Fecha") 
   }
 
   public isLoggedIn():boolean{
