@@ -83,31 +83,45 @@
 .custom-card {
     position: relative;
     border: none;
-    transition: transform 0.3s ease; /* Agregamos una transición para el efecto de previsualización */
-    cursor: pointer; /* Cambiamos el cursor al pasar el mouse para indicar que es interactivo */
+    transition: transform 0.3s ease;
+    cursor: pointer;
     background-color: #f2f6fc;
     color: black;
     border: 1px solid #d8d9dc;
 }
 
 .custom-card .card-image {
-    height: 150px; /* Ajusta la altura deseada para mostrar solo una parte de la imagen */
+    height: 150px;
     background-size: cover;
-    overflow: hidden; /* Ocultamos cualquier parte de la imagen que se extienda más allá del área designada */
+    overflow: hidden;
     margin: 0 8px;
     margin-top: 8px;
     background-color: white;
     background-position: center;
 }
 
-.card-header{
+.card-header {
     border: none;
 }
 
+.card-buttons {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none; /* Ocultar los botones inicialmente */
+    z-index: 1; /* Añadir z-index para que los botones estén en un nivel superior */
+}
+
+.custom-card:hover .card-buttons {
+    display: block; /* Mostrar los botones en hover */
+}
+
 .custom-card:hover {
-    transform: scale(0.95); /* Reducimos ligeramente el tamaño de la tarjeta en el hover */
+    transform: scale(0.95);
     background-color: rgb(230, 231, 232);
 }
+
 
 
 .boton{

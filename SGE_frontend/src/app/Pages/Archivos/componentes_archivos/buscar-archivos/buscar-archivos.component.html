@@ -45,20 +45,27 @@
 
 
 <div *ngIf="cards" class="container">
-    <div class="row">
-        <div (click)="pdf(a.dataUir + ',' + a.ruta)" *ngFor="let a of archivos; let i = index" class="col-md-4">
-            <div class="card custom-card text-center mb-3" data-bs-toggle="modal" data-bs-target="#modalImagen" style="max-width: 18rem;">
-                <div style="margin-top: 15px;">{{ a.nombreOriginal }}</div>
-                <div class="card-image" [style.background-image]="'url(' + dataUri + ',' + a.rutaMiniatura + ')'"></div>
-                <div class="card-body">
-                    <h5 class="card-text">{{ a.tipoArchivo.tipoArchivo }}</h5>
-                    <p class="card-text">{{ obligacion[obligacion.length-1].cliente.nombres }} {{ obligacion[obligacion.length-1].cliente.apellidos }}</p>
-                    <p class="card-text">{{ obligacion[obligacion.length-1].numeroObligacion }}</p>
-                </div>
-            </div>
+  <div class="row">
+    <div (click)="pdf(a.dataUir + ',' + a.ruta)" *ngFor="let a of archivos; let i = index" class="col-md-4">
+      <div class="custom-card text-center mb-3">
+        <div class="fw-bold" style="margin-top: 15px;">{{ a.nombreOriginal }}</div>
+        <div class="card-image" [style.background-image]="'url(' + dataUri + ',' + a.rutaMiniatura + ')'"></div>
+        <div class="card-body">
+          <p class="card-text fw-bold">{{ a.tipoArchivo.tipoArchivo }}</p>
+          <p class="card-text">{{ obligacion[obligacion.length-1].cliente.nombres }} {{ obligacion[obligacion.length-1].cliente.apellidos }}</p>
+          <p class="card-text">{{ obligacion[obligacion.length-1].numeroObligacion }}</p>
         </div>
+      </div>
+      <div class="button-container">
+        <button (click)="editar()" class="btn btn-primary me-2"><i class="fa-solid fa-pen-to-square"></i></button>
+        <button (click)="eliminar()" class="btn btn-danger" style="background-color: #960010; border-color: #960010;"><i class="fa-solid fa-trash"></i></button>
+      </div>
     </div>
+  </div>
 </div>
+
+
+
 
   
   <!-- Modal Imagen -->

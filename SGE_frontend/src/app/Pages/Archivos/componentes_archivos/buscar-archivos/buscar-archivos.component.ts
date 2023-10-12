@@ -86,5 +86,13 @@ export class BuscarArchivosComponent implements OnInit {
     embed.src = base64;
   }
 
+  editar(){
+    alert('Editar')
+  }
+
+  eliminar(){
+    alert('Eliminar')
+  }
+
 
 }
