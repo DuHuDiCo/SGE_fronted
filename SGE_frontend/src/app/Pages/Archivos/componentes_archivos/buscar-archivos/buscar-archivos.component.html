@@ -46,10 +46,10 @@
 
 <div *ngIf="cards" class="container">
     <div class="row">
-        <div *ngFor="let a of archivos; let i = index" class="col-md-4">
+        <div (click)="pdf(a.dataUir + ',' + a.ruta)" *ngFor="let a of archivos; let i = index" class="col-md-4">
             <div class="card custom-card text-center mb-3" data-bs-toggle="modal" data-bs-target="#modalImagen" style="max-width: 18rem;">
-                <div style="margin-top: 15px;">{{ a.nombreArchivo }}</div>
-                <div class="card-image" style="background-image: url('../../../../../assets/logo-Principal.png'); background-position: center;"></div>
+                <div style="margin-top: 15px;">{{ a.nombreOriginal }}</div>
+                <div class="card-image" [style.background-image]="'url(' + dataUri + ',' + a.rutaMiniatura + ')'"></div>
                 <div class="card-body">
                     <h5 class="card-text">{{ a.tipoArchivo.tipoArchivo }}</h5>
                     <p class="card-text">{{ obligacion[obligacion.length-1].cliente.nombres }} {{ obligacion[obligacion.length-1].cliente.apellidos }}</p>
@@ -66,15 +66,14 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Archivo</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          ...
+          <embed type="application/pdf" #pdfEmbed width="1100px" height="1000px">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Understood</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>

@@ -41,7 +41,8 @@ export class SubirArchivosComponent implements OnInit {
 
   base64: Base64 = {
     base46: '',
-    tipoArchivo: ''
+    tipoArchivo: '',
+    nombreArchivo: ''
   }
 
 
@@ -243,10 +244,12 @@ export class SubirArchivosComponent implements OnInit {
       this.nombresArchivos.push(archivo.name)
       this.base64.base46 = file.base;
       this.base64.tipoArchivo = tipoArchivo
+      this.base64.nombreArchivo = archivo.name
       this.archivo.base64.push(this.base64)
       this.base64 = {
         base46: '',
-        tipoArchivo: ''
+        tipoArchivo: '',
+        nombreArchivo: ''
       }
       console.log(this.archivo);
       console.log(this.nombresArchivos);

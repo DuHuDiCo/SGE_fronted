@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SubirArchivoService } from 'src/app/Services/Archivo/SubirArchivos/subir-archivo.service';
 import { Obligacion } from 'src/app/Types/Consignaciones';
 import Swal from 'sweetalert2';
@@ -11,6 +11,9 @@ import Swal from 'sweetalert2';
 export class BuscarArchivosComponent implements OnInit {
 
   cedula:string = ''
+  url:string = ''
+  dataUri:string = 'data:image/jpg;base64'
+  base64Pdf:string = ''
   cards:boolean = false
   tabla:boolean = false
   filtro:boolean = false
@@ -21,6 +24,8 @@ export class BuscarArchivosComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
 
   filter(){
     if(this.cedula.trim() == '' || this.cedula.trim() == null){
@@ -45,11 +50,11 @@ export class BuscarArchivosComponent implements OnInit {
           this.cedula = ''
             Swal.fire({
               icon: 'info',
-              title: 'Estos Son Los Archivos Encontrados',
+              title: 'Estas Son Las Obligaciones Encontradas',
               text: 'Elija Una Obligación',
               timer: 2500
             })
-          console.log(this.obligacion);
+          console.log(this.datos);
         }, (error:any) => {
           Swal.fire({
             icon: 'error',
@@ -76,6 +81,10 @@ export class BuscarArchivosComponent implements OnInit {
     this.tabla = false
   }
 
+  pdf(base64:string){
+    const embed = this.pdfEmbed.nativeElement;
+    embed.src = base64;
+  }
 
 
 }

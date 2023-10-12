@@ -288,7 +288,7 @@ const routes: Routes = [
     ]
   },
 
-  {path: 'Archivos', redirectTo:'dashboard-archivos' , pathMatch:'full' },
+  {path: 'Archivos', redirectTo:'dashboard-archivos/archivos-exs' , pathMatch:'full' },
   {
     path:"dashboard-archivos",
     component:DashboardArchivosComponent,
