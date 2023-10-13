@@ -683,6 +683,7 @@ export class ConsultasComponent implements OnInit {
       this.consultarService.filter(this.estado, this.fecha, this.sede, this.pages, this.sizes).subscribe(
         (data: any) => {
           this.con = data.content
+          this.botones = new Array<boolean>(this.con.length).fill(false)
           this.botonFiltrar = false
           this.paginas = new Array(data.totalPages)
           this.last = data.last
