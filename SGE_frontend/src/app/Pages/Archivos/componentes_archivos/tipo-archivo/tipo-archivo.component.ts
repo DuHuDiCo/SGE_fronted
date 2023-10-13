@@ -24,6 +24,8 @@ export class TipoArchivoComponent implements OnInit {
 
   botonGuardarTipo:boolean = false
   botonEliminar:boolean = false
+  botonEditar:boolean = false
+  cedula:string = ''
 
   constructor(private tipoArchivoService:TipoArchivoService) { }
 
@@ -121,15 +123,22 @@ export class TipoArchivoComponent implements OnInit {
       Swal.fire('Error', 'Digite El nombre Del Tipo De Archivo', 'error')
       return
     }
-
-    this.tipoArchivoService.update(this.modal).subscribe(
-      (data:any) => {
-        Swal.fire('Felicidades', 'El Tipo De Archivo Ha Sido Actualizado', 'success')
-      }, (error:any) =>{
-        Swal.fire('Error', 'Error al Actualizar el Tipo de Archivo', 'error')
-        console.log(error);
-      }
-    )
+    this.botonEditar = true
+    setTimeout(() => {
+      this.tipoArchivoService.update(this.modal).subscribe(
+        (data:any) => {
+          Swal.fire('Felicidades', 'El Tipo De Archivo Ha Sido Actualizado', 'success')
+          this.botonEditar = false
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000);
+        }, (error:any) =>{
+          Swal.fire('Error', 'Error al Actualizar el Tipo de Archivo', 'error')
+          this.botonEditar = false
+          console.log(error);
+        }
+      )
+    }, 2000);
   }
 
 }

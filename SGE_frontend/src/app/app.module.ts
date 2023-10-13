@@ -92,6 +92,7 @@ import { ConsignacionesDirectiveDirective } from './directivas/DirectivaConsigna
 import { CambioContrasenaComponent } from './componentesGenerales/cambio-contrasena/cambio-contrasena.component';
 import { SubirArchivosComponent } from './Pages/Archivos/componentes_archivos/subir-archivos/subir-archivos.component';
 import { TipoArchivoComponent } from './Pages/Archivos/componentes_archivos/tipo-archivo/tipo-archivo.component';
+import { BuscarArchivosComponent } from './Pages/Archivos/componentes_archivos/buscar-archivos/buscar-archivos.component';
 
 
 
@@ -191,6 +192,7 @@ import { TipoArchivoComponent } from './Pages/Archivos/componentes_archivos/tipo
     CambioContrasenaComponent,
     SubirArchivosComponent,
     TipoArchivoComponent,
+    BuscarArchivosComponent,
 
   ],
 

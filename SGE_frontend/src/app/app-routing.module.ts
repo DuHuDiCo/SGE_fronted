@@ -67,6 +67,7 @@ import { RolesUsuariosComponent } from './Pages/AdminGeneral/Usuarios/roles-usua
 import { CambioContrasenaComponent } from './componentesGenerales/cambio-contrasena/cambio-contrasena.component';
 import { SubirArchivosComponent } from './Pages/Archivos/componentes_archivos/subir-archivos/subir-archivos.component';
 import { TipoArchivoComponent } from './Pages/Archivos/componentes_archivos/tipo-archivo/tipo-archivo.component';
+import { BuscarArchivosComponent } from './Pages/Archivos/componentes_archivos/buscar-archivos/buscar-archivos.component';
 
 
 
@@ -287,7 +288,7 @@ const routes: Routes = [
     ]
   },
 
-  {path: 'Archivos', redirectTo:'dashboard-archivos' , pathMatch:'full' },
+  {path: 'Archivos', redirectTo:'dashboard-archivos/archivos-exs' , pathMatch:'full' },
   {
     path:"dashboard-archivos",
     component:DashboardArchivosComponent,
@@ -304,6 +305,10 @@ const routes: Routes = [
       {
         path: 'tipo-archivo',
         component: TipoArchivoComponent
+      },
+      {
+        path: 'buscar-archivos',
+        component: BuscarArchivosComponent
       }
     ]
   },

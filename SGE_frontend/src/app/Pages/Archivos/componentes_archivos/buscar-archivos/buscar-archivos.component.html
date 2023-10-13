@@ -1,0 +1,87 @@
+<div *ngIf="!cards" class="container container-t">
+    <div class="row text-center">
+        <div class="col-md-12 col-12">
+            <h5 class="mt-4">Digite La Cédula Del Cliente</h5>
+            <div class="col-md-12 col-12">
+                <div class="usuario mt-4">
+                    <input [(ngModel)]="cedula" name="cedula" type="text" class="input-usuario"
+                        placeholder="Número De Cédula">
+                </div>
+            </div>
+            <button *ngIf="!filtro" (click)="filter()" class="boton">Buscar</button>
+            <button *ngIf="filtro" type="button" class="boton mb-4"
+                style="background-color: #960010;border-color: #960010;">
+                <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="tabla" class="container">
+    <div class="container-t">
+        <div class="mt-2 mb-4">
+            <hr class="border-4">
+            <table class="table table-responsive table-bordered table-hover text-center mt-3">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Valor Obligación</th>
+                    <th scope="col">Fecha Obligación</th>
+                    <th scope="col">Sede</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let o of obligacion; let i = index" (click)="llenarCards(i)" style="cursor: pointer;">
+                    <td>{{ o.cliente.nombres }} {{ o.cliente.apellidos }}</td>
+                    <td>{{ o.capital }}</td>
+                    <td>{{ o.fechaObligacion | date:'short' }}</td>
+                    <td>{{ o.sede.nombreSede }}</td>
+                  </tr>
+                </tbody>
+              </table> 
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="cards" class="container">
+  <div class="row">
+    <div (click)="pdf(a.dataUir + ',' + a.ruta)" *ngFor="let a of archivos; let i = index" class="col-md-4 c">
+      <div class="custom-card text-center mb-3" data-bs-toggle="modal" data-bs-target="#modalImagen">
+        <div class="fw-bold" style="margin-top: 15px;">{{ a.nombreOriginal }}</div>
+        <div class="card-image" [style.background-image]="'url(' + dataUri + ',' + a.rutaMiniatura + ')'"></div>
+        <div class="card-body">
+          <p class="card-text fw-bold">{{ a.tipoArchivo.tipoArchivo }}</p>
+          <p class="card-text">{{ obligacion[obligacion.length-1].cliente.nombres }} {{ obligacion[obligacion.length-1].cliente.apellidos }}</p>
+          <p class="card-text">{{ obligacion[obligacion.length-1].numeroObligacion }}</p>
+        </div>
+      </div>
+      <div class="footer mb-3">
+        <div class="button-container mb-3">
+          <button (click)="editar()" class="btn btn-primary me-2 mt-3"><i class="fa-solid fa-pen-to-square"></i></button>
+          <button (click)="eliminar(a.idArchivo)" class="btn btn-danger mt-3" style="background-color: #960010; border-color: #960010;"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+  <!-- Modal Imagen -->
+  <div class="modal fade" id="modalImagen" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Archivo</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <embed type="application/pdf" #pdfEmbed width="1100px" height="1000px">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
