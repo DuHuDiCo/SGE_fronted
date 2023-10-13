@@ -100,27 +100,38 @@
     background-position: center;
 }
 
-.card-header {
-    border: none;
+.footer {
+    display: none;
+    margin-top: -26px;
+    text-align: center; /* Alinea el contenido al centro si es necesario */
+    border: 1px solid #d8d9dc;
+    border-top: none;
 }
 
-.card-buttons {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: none; /* Ocultar los botones inicialmente */
-    z-index: 1; /* Añadir z-index para que los botones estén en un nivel superior */
-}
-
-.custom-card:hover .card-buttons {
-    display: block; /* Mostrar los botones en hover */
-}
-
-.custom-card:hover {
+.c:hover .footer {
+    display: block; /* Muestra el footer al hacer hover en el div con clase "c" */
     transform: scale(0.95);
     background-color: rgb(230, 231, 232);
 }
+
+.c:hover .custom-card {
+    transform: scale(0.95);
+    background-color: rgb(230, 231, 232);
+    border-bottom: none;
+}
+
+.footer .button-container {
+    display: none; /* Oculta los botones inicialmente */
+}
+
+.c:hover .footer .button-container {
+    display: block; /* Muestra los botones en hover en el div con clase "c" */
+}
+
+
+
+
+  
 
 
 

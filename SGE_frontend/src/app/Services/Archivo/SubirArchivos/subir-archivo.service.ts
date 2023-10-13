@@ -18,4 +18,8 @@ export class SubirArchivoService {
   filter(cedula:string){
     return this.http.get(`${this.url}/archivo/getArchivosByCedula(${cedula}`)
   }
+
+  delete(id:number){
+    return this.http.delete(`${this.url}/archivo/deleteArchivo?id=${id}`)
+  }
 }

@@ -90,9 +90,36 @@ export class BuscarArchivosComponent implements OnInit {
     alert('Editar')
   }
 
-  eliminar(){
-    alert('Eliminar')
-  }
+  eliminar(id:number){
+    Swal.fire({
+      title: 'Eliminar El Tipo De Archivo',
+      text: '¿Estas seguro de El Tipo De Archivo?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+          setTimeout(() => {
+            this.buscarService.delete(id).subscribe(
+              (data: any) => {
+                this.archivos = this.archivos.filter((archivos:any) => archivos.idArchivo != archivos);
+                Swal.fire('Tipo De Archivo Eliminado', 'El Tipo De Archivo ha sido Eliminado Exitosamente', 'success')
+                setTimeout(() => {
+                  window.location.reload()
+                }, 2000);
+              },
+              (error:any) => {
+                Swal.fire('Error', 'Error al Eliminar El Tipo de Archivo', 'error')
+                console.log(error);
+              }
+            )
+          }, 2000);
+        }
+    })    
+}
 
 
 }
