@@ -93,6 +93,8 @@ import { CambioContrasenaComponent } from './componentesGenerales/cambio-contras
 import { SubirArchivosComponent } from './Pages/Archivos/componentes_archivos/subir-archivos/subir-archivos.component';
 import { TipoArchivoComponent } from './Pages/Archivos/componentes_archivos/tipo-archivo/tipo-archivo.component';
 import { BuscarArchivosComponent } from './Pages/Archivos/componentes_archivos/buscar-archivos/buscar-archivos.component';
+import { ConsignacionesListasComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/consignaciones-listas/consignaciones-listas.component';
+
 
 
 
@@ -193,6 +195,7 @@ import { BuscarArchivosComponent } from './Pages/Archivos/componentes_archivos/b
     SubirArchivosComponent,
     TipoArchivoComponent,
     BuscarArchivosComponent,
+    ConsignacionesListasComponent,
 
   ],
 
