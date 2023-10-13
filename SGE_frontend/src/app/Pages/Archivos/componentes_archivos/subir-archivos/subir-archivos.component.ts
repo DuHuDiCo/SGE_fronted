@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SubirArchivoService } from 'src/app/Services/Archivo/SubirArchivos/subir-archivo.service';
+import { TipoArchivoService } from 'src/app/Services/Archivo/TipoArchivo/tipo-archivo.service';
 import { IngresarService } from 'src/app/Services/Consignaciones/IngresarConsignaciones/ingresar.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Archivo, Base64 } from 'src/app/Types/Archivo/Archivos';
+import { TipoArchivo } from 'src/app/Types/Archivo/TipoArchivo';
 import { Obligacion } from 'src/app/Types/Consignaciones';
 import Swal from 'sweetalert2';
 
@@ -21,12 +23,13 @@ export class SubirArchivosComponent implements OnInit {
   botonAutorizacion: boolean = false
   datosPersonales: boolean = false
   botonCedulaCliente: boolean = false
+  botonCedulaCodeudor:boolean = false
   botonPagare: boolean = false
   botonGuardar: boolean = false
   cedula: string = ''
   tabla: boolean = false
   background_color: string = '#960010'
-  width: number = 10
+  width: number = 0
   display: string = 'none'
 
   obligacion: Obligacion[] = []
@@ -45,10 +48,13 @@ export class SubirArchivosComponent implements OnInit {
     nombreArchivo: ''
   }
 
+  tiposArchivos:TipoArchivo[] = []
 
-  constructor(private ingresarService: IngresarService,private subirService:SubirArchivoService , private authService: AuthenticationService, private sanitizer: DomSanitizer) { }
+
+  constructor(private ingresarService: IngresarService,private subirService:SubirArchivoService , private authService: AuthenticationService, private tipoArchivoService:TipoArchivoService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
+    this.getAllTipoArchivo()
   }
 
   cambiarInputs(accion: string) {
@@ -66,7 +72,7 @@ export class SubirArchivosComponent implements OnInit {
         break;
       case 'CEDULA':
         this.botonCedula = false
-        this.botonFactura = true
+        this.botonCredito = true
         this.display = 'block'
         Swal.fire({
           icon: 'info',
@@ -75,14 +81,14 @@ export class SubirArchivosComponent implements OnInit {
           timer: 2500
         })
         break;
-      case 'FACTURA':
+        case 'CREDITO':
         if (this.archivo.base64.length == 0) {
-          Swal.fire('Error', 'Seleccione La Factura Correspondiente', 'error')
+          Swal.fire('Error', 'Seleccione El Crédito Correspondiente', 'error')
           return
         } else {
-          this.botonFactura = false
-          this.botonCredito = true
-          this.width = 20
+          this.botonCredito = false
+          this.botonFactura = true
+          this.width = this.width + Math.round(100 / this.tiposArchivos.length)
           Swal.fire({
             icon: 'info',
             title: 'Paso #2 Completado',
@@ -90,89 +96,74 @@ export class SubirArchivosComponent implements OnInit {
             timer: 2500
           })
         }
-
         break;
-      case 'CREDITO':
-        if (this.archivo.base64.length <= 1) {
-          Swal.fire('Error', 'Seleccione El Crédito Correspondiente', 'error')
-          return
-        } else {
-          this.botonCredito = false
+      case 'FACTURA':
+          this.botonFactura = false
           this.botonAutorizacion = true
-          this.width = 40
+          this.width = this.width + Math.round(100 / this.tiposArchivos.length)
           Swal.fire({
             icon: 'info',
             title: 'Paso #3 Completado',
             text: 'Seleccione el Archivo Correspondiente',
             timer: 2500
           })
-        }
         break;
+      
       case 'AUTORIZACION':
-        if (this.archivo.base64.length <= 2) {
-          Swal.fire('Error', 'Seleccione La Autorización Correspondiente', 'error')
-          return
-        } else {
           this.botonAutorizacion = false
           this.datosPersonales = true
-          this.width = 60
+          this.width = this.width + Math.round(100 / this.tiposArchivos.length)
           Swal.fire({
             icon: 'info',
             title: 'Paso #4 Completado',
             text: 'Seleccione el Archivo Correspondiente',
             timer: 2500
           })
-        }
-
         break;
       case 'DATOSPERSONALES':
-        if (this.archivo.base64.length <= 3) {
-          Swal.fire('Error', 'Seleccione El Tratamiento de Datos Correspondiente', 'error')
-          return
-        } else {
           this.datosPersonales = false
           this.botonCedulaCliente = true
-          this.width = 80
+          this.width = this.width + Math.round(100 / this.tiposArchivos.length)
           Swal.fire({
             icon: 'info',
             title: 'Paso #5 Completado',
             text: 'Seleccione el Archivo Correspondiente',
             timer: 2500
           })
-        } 
         break;
       case 'CEDULACLIENTE':
-        if (this.archivo.base64.length <= 4) {
-          Swal.fire('Error', 'Seleccione La Cédula Correspondiente', 'error')
-          return
-        } else {
           this.botonCedulaCliente = false
-          this.botonPagare = true
-          this.width = 90
+          this.botonCedulaCodeudor = true
+          this.width = this.width + Math.round(100 / this.tiposArchivos.length)
           Swal.fire({
             icon: 'info',
             title: 'Paso #6 Completado',
             text: 'Seleccione el Archivo Correspondiente',
             timer: 2500
           })
-        }
+        break;
+        case 'CEDULACODEUDOR':
+          this.botonCedulaCodeudor = false
+          this.botonPagare = true
+          this.width = this.width + Math.round(100 / this.tiposArchivos.length)
+          Swal.fire({
+            icon: 'info',
+            title: 'Paso #7 Completado',
+            text: 'Seleccione el Archivo Correspondiente',
+            timer: 2500
+          })
         break;
       case 'PAGARE':
-        if (this.archivo.base64.length <= 5) {
-          Swal.fire('Error', 'Seleccione El Pagaré Correspondiente', 'error')
-          return
-        } else {
           this.botonPagare = false
           this.botonGuardar = true
-          this.width = 100
+          this.width = this.width + Math.round(100 / this.tiposArchivos.length)
           this.display = 'none'
           Swal.fire({
             icon: 'success',
-            title: 'Paso #7 Completado',
+            title: 'Paso #8 Completado',
             text: 'El Registro se Ha Completado',
             timer: 2500
           })
-        }
         break;
     }
   }
@@ -209,6 +200,17 @@ export class SubirArchivosComponent implements OnInit {
         Swal.fire('Error', 'Error Al Traer Las Obligaciones', 'error')
         this.cedula = ''
 
+      }
+    )
+  }
+
+  getAllTipoArchivo(){
+    this.tipoArchivoService.getAll().subscribe(
+      (data:any) => {
+        this.tiposArchivos = data
+        console.log(data);
+      }, (error:any) => {
+        console.log(error);
       }
     )
   }

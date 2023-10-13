@@ -58,7 +58,7 @@
       </div>
       <div class="footer mb-3">
         <div class="button-container mb-3">
-          <button (click)="editar()" class="btn btn-primary me-2 mt-3"><i class="fa-solid fa-pen-to-square"></i></button>
+          <button (click)="abrirModal(a.idArchivo)" class="btn btn-primary me-2 mt-3" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen-to-square"></i></button>
           <button (click)="eliminar(a.idArchivo)" class="btn btn-danger mt-3" style="background-color: #960010; border-color: #960010;"><i class="fa-solid fa-trash"></i></button>
         </div>
       </div>
@@ -85,3 +85,26 @@
       </div>
     </div>
   </div>
+
+    <!-- Modal Editar -->
+    <div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Archivo</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="col-md-12 col-12">
+              <div class="input-group mb-3">
+                <input (change)="obtenerFile($event)" type="file" class="form-control" accept=".pdf" max="1048576">
+              </div>
+          </div>
+          </div>
+          <div class="modal-footer">
+          <button (click)="editar()" type="button" class="btn btn-danger" style="background-color: #960010; border-color: #960010;">Editar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>

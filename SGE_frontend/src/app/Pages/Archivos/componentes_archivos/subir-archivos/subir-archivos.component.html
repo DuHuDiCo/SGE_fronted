@@ -50,7 +50,8 @@
         <h5 *ngIf="botonCredito" class="mt-4 mb-3">Seleccione La Solicitud De Credito</h5>
         <h5 *ngIf="botonAutorizacion" class="mt-4 mb-3">Seleccione La Autorización</h5>
         <h5 *ngIf="datosPersonales" class="mt-4 mb-3">Seleccione El Tratamiento De Datos Personales</h5>
-        <h5 *ngIf="botonCedulaCliente" class="mt-4 mb-3">Seleccione La Cédula</h5>
+        <h5 *ngIf="botonCedulaCliente" class="mt-4 mb-3">Seleccione La Cédula Del Cliente</h5>
+        <h5 *ngIf="botonCedulaCodeudor" class="mt-4 mb-3">Seleccione La Cédula Del Codeudor</h5>
         <h5 *ngIf="botonPagare" class="mt-4 mb-3">Seleccione El Pagaré</h5>
         <div class="col-md-12 col-12">
             <div *ngIf="botonFactura" class = "file">
@@ -78,55 +79,30 @@
                     <input (change)="obtenerFile($event, 'CEDULA')" type="file" class="form-control" accept=".pdf" max="1048576">
                   </div>
             </div>
+            <div *ngIf="botonCedulaCodeudor" class = "file">
+              <div class="input-group mb-3">
+                  <input (change)="obtenerFile($event, 'CEDULACODEUDOR')" type="file" class="form-control" accept=".pdf" max="1048576">
+                </div>
+          </div>
             <div *ngIf="botonPagare" class = "file">
                 <div class="input-group mb-3">
                     <input (change)="obtenerFile($event, 'PAGARE')" type="file" class="form-control" accept=".pdf" max="1048576">
                   </div>
             </div>
         </div>
-        <button *ngIf="botonFactura" (click)="cambiarInputs('FACTURA')" class="boton">Subir</button>
-        <button *ngIf="botonCredito" (click)="cambiarInputs('CREDITO')" class="boton">Subir</button>
-        <button *ngIf="botonAutorizacion" (click)="cambiarInputs('AUTORIZACION')" class="boton">Subir</button>
-        <button *ngIf="datosPersonales" (click)="cambiarInputs('DATOSPERSONALES')" class="boton">Subir</button>
-        <button *ngIf="botonCedulaCliente" (click)="cambiarInputs('CEDULACLIENTE')" class="boton">Subir</button>
-        <button *ngIf="botonPagare" (click)="cambiarInputs('PAGARE')" class="boton">Subir</button> 
+        <button *ngIf="botonFactura" (click)="cambiarInputs('FACTURA')" class="boton">Continuar</button>
+        <button *ngIf="botonCredito" (click)="cambiarInputs('CREDITO')" class="boton">Continuar</button>
+        <button *ngIf="botonAutorizacion" (click)="cambiarInputs('AUTORIZACION')" class="boton">Continuar</button>
+        <button *ngIf="datosPersonales" (click)="cambiarInputs('DATOSPERSONALES')" class="boton">Continuar</button>
+        <button *ngIf="botonCedulaCliente" (click)="cambiarInputs('CEDULACLIENTE')" class="boton">Continuar</button>
+        <button *ngIf="botonCedulaCodeudor" (click)="cambiarInputs('CEDULACODEUDOR')" class="boton">Continuar</button>
+        <button *ngIf="botonPagare" (click)="cambiarInputs('PAGARE')" class="boton">Continuar</button> 
     </div>
 </div>
 
 <div class="container" *ngIf="botonGuardar">
     <div class="container-t">
-        <h1 class="text-center titulo">Este Es el Resumen de Los Archivos</h1>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle text-center mt-4 mb-4">
-                        <thead>
-                          <tr>
-                            <th scope="col">Factura</th>
-                            <th scope="col">Solicitud De Credito</th>
-                            <th scope="col">Autorización</th>
-                            <th scope="col">Tratamiento de Datos Personales</th>
-                            <th scope="col">Cédula</th>
-                            <th scope="col">Pagaré</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            <ng-container *ngFor="let a of nombresArchivos; let i = index">
-                              <tr *ngIf="i === 0">
-                                <td>{{ nombresArchivos[i] }}</td>
-                                <td>{{ nombresArchivos[i+1] }}</td>
-                                <td>{{ nombresArchivos[i+2] }}</td>
-                                <td>{{ nombresArchivos[i+3] }}</td>
-                                <td>{{ nombresArchivos[i+4] }}</td>
-                                <td>{{ nombresArchivos[i+5] }}</td>
-                              </tr>
-                            </ng-container>
-                          </tbody>
-                          
-                      </table>
-                </div>
-            </div>
-        </div>
+        <h1 class="text-center titulo">Sus Archivos Han sido Procesados Con éxito, Haga Clic En El Botón Para Terminar El Proceso</h1>
         
         <button (click)="save()" class="boton">Guardar</button>
 
