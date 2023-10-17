@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { SubirArchivoService } from 'src/app/Services/Archivo/SubirArchivos/subir-archivo.service';
 import { TipoArchivoService } from 'src/app/Services/Archivo/TipoArchivo/tipo-archivo.service';
 import { IngresarService } from 'src/app/Services/Consignaciones/IngresarConsignaciones/ingresar.service';
@@ -51,7 +52,7 @@ export class SubirArchivosComponent implements OnInit {
   tiposArchivos:TipoArchivo[] = []
 
 
-  constructor(private ingresarService: IngresarService,private subirService:SubirArchivoService , private authService: AuthenticationService, private tipoArchivoService:TipoArchivoService, private sanitizer: DomSanitizer) { }
+  constructor(private ingresarService: IngresarService,private subirService:SubirArchivoService , private authService: AuthenticationService, private tipoArchivoService:TipoArchivoService, private router:Router, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.getAllTipoArchivo()
@@ -217,13 +218,15 @@ export class SubirArchivosComponent implements OnInit {
 
   numeroO(obligacion: string, accion: string) {
     this.archivo.numeroObligacion = obligacion
-    this.cambiarInputs(accion)
+    
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
       return
     }
     this.archivo.username = user
+
+    this.isEmpty(obligacion, accion)
   }
 
   public obtenerFile(event: any, tipoArchivo: string) {
@@ -297,6 +300,23 @@ export class SubirArchivosComponent implements OnInit {
           text: 'Error Al Guardar Los Archivos',
           timer: 2500
         })
+        console.log(error);
+      }
+    )
+  }
+
+  isEmpty(obligacion:string, accion:string){
+    this.subirService.isEmpty(obligacion).subscribe(
+      (data:any) => {
+        if(data){
+          this.cambiarInputs(accion)
+        } else {
+          Swal.fire('Error', 'Esta Obligacion Ya Contiene Archivos, Puede Subirlos A continuación', 'error')
+          setTimeout(() => {
+            this.router.navigate(['/dashboard-archivos/buscar-archivos'])
+          }, 3000);
+        }
+      }, (error:any) => {
         console.log(error);
       }
     )

@@ -26,4 +26,12 @@ export class SubirArchivoService {
   update(archivo:EditarArchivo){
     return this.http.put(`${this.url}/archivo/updateArchivo`, archivo)
   }
+
+  saveOne(archivo:Archivo){
+    return this.http.post(`${this.url}/archivo/saveOneArchivo`, archivo)
+  }
+
+  isEmpty(numeroObligacion:string){
+    return this.http.get(`${this.url}/archivo/isEmpty?numeroObligacion=${numeroObligacion}`)
+  }
 }

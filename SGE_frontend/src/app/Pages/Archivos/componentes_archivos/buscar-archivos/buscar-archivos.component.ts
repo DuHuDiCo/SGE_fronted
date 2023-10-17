@@ -1,8 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SubirArchivoService } from 'src/app/Services/Archivo/SubirArchivos/subir-archivo.service';
+import { TipoArchivoService } from 'src/app/Services/Archivo/TipoArchivo/tipo-archivo.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
-import { EditarArchivo } from 'src/app/Types/Archivo/Archivos';
+import { Archivo, Base64, EditarArchivo } from 'src/app/Types/Archivo/Archivos';
+import { TipoArchivo } from 'src/app/Types/Archivo/TipoArchivo';
 import { Obligacion } from 'src/app/Types/Consignaciones';
 import Swal from 'sweetalert2';
 
@@ -20,9 +22,15 @@ export class BuscarArchivosComponent implements OnInit {
   cards:boolean = false
   tabla:boolean = false
   filtro:boolean = false
+  tipoArc:number = 0
+  numeroArc:number = 0
+
   obligacion: any[] = []
   archivos:any[] = []
   datos:any[] = []
+  tiposArchivos:TipoArchivo[] = []
+  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
+
   modal:EditarArchivo = {
     idArchivo: 0,
     base64: '',
@@ -30,9 +38,22 @@ export class BuscarArchivosComponent implements OnInit {
     tipoArchivo: '',
     nombreOriginal: ''
   }
-  constructor(private buscarService:SubirArchivoService, private authService:AuthenticationService, private sanitizer: DomSanitizer) { }
+
+  subirArchivo:Archivo = {
+    numeroObligacion: '',
+    base64: [],
+    username: ''
+  }
+
+  base64: Base64 = {
+    base46: '',
+    tipoArchivo: '',
+    nombreArchivo: ''
+  }
+  constructor(private buscarService:SubirArchivoService, private authService:AuthenticationService, private tipoArchivoService:TipoArchivoService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
+    this.getAllTipo()
   }
 
   @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
@@ -55,7 +76,9 @@ export class BuscarArchivosComponent implements OnInit {
           this.datos = data
           data.forEach((element:any) => {
             this.obligacion.push(element.cuentaPorCobrar)
+            this.numeroArc = element.archivos.length
           });
+          
           this.tabla = true
           this.filtro = false
           this.cedula = ''
@@ -80,8 +103,46 @@ export class BuscarArchivosComponent implements OnInit {
     }, 2000);
   }
 
+  getAllTipo(){
+    this.tipoArchivoService.getAll().subscribe(
+      (data:any) => {
+        this.tiposArchivos = data
+        this.tipoArc = data.length
+        console.log(data);
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  saveOne(){
+    console.log(this.subirArchivo);
+    
+    this.buscarService.saveOne(this.subirArchivo).subscribe(
+      (data:any) => {
+        Swal.fire('Felicidades', 'Archivo Guardado Con éxito', 'success')
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000);
+        
+      }, (error:any) => {
+        Swal.fire('Error', 'Erro al Guardar El Archivo', 'error')
+        console.log(error);
+      }
+    )
+  }
+
   //LLENAR LAS CARDS
-  llenarCards(position:number){
+  llenarCards(position:number, obligacion:string){
+
+    this.subirArchivo.numeroObligacion = obligacion
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+    this.subirArchivo.username = user
+
     Swal.fire({
       icon: 'success',
       title: 'Felicidades',
@@ -89,6 +150,13 @@ export class BuscarArchivosComponent implements OnInit {
       timer: 2500
     })
     this.archivos = this.datos[position].archivos
+    this.archivos.forEach((element:any, index:number) => {
+      var tipo = this.tiposArchivos.find((t:any) => t.tipoArchivo == element.tipoArchivo.tipoArchivo)
+      if(tipo != null || tipo != undefined){
+        var position = this.tiposArchivos.indexOf(tipo)
+        this.tiposArchivos.splice(position, 1)
+      }
+    });
     this.cards = true
     this.tabla = false
   }
@@ -175,10 +243,18 @@ export class BuscarArchivosComponent implements OnInit {
       return
     }
 
+    if (archivo.size > 1048576) {
+      Swal.fire('Error', 'El Archivo Es Demasiado Pesado', 'error')
+      this.base64.base46 = ''
+      return
+    }
+
     this.extraerBase64(archivo).then((file: any) => {
       this.modal.base64 = file.base;
+      this.base64.base46 = file.base;
       this.modal.nombreOriginal = archivo.name
-
+      this.base64.nombreArchivo = archivo.name
+      this.subirArchivo.base64.push(this.base64)
     })
   }
 

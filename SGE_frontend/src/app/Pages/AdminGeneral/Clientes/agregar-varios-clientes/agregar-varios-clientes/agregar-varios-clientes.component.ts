@@ -61,6 +61,7 @@ export class AgregarVariosClientesComponent implements OnInit{
           return
         }
       },(error:any) => {
+        console.log(error);
         
       }
     )
