@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ConsiganacionesRankingService } from 'src/app/Services/Consignaciones/consignaciones-ranking/consiganaciones-ranking.service';
+import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { ConsignacionRanking } from 'src/app/Types/consignacionesRanking';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-consignaciones-listas',
@@ -7,9 +11,43 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConsignacionesListasComponent implements OnInit {
 
-  constructor() { }
+  constructor(private consignacionRanking: ConsiganacionesRankingService, private authService: AuthenticationService ) { }
 
-  ngOnInit(): void {
+  consignacioneslistas: ConsignacionRanking [] = []
+
+  Ranking: ConsignacionRanking = {
+
+    consignacionesToday: 0,
+    consignacionesMonth: 0,
+    consignacionesDevueltasCaja: 0,
+    consignacionesPendientes: 0,
+    consignacionesComprobadas: 0,
+    consignacionesAplicado: 0,
+    consignacionesDevueltasContabilidad: 0
   }
 
+  ngOnInit(): void {
+
+    this.getConsignacionesRanking()
+  }
+
+
+  getConsignacionesRanking() {
+
+    let username = this.authService.getUsername();
+
+    if (username === null) {
+      return;
+    }
+
+    this.consignacionRanking.getEstadisticas(username).subscribe(
+      (data: any) => {
+        this.Ranking = data
+        console.log(data);
+      }, (error: any) => {
+        console.log(error);
+        Swal.fire('Error', 'Error al cargar los Rankings de las Consignaciones', 'error');
+      }
+    )
+  }
 }
