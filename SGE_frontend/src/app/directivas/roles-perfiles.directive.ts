@@ -20,7 +20,8 @@ export class RolesPerfilesDirective implements OnInit {
   ngOnInit(): void {
     this.rolesUser = this.authService.getRoles();
     this.convertirString();
-
+    console.log(this.rolesString);
+    
     if (this.rolesString.includes(ROLES.SuperAdministration.toUpperCase()) || this.rolesString.includes(ROLES.Administration)) {
 
       this.viewContainer.createEmbeddedView(this.templateRef);
