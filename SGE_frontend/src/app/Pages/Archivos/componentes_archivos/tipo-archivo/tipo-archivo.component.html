@@ -28,23 +28,26 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
-                    <th scope="col">Acciones</th>
+                    <th *appArchivos="permisos[1]" scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let t of tiposArchivos;let i = index">
                     <th>{{ i + 1 }}</th>
                     <td>{{ t.tipoArchivo }}</td>
-                    <td>
-                        <button (click)="getById(t.idTipoArchivo)" data-bs-toggle="modal" data-bs-target="#modalEditar"
+                    <td *appArchivos="permisos[1]">
+                        <button *appArchivos="permisos[1]" (click)="getById(t.idTipoArchivo)" data-bs-toggle="modal" data-bs-target="#modalEditar"
                             class="btn btn-sm btn-primary me-2"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button *ngIf="!botonEliminar" (click)="deleteTipoArchivo(t.idTipoArchivo)"
+
+                        <span *appRolesPerfiles="rolesArray[6]">
+                            <button *ngIf="!botonEliminar" (click)="deleteTipoArchivo(t.idTipoArchivo)"
                             class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
                         <button *ngIf="botonEliminar" type="button" class="btn btn-sm btn-danger"
                             style="background-color: #960010;border-color: #960010;">
                             <span class="spinner-border spinner-border-sm float-right" role="status"
                                 aria-hidden="true"></span>
                         </button>
+                        </span>
                     </td>
                 </tr>
             </tbody>

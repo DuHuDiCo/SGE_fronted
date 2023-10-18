@@ -8,6 +8,8 @@ import { AuthenticationService } from 'src/app/Services/authentication/authentic
 })
 export class SidebarArchivosComponent implements OnInit {
 
+  permisos: string[] = ['ELIMINAR ARCHIVOS', 'EDITAR ARCHIVOS', 'SUBIR UN ARCHIVO', 'SUBIR ARCHIVOS', 'CREAR TIPOS ARCHIVO', 'EDITAR TIPOS ARCHIVO', 'BUSCAR ARCHIVOS']
+
   constructor(private authService:AuthenticationService) { }
 
   ngOnInit(): void {
