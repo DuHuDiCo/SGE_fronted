@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Archivo } from 'src/app/Types/Archivo/Archivos';
+import { Archivo, EditarArchivo } from 'src/app/Types/Archivo/Archivos';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +16,22 @@ export class SubirArchivoService {
   }
 
   filter(cedula:string){
-    return this.http.get(`${this.url}/archivo/getArchivosByCedula(${cedula}`)
+    return this.http.get(`${this.url}/archivo/getArchivosByCedula/${cedula}`)
   }
 
   delete(id:number){
-    return this.http.delete(`${this.url}/archivo/deleteArchivo?id=${id}`)
+    return this.http.delete(`${this.url}/archivo/deleteArchivo/${id}`)
+  }
+
+  update(archivo:EditarArchivo){
+    return this.http.put(`${this.url}/archivo/updateArchivo`, archivo)
+  }
+
+  saveOne(archivo:Archivo){
+    return this.http.post(`${this.url}/archivo/saveOneArchivo`, archivo)
+  }
+
+  isEmpty(numeroObligacion:string){
+    return this.http.get(`${this.url}/archivo/isEmpty?numeroObligacion=${numeroObligacion}`)
   }
 }

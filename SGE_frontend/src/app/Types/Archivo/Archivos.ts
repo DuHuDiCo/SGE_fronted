@@ -9,3 +9,11 @@ export type Base64 = {
   nombreArchivo: string,
   tipoArchivo: string
 }
+
+export type EditarArchivo = {
+  idArchivo: number,
+  base64: string,
+  username: string,
+  tipoArchivo: string,
+  nombreOriginal: string
+}
