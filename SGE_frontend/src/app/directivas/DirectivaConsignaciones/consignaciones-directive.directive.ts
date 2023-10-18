@@ -11,6 +11,7 @@ export class ConsignacionesDirectiveDirective implements OnInit {
   constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private authService:AuthenticationService) { }
 
   ngOnInit(): void {
+    
     var rol = this.authService.getRolesP()
     
     if(rol != null || rol != undefined){

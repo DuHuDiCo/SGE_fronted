@@ -11,9 +11,26 @@ import Swal from 'sweetalert2';
 })
 export class ConsignacionesListasComponent implements OnInit {
 
-  constructor(private consignacionRanking: ConsiganacionesRankingService, private authService: AuthenticationService ) { }
+  constructor(private consignacionRanking: ConsiganacionesRankingService, private authService: AuthenticationService) { }
 
-  consignacioneslistas: ConsignacionRanking [] = []
+  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
+
+  RolesRanking: string[] = [
+    //1
+    "DIA",
+    //2
+    "MES",
+    //3
+    "APLICADAS",
+    //4
+    "DEVUELTACAJA",
+    //5
+    "COMPROBADAS",
+    //6
+    "PENDIENTES",
+    //7
+    "DEVUELTACONTABILIDAD"
+  ]
 
   Ranking: ConsignacionRanking = {
 
@@ -47,7 +64,7 @@ export class ConsignacionesListasComponent implements OnInit {
       }, (error: any) => {
         console.log(error);
         Swal.fire('Error', 'Error al cargar los Rankings de las Consignaciones', 'error');
-      }
-    )
-  }
+      }
+    )
+  }
 }
