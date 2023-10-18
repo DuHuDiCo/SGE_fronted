@@ -93,6 +93,7 @@ import { CambioContrasenaComponent } from './componentesGenerales/cambio-contras
 import { SubirArchivosComponent } from './Pages/Archivos/componentes_archivos/subir-archivos/subir-archivos.component';
 import { TipoArchivoComponent } from './Pages/Archivos/componentes_archivos/tipo-archivo/tipo-archivo.component';
 import { BuscarArchivosComponent } from './Pages/Archivos/componentes_archivos/buscar-archivos/buscar-archivos.component';
+import { ArchivosDirective } from './directivas/DirectivaArchivos/archivos.directive';
 
 
 
@@ -193,6 +194,7 @@ import { BuscarArchivosComponent } from './Pages/Archivos/componentes_archivos/b
     SubirArchivosComponent,
     TipoArchivoComponent,
     BuscarArchivosComponent,
+    ArchivosDirective,
 
   ],
 

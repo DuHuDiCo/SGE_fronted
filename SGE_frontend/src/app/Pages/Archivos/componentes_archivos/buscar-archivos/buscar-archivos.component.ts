@@ -30,7 +30,7 @@ export class BuscarArchivosComponent implements OnInit {
   datos:any[] = []
   tiposArchivos:TipoArchivo[] = []
   rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
-  permisos: string[] = ['ELIMINAR ARCHIVOS', 'EDITAR ARCHIVOS']
+  permisos: string[] = ['ELIMINAR ARCHIVOS', 'EDITAR ARCHIVOS', 'SUBIR UN ARCHIVO', 'SUBIR ARCHIVOS', 'CREAR TIPOS ARCHIVO', 'EDITAR TIPOS ARCHIVO']
 
   modal:EditarArchivo = {
     idArchivo: 0,
