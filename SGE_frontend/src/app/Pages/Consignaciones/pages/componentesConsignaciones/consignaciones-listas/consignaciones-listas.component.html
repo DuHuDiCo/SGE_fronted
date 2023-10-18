@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div class="col-xl-4 col-md-6 mb-4" *appRolesPerfiles="RolesRanking[5]">
+    <div class="col-xl-4 col-md-6 mb-4" *appRolesPerfiles="rolesArray[5]">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <div class="col-xl-4 col-md-6 mb-4" *appRolesPerfiles="RolesRanking[5]">
+    <div class="col-xl-4 col-md-6 mb-4" *appRolesPerfiles="rolesArray[5]">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    <div class="col-xl-4 col-md-6 mb-4" *appRolesPerfiles="RolesRanking[5]">
+    <div class="col-xl-4 col-md-6 mb-4" *appRolesPerfiles="rolesArray[5]">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -102,7 +102,7 @@
                         <div class="titulo">
                             Consignaciones (APLICADAS)</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="conMes">
-                            {{Ranking.consignacionesAplicado}}</div>
+                            {{Ranking.consignacionesAplicada}}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fa-solid fa-check text-gray-300 titulos"></i>
@@ -112,7 +112,7 @@
         </div>
     </div>
 
-    <div class="col-xl-4 col-md-6 mb-4" *appRolesPerfiles="RolesRanking[5]">
+    <div class="col-xl-4 col-md-6 mb-4" *appRolesPerfiles="rolesArray[5]">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -123,9 +123,47 @@
                             {{Ranking.consignacionesDevueltasContabilidad}}</div>
                     </div>
 
-                    
+
                     <div class="col-auto">
                         <i class="fa-solid fa-cash-register text-gray-300 titulos"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4" *appRolesPerfiles="rolesArray[5]">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="titulo">
+                            Consignaciones Comprobadas (SEDE)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="conMes">
+                            {{Ranking.consignacionesComprobadasSede}}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-building-columns text-gray-300 titulos"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4" *appRolesPerfiles="rolesArray[5]">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="titulo">
+                            Consignaciones Aplicadas (SEDE)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="conMes">
+                            {{Ranking.consignacionesAplicadasSede}}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-building text-gray-300 titulos"></i>
                     </div>
                 </div>
             </div>

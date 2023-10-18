@@ -29,7 +29,13 @@ export class ConsignacionesListasComponent implements OnInit {
     //6
     "PENDIENTES",
     //7
-    "DEVUELTACONTABILIDAD"
+    "DEVUELTACONTABILIDAD",
+    //8
+    "DEVUELTACAJA",
+    //9
+    "APLICADASSEDE",
+    //10
+    "COMPROBADASSEDE"
   ]
 
   Ranking: ConsignacionRanking = {
@@ -39,7 +45,9 @@ export class ConsignacionesListasComponent implements OnInit {
     consignacionesDevueltasCaja: 0,
     consignacionesPendientes: 0,
     consignacionesComprobadas: 0,
-    consignacionesAplicado: 0,
+    consignacionesComprobadasSede: 0,
+    consignacionesAplicada: 0,
+    consignacionesAplicadasSede: 0,
     consignacionesDevueltasContabilidad: 0
   }
 
