@@ -1,4 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ReportesService } from 'src/app/Services/Consignaciones/Reportes/reportes.service';
+import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { Reportes } from 'src/app/Types/Consignaciones';
+import { ROLES } from 'src/app/Types/Roles';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reportes',
@@ -7,7 +12,16 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 })
 export class ReportesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private reportesService: ReportesService, private authService: AuthenticationService) { }
+
+  page: number = 0
+  size: number = 10
+  order: string = 'idFilesReporte'
+  tipoReporte: string = 'null'
+  fecha: Date | null = null
+  username: string = 'null'
+
+  reportes: Reportes[] = []
 
   rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
 
@@ -15,6 +29,46 @@ export class ReportesComponent implements OnInit {
   }
 
   @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
+
+  filter() {
+    this.username?.trim()
+    if (this.username == 'null' && this.fecha == null) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe de Elegir Al Menos Un Filtro',
+        timer: 3000
+      })
+      return
+    }
+
+    if (this.validarPermiso('CONSULTAR PENDIENTES')) {
+      this.tipoReporte = 'null'
+
+      this.reportesService.filtro(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha).subscribe(
+        (data: any) => {
+          console.log(data);
+          console.log(this.tipoReporte);
+          console.log(this.username);
+          console.log(this.fecha);
+        }, (error: any) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al Filtrar',
+            timer: 3000
+          })
+          console.log(error);
+          console.log(this.tipoReporte);
+          console.log(this.username);
+          console.log(this.fecha);
+        }
+      )
+    }
+
+
+
+  }
 
   mostrarPDF() {
     // Obtén el embed y el botón
@@ -27,4 +81,14 @@ export class ReportesComponent implements OnInit {
     // Establece la fuente del embed al PDF en base64
     embed.src = pdfBase64;
   }
+
+  validarPermiso(permisos: string): boolean {
+    var roles = this.authService.getRolesP()
+
+    var permiso: any = {}
+    permiso = roles.permisos.find((pe: any) => pe.permiso.includes(permisos))
+    return permiso != null || permiso != undefined
+
+  }
+
 }
