@@ -288,16 +288,12 @@ const routes: Routes = [
     ]
   },
 
-  {path: 'Archivos', redirectTo:'dashboard-archivos/archivos-exs' , pathMatch:'full' },
+  {path: 'Archivos', redirectTo:'dashboard-archivos/buscar-archivos' , pathMatch:'full' },
   {
     path:"dashboard-archivos",
     component:DashboardArchivosComponent,
     canActivate:[AuthenticationGuard],
     children:[
-      {
-        path:'archivos-exs',
-        component:ArchivosExsComponent
-      },
       {
         path: 'subir-archivos',
         component: SubirArchivosComponent

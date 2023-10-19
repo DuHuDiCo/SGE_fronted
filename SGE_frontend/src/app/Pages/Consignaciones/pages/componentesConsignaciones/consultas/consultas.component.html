@@ -1,54 +1,58 @@
 <div class="caja">
   <h1 class="titulo">Consultar Consignaciones</h1><br>
 
-  <div class="d-grid gap-2 d-md-flex justify-content-md-end" id="btn btn-primary" *appConsignacionesDirective="permisos[0]">
-    <button class="btn-archivos" type="button">Generar Archivos</button>
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end" id="btn btn-primary"
+    *appConsignacionesDirective="permisos[0]">
+    <button *ngIf="!botonGenerarPendientes" (click)="generarReportePendientes()" class="btn-archivos" type="button">Generar Archivos</button>
+    <button *ngIf="botonGenerarPendientes" type="button" class="btn-archivos">
+      Generando...
+      <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+    </button>
   </div>
 
   <header class="box">
     <div class="row">
       <div *appConsignacionesDirective="permisos[6]" class="col-md-3 col-12">
-          <div class="seleciona">
-            <select (change)="change($event)" [(ngModel)]="estado" name="estado" class="form-select form-control">
-              <option value="null" selected>Seleccionar un Estado</option>
-              <option *ngFor="let e of estadoA" value="{{e.estado}}">{{ e.estado }}</option>
-            </select>
-          </div>
+        <div class="seleciona">
+          <select (change)="change($event)" [(ngModel)]="estado" name="estado" class="form-select form-control">
+            <option value="null" selected>Seleccionar un Estado</option>
+            <option *ngFor="let e of estadoA" value="{{e.estado}}">{{ e.estado }}</option>
+          </select>
+        </div>
       </div>
       <div *appConsignacionesDirective="permisos[7]" class="col-md-3 col-12">
-          <div class="selecionar">
-            <select (change)="change($event)" [(ngModel)]="sede" name="sede" class="form-select form-control">
-              <option value="null" selected>Seleccione Una Sede</option>
-              <option *ngFor="let s of sedes" value="{{ s.nombreSede }}">{{ s.nombreSede }}</option>
-            </select>
-          </div>
+        <div class="selecionar">
+          <select (change)="change($event)" [(ngModel)]="sede" name="sede" class="form-select form-control">
+            <option value="null" selected>Seleccione Una Sede</option>
+            <option *ngFor="let s of sedes" value="{{ s.nombreSede }}">{{ s.nombreSede }}</option>
+          </select>
+        </div>
       </div>
       <div *appConsignacionesDirective="permisos[8]" class="col-md-3 col-12">
-          <div class="fecha">
-            <input (change)="change($event)" [(ngModel)]="fecha" name="fecha" class="c form-control" type="date"
-              placeholder="Fecha">
-          </div>
-      </div>
-        <div *appConsignacionesDirective="permisos[9]" class="col-md-3 col-12">
-          <!-- <input class="c form-control" type="search" placeholder="Digite Una Cédula"> -->
-          <form action="" class="search-bar">
-            <input [(ngModel)]="cedula" name="cedula" type="search" name="search" pattern=".*\S.*" required
-              (keyup.enter)="getConsignacionByCedula()">
-            <button class="search-btn" type="submit">
-              <span>Search</span>
-            </button>
-          </form>
+        <div class="fecha">
+          <input (change)="change($event)" [(ngModel)]="fecha" name="fecha" class="c form-control" type="date"
+            placeholder="Fecha">
         </div>
+      </div>
+      <div *appConsignacionesDirective="permisos[9]" class="col-md-3 col-12">
+        <!-- <input class="c form-control" type="search" placeholder="Digite Una Cédula"> -->
+        <form action="" class="search-bar">
+          <input [(ngModel)]="cedula" name="cedula" type="search" name="search" pattern=".*\S.*" required
+            (keyup.enter)="getConsignacionByCedula()">
+          <button class="search-btn" type="submit">
+            <span>Search</span>
+          </button>
+        </form>
+      </div>
       <div *ngIf="filtro" class="row">
         <div *ngIf="!botonFiltrar" class="col-md-12">
           <button class="b btn" (click)="filter()">Filtrar</button>
         </div>
         <div *ngIf="botonFiltrar" class="col-md-12">
-          <button type="button" class="btn btn-danger"
-          style="background-color: #960010;border-color: #960010;">
-          Filtrando...
-          <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-        </button>
+          <button type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
+            Filtrando...
+            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+          </button>
         </div>
       </div>
     </div>
@@ -62,12 +66,13 @@
     <div *ngIf="cambios" class="row">
       <div class="col-md-12">
         <div class="text-right">
-          <button *ngIf="!botonCambiarConsignacion" (click)="cambiarConsignacion()" class="b btn mb-4">Guardar Cambios</button>
+          <button *ngIf="!botonCambiarConsignacion" (click)="cambiarConsignacion()" class="b btn mb-4">Guardar
+            Cambios</button>
           <button *ngIf="botonCambiarConsignacion" type="button" class="btn btn-danger mb-4"
-          style="background-color: #960010;border-color: #960010;">
-          Guardando...
-          <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-        </button>
+            style="background-color: #960010;border-color: #960010;">
+            Guardando...
+            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+          </button>
           <button (click)="cancelar()" class="btn btn-secondary ms-2 mb-4">Cancelar</button>
         </div>
       </div>
@@ -104,73 +109,87 @@
           <td class="d-flex align-middle">
             <!-- EDITAR CONSIGNACION -->
             <span *appConsignacionesDirective="permisos[5]">
-              <button *ngIf="c.actualizaciones[0].estado.estado != 'APLICADO'" (click)="getConsignacionById(c.idConsignacion)"
-              class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar" id="btn_editar_{{ i }}"><i
-                class="fa-solid fa-pen"></i></button>
+              <button *ngIf="c.actualizaciones[0].estado.estado != 'APLICADO'"
+                (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                data-bs-target="#modalEditar" id="btn_editar_{{ i }}"><i class="fa-solid fa-pen"></i></button>
             </span>
 
             <!-- VER OBSERVACIONES -->
             <span *appConsignacionesDirective="permisos[13]">
               <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer" id="btn_observaciones_{{ i }}"><i
-                  class="fa-regular fa-eye"></i></button>
+                class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"
+                id="btn_observaciones_{{ i }}"><i class="fa-regular fa-eye"></i></button>
             </span>
-            
+
 
             <!-- VER COMPROBANTE -->
             <span *appConsignacionesDirective="permisos[14]">
               <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
-                class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage" id="btn_comprobante_{{i}}"><i
-                  class="fa-regular fa-image"></i></button>
+                class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"
+                id="btn_comprobante_{{i}}"><i class="fa-regular fa-image"></i></button>
             </span>
 
             <!-- VER HISTORIAL -->
             <span *appConsignacionesDirective="permisos[15]">
               <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo" id="btn_historial_{{i}}"><i
-                  class="fa-solid fa-circle-info"></i></button>
+                class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo"
+                id="btn_historial_{{i}}"><i class="fa-solid fa-circle-info"></i></button>
             </span>
 
             <!-- COMPROBAR CONSIGNACIONES -->
             <span *appConsignacionesDirective="permisos[3]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO')"
-                class="btn btn-sm btn-warning ms-2" id="btn_comprobar_consignaciones_{{i}}"><i class="fa-solid fa-check"></i></button>
+              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+                (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO', 'COMPROBADAS')"
+                class="btn btn-sm btn-warning ms-2" id="btn_comprobar_consignaciones_{{i}}"><i
+                  class="fa-solid fa-check"></i></button>
             </span>
             <span *appConsignacionesDirective="permisos[3]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO')"
-                class="b btn btn-sm ms-2" id="btn_comprobar_consignaciones_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+                (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO', '')" class="b btn btn-sm ms-2"
+                id="btn_comprobar_consignaciones_x{{i}}" style="display: none;"><i
+                  class="fa-solid fa-xmark"></i></button>
             </span>
 
             <!-- APLICAR CONSIGNACIONES -->
             <span *appConsignacionesDirective="permisos[4]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado && c.sede == sedeUser" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO')"
-                class="btn btn-sm btn-warning ms-2" id="btn_aplicar_consignaciones_{{i}}"><i class="fa-solid fa-check"></i></button>
+              <button
+                *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado && c.sede == sedeUser"
+                (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO', 'APLICADAS')"
+                class="btn btn-sm btn-warning ms-2" id="btn_aplicar_consignaciones_{{i}}"><i
+                  class="fa-solid fa-check"></i></button>
             </span>
             <span *appConsignacionesDirective="permisos[4]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO')"
-                class="b btn btn-sm ms-2" id="btn_aplicar_consignaciones_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+                (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO', '')" class="b btn btn-sm ms-2"
+                id="btn_aplicar_consignaciones_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
             </span>
 
             <!-- DEVOLVER DE COMPROBADAS -->
             <span *appConsignacionesDirective="permisos[3]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD')"
-                class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_comprobadas_{{i}}"><i class="fa-solid fa-backward"></i></button>
+                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD')" class="btn btn-sm btn-warning ms-2"
+                data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_comprobadas_{{i}}"><i
+                  class="fa-solid fa-backward"></i></button>
             </span>
             <span *appConsignacionesDirective="permisos[3]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
                 (click)="cambiarDevolver(c.idConsignacion, i, 'ACTIVAR', 'DEVUELTA CONTABILIDAD')"
-                class="b btn btn-sm ms-2" id="btn_devolver_comprobadas_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+                class="b btn btn-sm ms-2" id="btn_devolver_comprobadas_x{{i}}" style="display: none;"><i
+                  class="fa-solid fa-xmark"></i></button>
             </span>
 
             <!-- DEVOLVER APLICADAS -->
             <span *appConsignacionesDirective="permisos[4]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado && c.sede == sedeUser" (click)="devolver(c.idConsignacion, i, 'DEVUELTA CAJA')"
-                class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_aplicadas_{{i}}"><i class="fa-solid fa-backward"></i></button>
+              <button
+                *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado && c.sede == sedeUser"
+                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CAJA')" class="btn btn-sm btn-warning ms-2"
+                data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_aplicadas_{{i}}"><i
+                  class="fa-solid fa-backward"></i></button>
             </span>
             <span *appConsignacionesDirective="permisos[4]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="cambiarDevolver(c.idConsignacion, i, 'ACTIVAR', 'DEVUELTA CAJA')"
-                class="b btn btn-sm ms-2" id="btn_devolver_aplicadas_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+                (click)="cambiarDevolver(c.idConsignacion, i, 'ACTIVAR', 'DEVUELTA CAJA')" class="b btn btn-sm ms-2"
+                id="btn_devolver_aplicadas_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
             </span>
           </td>
 
@@ -411,24 +430,26 @@
   </div>
 
   <!-- Observaciones -->
-<div class="modal fade" id="modalObservacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar Observación</h1>
-      </div>
-      <div class="modal-body">
+  <div class="modal fade" id="modalObservacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar Observación</h1>
+        </div>
         <div class="modal-body">
-          <div class="form-floating">
-              <textarea [(ngModel)]="cambiarEstado.observacion" name="observacion" class="form-control" placeholder="Observacion" id="floatingTextarea2" style="height: 100px"></textarea>
+          <div class="modal-body">
+            <div class="form-floating">
+              <textarea [(ngModel)]="cambiarEstado.observacion" name="observacion" class="form-control"
+                placeholder="Observacion" id="floatingTextarea2" style="height: 100px"></textarea>
               <label for="floatingTextarea2">Observaciones</label>
             </div>
-      </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button (click)="agregarDevolucion()" data-bs-dismiss="modal" type="button" class="b btn">Guardar</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button (click)="agregarDevolucion()" data-bs-dismiss="modal" type="button" class="b btn">Guardar</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
