@@ -68,6 +68,7 @@ import { CambioContrasenaComponent } from './componentesGenerales/cambio-contras
 import { SubirArchivosComponent } from './Pages/Archivos/componentes_archivos/subir-archivos/subir-archivos.component';
 import { TipoArchivoComponent } from './Pages/Archivos/componentes_archivos/tipo-archivo/tipo-archivo.component';
 import { BuscarArchivosComponent } from './Pages/Archivos/componentes_archivos/buscar-archivos/buscar-archivos.component';
+import { ObligacionesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/obligaciones/obligaciones.component';
 
 
 
@@ -186,6 +187,10 @@ const routes: Routes = [
         path:'estados',
         component: EstadosComponent
       },
+      {
+        path: 'obligaciones',
+        component: ObligacionesComponent
+      }
     ]
   },
 
