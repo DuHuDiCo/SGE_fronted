@@ -252,7 +252,42 @@ export type Reportes = {
   nombreReporte: string,
   ruta: string,
   fechaReporte: Date,
-  usuarioId: number,
+  usuario: {
+    idUsuario: number,
+    username: string,
+    email: string,
+    password: string,
+    nombres: string,
+    apellidos: string,
+    sede: string,
+    tipo_documento: string,
+    numero_documento: string,
+    celular: string,
+    fecha_nacimiento: Date,
+    fecha_creacion: Date,
+    status: true,
+    roles: [
+      {
+        idRol: number,
+        rol: string,
+        permisos: [
+          {
+            idPermiso: number,
+            permiso: string
+          }
+        ]
+      }
+    ],
+    enabled: true,
+    authorities: [
+      {
+        authority: string
+      }
+    ],
+    accountNonExpired: true,
+    credentialsNonExpired: true,
+    accountNonLocked: true
+  },
   tipoReporte: string
 }
 
