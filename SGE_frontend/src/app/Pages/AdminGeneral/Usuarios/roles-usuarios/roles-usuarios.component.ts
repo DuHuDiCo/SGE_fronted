@@ -333,8 +333,6 @@ export class RolesUsuariosComponent implements OnInit {
     let username = this.authService.getUsername();
 
     if (username != null || username != undefined) {
-      
-      
 
       this.userAgService.crearUsuario(this.usuario, username).subscribe(
         (data: any) => {
@@ -342,11 +340,10 @@ export class RolesUsuariosComponent implements OnInit {
           setTimeout(() => {
             this.router.navigate(['/dashboard-admin-general/buscar-usuario'])
           }, 2000);
-          
-
+    
         },
         (error: any) => {
-          
+        
           Swal.fire('ERROR', 'Error Guardar Usuario', 'error')
         }
       )

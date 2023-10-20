@@ -15,28 +15,28 @@ export class ConsignacionesListasComponent implements OnInit {
 
   rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
 
-  RolesRanking: string[] = [
+  //RolesRanking: string[] = [
     //1
-    "DIA",
+     //"DIA",
     //2
-    "MES",
+     //"MES",
     //3
-    "APLICADAS",
+     //"APLICADAS",
     //4
-    "DEVUELTACAJA",
+      //"DEVUELTACAJA",
     //5
-    "COMPROBADAS",
+      //"COMPROBADAS",
     //6
-    "PENDIENTES",
+     //"PENDIENTES",
     //7
-    "DEVUELTACONTABILIDAD",
+     //"DEVUELTACONTABILIDAD",
     //8
-    "DEVUELTACAJA",
+     //"DEVUELTACAJA",
     //9
-    "APLICADASSEDE",
+     //"APLICADASSEDE",
     //10
-    "COMPROBADASSEDE"
-  ]
+     //"COMPROBADASSEDE"
+   //]
 
   Ranking: ConsignacionRanking = {
 
@@ -45,9 +45,9 @@ export class ConsignacionesListasComponent implements OnInit {
     consignacionesDevueltasCaja: 0,
     consignacionesPendientes: 0,
     consignacionesComprobadas: 0,
-    consignacionesComprobadasSede: 0,
-    consignacionesAplicada: 0,
-    consignacionesAplicadasSede: 0,
+    consignacionesComprobadasBySede: 0,
+    consignacionesAplicado: 0,
+    consignacionesAplicadoBySede: 0,
     consignacionesDevueltasContabilidad: 0
   }
 

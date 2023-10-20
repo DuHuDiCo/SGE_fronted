@@ -6,8 +6,8 @@ export type ConsignacionRanking = {
     consignacionesDevueltasCaja: Number,
     consignacionesPendientes: Number,
     consignacionesComprobadas: Number,
-    consignacionesComprobadasSede: Number,
-    consignacionesAplicada: Number,
-    consignacionesAplicadasSede: Number,
+    consignacionesComprobadasBySede: Number,
+    consignacionesAplicado: Number,
+    consignacionesAplicadoBySede: Number,
     consignacionesDevueltasContabilidad: Number,
   }
