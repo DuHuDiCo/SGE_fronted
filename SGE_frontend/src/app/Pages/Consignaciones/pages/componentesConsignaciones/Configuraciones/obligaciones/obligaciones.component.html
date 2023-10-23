@@ -1,1 +1,128 @@
-<p>obligaciones works!</p>
+<div class="row text-center justify-content-center">
+    <div class="col-md-6">
+        <h5 class="titulo">Ingresar Una Nueva Obligación</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.numeroObligacion" name="numeroObligacion" type="text"
+                    class="form-control" placeholder="Ingrese El Numero de Obligación">
+            </div>
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.totalCuotas" name="totalCuotas" type="number" class="form-control"
+                    placeholder="Ingrese El Total Cuotas">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.cedula" name="cedula" type="text" class="form-control"
+                    placeholder="Ingrese La Cédula del Cliente">
+            </div>
+            <div class="col-md-6">
+                <div class="usuario">
+                    <select [(ngModel)]="obligacion.sede" name="sede" class="form-select" required
+                        aria-label="select example">
+                        <option value="">Elija Una Sede</option>
+                        <option *ngFor="let s of sedes" value="{{ s.nombreSede }}">{{ s.nombreSede }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.periodicidad" name="periodicidad" type="number" class="form-control"
+                    placeholder="Ingrese La Periodicidad">
+            </div>
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.valorCuota" name="valorCuota" type="number" class="form-control"
+                    placeholder="Ingrese El Valor de la Cuota">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.saldoInicial" name="saldoInicial" type="number" class="form-control"
+                    placeholder="Ingrese El Saldo Inicial">
+            </div>
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.diasVencidos" name="diasVencidos" type="number" class="form-control"
+                    placeholder="Ingrese Los Dias Vencidos">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.capital" name="capital" type="number" class="form-control"
+                    placeholder="Ingrese El Capital">
+            </div>
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.saldoVencido" name="saldoVencido" type="number" class="form-control"
+                    placeholder="Ingrese El Saldo Vencido">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.interesesTotales" name="interesesTotales" type="number"
+                    class="form-control" placeholder="Ingrese Los Intereses Totales">
+            </div>
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.interesesVencidos" name="interesesVencidos" type="number"
+                    class="form-control" placeholder="Ingrese Los Intereses Vencidos">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.otrosCobros" name="otrosCobros" type="number" class="form-control"
+                    placeholder="Ingrese Otros Cobros">
+            </div>
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.saldoMora" name="saldoMora" type="number" class="form-control"
+                    placeholder="Ingrese El saldo en Mora">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.saldoTotal" name="saldoTotal" type="number" class="form-control"
+                    placeholder="Ingrese El Saldo Total">
+            </div>
+            <div class="col-md-6">
+                <input [(ngModel)]="obligacion.observacion" name="observacion" type="text" class="form-control"
+                    placeholder="Ingrese Una Observacion (Opcional)">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="usuario">
+                    <select [(ngModel)]="obligacion.tipoCuentaPorCobrar" name="tipoCuentaPorCobrar" class="form-select"
+                        required aria-label="select example">
+                        <option value="">Elija El Tipo De Obligación</option>
+                        <option *ngFor="let t of tipos">{{ t.tipoCuenta }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="usuario">
+                    <select [(ngModel)]="obligacion.estado" name="estado" class="form-select" required
+                        aria-label="select example">
+                        <option value="">Elija Un Estado</option>
+                        <option *ngFor="let e of estados" value="{{ e.estado }}">{{ e.estado }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="usuario">
+                    <select [(ngModel)]="obligacion.idAsesor" name="idAsesor" class="form-select" required
+                        aria-label="select example">
+                        <option value="">Elija Un Asesor</option>
+                        <option *ngFor="let a of asesores" value="{{ a.usuario.idUsuario }}">{{ a.usuario.username }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button *ngIf="!botonSave" (click)="save()" class="btn btn-primary guardar">Guardar</button>
+            <button *ngIf="botonSave" type="button" class="btn btn-danger"
+                style="background-color: #960010;border-color: #960010;">
+                <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+</div>

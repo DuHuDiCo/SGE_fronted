@@ -127,8 +127,6 @@ export class BuscarClientesComponent implements OnInit {
             Swal.fire('Cliente Eliminado', 'El Cliente ha sido Eliminado Exitosamente', 'success')
           },
           (error) => {
-            
-
             Swal.fire('Error', 'Error al Eliminar el Cliente', 'error')
           }
         )

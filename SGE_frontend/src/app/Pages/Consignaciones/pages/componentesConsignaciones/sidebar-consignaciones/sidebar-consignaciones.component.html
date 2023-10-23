@@ -6,23 +6,29 @@
             style="background-color: rgb(255, 255, 255);"></button>
 
     </div>
-    <h2 style="color: rgb(255, 255, 255); font-size: 1.2em;font-weight: bold;" class="text-center">Departamento Cartera</h2>
+    <h2 style="color: rgb(255, 255, 255); font-size: 1.2em;font-weight: bold;" class="text-center">Departamento Cartera
+    </h2>
     <hr style="color: white;">
     <ul class="nav flex-column ">
 
         <li class="mb-1">
-            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#getting-started-collapse" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
                 Consignaciones
             </button>
-    
+
             <div class="collapse" id="getting-started-collapse" data-bs-dismiss="offcanvas">
                 <ul class="list-unstyled fw-normal pb-1 small">
-                    <li *appConsignacionesDirective="permisos[0]"> <button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/ingresar"><i class="fas fa-pen"></i>&nbsp; Ingresar</button></li>
+                    <li *appConsignacionesDirective="permisos[0]"> <button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/ingresar"><i class="fas fa-pen"></i>&nbsp;
+                            Ingresar</button></li>
 
-                    <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-consignaciones/consultar"><i class="fas fa-search"></i>
-                        &nbsp; Consultar</button></li>
-                    
-                    <li><button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/reportes"><i class="fas fa-times-circle"></i>
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/consultar"><i class="fas fa-search"></i>
+                            &nbsp; Consultar</button></li>
+
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/reportes"><i class="fas fa-times-circle"></i>
                             &nbsp; Reportes</button></li>
                 </ul>
             </div>
@@ -32,24 +38,55 @@
     <ul class="nav flex-column" *appConsignacionesDirective="permisos[22]">
 
         <li class="mb-1">
-            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#configuraciones" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#configuraciones" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
                 Configuraciones
             </button>
-    
+
             <div class="collapse" id="configuraciones" data-bs-dismiss="offcanvas">
                 <ul class="list-unstyled fw-normal pb-1 small">
 
-                    <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-consignaciones/bancos"><i class="fa-solid fa-building-columns"></i>
-                    &nbsp; Bancos</button></li>
-                    
-                    <li><button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/sucursales"><i class="fa-solid fa-location-dot"></i>
-                    &nbsp; Sucursales</button></li>
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/bancos"><i class="fa-solid fa-building-columns"></i>
+                            &nbsp; Bancos</button></li>
 
-                    <li><button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/estados"><i class="fa-solid fa-spinner"></i>
-                    &nbsp; Estados</button></li>
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/sucursales"><i class="fa-solid fa-location-dot"></i>
+                            &nbsp; Sucursales</button></li>
 
-                    <li><button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/obligaciones"><i class="fa-solid fa-file-contract"></i>
-                    &nbsp; Obligaciones</button></li>
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/estados"><i class="fa-solid fa-spinner"></i>
+                            &nbsp; Estados</button></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <ul class="nav flex-column" *appConsignacionesDirective="permisos[22]">
+
+        <li class="mb-1">
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#obligaciones" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+                Obligaciones
+            </button>
+
+            <div class="collapse" id="obligaciones" data-bs-dismiss="offcanvas">
+                <ul class="list-unstyled fw-normal pb-1 small">
+
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/obligaciones"><i
+                                class="fa-solid fa-file-contract"></i>
+                            &nbsp; Obligaciones</button></li>
+
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/tiposObligacion"><i class="fa-solid fa-file-word"></i>
+                            &nbsp; Tipos</button></li>
+
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/estadosObligacion"><i class="fa-solid fa-spinner"></i>
+                            &nbsp; Estados</button></li>
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/asesores"><i class="fa-solid fa-user-tie"></i>
+                            &nbsp; Asesores</button></li>
                 </ul>
             </div>
         </li>
@@ -57,18 +94,22 @@
     <hr style="color: white;" *appConsignacionesDirective="permisos[22]">
     <ul class="nav flex-column" *appConsignacionesDirective="permisos[23]">
         <li class="mb-1">
-            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse-i" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#getting-started-collapse-i" aria-expanded="false"><i
+                    class="fas fa-sort-down"></i>&nbsp;
                 Informes
             </button>
-    
+
             <div class="collapse" id="getting-started-collapse-i" data-bs-dismiss="offcanvas">
                 <ul class="list-unstyled fw-normal pb-1 small">
                     <!--<li> <button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/ingresar"><i class="fas fa-pen"></i>&nbsp; xxx</button></li> !/-->
 
-                    <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-consignaciones/consultar"><i class="fas fa-search"></i>
-                        &nbsp; Reporte de informes</button></li>
-                    
-                    <li><button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/reportes"><i class="fas fa-times-circle"></i>
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/consultar"><i class="fas fa-search"></i>
+                            &nbsp; Reporte de informes</button></li>
+
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/reportes"><i class="fas fa-times-circle"></i>
                             &nbsp; Eliminar informes</button></li>
                 </ul>
             </div>
@@ -76,13 +117,14 @@
     </ul>
     <hr style="color: white;" *appConsignacionesDirective="permisos[23]">
     <ul class="nav flex-column ">
-        
+
         <li class="nav-item">
-            <button (click)="logout()" class="nav-link active" aria-current="page"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</button>
+            <button (click)="logout()" class="nav-link active" aria-current="page"><i
+                    class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</button>
         </li>
-       
+
     </ul>
-    
-    
+
+
 
 </div>

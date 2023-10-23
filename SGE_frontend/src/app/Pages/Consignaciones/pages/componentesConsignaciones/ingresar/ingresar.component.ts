@@ -238,9 +238,10 @@ export class IngresarComponent implements OnInit {
     this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
       (data: any) => {
         this.obligacion = data
+        console.log(data);
         if (this.obligacion.length > 0) {
           this.tabla = true
-
+          
           return
         }
         if (this.obligacion.length <= 0) {
@@ -249,7 +250,8 @@ export class IngresarComponent implements OnInit {
           this.cedula = ''
           return
         }
-
+        
+        
 
 
       }, (error: any) => {
