@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BancoServiceService } from 'src/app/Services/Consignaciones/Bancos/banco-service.service';
 import { IngresarService } from 'src/app/Services/Consignaciones/IngresarConsignaciones/ingresar.service';
+import { ObligacionesService } from 'src/app/Services/Consignaciones/Obligaciones/obligaciones.service';
+import { SedeService } from 'src/app/Services/Consignaciones/Sedes/sede.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Plataforma } from 'src/app/Types/Banco';
 import { Con, ConRes, Consignacion, Obligacion } from 'src/app/Types/Consignaciones';
+import { Sede } from 'src/app/Types/Sede';
 import Swal from 'sweetalert2';
 
 declare var $: any;
@@ -16,16 +19,19 @@ declare var $: any;
 })
 export class IngresarComponent implements OnInit {
 
-  constructor(private ingresarService: IngresarService, private authService: AuthenticationService, private bancoService: BancoServiceService, private sanitizer: DomSanitizer) { }
+  constructor(private ingresarService: IngresarService,private obligacionService:ObligacionesService, private authService: AuthenticationService, private bancoService: BancoServiceService, private sanitizer: DomSanitizer, private sedeService:SedeService) { }
 
   ngOnInit(): void {
     this.getPlataforma()
+    this.getAllSede()
+    this.getAllAsesores()
   }
 
   cedula: string = ''
 
   tabla: boolean = false
   crearConsignacion: boolean = false
+  crearCliente: boolean = false
   con: ConRes = {
     mensaje: '',
     consigRes: []
@@ -43,7 +49,20 @@ export class IngresarComponent implements OnInit {
     username: ''
   }
 
+  cliente: any = {
+    nombres: '',
+    apellidos: '',
+    tipoDocumento: '',
+    numeroDocumento: '',
+    username: '',
+    numeroObligacion: '',
+    sede: '',
+    asesor: 0
+  }
+
   obligacion: Obligacion[] = []
+  sedes:Sede[] = []
+  asesores:any[] = []
 
   plataforma: any[] = []
 
@@ -219,12 +238,156 @@ export class IngresarComponent implements OnInit {
     )
   }
 
+  guardarCliente(){
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+    this.cliente.username = user
+
+    if(this.cliente.nombres.trim() == '' || this.cliente.nombres.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite Los Nombres Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cliente.apellidos.trim() == '' || this.cliente.apellidos.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite Los apellidos Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cliente.tipoDocumento.trim() == '' || this.cliente.tipoDocumento.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Elija El Tipo De Documento Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cliente.numeroDocumento.trim() == '' || this.cliente.numeroDocumento.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite El Número De Documento Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cliente.numeroObligacion.trim() == '' || this.cliente.numeroObligacion.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite El Número De Obligación Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cliente.sede.trim() == '' || this.cliente.sede.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Elija La Sede Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cliente.asesor == 0 || this.cliente.asesor == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Elija El Asesor Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+    
+    this.crearCliente = true
+
+    this.ingresarService.saveCliente(this.cliente).subscribe(
+      (data:any) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Felicidades',
+          text: 'Cliente Creado Exitosamente',
+          timer: 3000
+        })
+        this.crearCliente = false
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000);
+      }, (error:any) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Erro Al Crear El Cliente',
+          timer: 3000
+        })
+        this.crearCliente = false
+        this.cliente = {
+          nombres: '',
+          apellidos: '',
+          tipoDocumento: '',
+          numeroDocumento: '',
+          username: '',
+          numeroObligacion: '',
+          sede: '',
+          asesor: 0
+        }
+        console.log(error);
+        
+      }
+    )
+
+  }
+
+  getAllSede(){
+    this.sedeService.getSedes().subscribe(
+      (data:any) => {
+        this.sedes = data
+        console.log(data);
+      }, (error:any) => {
+        console.log(error);
+        
+      }
+    )
+  }
+
+  getAllAsesores() {
+    this.obligacionService.getAllAsesores().subscribe(
+      (data: any) => {
+        this.asesores = data
+        console.log(this.asesores);
+      }, (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
   showModal() {
     $('#myModal').modal('show');
   }
 
   showModalCon(){
     $('#modalConfirmar').modal('show');
+  }
+
+  showCliente(){
+    $('#modalCliente').modal('show')
   }
 
   getObligacionByCedula() {
@@ -245,7 +408,8 @@ export class IngresarComponent implements OnInit {
           return
         }
         if (this.obligacion.length <= 0) {
-          Swal.fire('Error', 'Digite Una Cédula Válida', 'error')
+          Swal.fire('Error', 'La Cédula No Pertenece A un Cliente', 'error')
+          this.showCliente()
           this.tabla = false
           this.cedula = ''
           return
@@ -334,6 +498,19 @@ export class IngresarComponent implements OnInit {
 
     this.cedula = ''
     this.tabla = false
+  }
+
+  cancelarCliente(){
+    this.cliente = {
+      nombres: '',
+      apellidos: '',
+      tipoDocumento: '',
+      numeroDocumento: '',
+      username: '',
+      numeroObligacion: '',
+      sede: '',
+      asesor: 0
+    }
   }
 
 
