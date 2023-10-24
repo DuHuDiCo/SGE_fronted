@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { SubirArchivoService } from 'src/app/Services/Archivo/SubirArchivos/subir-archivo.service';
 import { TipoArchivoService } from 'src/app/Services/Archivo/TipoArchivo/tipo-archivo.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
@@ -51,7 +52,7 @@ export class BuscarArchivosComponent implements OnInit {
     tipoArchivo: '',
     nombreArchivo: ''
   }
-  constructor(private buscarService:SubirArchivoService, private authService:AuthenticationService, private tipoArchivoService:TipoArchivoService, private sanitizer: DomSanitizer) { }
+  constructor(private buscarService:SubirArchivoService, private router:Router, private subirService:SubirArchivoService, private authService:AuthenticationService, private tipoArchivoService:TipoArchivoService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.getAllTipo()
@@ -79,7 +80,6 @@ export class BuscarArchivosComponent implements OnInit {
             this.obligacion.push(element.cuentaPorCobrar)
             this.numeroArc = element.archivos.length
           });
-          
           this.tabla = true
           this.filtro = false
           this.cedula = ''
@@ -102,6 +102,30 @@ export class BuscarArchivosComponent implements OnInit {
         }
       )
     }, 2000);
+  }
+
+  isEmpty(obligacion:string){
+    this.subirService.isEmpty(obligacion).subscribe(
+      (data:any) => {
+        if(data){
+          Swal.fire('Error', 'Esta Obligacion No Contiene Archivos, Puede Subirlos A continuación', 'error')
+          setTimeout(() => {
+            this.router.navigate(['/dashboard-archivos/subir-archivos'])
+          }, 3000);
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Felicidades',
+            text: 'Estos Son Los Archivos Encontrados',
+            timer: 2500
+          })
+          this.cards = true
+          this.tabla = false
+        }
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
   }
 
   getAllTipo(){
@@ -144,12 +168,8 @@ export class BuscarArchivosComponent implements OnInit {
     }
     this.subirArchivo.username = user
 
-    Swal.fire({
-      icon: 'success',
-      title: 'Felicidades',
-      text: 'Estos Son Los Archivos Encontrados',
-      timer: 2500
-    })
+    this.isEmpty(obligacion)
+
     this.archivos = this.datos[position].archivos
     this.archivos.forEach((element:any, index:number) => {
       var tipo = this.tiposArchivos.find((t:any) => t.tipoArchivo == element.tipoArchivo.tipoArchivo)
@@ -158,8 +178,6 @@ export class BuscarArchivosComponent implements OnInit {
         this.tiposArchivos.splice(position, 1)
       }
     });
-    this.cards = true
-    this.tabla = false
   }
 
   //LLENAR LOS MODALES CON SU PDF

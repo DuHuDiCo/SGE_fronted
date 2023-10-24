@@ -237,6 +237,10 @@ export class ConsultasComponent implements OnInit {
   sedeUser:string | null = ''
   selected!:boolean
 
+  tipoReporte:string = ''
+
+  botonGenerarPendientes:boolean = false
+
 
   private proSubscription!: Subscription;
 
@@ -772,7 +776,10 @@ export class ConsultasComponent implements OnInit {
 
   //METODO USADO EN EL HTML PARA LLAMAR LAS FUNCIONES DE CAMBIAR LOS BOTONES
   //SOLO DE COMPROBAR Y APLICAR
-  cambiarConsignacionTemporal(id: number, position: number, estado: string) {
+  cambiarConsignacionTemporal(id: number, position: number, estado: string, tipoReporte:string) {
+
+    alert(tipoReporte)
+    this.tipoReporte = tipoReporte
 
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
 
@@ -941,7 +948,7 @@ export class ConsultasComponent implements OnInit {
             btn_devolver_comprobadas_x.style.display = 'none'
             btn_devolver_comprobadas.style.display = 'block'
             btn_comprobar.outerHTML = boton_comprobar_activo
-            this.metodoCambiarTemporal(`btn_comprobar_consignaciones_${position}`, id, position, 'COMPROBADO')
+            this.metodoCambiarTemporal(`btn_comprobar_consignaciones_${position}`, id, position, 'COMPROBADO', 'COMPROBADAS')
 
           }
         }
@@ -951,7 +958,7 @@ export class ConsultasComponent implements OnInit {
             btn_devolver_aplicadas_x.style.display = 'none'
             btn_devolver_aplicadas.style.display = 'block'
             btn_aplicar.outerHTML = boton_aplicar_activo
-            this.metodoCambiarTemporal(`btn_aplicar_consignaciones_${position}`, id, position, 'APLICADO')
+            this.metodoCambiarTemporal(`btn_aplicar_consignaciones_${position}`, id, position, 'APLICADO', 'APLICADAS')
           }
         }
 
@@ -1143,9 +1150,9 @@ export class ConsultasComponent implements OnInit {
   }
 
   //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK PARA VOLVER DE NUEVO AL BOTON ORIGINAL
-  metodoCambiarTemporal(idElemento:string, idConsignacion:number, position:number, estado:string){
+  metodoCambiarTemporal(idElemento:string, idConsignacion:number, position:number, estado:string, tipoReporte:string){
     var x = document.getElementById(idElemento)
-    x?.addEventListener('click', () => this.cambiarConsignacionTemporal(idConsignacion, position, estado)); 
+    x?.addEventListener('click', () => this.cambiarConsignacionTemporal(idConsignacion, position, estado, tipoReporte)); 
   }
 
   //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK PARA VOLVER DE NUEVO AL BOTON ORIGINAL
@@ -1225,7 +1232,7 @@ export class ConsultasComponent implements OnInit {
     this.botonCambiarConsignacion = true
 
     setTimeout(() => {
-      this.consultarService.cambiarEstadoConsignacion(this.cambioArray).subscribe(
+      this.consultarService.cambiarEstadoConsignacion(this.cambioArray, this.tipoReporte).subscribe(
         (data: any) => {
           Swal.fire('Felicidades', 'Cambio Realizado Con Éxito', 'success')
           this.botonCambiarConsignacion = false
@@ -1286,6 +1293,39 @@ export class ConsultasComponent implements OnInit {
     }
 
     this.posicionDevolver = 0
+  }
+
+  //GENERAR REPORTE PENDIENTES
+  generarReportePendientes(){
+    this.botonGenerarPendientes = true
+      setTimeout(() => {
+        var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+        this.consultarService.reportesPendientes(user).subscribe(
+          (data:any) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Felicidades',
+              text: 'Reporte Generado Con Éxito',
+              timer: 3000
+            })
+            this.botonGenerarPendientes = false
+          }, (error:any) => {
+            console.log(error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error Al Generar El Reporte',
+              timer: 3000
+            })
+            this.botonGenerarPendientes = false
+          }
+        )
+      }, 2000);
+    
   }
 
 
