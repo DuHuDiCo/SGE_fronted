@@ -3,7 +3,7 @@ import { Usuario } from "./Usuario"
 export type Consignacion = {
   idConsignacion: number,
   numeroRecibo: string,
-  valor: number,
+  valor: number | null,
   fechaPago: Date,
   idPlataforma: number,
   observaciones: string | null,

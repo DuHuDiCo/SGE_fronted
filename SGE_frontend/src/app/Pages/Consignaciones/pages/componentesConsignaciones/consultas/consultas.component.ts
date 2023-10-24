@@ -614,7 +614,7 @@ export class ConsultasComponent implements OnInit {
       this.proSubscription = this.consultarService.proSubject.subscribe(
         (con: boolean) => {
           this.isCon = con;
-          this.cont = this.initialCon + (this.page * this.size);
+          this.cont = this.initialCon - (this.page * this.size);
         }
       );
       setTimeout(() => {
@@ -627,6 +627,15 @@ export class ConsultasComponent implements OnInit {
   goToPage(page: number) {
     this.page = page
     this.getRoles()
+    this.proSubscription = this.consultarService.proSubject.subscribe(
+      (con: boolean) => {
+        this.isCon = con;
+        this.cont = this.cont * page
+      }
+    );
+    setTimeout(() => {
+      this.proSubscription.unsubscribe()
+    }, 1000);
   }
 
   //CREAR UNA OBSERVACION A UN CONSIGNACION DESDE EL MODAL VER MÁS
