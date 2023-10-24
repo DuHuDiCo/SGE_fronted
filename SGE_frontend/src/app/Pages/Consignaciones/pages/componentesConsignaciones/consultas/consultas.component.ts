@@ -778,7 +778,7 @@ export class ConsultasComponent implements OnInit {
   //SOLO DE COMPROBAR Y APLICAR
   cambiarConsignacionTemporal(id: number, position: number, estado: string, tipoReporte:string) {
 
-    alert(tipoReporte)
+
     this.tipoReporte = tipoReporte
 
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
@@ -1106,7 +1106,7 @@ export class ConsultasComponent implements OnInit {
             btn_comprobar.style.display = 'block'
             btn_comprobar_x.style.display = 'none'
             btn_devolver_comprobadas.outerHTML = boton_devolver_comprobadas_activo
-            this.metodoCambiarDevolver(`btn_devolver_comprobadas_${position}`, id, position, 'DEVUELTA CONTABILIDAD')
+            this.metodoCambiarDevolver(`btn_devolver_comprobadas_${position}`, id, position, 'DEVUELTA CONTABILIDAD', 'COMPROBADAS')
           }
 
         }
@@ -1116,7 +1116,7 @@ export class ConsultasComponent implements OnInit {
             btn_aplicar.style.display = 'block'
             btn_aplicar_x.style.display = 'none'
             btn_devolver_aplicadas.outerHTML = boton_devolver_aplicadas_activo
-            this.metodoCambiarDevolver(`btn_devolver_aplicadas_${position}`, id, position, 'DEVUELTA CAJA')
+            this.metodoCambiarDevolver(`btn_devolver_aplicadas_${position}`, id, position, 'DEVUELTA CAJA', 'APLICADAS')
           }
         }
 
@@ -1127,7 +1127,9 @@ export class ConsultasComponent implements OnInit {
   //METODO QUE SE LLAMA EN "cambiarDevolver" PARA REALIZAR
   //TODOS LOS CAMBIOS DE BOTONES Y SUS RESPECTIVAS VALIDACIONES
   //SOLO PARA DEVOLVER CONTABILIDAD Y DEVOLVER CAJA
-  devolver(id: number, position: number, estado: string) {
+  devolver(id: number, position: number, estado: string, tipoReporte:string) {
+
+    this.tipoReporte = tipoReporte
 
     this.cambiarEstado.idConsignacion = id
     this.cambiarEstado.estado = estado
@@ -1140,6 +1142,9 @@ export class ConsultasComponent implements OnInit {
     this.cambiarEstado.username = user
 
     this.posicionDevolver = position
+
+    console.log(this.cambioArray);
+    
 
   }
 
@@ -1156,9 +1161,9 @@ export class ConsultasComponent implements OnInit {
   }
 
   //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK PARA VOLVER DE NUEVO AL BOTON ORIGINAL
-  metodoCambiarDevolver(idElemento:string, idConsignacion:number, position:number, estado:string){
+  metodoCambiarDevolver(idElemento:string, idConsignacion:number, position:number, estado:string, tipoReporte:string){
     var x = document.getElementById(idElemento)
-    x?.addEventListener('click', () => this.devolver(idConsignacion, position, estado)); 
+    x?.addEventListener('click', () => this.devolver(idConsignacion, position, estado, tipoReporte)); 
   }
 
   //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK DE MOSTRAR EL COMPROBANTE
