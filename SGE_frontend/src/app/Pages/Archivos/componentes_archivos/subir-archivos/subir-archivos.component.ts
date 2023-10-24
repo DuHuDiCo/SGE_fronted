@@ -229,7 +229,7 @@ export class SubirArchivosComponent implements OnInit {
     this.isEmpty(obligacion, accion)
   }
 
-  public obtenerFile(event: any, tipoArchivo: string) {
+  public obtenerFile(event: any, tipoArchivo:TipoArchivo) {
     var archivo = event.target.files[0];
     
     if (archivo.size > 1048576) {
@@ -248,7 +248,7 @@ export class SubirArchivosComponent implements OnInit {
     this.extraerBase64(archivo).then((file: any) => {
       this.nombresArchivos.push(archivo.name)
       this.base64.base46 = file.base;
-      this.base64.tipoArchivo = tipoArchivo
+      this.base64.tipoArchivo = tipoArchivo.tipoArchivo
       this.base64.nombreArchivo = archivo.name
       this.archivo.base64.push(this.base64)
       this.base64 = {

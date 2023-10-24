@@ -42,8 +42,8 @@ export class ConsultarService {
     return this.http.get(`${this.url}/consignacion/getConsignacionByCliente/${cedula}`)
   }
 
-  cambiarEstadoConsignacion(cambioEstado:any){
-    return this.http.put(`${this.url}/consignacion/changeEstadoOfConsignacionToComprobadas`, cambioEstado)
+  cambiarEstadoConsignacion(cambioEstado:any, tipoReporte:string){
+    return this.http.put(`${this.url}/consignacion/changeEstadoOfConsignacionToComprobadas?tipoReporte=${tipoReporte}`, cambioEstado)
   }
 
   listarComprobados(username:string, page:number, size:number){
@@ -52,6 +52,10 @@ export class ConsultarService {
 
   isSelected(selected:any){
     return this.http.put(`${this.url}/consignacion/isSelectedConsignacion`, selected)
+  }
+
+  reportesPendientes(username:string){
+    return this.http.get(`${this.url}/consignacion/reportePendientes?username=${username}`)
   }
 
 }

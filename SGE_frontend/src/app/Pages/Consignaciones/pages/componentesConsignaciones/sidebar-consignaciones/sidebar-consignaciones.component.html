@@ -65,6 +65,36 @@
             </div>
         </li>
     </ul>
+    <ul class="nav flex-column" *appConsignacionesDirective="permisos[22]">
+
+        <li class="mb-1">
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#obligaciones" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+                Obligaciones
+            </button>
+
+            <div class="collapse" id="obligaciones" data-bs-dismiss="offcanvas">
+                <ul class="list-unstyled fw-normal pb-1 small">
+
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/obligaciones"><i
+                                class="fa-solid fa-file-contract"></i>
+                            &nbsp; Obligaciones</button></li>
+
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/tiposObligacion"><i class="fa-solid fa-file-word"></i>
+                            &nbsp; Tipos</button></li>
+
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/estadosObligacion"><i class="fa-solid fa-spinner"></i>
+                            &nbsp; Estados</button></li>
+                    <li><button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/asesores"><i class="fa-solid fa-user-tie"></i>
+                            &nbsp; Asesores</button></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
     <hr style="color: white;" *appConsignacionesDirective="permisos[22]">
     <ul class="nav flex-column" *appConsignacionesDirective="permisos[23]">
         <li class="mb-1">

@@ -58,37 +58,37 @@
         <div class="col-md-12 col-12">
             <div *ngIf="botonFactura" class = "file">
                 <div class="input-group mb-3">
-                    <input (change)="obtenerFile($event, 'FACTURA')" type="file" class="form-control" accept=".pdf" max="1048576">
+                    <input (change)="obtenerFile($event, tiposArchivos[0])" type="file" class="form-control" accept=".pdf" max="1048576">
                   </div>
             </div>
             <div *ngIf="botonCredito" class = "file">
                 <div class="input-group mb-3">
-                    <input (change)="obtenerFile($event, 'CREDITO')" type="file" class="form-control" accept=".pdf" max="1048576">
+                    <input (change)="obtenerFile($event, tiposArchivos[1])" type="file" class="form-control" accept=".pdf" max="1048576">
                   </div>
             </div>
             <div *ngIf="botonAutorizacion" class = "file">
                 <div class="input-group mb-3">
-                    <input (change)="obtenerFile($event, 'AUTORIZACION')" type="file" class="form-control" accept=".pdf" max="1048576">
+                    <input (change)="obtenerFile($event, tiposArchivos[2])" type="file" class="form-control" accept=".pdf" max="1048576">
                   </div>
             </div>
             <div *ngIf="datosPersonales" class = "file">
                 <div class="input-group mb-3">
-                    <input (change)="obtenerFile($event, 'DATOSPERSONALES')" type="file" class="form-control" accept=".pdf" max="1048576">
+                    <input (change)="obtenerFile($event, tiposArchivos[3])" type="file" class="form-control" accept=".pdf" max="1048576">
                   </div>
             </div>
             <div *ngIf="botonCedulaCliente" class = "file">
                 <div class="input-group mb-3">
-                    <input (change)="obtenerFile($event, 'CEDULA')" type="file" class="form-control" accept=".pdf" max="1048576">
+                    <input (change)="obtenerFile($event, tiposArchivos[4])" type="file" class="form-control" accept=".pdf" max="1048576">
                   </div>
             </div>
             <div *ngIf="botonCedulaCodeudor" class = "file">
               <div class="input-group mb-3">
-                  <input (change)="obtenerFile($event, 'CEDULACODEUDOR')" type="file" class="form-control" accept=".pdf" max="1048576">
+                  <input (change)="obtenerFile($event, tiposArchivos[6])" type="file" class="form-control" accept=".pdf" max="1048576">
                 </div>
           </div>
             <div *ngIf="botonPagare" class = "file">
                 <div class="input-group mb-3">
-                    <input (change)="obtenerFile($event, 'PAGARE')" type="file" class="form-control" accept=".pdf" max="1048576">
+                    <input (change)="obtenerFile($event, tiposArchivos[5])" type="file" class="form-control" accept=".pdf" max="1048576">
                   </div>
             </div>
         </div>

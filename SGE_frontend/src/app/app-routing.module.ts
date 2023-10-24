@@ -68,7 +68,14 @@ import { CambioContrasenaComponent } from './componentesGenerales/cambio-contras
 import { SubirArchivosComponent } from './Pages/Archivos/componentes_archivos/subir-archivos/subir-archivos.component';
 import { TipoArchivoComponent } from './Pages/Archivos/componentes_archivos/tipo-archivo/tipo-archivo.component';
 import { BuscarArchivosComponent } from './Pages/Archivos/componentes_archivos/buscar-archivos/buscar-archivos.component';
-import { ConsignacionesListasComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/consignaciones-listas/consignaciones-listas.component';
+import { ObligacionesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/obligaciones/obligaciones.component';
+import { EstadosObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados-obligacion/estados-obligacion.component';
+import { TipoObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/tipo-obligacion/tipo-obligacion.component';
+import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/asesores/asesores.component';
+
+
+
+
 
 
 
@@ -183,10 +190,6 @@ const routes: Routes = [
         path: 'estados',
         component: EstadosComponent
       },
-      {
-        path: 'consignacionesListas',
-        component: ConsignacionesListasComponent
-      }
     ]
   },
 
@@ -289,15 +292,15 @@ const routes: Routes = [
     ]
   },
 
-  { path: 'Archivos', redirectTo: 'dashboard-archivos/archivos-exs', pathMatch: 'full' },
+  {path: 'Archivos', redirectTo:'dashboard-archivos/archivos-exs' , pathMatch:'full' },
   {
-    path: "dashboard-archivos",
-    component: DashboardArchivosComponent,
-    canActivate: [AuthenticationGuard],
-    children: [
+    path:"dashboard-archivos",
+    component:DashboardArchivosComponent,
+    canActivate:[AuthenticationGuard],
+    children:[
       {
-        path: 'archivos-exs',
-        component: ArchivosExsComponent
+        path:'archivos-exs',
+        component:ArchivosExsComponent
       },
       {
         path: 'subir-archivos',
