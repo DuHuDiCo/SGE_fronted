@@ -193,7 +193,16 @@ import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsi
     BancosComponent,
     EstadosComponent,
     SucursalesComponent,
-    ConsignacionesDirectiveDirective
+    ConsignacionesDirectiveDirective,
+    CambioContrasenaComponent,
+    SubirArchivosComponent,
+    TipoArchivoComponent,
+    BuscarArchivosComponent,
+    ArchivosDirective,
+    ObligacionesComponent,
+    EstadosObligacionComponent,
+    TipoObligacionComponent,
+    AsesoresComponent,
 
   ],
 
@@ -212,4 +221,4 @@ import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsi
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { }

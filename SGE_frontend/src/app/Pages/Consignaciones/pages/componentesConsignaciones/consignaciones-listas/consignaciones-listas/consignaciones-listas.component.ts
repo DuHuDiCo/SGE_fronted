@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ConsiganacionesRankingService } from 'src/app/Services/Consignaciones/consignaciones-ranking/consiganaciones-ranking.service';
+import { ConsiganacionesRankingService } from 'src/app/Services/Consignaciones/consignacionesRanking/consiganaciones-ranking-service.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
-import { ConsignacionRanking } from 'src/app/Types/consignacionesRanking';
+import { ConsignacionRanking } from 'src/app/Types/consignacionRanking';
+
 import Swal from 'sweetalert2';
 
 @Component({
