@@ -183,6 +183,9 @@ export class BancosComponent implements OnInit {
     this.bancoService.updateBancos(this.modal).subscribe(
       (data:any) => {
         Swal.fire('Felicidades', 'El Banco ha sido Actualizado Exitosamente', 'success')
+        setTimeout(() => {
+          window.location.reload()
+          }, 2000);
       }, (error:any) => {
         Swal.fire('Error', 'Error Al Editar El Banco', 'error')
         

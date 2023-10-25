@@ -25,8 +25,10 @@ export class ReportesComponent implements OnInit {
   username: string = 'null'
 
   botonFiltrar:boolean = false
+  filtro:boolean = false
   last: boolean = false
   first: boolean = false
+  filtrando:boolean = false
   cont: number = 1
   isCon: boolean = false
   initialCon: number = 1;
@@ -50,8 +52,8 @@ export class ReportesComponent implements OnInit {
     if (this.validarRol()) {
       this.reportesService.getAll(this.page, this.size, this.order).subscribe(
         (data:any) => {
-          this.reportes = data.content
           this.paginas = new Array(data.totalPages)
+          this.reportes = data.content
           this.last = data.last
           this.first = data.first
           this.reportesService.proSubject.next(true);
@@ -67,9 +69,12 @@ export class ReportesComponent implements OnInit {
       }
       this.reportesService.getFilesByUsername(this.page, this.size, this.order, user).subscribe(
         (data:any) => {
+          this.paginas = new Array(data.totalPages)
           this.reportes = data.content
-          console.log(this.reportes);
-          
+          this.last = data.last
+          this.first = data.first
+          this.reportesService.proSubject.next(true);
+          console.log(this.reportes);   
         }, (error:any) => {
           console.log(error);
         }
@@ -98,25 +103,21 @@ export class ReportesComponent implements OnInit {
       })
       return
     }
-    this.tipoReporte = 'null'
-      this.reportesService.filtro(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha).subscribe(
-        (data: any) => {
-          this.reportes = data.content
-          this.paginas = new Array(data.totalPages)
-          this.last = data.last
-          this.first = data.first
-          this.reportesService.proSubject.next(true);
-          console.log(this.reportes);
-        }, (error: any) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Error al Filtrar',
-            timer: 3000
-          })
-          console.log(error);
+    this.filtro = true
+    setTimeout(() => {
+      if(!this.validarRol()){
+        var user = this.authService.getUsername()
+
+        if (user == null || user == undefined) {
+          return
         }
-      )
+        this.username = user
+
+        this.filtrar(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha)
+      } else {
+        this.filtrar(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha)
+      }
+    }, 2000);
 
 
 
@@ -146,12 +147,10 @@ export class ReportesComponent implements OnInit {
     }
 
     if (this.fecha != 'null' || this.username != 'null') {
-      alert('abrir')
       this.botonFiltrar = true
     }
     
     if(this.fecha == 'null' && this.username == 'null'){
-      alert('cerrar')
       this.botonFiltrar = false
     }
   }
@@ -159,38 +158,122 @@ export class ReportesComponent implements OnInit {
   next() {
     if (!this.last) {
       this.page++
-      this.getFirts()
-      this.proSubscription = this.reportesService.proSubject.subscribe(
-        (con: boolean) => {
-          this.isCon = con;
-          this.cont = this.initialCon + (this.page * this.size);
-        }
-      );
-      setTimeout(() => {
-        this.proSubscription.unsubscribe()
-      }, 1000);
+      if(this.filtrando){
+        this.filtrar(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha)
+        this.proSubscription = this.reportesService.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont + this.size;
+            this.proSubscription.unsubscribe()
+          }
+        );
+      } else {
+        this.getFirts()
+        this.proSubscription = this.reportesService.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont + this.size;
+            this.proSubscription.unsubscribe()
+          }
+        );
+      }
+      
+      
     }
   }
 
   back() {
     if (!this.first) {
       this.page--
-      this.getFirts()
-      this.proSubscription = this.reportesService.proSubject.subscribe(
-        (con: boolean) => {
-          this.isCon = con;
-          this.cont = this.initialCon + (this.page * this.size);
-        }
-      );
-      setTimeout(() => {
-        this.proSubscription.unsubscribe()
-      }, 1000);
+      if(this.filtrando){
+        this.filtrar(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha)
+        this.proSubscription = this.reportesService.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont - this.size;
+            this.proSubscription.unsubscribe()
+          }
+        );
+      } else {
+        this.getFirts()
+        this.proSubscription = this.reportesService.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont - this.size;
+            this.proSubscription.unsubscribe()
+          }
+        );
+      }
     }
   }
 
   goToPage(page: number) {
     this.page = page
-    this.getFirts()
+    if(this.filtrando){
+      this.filtrar(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha)
+      this.proSubscription = this.reportesService.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.size);
+          this.proSubscription.unsubscribe()
+        }
+      );
+    } else {
+      this.getFirts()
+      this.proSubscription = this.reportesService.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.size);
+          this.proSubscription.unsubscribe()
+        }
+      );
+    }
+  }
+
+  filtrar(page:number, size:number, order:string, tipoReporte:string, username:string, fecha:string){
+    this.tipoReporte = 'null'
+      this.reportesService.filtro(page, size, order, tipoReporte, username, fecha).subscribe(
+        (data: any) => {
+          this.filtrando = true
+          if(data.content.length == 0){
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se Encontraron Reportes Con Estos Filtros',
+              timer: 3000
+            })
+            this.botonFiltrar = false
+            this.filtro = false
+            this.fecha = 'null'
+            this.username = 'null'
+            this.getFirts()
+          } else {
+            Swal.fire({
+              icon: 'success',
+              title: 'Felicidades',
+              text: 'Estos Son Los Reportes Encontrados',
+              timer: 3000
+            })
+
+            this.reportes = data.content
+            this.paginas = new Array(data.totalPages)
+            this.last = data.last
+            this.first = data.first
+            this.reportesService.proSubject.next(true);
+            console.log(this.reportes);
+            this.filtro = false
+          }
+        }, (error: any) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al Filtrar',
+            timer: 3000
+          })
+          console.log(error);
+          this.filtro = false
+        }
+      )
   }
 
   

@@ -596,11 +596,11 @@ export class ConsultasComponent implements OnInit {
   next() {
     if (!this.last) {
       this.page++
-      if(this.filtrando){
+      if (this.filtrando) {
         this.filtrar(this.estado, this.fecha, this.sede, this.page, this.sizes)
         this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
           (con: boolean) => {
-            
+
             this.isCon = con;
             this.cont = this.cont + this.size
             this.proSubscriptionNext.unsubscribe()
@@ -609,13 +609,13 @@ export class ConsultasComponent implements OnInit {
       } else {
         this.getRoles()
         this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
-        (con: boolean) => {
-          
-          this.isCon = con;
-          this.cont = this.cont + this.size
-          this.proSubscriptionNext.unsubscribe()
-        }
-      );
+          (con: boolean) => {
+
+            this.isCon = con;
+            this.cont = this.cont + this.size
+            this.proSubscriptionNext.unsubscribe()
+          }
+        );
       }
     }
   }
@@ -624,11 +624,11 @@ export class ConsultasComponent implements OnInit {
   back() {
     if (!this.first) {
       this.page--
-      if(this.filtrando){
+      if (this.filtrando) {
         this.filtrar(this.estado, this.fecha, this.sede, this.page, this.sizes)
         this.proSubscriptionBack = this.consultarService.proSubject.subscribe(
           (con: boolean) => {
-            
+
             this.isCon = con;
             this.cont = this.cont - this.size
             this.proSubscriptionBack.unsubscribe()
@@ -638,21 +638,21 @@ export class ConsultasComponent implements OnInit {
         this.getRoles()
         this.proSubscriptionBack = this.consultarService.proSubject.subscribe(
           (con: boolean) => {
-            
+
             this.isCon = con;
             this.cont = this.cont - this.size
             this.proSubscriptionBack.unsubscribe()
           }
         );
       }
-      
+
     }
   }
 
   //IR A UNA PAGINA ESPECIFICA
   goToPage(page: number) {
     this.page = page
-    if(this.filtrando){
+    if (this.filtrando) {
       this.filtrar(this.estado, this.fecha, this.sede, this.page, this.sizes)
       this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
         (con: boolean) => {
@@ -671,8 +671,8 @@ export class ConsultasComponent implements OnInit {
         }
       );
     }
-    
-    
+
+
   }
 
   //CREAR UNA OBSERVACION A UN CONSIGNACION DESDE EL MODAL VER MÁS
@@ -730,7 +730,7 @@ export class ConsultasComponent implements OnInit {
     this.botonFiltrar = true
     this.spinner = true
     setTimeout(() => {
-      this.filtrar(this.estado,this.fecha,this.sede,this.pages,this.sizes)
+      this.filtrar(this.estado, this.fecha, this.sede, this.pages, this.sizes)
     }, 2000);
 
   }
@@ -1219,7 +1219,7 @@ export class ConsultasComponent implements OnInit {
       this.cambiarEstado.idConsignacion = this.cambiarEstado.idConsignacion
       this.cambiarEstado.estado = this.cambiarEstado.estado
       this.cambiarEstado.observacion = this.cambiarEstado.observacion.trim()
-      
+
       var user = this.authService.getUsername()
 
       if (user == null || user == undefined) {
@@ -1234,7 +1234,7 @@ export class ConsultasComponent implements OnInit {
       this.enviarIsSelected(this.isSelected)
 
       console.log(this.cambioArray);
-      
+
 
       this.cambios = true
     }
@@ -1343,25 +1343,41 @@ export class ConsultasComponent implements OnInit {
   }
 
 
-  filtrar(estado:string, fecha:any, sede:string, pages:number,sizes:number){
+  filtrar(estado: string, fecha: any, sede: string, pages: number, sizes: number) {
     this.consultarService.filter(estado, fecha, sede, pages, sizes).subscribe(
       (data: any) => {
         this.filtrando = true
-        this.con = data.content
-        this.botones = new Array<boolean>(this.con.length).fill(false)
-        this.botonFiltrar = false
-        this.paginas = new Array(data.totalPages)
-        this.last = data.last
-        this.first = data.first
-        this.spinner = false
-        this.con.forEach((c: any) => {
-          c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
-        })
-        console.log(data);
 
-
-        this.consultarService.proSubject.next(true);
-
+        if (data.content.length == 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se Encontraron Consignaciones Con Estos Filtros',
+            timer: 3000
+          })
+          this.spinner = false
+          this.botonFiltrar = false
+          this.estado = 'null'
+          this.fecha = 'null'
+          this.sede = 'null'
+          this.filtro = false
+          
+          this.getRoles()
+          
+        } else {
+          this.con = data.content
+          this.botones = new Array<boolean>(this.con.length).fill(false)
+          this.botonFiltrar = false
+          this.paginas = new Array(data.totalPages)
+          this.last = data.last
+          this.first = data.first
+          this.spinner = false
+          this.con.forEach((c: any) => {
+            c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
+          })
+          console.log(data);
+          this.consultarService.proSubject.next(true);
+        }
       }, (error: any) => {
         this.botonFiltrar = false
         this.spinner = false

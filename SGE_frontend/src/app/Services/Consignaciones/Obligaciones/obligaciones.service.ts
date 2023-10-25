@@ -22,7 +22,7 @@ export class ObligacionesService {
   }
 
   updateEstado(estado:any){
-    return this.http.put(`${baseUrl}/estado/editarEstado`, estado)
+    return this.http.put(`${baseUrl}/cartera/estado/editarEstado`, estado)
   }
 
   // METODOS TIPOS

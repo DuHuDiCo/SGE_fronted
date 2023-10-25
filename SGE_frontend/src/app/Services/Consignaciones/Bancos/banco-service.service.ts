@@ -23,7 +23,7 @@ export class BancoServiceService {
   }
 
   saveBanco(banco:Plataforma){
-    return this.http.post(`${baseUrl}/consignacion/consignacion/platform/savePlatform`, banco)
+    return this.http.post(`${baseUrl}/consignacion/platform/savePlatform`, banco)
   }
 
   getBancos(){
