@@ -748,17 +748,32 @@ export class ConsultasComponent implements OnInit {
 
   //FILTRAR UNA CONSIGNACION POR CEDULA DEL CLIENTE
   getConsignacionByCedula() {
-    this.con = []
+    if(this.cedula == '' || this.cedula == null){
+    }
     this.consultarService.getConsignacionByCedula(this.cedula).subscribe(
       (data: any) => {
+        if(data.length == 0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No Hay Consignaciones Con Este Filtro',
+            timer: 3000
+          })
+          return
+        }
+        
         this.con = data
         this.con.forEach((element: any) => {
           element.actualizaciones = element.actualizaciones.filter((a: any) => a.isCurrent == true)
         });
-
-
+        Swal.fire({
+          icon: 'success',
+          title: 'Felicidades',
+          text: 'Estas Fueron Las Consignaciones Encontradas',
+          timer: 3000
+        })
       }, (error: any) => {
-
+        console.log(error);
       }
     )
   }
