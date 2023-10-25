@@ -240,6 +240,7 @@ export class ConsultasComponent implements OnInit {
   tipoReporte: string = ''
 
   botonGenerarPendientes: boolean = false
+  filtrando: boolean = false
 
 
   private proSubscriptionNext!: Subscription;
@@ -595,8 +596,19 @@ export class ConsultasComponent implements OnInit {
   next() {
     if (!this.last) {
       this.page++
-      this.getRoles()
-      this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
+      if(this.filtrando){
+        this.filter()
+        this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
+          (con: boolean) => {
+            
+            this.isCon = con;
+            this.cont = this.cont + this.size
+            this.proSubscriptionNext.unsubscribe()
+          }
+        );
+      } else {
+        this.getRoles()
+        this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
         (con: boolean) => {
           
           this.isCon = con;
@@ -604,10 +616,7 @@ export class ConsultasComponent implements OnInit {
           this.proSubscriptionNext.unsubscribe()
         }
       );
-      // setTimeout(() => {
-
-      //   this.proSubscriptionNext.unsubscribe()
-      // }, 1000);
+      }
     }
   }
 
@@ -615,15 +624,27 @@ export class ConsultasComponent implements OnInit {
   back() {
     if (!this.first) {
       this.page--
-      this.getRoles()
-      this.proSubscriptionBack = this.consultarService.proSubject.subscribe(
-        (con: boolean) => {
-          
-          this.isCon = con;
-          this.cont = this.cont - this.size
-          this.proSubscriptionBack.unsubscribe()
-        }
-      );
+      if(this.filtrando){
+        this.filter()
+        this.proSubscriptionBack = this.consultarService.proSubject.subscribe(
+          (con: boolean) => {
+            
+            this.isCon = con;
+            this.cont = this.cont - this.size
+            this.proSubscriptionBack.unsubscribe()
+          }
+        );
+      } else {
+        this.getRoles()
+        this.proSubscriptionBack = this.consultarService.proSubject.subscribe(
+          (con: boolean) => {
+            
+            this.isCon = con;
+            this.cont = this.cont - this.size
+            this.proSubscriptionBack.unsubscribe()
+          }
+        );
+      }
       
     }
   }
@@ -631,14 +652,26 @@ export class ConsultasComponent implements OnInit {
   //IR A UNA PAGINA ESPECIFICA
   goToPage(page: number) {
     this.page = page
-    this.getRoles()
-    this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
-      (con: boolean) => {
-        this.isCon = con;
-        this.cont = this.initialCon + (this.page * this.sizes);
-        this.proSubscriptionNext.unsubscribe()
-      }
-    );
+    if(this.filtrando){
+      this.filter()
+      this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.sizes);
+          this.proSubscriptionNext.unsubscribe()
+        }
+      );
+    } else {
+      this.getRoles()
+      this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.sizes);
+          this.proSubscriptionNext.unsubscribe()
+        }
+      );
+    }
+    
     
   }
 
@@ -699,6 +732,7 @@ export class ConsultasComponent implements OnInit {
     setTimeout(() => {
       this.consultarService.filter(this.estado, this.fecha, this.sede, this.pages, this.sizes).subscribe(
         (data: any) => {
+          this.filtrando = true
           this.con = data.content
           this.botones = new Array<boolean>(this.con.length).fill(false)
           this.botonFiltrar = false
@@ -1225,6 +1259,8 @@ export class ConsultasComponent implements OnInit {
       this.cambiarDevolver(this.cambiarEstado.idConsignacion, this.posicionDevolver, 'DESACTIVAR', this.cambiarEstado.estado)
       this.cambiarEstado.idConsignacion = this.cambiarEstado.idConsignacion
       this.cambiarEstado.estado = this.cambiarEstado.estado
+      this.cambiarEstado.observacion = this.cambiarEstado.observacion.trim()
+      
       var user = this.authService.getUsername()
 
       if (user == null || user == undefined) {
@@ -1238,7 +1274,8 @@ export class ConsultasComponent implements OnInit {
       this.isSelected.opcion = 'SELECCIONAR'
       this.enviarIsSelected(this.isSelected)
 
-
+      console.log(this.cambioArray);
+      
 
       this.cambios = true
     }
