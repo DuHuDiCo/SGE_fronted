@@ -597,7 +597,7 @@ export class ConsultasComponent implements OnInit {
     if (!this.last) {
       this.page++
       if(this.filtrando){
-        this.filter()
+        this.filtrar(this.estado, this.fecha, this.sede, this.page, this.sizes)
         this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
           (con: boolean) => {
             
@@ -625,7 +625,7 @@ export class ConsultasComponent implements OnInit {
     if (!this.first) {
       this.page--
       if(this.filtrando){
-        this.filter()
+        this.filtrar(this.estado, this.fecha, this.sede, this.page, this.sizes)
         this.proSubscriptionBack = this.consultarService.proSubject.subscribe(
           (con: boolean) => {
             
@@ -653,7 +653,7 @@ export class ConsultasComponent implements OnInit {
   goToPage(page: number) {
     this.page = page
     if(this.filtrando){
-      this.filter()
+      this.filtrar(this.estado, this.fecha, this.sede, this.page, this.sizes)
       this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
         (con: boolean) => {
           this.isCon = con;
@@ -730,48 +730,7 @@ export class ConsultasComponent implements OnInit {
     this.botonFiltrar = true
     this.spinner = true
     setTimeout(() => {
-      this.consultarService.filter(this.estado, this.fecha, this.sede, this.pages, this.sizes).subscribe(
-        (data: any) => {
-          this.filtrando = true
-          this.con = data.content
-          this.botones = new Array<boolean>(this.con.length).fill(false)
-          this.botonFiltrar = false
-          this.paginas = new Array(data.totalPages)
-          this.last = data.last
-          this.first = data.first
-          this.spinner = false
-          this.con.forEach((c: any) => {
-            c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
-          })
-          console.log(data);
-
-
-          if (this.con.length <= 0) {
-            this.botonFiltrar = false
-            this.spinner = false
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'No hay Datos Con Este Filtro',
-              confirmButtonText: 'Ok',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.estado = 'null'
-                this.sede = 'null'
-                this.fecha = 'null'
-                this.filtro = false
-                this.getRoles()
-              }
-            })
-
-            return
-          }
-
-        }, (error: any) => {
-          this.botonFiltrar = false
-          this.spinner = false
-        }
-      )
+      this.filtrar(this.estado,this.fecha,this.sede,this.pages,this.sizes)
     }, 2000);
 
   }
@@ -1383,5 +1342,31 @@ export class ConsultasComponent implements OnInit {
 
   }
 
+
+  filtrar(estado:string, fecha:any, sede:string, pages:number,sizes:number){
+    this.consultarService.filter(estado, fecha, sede, pages, sizes).subscribe(
+      (data: any) => {
+        this.filtrando = true
+        this.con = data.content
+        this.botones = new Array<boolean>(this.con.length).fill(false)
+        this.botonFiltrar = false
+        this.paginas = new Array(data.totalPages)
+        this.last = data.last
+        this.first = data.first
+        this.spinner = false
+        this.con.forEach((c: any) => {
+          c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
+        })
+        console.log(data);
+
+
+        this.consultarService.proSubject.next(true);
+
+      }, (error: any) => {
+        this.botonFiltrar = false
+        this.spinner = false
+      }
+    )
+  }
 
 }
