@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Consignacion, ObservacionDto } from 'src/app/Types/Consignaciones';
+import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
   providedIn: 'root'
@@ -15,47 +16,47 @@ export class ConsultarService {
   url = 'http://192.168.1.183:8007/api/v1'
 
   getAllConsignaciones(estado:string, page:number, size:number){
-    return this.http.get(`${this.url}/consignacion/getAllConsignaciones?estado=${estado}&page=${page}&size=${size}`)
+    return this.http.get(`${baseUrl}/consignacion/getAllConsignaciones?estado=${estado}&page=${page}&size=${size}`)
   }
 
   getConsignacionById(id:number){
-    return this.http.get(`${this.url}/consignacion/getConsignacionById/${id}`)
+    return this.http.get(`${baseUrl}/consignacion/getConsignacionById/${id}`)
   }
 
   updateConsignacion(consignacion:Consignacion){
-    return this.http.put(`${this.url}/consignacion/editarConsignacion`, consignacion)
+    return this.http.put(`${baseUrl}/consignacion/editarConsignacion`, consignacion)
   }
 
   saveObservacion(observacion:ObservacionDto){
-    return this.http.post(`${this.url}/observacion/save`, observacion)
+    return this.http.post(`${baseUrl}/consignacion/observacion/save`, observacion)
   }
 
   filter(estado:string, fecha:string, sede:string, page:number, size:number){
-    return this.http.get(`${this.url}/consignacion/filtrarConsignaciones?estado=${estado}&fecha=${fecha}&sede=${sede}&page=${page}&size=${size}`)
+    return this.http.get(`${baseUrl}/consignacion/filtrarConsignaciones?estado=${estado}&fecha=${fecha}&sede=${sede}&page=${page}&size=${size}`)
   }
 
   getAllSede(){
-    return this.http.get(`http://192.168.1.241:8006/api/v1/sede/getAllSedes`)
+    return this.http.get(`http://192.168.1.241:8006/api/v1/cartera/sede/getAllSedes`)
   }
 
   getConsignacionByCedula(cedula:string){
-    return this.http.get(`${this.url}/consignacion/getConsignacionByCliente/${cedula}`)
+    return this.http.get(`${baseUrl}/consignacion/getConsignacionByCliente/${cedula}`)
   }
 
   cambiarEstadoConsignacion(cambioEstado:any, tipoReporte:string){
-    return this.http.put(`${this.url}/consignacion/changeEstadoOfConsignacionToComprobadas?tipoReporte=${tipoReporte}`, cambioEstado)
+    return this.http.put(`${baseUrl}/consignacion/changeEstadoOfConsignacionToComprobadas?tipoReporte=${tipoReporte}`, cambioEstado)
   }
 
   listarComprobados(username:string, page:number, size:number){
-    return this.http.get(`${this.url}/consignacion/consignacionesComprobadas?username=${username}&page=${page}&size=${size}`)
+    return this.http.get(`${baseUrl}/consignacion/consignacionesComprobadas?username=${username}&page=${page}&size=${size}`)
   }
 
   isSelected(selected:any){
-    return this.http.put(`${this.url}/consignacion/isSelectedConsignacion`, selected)
+    return this.http.put(`${baseUrl}/consignacion/isSelectedConsignacion`, selected)
   }
 
   reportesPendientes(username:string){
-    return this.http.get(`${this.url}/consignacion/reportePendientes?username=${username}`)
+    return this.http.get(`${baseUrl}/consignacion/reportePendientes?username=${username}`)
   }
 
 }

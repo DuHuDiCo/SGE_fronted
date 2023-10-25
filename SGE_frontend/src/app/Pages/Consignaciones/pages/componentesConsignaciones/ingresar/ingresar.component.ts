@@ -40,7 +40,7 @@ export class IngresarComponent implements OnInit {
   consignacion: Consignacion = {
     idConsignacion: 0,
     numeroRecibo: '',
-    valor: 0,
+    valor: null,
     fechaPago: new Date,
     idPlataforma: 0,
     observaciones: '',
@@ -57,7 +57,7 @@ export class IngresarComponent implements OnInit {
     username: '',
     numeroObligacion: '',
     sede: '',
-    asesor: 0
+    asesor: ''
   }
 
   obligacion: Obligacion[] = []
@@ -327,9 +327,20 @@ export class IngresarComponent implements OnInit {
           timer: 3000
         })
         this.crearCliente = false
-        setTimeout(() => {
-          window.location.reload()
-        }, 2000);
+
+        this.cedula = this.cliente.numeroDocumento
+
+        this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
+          (data:any) => {
+            this.obligacion = data
+            if (this.obligacion.length > 0) {
+              this.tabla = true
+              return
+            }
+          }, (error:any) => {
+            console.log(error);
+          }
+        )
       }, (error:any) => {
         Swal.fire({
           icon: 'error',

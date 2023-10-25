@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
   providedIn: 'root'
@@ -8,44 +9,44 @@ export class ObligacionesService {
 
   constructor(private http:HttpClient) { }
 
-  url = 'http://192.168.1.183:8006/api/v1'
+  url = 'http://192.168.1.241:8006/api/v1/cartera'
 
   // METODOS ESTADO
 
   saveEstado(estado:string){
-    return this.http.post(`${this.url}/estado/saveEstado`, estado)
+    return this.http.post(`${baseUrl}/cartera/estado/saveEstado`, estado)
   }
 
   getAllEstado(){
-    return this.http.get(`${this.url}/estado/getAllEstados`)
+    return this.http.get(`${baseUrl}/cartera/estado/getAllEstados`)
   }
 
   updateEstado(estado:any){
-    return this.http.put(`${this.url}/estado/editarEstado`, estado)
+    return this.http.put(`${baseUrl}/estado/editarEstado`, estado)
   }
 
   // METODOS TIPOS
 
   saveTipo(tipo:string){
-    return this.http.post(`${this.url}/tipoCuentaCobrar/save`, tipo)
+    return this.http.post(`${baseUrl}/cartera/tipoCuentaCobrar/save`, tipo)
   }
 
   getAllTipo(){
-    return this.http.get(`${this.url}/tipoCuentaCobrar/allTipoCuentas`)
+    return this.http.get(`${baseUrl}/cartera/tipoCuentaCobrar/allTipoCuentas`)
   }
 
   updateTipo(tipo:any){
-    return this.http.put(`${this.url}/tipoCuentaCobrar/editTipoCuenta`, tipo)
+    return this.http.put(`${baseUrl}/cartera/tipoCuentaCobrar/editTipoCuenta`, tipo)
   }
 
   // METODOS ASESORES
 
   saveAsesores(asesor:number){
-    return this.http.post(`${this.url}/asesor/save`, asesor)
+    return this.http.post(`${baseUrl}/asesor/save`, asesor)
   }
 
   getAllAsesores(){
-    return this.http.get(`${this.url}/asesor/allAsesores`)
+    return this.http.get(`${baseUrl}/cartera/asesor/allAsesores`)
   }
 
   getUsuarioByRol(rolId:number){
@@ -54,7 +55,7 @@ export class ObligacionesService {
 
   // METODOS OBLIGACIONES
   saveObligacion(obligacion:any){
-    return this.http.post(`${this.url}/cartera/cuentasPorCobrar`, obligacion)
+    return this.http.post(`${baseUrl}/cartera/cuentasPorCobrar`, obligacion)
   }
 
   

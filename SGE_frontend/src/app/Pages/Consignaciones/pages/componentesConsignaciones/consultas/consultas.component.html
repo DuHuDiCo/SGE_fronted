@@ -167,7 +167,7 @@
             <!-- DEVOLVER DE COMPROBADAS -->
             <span *appConsignacionesDirective="permisos[3]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD')" class="btn btn-sm btn-warning ms-2"
+                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD', 'COMPROBADAS')" class="btn btn-sm btn-warning ms-2"
                 data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_comprobadas_{{i}}"><i
                   class="fa-solid fa-backward"></i></button>
             </span>
@@ -182,7 +182,7 @@
             <span *appConsignacionesDirective="permisos[4]">
               <button
                 *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado && c.sede == sedeUser"
-                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CAJA')" class="btn btn-sm btn-warning ms-2"
+                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CAJA', 'APLICADAS')" class="btn btn-sm btn-warning ms-2"
                 data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_aplicadas_{{i}}"><i
                   class="fa-solid fa-backward"></i></button>
             </span>
