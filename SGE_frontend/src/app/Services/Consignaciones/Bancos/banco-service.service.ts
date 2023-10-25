@@ -1,3 +1,4 @@
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Plataforma } from 'src/app/Types/Banco';
@@ -13,27 +14,27 @@ export class BancoServiceService {
   constructor(private http:HttpClient) { }
 
   save(tipoPago:tipoPago){
-    return this.http.post(`${this.url}/tipoPago/saveTipoPag`, tipoPago)
+    return this.http.post(`${this.url}/consignacion/tipoPago/saveTipoPag`, tipoPago)
   }
 
   getTipoPago(){
-    return this.http.get(`${this.url}/tipoPago/getAllTipoPago`)
+    return this.http.get(`${this.url}/consignacion/tipoPago/getAllTipoPago`)
   }
 
   saveBanco(banco:Plataforma){
-    return this.http.post(`${this.url}/platform/savePlatform`, banco)
+    return this.http.post(`${this.url}/consignacion/consignacion/platform/savePlatform`, banco)
   }
 
   getBancos(){
-    return this.http.get(`${this.url}/platform/getAllPlatforms`)
+    return this.http.get(`${this.url}/consignacion/platform/getAllPlatforms`)
   }
 
   getBancosById(id:number){
-    return this.http.get(`${this.url}/platform/getPlataformaById/${id}`)
+    return this.http.get(`${this.url}/consignacion/platform/getPlataformaById/${id}`)
   }
 
   updateBancos(banco:Plataforma){
-    return this.http.put(`${this.url}/platform/plataforma`, banco)
+    return this.http.put(`${this.url}/consignacion/platform/plataforma`, banco)
   }
 
 

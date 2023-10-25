@@ -12,18 +12,18 @@ export class EstadoServiceService {
   url = 'http://192.168.1.183:8007/api/v1'
 
   saveEstado(estado:Estado){
-    return this.http.post(`${this.url}/estado/saveEstado`, estado)
+    return this.http.post(`${this.url}/consignacion/estado/saveEstado`, estado)
   }
 
   getAll(){
-    return this.http.get(`${this.url}/estado/getAllEstados`)
+    return this.http.get(`${this.url}/consignacion/estado/getAllEstados`)
   }
 
   getEstadoById(idEstado:number){
-    return this.http.get(`${this.url}/estado/getEstadoById/${idEstado}`)
+    return this.http.get(`${this.url}/consignacion/estado/getEstadoById/${idEstado}`)
   }
 
   updateEstado(estado:Estado){
-    return this.http.put(`${this.url}/estado/editarEstado`, estado)
+    return this.http.put(`${this.url}/consignacion/estado/editarEstado`, estado)
   }
 }

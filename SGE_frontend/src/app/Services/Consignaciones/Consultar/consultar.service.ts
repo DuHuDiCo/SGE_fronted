@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Consignacion, ObservacionDto } from 'src/app/Types/Consignaciones';
+import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class ConsultarService {
   }
 
   saveObservacion(observacion:ObservacionDto){
-    return this.http.post(`${this.url}/observacion/save`, observacion)
+    return this.http.post(`${this.url}/consignacion/observacion/save`, observacion)
   }
 
   filter(estado:string, fecha:string, sede:string, page:number, size:number){
@@ -35,7 +36,7 @@ export class ConsultarService {
   }
 
   getAllSede(){
-    return this.http.get(`http://192.168.1.241:8006/api/v1/sede/getAllSedes`)
+    return this.http.get(`http://192.168.1.241:8006/api/v1/cartera/sede/getAllSedes`)
   }
 
   getConsignacionByCedula(cedula:string){
@@ -55,7 +56,7 @@ export class ConsultarService {
   }
 
   reportesPendientes(username:string){
-    return this.http.get(`${this.url}/consignacion/reportePendientes?username=${username}`)
+    return this.http.get(`${baseUrl}/consignacion/reportePendientes?username=${username}`)
   }
 
 }

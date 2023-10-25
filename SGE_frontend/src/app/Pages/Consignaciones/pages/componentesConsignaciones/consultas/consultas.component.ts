@@ -193,7 +193,7 @@ export class ConsultasComponent implements OnInit {
     username: '',
     observacion: ''
   }
-  isSelected:IsSelected = {
+  isSelected: IsSelected = {
     idConsignacion: 0,
     username: '',
     opcion: '',
@@ -222,8 +222,8 @@ export class ConsultasComponent implements OnInit {
   spinner: boolean = true
   filtro: boolean = false
   cambios: boolean = false
-  botonFiltrar:boolean = false
-  botonCambiarConsignacion:boolean = false
+  botonFiltrar: boolean = false
+  botonCambiarConsignacion: boolean = false
 
   estado: string = 'null'
   fecha: any = 'null'
@@ -234,15 +234,16 @@ export class ConsultasComponent implements OnInit {
   posicionDevolver: number = 0
   clickeado: string = ''
 
-  sedeUser:string | null = ''
-  selected!:boolean
+  sedeUser: string | null = ''
+  selected!: boolean
 
-  tipoReporte:string = ''
+  tipoReporte: string = ''
 
-  botonGenerarPendientes:boolean = false
+  botonGenerarPendientes: boolean = false
 
 
-  private proSubscription!: Subscription;
+  private proSubscriptionNext!: Subscription;
+  private proSubscriptionBack!: Subscription;
 
   constructor(private authService: AuthenticationService, private consultarService: ConsultarService, private bancoService: BancoServiceService, private ingresarService: IngresarService, private estadoService: EstadoServiceService, private sanitizer: DomSanitizer) { }
 
@@ -298,7 +299,7 @@ export class ConsultasComponent implements OnInit {
         }, (error: any) => {
           Swal.fire('Error', 'Error al Actualizar La Consignación', 'error')
           this.editarCon = false
-          
+
         }
       )
     }, 2000);
@@ -306,55 +307,56 @@ export class ConsultasComponent implements OnInit {
 
   //OBTENER EL ROL Y PERMISO DEL USUARIO
   getRoles() {
+
     var roles = this.authService.getRolesP()
 
-    
+
     var permiso: any = {}
     permiso = roles.permisos.find((pe: any) => pe.permiso.startsWith('CONSULTAR'))
-    
+
     var arrayP = permiso.permiso.split(" ")
     var p = arrayP[1].substring(0, arrayP[1].length - 1)
     this.estadoConsignacion = p
-    
+
 
     this.getConsignaciones(p)
   }
 
   //TRAER LAS CONSIGNACIONES CON VALIDACIONES SEGUN EL PERMISO
-  getConsignaciones(p: string) { 
+  getConsignaciones(p: string) {
     this.sedeUser = this.authService.getSede()
 
     var user = this.authService.getUsername()
 
-      if (user == null || user == undefined) {
-        return
-      }
-      this.cambiarEstado.username = user
+    if (user == null || user == undefined) {
+      return
+    }
+    this.cambiarEstado.username = user
 
-    if(this.validarPermiso('CONSULTAR COMPROBADOS')){
+    if (this.validarPermiso('CONSULTAR COMPROBADOS')) {
       this.consultarService.listarComprobados(user, this.page, this.size).subscribe(
-        (data:any) => {
+        (data: any) => {
           this.spinner = false
           this.con = data.content
 
-          this.con.forEach((e:any, index:number) =>  {
+          this.con.forEach((e: any, index: number) => {
 
-            if(e.isSelected){
+            if (e.isSelected) {
               var user = this.authService.getUsername()
 
-            if (user == null || user == undefined) {
-              return
-            }
-              var guardarArray:CambioEstado = {
+              if (user == null || user == undefined) {
+                return
+              }
+              var guardarArray: CambioEstado = {
                 estado: e.isSelecetedEstado,
                 idConsignacion: e.idConsignacion,
                 username: user,
                 observacion: ''
               }
 
-              this.cambioArray.push(guardarArray) 
+              this.cambioArray.push(guardarArray)
               setTimeout(() => {
-                if(e.isSelecetedEstado.startsWith('DEVUELTA')){
+                if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
                   this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
                 } else {
                   this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
@@ -366,7 +368,7 @@ export class ConsultasComponent implements OnInit {
                 }
                 console.log(this.cambioArray);
               }, 100);
-              
+
 
             }
           });
@@ -378,45 +380,45 @@ export class ConsultasComponent implements OnInit {
           this.con.forEach((c: any) => {
             c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
           })
-          if(this.con.length <= 0){
+          if (this.con.length <= 0) {
             Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
             return
           }
           console.log(data);
-          
-          
+
+
           this.botones = new Array<boolean>(this.con.length).fill(false)
-        }, (error:any) => {
-          
+        }, (error: any) => {
+
         }
       )
     }
 
-    if(this.validarPermiso('CONSULTAR PENDIENTES')){
+    if (this.validarPermiso('CONSULTAR PENDIENTES')) {
       this.consultarService.getAllConsignaciones(p, this.page, this.size).subscribe(
         (data: any) => {
           this.spinner = false
           this.con = data.content
 
-          this.con.forEach((e:any, index:number) =>  {
+          this.con.forEach((e: any, index: number) => {
 
-            if(e.isSelected){
+            if (e.isSelected) {
               var user = this.authService.getUsername()
 
-            if (user == null || user == undefined) {
-              return
-            }
-              var guardarArray:CambioEstado = {
+              if (user == null || user == undefined) {
+                return
+              }
+              var guardarArray: CambioEstado = {
                 estado: e.isSelecetedEstado,
                 idConsignacion: e.idConsignacion,
                 username: user,
                 observacion: ''
               }
 
-              this.cambioArray.push(guardarArray) 
+              this.cambioArray.push(guardarArray)
               setTimeout(() => {
 
-                if(e.isSelecetedEstado.startsWith('DEVUELTA')){
+                if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
                   this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
                 } else {
                   this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
@@ -429,7 +431,7 @@ export class ConsultasComponent implements OnInit {
                 }
                 console.log(this.cambioArray);
               }, 100);
-              
+
 
             }
           });
@@ -443,18 +445,18 @@ export class ConsultasComponent implements OnInit {
           })
           this.botones = new Array<boolean>(this.con.length).fill(false)
 
-          if(this.con.length <= 0){
+          if (this.con.length <= 0) {
             Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
             return
           }
-          
-          
+
+
         }, (error: any) => {
-          
+
         }
       )
     }
-   
+
   }
 
   img(dataURI: string) {
@@ -478,9 +480,9 @@ export class ConsultasComponent implements OnInit {
         this.cuentasPorCobrar = data
         this.detalle = data
         this.observacionDto.idConsignacion = data.idConsignacion
-        
+
       }, (error: any) => {
-        
+
       }
     )
   }
@@ -491,7 +493,7 @@ export class ConsultasComponent implements OnInit {
       (data: any) => {
         this.plataforma = data
       }, (error: any) => {
-        
+
       }
     )
   }
@@ -536,7 +538,7 @@ export class ConsultasComponent implements OnInit {
           this.check = false
           this.buscarObli = false
           this.cedulaEditar = ''
-          
+
         }
       )
     }, 2000);
@@ -561,7 +563,7 @@ export class ConsultasComponent implements OnInit {
     var archivo = event.target.files[0];
     this.extraerBase64(archivo).then((file: any) => {
       this.modal.base64 = file.base;
-      
+
     })
   }
 
@@ -594,15 +596,18 @@ export class ConsultasComponent implements OnInit {
     if (!this.last) {
       this.page++
       this.getRoles()
-      this.proSubscription = this.consultarService.proSubject.subscribe(
+      this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
         (con: boolean) => {
+          
           this.isCon = con;
-          this.cont = this.initialCon + (this.page * this.size);
+          this.cont = this.cont + this.size
+          this.proSubscriptionNext.unsubscribe()
         }
       );
-      setTimeout(() => {
-        this.proSubscription.unsubscribe()
-      }, 1000);
+      // setTimeout(() => {
+
+      //   this.proSubscriptionNext.unsubscribe()
+      // }, 1000);
     }
   }
 
@@ -611,15 +616,15 @@ export class ConsultasComponent implements OnInit {
     if (!this.first) {
       this.page--
       this.getRoles()
-      this.proSubscription = this.consultarService.proSubject.subscribe(
+      this.proSubscriptionBack = this.consultarService.proSubject.subscribe(
         (con: boolean) => {
+          
           this.isCon = con;
-          this.cont = this.initialCon - (this.page * this.size);
+          this.cont = this.cont - this.size
+          this.proSubscriptionBack.unsubscribe()
         }
       );
-      setTimeout(() => {
-        this.proSubscription.unsubscribe()
-      }, 1000);
+      
     }
   }
 
@@ -627,15 +632,14 @@ export class ConsultasComponent implements OnInit {
   goToPage(page: number) {
     this.page = page
     this.getRoles()
-    this.proSubscription = this.consultarService.proSubject.subscribe(
+    this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
       (con: boolean) => {
         this.isCon = con;
-        this.cont = this.cont * page
+        this.cont = this.initialCon + (this.page * this.sizes);
+        this.proSubscriptionNext.unsubscribe()
       }
     );
-    setTimeout(() => {
-      this.proSubscription.unsubscribe()
-    }, 1000);
+    
   }
 
   //CREAR UNA OBSERVACION A UN CONSIGNACION DESDE EL MODAL VER MÁS
@@ -661,10 +665,10 @@ export class ConsultasComponent implements OnInit {
           Swal.fire('Felicidades', 'Observacion Guardada Con Éxito', 'success')
           this.crearObs = false
           this.detalle.observaciones.push(data)
-          
+
 
         }, (error: any) => {
-          
+
           this.crearObs = false
         }
       )
@@ -677,7 +681,7 @@ export class ConsultasComponent implements OnInit {
       (data: any) => {
         this.estadoA = data
       }, (error: any) => {
-        
+
         Swal.fire('Error', 'Error al cargar los estados', 'error')
       }
     )
@@ -706,8 +710,8 @@ export class ConsultasComponent implements OnInit {
             c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
           })
           console.log(data);
-          
-  
+
+
           if (this.con.length <= 0) {
             this.botonFiltrar = false
             this.spinner = false
@@ -725,17 +729,17 @@ export class ConsultasComponent implements OnInit {
                 this.getRoles()
               }
             })
-            
+
             return
           }
-  
+
         }, (error: any) => {
           this.botonFiltrar = false
           this.spinner = false
         }
       )
     }, 2000);
-    
+
   }
 
   //TRAER TODAS LA SEDES
@@ -744,7 +748,7 @@ export class ConsultasComponent implements OnInit {
       (data: any) => {
         this.sedes = data
       }, (error: any) => {
-        
+
       }
     )
   }
@@ -755,13 +759,13 @@ export class ConsultasComponent implements OnInit {
     this.consultarService.getConsignacionByCedula(this.cedula).subscribe(
       (data: any) => {
         this.con = data
-        this.con.forEach((element:any) => {
-          element.actualizaciones = element.actualizaciones.filter((a:any)=> a.isCurrent == true)
+        this.con.forEach((element: any) => {
+          element.actualizaciones = element.actualizaciones.filter((a: any) => a.isCurrent == true)
         });
-        
+
 
       }, (error: any) => {
-        
+
       }
     )
   }
@@ -775,7 +779,7 @@ export class ConsultasComponent implements OnInit {
     if (this.estado != 'null' || this.fecha != 'null' || this.sede != 'null') {
       if (this.fecha != "" || this.estado != 'null' || this.sede != 'null' && this.cambioArray.length > 0) {
         this.filtro = true
-      } if(this.cambioArray.length > 0) {
+      } if (this.cambioArray.length > 0) {
         this.filtro = false
       }
     } else {
@@ -785,21 +789,21 @@ export class ConsultasComponent implements OnInit {
 
   //METODO USADO EN EL HTML PARA LLAMAR LAS FUNCIONES DE CAMBIAR LOS BOTONES
   //SOLO DE COMPROBAR Y APLICAR
-  cambiarConsignacionTemporal(id: number, position: number, estado: string, tipoReporte:string) {
+  cambiarConsignacionTemporal(id: number, position: number, estado: string, tipoReporte: string) {
 
 
     this.tipoReporte = tipoReporte
 
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
 
-      this.isSelected.idConsignacion = id
-      this.isSelected.estado = estado
+    this.isSelected.idConsignacion = id
+    this.isSelected.estado = estado
 
-      var user = this.authService.getUsername()
+    var user = this.authService.getUsername()
 
-      if (user == null || user == undefined) {
-        return
-      }
+    if (user == null || user == undefined) {
+      return
+    }
 
     if (idC != null || idC != undefined) {
       this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
@@ -815,7 +819,7 @@ export class ConsultasComponent implements OnInit {
       this.isSelected.opcion = 'DESELECCIONAR'
 
       this.enviarIsSelected(this.isSelected)
-      
+
     } else {
       this.cambiarEstado.idConsignacion = id
       this.cambiarEstado.estado = estado
@@ -836,18 +840,18 @@ export class ConsultasComponent implements OnInit {
       this.cambiarBotones(position, 'DESACTIVAR', id, estado)
       this.cambios = true
     }
-    
+
   }
 
-  enviarIsSelected(isSelected:IsSelected){
+  enviarIsSelected(isSelected: IsSelected) {
     console.log(isSelected);
-    
+
     this.consultarService.isSelected(isSelected).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.selected = data.isSelected
         console.log(this.selected);
-      }, (error:any) => {
-        console.log(error); 
+      }, (error: any) => {
+        console.log(error);
       }
     )
   }
@@ -880,7 +884,7 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (accion == 'DESACTIVAR') {
-      if(this.filtro){
+      if (this.filtro) {
         this.filtro = false
       }
       var boton_observaciones = `<button *ngIf="!botones[i]"
@@ -902,7 +906,7 @@ export class ConsultasComponent implements OnInit {
         class="btn btn-sm btn-danger ms-2" id="btn_aplicar_consignaciones_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
 
       if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
-        
+
         btn_observaciones.outerHTML = boton_observaciones
         btn_historial.outerHTML = boton_historial
         btn_comprobante.outerHTML = boton_comprobante
@@ -972,9 +976,9 @@ export class ConsultasComponent implements OnInit {
         }
 
         var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
-        
+
         if (idC != null || idC != undefined) {
-          
+
           this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
           if (this.cambioArray.length > 0) {
             this.cambios = true
@@ -985,7 +989,7 @@ export class ConsultasComponent implements OnInit {
           this.isSelected.idConsignacion = id
 
           this.isSelected.estado = estado
-          
+
           this.isSelected.username = this.cambiarEstado.username
 
           this.isSelected.opcion = 'DESELECCIONAR'
@@ -1025,7 +1029,7 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (accion == 'DESACTIVAR') {
-      if(this.filtro){
+      if (this.filtro) {
         this.filtro = false
       }
       var boton_observaciones = `<button *ngIf="!botones[i]"
@@ -1049,13 +1053,13 @@ export class ConsultasComponent implements OnInit {
       console.log(btn_observaciones);
       console.log(btn_historial);
       console.log(btn_comprobante);
-      
+
 
       if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
         btn_observaciones.outerHTML = boton_observaciones
         btn_historial.outerHTML = boton_historial
         btn_comprobante.outerHTML = boton_comprobante
-        
+
 
 
         if (this.validarPermiso('APLICAR')) {
@@ -1081,8 +1085,8 @@ export class ConsultasComponent implements OnInit {
       }
     }
     if (accion == 'ACTIVAR') {
-      
-      
+
+
       var boton_observaciones_activo = `<button *ngIf="!botones[i]"
         class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer" id="btn_observaciones_${position}"><i
         class="fa-regular fa-eye"></i></button>`
@@ -1136,7 +1140,7 @@ export class ConsultasComponent implements OnInit {
   //METODO QUE SE LLAMA EN "cambiarDevolver" PARA REALIZAR
   //TODOS LOS CAMBIOS DE BOTONES Y SUS RESPECTIVAS VALIDACIONES
   //SOLO PARA DEVOLVER CONTABILIDAD Y DEVOLVER CAJA
-  devolver(id: number, position: number, estado: string, tipoReporte:string) {
+  devolver(id: number, position: number, estado: string, tipoReporte: string) {
 
     this.tipoReporte = tipoReporte
 
@@ -1153,32 +1157,32 @@ export class ConsultasComponent implements OnInit {
     this.posicionDevolver = position
 
     console.log(this.cambioArray);
-    
+
 
   }
 
   //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK DE TRAER POR ID
-  ponerEventoClick(idConsignacion:number, idElemento:string){
+  ponerEventoClick(idConsignacion: number, idElemento: string) {
     var x = document.getElementById(idElemento)
-    x?.addEventListener('click', () => this.getConsignacionById(idConsignacion)); 
+    x?.addEventListener('click', () => this.getConsignacionById(idConsignacion));
   }
 
   //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK PARA VOLVER DE NUEVO AL BOTON ORIGINAL
-  metodoCambiarTemporal(idElemento:string, idConsignacion:number, position:number, estado:string, tipoReporte:string){
+  metodoCambiarTemporal(idElemento: string, idConsignacion: number, position: number, estado: string, tipoReporte: string) {
     var x = document.getElementById(idElemento)
-    x?.addEventListener('click', () => this.cambiarConsignacionTemporal(idConsignacion, position, estado, tipoReporte)); 
+    x?.addEventListener('click', () => this.cambiarConsignacionTemporal(idConsignacion, position, estado, tipoReporte));
   }
 
   //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK PARA VOLVER DE NUEVO AL BOTON ORIGINAL
-  metodoCambiarDevolver(idElemento:string, idConsignacion:number, position:number, estado:string, tipoReporte:string){
+  metodoCambiarDevolver(idElemento: string, idConsignacion: number, position: number, estado: string, tipoReporte: string) {
     var x = document.getElementById(idElemento)
-    x?.addEventListener('click', () => this.devolver(idConsignacion, position, estado, tipoReporte)); 
+    x?.addEventListener('click', () => this.devolver(idConsignacion, position, estado, tipoReporte));
   }
 
   //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK DE MOSTRAR EL COMPROBANTE
-  metodoImagen(idConsignacion:number, idElemento:string){
-    var comprobante = this.con.find((c:any) => c.idConsignacion == idConsignacion)
-    if(comprobante != null || comprobante != undefined){
+  metodoImagen(idConsignacion: number, idElemento: string) {
+    var comprobante = this.con.find((c: any) => c.idConsignacion == idConsignacion)
+    if (comprobante != null || comprobante != undefined) {
       this.base64 = comprobante.comprobantes.dataURI + ',' + comprobante.comprobantes.rutaArchivo
     }
   }
@@ -1186,11 +1190,11 @@ export class ConsultasComponent implements OnInit {
   //METODO QUE SE UTILIZA EN ALGUNOS IF PARA EJECUTAR UNA ACCION SEGUN UN PERMISO ESPECIFICO
   validarPermiso(permisos: string): boolean {
     var roles = this.authService.getRolesP()
-    
+
     var permiso: any = {}
     permiso = roles.permisos.find((pe: any) => pe.permiso.includes(permisos))
     return permiso != null || permiso != undefined
-    
+
   }
 
   //METODO PARA AGREGAR UNA DEVOLUCION (CONTABILIDAD O CAJA)
@@ -1203,9 +1207,9 @@ export class ConsultasComponent implements OnInit {
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == this.cambiarEstado.idConsignacion)
 
     console.log(idC);
-    
-      this.isSelected.idConsignacion = this.cambiarEstado.idConsignacion
-      this.isSelected.estado = this.cambiarEstado.estado
+
+    this.isSelected.idConsignacion = this.cambiarEstado.idConsignacion
+    this.isSelected.estado = this.cambiarEstado.estado
 
     if (idC != null || idC != undefined) {
       this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != this.cambiarEstado.idConsignacion)
@@ -1215,9 +1219,9 @@ export class ConsultasComponent implements OnInit {
       } else {
         this.cambios = false
       }
-      
+
     } else {
-      
+
       this.cambiarDevolver(this.cambiarEstado.idConsignacion, this.posicionDevolver, 'DESACTIVAR', this.cambiarEstado.estado)
       this.cambiarEstado.idConsignacion = this.cambiarEstado.idConsignacion
       this.cambiarEstado.estado = this.cambiarEstado.estado
@@ -1238,7 +1242,7 @@ export class ConsultasComponent implements OnInit {
 
       this.cambios = true
     }
-    
+
   }
 
   //METODO PARA CAMBIAR EL ESTADO DE LA CONSIGNACION
@@ -1256,7 +1260,7 @@ export class ConsultasComponent implements OnInit {
         }, (error: any) => {
           Swal.fire('Error', 'Error al Realizar El Cambio', 'error')
           this.botonCambiarConsignacion = false
-          
+
         }
       )
     }, 2000);
@@ -1265,7 +1269,7 @@ export class ConsultasComponent implements OnInit {
 
   //METODO PARA CANCELAR TODOS LOS CAMBIOS
   cancelar() {
-    this.cambioArray.forEach((e:any) => {
+    this.cambioArray.forEach((e: any) => {
       var user = this.authService.getUsername()
 
       if (user == null || user == undefined) {
@@ -1278,12 +1282,12 @@ export class ConsultasComponent implements OnInit {
         opcion: 'DESELECCIONAR',
         estado: e.estado
       }
-      
+
 
       this.consultarService.isSelected(this.isSelected).subscribe(
-        (data:any) => { 
-           
-        }, (error:any) => {
+        (data: any) => {
+
+        }, (error: any) => {
           console.log(error);
         }
       )
@@ -1310,36 +1314,36 @@ export class ConsultasComponent implements OnInit {
   }
 
   //GENERAR REPORTE PENDIENTES
-  generarReportePendientes(){
+  generarReportePendientes() {
     this.botonGenerarPendientes = true
-      setTimeout(() => {
-        var user = this.authService.getUsername()
+    setTimeout(() => {
+      var user = this.authService.getUsername()
 
       if (user == null || user == undefined) {
         return
       }
-        this.consultarService.reportesPendientes(user).subscribe(
-          (data:any) => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Felicidades',
-              text: 'Reporte Generado Con Éxito',
-              timer: 3000
-            })
-            this.botonGenerarPendientes = false
-          }, (error:any) => {
-            console.log(error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Error Al Generar El Reporte',
-              timer: 3000
-            })
-            this.botonGenerarPendientes = false
-          }
-        )
-      }, 2000);
-    
+      this.consultarService.reportesPendientes(user).subscribe(
+        (data: any) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Felicidades',
+            text: 'Reporte Generado Con Éxito',
+            timer: 3000
+          })
+          this.botonGenerarPendientes = false
+        }, (error: any) => {
+          console.log(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error Al Generar El Reporte',
+            timer: 3000
+          })
+          this.botonGenerarPendientes = false
+        }
+      )
+    }, 2000);
+
   }
 
 
