@@ -12,6 +12,16 @@
 
 }
 
+.b{
+  color: white;
+  background-color: #960010;
+  border-color: #960010;
+}
+
+.b:hover{
+  background: #d40000;
+  border-color: #d40000;
+}
 
 .btn-archivos{
     position: relative;

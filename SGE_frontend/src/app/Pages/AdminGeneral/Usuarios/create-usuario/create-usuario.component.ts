@@ -66,10 +66,10 @@ export class CreateUsuarioComponent implements OnInit {
     this.userAgService.listarRoles().subscribe(
       (data: any) => {
         this.IterarRol = data;
-        console.log(this.IterarRol)
+        
       },
       (error: any) => {
-        console.log(error);
+        
       }
     )
 

@@ -64,6 +64,14 @@ import { BancosComponent } from './Pages/Consignaciones/pages/componentesConsign
 import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/sucursales/sucursales.component';
 import { EstadosComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados/estados.component';
 import { RolesUsuariosComponent } from './Pages/AdminGeneral/Usuarios/roles-usuarios/roles-usuarios.component';
+import { CambioContrasenaComponent } from './componentesGenerales/cambio-contrasena/cambio-contrasena.component';
+import { SubirArchivosComponent } from './Pages/Archivos/componentes_archivos/subir-archivos/subir-archivos.component';
+import { TipoArchivoComponent } from './Pages/Archivos/componentes_archivos/tipo-archivo/tipo-archivo.component';
+import { BuscarArchivosComponent } from './Pages/Archivos/componentes_archivos/buscar-archivos/buscar-archivos.component';
+import { ObligacionesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/obligaciones/obligaciones.component';
+import { EstadosObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados-obligacion/estados-obligacion.component';
+import { TipoObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/tipo-obligacion/tipo-obligacion.component';
+import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/asesores/asesores.component';
 
 
 
@@ -85,6 +93,10 @@ const routes: Routes = [
     path:'opciones', 
     component:OpcionesComponent,
     canActivate:[AuthenticationGuard]
+  },
+  {
+    path:'cambioContrasena', 
+    component:CambioContrasenaComponent,
   },
   {
     path: 'cartera', redirectTo:'dashboard-cartera/inicio' , pathMatch:'full' 
@@ -177,6 +189,22 @@ const routes: Routes = [
       {
         path:'estados',
         component: EstadosComponent
+      },
+      {
+        path: 'obligaciones',
+        component: ObligacionesComponent
+      },
+      {
+        path: 'estadosObligacion',
+        component: EstadosObligacionComponent
+      },
+      {
+        path: 'tiposObligacion',
+        component: TipoObligacionComponent
+      },
+      {
+        path: 'asesores',
+        component: AsesoresComponent
       },
     ]
   },
@@ -280,16 +308,24 @@ const routes: Routes = [
     ]
   },
 
-  {path: 'Archivos', redirectTo:'dashboard-archivos' , pathMatch:'full' },
+  {path: 'Archivos', redirectTo:'dashboard-archivos/buscar-archivos' , pathMatch:'full' },
   {
     path:"dashboard-archivos",
     component:DashboardArchivosComponent,
     canActivate:[AuthenticationGuard],
     children:[
       {
-        path:'archivos-exs',
-        component:ArchivosExsComponent
+        path: 'subir-archivos',
+        component: SubirArchivosComponent
       },
+      {
+        path: 'tipo-archivo',
+        component: TipoArchivoComponent
+      },
+      {
+        path: 'buscar-archivos',
+        component: BuscarArchivosComponent
+      }
     ]
   },
 

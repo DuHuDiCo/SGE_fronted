@@ -133,7 +133,7 @@ export class AgregarClienteComponent implements OnInit {
         if(depa != null){
           this.cliente.direccion.departamento = depa.name
         }
-        console.log(data);
+        
         Swal.fire('Guardado', 'Cliente guardado con Exito', 'success');
         this.cliente = {
           nombres: "",
@@ -172,9 +172,9 @@ export class AgregarClienteComponent implements OnInit {
     this.clienteService.listarDepartamentos().subscribe(
       (data:any) => {
         this.department = data
-        console.log(data);
+        
       }, (error:any) => {
-        console.log(error);
+        
         Swal.fire('Error', 'Error al cargar los departamentos', 'error');
       }
     )
@@ -190,7 +190,7 @@ export class AgregarClienteComponent implements OnInit {
       (data:any) => {
         this.ciudades = data
       }, (error:any) => {
-        console.log(error);
+        
       }
     )
   }

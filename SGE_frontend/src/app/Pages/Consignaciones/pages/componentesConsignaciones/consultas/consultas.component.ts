@@ -8,7 +8,7 @@ import { EstadoServiceService } from 'src/app/Services/Consignaciones/Estado/est
 import { IngresarService } from 'src/app/Services/Consignaciones/IngresarConsignaciones/ingresar.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Plataforma } from 'src/app/Types/Banco';
-import { CambioEstado, Con, Consignacion, Obligacion, ObservacionDto } from 'src/app/Types/Consignaciones';
+import { CambioEstado, Con, Consignacion, IsSelected, Obligacion, ObservacionDto } from 'src/app/Types/Consignaciones';
 import { Estado } from 'src/app/Types/Estado';
 import { Sede } from 'src/app/Types/Sede';
 import Swal from 'sweetalert2';
@@ -120,6 +120,7 @@ export class ConsultasComponent implements OnInit {
     cuentasCobrar: [],
     actualizaciones: [],
     fileReportes: [],
+    sede: ''
   }
   cuentasPorCobrar: Con = {
     idConsignacion: 0,
@@ -149,6 +150,7 @@ export class ConsultasComponent implements OnInit {
     cuentasCobrar: [],
     actualizaciones: [],
     fileReportes: [],
+    sede: ''
   }
   detalle: Con = {
     idConsignacion: 0,
@@ -178,6 +180,7 @@ export class ConsultasComponent implements OnInit {
     cuentasCobrar: [],
     actualizaciones: [],
     fileReportes: [],
+    sede: ''
   }
   observacionDto: ObservacionDto = {
     detalle: '',
@@ -190,11 +193,18 @@ export class ConsultasComponent implements OnInit {
     username: '',
     observacion: ''
   }
+  isSelected: IsSelected = {
+    idConsignacion: 0,
+    username: '',
+    opcion: '',
+    estado: ''
+  }
 
   cambioArray: CambioEstado[] = []
 
   //VARIABLES
   cedula: string = ''
+  cedulaEditar: string = ''
   base64: string = ''
   check: boolean = false
   page: number = 0
@@ -212,6 +222,8 @@ export class ConsultasComponent implements OnInit {
   spinner: boolean = true
   filtro: boolean = false
   cambios: boolean = false
+  botonFiltrar: boolean = false
+  botonCambiarConsignacion: boolean = false
 
   estado: string = 'null'
   fecha: any = 'null'
@@ -219,11 +231,20 @@ export class ConsultasComponent implements OnInit {
 
   estadoConsignacion: string = ''
 
-  posicionDevolver:number = 0
-  clickeado:string = ''
+  posicionDevolver: number = 0
+  clickeado: string = ''
+
+  sedeUser: string | null = ''
+  selected!: boolean
+
+  tipoReporte: string = ''
+
+  botonGenerarPendientes: boolean = false
+  filtrando: boolean = false
 
 
-  private proSubscription!: Subscription;
+  private proSubscriptionNext!: Subscription;
+  private proSubscriptionBack!: Subscription;
 
   constructor(private authService: AuthenticationService, private consultarService: ConsultarService, private bancoService: BancoServiceService, private ingresarService: IngresarService, private estadoService: EstadoServiceService, private sanitizer: DomSanitizer) { }
 
@@ -234,6 +255,7 @@ export class ConsultasComponent implements OnInit {
     this.getSede()
   }
 
+  //VALIDACION DE LOS CAMPOS DE CONSIGNACION PARA EDITAR
   validateNewConsignacion() {
     if (this.modal.numeroRecibo.trim() == '' || this.modal.numeroRecibo.trim() == null) {
       Swal.fire('Error', 'Digite un Número de Recibo', 'error')
@@ -278,55 +300,172 @@ export class ConsultasComponent implements OnInit {
         }, (error: any) => {
           Swal.fire('Error', 'Error al Actualizar La Consignación', 'error')
           this.editarCon = false
-          console.log(error);
+
         }
       )
     }, 2000);
   }
 
-
+  //OBTENER EL ROL Y PERMISO DEL USUARIO
   getRoles() {
+
     var roles = this.authService.getRolesP()
 
-    console.log(this.roles);
+
     var permiso: any = {}
     permiso = roles.permisos.find((pe: any) => pe.permiso.startsWith('CONSULTAR'))
-    console.log(permiso);
+
     var arrayP = permiso.permiso.split(" ")
     var p = arrayP[1].substring(0, arrayP[1].length - 1)
     this.estadoConsignacion = p
-    console.log(p);
+
 
     this.getConsignaciones(p)
   }
 
+  //TRAER LAS CONSIGNACIONES CON VALIDACIONES SEGUN EL PERMISO
   getConsignaciones(p: string) {
-    this.consultarService.getAllConsignaciones(p, this.page, this.size).subscribe(
-      (data: any) => {
-        this.spinner = false
-        this.con = data.content
-        this.paginas = new Array(data.totalPages)
-        this.last = data.last
-        this.first = data.first
-        this.consultarService.proSubject.next(true);
-        this.con.forEach((c:any) => {
-          c.actualizaciones = c.actualizaciones.filter((a:any) => a.isCurrent == true)
-        })
+    this.sedeUser = this.authService.getSede()
 
-        this.botones = new Array<boolean>(this.con.length).fill(false)
-        console.log(this.botones);
-        console.log(data);
-      }, (error: any) => {
-        console.log(error);
-      }
-    )
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+    this.cambiarEstado.username = user
+
+    if (this.validarPermiso('CONSULTAR COMPROBADOS')) {
+      this.consultarService.listarComprobados(user, this.page, this.size).subscribe(
+        (data: any) => {
+          this.spinner = false
+          this.con = data.content
+
+          this.con.forEach((e: any, index: number) => {
+
+            if (e.isSelected) {
+              var user = this.authService.getUsername()
+
+              if (user == null || user == undefined) {
+                return
+              }
+              var guardarArray: CambioEstado = {
+                estado: e.isSelecetedEstado,
+                idConsignacion: e.idConsignacion,
+                username: user,
+                observacion: ''
+              }
+
+              this.cambioArray.push(guardarArray)
+              setTimeout(() => {
+                if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
+                  this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
+                } else {
+                  this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
+                }
+                if (this.cambioArray.length > 0) {
+                  this.cambios = true
+                } else {
+                  this.cambios = false
+                }
+                console.log(this.cambioArray);
+              }, 100);
+
+
+            }
+          });
+
+          this.paginas = new Array(data.totalPages)
+          this.last = data.last
+          this.first = data.first
+          this.consultarService.proSubject.next(true);
+          this.con.forEach((c: any) => {
+            c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
+          })
+          if (this.con.length <= 0) {
+            Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+            return
+          }
+          console.log(data);
+
+
+          this.botones = new Array<boolean>(this.con.length).fill(false)
+        }, (error: any) => {
+
+        }
+      )
+    }
+
+    if (this.validarPermiso('CONSULTAR PENDIENTES')) {
+      this.consultarService.getAllConsignaciones(p, this.page, this.size).subscribe(
+        (data: any) => {
+          this.spinner = false
+          this.con = data.content
+
+          this.con.forEach((e: any, index: number) => {
+
+            if (e.isSelected) {
+              var user = this.authService.getUsername()
+
+              if (user == null || user == undefined) {
+                return
+              }
+              var guardarArray: CambioEstado = {
+                estado: e.isSelecetedEstado,
+                idConsignacion: e.idConsignacion,
+                username: user,
+                observacion: ''
+              }
+
+              this.cambioArray.push(guardarArray)
+              setTimeout(() => {
+
+                if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
+                  this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
+                } else {
+                  this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
+                }
+
+                if (this.cambioArray.length > 0) {
+                  this.cambios = true
+                } else {
+                  this.cambios = false
+                }
+                console.log(this.cambioArray);
+              }, 100);
+
+
+            }
+          });
+
+          this.paginas = new Array(data.totalPages)
+          this.last = data.last
+          this.first = data.first
+          this.consultarService.proSubject.next(true);
+          this.con.forEach((c: any) => {
+            c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
+          })
+          this.botones = new Array<boolean>(this.con.length).fill(false)
+
+          if (this.con.length <= 0) {
+            Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+            return
+          }
+
+
+        }, (error: any) => {
+
+        }
+      )
+    }
+
   }
 
   img(dataURI: string) {
     this.base64 = dataURI
   }
 
-  getConsignacionById(id: number) {
+  //OBTENER LA CONSIGNACION POR ID (PARA EDITAR Y OTRAS FUNCIONES)
+  public getConsignacionById(id: number) {
     this.consultarService.getConsignacionById(id).subscribe(
       (data: any) => {
         this.cuentasPorCobrar.cuentasCobrar = []
@@ -342,32 +481,35 @@ export class ConsultasComponent implements OnInit {
         this.cuentasPorCobrar = data
         this.detalle = data
         this.observacionDto.idConsignacion = data.idConsignacion
-        console.log(this.cambiarEstado);
+
       }, (error: any) => {
-        console.log(error);
+
       }
     )
   }
 
+  //TRAER TODAS LAS PLATAFORMAS
   getPlataforma() {
     this.bancoService.getBancos().subscribe(
       (data: any) => {
         this.plataforma = data
       }, (error: any) => {
-        console.log(error);
+
       }
     )
   }
 
+  //METODO PARA CAMBIAR EL TIPO DE PAGO EN EL INPUT
   cambiarPago(event: any) {
     var valor = event.target.value
     this.modal.idPlataforma = valor
   }
 
+  //BUSCAR UNA OBLIGACION SEGUN LA CEDULA DEL CLIENTE
   getObligacionByCedula() {
 
-    const cedula = this.cedula.trim()
-    if (this.cedula.trim() == '' || isNaN(parseInt(cedula))) {
+    const cedula = this.cedulaEditar.trim()
+    if (cedula.trim() == '' || isNaN(parseInt(cedula))) {
       Swal.fire('Error', 'Debe de Ingresar una Cédula Válida', 'error')
       return
     }
@@ -375,7 +517,7 @@ export class ConsultasComponent implements OnInit {
     this.buscarObli = true
 
     setTimeout(() => {
-      this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
+      this.ingresarService.getObligacionByCedula(this.cedulaEditar).subscribe(
         (data: any) => {
           this.cuentasPorCobrar.cuentasCobrar = data
 
@@ -388,7 +530,7 @@ export class ConsultasComponent implements OnInit {
           if (this.cuentasPorCobrar.cuentasCobrar.length <= 0) {
             Swal.fire('Error', 'Digite Una Cédula Válida', 'error')
             this.buscarObli = false
-            this.cedula = ''
+            this.cedulaEditar = ''
             return
           }
 
@@ -396,8 +538,8 @@ export class ConsultasComponent implements OnInit {
           Swal.fire('Error', 'Error Al Traer Las Obligaciones', 'error')
           this.check = false
           this.buscarObli = false
-          this.cedula = ''
-          console.log(error);
+          this.cedulaEditar = ''
+
         }
       )
     }, 2000);
@@ -405,6 +547,7 @@ export class ConsultasComponent implements OnInit {
 
   }
 
+  //MARCAR LOS CHECKBOXS
   checkBox(obligacion: string) {
     this.modal.obligaciones = []
     if (this.modal.obligaciones.includes(obligacion)) {
@@ -416,14 +559,16 @@ export class ConsultasComponent implements OnInit {
 
   }
 
+  //OBTENER EL ARCHIVO (EDITAR)
   public obtenerFile(event: any) {
     var archivo = event.target.files[0];
     this.extraerBase64(archivo).then((file: any) => {
       this.modal.base64 = file.base;
-      console.log(this.modal);
+
     })
   }
 
+  //CONVERTIRLO A BASE64 (EDITAR)
   public extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
     try {
       const unsafeImg = window.URL.createObjectURL($event);
@@ -446,43 +591,91 @@ export class ConsultasComponent implements OnInit {
     }
   })
 
+  //METODOS PARA LA PAGINACION DESDE EL BACKEND
+  //PAGINA SIGUIENTE
   next() {
     if (!this.last) {
       this.page++
-      this.getRoles()
-      this.proSubscription = this.consultarService.proSubject.subscribe(
-        (con: boolean) => {
-          this.isCon = con;
-          this.cont = this.initialCon + (this.page * this.size);
-        }
-      );
-      setTimeout(() => {
-        this.proSubscription.unsubscribe()
-      }, 1000);
+      if (this.filtrando) {
+        this.filtrar(this.estado, this.fecha, this.sede, this.page, this.sizes)
+        this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
+          (con: boolean) => {
+
+            this.isCon = con;
+            this.cont = this.cont + this.size
+            this.proSubscriptionNext.unsubscribe()
+          }
+        );
+      } else {
+        this.getRoles()
+        this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
+          (con: boolean) => {
+
+            this.isCon = con;
+            this.cont = this.cont + this.size
+            this.proSubscriptionNext.unsubscribe()
+          }
+        );
+      }
     }
   }
 
+  //PAGINA ANTERIOR
   back() {
     if (!this.first) {
       this.page--
-      this.getRoles()
-      this.proSubscription = this.consultarService.proSubject.subscribe(
-        (con: boolean) => {
-          this.isCon = con;
-          this.cont = this.initialCon + (this.page * this.size);
-        }
-      );
-      setTimeout(() => {
-        this.proSubscription.unsubscribe()
-      }, 1000);
+      if (this.filtrando) {
+        this.filtrar(this.estado, this.fecha, this.sede, this.page, this.sizes)
+        this.proSubscriptionBack = this.consultarService.proSubject.subscribe(
+          (con: boolean) => {
+
+            this.isCon = con;
+            this.cont = this.cont - this.size
+            this.proSubscriptionBack.unsubscribe()
+          }
+        );
+      } else {
+        this.getRoles()
+        this.proSubscriptionBack = this.consultarService.proSubject.subscribe(
+          (con: boolean) => {
+
+            this.isCon = con;
+            this.cont = this.cont - this.size
+            this.proSubscriptionBack.unsubscribe()
+          }
+        );
+      }
+
     }
   }
 
+  //IR A UNA PAGINA ESPECIFICA
   goToPage(page: number) {
     this.page = page
-    this.getRoles()
+    if (this.filtrando) {
+      this.filtrar(this.estado, this.fecha, this.sede, this.page, this.sizes)
+      this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.sizes);
+          this.proSubscriptionNext.unsubscribe()
+        }
+      );
+    } else {
+      this.getRoles()
+      this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.sizes);
+          this.proSubscriptionNext.unsubscribe()
+        }
+      );
+    }
+
+
   }
 
+  //CREAR UNA OBSERVACION A UN CONSIGNACION DESDE EL MODAL VER MÁS
   saveObservacion() {
 
     if (this.observacionDto.detalle.trim() == '' || this.observacionDto.detalle.trim() == null) {
@@ -505,99 +698,81 @@ export class ConsultasComponent implements OnInit {
           Swal.fire('Felicidades', 'Observacion Guardada Con Éxito', 'success')
           this.crearObs = false
           this.detalle.observaciones.push(data)
-          console.log(data);
+
 
         }, (error: any) => {
-          console.log(error);
+
           this.crearObs = false
         }
       )
     }, 2000);
   }
 
+  //TRAER TODOS LOS ESTADOS
   getAllEstado() {
     this.estadoService.getAll().subscribe(
       (data: any) => {
         this.estadoA = data
       }, (error: any) => {
-        console.log(error);
+
         Swal.fire('Error', 'Error al cargar los estados', 'error')
       }
     )
   }
 
+  //FILTRAR POR SEDE, ESTADO Y/O FECHA
   filter() {
     this.con = []
     if (this.estado == 'null' && this.fecha == 'null' && this.sede == 'null') {
       Swal.fire('Error', 'Debe de Seleccionar Al Menos Un Dato', 'error')
       return
     }
-    this.consultarService.filter(this.estado, this.fecha, this.sede, this.pages, this.sizes).subscribe(
-      (data: any) => {
-        this.con = data.content
-        console.log(data.content);
-        this.con.forEach((c: any) => {
-          c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
-        })
-        console.log(this.con);
+    this.botonFiltrar = true
+    this.spinner = true
+    setTimeout(() => {
+      this.filtrar(this.estado, this.fecha, this.sede, this.pages, this.sizes)
+    }, 2000);
 
-        if (this.con.length <= 0) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No hay Datos Con Este Filtro',
-            confirmButtonText: 'Ok',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.estado = 'null'
-              this.sede = 'null'
-              this.fecha = 'null'
-              this.filtro = false
-              this.getRoles()
-            }
-          })
-
-          return
-        }
-
-      }, (error: any) => {
-        console.log(error);
-      }
-    )
   }
 
+  //TRAER TODAS LA SEDES
   getSede() {
     this.consultarService.getAllSede().subscribe(
       (data: any) => {
         this.sedes = data
       }, (error: any) => {
-        console.log(error);
+
       }
     )
   }
 
+  //FILTRAR UNA CONSIGNACION POR CEDULA DEL CLIENTE
   getConsignacionByCedula() {
     this.con = []
     this.consultarService.getConsignacionByCedula(this.cedula).subscribe(
       (data: any) => {
         this.con = data
-        console.log(data);
+        this.con.forEach((element: any) => {
+          element.actualizaciones = element.actualizaciones.filter((a: any) => a.isCurrent == true)
+        });
+
 
       }, (error: any) => {
-        console.log(error);
+
       }
     )
   }
 
+  //CHANGE PARA DETECTAR UN CAMBIO EN LOS SELECT DEL FILTRO Y OCULTAR EL BOTON DE FILTRADO
   change(event: any) {
     if (this.fecha == '') {
       this.fecha = 'null'
     }
 
     if (this.estado != 'null' || this.fecha != 'null' || this.sede != 'null') {
-      if (this.fecha != "" || this.estado != 'null' || this.sede != 'null') {
+      if (this.fecha != "" || this.estado != 'null' || this.sede != 'null' && this.cambioArray.length > 0) {
         this.filtro = true
-      } else {
+      } if (this.cambioArray.length > 0) {
         this.filtro = false
       }
     } else {
@@ -605,53 +780,364 @@ export class ConsultasComponent implements OnInit {
     }
   }
 
-  cambiarConsignacionTemporal(id: number, position: number, estado: string, click:string) {
+  //METODO USADO EN EL HTML PARA LLAMAR LAS FUNCIONES DE CAMBIAR LOS BOTONES
+  //SOLO DE COMPROBAR Y APLICAR
+  cambiarConsignacionTemporal(id: number, position: number, estado: string, tipoReporte: string) {
+
+
+    this.tipoReporte = tipoReporte
 
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
 
-    this.clickeado = click
+    this.isSelected.idConsignacion = id
+    this.isSelected.estado = estado
+
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
 
     if (idC != null || idC != undefined) {
       this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
-      console.log(this.cambioArray);
+      this.cambiarBotones(position, 'ACTIVAR', id, estado)
+      if (this.cambioArray.length > 0) {
+        this.cambios = true
+      } else {
+        this.cambios = false
+      }
+
+      this.isSelected.username = user
+
+      this.isSelected.opcion = 'DESELECCIONAR'
+
+      this.enviarIsSelected(this.isSelected)
+
     } else {
       this.cambiarEstado.idConsignacion = id
-
       this.cambiarEstado.estado = estado
-
-      var user = this.authService.getUsername()
-
-      if (user == null || user == undefined) {
-        return
-      }
       this.cambiarEstado.username = user
-
       this.cambioArray.push(this.cambiarEstado)
+
+      this.isSelected.username = user
+      this.isSelected.opcion = 'SELECCIONAR'
+      this.enviarIsSelected(this.isSelected)
+
       this.cambiarEstado = {
         estado: '',
         idConsignacion: 0,
         username: '',
         observacion: ''
       }
+
+      this.cambiarBotones(position, 'DESACTIVAR', id, estado)
+      this.cambios = true
     }
 
-    console.log(this.cambioArray);
+  }
+
+  enviarIsSelected(isSelected: IsSelected) {
+    console.log(isSelected);
+
+    this.consultarService.isSelected(isSelected).subscribe(
+      (data: any) => {
+        this.selected = data.isSelected
+        console.log(this.selected);
+      }, (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  //METODO USADO EN EL HTML PARA LLAMAR LAS FUNCIONES DE CAMBIAR LOS BOTONES
+  //SOLO DE DEVOLVER CONTABILIDAD Y DEVOLVER CAJA
+  cambiarDevolver(id: number, position: number, accion: string, estado: string) {
+    var btn_devolver_aplicadas
+    var btn_devolver_aplicadas_x
+    var btn_devolver_comprobadas
+    var btn_devolver_comprobadas_x
+    var btn_aplicar
+    var btn_comprobar
+
+    var btn_observaciones = document.getElementById(`btn_observaciones_${position}`)
+    var btn_comprobante = document.getElementById(`btn_comprobante_${position}`)
+    var btn_historial = document.getElementById(`btn_historial_${position}`)
 
 
+    if (this.validarPermiso('APLICAR')) {
+      btn_devolver_aplicadas = document.getElementById(`btn_devolver_aplicadas_${position}`)
+      btn_devolver_aplicadas_x = document.getElementById(`btn_devolver_aplicadas_x${position}`)
+      btn_aplicar = document.getElementById(`btn_aplicar_consignaciones_${position}`)
+    }
 
-    if (this.botones[position]) {
-      this.botones[position] = false
-    } else {
-      this.botones[position] = true
+    if (this.validarPermiso('COMPROBAR')) {
+      btn_devolver_comprobadas = document.getElementById(`btn_devolver_comprobadas_${position}`)
+      btn_devolver_comprobadas_x = document.getElementById(`btn_devolver_comprobadas_x${position}`)
+      btn_comprobar = document.getElementById(`btn_comprobar_consignaciones_${position}`)
+    }
+
+    if (accion == 'DESACTIVAR') {
+      if (this.filtro) {
+        this.filtro = false
+      }
+      var boton_observaciones = `<button *ngIf="!botones[i]"
+        class="btn btn-danger btn-sm ms-2" id="btn_observaciones_${position}" disabled><i
+          class="fa-solid fa-ban"></i></button>`
+
+      var boton_historial = `<button *ngIf="!botones[i]"
+        class="btn btn-sm btn-danger ms-2" id="btn_historial_${position}" disabled><i
+          class="fa-solid fa-ban"></i></button>`
+
+      var boton_comprobante = `<button *ngIf="!botones[i]"
+        class="btn btn-sm btn-danger ms-2" id="btn_comprobante_${position}" disabled><i
+          class="fa-solid fa-ban"></i></button>`
+
+      var boton_comprobar = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+        class="btn btn-sm btn-danger ms-2" id="btn_comprobar_consignaciones_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
+
+      var boton_aplicar = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+        class="btn btn-sm btn-danger ms-2" id="btn_aplicar_consignaciones_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
+
+      if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
+
+        btn_observaciones.outerHTML = boton_observaciones
+        btn_historial.outerHTML = boton_historial
+        btn_comprobante.outerHTML = boton_comprobante
+
+
+        if (this.validarPermiso('APLICAR')) {
+          if (btn_devolver_aplicadas != null && btn_devolver_aplicadas_x != null && btn_aplicar != null) {
+            btn_devolver_aplicadas_x.style.display = 'block'
+            btn_devolver_aplicadas.style.display = 'none'
+            btn_aplicar.outerHTML = boton_aplicar
+          }
+        }
+
+        if (this.validarPermiso('COMPROBAR')) {
+          if (btn_devolver_comprobadas != null && btn_devolver_comprobadas_x != null && btn_comprobar != null) {
+            btn_devolver_comprobadas_x.style.display = 'block'
+            btn_devolver_comprobadas.style.display = 'none'
+            btn_comprobar.outerHTML = boton_comprobar
+          }
+        }
+      }
+    }
+    if (accion == 'ACTIVAR') {
+      var boton_observaciones_activo = `<button *ngIf="!botones[i]"
+        class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer" id="btn_observaciones_${position}"><i
+        class="fa-regular fa-eye"></i></button>`
+
+      var boton_historial_activo = `<button *ngIf="!botones[i]"
+        class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo" id="btn_historial_${position}"><i
+          class="fa-solid fa-circle-info"></i></button>`
+
+      var boton_comprobante_activo = `<button *ngIf="!botones[i]" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage" id="btn_comprobante_${position}"><i
+      class="fa-regular fa-image"></i></button>`
+
+      var boton_comprobar_activo = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+        class="btn btn-sm btn-warning ms-2" id="btn_comprobar_consignaciones_${position}"><i class="fa-solid fa-check"></i></button>`
+
+      var boton_aplicar_activo = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+        class="btn btn-sm btn-warning ms-2" id="btn_aplicar_consignaciones_${position}"><i class="fa-solid fa-check"></i></button>`
+
+
+      if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
+        btn_observaciones.outerHTML = boton_observaciones_activo
+        this.ponerEventoClick(id, `btn_observaciones_${position}`)
+        btn_historial.outerHTML = boton_historial_activo
+        this.ponerEventoClick(id, `btn_historial_${position}`)
+        btn_comprobante.outerHTML = boton_comprobante_activo
+        this.metodoImagen(id, `btn_comprobante_${position}`)
+
+        if (this.validarPermiso('COMPROBAR')) {
+          if (btn_devolver_comprobadas != null && btn_devolver_comprobadas_x && btn_comprobar != null) {
+            btn_devolver_comprobadas_x.style.display = 'none'
+            btn_devolver_comprobadas.style.display = 'block'
+            btn_comprobar.outerHTML = boton_comprobar_activo
+            this.metodoCambiarTemporal(`btn_comprobar_consignaciones_${position}`, id, position, 'COMPROBADO', 'COMPROBADAS')
+
+          }
+        }
+
+        if (this.validarPermiso('APLICAR')) {
+          if (btn_devolver_aplicadas != null && btn_devolver_aplicadas_x && btn_aplicar != null) {
+            btn_devolver_aplicadas_x.style.display = 'none'
+            btn_devolver_aplicadas.style.display = 'block'
+            btn_aplicar.outerHTML = boton_aplicar_activo
+            this.metodoCambiarTemporal(`btn_aplicar_consignaciones_${position}`, id, position, 'APLICADO', 'APLICADAS')
+          }
+        }
+
+        var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
+
+        if (idC != null || idC != undefined) {
+
+          this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
+          if (this.cambioArray.length > 0) {
+            this.cambios = true
+          } else {
+            this.cambios = false
+          }
+
+          this.isSelected.idConsignacion = id
+
+          this.isSelected.estado = estado
+
+          this.isSelected.username = this.cambiarEstado.username
+
+          this.isSelected.opcion = 'DESELECCIONAR'
+
+          this.enviarIsSelected(this.isSelected)
+        }
+
+      }
     }
   }
 
-  devolver(id: number, position: number, estado: string, clickeado:string) {
+  //METODO QUE SE LLAMA EN "cambiarConsignacionTemporal" PARA REALIZAR
+  //TODOS LOS CAMBIOS DE BOTONES Y SUS RESPECTIVAS VALIDACIONES
+  //SOLO PARA COMPROBAR Y APLICAR
+  cambiarBotones(position: number, accion: string, id: number, estado: string) {
 
-    this.clickeado = clickeado
+    var btn_aplicar_x
+    var btn_aplicar
+    var btn_comprobar_x
+    var btn_comprobar
+
+    var btn_observaciones = document.getElementById(`btn_observaciones_${position}`)
+    var btn_comprobante = document.getElementById(`btn_comprobante_${position}`)
+    var btn_historial = document.getElementById(`btn_historial_${position}`)
+    var btn_devolver_comprobadas = document.getElementById(`btn_devolver_comprobadas_${position}`)
+    var btn_devolver_aplicadas = document.getElementById(`btn_devolver_aplicadas_${position}`)
+
+
+    if (this.validarPermiso('APLICAR')) {
+      btn_aplicar = document.getElementById(`btn_aplicar_consignaciones_${position}`)
+      btn_aplicar_x = document.getElementById(`btn_aplicar_consignaciones_x${position}`)
+    }
+
+    if (this.validarPermiso('COMPROBAR')) {
+      btn_comprobar = document.getElementById(`btn_comprobar_consignaciones_${position}`)
+      btn_comprobar_x = document.getElementById(`btn_comprobar_consignaciones_x${position}`)
+    }
+
+    if (accion == 'DESACTIVAR') {
+      if (this.filtro) {
+        this.filtro = false
+      }
+      var boton_observaciones = `<button *ngIf="!botones[i]"
+        class="btn btn-danger btn-sm ms-2" id="btn_observaciones_${position}" disabled><i
+          class="fa-solid fa-ban"></i></button>`
+
+      var boton_historial = `<button *ngIf="!botones[i]"
+        class="btn btn-sm btn-danger ms-2" id="btn_historial_${position}" disabled><i
+          class="fa-solid fa-ban"></i></button>`
+
+      var boton_comprobante = `<button *ngIf="!botones[i]"
+        class="btn btn-sm btn-danger ms-2" id="btn_comprobante_${position}" disabled><i
+          class="fa-solid fa-ban"></i></button>`
+
+      var boton_devolver_comprobadas = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+        class="btn btn-sm btn-danger ms-2" id="btn_devolver_comprobadas_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
+
+      var boton_devolver_aplicadas = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+        class="btn btn-sm btn-danger ms-2" id="btn_devolver_aplicadas_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
+
+      console.log(btn_observaciones);
+      console.log(btn_historial);
+      console.log(btn_comprobante);
+
+
+      if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
+        btn_observaciones.outerHTML = boton_observaciones
+        btn_historial.outerHTML = boton_historial
+        btn_comprobante.outerHTML = boton_comprobante
+
+
+
+        if (this.validarPermiso('APLICAR')) {
+          if (btn_aplicar != null && btn_aplicar_x != null && btn_devolver_aplicadas != null) {
+            btn_aplicar_x.style.display = 'block'
+            btn_aplicar.style.display = 'none'
+            btn_devolver_aplicadas.outerHTML = boton_devolver_aplicadas
+
+          }
+        }
+
+        if (this.validarPermiso('COMPROBAR')) {
+          if (btn_comprobar != null && btn_comprobar_x != null && btn_devolver_comprobadas != null) {
+            btn_comprobar.style.display = 'none'
+            btn_comprobar_x.style.display = 'block'
+            btn_devolver_comprobadas.outerHTML = boton_devolver_comprobadas
+
+
+          }
+        }
+
+
+      }
+    }
+    if (accion == 'ACTIVAR') {
+
+
+      var boton_observaciones_activo = `<button *ngIf="!botones[i]"
+        class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer" id="btn_observaciones_${position}"><i
+        class="fa-regular fa-eye"></i></button>`
+
+      var boton_historial_activo = `<button *ngIf="!botones[i]"
+        class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo" id="btn_historial_${position}"><i
+          class="fa-solid fa-circle-info"></i></button>`
+
+      var boton_comprobante_activo = `<button *ngIf="!botones[i]"
+        class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage" id="btn_comprobante_${position}"><i
+          class="fa-regular fa-image"></i></button>`
+
+      var boton_devolver_comprobadas_activo = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+        class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_comprobadas_${position}"><i class="fa-solid fa-backward"></i></button>`
+
+      var boton_devolver_aplicadas_activo = ` <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="devolver(${id}, ${position}, 'DEVUELTA CAJA')"
+        class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_aplicadas_${position}"><i class="fa-solid fa-backward"></i></button>`
+
+      if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
+        btn_observaciones.outerHTML = boton_observaciones_activo
+        this.ponerEventoClick(id, `btn_observaciones_${position}`)
+        btn_historial.outerHTML = boton_historial_activo
+        this.ponerEventoClick(id, `btn_historial_${position}`)
+        btn_comprobante.outerHTML = boton_comprobante_activo
+        this.metodoImagen(id, `btn_comprobante_${position}`)
+
+
+        if (this.validarPermiso('COMPROBAR')) {
+          if (btn_comprobar != null && btn_comprobar_x != null && btn_devolver_comprobadas) {
+            btn_comprobar.style.display = 'block'
+            btn_comprobar_x.style.display = 'none'
+            btn_devolver_comprobadas.outerHTML = boton_devolver_comprobadas_activo
+            this.metodoCambiarDevolver(`btn_devolver_comprobadas_${position}`, id, position, 'DEVUELTA CONTABILIDAD', 'COMPROBADAS')
+          }
+
+        }
+
+        if (this.validarPermiso('APLICAR')) {
+          if (btn_aplicar != null && btn_aplicar_x != null && btn_devolver_aplicadas != null) {
+            btn_aplicar.style.display = 'block'
+            btn_aplicar_x.style.display = 'none'
+            btn_devolver_aplicadas.outerHTML = boton_devolver_aplicadas_activo
+            this.metodoCambiarDevolver(`btn_devolver_aplicadas_${position}`, id, position, 'DEVUELTA CAJA', 'APLICADAS')
+          }
+        }
+
+      }
+    }
+  }
+
+  //METODO QUE SE LLAMA EN "cambiarDevolver" PARA REALIZAR
+  //TODOS LOS CAMBIOS DE BOTONES Y SUS RESPECTIVAS VALIDACIONES
+  //SOLO PARA DEVOLVER CONTABILIDAD Y DEVOLVER CAJA
+  devolver(id: number, position: number, estado: string, tipoReporte: string) {
+
+    this.tipoReporte = tipoReporte
 
     this.cambiarEstado.idConsignacion = id
-
     this.cambiarEstado.estado = estado
 
     var user = this.authService.getUsername()
@@ -663,54 +1149,147 @@ export class ConsultasComponent implements OnInit {
 
     this.posicionDevolver = position
 
-    console.log(this.cambioArray)
+    console.log(this.cambioArray);
+
+
   }
 
+  //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK DE TRAER POR ID
+  ponerEventoClick(idConsignacion: number, idElemento: string) {
+    var x = document.getElementById(idElemento)
+    x?.addEventListener('click', () => this.getConsignacionById(idConsignacion));
+  }
+
+  //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK PARA VOLVER DE NUEVO AL BOTON ORIGINAL
+  metodoCambiarTemporal(idElemento: string, idConsignacion: number, position: number, estado: string, tipoReporte: string) {
+    var x = document.getElementById(idElemento)
+    x?.addEventListener('click', () => this.cambiarConsignacionTemporal(idConsignacion, position, estado, tipoReporte));
+  }
+
+  //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK PARA VOLVER DE NUEVO AL BOTON ORIGINAL
+  metodoCambiarDevolver(idElemento: string, idConsignacion: number, position: number, estado: string, tipoReporte: string) {
+    var x = document.getElementById(idElemento)
+    x?.addEventListener('click', () => this.devolver(idConsignacion, position, estado, tipoReporte));
+  }
+
+  //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK DE MOSTRAR EL COMPROBANTE
+  metodoImagen(idConsignacion: number, idElemento: string) {
+    var comprobante = this.con.find((c: any) => c.idConsignacion == idConsignacion)
+    if (comprobante != null || comprobante != undefined) {
+      this.base64 = comprobante.comprobantes.dataURI + ',' + comprobante.comprobantes.rutaArchivo
+    }
+  }
+
+  //METODO QUE SE UTILIZA EN ALGUNOS IF PARA EJECUTAR UNA ACCION SEGUN UN PERMISO ESPECIFICO
+  validarPermiso(permisos: string): boolean {
+    var roles = this.authService.getRolesP()
+
+    var permiso: any = {}
+    permiso = roles.permisos.find((pe: any) => pe.permiso.includes(permisos))
+    return permiso != null || permiso != undefined
+
+  }
+
+  //METODO PARA AGREGAR UNA DEVOLUCION (CONTABILIDAD O CAJA)
+  //AL ARRAY RESPECTIVO PARA GUARDARLOS SI ES NECESARIO
   agregarDevolucion() {
     if (this.cambiarEstado.observacion.trim() == '' || this.cambiarEstado.observacion.trim() == null) {
       Swal.fire('Error', 'Digite Una Observación', 'error')
       return
     }
+    var idC = this.cambioArray.find((c: any) => c.idConsignacion == this.cambiarEstado.idConsignacion)
 
-    if (this.botones[this.posicionDevolver]) {
-      this.botones[this.posicionDevolver] = false
-    } else {
-      this.botones[this.posicionDevolver] = true
-    }
+    console.log(idC);
 
-    this.cambioArray.push(this.cambiarEstado)
-    console.log(this.cambioArray);
+    this.isSelected.idConsignacion = this.cambiarEstado.idConsignacion
+    this.isSelected.estado = this.cambiarEstado.estado
 
-    this.cambiarEstado = {
-      estado: '',
-      idConsignacion: 0,
-      username: '',
-      observacion: ''
-    }
-  }
-
-  cambiarConsignacion() {
-    this.consultarService.cambiarEstadoConsignacion(this.cambiarEstado).subscribe(
-      (data: any) => {
-        Swal.fire('Felicidades', 'Cambio Realizado Con Éxito', 'success')
-        setTimeout(() => {
-          window.location.reload()
-        }, 2000);
-      }, (error: any) => {
-        Swal.fire('Error', 'Error al Realizar El Cambio', 'error')
-        console.log(error);
+    if (idC != null || idC != undefined) {
+      this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != this.cambiarEstado.idConsignacion)
+      this.cambiarDevolver(this.cambiarEstado.idConsignacion, this.posicionDevolver, 'ACTIVAR', this.cambiarEstado.estado)
+      if (this.cambioArray.length > 0) {
+        this.cambios = true
+      } else {
+        this.cambios = false
       }
-    )
+
+    } else {
+
+      this.cambiarDevolver(this.cambiarEstado.idConsignacion, this.posicionDevolver, 'DESACTIVAR', this.cambiarEstado.estado)
+      this.cambiarEstado.idConsignacion = this.cambiarEstado.idConsignacion
+      this.cambiarEstado.estado = this.cambiarEstado.estado
+      this.cambiarEstado.observacion = this.cambiarEstado.observacion.trim()
+
+      var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+      this.cambiarEstado.username = user
+
+      this.cambioArray.push(this.cambiarEstado)
+
+      this.isSelected.username = this.cambiarEstado.username
+      this.isSelected.opcion = 'SELECCIONAR'
+      this.enviarIsSelected(this.isSelected)
+
+      console.log(this.cambioArray);
+
+
+      this.cambios = true
+    }
 
   }
 
+  //METODO PARA CAMBIAR EL ESTADO DE LA CONSIGNACION
+  cambiarConsignacion() {
+    this.botonCambiarConsignacion = true
+
+    setTimeout(() => {
+      this.consultarService.cambiarEstadoConsignacion(this.cambioArray, this.tipoReporte).subscribe(
+        (data: any) => {
+          Swal.fire('Felicidades', 'Cambio Realizado Con Éxito', 'success')
+          this.botonCambiarConsignacion = false
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000);
+        }, (error: any) => {
+          Swal.fire('Error', 'Error al Realizar El Cambio', 'error')
+          this.botonCambiarConsignacion = false
+
+        }
+      )
+    }, 2000);
+
+  }
+
+  //METODO PARA CANCELAR TODOS LOS CAMBIOS
   cancelar() {
-    this.cambiarEstado = {
-      estado: '',
-      idConsignacion: 0,
-      username: '',
-      observacion: ''
-    }
+    this.cambioArray.forEach((e: any) => {
+      var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+
+      this.isSelected = {
+        idConsignacion: e.idConsignacion,
+        username: user,
+        opcion: 'DESELECCIONAR',
+        estado: e.estado
+      }
+
+
+      this.consultarService.isSelected(this.isSelected).subscribe(
+        (data: any) => {
+
+        }, (error: any) => {
+          console.log(error);
+        }
+      )
+    });
+
+    this.cambioArray = []
 
     Swal.fire('Felicidades', 'Cambios Cancelados Con Éxito', 'success')
 
@@ -719,7 +1298,7 @@ export class ConsultasComponent implements OnInit {
     }, 2000);
   }
 
-  cancelarObservacion(){
+  cancelarObservacion() {
     this.cambiarEstado = {
       estado: '',
       idConsignacion: 0,
@@ -730,5 +1309,80 @@ export class ConsultasComponent implements OnInit {
     this.posicionDevolver = 0
   }
 
+  //GENERAR REPORTE PENDIENTES
+  generarReportePendientes() {
+    this.botonGenerarPendientes = true
+    setTimeout(() => {
+      var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+      this.consultarService.reportesPendientes(user).subscribe(
+        (data: any) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Felicidades',
+            text: 'Reporte Generado Con Éxito',
+            timer: 3000
+          })
+          this.botonGenerarPendientes = false
+        }, (error: any) => {
+          console.log(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error Al Generar El Reporte',
+            timer: 3000
+          })
+          this.botonGenerarPendientes = false
+        }
+      )
+    }, 2000);
+
+  }
+
+
+  filtrar(estado: string, fecha: any, sede: string, pages: number, sizes: number) {
+    this.consultarService.filter(estado, fecha, sede, pages, sizes).subscribe(
+      (data: any) => {
+        this.filtrando = true
+
+        if (data.content.length == 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se Encontraron Consignaciones Con Estos Filtros',
+            timer: 3000
+          })
+          this.spinner = false
+          this.botonFiltrar = false
+          this.estado = 'null'
+          this.fecha = 'null'
+          this.sede = 'null'
+          this.filtro = false
+          
+          this.getRoles()
+          
+        } else {
+          this.con = data.content
+          this.botones = new Array<boolean>(this.con.length).fill(false)
+          this.botonFiltrar = false
+          this.paginas = new Array(data.totalPages)
+          this.last = data.last
+          this.first = data.first
+          this.spinner = false
+          this.con.forEach((c: any) => {
+            c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
+          })
+          console.log(data);
+          this.consultarService.proSubject.next(true);
+        }
+      }, (error: any) => {
+        this.botonFiltrar = false
+        this.spinner = false
+      }
+    )
+  }
 
 }

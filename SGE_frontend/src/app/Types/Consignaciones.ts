@@ -3,10 +3,10 @@ import { Usuario } from "./Usuario"
 export type Consignacion = {
   idConsignacion: number,
   numeroRecibo: string,
-  valor: number,
+  valor: number | null,
   fechaPago: Date,
   idPlataforma: number,
-  observaciones: string,
+  observaciones: string | null,
   obligaciones: string[],
   base64: string,
   username: string
@@ -185,6 +185,7 @@ export type Obligacion =  {
 export type Con = {
   idConsignacion: number,
   numeroRecibo: string,
+  sede:string,
   valor: number,
   fechaPago: Date,
   fechaCreacion: Date,
@@ -238,6 +239,7 @@ export type Obg = {
 export type Actualizaciones =  {
   idActualizacion: number,
   fechaActualizacion: Date,
+  isCurrent:boolean,
   usuario: Usuario,
   estado: {
     idEstado: number,
@@ -250,7 +252,42 @@ export type Reportes = {
   nombreReporte: string,
   ruta: string,
   fechaReporte: Date,
-  usuarioId: number,
+  usuario: {
+    idUsuario: number,
+    username: string,
+    email: string,
+    password: string,
+    nombres: string,
+    apellidos: string,
+    sede: string,
+    tipo_documento: string,
+    numero_documento: string,
+    celular: string,
+    fecha_nacimiento: Date,
+    fecha_creacion: Date,
+    status: true,
+    roles: [
+      {
+        idRol: number,
+        rol: string,
+        permisos: [
+          {
+            idPermiso: number,
+            permiso: string
+          }
+        ]
+      }
+    ],
+    enabled: true,
+    authorities: [
+      {
+        authority: string
+      }
+    ],
+    accountNonExpired: true,
+    credentialsNonExpired: true,
+    accountNonLocked: true
+  },
   tipoReporte: string
 }
 
@@ -338,4 +375,16 @@ export type CambioEstado = {
   idConsignacion: number,
   username: string,
   observacion: string
+}
+
+export type IsSelected = {
+  idConsignacion: number,
+  username: string,
+  opcion: string,
+  estado: string
+}
+
+export type ConRes = {
+  mensaje:string,
+  consigRes: Con[]
 }

@@ -35,7 +35,7 @@ export class SucursalesComponent implements OnInit {
       (data:any) => {
         this.sede = data
       }, (error:any) => {
-        console.log(error);
+        
       }
     )
   }
@@ -52,7 +52,7 @@ export class SucursalesComponent implements OnInit {
         window.location.reload()
       }, 3000);
       }, (error:any) => {
-        console.log(error);
+        
       }
     )
   }
@@ -62,10 +62,10 @@ export class SucursalesComponent implements OnInit {
       (data:any) => {
         this.modal.idSede = data.idSede
         this.modal.nombreSede = data.nombreSede
-        console.log(this.modal);
+        
         
       }, (error:any) => {
-        console.log(error);
+        
       }
     )
   }
@@ -78,7 +78,7 @@ export class SucursalesComponent implements OnInit {
           window.location.reload()
         }, 2000);
       }, (error:any) => {
-        console.log(error);
+        
         Swal.fire('Error', 'Error Al Actualizar la Sede', 'error')
       }
     )

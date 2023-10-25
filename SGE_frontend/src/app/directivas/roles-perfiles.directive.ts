@@ -17,17 +17,11 @@ export class RolesPerfilesDirective implements OnInit {
 
   constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private authService: AuthenticationService) { }
 
-
-
-
   ngOnInit(): void {
     this.rolesUser = this.authService.getRoles();
     this.convertirString();
+    console.log(this.rolesString);
     
-
-    
-
-
     if (this.rolesString.includes(ROLES.SuperAdministration.toUpperCase()) || this.rolesString.includes(ROLES.Administration)) {
 
       this.viewContainer.createEmbeddedView(this.templateRef);
@@ -35,12 +29,7 @@ export class RolesPerfilesDirective implements OnInit {
       if (this.verificarRol(this.rol.toUpperCase())) {
         this.viewContainer.createEmbeddedView(this.templateRef);
       }
-      
     }
-
-    console.log(this.rolesString);
-    
-
   }
 
   @Input()

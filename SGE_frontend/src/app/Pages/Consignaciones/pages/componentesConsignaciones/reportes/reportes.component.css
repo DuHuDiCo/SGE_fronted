@@ -43,3 +43,14 @@
     overflow: hidden;
     box-shadow: 1px 9px 60px 0 rgb(0 0 0 / 30%);
 }
+
+.b{
+    color: white;
+    background-color: #960010;
+    border-color: #960010;
+  }
+  
+  .b:hover{
+    background: #d40000;
+    border-color: #d40000;
+  }

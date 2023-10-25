@@ -28,6 +28,8 @@ export class AgregarVariosClientesComponent implements OnInit{
   cliente:Cliente[] = []
 
   mostrarClientes:boolean = false;
+  tabla:boolean = false
+  botonErrores:boolean = false
  
  constructor(private authService:AuthenticationService, private http:HttpClient, private variosClientes:AgregarVariosClientesService) { }
 
@@ -58,10 +60,35 @@ export class AgregarVariosClientesComponent implements OnInit{
           Swal.fire('Error de Validacion', `Algunos registros no fueron validados: ${data.Exceptions.length}` , 'error')
           this.formModal.show();
           this.mostrarClientes = true
+          this.botonErrores = true
+          if(data.Clientes.length == 0){
+            this.mostrarClientes = true
+            this.clientes = data.Clientes
+            this.cambios = data.Cambios   
+            this.mostrarClientes = true
+            return
+          } 
+          this.tabla = true
+          console.log(data);
           return
+        }
+
+        if(data.Exceptions.length == 0){
+          Swal.fire({
+            icon: 'success',
+            title: 'Felicidades',
+            text: 'Estos Son Los Clientes Cargados',
+            timer: 3000
+          })
+          this.mostrarClientes = true
+          this.clientes = data.Clientes
+          this.cambios = data.Cambios   
+          this.tabla = true
+          this.mostrarClientes = true
         }
       },(error:any) => {
         console.log(error);
+        
       }
     )
   }
@@ -74,9 +101,9 @@ export class AgregarVariosClientesComponent implements OnInit{
         setTimeout(() => {
         location.reload()
         }, 2000);
-        console.log(data)
+        
       }, (error:any) => {
-        console.log(error)
+        
         Swal.fire('Error', 'Error al guardar el Cliente', 'error')
       }
     )

@@ -1,113 +1,265 @@
-
-    <h1 class="titulo">Ingresar Nuevas Consignaciones</h1><br>
-    <hr class="border-4">
-            <div class="row align-items-center">
-                <div class="row align-items-center">
-                    <div class="col-md-12 col-12">
-                        <div class="usuario mt-4">
-                            <input [(ngModel)]="consignacion.numeroRecibo" name="numeroRecibo" type="text" class="input-usuario" placeholder="Número Del Recibo">
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="usuario">
-                            <input [(ngModel)]="consignacion.valor" name="valor" type="text" class="input-usuario" placeholder="Valor">
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="usuario">
-                            <input [(ngModel)]="consignacion.fechaPago" name="fechaPago" type="date" class="input-usuario"> 
-                        </div>
-                    </div>
-            </div>
-
-        <div class="row align-items-center">
-            <div class="col-md-11 col-12">
-                <div class="usuario">
-                    <input [(ngModel)]="cedula" name="cedula" type="search" class="input-usuario" placeholder="Cédula Cliente"> 
-                </div>
-            </div>
-            <div class="col-md-1 col-12">
-                <button (click)="getObligacionByCedula()" class="btn btn-success btn-lg"><i class="fa-solid fa-magnifying-glass"></i></button>    
-            </div>
-            <div *ngIf="tabla" class="mt-2 mb-4">
-                <hr class="border-4">
-                <table class="table table-hover text-center mt-3">
-                    <thead>
-                      <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Valor Obligación</th>
-                        <th scope="col">Fecha Obligación</th>
-                        <th scope="col">Sede</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let o of obligacion">
-                        <th scope="row">
-                            <div class="form-check">
-                                <input (click)="check(o.numeroObligacion)" [checked]="consignacion.obligaciones.includes(o.numeroObligacion)" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                </label>
-                              </div>
-                        </th>
-                        <td>{{ o.cliente.nombres }} {{ o.cliente.apellidos }}</td>
-                        <td>{{ o.capital }}</td>
-                        <td>{{ o.fechaObligacion | date:'short' }}</td>
-                        <td>{{ o.sede.nombreSede }}</td>
-                      </tr>
-                    </tbody>
-                  </table> 
-            </div>
-             
-        </div>
-
-        <div class="row align-items-end">
-            <div class="col-md-6 col-12">
-                <div class="usuario">
-                    <select [(ngModel)]="consignacion.idPlataforma" name="idPlataforma" class="form-select" required aria-label="select example">
-                    <option value="0">Elija Una Plataforma</option>
-                    <option *ngFor="let p of plataforma" value="{{ p.idPlataforma }}">{{ p.bancos.nombreBanco }} - {{ p.bancos.tipoPago[0].tipoPago }}</option>
-                    </select>
-                </div>
-            </div>
-            
-
-            <div class="col-md-6 col-12" >
-                <div class = "file">
-                    <div class="input-group mb-3">
-                        <input (change)="obtenerFile($event)" [(ngModel)]="consignacion.base64" name="base64" type="file" class="form-control" accept=".png, .jpg" max="1048576">
-                      </div>
-                </div>
-            </div>
-        </div>
-        
-    <div style="text-align: center;">
-        <button (click)="guardarConsignacion()" class="guardar" type="button">Guardar Consignaciones</button>
-    </div><br>
-    
-    <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">¿Deseas Agregar Una Observación?</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="form-floating">
-                <textarea [(ngModel)]="consignacion.observaciones" name="observaciones" class="form-control" placeholder="Observacion" id="floatingTextarea2" style="height: 100px"></textarea>
-                <label for="floatingTextarea2">Observaciones</label>
-              </div>
-        </div>
-        <div class="modal-footer">
-          <button *ngIf="!crearConsignacion" type="button" class="btn btn-danger" (click)="guardarConObs('NO')" data-bs-dismiss="modal">No</button>
-          <button *ngIf="!crearConsignacion" type="button" class="btn btn-primary" (click)="guardarConObs('SI')">Si</button>
-          <button *ngIf="crearConsignacion" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
-            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-        </button>
-        </div>
+<h1 class="titulo">Ingresar Nuevas Consignaciones</h1><br>
+<hr class="border-4">
+<div class="row align-items-center">
+  <div class="row align-items-center">
+    <div class="col-md-12 col-12">
+      <div class="usuario mt-4">
+        <input [(ngModel)]="consignacion.numeroRecibo" name="numeroRecibo" type="text" class="input-usuario"
+          placeholder="Número Del Recibo">
+      </div>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="usuario">
+        <input [(ngModel)]="consignacion.valor" name="valor" type="text" class="input-usuario" placeholder="Valor">
+      </div>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="usuario">
+        <input [(ngModel)]="consignacion.fechaPago" name="fechaPago" type="date" class="input-usuario">
       </div>
     </div>
   </div>
 
+  <div class="row align-items-center">
+    <div class="col-md-11 col-12">
+      <div class="usuario">
+        <input [(ngModel)]="cedula" name="cedula" type="search" class="input-usuario" placeholder="Cédula Cliente">
+      </div>
+    </div>
+    <div class="col-md-1 col-12">
+      <button (click)="getObligacionByCedula()" class="btn btn-success btn-lg"><i
+          class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+    <div *ngIf="tabla" class="mt-2 mb-4">
+      <hr class="border-4">
+      <table class="table table-hover text-center mt-3">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Valor Obligación</th>
+            <th scope="col">Fecha Obligación</th>
+            <th scope="col">Sede</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let o of obligacion">
+            <th scope="row">
+              <div class="form-check">
+                <input (click)="check(o.numeroObligacion)"
+                  [checked]="consignacion.obligaciones.includes(o.numeroObligacion)" class="form-check-input"
+                  type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                </label>
+              </div>
+            </th>
+            <td>{{ o.cliente.nombres }} {{ o.cliente.apellidos }}</td>
+            <td>{{ o.capital }}</td>
+            <td>{{ o.fechaObligacion | date:'short' }}</td>
+            <td>{{ o.sede.nombreSede }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row align-items-end">
+      <div class="col-md-6 col-12">
+        <div class="usuario">
+          <select [(ngModel)]="consignacion.idPlataforma" name="idPlataforma" class="form-select" required
+            aria-label="select example">
+            <option value="0">Elija Una Plataforma</option>
+            <option *ngFor="let p of plataforma" value="{{ p.idPlataforma }}">{{ p.bancos.nombreBanco }} - {{
+              p.bancos.tipoPago[0].tipoPago }}</option>
+          </select>
+        </div>
+      </div>
 
+
+      <div class="col-md-6 col-12">
+        <div class="file">
+          <div class="input-group mb-3">
+            <input (change)="obtenerFile($event)" [(ngModel)]="consignacion.base64" name="base64" type="file"
+              class="form-control" accept=".png, .jpg" max="1048576">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center;">
+      <button (click)="guardarConsignacion()" class="guardar" type="button">Guardar Consignaciones</button>
+    </div><br>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">¿Deseas Agregar Una Observación?</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-floating">
+              <textarea [(ngModel)]="consignacion.observaciones" name="observaciones" class="form-control"
+                placeholder="Observacion" id="floatingTextarea2" style="height: 100px"></textarea>
+              <label for="floatingTextarea2">Observaciones</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button *ngIf="!crearConsignacion" type="button" class="btn btn-danger" (click)="guardarConObs('NO')"
+              data-bs-dismiss="modal">No</button>
+            <button *ngIf="!crearConsignacion" type="button" class="btn btn-primary" (click)="guardarConObs('SI')"
+              data-bs-dismiss="modal">Si</button>
+            <button *ngIf="crearConsignacion" type="button" class="btn btn-danger"
+              style="background-color: #960010;border-color: #960010;">
+              <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalConfirmar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Consignaciones que Coinciden:</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger" role="alert">
+              La Consignación Que estas ingresando Coincide con las Siguientes Consignaciones:
+            </div>
+
+            <table class="table table-bordered align-middle text-center">
+              <thead class="align-middle">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Número Recibo</th>
+                  <th scope="col">Nombre Cliente</th>
+                  <th scope="col">Cédula</th>
+                  <th scope="col">Fecha Pago</th>
+                  <th scope="col">Valor</th>
+                  <th scope="col">Sede</th>
+                </tr>
+              </thead>
+              <tbody class="align-middle">
+                <tr *ngFor="let c of con.consigRes; let i = index">
+                  <th scope="row">{{ i + 1 }}</th>
+                  <th scope="row">{{ c.numeroRecibo }}</th>
+                  <td>{{ c.cuentasCobrar[0].cliente.nombres }} {{ c.cuentasCobrar[0].cliente.apellidos }}</td>
+                  <td> {{ c.cuentasCobrar[0].cliente.numeroDocumento }} </td>
+                  <td>{{ c.fechaPago | date:'dd/MM/yyyy' }}</td>
+                  <td>$ {{ c.valor | number}}</td>
+                  <td>{{ c.sede }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="confirmarObservacion()">Guardar De Todos
+              Modos</button>
+            <button type="button" class="btn btn-secondary" (click)="cancelarConsignacion()"
+              data-bs-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Un Cliente</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger text-center" role="alert">
+              La Cédula Ingresada No Coincide Con Ningún Cliente Registrado.
+            </div>
+
+            <div class="mt-2 mb-4">
+              <hr class="border-4">
+              <div class="row justify-content-center text-center">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="usuario mt-4">
+                        <input [(ngModel)]="cliente.nombres" name="nombres" type="text" class="input-usuario"
+                          placeholder="Nombres">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="usuario mt-4">
+                        <input [(ngModel)]="cliente.apellidos" name="apellidos" type="text" class="input-usuario"
+                          placeholder="Apellidos">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="usuario mt-4">
+                        <select [(ngModel)]="cliente.tipoDocumento" name="tipoDocumento" class="form-select" required
+                          aria-label="select example">
+                          <option value="">Elija Un Tipo Doc</option>
+                          <option value="C.C">C.C
+                          </option>
+                          <option value="T.I">T.I
+                          </option>
+                          <option value="C.E">C.E
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="usuario mt-4">
+                        <input [(ngModel)]="cliente.numeroDocumento" name="numeroDocumento" type="text" class="input-usuario"
+                          placeholder="Numero de Documento">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="usuario mt-4">
+                        <input [(ngModel)]="cliente.numeroObligacion" name="numeroObligacion" type="text" class="input-usuario"
+                          placeholder="Numero de Obligación">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="usuario mt-4">
+                        <select [(ngModel)]="cliente.sede" name="sede" class="form-select" required
+                          aria-label="select example">
+                          <option value="">Elija Una Sede</option>
+                          <option *ngFor="let s of sedes" value="{{ s.nombreSede }}">{{ s.nombreSede }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="usuario mt-4">
+                        <select [(ngModel)]="cliente.asesor" name="asesor" class="form-select" required
+                          aria-label="select example">
+                          <option value="">Elija Un Asesor</option>
+                          <option *ngFor="let a of asesores" value="{{ a.usuario.idUsuario }}">{{ a.usuario.username }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button *ngIf="!crearCliente" type="button" class="btn btn-danger" data-bs-dismiss="modal" style="background-color: #960010;border-color: #960010;" (click)="guardarCliente()">Guardar</button>
+            <button *ngIf="crearCliente" type="button" class="btn btn-danger"
+              style="background-color: #960010;border-color: #960010;">
+              <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-secondary"
+              data-bs-dismiss="modal" (click)="cancelarCliente()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    

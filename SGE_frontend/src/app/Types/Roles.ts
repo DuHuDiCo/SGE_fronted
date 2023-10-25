@@ -38,10 +38,11 @@ export type RolDto = {
 
 export enum ROLES{
     SuperAdministration = "SUPERADMINISTRADOR",
-    Administration = "Administration",
+    Administration = "ADMINISTRATION",
     Cartera = "Cartera",
     Consignaciones = "CONSIGNACIONES",
     Caja = "Caja",
     Creditos = "Creditos",
-    Ventas = "Ventas"
+    Ventas = "Ventas",
+    Archivos = "Archivos"
 }

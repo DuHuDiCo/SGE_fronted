@@ -89,7 +89,15 @@ import { EstadosComponent } from './Pages/Consignaciones/pages/componentesConsig
 import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/sucursales/sucursales.component';
 import { RolesUsuariosComponent } from './Pages/AdminGeneral/Usuarios/roles-usuarios/roles-usuarios.component';
 import { ConsignacionesDirectiveDirective } from './directivas/DirectivaConsignaciones/consignaciones-directive.directive';
-import { ConsignacionesListasComponent } from './pages/consignaciones/pages/componentesConsignaciones/consignaciones-listas/consignaciones-listas/consignaciones-listas.component';
+import { CambioContrasenaComponent } from './componentesGenerales/cambio-contrasena/cambio-contrasena.component';
+import { SubirArchivosComponent } from './Pages/Archivos/componentes_archivos/subir-archivos/subir-archivos.component';
+import { TipoArchivoComponent } from './Pages/Archivos/componentes_archivos/tipo-archivo/tipo-archivo.component';
+import { BuscarArchivosComponent } from './Pages/Archivos/componentes_archivos/buscar-archivos/buscar-archivos.component';
+import { ArchivosDirective } from './directivas/DirectivaArchivos/archivos.directive';
+import { ObligacionesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/obligaciones/obligaciones.component';
+import { EstadosObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados-obligacion/estados-obligacion.component';
+import { TipoObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/tipo-obligacion/tipo-obligacion.component';
+import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/asesores/asesores.component';
 
 
 
@@ -185,8 +193,7 @@ import { ConsignacionesListasComponent } from './pages/consignaciones/pages/comp
     BancosComponent,
     EstadosComponent,
     SucursalesComponent,
-    ConsignacionesDirectiveDirective,
-    ConsignacionesListasComponent
+    ConsignacionesDirectiveDirective
 
   ],
 

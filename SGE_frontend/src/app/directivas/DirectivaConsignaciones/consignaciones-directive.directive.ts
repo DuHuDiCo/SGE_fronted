@@ -1,5 +1,6 @@
 import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { ROLES, Roles } from 'src/app/Types/Roles';
 
 @Directive({
   selector: '[appConsignacionesDirective]'
