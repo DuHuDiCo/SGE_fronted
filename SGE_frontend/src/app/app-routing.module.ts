@@ -72,6 +72,7 @@ import { ObligacionesComponent } from './Pages/Consignaciones/pages/componentesC
 import { EstadosObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados-obligacion/estados-obligacion.component';
 import { TipoObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/tipo-obligacion/tipo-obligacion.component';
 import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/asesores/asesores.component';
+import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/rankings/rankings/rankings.component';
 
 
 
@@ -160,7 +161,7 @@ const routes: Routes = [
 
 
 
-  {path: 'consignaciones', redirectTo:'dashboard-consignaciones/consultar' , pathMatch:'full' },
+  {path: 'consignaciones', redirectTo:'dashboard-consignaciones/rankings' , pathMatch:'full' },
   {
     path:'dashboard-consignaciones',
     component:DashboarConsignacionesComponent,
@@ -206,6 +207,10 @@ const routes: Routes = [
         path: 'asesores',
         component: AsesoresComponent
       },
+      {
+        path: 'rankings',
+        component: RankingsComponent
+      }
     ]
   },
 
