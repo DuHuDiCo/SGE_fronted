@@ -98,6 +98,8 @@ import { ObligacionesComponent } from './Pages/Consignaciones/pages/componentesC
 import { EstadosObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados-obligacion/estados-obligacion.component';
 import { TipoObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/tipo-obligacion/tipo-obligacion.component';
 import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/asesores/asesores.component';
+import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/rankings/rankings/rankings.component';
+
 
 
 
@@ -203,6 +205,7 @@ import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsi
     EstadosObligacionComponent,
     TipoObligacionComponent,
     AsesoresComponent,
+    RankingsComponent,
 
   ],
 
