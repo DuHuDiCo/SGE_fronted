@@ -20,8 +20,6 @@
     padding: 10px;
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
-
-/*
 .was-validated{
     text-align: center;
     color: #000;
@@ -126,9 +124,6 @@
     
 }
 
-*/
-
-/* Media query for mobile-sized screens */
 @media (max-width: 576px) {
     .container {
         width: 400px;
