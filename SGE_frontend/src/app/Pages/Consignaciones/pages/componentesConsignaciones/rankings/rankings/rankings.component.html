@@ -1,1 +1,169 @@
-<p>rankings works!</p>
+<div class="row">
+
+    <div>
+        <h1 class="titulo2">Ranking Consignaciones</h1>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2 border-radius">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="titulo">
+                            Consignaciones (MES)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="conMes">
+                            {{Ranking.consignacionesMonth}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-regular fa-calendar-days text-gray-300 titulos"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="titulo">
+                            Consignaciones (DIA)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="conMes">
+                            {{Ranking.consignacionesToday}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-calendar-check text-gray-300 titulos"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="titulo">
+                            Consignaciones (DEVUELTA CAJA)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="conMes">
+                            {{Ranking.consignacionesDevueltasCaja}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-landmark text-gray-300 titulos"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="titulo">
+                            Consignaciones (PENDIENTES)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="conMes">
+                            {{Ranking.consignacionesPendientes}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-x text-gray-300 titulos"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="titulo">
+                            Consignaciones (COMPROBADAS)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="conMes">
+                            {{Ranking.consignacionesComprobadas}}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-receipt text-gray-300 titulos"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="titulo">
+                            Consignaciones (APLICADAS)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="conMes">
+                            {{Ranking.consignacionesAplicado}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-check text-gray-300 titulos"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="titulo">
+                            Consignaciones (DEVUELTA CONTABILIDAD)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="conMes">
+                            {{Ranking.consignacionesDevueltasContabilidad}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-cash-register text-gray-300 titulos"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="titulo">
+                            Consignaciones Comprobadas (SEDE)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="conMes">
+                            {{Ranking.consignacionesComprobadasBySede}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-building-columns text-gray-300 titulos"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="titulo">
+                            Consignaciones Aplicadas (SEDE)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="conMes">
+                            {{Ranking.consignacionesAplicadoBySede}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-building text-gray-300 titulos"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
