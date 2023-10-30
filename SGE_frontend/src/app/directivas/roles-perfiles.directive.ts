@@ -1,5 +1,5 @@
 import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { RolUsuario } from '../Models/rol-usuario';
+
 import Roles from '../Models/Roles';
 import { AuthenticationService } from '../Services/authentication/authentication.service';
 import { ROLES } from '../Types/Roles';
