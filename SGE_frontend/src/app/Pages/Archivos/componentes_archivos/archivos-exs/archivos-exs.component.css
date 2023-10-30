@@ -6,7 +6,7 @@
     margin-top: 70px;
     border-radius: 40px;
     background: #dfe2e5;
-    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+    box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
 }
 
 .imagen-portada{
@@ -58,7 +58,7 @@
     border-radius: 18px;
     height: 50px;
     margin-bottom: 30px;
-    box-shadow: 10px 10px 20px #707274, -2px 0px 10px 4px #707274;
+    box-shadow: 2px 2px 2px #707274, -2px 0px 2px 0px #707274;
 }
 
 .boton:hover{
@@ -68,6 +68,13 @@
 @media (min-width: 1200px){
 .container, .container-lg, .container-md, .container-sm, .container-xl {
     max-width: 1000px;
+    }
+}
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 400px;
     }
 }
 
@@ -82,8 +89,9 @@
 
 
 
+
 /* Estilos para darle un espaciado al contenedor y para darle estilo a las felchas de siguiente y atras  */
-.min-screen .screen-box{
+/* .min-screen .screen-box{
     display: none;
 }
 
@@ -140,7 +148,7 @@
     height: 4.5rem;
     width: 4.5rem;
     /* color: #ecb709; */
-    color: #D60303;
+    /* color: #D60303;
     border-radius: 50%;
     line-height: 4rem;
     font-size: 3rem;
@@ -167,6 +175,6 @@
         left: 20px;
         padding: 2px 20px;
     }
-}
+} */ 
 
 

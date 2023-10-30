@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 550px;
+    min-height: 150px;
     height: auto;
     background: #fff;
     
@@ -24,6 +24,8 @@
 .option a {
     position: relative;
     text-decoration: none;
+    margin-top: 50px;
+    margin-bottom: 50px;
     width: 100px;
     height: 80px;
     cursor: pointer;
@@ -33,8 +35,7 @@
     align-items: center;
     text-align: center;
     transition: .3s;
-    background: #a0a3a5;
-    box-shadow: 5px 3px 8px #6c757d, -1px -1px 9px 5px #6c757d;
+    background: rgba(229, 229, 229, 0.816);
     animation: fadein 0.4s linear;
 }
 
@@ -46,6 +47,7 @@
     padding: 20px;
     cursor: pointer;
     animation: fadein 0.4s linear;
+    box-shadow: 5px 3px 8px #6c757d, -1px -1px 5px 2px #6c757d;
 }
 
 .options {
@@ -67,7 +69,7 @@
     position: absolute;
     color: #fff;
     background: #000;
-    font-family: 'Rubik';
+    font-family: 'Roboto';
     top: 10px;
 
     left: 50%;
@@ -100,9 +102,7 @@ span {
 
 
 #cerrar {
-    width: 3%;
-    margin-left: 1250px;
-    overflow: hidden;
+   
     cursor: pointer;
 }
 
@@ -118,6 +118,7 @@ span {
 
 
 /* Tablet */
+
 @media_table (max-width:1000px) {
     .caja {
         display: flex;
@@ -133,8 +134,8 @@ span {
     .options {
         display: flex;
         list-style: none;
-        /* padding: 0; */
-        margin: 0 0 0 200px;
+         /* padding: 0; 
+         margin: 0 0 0 200px; */
     }
 
     .option a {
@@ -151,25 +152,20 @@ span {
     }
 
 
-}
+} 
 
 
 /* Movil */
 
-@media_movil (max-width:390px) {
-    .caja {
-        display: flex;
-        width: 100%;
-        margin: 0 40px;
-        align-items: center;
-        min-height: 550px;
-        height: auto;
-        background: #fff;
+@media (max-width: 767px) {
+    .options {
+        /* Eliminamos el margen para que los elementos ocupen toda la fila */
+        margin: 0;
     }
 
-    .options {
-        display: flex;
-        list-style: none;
-        margin: 0 0 0 40px;
+    /* Utilizamos la clase col-6 para que se muestren en 2 columnas por fila */
+    .col-sm-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
     }
 }

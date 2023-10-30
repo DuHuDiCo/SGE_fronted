@@ -1,0 +1,144 @@
+<div class="container">
+    <header class="mt-5">
+        <h1 class="titulo">Buscar Usuarios</h1>
+    </header>
+    <span>Ingresar el Nombre del Usuario Que deseas Buscar</span>
+    <br><br>
+
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <form #FormRoles="ngForm">
+                <div class="mb-3 row">
+                    <label for="staticEmail" class="col-md-2 col-form-label mt-4">Usuario:</label>
+                    <div class="col-md-10">
+                        <input [(ngModel)]="nombre" type="text" class="form-control inputs" id="staticEmail" ngModel
+                            name="nombre" (keyup.enter)="filtrarUsuarios()">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-10 offset-md-1">
+            <div class="table-container">
+                <table class="table">
+                    <thead class="table table-dark">
+                        <tr class="align-middle">
+                            <th>Username</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Telefono</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let c of usuarios; let i = index" class="align-middle">
+                            <th>{{ c.username }}</th>
+                            <th>{{ c.nombres }}</th>
+                            <th>{{ c.apellidos }}</th>
+                            <th>{{ c.celular }}</th>
+                            <th>{{ c.status ? 'Activado' : 'Desactivado'}}</th>
+                            <td>
+                                <button type="button" class="btn btn-sm me-3"
+                                    style="background-color: #960010; color: white;"
+                                     (click)="enviarUsuarioToRoles(c.idUsuario)"><i
+                                        class="fa-solid fa-gear"></i>
+                                </button>
+
+                                <button (click)="datos.datoToDelete=c.username" *ngIf="!c.status" type="button"
+                                    class="btn btn-sm" style="background-color: #ff2424; color: white;" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop2"><i class="fa-solid fa-unlock"></i>
+                                </button>
+
+                                <ng-container *ngIf="c.status">
+                                    <button (click)="datos.datoToDelete=c.username" type="button"
+                                        class="btn btn-sm" style="background-color: #960010; color: white;"  data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop"><i class="fa-solid fa-lock"></i>
+                                    </button>
+                                </ng-container>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+        </div>
+    </div>
+
+    <!-- Modales para ver detalles 
+    <div class="modal fade" *ngFor="let c of usuarios; let i = index" [id]="'verDetallesModal' + i" tabindex="-1"
+        aria-labelledby="verDetallesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verDetallesModalLabel">Detalles del Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <!-- Modal Desactivar -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">DESACTIVAR USUARIO</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Quiere Desactivar este Usuario?
+                </div>
+                <div>
+                    <h5 class="modal-title">Ingresar los Datos</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="password">Contraseña:</label>
+                        <input [(ngModel)]="datos.passwordUser" type="password" id="password" name="password"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" (click)="desactivarUsuario()">Desactivar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Activar -->
+    <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">ACTIVAR USUARIO</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Quiere Activar este Usuario?
+                </div>
+                <div>
+                    <h5 class="modal-title">Ingresar los Datos</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="password">Contraseña:</label>
+                        <input [(ngModel)]="datos.passwordUser" type="password" id="password" name="password"
+                            class="form-control">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" (click)="activarUsuario()">Activar</button>
+                </div>
+            </div>
+        </div>
+    </div>

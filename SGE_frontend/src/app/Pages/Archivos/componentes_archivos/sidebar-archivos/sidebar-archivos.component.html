@@ -14,14 +14,29 @@ aria-labelledby="offcanvasWithBackdropLabel">
         <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
             Archivos Fisicos
         </button>
-
-        <div class="collapse" id="getting-started-collapse">
+        <div *appArchivos="permisos[3]" class="collapse" id="getting-started-collapse" data-bs-dismiss="offcanvas">
             <ul class="list-unstyled fw-normal pb-1 small">
-                <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-archivos/archivos-exs"><i class="fas fa-file-alt"></i>&nbsp; Archivos Existentes</button></li>
+                <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-archivos/subir-archivos"><i class="fa-solid fa-upload"></i>&nbsp; Subir Archivos</button></li>
+            </ul>
+        </div>
+        <div *appArchivos="permisos[4]" class="collapse" id="getting-started-collapse" data-bs-dismiss="offcanvas">
+            <ul class="list-unstyled fw-normal pb-1 small">
+                <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-archivos/tipo-archivo"><i class="fa-solid fa-file-export"></i>&nbsp; Tipos de Archivos</button></li>
+            </ul>
+        </div>
+        <div *appArchivos="permisos[6]" class="collapse" id="getting-started-collapse" data-bs-dismiss="offcanvas">
+            <ul class="list-unstyled fw-normal pb-1 small">
+                <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-archivos/buscar-archivos"><i class="fa-solid fa-magnifying-glass"></i>&nbsp; Buscar Archivos</button></li>
             </ul>
         </div>
     </li>
+    <hr style="color: white;">
+    <ul class="nav flex-column ">
 
+        <li class="nav-item">
+            <button (click) = "logout()" class="nav-link active" aria-current="page"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</button>
+        </li>
+    </ul>
 
 
     <!-- <li class="mb-1">

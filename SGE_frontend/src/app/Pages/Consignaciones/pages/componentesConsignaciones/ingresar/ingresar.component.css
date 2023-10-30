@@ -26,16 +26,14 @@
     margin: 0;
     padding: 0;
 }
-*{
-    margin: 0;
-}
+
 .usuario,.file{
     border-radius: 25px;
     text-align: center;
-    width: 90%;
+    width: 100%;
     margin: 10px auto;
     background: #ecf0f3;
-    box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 
 }
 .file{
@@ -51,11 +49,12 @@
     text-align: center;
     margin: 15px auto;
     padding: 10px;
-    box-shadow: inset 10px 10px 20px #adb5bd, inset -10px -10px 20px #ffffff;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 
 .input-usuario{
     border: none;
+    text-align: center;
     outline: none;
     background: none;
     font-size: 15px;
@@ -79,14 +78,28 @@
     color: #fff;
     background: #9C1717;
     cursor: pointer;
-    width: 30%;
+    width: auto;
     outline: none;
     border: #cbced1;
     border-radius: 18px;
     height: 50px;
     margin-bottom: 30px;
-    box-shadow: 10px 10px 20px #707274, -2px 0px 10px 4px #707274;
+    box-shadow: 2px 2px 2px #707274, -2px 0px 2px 0px #707274;
 }
 .guardar:hover{
     background: #D60303 ;
+}
+
+.input-usuario2 {
+    color: #000000;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 400px;
+    }
 }

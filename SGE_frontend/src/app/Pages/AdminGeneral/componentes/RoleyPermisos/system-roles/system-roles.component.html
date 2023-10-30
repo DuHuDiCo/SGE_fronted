@@ -49,7 +49,7 @@
             <div class="boxItems">
                 <div class="row">
                     <div class="cardList" *ngFor="let rol of roles">
-                        <label for="">{{rol | uppercase}}</label> <a (click)="quitarRol(rol)"><i
+                        <label for="">{{rol }}</label> <a (click)="quitarRol(rol)"><i
                                 class="fas fa-times ms-3" style="cursor: pointer;"></i></a>
 
                     </div>
@@ -73,14 +73,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let rol of rolesSaved;let i = index">
-                        <td>{{i + 1}}</td>
+                    <tr *ngFor="let rol of rolesSaved | paginate: { itemsPerPage: 10, currentPage: page};let i = index">
+                        <td>{{ (page - 1) * 10 + i + 1 }}</td>
                         <td>{{rol.rol}}</td>
-                        <td><button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button></td>
+                        <td><button (click) = "eliminarRol(rol.idRole)" class="btn btn-sm" style="background-color: #960010; color: white;"><i class="fas fa-trash"></i></button></td>
                     </tr>
                 </tbody>
 
             </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-4">
+            <pagination-controls class="pagination" (pageChange)="page = $event;" previousLabel="Anterior"
+            nextLabel="Siguiente"></pagination-controls>
         </div>
     </div>
 </div>

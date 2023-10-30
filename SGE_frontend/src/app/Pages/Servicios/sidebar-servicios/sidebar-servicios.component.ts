@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { windowTime } from 'rxjs';
+import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 
 @Component({
   selector: 'app-sidebar-servicios',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarServiciosComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService:AuthenticationService) { }
 
   ngOnInit(): void {
+  }
+
+  logout(){
+    this.authService.logout()
+    window.location.reload()
   }
 
 }

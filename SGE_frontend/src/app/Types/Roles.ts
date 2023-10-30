@@ -14,12 +14,35 @@ export type RolSystem ={
     rol:string
 }
 
+export type Roles = {
+    idRole:number,
+    rol:string,
+    permissions: [
+        {
+            idPermission: number,
+            permission: string
+        }
+    ]
+}
+
+export type RolesUser = {
+    rol: string,
+    permisos : string[]
+}
+
+
+export type RolDto = {
+    id:number,
+    permisos:number[]
+}
 
 export enum ROLES{
-    SuperAdministration = "SuperAdministration",
-    Administration = "Administration",
+    SuperAdministration = "SUPERADMINISTRADOR",
+    Administration = "ADMINISTRATION",
     Cartera = "Cartera",
+    Consignaciones = "CONSIGNACIONES",
     Caja = "Caja",
     Creditos = "Creditos",
-    Ventas = "Ventas"
+    Ventas = "Ventas",
+    Archivos = "Archivos"
 }

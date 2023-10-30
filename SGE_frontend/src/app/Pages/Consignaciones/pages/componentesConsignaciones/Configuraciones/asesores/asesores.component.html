@@ -1,0 +1,41 @@
+<div class="row text-center justify-content-center">
+    <div class="col-md-6">
+        <h5 class="titulo">Ingresar Un Nuevo Asesor</h5>
+        <div class="usuario">
+            <select [(ngModel)]="asesor.usuarioId" name="usuarioId" class="form-select" required aria-label="select example">
+            <option value="0">Elija Un Usuario</option>
+            <option *ngFor="let u of users" value="{{ u.idUsuario }}">{{ u.username }}</option>
+            </select>
+        </div>
+        <div class="text-center">
+            <button *ngIf="!botonSave" (click)="save()" class="btn btn-primary guardar">Guardar</button>
+            <button *ngIf="botonSave" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
+                <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row text-center justify-content-center">
+    <div class="col-md-8 mt-3">
+        <div class="table-responsive align-middle text-center">
+            <table class="table table-bordered align-middle text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Asesores</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let a of asesores | paginate: { itemsPerPage: 10 , currentPage: page} ; let i = index">
+                        <th scope="row">{{ (page - 1) * 10 + i + 1 }}</th>
+                        <td>{{ a.usuario.username }}</td>
+    
+                    </tr>
+                </tbody>
+            </table>
+            <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+        </div>
+    </div>
+</div>
+

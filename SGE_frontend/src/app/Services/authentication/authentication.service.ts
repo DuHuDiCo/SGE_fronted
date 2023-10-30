@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import Login from 'src/app/Models/Login';
+import { ROLES } from 'src/app/Types/Roles';
 import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
@@ -41,7 +42,7 @@ export class AuthenticationService {
   
   public getUsername(){
     var user:string | null = localStorage.getItem("Username")
-    
+    return user 
   }
   
   public getRoles(){
@@ -54,12 +55,47 @@ export class AuthenticationService {
     }
   }
 
+  public getRolesP(){
+    var roles = this.getRoles()
+    if(roles != null){
+      var rol = roles.find((r:any) => r.rol == ROLES.Consignaciones)
+      if(rol != null){
+        return rol
+      }
+      return null
+    }
+  }
+
+  public setSede(sede:string){
+    localStorage.setItem("Sede", sede)
+  }
+
+  public getSede(){
+    var sede:string | null = localStorage.getItem("Sede")
+    return sede
+  }
+
+  public setFecha(fecha:string){
+    localStorage.setItem("Fecha", fecha)
+  }
+
+  public getFecha(){
+    var fecha:string | null = localStorage.getItem("Fecha")
+    if(fecha != null || fecha != undefined){
+      var fechaDate = new Date(fecha)
+      return fechaDate
+    }
+    return null
+  }
+
 
   public logout():void{
     localStorage.removeItem("Token")
     localStorage.removeItem("Username")
     localStorage.removeItem("Roles")
-    
+    localStorage.removeItem("Sede")
+    localStorage.removeItem("Is_updateable")
+    localStorage.removeItem("Fecha") 
   }
 
   public isLoggedIn():boolean{

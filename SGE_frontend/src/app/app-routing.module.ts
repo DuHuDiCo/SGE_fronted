@@ -44,6 +44,42 @@ import { DashboardSuperAdminComponent } from './Pages/AdminGeneral/dashboard-sup
 import { SystemRolesComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-roles/system-roles.component';
 import { SystemPermisosComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-permisos/system-permisos.component';
 
+import { AgregarVariosClientesComponent } from './Pages/AdminGeneral/Clientes/agregar-varios-clientes/agregar-varios-clientes/agregar-varios-clientes.component';
+
+import { BuscarClientesComponent } from './Pages/AdminGeneral/Clientes/buscar-clientes/buscar-clientes.component';
+import { AgregarClienteComponent } from './Pages/AdminGeneral/Clientes/agregar-cliente/agregar-cliente.component';
+import { DashboardCajaComponent } from './Pages/Caja/dashboard-caja/dashboard-caja.component';
+import { DashboardServiciosComponent } from './Pages/Servicios/dashboard-servicios/dashboard-servicios.component';
+
+import { RolesUsuariosGuardarComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/crear-usuarios/roles-usuarios-guardar/roles-usuarios-guardar.component';
+import { DashboardPerfilComponent } from './Pages/Perfil/dashboard/dashboard-perfil/dashboard-perfil.component';
+import { CreateUsuarioComponent } from './Pages/AdminGeneral/Usuarios/create-usuario/create-usuario.component';
+
+import { ConfiguracionPerfilComponent } from './Pages/Perfil/configuracion-perfil/configuracion-perfil.component';
+
+import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/datos-perfil.component';
+import { BuscarUsuariosService } from './Services/BuscarUsuarios/buscar-usuarios.service';
+import { BuscarUsuariosComponent } from './Pages/AdminGeneral/Usuarios/listar-usuarios/listar-usuarios.component';
+import { BancosComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/bancos/bancos.component';
+import { SucursalesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/sucursales/sucursales.component';
+import { EstadosComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados/estados.component';
+import { RolesUsuariosComponent } from './Pages/AdminGeneral/Usuarios/roles-usuarios/roles-usuarios.component';
+import { CambioContrasenaComponent } from './componentesGenerales/cambio-contrasena/cambio-contrasena.component';
+import { SubirArchivosComponent } from './Pages/Archivos/componentes_archivos/subir-archivos/subir-archivos.component';
+import { TipoArchivoComponent } from './Pages/Archivos/componentes_archivos/tipo-archivo/tipo-archivo.component';
+import { BuscarArchivosComponent } from './Pages/Archivos/componentes_archivos/buscar-archivos/buscar-archivos.component';
+import { ObligacionesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/obligaciones/obligaciones.component';
+import { EstadosObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/estados-obligacion/estados-obligacion.component';
+import { TipoObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/tipo-obligacion/tipo-obligacion.component';
+import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/asesores/asesores.component';
+import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/rankings/rankings/rankings.component';
+
+
+
+
+
+
+
 
 
 const routes: Routes = [
@@ -60,12 +96,17 @@ const routes: Routes = [
     canActivate:[AuthenticationGuard]
   },
   {
+    path:'cambioContrasena', 
+    component:CambioContrasenaComponent,
+  },
+  {
     path: 'cartera', redirectTo:'dashboard-cartera/inicio' , pathMatch:'full' 
   }
   ,
   {
     path:"dashboard-cartera",
     component:DashboardComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:"gestion",
@@ -87,28 +128,89 @@ const routes: Routes = [
     children:[]
   },
 
+  {
+    path: 'caja', redirectTo:'dashboard-caja' , pathMatch:'full' 
+  },
+
+  {
+    path: 'dashboard-caja',
+    component: DashboardCajaComponent,
+    canActivate:[AuthenticationGuard],
+  },
+
+  {
+    path: 'perfil', redirectTo:'dashboard-perfil/datos' , pathMatch:'full' 
+  },
+  {
+    path: 'dashboard-perfil',
+    component: DashboardPerfilComponent,
+    canActivate:[AuthenticationGuard],
+    children:[
+      {
+
+        path: 'configuracion-perfil',
+        component: ConfiguracionPerfilComponent
+      },
+      {
+        path:"datos",
+        component: DatosPerfilComponent,
+      },
+    ]
+
+  },
 
 
-  {path: 'consignaciones', redirectTo:'dashboard-consignaciones/consultar' , pathMatch:'full' },
+
+  {path: 'consignaciones', redirectTo:'dashboard-consignaciones/rankings' , pathMatch:'full' },
   {
     path:'dashboard-consignaciones',
     component:DashboarConsignacionesComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'ingresar',
         component:IngresarComponent
-        
       },
       {
         path:'consultar',
         component:ConsultasComponent
-        
       },
       {
         path:'reportes',
         component:ReportesComponent
-        
       },
+      {
+        path:'bancos',
+        component:BancosComponent
+      },
+      {
+        path:'sucursales',
+        component:SucursalesComponent
+      },
+      {
+        path:'estados',
+        component: EstadosComponent
+      },
+      {
+        path: 'obligaciones',
+        component: ObligacionesComponent
+      },
+      {
+        path: 'estadosObligacion',
+        component: EstadosObligacionComponent
+      },
+      {
+        path: 'tiposObligacion',
+        component: TipoObligacionComponent
+      },
+      {
+        path: 'asesores',
+        component: AsesoresComponent
+      },
+      {
+        path: 'rankings',
+        component: RankingsComponent
+      }
     ]
   },
 
@@ -118,32 +220,30 @@ const routes: Routes = [
   {
     path:"dashboard-administracion",
     component:DashboardAdminComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'gestionUsuarios',
         component:GestionUsuariosComponent
         
-        
       },
       {
         path:'crearUsuarios',
         component:CrearUsuariosComponent
-      }
-      ,
-      {
-        path:'rolesUsuario/:usuarioId',
-        component: RolesUsuarioComponent
-      }
       
+      },
+      {
+        path:'rolesUsuariosGuardados',
+        component: RolesUsuariosGuardarComponent
+      }
     ]
   },
-
-
-
+  
   {path: 'sst', redirectTo:'dashboard-sst' , pathMatch:'full' },
   {
     path:"dashboard-sst",
     component:DashboardSSTComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'incapacidad-g',
@@ -196,6 +296,7 @@ const routes: Routes = [
   {
     path:"dashboard-creditos",
     component:DashboardCreditosComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'ver-creditos',
@@ -212,15 +313,24 @@ const routes: Routes = [
     ]
   },
 
-  {path: 'Archivos', redirectTo:'dashboard-archivos' , pathMatch:'full' },
+  {path: 'Archivos', redirectTo:'dashboard-archivos/buscar-archivos' , pathMatch:'full' },
   {
     path:"dashboard-archivos",
     component:DashboardArchivosComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
-        path:'archivos-exs',
-        component:ArchivosExsComponent
+        path: 'subir-archivos',
+        component: SubirArchivosComponent
       },
+      {
+        path: 'tipo-archivo',
+        component: TipoArchivoComponent
+      },
+      {
+        path: 'buscar-archivos',
+        component: BuscarArchivosComponent
+      }
     ]
   },
 
@@ -229,6 +339,7 @@ const routes: Routes = [
   {
     path:"dashboard-ventas",
     component:DashboardVentasComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'proceso-ventas',
@@ -237,10 +348,19 @@ const routes: Routes = [
     ]
   },
 
+  {path: 'servicios', redirectTo:'dashboard-servicios' , pathMatch:'full' },
+  {
+    path: 'dashboard-servicios',
+    component: DashboardServiciosComponent,
+    canActivate:[AuthenticationGuard],
+  },
+
+
   {path: 'AdminGeneral', redirectTo:'dashboard-admin-general/system-roles' , pathMatch:'full' },
   {
     path:"dashboard-admin-general",
     component:DashboardSuperAdminComponent,
+    canActivate:[AuthenticationGuard],
     children:[
       {
         path:'system-roles',
@@ -249,6 +369,32 @@ const routes: Routes = [
       {
         path:'system-permisos',
         component: SystemPermisosComponent
+      },
+      {
+        path:'agregar-varios-clientes',
+        component: AgregarVariosClientesComponent
+      }  
+      ,
+      {
+        path: 'buscar-cliente',
+        component: BuscarClientesComponent
+
+      },
+      {
+        path: 'agregar-cliente',
+        component: AgregarClienteComponent
+      },
+      {
+        path: 'crear-usuario',
+        component: CreateUsuarioComponent
+      },
+      {
+        path: 'buscar-usuario',
+        component: BuscarUsuariosComponent
+      },
+      {
+        path: 'roles-usuario',
+        component: RolesUsuariosComponent
       }
     ]
   }

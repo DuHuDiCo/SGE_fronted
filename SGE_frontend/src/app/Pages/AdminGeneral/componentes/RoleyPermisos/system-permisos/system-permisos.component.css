@@ -8,6 +8,11 @@
     border-radius: 50%;
 }
 
+.pagination ::ng-deep .ngx-pagination .current {
+    background: #960010
+}
+
+
 .container {
     text-align: center;
     position: relative;
@@ -16,7 +21,7 @@
     margin-top: 30px;
     border-radius: 15px;
     background: #dfe2e5;
-    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+    box-shadow: 5px 5px 5px #707274, -14px -9px 10px 5px #ffffff;
 }
 
 .form-check-input:checked {
@@ -31,7 +36,7 @@
     padding: 15px;
     margin: 15px auto;
     background: #ecf0f3;
-    box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
+    box-shadow: inset 2px 2px 2px #adb5bd, inset -10px -10px 10px #ffffffd2;
 
 }
 
@@ -40,7 +45,7 @@
     text-align: center;
     width: 200px;
     padding: 10px;
-    box-shadow: inset 10px 10px 20px #adb5bd, inset -10px -10px 20px #ffffff;
+    box-shadow: inset 2px 2px 2px #adb5bd, inset -10px -10px 10px #ffffffd2;
 }
 
 .boxItems{
@@ -83,4 +88,11 @@
     margin-top: 5px;
     width: 150px;
     color: white;
+}
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 400px;
+    }
 }

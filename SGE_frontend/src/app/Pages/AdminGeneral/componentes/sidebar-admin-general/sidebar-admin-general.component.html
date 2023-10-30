@@ -15,7 +15,7 @@
                 Gestion Sistema
             </button>
     
-            <div class="collapse" id="getting-started-collapse">
+            <div class="collapse" id="getting-started-collapse" data-bs-dismiss="offcanvas">
                 <ul class="list-unstyled fw-normal pb-1 small">
                     <li> <button class="nav-link active" aria-current="page" [routerLink]="'/dashboard-admin-general/system-roles'"><i class="fas fa-user-cog" ></i>&nbsp; Crear Roles Sistema</button></li>
 
@@ -30,25 +30,39 @@
                 Gestionar Clientes
             </button>
     
-            <div class="collapse" id="getting-started-collapse-clientes">
+            <div class="collapse" id="getting-started-collapse-clientes" data-bs-dismiss="offcanvas">
                 <ul class="list-unstyled fw-normal pb-1 small">
-                    <li> <button class="nav-link active" aria-current="page" [routerLink]=""><i class="fa-solid fa-magnifying-glass"></i>&nbsp; Buscar Clientes </button></li>
+                    <li> <button class="nav-link active" aria-current="page" [routerLink] = "'buscar-cliente'"><i class="fa-solid fa-magnifying-glass"></i>&nbsp; Buscar Clientes </button></li>
 
-                    <li><button class="nav-link active" aria-current="page"  [routerLink]=""><i class="fas fa-user-plus"></i>
+                    <li><button class="nav-link active" aria-current="page"  [routerLink]="'agregar-cliente'"><i class="fas fa-user-plus"></i>
                         &nbsp; Agregar Un Cliente</button></li>
 
-                        <li><button class="nav-link active" aria-current="page"  [routerLink]=""><i class="fas fa-user-plus"></i>
+                        <li><button class="nav-link active" aria-current="page"  [routerLink] = "'agregar-varios-clientes'"><i class="fas fa-user-plus"></i>
                             &nbsp; Agregar Varios Clientes</button></li>
                 </ul>
             </div>
         </li>
+
+        <li class="mb-1">
+            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse-usuarios" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
+                Gestionar Usuarios
+            </button>
+    
+            <div class="collapse" id="getting-started-collapse-usuarios" data-bs-dismiss="offcanvas">
+                <ul class="list-unstyled fw-normal pb-1 small">
+                    <li> <button [routerLink]="'crear-usuario'" class="nav-link active" aria-current="page"><i class="fas fa-user-plus" ></i>&nbsp; Crear Usuarios</button></li>
+                    <li> <button [routerLink]="'buscar-usuario'" class="nav-link active" aria-current="page"><i class="fas fa-user-plus" ></i>&nbsp; Listar Usuarios</button></li>
+                </ul>
+            </div>
+        </li>
+
         
     </ul>
     <hr style="color: white;">
     <ul class="nav flex-column ">
 
         <li class="nav-item">
-            <button class="nav-link active" aria-current="page"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</button>
+            <button (click)="logout()" class="nav-link active" aria-current="page"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</button>
         </li>
     </ul>
 

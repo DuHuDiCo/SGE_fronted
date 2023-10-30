@@ -12,13 +12,13 @@ border-bottom: 20px;
     color: #fff;
     background: #960010;
     border-radius: 20px;
-    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+    box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
 }
 
 .card{
     border-radius: 20px;
     background: #dfe2e5;
-    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+    box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
 }
 .cardx{
     height: 240px;
@@ -26,7 +26,7 @@ border-bottom: 20px;
     text-align: center;
     margin: 25px auto;
     background: #dfe2e5;
-    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+    box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
 }
 
 .cardR{
@@ -34,7 +34,7 @@ border-bottom: 20px;
     color: rgb(0, 0, 0);
     border-radius: 20px;
     background: #dfe2e5;
-    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+    box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
 }
 
 #circle {

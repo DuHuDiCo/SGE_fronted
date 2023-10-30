@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { BuscarUsuariosService } from 'src/app/Services/BuscarUsuarios/buscar-usuarios.service';
+import { ReportesService } from 'src/app/Services/Consignaciones/Reportes/reportes.service';
+import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { Reportes } from 'src/app/Types/Consignaciones';
+import { ROLES } from 'src/app/Types/Roles';
+import { users } from 'src/app/Types/Usuarios';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reportes',
@@ -7,9 +15,267 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReportesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private reportesService: ReportesService, private authService: AuthenticationService, private usuariosService:BuscarUsuariosService) { }
+
+  page: number = 0
+  size: number = 10
+  order: string = 'idReporte'
+  tipoReporte: string = 'null'
+  fecha: string = 'null'
+  username: string = 'null'
+
+  botonFiltrar:boolean = false
+  filtro:boolean = false
+  last: boolean = false
+  first: boolean = false
+  filtrando:boolean = false
+  cont: number = 1
+  isCon: boolean = false
+  initialCon: number = 1;
+
+  reportes: Reportes[] = []
+  usuarios: users[] = []
+  paginas!: Array<number>
+
+  private proSubscription!: Subscription;
+
+  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
 
   ngOnInit(): void {
+    this.getFirts()
+    this.listarUsuarios()
   }
+
+  @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
+
+  getFirts(){
+    if (this.validarRol()) {
+      this.reportesService.getAll(this.page, this.size, this.order).subscribe(
+        (data:any) => {
+          this.paginas = new Array(data.totalPages)
+          this.reportes = data.content
+          this.last = data.last
+          this.first = data.first
+          this.reportesService.proSubject.next(true);
+          console.log(this.reportes);
+        }, (error:any) => {
+          console.log(error);
+        }
+      )
+    } else {
+      var user = this.authService.getUsername()
+      if (user == null || user == undefined) {
+        return
+      }
+      this.reportesService.getFilesByUsername(this.page, this.size, this.order, user).subscribe(
+        (data:any) => {
+          this.paginas = new Array(data.totalPages)
+          this.reportes = data.content
+          this.last = data.last
+          this.first = data.first
+          this.reportesService.proSubject.next(true);
+          console.log(this.reportes);   
+        }, (error:any) => {
+          console.log(error);
+        }
+      )
+    }
+  }
+
+  listarUsuarios(){
+    this.usuariosService.listarUsuarios().subscribe(
+      (data:any) => {
+        this.usuarios = data
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  filter() {
+    this.username?.trim()
+    if (this.username == 'null' && this.fecha == null) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe de Elegir Al Menos Un Filtro',
+        timer: 3000
+      })
+      return
+    }
+    this.filtro = true
+    setTimeout(() => {
+      if(!this.validarRol()){
+        var user = this.authService.getUsername()
+
+        if (user == null || user == undefined) {
+          return
+        }
+        this.username = user
+
+        this.filtrar(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha)
+      } else {
+        this.filtrar(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha)
+      }
+    }, 2000);
+
+
+
+  }
+
+  mostrarPDF(base64:string) {
+    // Obtén el embed y el botón
+      const embed = this.pdfEmbed.nativeElement;
+      embed.src = base64;
+  }
+
+  validarRol() {
+    var roles = this.authService.getRoles()
+    if(roles != null){
+      var rol = roles.find((r:any) => r.rol == ROLES.SuperAdministration || r.rol == ROLES.Administration)
+      if(rol != null){
+        return rol
+      }
+      return null
+    }
+
+  }
+
+  change(event: any) {
+    if(this.fecha == ''){
+      this.fecha = 'null'
+    }
+
+    if (this.fecha != 'null' || this.username != 'null') {
+      this.botonFiltrar = true
+    }
+    
+    if(this.fecha == 'null' && this.username == 'null'){
+      this.botonFiltrar = false
+    }
+  }
+
+  next() {
+    if (!this.last) {
+      this.page++
+      if(this.filtrando){
+        this.filtrar(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha)
+        this.proSubscription = this.reportesService.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont + this.size;
+            this.proSubscription.unsubscribe()
+          }
+        );
+      } else {
+        this.getFirts()
+        this.proSubscription = this.reportesService.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont + this.size;
+            this.proSubscription.unsubscribe()
+          }
+        );
+      }
+      
+      
+    }
+  }
+
+  back() {
+    if (!this.first) {
+      this.page--
+      if(this.filtrando){
+        this.filtrar(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha)
+        this.proSubscription = this.reportesService.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont - this.size;
+            this.proSubscription.unsubscribe()
+          }
+        );
+      } else {
+        this.getFirts()
+        this.proSubscription = this.reportesService.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont - this.size;
+            this.proSubscription.unsubscribe()
+          }
+        );
+      }
+    }
+  }
+
+  goToPage(page: number) {
+    this.page = page
+    if(this.filtrando){
+      this.filtrar(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha)
+      this.proSubscription = this.reportesService.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.size);
+          this.proSubscription.unsubscribe()
+        }
+      );
+    } else {
+      this.getFirts()
+      this.proSubscription = this.reportesService.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.size);
+          this.proSubscription.unsubscribe()
+        }
+      );
+    }
+  }
+
+  filtrar(page:number, size:number, order:string, tipoReporte:string, username:string, fecha:string){
+    this.tipoReporte = 'null'
+      this.reportesService.filtro(page, size, order, tipoReporte, username, fecha).subscribe(
+        (data: any) => {
+          this.filtrando = true
+          if(data.content.length == 0){
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se Encontraron Reportes Con Estos Filtros',
+              timer: 3000
+            })
+            this.botonFiltrar = false
+            this.filtro = false
+            this.fecha = 'null'
+            this.username = 'null'
+            this.getFirts()
+          } else {
+            Swal.fire({
+              icon: 'success',
+              title: 'Felicidades',
+              text: 'Estos Son Los Reportes Encontrados',
+              timer: 3000
+            })
+
+            this.reportes = data.content
+            this.paginas = new Array(data.totalPages)
+            this.last = data.last
+            this.first = data.first
+            this.reportesService.proSubject.next(true);
+            console.log(this.reportes);
+            this.filtro = false
+          }
+        }, (error: any) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al Filtrar',
+            timer: 3000
+          })
+          console.log(error);
+          this.filtro = false
+        }
+      )
+  }
+
+  
 
 }

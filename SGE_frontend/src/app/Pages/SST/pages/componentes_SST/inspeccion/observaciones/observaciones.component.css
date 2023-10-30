@@ -6,7 +6,7 @@
     margin-top: 50px;
     border-radius: 40px;
     background: #dfe2e5;
-    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+    box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
 }
 
 
@@ -51,7 +51,7 @@
     width: 90%;
     margin: 15px auto;
     background: #ecf0f3;
-    box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 
 }
 .form-control{
@@ -60,8 +60,6 @@
     width: 90%;
     padding: 15px;
     margin: 15px auto;
-    background: #ecf0f3;
-    box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
 }
 
 .form-select{
@@ -70,7 +68,7 @@
     margin: 15px auto;
     width: 90%;
     padding: 13px;
-    box-shadow: inset 2px 7px 20px 9px #adb5bd, inset 1px -6px 20px #adb5bd;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 .file{
     border-radius: 25px;
@@ -86,7 +84,7 @@
     width: 90%;
     margin: 10px auto;
     background: #ecf0f3;
-    box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 input{
     border: none;
@@ -118,7 +116,7 @@ button{
     border-radius: 18px;
     height: 50px;
     margin-bottom: 30px;
-    box-shadow: 10px 10px 20px #707274, -2px 0px 10px 4px #707274;
+    box-shadow: 2px 2px 2px #707274, -2px 0px 2px 0px #707274;
 }
 
 button:hover{
@@ -130,5 +128,12 @@ button:hover{
 @media (min-width: 1200px){
 .container, .container-lg, .container-md, .container-sm, .container-xl {
     max-width: 1000px;
+    }
+}
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 400px;
     }
 }

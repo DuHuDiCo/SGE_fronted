@@ -1,13 +1,12 @@
 .nav{
     height: 120px;
     background: #ecf0f3ea;
-    box-shadow: inset 11px 8px 20px #adb5bd, -1px 6px 20px #6c757d;
+    box-shadow: inset 2px 2px 2px #adb5bd, -1px 3px 5px #6c757d;
     width: 100%;
 }
 .btn{
     margin-left: 30px;
     height: 50px;
-    margin-top: 40px;
 }
 
 .logo{
@@ -26,9 +25,8 @@
     width: 250px;
     height: 48px;
     margin-left: 200px;
-    margin-top: 50px;
     background: #ecf0f3ea;
-    box-shadow: inset 11px 8px 20px #adb5bd, -1px 6px 20px #6c757d;
+    box-shadow: inset 2px 2px 2px #adb5bd, -1px 2px 2px #6c757d;
     border: 0px solid;
     padding-left: 54px;
     padding-right: 8px;
@@ -52,7 +50,6 @@
 
 .noti{
     margin-left: 100px;
-    margin-top: 55px;
     color: black;
 }
 svg#persona {
@@ -60,7 +57,13 @@ svg#persona {
     color: #191919;
 }
 
+.p-user{
+    cursor: pointer;
+}
 
+.hover-lista:hover{
+    background-color: #960010;
+}
 
 .perfil{
    margin-top: 60px; 
@@ -71,14 +74,51 @@ svg#persona {
     color: #960010;
 }
 
-@media(max-width : 700px){
-    .nav{
-    height: auto;
-    /* width: 70px; */
-    left: 0;
-    /* margin: 100px 0; */
-    /* display: grid; */
-    grid-template-columns: auto auto auto;}
 
-    
-}
+
+/* Añade estas reglas CSS para centrar los elementos en la barra de navegación */
+
+/* Centrar la imagen y la barra de búsqueda en pantallas grandes y medianas */
+.d-md-flex.align-items-center {
+    justify-content: space-between; /* Alinea los elementos de forma equitativa */
+  }
+  
+  /* Centrar el menú hamburguesa y la imagen en pantallas grandes y medianas */
+  .d-md-flex.align-items-center > div:first-child {
+    margin-right: auto; /* Empuja los elementos hacia la derecha */
+  }
+  
+  /* Centrar la barra de búsqueda en pantallas grandes y medianas */
+  .d-md-flex.align-items-center > form {
+    margin-left: auto; /* Empuja la barra de búsqueda hacia la derecha */
+  }
+  
+  /* Asegurar que el menú hamburguesa se mantenga fijo en su posición */
+  .d-md-flex.align-items-center > div:first-child button {
+    margin-left: 0; /* Elimina el margen izquierdo del botón del menú hamburguesa */
+  }
+  
+  /* Centrar los elementos del menú hamburguesa en pantallas pequeñas */
+  .navbar-expand-lg .navbar-collapse {
+    justify-content: center; /* Alinea los elementos del menú hacia el centro */
+  }
+  
+  @media (max-width: 767px) {
+    .noti {
+      margin-left: 400px; /* Adjust the margin for small screens */
+    }
+  
+    svg#persona {
+      height: 20px; /* Adjust the height for small screens */
+    }
+  }
+
+  @media (max-width: 576px ) {
+    .noti {
+      margin-left: 50px; /* Adjust the margin for small screens */
+    }
+  
+    svg#persona {
+      height: 20px; /* Adjust the height for small screens */
+    }
+  }

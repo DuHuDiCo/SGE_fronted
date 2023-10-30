@@ -16,7 +16,7 @@ aria-labelledby="offcanvasWithBackdropLabel">
             Analizar
         </button>
 
-        <div class="collapse" id="getting-started-collapse">
+        <div class="collapse" id="getting-started-collapse" data-bs-dismiss="offcanvas">
             <ul class="list-unstyled fw-normal pb-1 small">
                 <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-creditos/ver-creditos"><i class="fas fa-eye"></i>&nbsp; Ver Creditos</button></li>
             </ul>
@@ -30,12 +30,19 @@ aria-labelledby="offcanvasWithBackdropLabel">
             Creación
         </button>
 
-        <div class="collapse" id="getting-started-collapse-r">
+        <div class="collapse" id="getting-started-collapse-r" data-bs-dismiss="offcanvas">
             <ul class="list-unstyled fw-normal pb-1 small">
                 <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-creditos/creditos-creados"><i class="far fa-file-alt"></i>&nbsp; Crear credito</button></li>
             </ul>
         </div>
     </li>
 </ul>
+<hr style="color: white;">
+    <ul class="nav flex-column ">
+
+        <li class="nav-item">
+            <button (click) = "logout()" class="nav-link active" aria-current="page"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</button>
+        </li>
+    </ul>
 <hr style="color: white;">
 </div>

@@ -5,9 +5,10 @@
     border-radius: 20px;
     overflow: hidden;
     background: #eaecee;
-    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+    box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
     padding: 20px;
     margin-bottom: 30px;
+    
 }
 
 .card-header{
@@ -27,4 +28,11 @@ label.btn.btn-outline-dark{
     border: none;
     outline: none;
 
+}
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 400px;
+    }
 }

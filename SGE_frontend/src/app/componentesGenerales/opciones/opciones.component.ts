@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import Roles from 'src/app/Models/Roles';
+import { OpcionesService } from 'src/app/Services/Opciones/opciones.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { ROLES, RolesUsuario } from 'src/app/Types/Roles';
+declare var window: any;
 
 @Component({
   selector: 'app-opciones',
@@ -17,21 +20,15 @@ export class OpcionesComponent implements OnInit {
 
   role =ROLES.Administration;
 
-  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SuperAdministration', 'SST']
+  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
 
   
 
 
-  constructor(private authService: AuthenticationService) { }
+  constructor(private authService: AuthenticationService, private opcionesService:OpcionesService, private router:Router) { }
 
   ngOnInit(): void {
-    
   }
-
-
-  
-
-
 
   logout(): void {
     this.authService.logout();

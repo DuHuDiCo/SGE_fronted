@@ -7,9 +7,16 @@
     border-radius: 10px;
     padding: 10px;
     background: #dfe2e5;
-    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+    box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
 }
 
 table{
     border-radius: 5px;
+}
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+    .container {
+        width: 400px;
+    }
 }

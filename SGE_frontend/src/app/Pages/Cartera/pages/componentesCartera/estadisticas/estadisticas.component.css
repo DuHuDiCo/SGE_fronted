@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,700);
+/* @import url(https://fonts.googleapis.com/css?family=Ubuntu:400,700);
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -64,7 +64,6 @@ border-top-right-radius: 5px;
       width: 300px;
       overflow: hidden;
     }
-    /******************************************** LEFT CONTAINER *****************************************/
     .left-container {}
       .menu-box {
         height: 390px;
@@ -150,13 +149,6 @@ border-top-right-radius: 5px;
               color: #e64c65;
             }
 
-/******************************************
-↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
-ESTILOS PROPIOS DE LOS GRÄFICOS
-↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
-GRAFICO LINEAL
-******************************************/
-
 .grafico {
   padding: 2rem 1rem 1rem;
   width: 100%;
@@ -236,9 +228,6 @@ GRAFICO LINEAL
   text-align: center;
 }
 
-/******************************************
-GRAFICO CIRCULAR PIE CHART
-******************************************/
 .donut-chart {
   position: relative;
   width: 200px;
@@ -320,9 +309,7 @@ p.center-date {
   color: #FCB150;
   font-size: inherit;
 }
-/**************************
-BAR-CHART
-**************************/
+
 .grafico.bar-chart {
   background: #3468AF;
   padding: 0 1rem 2rem 1rem;
@@ -388,4 +375,4 @@ BAR-CHART
 .bar-chart .eje-x li:nth-child(7):before {
   background: #15BFCC;  
   height: 520%;
-}
+} */
