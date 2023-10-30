@@ -24,7 +24,7 @@ export class ConsultasComponent implements OnInit {
   // ARRAYS
   roles: string[] = []
   plataforma: any[] = []
-  con: Con[] = []
+  con: any[] = []
   sedes: Sede[] = []
   estadoA: Estado[] = []
   paginas!: Array<number>
