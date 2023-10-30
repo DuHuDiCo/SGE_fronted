@@ -53,7 +53,7 @@
                     <tr *ngFor="let p of datosPlatform; let i = index">
                         <th scope="row">{{ i + 1 }}</th>
                         <td>{{ p.bancos.nombreBanco }}</td>
-                        <td *ngFor="let pla of p.bancos.tipoPago">{{ pla.tipoPago }}</td>
+                        <td>{{ p.bancos.tipoPago.tipoPago }}</td>
                         <td>
                             <button (click)="getBancoById(p.idPlataforma)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar">
                             <i class="fa-solid fa-pen"></i></button>
