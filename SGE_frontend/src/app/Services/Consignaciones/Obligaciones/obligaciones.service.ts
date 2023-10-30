@@ -50,7 +50,7 @@ export class ObligacionesService {
   }
 
   getUsuarioByRol(rolId:number){
-    return this.http.get(`http://192.168.1.183:8002/api/v1/users/getUserByRol/${rolId}`)
+    return this.http.get(`${baseUrl}/users/getUserByRol/${rolId}`)
   }
 
   // METODOS OBLIGACIONES

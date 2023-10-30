@@ -29,7 +29,7 @@
                 <tbody>
                     <tr *ngFor="let a of asesores | paginate: { itemsPerPage: 10 , currentPage: page} ; let i = index">
                         <th scope="row">{{ (page - 1) * 10 + i + 1 }}</th>
-                        <td>{{ a.usuario.username }}</td>
+                        <td>{{ a.usuario.nombres }} {{ a.usuario.apellidos }}</td>
     
                     </tr>
                 </tbody>

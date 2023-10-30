@@ -68,7 +68,7 @@
             aria-label="select example">
             <option value="0">Elija Una Plataforma</option>
             <option *ngFor="let p of plataforma" value="{{ p.idPlataforma }}">{{ p.bancos.nombreBanco }} - {{
-              p.bancos.tipoPago[0].tipoPago }}</option>
+              p.bancos.tipoPago.tipoPago }}</option>
           </select>
         </div>
       </div>
