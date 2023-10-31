@@ -13,8 +13,6 @@ export class ConsultarService {
 
   public proSubject = new Subject<boolean>();
 
-  url = 'http://192.168.1.183:8007/api/v1'
-
   getAllConsignaciones(estado:string, page:number, size:number){
     return this.http.get(`${baseUrl}/consignacion/getAllConsignaciones?estado=${estado}&page=${page}&size=${size}`)
   }
@@ -36,7 +34,7 @@ export class ConsultarService {
   }
 
   getAllSede(){
-    return this.http.get(`http://192.168.1.241:8006/api/v1/cartera/sede/getAllSedes`)
+    return this.http.get(`${baseUrl}/cartera/sede/getAllSedes`)
   }
 
   getConsignacionByCedula(cedula:string){

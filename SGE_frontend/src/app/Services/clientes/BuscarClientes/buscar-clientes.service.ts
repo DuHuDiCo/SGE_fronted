@@ -13,19 +13,19 @@ export class BuscarClientesService {
   Url = "http://192.168.1.171:8004/api/v1";
 
   public listarClientes(){
-    return this.http.get(`${this.Url}/clientes/all`)
+    return this.http.get(`${baseUrl}/clientes/all`)
   }
 
   public filtrarClientes(cedula:string){
-    return this.http.get(`${this.Url}/clientes/find/${cedula}`)
+    return this.http.get(`${baseUrl}/clientes/find/${cedula}`)
   }
 
   public eliminarCliente(idCliente: Number, username:string | null){
-    return this.http.delete(`${this.Url}/clientes/delete/${idCliente}?username=${username}`)
+    return this.http.delete(`${baseUrl}/clientes/delete/${idCliente}?username=${username}`)
   }
 
   public updateDatos(datos:DatosContacto){
-    return this.http.put(`${this.Url}/clientes/updateDatosContacto`, datos)
+    return this.http.put(`${baseUrl}/clientes/updateDatosContacto`, datos)
   }
 
   listarDepartamentos(){

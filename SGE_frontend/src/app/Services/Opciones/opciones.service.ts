@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NuevaContraseña } from 'src/app/Types/Usuario';
+import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class OpcionesService {
   }
 
   changePassowrd(contraseña:NuevaContraseña){
-    return this.http.put(`http://192.168.1.171:9000/api/v1/users/changeFirstPassword`, contraseña)
+    return this.http.put(`${baseUrl}/users/changeFirstPassword`, contraseña)
   }
 
 

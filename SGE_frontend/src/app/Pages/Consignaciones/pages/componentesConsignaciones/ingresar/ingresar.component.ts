@@ -318,6 +318,9 @@ export class IngresarComponent implements OnInit {
     
     this.crearCliente = true
 
+    console.log(this.cliente);
+    
+
     this.ingresarService.saveCliente(this.cliente).subscribe(
       (data:any) => {
         Swal.fire({

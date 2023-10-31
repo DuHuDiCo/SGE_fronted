@@ -42,7 +42,7 @@ export class ObligacionesService {
   // METODOS ASESORES
 
   saveAsesores(asesor:number){
-    return this.http.post(`${baseUrl}/asesor/save`, asesor)
+    return this.http.post(`${baseUrl}/cartera/asesor/save`, asesor)
   }
 
   getAllAsesores(){
