@@ -402,7 +402,7 @@
                 <select (change)="cambiarPago($event)" [(ngModel)]="modal.idPlataforma" name="idPlataforma"
                   class="form-select" required aria-label="select example">
                   <option *ngFor="let p of plataforma" value="{{ p.idPlataforma }}">{{ p.bancos.nombreBanco }} - {{
-                    p.bancos.tipoPago[0].tipoPago }}</option>
+                    p.bancos.tipoPago.tipoPago }}</option>
                 </select>
               </div>
             </div>
