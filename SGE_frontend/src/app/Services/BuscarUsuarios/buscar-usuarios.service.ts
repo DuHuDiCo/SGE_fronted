@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
@@ -9,10 +10,12 @@ export class BuscarUsuariosService {
 
   usuarioGeneral:any = {}
 
+  public proSubject = new Subject<boolean>();
+
   constructor(private http: HttpClient) { }
 
-  public listarUsuarios() {
-    return this.http.get(`${baseUrl}/users/getAll`)
+  public listarUsuarios(page:number, size:number) {
+    return this.http.get(`${baseUrl}/users/getAll?page=${page}&size=${size}`)
   }
 
   public filtrarUsuarios(nombres: string) {

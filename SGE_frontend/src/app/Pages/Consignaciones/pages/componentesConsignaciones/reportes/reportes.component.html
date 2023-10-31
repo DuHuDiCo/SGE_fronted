@@ -4,13 +4,15 @@
         <div class="col-md-6">
             <div class="fecha text-center">
                 <label for="date"><strong>Fecha Reporte</strong></label>
-                <input (change)="change($event)" [(ngModel)]="fecha" type="date" class="form-control" placeholder="Fecha" aria-label="Fecha">
+                <input (change)="change($event)" [(ngModel)]="fecha" type="date" class="form-control"
+                    placeholder="Fecha" aria-label="Fecha">
             </div>
         </div>
         <div *appRolesPerfiles="rolesArray[6]" class="col-md-6">
             <div class="seleccionar text-center">
                 <label><strong>Nombre Usuario</strong></label>
-                <select (change)="change($event)" [(ngModel)]="username" class="form-select" aria-label="Default select example">
+                <select (change)="change($event)" [(ngModel)]="username" class="form-select"
+                    aria-label="Default select example">
                     <option value="null">Elija El Usuario</option>
                     <option *ngFor="let u of usuarios" value="{{ u.username }}">{{ u.username }}</option>
                 </select>
@@ -20,7 +22,8 @@
     <span *ngIf="botonFiltrar">
         <div *ngIf="!filtro" class="row text-center">
             <div class="col-md-12">
-                <button (click)="filter()" class="btn btn-danger" style="background-color: #960010; border-color: #960010;">Filtrar</button>
+                <button (click)="filter()" class="btn btn-danger"
+                    style="background-color: #960010; border-color: #960010;">Filtrar</button>
             </div>
         </div>
     </span>
@@ -29,7 +32,7 @@
             <button type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
                 Filtrando...
                 <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-              </button>
+            </button>
         </div>
     </div>
 </header><br>
@@ -52,7 +55,8 @@
                 <td>{{ r.usuario.username }}</td>
                 <td>{{ r.fechaReporte | date: "d/M/yy" }}</td>
                 <td>
-                    <button class="btn btn-info btn-sm ms-2" (click)="mostrarPDF('data:application/pdf;base64,' + r.ruta)" data-bs-toggle="modal"
+                    <button class="btn btn-info btn-sm ms-2"
+                        (click)="mostrarPDF('data:application/pdf;base64,' + r.ruta)" data-bs-toggle="modal"
                         data-bs-target="#modalIframe"><i class="fa-regular fa-eye"></i></button>
                 </td>
             </tr>
@@ -61,20 +65,20 @@
     <div class="row justify-content-center">
         <div class="col-md-3"></div>
         <div class="col-md-5">
-          <nav aria-label="...">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link b" (click)="back()" style="cursor: pointer;">Anterior</a>
-              </li>
-              <li class="page-item" *ngFor="let p of paginas; let i = index"><a (click)="goToPage(i)" class="page-link b"
-                  style="cursor: pointer;">{{ i + 1 }}</a></li>
-              <li class="page-item">
-                <a class="page-link b" (click)="next()" style="cursor: pointer;">Siguiente</a>
-              </li>
-            </ul>
-          </nav>
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link b" (click)="back()" style="cursor: pointer;">Anterior</a>
+                    </li>
+                    <li class="page-item" *ngFor="let p of paginas; let i = index"><a (click)="goToPage(i)"
+                            class="page-link b" style="cursor: pointer;">{{ i + 1 }}</a></li>
+                    <li class="page-item">
+                        <a class="page-link b" (click)="next()" style="cursor: pointer;">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-      </div>
+    </div>
 </div>
 
 <!-- Modal Embed -->

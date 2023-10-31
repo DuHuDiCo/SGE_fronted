@@ -67,6 +67,17 @@
     color: white;
 }
 
+.b{
+    color: white;
+    background-color: #960010;
+    border-color: #960010;
+  }
+  
+  .b:hover{
+    background: #d40000;
+    border-color: #d40000;
+  }
+
 .btn-guardar{
     display: block;
     object-fit: cover;

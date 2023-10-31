@@ -17,6 +17,9 @@ export class ReportesComponent implements OnInit {
 
   constructor(private reportesService: ReportesService, private authService: AuthenticationService, private usuariosService:BuscarUsuariosService) { }
 
+  pages: number = 0
+  sizes: number = 200
+
   page: number = 0
   size: number = 10
   order: string = 'idReporte'
@@ -52,8 +55,8 @@ export class ReportesComponent implements OnInit {
     if (this.validarRol()) {
       this.reportesService.getAll(this.page, this.size, this.order).subscribe(
         (data:any) => {
-          this.paginas = new Array(data.totalPages)
           this.reportes = data.content
+          this.paginas = new Array(data.totalPages)
           this.last = data.last
           this.first = data.first
           this.reportesService.proSubject.next(true);
@@ -83,7 +86,7 @@ export class ReportesComponent implements OnInit {
   }
 
   listarUsuarios(){
-    this.usuariosService.listarUsuarios().subscribe(
+    this.usuariosService.listarUsuarios(this.pages, this.sizes).subscribe(
       (data:any) => {
         this.usuarios = data
       }, (error:any) => {

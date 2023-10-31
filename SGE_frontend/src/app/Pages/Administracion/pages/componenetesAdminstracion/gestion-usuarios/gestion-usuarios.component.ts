@@ -19,6 +19,9 @@ export class GestionUsuariosComponent implements OnInit {
 
   usuarios: users[] = []
 
+  page: number = 0
+  size: number = 10
+
   rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
 
   nombre: string = ''
@@ -32,7 +35,7 @@ export class GestionUsuariosComponent implements OnInit {
   constructor(private usuariosService: BuscarUsuariosService, private authService: AuthenticationService) { }
 
   private listarUsuarios() {
-    this.usuariosService.listarUsuarios().subscribe(
+    this.usuariosService.listarUsuarios(this.page, this.size).subscribe(
       (data: any) => {
         this.usuarios = data;
         

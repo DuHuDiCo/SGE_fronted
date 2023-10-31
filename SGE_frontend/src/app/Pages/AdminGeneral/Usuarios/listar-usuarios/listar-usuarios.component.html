@@ -64,6 +64,23 @@
                 </table>
             </div>
             <br>
+            <div class="row justify-content-center">
+                <div class="col-md-3"></div>
+                <div class="col-md-5">
+                    <nav aria-label="...">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link b" (click)="back()" style="cursor: pointer;">Anterior</a>
+                            </li>
+                            <li class="page-item" *ngFor="let p of paginas; let i = index"><a (click)="goToPage(i)"
+                                    class="page-link b" style="cursor: pointer;">{{ i + 1 }}</a></li>
+                            <li class="page-item">
+                                <a class="page-link b" (click)="next()" style="cursor: pointer;">Siguiente</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
     </div>
 

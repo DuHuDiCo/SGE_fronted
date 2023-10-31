@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { BuscarUsuariosService } from 'src/app/Services/BuscarUsuarios/buscar-usuarios.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { UsuarioAgService } from 'src/app/Services/usuario-adminGeneral/usuario-ag.service';
@@ -18,6 +19,20 @@ import Swal from 'sweetalert2';
 
 export class BuscarUsuariosComponent implements OnInit {
 
+  cont: number = 1
+  isCon: boolean = false
+  initialCon: number = 1;
+
+  last: boolean = false
+  first: boolean = false
+
+  page: number = 0
+  size: number = 20
+
+  paginas!: Array<number>
+
+  private proSubscription!: Subscription;
+
   ngOnInit(): void {
     this.listarUsuarios();
   }
@@ -34,16 +49,21 @@ export class BuscarUsuariosComponent implements OnInit {
     datoToDelete: ''
   }
 
-  constructor(private usuariosService: BuscarUsuariosService, private authService: AuthenticationService, private router:Router) { }
+  constructor(private usuariosService: BuscarUsuariosService, private authService: AuthenticationService, private router: Router) { }
 
   private listarUsuarios() {
-    this.usuariosService.listarUsuarios().subscribe(
+    this.usuariosService.listarUsuarios(this.page, this.size).subscribe(
       (data: any) => {
-        this.usuarios = data;
+        this.usuarios = data.content;
+        console.log(data);
         
+        this.paginas = new Array(data.totalPages)
+          this.last = data.last
+          this.first = data.first
+          this.usuariosService.proSubject.next(true);
       },
       (error: any) => {
-        
+
         Swal.fire('ERROR', 'Error al cargar los usuarios', 'error');
       }
     );
@@ -55,10 +75,9 @@ export class BuscarUsuariosComponent implements OnInit {
       this.usuariosService.filtrarUsuarios(this.nombre).subscribe(
         (data: any) => {
           this.usuarios = data
-          
         },
         (error: any) => {
-          
+
           Swal.fire('ERROR', 'Error al filtrar los Usuarios', 'error');
         }
       );
@@ -106,7 +125,7 @@ export class BuscarUsuariosComponent implements OnInit {
             window.location.reload()
           },
           (error: any) => {
-            
+
             Swal.fire('ERROR', 'Error al Desactivar el Usuario', 'error');
           }
         );
@@ -161,14 +180,54 @@ export class BuscarUsuariosComponent implements OnInit {
 
 
 
-  enviarUsuarioToRoles(id:Number){
-    
-    var user = this.usuarios.find((u:any)=>u.idUsuario == id)
-    
-    
+  enviarUsuarioToRoles(id: Number) {
+
+    var user = this.usuarios.find((u: any) => u.idUsuario == id)
+
+
     this.usuariosService.setUsuarioGeneral(user);
 
     this.router.navigate(['/dashboard-admin-general/roles-usuario'])
+  }
+
+  next() {
+    if (!this.last) {
+      this.page++
+      this.listarUsuarios()
+      this.proSubscription = this.usuariosService.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.cont + this.size;
+          this.proSubscription.unsubscribe()
+        }
+      );
+    }
+  }
+
+  back() {
+    if (!this.first) {
+      this.page--
+      this.listarUsuarios()
+      this.proSubscription = this.usuariosService.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.cont - this.size;
+          this.proSubscription.unsubscribe()
+        }
+      );
+    }
+  }
+
+  goToPage(page: number) {
+    this.page = page
+    this.listarUsuarios()
+    this.proSubscription = this.usuariosService.proSubject.subscribe(
+      (con: boolean) => {
+        this.isCon = con;
+        this.cont = this.initialCon + (this.page * this.size);
+        this.proSubscription.unsubscribe()
+      }
+    );
   }
 
 }

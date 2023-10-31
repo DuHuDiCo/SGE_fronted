@@ -45,6 +45,7 @@ export class SucursalesComponent implements OnInit {
       Swal.fire('Error', 'Digite el Nombre de la Sede', 'error')
       return
     }
+    this.sedes.nombreSede.toUpperCase()
     this.sedeService.saveSede(this.sedes).subscribe(
       (data:any) => {
       Swal.fire('Felicidades', 'Sede Guardada Con Éxito', 'success')
