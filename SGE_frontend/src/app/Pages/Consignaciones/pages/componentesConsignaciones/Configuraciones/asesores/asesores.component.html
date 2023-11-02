@@ -4,7 +4,7 @@
         <div class="usuario">
             <select [(ngModel)]="asesor.usuarioId" name="usuarioId" class="form-select" required aria-label="select example">
             <option value="0">Elija Un Usuario</option>
-            <option *ngFor="let u of users" value="{{ u.idUsuario }}">{{ u.username }}</option>
+            <option *ngFor="let u of users" value="{{ u.idUsuario }}">{{ u.usuario.nombres }} {{ u.usuario.apellidos }}</option>
             </select>
         </div>
         <div class="text-center">
