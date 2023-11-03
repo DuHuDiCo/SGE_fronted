@@ -28,6 +28,7 @@ export class IngresarComponent implements OnInit {
   }
 
   cedula: string = ''
+  mensaje:string = ''
 
   tabla: boolean = false
   crearConsignacion: boolean = false

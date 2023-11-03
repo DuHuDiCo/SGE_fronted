@@ -15,8 +15,11 @@ export class CambioContrasenaComponent implements OnInit {
   contrasena:NuevaContraseña = {
     nombreUsuario: '',
     contrasenaBase: '',
-    contrasenaActualizada: ''
+    contrasenaActualizada: '',
+    confirmarContrasenaActualizada: ''
   }
+
+  botonContrasena:boolean = false
 
   constructor(private router:Router, private opcionesService:OpcionesService, private authService:AuthenticationService) { }
 
@@ -25,7 +28,6 @@ export class CambioContrasenaComponent implements OnInit {
 
   cambiarContrasena(){
     var user = this.authService.getUsername()
-
       if (user == null || user == undefined) {
         return
       }
@@ -39,22 +41,26 @@ export class CambioContrasenaComponent implements OnInit {
       Swal.fire('Error', 'Digite Su Contraseña Actualizada', 'error')
       return
     }
-
-    
-    
-
-    this.opcionesService.changePassowrd(this.contrasena).subscribe(
-      (data:any) => {
-        Swal.fire('Felicidades', 'Su Contraseña ha Sido Actualizada, inicie Sesion de Nuevo', 'success')
-        setTimeout(() => {
-          this.authService.logout()
-          this.router.navigate(['login'])
-        }, 4000);
-      }, (error:any) => {
-        Swal.fire('Error', 'Error al Cambiar La Contraseña', 'error')
-        
-      }
-    )
+    if(this.contrasena.confirmarContrasenaActualizada.trim() == '' || this.contrasena.confirmarContrasenaActualizada.trim() == null){
+      Swal.fire('Error', 'Digite De Nuevo La Contraseña', 'error')
+      return
+    }
+    this.botonContrasena = true
+    setTimeout(() => {
+      this.opcionesService.changePassowrd(this.contrasena).subscribe(
+        (data:any) => {
+          Swal.fire('Felicidades', 'Su Contraseña ha Sido Actualizada, inicie Sesion de Nuevo', 'success')
+          this.botonContrasena = false
+          setTimeout(() => {
+            this.authService.logout()
+            this.router.navigate(['login'])
+          }, 4000);
+        }, (error:any) => {
+          Swal.fire('Error', 'Error al Cambiar La Contraseña', 'error')
+          this.botonContrasena = false
+        }
+      )
+    }, 2000);
   }
 
 }
