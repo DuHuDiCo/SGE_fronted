@@ -38,5 +38,9 @@ export class BancoServiceService {
     return this.http.put(`${baseUrl}/consignacion/platform/plataforma`, banco)
   }
 
+  deletePlataforma(id:number){
+    return this.http.delete(`${baseUrl}/consignacion/platform/deletePlatform/${id}`)
+  }
+
 
 }

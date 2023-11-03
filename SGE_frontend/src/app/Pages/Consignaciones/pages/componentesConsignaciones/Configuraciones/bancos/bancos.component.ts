@@ -41,6 +41,9 @@ export class BancosComponent implements OnInit {
   spinner:boolean = true
   crearTipoPago:boolean = false
   crearBanco:boolean = false
+  deletePlatform:boolean = false
+
+  page:number = 1
 
   constructor(private bancoService:BancoServiceService) { }
 
@@ -198,6 +201,37 @@ export class BancosComponent implements OnInit {
     this.modal.bancoDto.idTipoPago = valor
   }
 
-
-
+  deletePlataforma(idTipoPago:number){
+    Swal.fire({
+      title: 'Eliminar La Plataforma',
+      text: '¿Estas seguro de Esta Plataforma?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+          this.deletePlatform = true
+          setTimeout(() => {
+            this.bancoService.deletePlataforma(idTipoPago).subscribe(
+              (data: any) => {
+                this.datosPlatform = this.datosPlatform.filter((tipoPago:any) => tipoPago.id != idTipoPago);
+                Swal.fire('Plataforma Eliminada', 'La Plataforma ha sido Eliminado Exitosamente', 'success')
+                setTimeout(() => {
+                  window.location.reload()
+                }, 2000);
+                this.deletePlatform = false
+              },
+              (error:any) => {
+                Swal.fire('Error', 'Error al Eliminar La Plataforma', 'error')
+                console.log(error);
+                this.deletePlatform = false
+              }
+            )
+          }, 2000);
+        }
+    })  
+  }
 }

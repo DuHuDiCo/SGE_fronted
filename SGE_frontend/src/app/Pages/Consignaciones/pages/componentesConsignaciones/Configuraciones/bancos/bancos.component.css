@@ -99,6 +99,15 @@
     background: #D60303 ;
 }
 
+.b {
+    background-color: #960010;
+    border-color: #960010;
+}
+
+.b:hover {
+    background: #D60303 ;
+}
+
 .input-usuario2 {
     color: #000000;
     padding: 8px 12px;

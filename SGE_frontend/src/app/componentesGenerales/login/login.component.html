@@ -25,7 +25,11 @@
                             <input type="password" id="password" class="fadeIn third" name="password"
                                 placeholder="Contraseña" [(ngModel)]="jwtRequest.password">
                         </div>
-                        <input type="submit" class="fadeIn fourth" value="Entrar">
+                        <input *ngIf="!inicioSesion" type="submit" value="Entrar">
+                        <button *ngIf="inicioSesion" class="btn-login">
+                            Entrando...
+                            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                          </button>
                     </form>
                 </div>
             </div>

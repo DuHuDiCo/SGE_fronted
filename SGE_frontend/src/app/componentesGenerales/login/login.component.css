@@ -170,6 +170,24 @@ input[type=reset]:active {
     transform: scale(0.95);
 }
 
+.btn-login{
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
+    padding-bottom: 40px;
+    color: #fff;
+    background: #9C1717 ;
+    cursor: pointer;
+    justify-content: end;
+    outline: none;
+    border: #cbced1;
+    border-radius: 18px;
+    height: 50px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    box-shadow: 2px 2px 2px #707274, -2px 0px 2px 0px #707274;
+}
+
 /* input[type=text] {
         background-color: #dee2e6;
         border: none;
