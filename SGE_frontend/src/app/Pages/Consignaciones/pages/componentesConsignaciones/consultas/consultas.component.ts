@@ -6,12 +6,15 @@ import { BancoServiceService } from 'src/app/Services/Consignaciones/Bancos/banc
 import { ConsultarService } from 'src/app/Services/Consignaciones/Consultar/consultar.service';
 import { EstadoServiceService } from 'src/app/Services/Consignaciones/Estado/estado-service.service';
 import { IngresarService } from 'src/app/Services/Consignaciones/IngresarConsignaciones/ingresar.service';
+import { ObligacionesService } from 'src/app/Services/Consignaciones/Obligaciones/obligaciones.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Plataforma } from 'src/app/Types/Banco';
 import { CambioEstado, Con, Consignacion, IsSelected, Obligacion, ObservacionDto } from 'src/app/Types/Consignaciones';
 import { Estado } from 'src/app/Types/Estado';
 import { Sede } from 'src/app/Types/Sede';
 import Swal from 'sweetalert2';
+
+declare var $: any;
 
 @Component({
   selector: 'app-consultas',
@@ -200,7 +203,19 @@ export class ConsultasComponent implements OnInit {
     estado: ''
   }
 
+  cliente: any = {
+    nombres: '',
+    apellidos: '',
+    tipoDocumento: '',
+    numeroDocumento: '',
+    username: '',
+    numeroObligacion: '',
+    sede: '',
+    asesor: ''
+  }
+
   cambioArray: CambioEstado[] = []
+  asesores:any[] = []
 
   //VARIABLES
   cedula: string = ''
@@ -224,6 +239,7 @@ export class ConsultasComponent implements OnInit {
   cambios: boolean = false
   botonFiltrar: boolean = false
   botonCambiarConsignacion: boolean = false
+  crearCliente: boolean = false
 
   estado: string = 'null'
   fecha: any = 'null'
@@ -246,7 +262,7 @@ export class ConsultasComponent implements OnInit {
   private proSubscriptionNext!: Subscription;
   private proSubscriptionBack!: Subscription;
 
-  constructor(private authService: AuthenticationService, private consultarService: ConsultarService, private bancoService: BancoServiceService, private ingresarService: IngresarService, private estadoService: EstadoServiceService, private sanitizer: DomSanitizer) { }
+  constructor(private authService: AuthenticationService, private consultarService: ConsultarService, private bancoService: BancoServiceService, private ingresarService: IngresarService, private estadoService: EstadoServiceService, private sanitizer: DomSanitizer, private obligacionService:ObligacionesService) { }
 
   ngOnInit(): void {
     this.getRoles()
@@ -280,6 +296,14 @@ export class ConsultasComponent implements OnInit {
       return
     }
 
+    this.showModal()
+  }
+
+  editarConsignacion(){
+    if(this.modal.observaciones == '' || this.modal.observaciones == null){
+      Swal.fire('Error', 'Ingrese La Observación Correspondiente', 'error')
+      return
+    }
     this.editarCon = true
 
     setTimeout(() => {
@@ -294,6 +318,7 @@ export class ConsultasComponent implements OnInit {
         (data: any) => {
           Swal.fire('Felicidades', 'Consignación Actualizada Con éxito', 'success')
           this.editarCon = false
+          $('#modalObs').modal('hide');
           setTimeout(() => {
             window.location.reload()
           }, 3000);
@@ -528,7 +553,9 @@ export class ConsultasComponent implements OnInit {
           }
 
           if (this.cuentasPorCobrar.cuentasCobrar.length <= 0) {
-            Swal.fire('Error', 'Digite Una Cédula Válida', 'error')
+            Swal.fire('Error', 'La Cédula No Pertenece A un Cliente', 'error')
+            this.showCliente()
+            this.getAllAsesores()
             this.buscarObli = false
             this.cedulaEditar = ''
             return
@@ -545,6 +572,10 @@ export class ConsultasComponent implements OnInit {
     }, 2000);
 
 
+  }
+
+  showCliente(){
+    $('#modalCliente').modal('show')
   }
 
   //MARCAR LOS CHECKBOXS
@@ -699,6 +730,11 @@ export class ConsultasComponent implements OnInit {
           this.crearObs = false
           this.detalle.observaciones.push(data)
 
+          this.observacionDto = {
+            detalle: '',
+            username: '',
+            idConsignacion: 0
+          }
 
         }, (error: any) => {
 
@@ -749,6 +785,12 @@ export class ConsultasComponent implements OnInit {
   //FILTRAR UNA CONSIGNACION POR CEDULA DEL CLIENTE
   getConsignacionByCedula() {
     if(this.cedula == '' || this.cedula == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite Una Cédula Válida',
+        timer: 3000
+      })
     }
     this.consultarService.getConsignacionByCedula(this.cedula).subscribe(
       (data: any) => {
@@ -761,8 +803,11 @@ export class ConsultasComponent implements OnInit {
           })
           return
         }
-        
         this.con = data
+        this.botones = new Array<boolean>(this.con.length).fill(false)
+        this.paginas = new Array(data.totalPages)
+        this.last = data.last
+        this.first = data.first
         this.con.forEach((element: any) => {
           element.actualizaciones = element.actualizaciones.filter((a: any) => a.isCurrent == true)
         });
@@ -1357,6 +1402,16 @@ export class ConsultasComponent implements OnInit {
 
   }
 
+  getAllAsesores() {
+    this.obligacionService.getAllAsesores().subscribe(
+      (data: any) => {
+        this.asesores = data
+        console.log(this.asesores);
+      }, (error: any) => {
+        console.log(error);
+      }
+    )
+  }
 
   filtrar(estado: string, fecha: any, sede: string, pages: number, sizes: number) {
     this.consultarService.filter(estado, fecha, sede, pages, sizes).subscribe(
@@ -1398,6 +1453,157 @@ export class ConsultasComponent implements OnInit {
         this.spinner = false
       }
     )
+  }
+
+  showModal() {
+    $('#modalEditar').modal('hide');
+    $('#modalObs').modal('show');
+  }
+
+  cancelarCliente(){
+    this.cliente = {
+      nombres: '',
+      apellidos: '',
+      tipoDocumento: '',
+      numeroDocumento: '',
+      username: '',
+      numeroObligacion: '',
+      sede: '',
+      asesor: 0
+    }
+  }
+
+  guardarCliente(){
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+    this.cliente.username = user
+
+    if(this.cliente.nombres.trim() == '' || this.cliente.nombres.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite Los Nombres Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cliente.apellidos.trim() == '' || this.cliente.apellidos.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite Los apellidos Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cliente.tipoDocumento.trim() == '' || this.cliente.tipoDocumento.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Elija El Tipo De Documento Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cliente.numeroDocumento.trim() == '' || this.cliente.numeroDocumento.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite El Número De Documento Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cliente.numeroObligacion.trim() == '' || this.cliente.numeroObligacion.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite El Número De Obligación Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cliente.sede.trim() == '' || this.cliente.sede.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Elija La Sede Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cliente.asesor == 0 || this.cliente.asesor == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Elija El Asesor Del Cliente',
+        timer: 3000
+      })
+      return
+    }
+    
+    this.crearCliente = true
+
+    console.log(this.cliente);
+    
+
+    this.ingresarService.saveCliente(this.cliente).subscribe(
+      (data:any) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Felicidades',
+          text: 'Cliente Creado Exitosamente',
+          timer: 3000
+        })
+        $('#modalCliente').modal('hide');
+        this.crearCliente = false
+
+        this.cedula = this.cliente.numeroDocumento
+
+        this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
+          (data:any) => {
+            this.cuentasPorCobrar.cuentasCobrar = data
+            if (this.cuentasPorCobrar.cuentasCobrar.length > 0) {
+              this.check = true
+              this.buscarObli = false
+              return
+            }
+          }, (error:any) => {
+            console.log(error);
+          }
+        )
+      }, (error:any) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Erro Al Crear El Cliente',
+          timer: 3000
+        })
+        this.crearCliente = false
+        this.cliente = {
+          nombres: '',
+          apellidos: '',
+          tipoDocumento: '',
+          numeroDocumento: '',
+          username: '',
+          numeroObligacion: '',
+          sede: '',
+          asesor: 0
+        }
+        console.log(error);
+        
+      }
+    )
+
   }
 
 }
