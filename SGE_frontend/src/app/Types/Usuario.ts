@@ -1,7 +1,6 @@
 import { RolesUser } from "./Roles"
 
 export type Usuario = {
-
   username: string,
   email: string,
   password: string,
@@ -12,13 +11,14 @@ export type Usuario = {
   celular: string,
   fecha_nacimiento: Date,
   sede: string,
-  roles : RolesUser[]
-  }
-  
-  export type NuevaContraseña = {
-  nombreUsuario:string,
-  contrasenaBase:string,
-  contrasenaActualizada:string,
+  roles: RolesUser[]
+}
+
+export type NuevaContraseña = {
+  nombreUsuario: string,
+  contrasenaBase: string,
+  contrasenaActualizada: string,
+  confirmarContrasenaActualizada:string
 
 }
 

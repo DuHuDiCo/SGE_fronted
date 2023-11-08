@@ -50,18 +50,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let p of datosPlatform; let i = index">
-                        <th scope="row">{{ i + 1 }}</th>
+                    <tr *ngFor="let p of datosPlatform | paginate: { itemsPerPage: 5 , currentPage: page } ; let i = index">
+                        <th scope="row">{{ (page - 1) * 5 + i + 1 }}</th>
                         <td>{{ p.bancos.nombreBanco }}</td>
                         <td>{{ p.bancos.tipoPago.tipoPago }}</td>
                         <td>
-                            <button (click)="getBancoById(p.idPlataforma)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar">
+                            <button (click)="getBancoById(p.idPlataforma)" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#modalEditar">
                             <i class="fa-solid fa-pen"></i></button>
+                            <button *ngIf="!deletePlatform" (click)="deletePlataforma(p.idPlataforma)" class="btn btn-sm btn-danger b"><i class="fa-solid fa-trash"></i></button>
+                            <button *ngIf="deletePlatform" type="button" class="btn btn-sm btn-danger b">
+                                <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                              </button>
                         </td>
 
                     </tr>
                 </tbody>
             </table>
+            <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
         </div>
     </div>
 </div>

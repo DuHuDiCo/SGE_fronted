@@ -5,11 +5,18 @@
                 <h3 class="mt-3">Cambia Tú Contraseña</h3>
                 <input [(ngModel)]="contrasena.contrasenaBase" name="contrasenaBase" type="password" class="form-control" placeholder="Contraseña Actual">
             </div>
-            <div class="mb-3">
+            <div class="mt-3">
                 <input [(ngModel)]="contrasena.contrasenaActualizada" name="contrasenaActualizada" type="password" class="form-control" placeholder="Contraseña Nueva">
             </div>
+            <div class="mb-3">
+                <input [(ngModel)]="contrasena.confirmarContrasenaActualizada" name="confirmarContrasenaActualizada" type="password" class="form-control" placeholder="Confirmar Contraseña Nueva">
+            </div>
 
-            <button (click)="cambiarContrasena()" class="btn btn-guardar">Cambiar</button>
+            <button *ngIf="!botonContrasena" (click)="cambiarContrasena()" class="btn btn-guardar">Cambiar</button>
+            <button *ngIf="botonContrasena" type="button" class="btn btn-guardar"
+            style="background-color: #960010;border-color: #960010;">
+            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+          </button>
         </div>
     </div>
 </div>

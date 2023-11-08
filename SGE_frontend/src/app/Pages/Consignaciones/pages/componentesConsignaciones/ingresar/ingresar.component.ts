@@ -28,6 +28,7 @@ export class IngresarComponent implements OnInit {
   }
 
   cedula: string = ''
+  mensaje:string = ''
 
   tabla: boolean = false
   crearConsignacion: boolean = false
@@ -160,7 +161,6 @@ export class IngresarComponent implements OnInit {
 
     } else {
       this.consignacion.observaciones = null
-      console.log(this.consignacion.fechaPago);
       
       this.ingresarService.confirmarConsignacion(this.consignacion.numeroRecibo, this.consignacion.fechaPago, this.consignacion.valor, this.consignacion.username).subscribe(
         (data: any) => {

@@ -417,13 +417,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button *ngIf="!editarCon" (click)="validateNewConsignacion()" class="b btn btn-primary"
+          <button (click)="validateNewConsignacion()" class="b btn btn-primary"
             type="button">Actualizar</button>
-          <button *ngIf="editarCon" type="button" class="btn btn-danger"
-            style="background-color: #960010;border-color: #960010;">
-            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-          </button>
-
         </div>
       </div>
     </div>
@@ -453,3 +448,131 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal Observaciones Obligatorias -->
+  <div class="modal fade" id="modalObs" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar Observación</h1>
+        </div>
+        <div class="modal-body">
+          <div class="modal-body">
+            <div class="form-floating">
+              <textarea [(ngModel)]="modal.observaciones" name="observaciones" class="form-control"
+                placeholder="Observacion" id="floatingTextarea2" style="height: 100px"></textarea>
+              <label for="floatingTextarea2">Observaciones</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button *ngIf="!editarCon" (click)="editarConsignacion()" type="button" class="b btn">Guardar</button>
+          <button *ngIf="editarCon" type="button" class="btn btn-danger"
+            style="background-color: #960010;border-color: #960010;">
+            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Cliente -->
+  <div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Un Cliente</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger text-center" role="alert">
+            La Cédula Ingresada No Coincide Con Ningún Cliente Registrado.
+          </div>
+
+          <div class="mt-2 mb-4">
+            <hr class="border-4">
+            <div class="row justify-content-center text-center">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="usuario mt-4">
+                      <input [(ngModel)]="cliente.nombres" name="nombres" type="text" class="input-usuario"
+                        placeholder="Nombres">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="usuario mt-4">
+                      <input [(ngModel)]="cliente.apellidos" name="apellidos" type="text" class="input-usuario"
+                        placeholder="Apellidos">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="usuario mt-4">
+                      <select [(ngModel)]="cliente.tipoDocumento" name="tipoDocumento" class="form-select" required
+                        aria-label="select example">
+                        <option value="">Elija Un Tipo Doc</option>
+                        <option value="C.C">C.C
+                        </option>
+                        <option value="T.I">T.I
+                        </option>
+                        <option value="C.E">C.E
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="usuario mt-4">
+                      <input [(ngModel)]="cliente.numeroDocumento" name="numeroDocumento" type="text" class="input-usuario"
+                        placeholder="Numero de Documento">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="usuario mt-4">
+                      <input [(ngModel)]="cliente.numeroObligacion" name="numeroObligacion" type="text" class="input-usuario"
+                        placeholder="Numero de Obligación">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="usuario mt-4">
+                      <select [(ngModel)]="cliente.sede" name="sede" class="form-select" required
+                        aria-label="select example">
+                        <option value="">Elija Una Sede</option>
+                        <option *ngFor="let s of sedes" value="{{ s.nombreSede }}">{{ s.nombreSede }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="usuario mt-4">
+                      <select [(ngModel)]="cliente.asesor" name="asesor" class="form-select" required
+                        aria-label="select example">
+                        <option value="">Elija Un Asesor</option>
+                        <option *ngFor="let a of asesores" value="{{ a.usuario.idUsuario }}">{{ a.usuario.nombres | uppercase }} {{ a.usuario.apellidos | uppercase }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button *ngIf="!crearCliente" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;" (click)="guardarCliente()">Guardar</button>
+          <button *ngIf="crearCliente" type="button" class="btn btn-danger"
+            style="background-color: #960010;border-color: #960010;">
+            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="btn btn-secondary"
+            data-bs-dismiss="modal" (click)="cancelarCliente()">Cancelar</button>
+        </div>
+      </div>
+    </div>

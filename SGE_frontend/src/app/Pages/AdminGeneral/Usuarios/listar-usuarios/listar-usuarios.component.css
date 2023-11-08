@@ -8,6 +8,51 @@
     border-radius: 50%;
 }
 
+.campos{
+    margin-top: 55px;
+}
+
+.usuario,
+.contraseña{
+    border-radius: 25px;
+    text-align: center;
+    width: 90%;
+    margin: 15px auto;
+    background: #ecf0f3;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+
+}
+
+.form-control{
+    border-radius: 25px;
+    text-align: center;
+    width: 90%;
+    padding: 15px;
+    margin: 15px auto;
+    background: #ecf0f3;
+    box-shadow: inset 10px 10px 20px #6d7072, inset -10px -10px 20px #ffffff;
+}
+
+.form-select{
+    border-radius: 25px;
+    text-align: center;
+    margin: 15px auto;
+    width: 90%;
+    padding: 13px;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff
+}
+
+.input1{
+    text-align: center;
+    border: none;
+    text-align: center;
+    outline: none;
+    background: none;
+    font-size: 12px;
+    margin: 13px 10px;
+    border-bottom: 10px;
+}
+
 .container{
     text-align: center;
     position: relative;

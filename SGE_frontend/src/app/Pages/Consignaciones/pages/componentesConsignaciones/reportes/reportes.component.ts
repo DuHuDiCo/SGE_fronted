@@ -52,43 +52,47 @@ export class ReportesComponent implements OnInit {
   @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
 
   getFirts(){
-    if (this.validarRol()) {
-      this.reportesService.getAll(this.page, this.size, this.order).subscribe(
-        (data:any) => {
-          this.reportes = data.content
-          this.paginas = new Array(data.totalPages)
-          this.last = data.last
-          this.first = data.first
-          this.reportesService.proSubject.next(true);
-          console.log(this.reportes);
-        }, (error:any) => {
-          console.log(error);
+    setTimeout(() => {
+      if (this.validarRol()) {
+        this.reportesService.getAll(this.page, this.size, this.order).subscribe(
+          (data:any) => {
+            this.reportes = data.content
+            this.paginas = new Array(data.totalPages)
+            this.last = data.last
+            this.first = data.first
+            console.log(this.cont);
+            
+            this.reportesService.proSubject.next(true);
+            console.log(this.reportes);
+          }, (error:any) => {
+            console.log(error);
+          }
+        )
+      } else {
+        var user = this.authService.getUsername()
+        if (user == null || user == undefined) {
+          return
         }
-      )
-    } else {
-      var user = this.authService.getUsername()
-      if (user == null || user == undefined) {
-        return
+        this.reportesService.getFilesByUsername(this.page, this.size, this.order, user).subscribe(
+          (data:any) => {
+            this.paginas = new Array(data.totalPages)
+            this.reportes = data.content
+            this.last = data.last
+            this.first = data.first
+            this.reportesService.proSubject.next(true);
+            console.log(this.reportes);   
+          }, (error:any) => {
+            console.log(error);
+          }
+        )
       }
-      this.reportesService.getFilesByUsername(this.page, this.size, this.order, user).subscribe(
-        (data:any) => {
-          this.paginas = new Array(data.totalPages)
-          this.reportes = data.content
-          this.last = data.last
-          this.first = data.first
-          this.reportesService.proSubject.next(true);
-          console.log(this.reportes);   
-        }, (error:any) => {
-          console.log(error);
-        }
-      )
-    }
+    }, 2000);
   }
 
   listarUsuarios(){
     this.usuariosService.listarUsuarios(this.pages, this.sizes).subscribe(
       (data:any) => {
-        this.usuarios = data
+        this.usuarios = data.content
       }, (error:any) => {
         console.log(error);
       }
@@ -96,7 +100,7 @@ export class ReportesComponent implements OnInit {
   }
 
   filter() {
-    this.username?.trim()
+    this.username.trim()
     if (this.username == 'null' && this.fecha == null) {
       Swal.fire({
         icon: 'error',

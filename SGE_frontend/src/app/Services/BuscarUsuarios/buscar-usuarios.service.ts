@@ -30,12 +30,24 @@ export class BuscarUsuariosService {
     return this.http.post(`${baseUrl}/users/activate`, usuario)
   }
 
+  updateUser(usuario:any){
+    return this.http.put(`${baseUrl}/users/editUser`, usuario)
+  }
+
   setUsuarioGeneral(usuario:any){
     this.usuarioGeneral = usuario;
   }
 
   getUsuarioGeneral(){
     return this.usuarioGeneral;
+  }
+
+  getUserById(id:number){
+    return this.http.get(`${baseUrl}/users/${id}`)
+  }
+
+  resetPassword(username:string){
+    return this.http.put(`${baseUrl}/users/resetPassword?username=${username}`, null)
   }
   
 }

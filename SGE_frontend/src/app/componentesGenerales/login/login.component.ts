@@ -21,7 +21,10 @@ export class LoginComponent implements OnInit {
     password: ''
   }
 
-  constructor(private router: Router, private authentication: AuthenticationService, private opcionesService:OpcionesService) { }
+  //VARIABLE DEL SPINNER
+  inicioSesion: boolean = false
+
+  constructor(private router: Router, private authentication: AuthenticationService, private opcionesService: OpcionesService) { }
 
   ngOnInit(): void {
 
@@ -32,55 +35,36 @@ export class LoginComponent implements OnInit {
       Swal.fire("Error", "Error, Datos Incorrectos", "error");
     } else {
       const login = new Login(this.jwtRequest.username, this.jwtRequest.password);
-
-      this.authentication.authentication(login).subscribe(
-        (data: any) => {
-
-
-          Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Inicio Sesion Exitoso',
-            showConfirmButton: false,
-            timer: 2000
-          })
-
-          this.authentication.setTokenLocalStorage(data.token)
-          this.authentication.setUsernameLocalStorage(data.username)
-          this.authentication.setRolesLocalStorage(data.roles)
-          this.authentication.setSede(data.sede)
-
-          this.opcionesService.setUpdate(data.isUpdateable)
-          this.authentication.setFecha(data.ultimaSesion)
-
-          
-
-          this.router.navigate(['opciones'])
-          
-
-          
-        },
-        (error: any) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Datos Incorrectos!',
-
-
-          })
-          
-
-        }
-      )
-
+      this.inicioSesion = true
+      setTimeout(() => {
+        this.authentication.authentication(login).subscribe(
+          (data: any) => {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Inicio Sesion Exitoso',
+              showConfirmButton: false,
+              timer: 2000
+            })
+            this.authentication.setTokenLocalStorage(data.token)
+            this.authentication.setUsernameLocalStorage(data.username)
+            this.authentication.setRolesLocalStorage(data.roles)
+            this.authentication.setSede(data.sede)
+            this.opcionesService.setUpdate(data.isUpdateable)
+            this.authentication.setFecha(data.ultimaSesion)
+            this.router.navigate(['opciones'])
+            this.inicioSesion = false
+          },
+          (error: any) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Datos Incorrectos!',
+            })
+            this.inicioSesion = false
+          }
+        )
+      }, 2000);
     }
-
-
-
-
-
   }
-
-
-
 }

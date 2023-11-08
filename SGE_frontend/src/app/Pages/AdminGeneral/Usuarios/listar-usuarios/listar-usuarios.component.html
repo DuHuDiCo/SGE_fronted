@@ -58,6 +58,13 @@
                                         data-bs-target="#staticBackdrop"><i class="fa-solid fa-lock"></i>
                                     </button>
                                 </ng-container>
+                                <button (click)="getUser(c.idUsuario)" class="btn btn-sm btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#modalEditar">
+                                <i class="fa-solid fa-pen"></i></button>
+
+                                <button *ngIf="!reseteo" (click)="resetPassword(c.username)" class="btn btn-sm btn-success ms-3"><i class="fa-solid fa-arrows-spin"></i></button>
+                                <button *ngIf="reseteo" type="button" class="btn btn-sm btn-success ms-3">
+                                    <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -83,21 +90,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Modales para ver detalles 
-    <div class="modal fade" *ngFor="let c of usuarios; let i = index" [id]="'verDetallesModal' + i" tabindex="-1"
-        aria-labelledby="verDetallesModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="verDetallesModalLabel">Detalles del Usuario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                </div>
-            </div>
-        </div>
-    </div>-->
 
     <!-- Modal Desactivar -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -159,3 +151,111 @@
             </div>
         </div>
     </div>
+  
+  <!-- Modal Editar -->
+  <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Cliente</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row align-items-start">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="usuario">
+                            <i class="fa-solid fa-user-secret"></i>
+                            <input [(ngModel)]="usuario.username" type="text" class="input-usuario input1" placeholder="Username">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="usuario">
+                            <i class="fa-solid fa-signature"></i>
+                            <input [(ngModel)]="usuario.nombres" name="nombres" type="text" class="input-usuario input1"
+                                placeholder="Nombres">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="usuario">
+                            <input [(ngModel)]="usuario.fecha_nacimiento" name="fecha_nacimiento" type="date"
+                                class="input-usuario input1">
+            
+                        </div>
+                        
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="usuario">
+                            <i class="fa-solid fa-signature"></i>
+                            <input [(ngModel)]="usuario.apellidos" name="apellidos" type="text" class="input-usuario input1"
+                                placeholder="Apellido">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        
+            <div class="col">
+                <div class="selecionar">
+                    <select [(ngModel)]="usuario.sede" name="sede" class="form-select">
+                        <option value="">Seleccione una Sede</option>
+                        <option *ngFor="let c of Sede" value="{{c.nombreSede}}">{{c.nombreSede}}</option>
+                    </select>
+                </div>
+            </div>
+        
+            <div class="row align-items-start">
+                <div class="col-md-6 col-12">
+                    <div class="selecionar">
+                        <select [(ngModel)]="usuario.tipo_documento" name="tipo_documento" class="form-select">
+                            <option value="" selected>Opciones</option>
+                            <option value="C.C">Cedula de Ciudadania</option>
+                            <option value="C.E">Cedula de Extranjeria</option>
+                        </select>
+                    </div>
+                </div>
+        
+                <div class="col-md-6 col-12">
+                    <div class="usuario">
+                        <i class="fa-solid fa-address-card"></i>
+                        <input [(ngModel)]="usuario.numero_documento" name="numero_documento" type="number"
+                            class="input-pass input1" placeholder="Documento">
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row align-items-center">
+                <div class="col-md-6 col-12">
+                    <div class="usuario">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input [(ngModel)]="usuario.email" name="email" type="email" class="input-usuario input1"
+                            placeholder="Correo">
+        
+                    </div>
+                </div>
+        
+                <div class="col">
+                    <div class="usuario">
+                        <i class="fa-solid fa-phone"></i>
+                        <input [(ngModel)]="usuario.celular" name="celular" type="number" class="input-usuario input1"
+                            placeholder="Telefono Celular">
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button *ngIf="!editar" (click)="editarUsuario()" type="button" class="btn btn-primary b">Guardar Cambios</button>
+          <button *ngIf="editar" type="button" class="btn btn-danger b">
+            Guardando...
+            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

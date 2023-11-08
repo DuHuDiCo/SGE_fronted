@@ -126,7 +126,7 @@
           </div>
           <div class="modal-body">
             <div class="alert alert-danger" role="alert">
-              La Consignación Que estas ingresando Coincide con las Siguientes Consignaciones:
+              La Consignación Que estas ingresando Coincide con los Siguientes Valores: {{ con.mensaje }}
             </div>
 
             <table class="table table-bordered align-middle text-center">
@@ -241,7 +241,7 @@
                         <select [(ngModel)]="cliente.asesor" name="asesor" class="form-select" required
                           aria-label="select example">
                           <option value="">Elija Un Asesor</option>
-                          <option *ngFor="let a of asesores" value="{{ a.usuario.idUsuario }}">{{ a.usuario.nombres }} {{ a.usuario.apellidos }}
+                          <option *ngFor="let a of asesores" value="{{ a.usuario.idUsuario }}">{{ a.usuario.nombres | uppercase }} {{ a.usuario.apellidos | uppercase }}
                           </option>
                         </select>
                       </div>
