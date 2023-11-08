@@ -46,8 +46,8 @@
           <tr *ngFor="let o of obligacion">
             <th scope="row">
               <div class="form-check">
-                <input (click)="check(o.numeroObligacion)"
-                  [checked]="consignacion.obligaciones.includes(o.numeroObligacion)" class="form-check-input"
+                <input (click)="check(o.numeroObligacion.trim())"
+                  [checked]="consignacion.obligaciones.includes(o.numeroObligacion.trim())" class="form-check-input"
                   type="checkbox" value="" id="flexCheckDefault">
                 <label class="form-check-label" for="flexCheckDefault">
                 </label>
@@ -55,7 +55,7 @@
             </th>
             <td>{{ o.cliente.nombres }} {{ o.cliente.apellidos }}</td>
             <td>{{ o.capital }}</td>
-            <td>{{ o.fechaObligacion | date:'short' }}</td>
+            <td>{{ o.fechaObligacion | date: 'dd/MM/yyyy' }}</td>
             <td>{{ o.sede.nombreSede }}</td>
           </tr>
         </tbody>
