@@ -1567,9 +1567,9 @@ export class ConsultasComponent implements OnInit {
         $('#modalCliente').modal('hide');
         this.crearCliente = false
 
-        this.cedula = this.cliente.numeroDocumento
+        this.cedulaEditar = this.cliente.numeroDocumento
 
-        this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
+        this.ingresarService.getObligacionByCedula(this.cedulaEditar).subscribe(
           (data:any) => {
             this.cuentasPorCobrar.cuentasCobrar = data
             if (this.cuentasPorCobrar.cuentasCobrar.length > 0) {
