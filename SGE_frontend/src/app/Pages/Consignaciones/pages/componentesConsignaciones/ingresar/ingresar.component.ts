@@ -418,7 +418,6 @@ export class IngresarComponent implements OnInit {
         console.log(data);
         if (this.obligacion.length > 0) {
           this.tabla = true
-          
           return
         }
         if (this.obligacion.length <= 0) {
@@ -428,10 +427,6 @@ export class IngresarComponent implements OnInit {
           this.cedula = ''
           return
         }
-        
-        
-
-
       }, (error: any) => {
         Swal.fire('Error', 'Error Al Traer Las Obligaciones', 'error')
         this.cedula = ''
