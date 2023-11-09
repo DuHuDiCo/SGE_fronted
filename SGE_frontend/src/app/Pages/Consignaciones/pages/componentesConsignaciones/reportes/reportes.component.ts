@@ -19,7 +19,7 @@ export class ReportesComponent implements OnInit {
 
   pages: number = 0
   sizes: number = 200
-
+  numeroPages: number = 0
   page: number = 0
   size: number = 10
   order: string = 'idReporte'
@@ -58,6 +58,7 @@ export class ReportesComponent implements OnInit {
           (data:any) => {
             this.reportes = data.content
             this.paginas = new Array(data.totalPages)
+            this.numeroPages = data.totalPages
             this.last = data.last
             this.first = data.first
             console.log(this.cont);

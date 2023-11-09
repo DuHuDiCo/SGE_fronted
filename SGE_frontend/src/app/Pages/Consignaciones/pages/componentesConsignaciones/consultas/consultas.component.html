@@ -222,7 +222,11 @@
 
         </tr>
       </tbody>
+
     </table>
+    
+  </div>
+  <nav aria-label="Page navigation example" *ngIf="numeroPages > 1">
     <div class="row justify-content-center">
       <div class="col-md-3"></div>
       <div class="col-md-5">
@@ -231,8 +235,19 @@
             <li class="page-item">
               <a class="page-link b" (click)="back()" style="cursor: pointer;">Anterior</a>
             </li>
-            <li class="page-item" *ngFor="let p of paginas; let i = index"><a (click)="goToPage(i)" class="page-link b"
-                style="cursor: pointer;">{{ i + 1 }}</a></li>
+            
+            <li class="page-item">
+              <div class="btn-group">
+                <button type="button" class="page-link dropdown-toggle"
+                  style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
+                  data-bs-toggle="dropdown">{{page+1}}/{{numeroPages}}</button>
+                <ul class="dropdown-menu" style="overflow-y: 400px;height: auto;">
+                  <li *ngFor="let p of paginas;let i = index"><button class="dropdown-item" (click)="goToPage(i)">{{i
+                      + 1}}</button></li>
+
+                </ul>
+              </div>
+            </li>
             <li class="page-item">
               <a class="page-link b" (click)="next()" style="cursor: pointer;">Siguiente</a>
             </li>
@@ -240,7 +255,7 @@
         </nav>
       </div>
     </div>
-  </div>
+  </nav>
 
   <!-- Modal Info-->
   <div class="modal fade" id="modalInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

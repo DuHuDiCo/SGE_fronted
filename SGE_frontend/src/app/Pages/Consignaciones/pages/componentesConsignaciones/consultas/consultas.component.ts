@@ -32,6 +32,7 @@ export class ConsultasComponent implements OnInit {
   estadoA: Estado[] = []
   paginas!: Array<number>
   botones!: Array<boolean>
+  numeroPages: number = 0
   permisos: string[] = [
     // 0
     "CREAR CONSIGNACIONES",
@@ -404,6 +405,7 @@ export class ConsultasComponent implements OnInit {
           this.paginas = new Array(data.totalPages)
           this.last = data.last
           this.first = data.first
+          this.numeroPages = data.totalPages
           this.consultarService.proSubject.next(true);
           this.con.forEach((c: any) => {
             c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
