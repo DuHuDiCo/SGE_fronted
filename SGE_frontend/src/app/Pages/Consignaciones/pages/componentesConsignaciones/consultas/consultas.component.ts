@@ -80,7 +80,9 @@ export class ConsultasComponent implements OnInit {
     // 22
     "CONFIGURACIONES",
     // 23
-    "INFORMES"
+    "INFORMES",
+    // 24
+    "CONSULTAR PENDIENTES"
   ]
 
   //OBJETOS
@@ -215,7 +217,7 @@ export class ConsultasComponent implements OnInit {
   }
 
   cambioArray: CambioEstado[] = []
-  asesores:any[] = []
+  asesores: any[] = []
 
   //VARIABLES
   cedula: string = ''
@@ -262,7 +264,7 @@ export class ConsultasComponent implements OnInit {
   private proSubscriptionNext!: Subscription;
   private proSubscriptionBack!: Subscription;
 
-  constructor(private authService: AuthenticationService, private consultarService: ConsultarService, private bancoService: BancoServiceService, private ingresarService: IngresarService, private estadoService: EstadoServiceService, private sanitizer: DomSanitizer, private obligacionService:ObligacionesService) { }
+  constructor(private authService: AuthenticationService, private consultarService: ConsultarService, private bancoService: BancoServiceService, private ingresarService: IngresarService, private estadoService: EstadoServiceService, private sanitizer: DomSanitizer, private obligacionService: ObligacionesService) { }
 
   ngOnInit(): void {
     this.getRoles()
@@ -299,8 +301,8 @@ export class ConsultasComponent implements OnInit {
     this.showModal()
   }
 
-  editarConsignacion(){
-    if(this.modal.observaciones == '' || this.modal.observaciones == null){
+  editarConsignacion() {
+    if (this.modal.observaciones == '' || this.modal.observaciones == null) {
       Swal.fire('Error', 'Ingrese La Observación Correspondiente', 'error')
       return
     }
@@ -574,7 +576,7 @@ export class ConsultasComponent implements OnInit {
 
   }
 
-  showCliente(){
+  showCliente() {
     $('#modalCliente').modal('show')
   }
 
@@ -784,7 +786,7 @@ export class ConsultasComponent implements OnInit {
 
   //FILTRAR UNA CONSIGNACION POR CEDULA DEL CLIENTE
   getConsignacionByCedula() {
-    if(this.cedula == '' || this.cedula == null){
+    if (this.cedula == '' || this.cedula == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -794,7 +796,7 @@ export class ConsultasComponent implements OnInit {
     }
     this.consultarService.getConsignacionByCedula(this.cedula).subscribe(
       (data: any) => {
-        if(data.length == 0){
+        if (data.length == 0) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -830,12 +832,20 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (this.estado != 'null' || this.fecha != 'null' || this.sede != 'null') {
-      if (this.fecha != "" || this.estado != 'null' || this.sede != 'null' && this.cambioArray.length > 0) {
-        this.filtro = true
-      } if (this.cambioArray.length > 0) {
+      if (this.fecha != "" || this.estado != 'null' || this.sede != 'null' ) {
+        
+        if( this.cambioArray.length > 0){
+          this.filtro = false
+        }else{
+          this.filtro = true
+        }
+
+        
+      }else{
         this.filtro = false
       }
     } else {
+      alert()
       this.filtro = false
     }
   }
@@ -1431,9 +1441,9 @@ export class ConsultasComponent implements OnInit {
           this.fecha = 'null'
           this.sede = 'null'
           this.filtro = false
-          
+
           this.getRoles()
-          
+
         } else {
           this.con = data.content
           this.botones = new Array<boolean>(this.con.length).fill(false)
@@ -1460,7 +1470,7 @@ export class ConsultasComponent implements OnInit {
     $('#modalObs').modal('show');
   }
 
-  cancelarCliente(){
+  cancelarCliente() {
     this.cliente = {
       nombres: '',
       apellidos: '',
@@ -1473,7 +1483,7 @@ export class ConsultasComponent implements OnInit {
     }
   }
 
-  guardarCliente(){
+  guardarCliente() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
@@ -1481,7 +1491,7 @@ export class ConsultasComponent implements OnInit {
     }
     this.cliente.username = user
 
-    if(this.cliente.nombres.trim() == '' || this.cliente.nombres.trim() == null){
+    if (this.cliente.nombres.trim() == '' || this.cliente.nombres.trim() == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -1491,7 +1501,7 @@ export class ConsultasComponent implements OnInit {
       return
     }
 
-    if(this.cliente.apellidos.trim() == '' || this.cliente.apellidos.trim() == null){
+    if (this.cliente.apellidos.trim() == '' || this.cliente.apellidos.trim() == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -1501,7 +1511,7 @@ export class ConsultasComponent implements OnInit {
       return
     }
 
-    if(this.cliente.tipoDocumento.trim() == '' || this.cliente.tipoDocumento.trim() == null){
+    if (this.cliente.tipoDocumento.trim() == '' || this.cliente.tipoDocumento.trim() == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -1511,7 +1521,7 @@ export class ConsultasComponent implements OnInit {
       return
     }
 
-    if(this.cliente.numeroDocumento.trim() == '' || this.cliente.numeroDocumento.trim() == null){
+    if (this.cliente.numeroDocumento.trim() == '' || this.cliente.numeroDocumento.trim() == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -1521,7 +1531,7 @@ export class ConsultasComponent implements OnInit {
       return
     }
 
-    if(this.cliente.numeroObligacion.trim() == '' || this.cliente.numeroObligacion.trim() == null){
+    if (this.cliente.numeroObligacion.trim() == '' || this.cliente.numeroObligacion.trim() == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -1531,7 +1541,7 @@ export class ConsultasComponent implements OnInit {
       return
     }
 
-    if(this.cliente.sede.trim() == '' || this.cliente.sede.trim() == null){
+    if (this.cliente.sede.trim() == '' || this.cliente.sede.trim() == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -1541,7 +1551,7 @@ export class ConsultasComponent implements OnInit {
       return
     }
 
-    if(this.cliente.asesor == 0 || this.cliente.asesor == null){
+    if (this.cliente.asesor == 0 || this.cliente.asesor == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -1550,14 +1560,14 @@ export class ConsultasComponent implements OnInit {
       })
       return
     }
-    
+
     this.crearCliente = true
 
     console.log(this.cliente);
-    
+
 
     this.ingresarService.saveCliente(this.cliente).subscribe(
-      (data:any) => {
+      (data: any) => {
         Swal.fire({
           icon: 'success',
           title: 'Felicidades',
@@ -1570,18 +1580,18 @@ export class ConsultasComponent implements OnInit {
         this.cedulaEditar = this.cliente.numeroDocumento
 
         this.ingresarService.getObligacionByCedula(this.cedulaEditar).subscribe(
-          (data:any) => {
+          (data: any) => {
             this.cuentasPorCobrar.cuentasCobrar = data
             if (this.cuentasPorCobrar.cuentasCobrar.length > 0) {
               this.check = true
               this.buscarObli = false
               return
             }
-          }, (error:any) => {
+          }, (error: any) => {
             console.log(error);
           }
         )
-      }, (error:any) => {
+      }, (error: any) => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -1600,7 +1610,7 @@ export class ConsultasComponent implements OnInit {
           asesor: 0
         }
         console.log(error);
-        
+
       }
     )
 

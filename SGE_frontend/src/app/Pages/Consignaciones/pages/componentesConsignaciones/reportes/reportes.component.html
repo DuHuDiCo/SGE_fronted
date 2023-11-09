@@ -14,7 +14,7 @@
                 <select (change)="change($event)" [(ngModel)]="username" class="form-select"
                     aria-label="Default select example">
                     <option value="null">Elija El Usuario</option>
-                    <option *ngFor="let u of usuarios" value="{{ u.username }}">{{ u.nombres }}</option>
+                    <option *ngFor="let u of usuarios" value="{{ u.username }}">{{ u.nombres }} {{ u.apellidos }}</option>
                 </select>
             </div>
         </div>
@@ -52,7 +52,7 @@
             <tr *ngFor="let r of reportes; let i = index">
                 <td>{{ cont + i }}</td>
                 <td>{{ r.nombreReporte }}</td>
-                <td>{{ r.usuario.nombres }}</td>
+                <td>{{ r.usuario.nombres }} {{ r.usuario.apellidos }}</td>
                 <td>{{ r.fechaReporte | date: "d/M/yy" }}</td>
                 <td>
                     <button class="btn btn-info btn-sm ms-2"

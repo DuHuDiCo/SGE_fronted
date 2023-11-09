@@ -3,7 +3,8 @@
 
   <div class="d-grid gap-2 d-md-flex justify-content-md-end" id="btn btn-primary"
     *appConsignacionesDirective="permisos[0]">
-    <button *ngIf="!botonGenerarPendientes" (click)="generarReportePendientes()" class="btn-archivos" type="button">Generar Archivos</button>
+    <button *ngIf="!botonGenerarPendientes" (click)="generarReportePendientes()" class="btn-archivos"
+      type="button">Generar Archivos</button>
     <button *ngIf="botonGenerarPendientes" type="button" class="btn-archivos">
       Generando...
       <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
@@ -63,20 +64,22 @@
     </div>
   </div>
   <div *ngIf="!spinner" class="table-responsive align-middle text-center">
-    <div *ngIf="cambios" class="row">
-      <div class="col-md-12">
-        <div class="text-right">
-          <button *ngIf="!botonCambiarConsignacion" (click)="cambiarConsignacion()" class="b btn mb-4">Guardar
-            Cambios</button>
-          <button *ngIf="botonCambiarConsignacion" type="button" class="btn btn-danger mb-4"
-            style="background-color: #960010;border-color: #960010;">
-            Guardando...
-            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-          </button>
-          <button (click)="cancelar()" class="btn btn-secondary ms-2 mb-4">Cancelar</button>
+    <span *appConsignacionesDirective="permisos[3]">
+      <div *ngIf="cambios" class="row">
+        <div class="col-md-12">
+          <div class="text-right">
+            <button *ngIf="!botonCambiarConsignacion" (click)="cambiarConsignacion()" class="b btn mb-4">Guardar
+              Cambios</button>
+            <button *ngIf="botonCambiarConsignacion" type="button" class="btn btn-danger mb-4"
+              style="background-color: #960010;border-color: #960010;">
+              Guardando...
+              <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+            </button>
+            <button (click)="cancelar()" class="btn btn-secondary ms-2 mb-4">Cancelar</button>
+          </div>
         </div>
       </div>
-    </div>
+    </span>
     <table class="table table-bordered align-middle text-center">
       <thead class="align-middle">
         <tr>
@@ -116,24 +119,48 @@
 
             <!-- VER OBSERVACIONES -->
             <span *appConsignacionesDirective="permisos[13]">
-              <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"
-                id="btn_observaciones_{{ i }}"><i class="fa-regular fa-eye"></i></button>
+              <span *appConsignacionesDirective="permisos[3]">
+                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+                  class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"
+                  id="btn_observaciones_{{ i }}"><i class="fa-regular fa-eye"></i></button>
+              </span>
+
+              <span *appConsignacionesDirective="permisos[0]">
+                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+                  class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"
+                  id="btn_observaciones_{{ i+1 }}"><i class="fa-regular fa-eye"></i></button>
+              </span>
+
             </span>
 
 
             <!-- VER COMPROBANTE -->
             <span *appConsignacionesDirective="permisos[14]">
-              <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
-                class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"
-                id="btn_comprobante_{{i}}"><i class="fa-regular fa-image"></i></button>
+              <span *appConsignacionesDirective="permisos[3]">
+                <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
+                  class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"
+                  id="btn_comprobante_{{i}}"><i class="fa-regular fa-image"></i></button>
+              </span>
+
+              <span *appConsignacionesDirective="permisos[0]">
+                <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
+                  class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"
+                  id="btn_comprobante_{{i+1}}"><i class="fa-regular fa-image"></i></button>
+              </span>
             </span>
 
             <!-- VER HISTORIAL -->
             <span *appConsignacionesDirective="permisos[15]">
-              <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo"
-                id="btn_historial_{{i}}"><i class="fa-solid fa-circle-info"></i></button>
+              <span *appConsignacionesDirective="permisos[3]">
+                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+                  class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo"
+                  id="btn_historial_{{i}}"><i class="fa-solid fa-circle-info"></i></button>
+              </span>
+              <span *appConsignacionesDirective="permisos[0]">
+                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+                  class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo"
+                  id="btn_historial_{{i+1}}"><i class="fa-solid fa-circle-info"></i></button>
+              </span>
             </span>
 
             <!-- COMPROBAR CONSIGNACIONES -->
@@ -167,9 +194,9 @@
             <!-- DEVOLVER DE COMPROBADAS -->
             <span *appConsignacionesDirective="permisos[3]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD', 'COMPROBADAS')" class="btn btn-sm btn-warning ms-2"
-                data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_comprobadas_{{i}}"><i
-                  class="fa-solid fa-backward"></i></button>
+                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD', 'COMPROBADAS')"
+                class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion"
+                id="btn_devolver_comprobadas_{{i}}"><i class="fa-solid fa-backward"></i></button>
             </span>
             <span *appConsignacionesDirective="permisos[3]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
@@ -182,9 +209,9 @@
             <span *appConsignacionesDirective="permisos[4]">
               <button
                 *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado && c.sede == sedeUser"
-                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CAJA', 'APLICADAS')" class="btn btn-sm btn-warning ms-2"
-                data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_aplicadas_{{i}}"><i
-                  class="fa-solid fa-backward"></i></button>
+                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CAJA', 'APLICADAS')"
+                class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion"
+                id="btn_devolver_aplicadas_{{i}}"><i class="fa-solid fa-backward"></i></button>
             </span>
             <span *appConsignacionesDirective="permisos[4]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
@@ -417,8 +444,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button (click)="validateNewConsignacion()" class="b btn btn-primary"
-            type="button">Actualizar</button>
+          <button (click)="validateNewConsignacion()" class="b btn btn-primary" type="button">Actualizar</button>
         </div>
       </div>
     </div>
@@ -526,16 +552,16 @@
                   </div>
                   <div class="col-md-6">
                     <div class="usuario mt-4">
-                      <input [(ngModel)]="cliente.numeroDocumento" name="numeroDocumento" type="text" class="input-usuario"
-                        placeholder="Numero de Documento">
+                      <input [(ngModel)]="cliente.numeroDocumento" name="numeroDocumento" type="text"
+                        class="input-usuario" placeholder="Numero de Documento">
                     </div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6">
                     <div class="usuario mt-4">
-                      <input [(ngModel)]="cliente.numeroObligacion" name="numeroObligacion" type="text" class="input-usuario"
-                        placeholder="Numero de Obligación">
+                      <input [(ngModel)]="cliente.numeroObligacion" name="numeroObligacion" type="text"
+                        class="input-usuario" placeholder="Numero de Obligación">
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -554,7 +580,8 @@
                       <select [(ngModel)]="cliente.asesor" name="asesor" class="form-select" required
                         aria-label="select example">
                         <option value="">Elija Un Asesor</option>
-                        <option *ngFor="let a of asesores" value="{{ a.usuario.idUsuario }}">{{ a.usuario.nombres | uppercase }} {{ a.usuario.apellidos | uppercase }}
+                        <option *ngFor="let a of asesores" value="{{ a.usuario.idUsuario }}">{{ a.usuario.nombres |
+                          uppercase }} {{ a.usuario.apellidos | uppercase }}
                         </option>
                       </select>
                     </div>
@@ -562,17 +589,18 @@
                 </div>
               </div>
             </div>
-      
+
           </div>
         </div>
         <div class="modal-footer">
-          <button *ngIf="!crearCliente" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;" (click)="guardarCliente()">Guardar</button>
+          <button *ngIf="!crearCliente" type="button" class="btn btn-danger"
+            style="background-color: #960010;border-color: #960010;" (click)="guardarCliente()">Guardar</button>
           <button *ngIf="crearCliente" type="button" class="btn btn-danger"
             style="background-color: #960010;border-color: #960010;">
             <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
           </button>
-          <button type="button" class="btn btn-secondary"
-            data-bs-dismiss="modal" (click)="cancelarCliente()">Cancelar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+            (click)="cancelarCliente()">Cancelar</button>
         </div>
       </div>
     </div>
