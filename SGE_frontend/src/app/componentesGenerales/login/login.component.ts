@@ -1,5 +1,6 @@
 import { Component, OnInit, Type } from '@angular/core';
 import { Router } from '@angular/router';
+import anime from 'animejs/lib/anime.es.js';
 import Login from 'src/app/Models/Login';
 
 import { Token } from 'src/app/Models/Token';
@@ -27,7 +28,11 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private authentication: AuthenticationService, private opcionesService: OpcionesService) { }
 
   ngOnInit(): void {
-
+    anime({
+      targets: '.wrapper',
+      translateY: 250,
+      duration: 4000,
+    });
   }
 
   public iniciarSesion(): void {

@@ -430,8 +430,8 @@
                       </td>
                       <td>{{ cc.cliente.nombres }} {{ cc.cliente.apellidos }}</td>
                       <td>{{ cc.capital }}</td>
-                      <td>{{ cc.fechaObligacion | date }}</td>
-                      <td>{{ cc.id_venta }}</td>
+                      <td>{{ cc.fechaObligacion | date: 'dd/MM/yyyy'}}</td>
+                      <td>{{ cc.sede.nombreSede }}</td>
                     </tr>
                   </tbody>
                 </table>
