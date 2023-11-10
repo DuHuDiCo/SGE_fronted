@@ -60,6 +60,7 @@
     font-size: 15px;
     margin: 13px 10px;
     border-bottom: 10px;
+    width: 90%;
 }
 .form-select{
     border: none;
