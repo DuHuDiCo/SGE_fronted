@@ -834,11 +834,14 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (this.estado != 'null' || this.fecha != 'null' || this.sede != 'null') {
+      
       if (this.fecha != "" || this.estado != 'null' || this.sede != 'null' ) {
         
-        if( this.cambioArray.length > 0){
+        if( this.cambioArray.length > 0 && (this.validarPermiso('COMPROBAR CONSIGNACIONES') || this.validarPermiso('APLICAR CONSIGNACIONES'))){
+          
           this.filtro = false
         }else{
+          
           this.filtro = true
         }
 
@@ -847,7 +850,7 @@ export class ConsultasComponent implements OnInit {
         this.filtro = false
       }
     } else {
-      alert()
+     
       this.filtro = false
     }
   }

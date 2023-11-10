@@ -80,6 +80,23 @@
         </div>
       </div>
     </span>
+
+    <span *appConsignacionesDirective="permisos[4]">
+      <div *ngIf="cambios" class="row">
+        <div class="col-md-12">
+          <div class="text-right">
+            <button *ngIf="!botonCambiarConsignacion" (click)="cambiarConsignacion()" class="b btn mb-4">Guardar
+              Cambios</button>
+            <button *ngIf="botonCambiarConsignacion" type="button" class="btn btn-danger mb-4"
+              style="background-color: #960010;border-color: #960010;">
+              Guardando...
+              <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+            </button>
+            <button (click)="cancelar()" class="btn btn-secondary ms-2 mb-4">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </span>
     <table class="table table-bordered align-middle text-center">
       <thead class="align-middle">
         <tr>
@@ -124,7 +141,11 @@
                   class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"
                   id="btn_observaciones_{{ i }}"><i class="fa-regular fa-eye"></i></button>
               </span>
-
+              <span *appConsignacionesDirective="permisos[4]">
+                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+                  class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"
+                  id="btn_observaciones_{{ i }}"><i class="fa-regular fa-eye"></i></button>
+              </span>
               <span *appConsignacionesDirective="permisos[0]">
                 <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
                   class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"
@@ -142,6 +163,12 @@
                   id="btn_comprobante_{{i}}"><i class="fa-regular fa-image"></i></button>
               </span>
 
+              <span *appConsignacionesDirective="permisos[4]">
+                <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
+                  class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"
+                  id="btn_comprobante_{{i}}"><i class="fa-regular fa-image"></i></button>
+              </span>
+
               <span *appConsignacionesDirective="permisos[0]">
                 <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
                   class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"
@@ -152,6 +179,12 @@
             <!-- VER HISTORIAL -->
             <span *appConsignacionesDirective="permisos[15]">
               <span *appConsignacionesDirective="permisos[3]">
+                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
+                  class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo"
+                  id="btn_historial_{{i}}"><i class="fa-solid fa-circle-info"></i></button>
+              </span>
+
+              <span *appConsignacionesDirective="permisos[4]">
                 <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
                   class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo"
                   id="btn_historial_{{i}}"><i class="fa-solid fa-circle-info"></i></button>
