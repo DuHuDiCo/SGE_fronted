@@ -373,7 +373,8 @@ export class ConsultasComponent implements OnInit {
         (data: any) => {
           this.spinner = false
           this.con = data.content
-
+          console.log(data);
+          
           this.con.forEach((e: any, index: number) => {
 
             if (e.isSelected) {
@@ -433,9 +434,11 @@ export class ConsultasComponent implements OnInit {
     if (this.validarPermiso('CONSULTAR PENDIENTES')) {
       this.consultarService.getAllConsignaciones(p, this.page, this.size).subscribe(
         (data: any) => {
+          console.log(data);
+          
           this.spinner = false
           this.con = data.content
-
+          this.numeroPages = data.totalPages
           this.con.forEach((e: any, index: number) => {
 
             if (e.isSelected) {
@@ -864,11 +867,14 @@ export class ConsultasComponent implements OnInit {
   //METODO USADO EN EL HTML PARA LLAMAR LAS FUNCIONES DE CAMBIAR LOS BOTONES
   //SOLO DE COMPROBAR Y APLICAR
   cambiarConsignacionTemporal(id: number, position: number, estado: string, tipoReporte: string) {
-
+    console.log(this.cambiarEstado);
+    
 
     this.tipoReporte = tipoReporte
 
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
+    console.log(idC);
+    
 
     this.isSelected.idConsignacion = id
     this.isSelected.estado = estado
@@ -880,6 +886,7 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (idC != null || idC != undefined) {
+      
       this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
       this.cambiarBotones(position, 'ACTIVAR', id, estado)
       if (this.cambioArray.length > 0) {
@@ -895,6 +902,7 @@ export class ConsultasComponent implements OnInit {
       this.enviarIsSelected(this.isSelected)
 
     } else {
+      
       this.cambiarEstado.idConsignacion = id
       this.cambiarEstado.estado = estado
       this.cambiarEstado.username = user
@@ -915,6 +923,8 @@ export class ConsultasComponent implements OnInit {
       this.cambios = true
     }
 
+    console.log(this.cambioArray);
+    
   }
 
   enviarIsSelected(isSelected: IsSelected) {
@@ -1312,6 +1322,12 @@ export class ConsultasComponent implements OnInit {
 
       this.isSelected.username = this.cambiarEstado.username
       this.isSelected.opcion = 'SELECCIONAR'
+      this.cambiarEstado = {
+        estado: '',
+        idConsignacion: 0,
+        username: '',
+        observacion: ''
+      }
       this.enviarIsSelected(this.isSelected)
 
       console.log(this.cambioArray);
