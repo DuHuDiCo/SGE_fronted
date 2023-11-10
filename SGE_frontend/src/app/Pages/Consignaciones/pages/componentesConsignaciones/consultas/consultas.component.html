@@ -405,6 +405,15 @@
                     p.bancos.tipoPago.tipoPago }}</option>
                 </select>
               </div>
+
+              <div class="usuario">
+                <select [(ngModel)]="modal.estado" name="estado"
+                  class="form-select" required aria-label="select example">
+                  <option value="">Elija Un Estado</option>
+                  <option value="PENDIENTE">PENDIENTE</option>
+                  <option value="COMPROBADO">COMPROBADO</option>
+                </select>
+              </div>
             </div>
             <div class="col-md-12 col-12">
               <div class="file">

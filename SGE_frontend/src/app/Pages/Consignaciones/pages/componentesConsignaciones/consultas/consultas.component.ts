@@ -84,7 +84,7 @@ export class ConsultasComponent implements OnInit {
   ]
 
   //OBJETOS
-  modal: Consignacion = {
+  modal: any = {
     idConsignacion: 0,
     numeroRecibo: '',
     valor: 0,
@@ -93,7 +93,8 @@ export class ConsultasComponent implements OnInit {
     observaciones: '',
     obligaciones: [],
     base64: '',
-    username: ''
+    username: '',
+    estado: ''
   }
   actu: Con = {
     idConsignacion: 0,
@@ -295,8 +296,13 @@ export class ConsultasComponent implements OnInit {
       Swal.fire('Error', 'Seleccione Una Plataforma', 'error')
       return
     }
+    if (this.modal.estado == '' || this.modal.estado == null) {
+      Swal.fire('Error', 'Seleccione Un Estado', 'error')
+      return
+    }
 
     this.showModal()
+    
   }
 
   editarConsignacion(){
