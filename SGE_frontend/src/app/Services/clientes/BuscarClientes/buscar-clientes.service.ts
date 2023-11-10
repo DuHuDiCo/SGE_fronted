@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { DatosContacto } from 'src/app/Types/DatosCliente';
 import baseUrl from 'src/app/utils/helper';
 
@@ -8,12 +9,15 @@ import baseUrl from 'src/app/utils/helper';
 })
 export class BuscarClientesService {
 
+
+  public proSubject = new Subject<boolean>();
+
   constructor(private http:HttpClient) { }
 
   Url = "http://192.168.1.171:8004/api/v1";
 
-  public listarClientes(){
-    return this.http.get(`${baseUrl}/clientes/all`)
+  public listarClientes(page:number, size:number){
+    return this.http.get(`${baseUrl}/clientes/all?page=${page}&size=${size}`)
   }
 
   public filtrarClientes(cedula:string){

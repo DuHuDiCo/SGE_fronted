@@ -14,7 +14,8 @@
                 <select (change)="change($event)" [(ngModel)]="username" class="form-select"
                     aria-label="Default select example">
                     <option value="null">Elija El Usuario</option>
-                    <option *ngFor="let u of usuarios" value="{{ u.username }}">{{ u.nombres | uppercase }} {{ u.apellidos | uppercase }}</option>
+                    <option *ngFor="let u of usuarios" value="{{ u.username }}">{{ u.nombres | uppercase }} {{
+                        u.apellidos | uppercase }}</option>
                 </select>
             </div>
         </div>
@@ -62,38 +63,39 @@
             </tr>
         </tbody>
     </table>
-    
+
 </div>
 <nav aria-label="Page navigation example" *ngIf="numeroPages > 1">
     <div class="row justify-content-center">
-      <div class="col-md-3"></div>
-      <div class="col-md-5">
-        <nav aria-label="...">
-          <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link b" (click)="back()" style="cursor: pointer;">Anterior</a>
-            </li>
-            
-            <li class="page-item">
-              <div class="btn-group">
-                <button type="button" class="page-link dropdown-toggle"
-                  style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
-                  data-bs-toggle="dropdown">{{page+1}}/{{numeroPages}}</button>
-                <ul class="dropdown-menu" style="overflow-y: 400px;height: auto;">
-                  <li *ngFor="let p of paginas;let i = index"><button class="dropdown-item" (click)="goToPage(i)">{{i
-                      + 1}}</button></li>
+        <div class="col-md-3"></div>
+        <div class="col-md-5">
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link b" (click)="back()" style="cursor: pointer;">Anterior</a>
+                    </li>
 
+                    <li class="page-item">
+                        <div class="btn-group">
+                            <button type="button" class="page-link dropdown-toggle"
+                                style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
+                                data-bs-toggle="dropdown">{{page+1}}/{{numeroPages}}</button>
+                            <ul class="dropdown-menu" style="overflow-y: 400px;height: auto;">
+                                <li *ngFor="let p of paginas;let i = index"><button class="dropdown-item"
+                                        (click)="goToPage(i)">{{i
+                                        + 1}}</button></li>
+
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link b" (click)="next()" style="cursor: pointer;">Siguiente</a>
+                    </li>
                 </ul>
-              </div>
-            </li>
-            <li class="page-item">
-              <a class="page-link b" (click)="next()" style="cursor: pointer;">Siguiente</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+            </nav>
+        </div>
     </div>
-  </nav>
+</nav>
 
 
 <!-- Modal Embed -->

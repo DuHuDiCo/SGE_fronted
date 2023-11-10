@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { BuscarClientesService } from 'src/app/Services/clientes/BuscarClientes/buscar-clientes.service';
 import { Ciudad } from 'src/app/Types/Ciudades';
@@ -16,10 +17,14 @@ export class BuscarClientesComponent implements OnInit {
 
   @ViewChild('mySelect')
   mySelect!: ElementRef<HTMLSelectElement>;
-
+  private proSubscription!: Subscription;
   pageTelefono: number = 1;
   pageDireccion: number = 1;
   pageCorreo: number = 1;
+
+  cont: number = 1
+  last: boolean = false
+  first: boolean = false
 
   cliente: Cliente[] = []
 
@@ -29,6 +34,16 @@ export class BuscarClientesComponent implements OnInit {
     fechaExpedicionDocumento: '',
     lugarExpedicionDocumento: ''
   }
+
+  isCon: boolean = false
+  initialCon: number = 1;
+  pages: number = 0
+  sizes: number = 200
+  numeroPages: number = 0
+  page: number = 0
+  size: number = 10
+  order: string = 'idReporte'
+  paginas!: Array<number>
 
   rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
 
@@ -73,9 +88,9 @@ export class BuscarClientesComponent implements OnInit {
   }
 
   private listarClientes() {
-    this.clienteService.listarClientes().subscribe(
+    this.clienteService.listarClientes(this.page, this.size).subscribe(
       (data: any) => {
-        this.cliente = data;
+        this.cliente = data.content;
         this.telefonos = data.telefonos
         this.direcciones = data.direcciones
         this.correos = data.correosElectronicos
@@ -311,6 +326,49 @@ export class BuscarClientesComponent implements OnInit {
     this.datosPersonales.fechaExpedicionDocumento = cliente.fechaExpedicionDocumento
     this.datosPersonales.lugarExpedicionDocumento = cliente.lugarExpedicionDocumento
 
+  }
+
+
+  back() {
+    if (!this.first) {
+      this.page--
+      this.listarClientes();
+        this.proSubscription = this.clienteService.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont - this.size;
+            this.proSubscription.unsubscribe()
+          }
+        );
+    }
+  }
+
+  goToPage(page: number) {
+    this.page = page
+    this.listarClientes()
+      this.proSubscription = this.clienteService.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.size);
+          this.proSubscription.unsubscribe()
+        }
+      );
+  }
+
+
+  next() {
+    if (!this.last) {
+      this.page++
+      this.listarClientes()
+        this.proSubscription = this.clienteService.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont + this.size;
+            this.proSubscription.unsubscribe()
+          }
+        );
+      
+    }
   }
 
 }
