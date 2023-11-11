@@ -66,6 +66,37 @@
                     </tbody>
                 </table>
             </div>
+            <nav aria-label="Page navigation example" *ngIf="numeroPages > 1">
+                <div class="row justify-content-center">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-5">
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link b" (click)="back()" style="cursor: pointer; background-color: #960010;color: white;">Anterior</a>
+                                </li>
+            
+                                <li class="page-item">
+                                    <div class="btn-group">
+                                        <button type="button" class="page-link dropdown-toggle"
+                                            style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
+                                            data-bs-toggle="dropdown">{{page+1}}/{{numeroPages}}</button>
+                                        <ul class="dropdown-menu" style="overflow-y: 400px;height: auto;">
+                                            <li *ngFor="let p of paginas;let i = index"><button class="dropdown-item"
+                                                    (click)="goToPage(i)">{{i
+                                                    + 1}}</button></li>
+            
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link b" (click)="next()" style="cursor: pointer;background-color: #960010;color: white;">Siguiente</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </nav>
             <br>
         </div>
     </div>
