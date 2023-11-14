@@ -84,7 +84,11 @@ export class ConsultasComponent implements OnInit {
     // 23
     "INFORMES",
     // 24
-    "CONSULTAR PENDIENTES"
+    "CONSULTAR PENDIENTES",
+    // 25
+    "VERIFICACION CARTERA",
+    // 26
+    "CONSULTAR CONCILIADOS"
   ]
 
   //OBJETOS
@@ -426,6 +430,74 @@ export class ConsultasComponent implements OnInit {
 
 
           this.botones = new Array<boolean>(this.con.length).fill(false)
+        }, (error: any) => {
+
+        }
+      )
+    }
+
+    if (this.validarPermiso('CONSULTAR CONCILIADOS')) {
+      this.estadoConsignacion = 'DEVUELTA ' + this.estadoConsignacion
+      console.log(this.estadoConsignacion);
+      
+      this.consultarService.getAllConsignaciones('DEVUELTA ' + p, this.page, this.size).subscribe(
+        (data: any) => {
+          console.log(data);
+          
+          this.spinner = false
+          this.con = data.content
+          this.numeroPages = data.totalPages
+          this.con.forEach((e: any, index: number) => {
+
+            if (e.isSelected) {
+              var user = this.authService.getUsername()
+
+              if (user == null || user == undefined) {
+                return
+              }
+              var guardarArray: CambioEstado = {
+                estado: e.isSelecetedEstado,
+                idConsignacion: e.idConsignacion,
+                username: user,
+                observacion: ''
+              }
+
+              this.cambioArray.push(guardarArray)
+              setTimeout(() => {
+
+                if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
+                  this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
+                } else {
+                  this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
+                }
+
+                if (this.cambioArray.length > 0) {
+                  this.cambios = true
+                } else {
+                  this.cambios = false
+                }
+                console.log(this.cambioArray);
+              }, 100);
+
+
+            }
+          });
+
+          this.paginas = new Array(data.totalPages)
+          this.last = data.last
+          this.first = data.first
+          this.consultarService.proSubject.next(true);
+          this.con.forEach((c: any) => {
+            c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
+          })
+          this.botones = new Array<boolean>(this.con.length).fill(false)
+
+          if (this.con.length <= 0) {
+            Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+            return
+          }
+
+
         }, (error: any) => {
 
         }
@@ -1113,6 +1185,11 @@ export class ConsultasComponent implements OnInit {
       btn_comprobar_x = document.getElementById(`btn_comprobar_consignaciones_x${position}`)
     }
 
+    if (this.validarPermiso('CONSULTAR CONCILIADOS')) {
+      btn_comprobar = document.getElementById(`btn_comprobar_consignaciones_${position}`)
+      btn_comprobar_x = document.getElementById(`btn_comprobar_consignaciones_x${position}`)
+    }
+
     if (accion == 'DESACTIVAR') {
       if (this.filtro) {
         this.filtro = false
@@ -1156,7 +1233,7 @@ export class ConsultasComponent implements OnInit {
           }
         }
 
-        if (this.validarPermiso('COMPROBAR')) {
+        if (this.validarPermiso('COMPROBAR') || this.validarPermiso('CONSULTAR CONCILIADOS')) {
           if (btn_comprobar != null && btn_comprobar_x != null && btn_devolver_comprobadas != null) {
             btn_comprobar.style.display = 'none'
             btn_comprobar_x.style.display = 'block'
@@ -1199,7 +1276,7 @@ export class ConsultasComponent implements OnInit {
         this.metodoImagen(id, `btn_comprobante_${position}`)
 
 
-        if (this.validarPermiso('COMPROBAR')) {
+        if (this.validarPermiso('COMPROBAR') || this.validarPermiso('CONSULTAR CONCILIADOS')) {
           if (btn_comprobar != null && btn_comprobar_x != null && btn_devolver_comprobadas) {
             btn_comprobar.style.display = 'block'
             btn_comprobar_x.style.display = 'none'
