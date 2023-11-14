@@ -522,11 +522,22 @@
                 placeholder="Observacion" id="floatingTextarea2" style="height: 100px"></textarea>
               <label for="floatingTextarea2">Observaciones</label>
             </div>
+            <span *appConsignacionesDirective="permisos[3]">
+
+              <div class="usuario">
+                <select [(ngModel)]="cambiarEstado.estado" name="estado"
+                  class="form-select" required aria-label="select example">
+                  <option value="">Elija Un Estado</option>
+                  <option value="DEVUELTA CONTABILIDAD">DEVUELTA CONTABILIDAD</option>
+                  <option value="DEVUELTA CONCILIACION">DEVUELTA CONCILIACION</option>
+                </select>
+              </div>
+            </span>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button (click)="agregarDevolucion()" data-bs-dismiss="modal" type="button" class="b btn">Guardar</button>
+          <button (click)="agregarDevolucion()" type="button" class="b btn">Guardar</button>
         </div>
       </div>
     </div>

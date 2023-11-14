@@ -1226,7 +1226,6 @@ export class ConsultasComponent implements OnInit {
   //TODOS LOS CAMBIOS DE BOTONES Y SUS RESPECTIVAS VALIDACIONES
   //SOLO PARA DEVOLVER CONTABILIDAD Y DEVOLVER CAJA
   devolver(id: number, position: number, estado: string, tipoReporte: string) {
-
     this.tipoReporte = tipoReporte
 
     this.cambiarEstado.idConsignacion = id
@@ -1289,6 +1288,14 @@ export class ConsultasComponent implements OnInit {
       Swal.fire('Error', 'Digite Una Observación', 'error')
       return
     }
+
+    if(this.validarPermiso('COMPROBAR CONSIGNACIONES')){
+      if (this.cambiarEstado.estado.trim() == '' || this.cambiarEstado.estado.trim() == null) {
+        Swal.fire('Error', 'Elija Un Estado Para La Devolución', 'error')
+        return
+      }
+    }
+
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == this.cambiarEstado.idConsignacion)
 
     console.log(idC);
@@ -1333,8 +1340,9 @@ export class ConsultasComponent implements OnInit {
 
       console.log(this.cambioArray);
 
-
       this.cambios = true
+
+      $('#modalObservacion').modal('hide');
     }
 
   }
