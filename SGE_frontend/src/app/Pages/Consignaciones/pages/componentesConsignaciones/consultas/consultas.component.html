@@ -157,7 +157,7 @@
 
             <!-- VER COMPROBANTE -->
             <span *appConsignacionesDirective="permisos[14]">
-              <span *appConsignacionesDirective="permisos[3] && permisos[24] && validarRol() || permisos[24]">
+              <span *appConsignacionesDirective="permisos[3] && permisos[24] && (validarRol() || permisos[24])">
                 <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
                   class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"
                   id="btn_comprobante_{{i}}"><i class="fa-regular fa-image"></i></button>

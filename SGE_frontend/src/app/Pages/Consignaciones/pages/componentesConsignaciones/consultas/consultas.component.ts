@@ -1477,6 +1477,8 @@ export class ConsultasComponent implements OnInit {
           this.botones = new Array<boolean>(this.con.length).fill(false)
           this.botonFiltrar = false
           this.paginas = new Array(data.totalPages)
+          this.numeroPages = data.totalPages
+          
           this.last = data.last
           this.first = data.first
           this.spinner = false
