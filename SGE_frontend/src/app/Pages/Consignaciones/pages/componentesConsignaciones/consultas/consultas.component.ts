@@ -11,6 +11,7 @@ import { AuthenticationService } from 'src/app/Services/authentication/authentic
 import { Plataforma } from 'src/app/Types/Banco';
 import { CambioEstado, Con, Consignacion, IsSelected, Obligacion, ObservacionDto } from 'src/app/Types/Consignaciones';
 import { Estado } from 'src/app/Types/Estado';
+import { ROLES } from 'src/app/Types/Roles';
 import { Sede } from 'src/app/Types/Sede';
 import Swal from 'sweetalert2';
 
@@ -1640,6 +1641,18 @@ export class ConsultasComponent implements OnInit {
 
       }
     )
+
+  }
+
+  validarRol() {
+    var roles = this.authService.getRoles()
+    if(roles != null){
+      var rol = roles.find((r:any) => r.rol == ROLES.SuperAdministration || r.rol == ROLES.Administration)
+      if(rol != null){
+        return rol
+      }
+      return null
+    }
 
   }
 

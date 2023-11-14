@@ -136,7 +136,7 @@
 
             <!-- VER OBSERVACIONES -->
             <span *appConsignacionesDirective="permisos[13]">
-              <span *appConsignacionesDirective="permisos[3]">
+              <span *appConsignacionesDirective="permisos[3] && permisos[24] && validarRol() || permisos[24]">
                 <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
                   class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"
                   id="btn_observaciones_{{ i }}"><i class="fa-regular fa-eye"></i></button>
@@ -157,7 +157,7 @@
 
             <!-- VER COMPROBANTE -->
             <span *appConsignacionesDirective="permisos[14]">
-              <span *appConsignacionesDirective="permisos[3]">
+              <span *appConsignacionesDirective="permisos[3] && permisos[24] && validarRol() || permisos[24]">
                 <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
                   class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"
                   id="btn_comprobante_{{i}}"><i class="fa-regular fa-image"></i></button>
@@ -178,7 +178,7 @@
 
             <!-- VER HISTORIAL -->
             <span *appConsignacionesDirective="permisos[15]">
-              <span *appConsignacionesDirective="permisos[3]">
+              <span *appConsignacionesDirective="permisos[3] && permisos[24] && validarRol() || permisos[24]">
                 <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
                   class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo"
                   id="btn_historial_{{i}}"><i class="fa-solid fa-circle-info"></i></button>
@@ -542,6 +542,9 @@
         </div>
         <div class="modal-body">
           <div class="modal-body">
+            <div class="alert alert-danger text-center" role="alert">
+              LA OBSERVACIÓN ES OBLIGATORIA PARA ACTUALIZAR LA CONSIGNACIÓN
+            </div>
             <div class="form-floating">
               <textarea [(ngModel)]="modal.observaciones" name="observaciones" class="form-control"
                 placeholder="Observacion" id="floatingTextarea2" style="height: 100px"></textarea>
