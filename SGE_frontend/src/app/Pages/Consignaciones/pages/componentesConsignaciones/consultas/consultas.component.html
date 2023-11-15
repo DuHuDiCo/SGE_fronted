@@ -312,7 +312,7 @@
             <tbody>
               <tr *ngFor="let a of actu.actualizaciones; let i = index">
                 <th scope="row">{{ i + 1 }}</th>
-                <td>{{ a.fechaActualizacion | date: 'short' }}</td>
+                <td>{{ a.fechaActualizacion | date: 'dd/MM/yyyy' }} {{ a.fechaActualizacion | date: 'shortTime' }}</td>
                 <td>{{ a.estado.estado }}</td>
                 <td>{{ a.usuario.nombres }} {{ a.usuario.apellidos }}</td>
               </tr>
