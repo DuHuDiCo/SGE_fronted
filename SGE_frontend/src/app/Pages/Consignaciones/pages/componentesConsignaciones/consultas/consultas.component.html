@@ -97,6 +97,24 @@
         </div>
       </div>
     </span>
+
+    <span *appConsignacionesDirective="permisos[26]">
+      <div *ngIf="cambios" class="row">
+        <div class="col-md-12">
+          <div class="text-right">
+            <button *ngIf="!botonCambiarConsignacion" (click)="cambiarConsignacion()" class="b btn mb-4">Guardar
+              Cambios</button>
+            <button *ngIf="botonCambiarConsignacion" type="button" class="btn btn-danger mb-4"
+              style="background-color: #960010;border-color: #960010;">
+              Guardando...
+              <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+            </button>
+            <button (click)="cancelar()" class="btn btn-secondary ms-2 mb-4">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </span>
+
     <table class="table table-bordered align-middle text-center">
       <thead class="align-middle">
         <tr>
@@ -283,18 +301,20 @@
             <span *appConsignacionesDirective="permisos[26]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
                 (click)="devolver(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD', 'COMPROBADAS')"
-                class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion"
+                class="btn btn-sm btn-warning ms-2 d-none" data-bs-toggle="modal" data-bs-target="#modalObservacion"
                 id="btn_devolver_comprobadas_{{i}}"><i class="fa-solid fa-backward"></i></button>
             </span>
+
+            <!-- CANCELAR CONSIGNACIONES -->
             <span *appConsignacionesDirective="permisos[26]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'CANCELADO', '')"
-                class="b btn btn-sm ms-2" id="btn_cancelar_{{i}}">
-                <i class="fa-solid fa-rectangle-xmark"></i></button>
+                (click)="cancelarConsignacion(c.idConsignacion, i, 'CANCELADO', '')"
+                class="btn btn-sm ms-2" id="btn_cancelar_{{i}}" style="background-color: #960010;">
+                <i class="fa-solid fa-rectangle-xmark" style="color: white;"></i></button>
             </span>
             <span *appConsignacionesDirective="permisos[26]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="cambiarDevolver(c.idConsignacion, i, 'CANCELADO', '')"
+                (click)="cambiarDevolver(c.idConsignacion, i, 'ACTIVAR', '')"
                 class="b btn btn-sm ms-2" id="btn_cancelar_x{{i}}" style="display: none;"><i
                   class="fa-solid fa-xmark"></i></button>
             </span>
@@ -590,7 +610,7 @@
                   class="form-select" required aria-label="select example">
                   <option value="">Elija Un Estado</option>
                   <option value="DEVUELTA CONTABILIDAD">DEVUELTA CONTABILIDAD</option>
-                  <option value="DEVUELTA CONCILIACION">DEVUELTA CONCILIACION</option>
+                  <option value="DEVUELTA CONCILIADO">DEVUELTA CONCILIADO</option>
                 </select>
               </div>
             </span>
