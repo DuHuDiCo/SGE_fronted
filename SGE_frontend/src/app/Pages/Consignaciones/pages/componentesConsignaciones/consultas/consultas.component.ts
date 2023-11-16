@@ -374,7 +374,7 @@ export class ConsultasComponent implements OnInit {
     this.cambiarEstado.username = user
 
     if (this.validarPermiso('CONSULTAR COMPROBADOS')) {
-      this.consultarService.listarComprobados(user, this.page, this.size, "fechaPago").subscribe(
+      this.consultarService.listarComprobados(user, this.page, this.size, "fecha_pago").subscribe(
         (data: any) => {
           this.spinner = false
           this.con = data.content
@@ -440,7 +440,7 @@ export class ConsultasComponent implements OnInit {
       this.estadoConsignacion = 'DEVUELTA ' + this.estadoConsignacion
       console.log(this.estadoConsignacion);
 
-      this.consultarService.getAllConsignaciones('DEVUELTA ' + p, this.page, this.size, "fechaPago").subscribe(
+      this.consultarService.getAllConsignaciones('DEVUELTA ' + p, this.page, this.size, "fecha_pago").subscribe(
         (data: any) => {
           console.log(data);
 
@@ -505,7 +505,7 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (this.validarPermiso('CONSULTAR PENDIENTES')) {
-      this.consultarService.getAllConsignaciones(p, this.page, this.size, "fechaCreacion").subscribe(
+      this.consultarService.getAllConsignaciones(p, this.page, this.size, "fecha_creacion").subscribe(
         (data: any) => {
           console.log(data);
 
