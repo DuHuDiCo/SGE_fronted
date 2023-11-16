@@ -13,8 +13,8 @@ export class ConsultarService {
 
   public proSubject = new Subject<boolean>();
 
-  getAllConsignaciones(estado:string, page:number, size:number){
-    return this.http.get(`${baseUrl}/consignacion/getAllConsignaciones?estado=${estado}&page=${page}&size=${size}`)
+  getAllConsignaciones(estado:string, page:number, size:number, order:string){
+    return this.http.get(`${baseUrl}/consignacion/getAllConsignaciones?estado=${estado}&page=${page}&size=${size}&order=${order}`)
   }
 
   getConsignacionById(id:number){
@@ -45,8 +45,8 @@ export class ConsultarService {
     return this.http.put(`${baseUrl}/consignacion/changeEstadoOfConsignacionToComprobadas?tipoReporte=${tipoReporte}`, cambioEstado)
   }
 
-  listarComprobados(username:string, page:number, size:number){
-    return this.http.get(`${baseUrl}/consignacion/consignacionesComprobadas?username=${username}&page=${page}&size=${size}`)
+  listarComprobados(username:string, page:number, size:number, order:string){
+    return this.http.get(`${baseUrl}/consignacion/consignacionesComprobadas?username=${username}&page=${page}&size=${size}&order=${order}`)
   }
 
   isSelected(selected:any){
