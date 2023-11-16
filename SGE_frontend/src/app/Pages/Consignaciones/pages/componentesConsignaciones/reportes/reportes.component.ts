@@ -267,6 +267,7 @@ export class ReportesComponent implements OnInit {
 
           this.reportes = data.content
           this.paginas = new Array(data.totalPages)
+          this.numeroPages = data.totalPages
           this.last = data.last
           this.first = data.first
           this.reportesService.proSubject.next(true);
