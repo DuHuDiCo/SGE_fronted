@@ -919,7 +919,7 @@ export class ConsultasComponent implements OnInit {
 
       if (this.fecha != "" || this.estado != 'null' || this.sede != 'null') {
 
-        if (this.cambioArray.length > 0 && (this.validarPermiso('COMPROBAR CONSIGNACIONES') || this.validarPermiso('APLICAR CONSIGNACIONES'))) {
+        if (this.cambioArray.length > 0 && (this.validarPermiso('COMPROBAR CONSIGNACIONES') || this.validarPermiso('APLICAR CONSIGNACIONES') || this.validarPermiso('CONSULTAR CONCILIADOS'))) {
 
           this.filtro = false
         } else {
