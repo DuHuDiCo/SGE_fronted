@@ -22,7 +22,7 @@ export class ReportesComponent implements OnInit {
   numeroPages: number = 0
   page: number = 0
   size: number = 10
-  order: string = 'idReporte'
+  order: string = 'fechaReporte'
   tipoReporte: string = 'null'
   fecha: string = 'null'
   username: string = 'null'
