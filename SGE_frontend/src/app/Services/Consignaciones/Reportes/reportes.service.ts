@@ -14,8 +14,8 @@ export class ReportesService {
 
   constructor(private http:HttpClient) { }
 
-  getAll(page:number, size:number, order:string): Observable<ArrayBuffer> {
-    return this.http.get(`${baseUrl}/consignacion/filesReporte/getAllFiles?page=${page}&size=${size}&order=${order}`,  { responseType: 'arraybuffer' })
+  getAll(page:number, size:number, order:string): Observable<any> {
+    return this.http.get(`${baseUrl}/consignacion/filesReporte/getAllFiles?page=${page}&size=${size}&order=${order}`,  { responseType: 'json' })
   }
 
   filtro(page:number, size:number, order:string, tipoReporte:string, username:string, fechaReporte:string){

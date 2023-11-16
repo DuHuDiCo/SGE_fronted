@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 })
 export class ReportesComponent implements OnInit {
 
-  constructor(private reportesService: ReportesService, private authService: AuthenticationService, private usuariosService:BuscarUsuariosService) { }
+  constructor(private reportesService: ReportesService, private authService: AuthenticationService, private usuariosService: BuscarUsuariosService) { }
 
   pages: number = 0
   sizes: number = 200
@@ -27,11 +27,11 @@ export class ReportesComponent implements OnInit {
   fecha: string = 'null'
   username: string = 'null'
 
-  botonFiltrar:boolean = false
-  filtro:boolean = false
+  botonFiltrar: boolean = false
+  filtro: boolean = false
   last: boolean = false
   first: boolean = false
-  filtrando:boolean = false
+  filtrando: boolean = false
   cont: number = 1
   isCon: boolean = false
   initialCon: number = 1;
@@ -51,22 +51,22 @@ export class ReportesComponent implements OnInit {
 
   @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
 
-  getFirts(){
+  getFirts() {
     setTimeout(() => {
       if (this.validarRol()) {
         this.reportesService.getAll(this.page, this.size, this.order).subscribe(
-          (data:any) => {
+          (data: any) => {
             this.reportes = data.content
             this.paginas = new Array(data.totalPages)
             this.numeroPages = data.totalPages
 
             this.last = data.last
             this.first = data.first
-            console.log(this.cont);
-            
+            console.log(data);
+
             this.reportesService.proSubject.next(true);
             console.log(this.reportes);
-          }, (error:any) => {
+          }, (error: any) => {
             console.log(error);
           }
         )
@@ -76,15 +76,15 @@ export class ReportesComponent implements OnInit {
           return
         }
         this.reportesService.getFilesByUsername(this.page, this.size, this.order, user).subscribe(
-          (data:any) => {
+          (data: any) => {
             this.paginas = new Array(data.totalPages)
             this.reportes = data.content
             this.numeroPages = data.totalPages
             this.last = data.last
             this.first = data.first
             this.reportesService.proSubject.next(true);
-            console.log(this.reportes);   
-          }, (error:any) => {
+            console.log(this.reportes);
+          }, (error: any) => {
             console.log(error);
           }
         )
@@ -92,11 +92,11 @@ export class ReportesComponent implements OnInit {
     }, 2000);
   }
 
-  listarUsuarios(){
+  listarUsuarios() {
     this.usuariosService.listarUsuarios(this.pages, this.sizes).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.usuarios = data.content
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
@@ -115,7 +115,7 @@ export class ReportesComponent implements OnInit {
     }
     this.filtro = true
     setTimeout(() => {
-      if(!this.validarRol()){
+      if (!this.validarRol()) {
         var user = this.authService.getUsername()
 
         if (user == null || user == undefined) {
@@ -133,17 +133,17 @@ export class ReportesComponent implements OnInit {
 
   }
 
-  mostrarPDF(base64:string) {
+  mostrarPDF(base64: string) {
     // Obtén el embed y el botón
-      const embed = this.pdfEmbed.nativeElement;
-      embed.src = base64;
+    const embed = this.pdfEmbed.nativeElement;
+    embed.src = base64;
   }
 
   validarRol() {
     var roles = this.authService.getRoles()
-    if(roles != null){
-      var rol = roles.find((r:any) => r.rol == ROLES.SuperAdministration || r.rol == ROLES.Administration)
-      if(rol != null){
+    if (roles != null) {
+      var rol = roles.find((r: any) => r.rol == ROLES.SuperAdministration || r.rol == ROLES.Administration)
+      if (rol != null) {
         return rol
       }
       return null
@@ -152,15 +152,15 @@ export class ReportesComponent implements OnInit {
   }
 
   change(event: any) {
-    if(this.fecha == ''){
+    if (this.fecha == '') {
       this.fecha = 'null'
     }
 
     if (this.fecha != 'null' || this.username != 'null') {
       this.botonFiltrar = true
     }
-    
-    if(this.fecha == 'null' && this.username == 'null'){
+
+    if (this.fecha == 'null' && this.username == 'null') {
       this.botonFiltrar = false
     }
   }
@@ -168,7 +168,7 @@ export class ReportesComponent implements OnInit {
   next() {
     if (!this.last) {
       this.page++
-      if(this.filtrando){
+      if (this.filtrando) {
         this.filtrar(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha)
         this.proSubscription = this.reportesService.proSubject.subscribe(
           (con: boolean) => {
@@ -187,15 +187,15 @@ export class ReportesComponent implements OnInit {
           }
         );
       }
-      
-      
+
+
     }
   }
 
   back() {
     if (!this.first) {
       this.page--
-      if(this.filtrando){
+      if (this.filtrando) {
         this.filtrar(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha)
         this.proSubscription = this.reportesService.proSubject.subscribe(
           (con: boolean) => {
@@ -219,7 +219,7 @@ export class ReportesComponent implements OnInit {
 
   goToPage(page: number) {
     this.page = page
-    if(this.filtrando){
+    if (this.filtrando) {
       this.filtrar(this.page, this.size, this.order, this.tipoReporte, this.username, this.fecha)
       this.proSubscription = this.reportesService.proSubject.subscribe(
         (con: boolean) => {
@@ -240,52 +240,65 @@ export class ReportesComponent implements OnInit {
     }
   }
 
-  filtrar(page:number, size:number, order:string, tipoReporte:string, username:string, fecha:string){
+  filtrar(page: number, size: number, order: string, tipoReporte: string, username: string, fecha: string) {
     this.tipoReporte = 'null'
-      this.reportesService.filtro(page, size, order, tipoReporte, username, fecha).subscribe(
-        (data: any) => {
-          this.filtrando = true
-          if(data.content.length == 0){
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'No se Encontraron Reportes Con Estos Filtros',
-              timer: 3000
-            })
-            this.botonFiltrar = false
-            this.filtro = false
-            this.fecha = 'null'
-            this.username = 'null'
-            this.getFirts()
-          } else {
-            Swal.fire({
-              icon: 'success',
-              title: 'Felicidades',
-              text: 'Estos Son Los Reportes Encontrados',
-              timer: 3000
-            })
-
-            this.reportes = data.content
-            this.paginas = new Array(data.totalPages)
-            this.last = data.last
-            this.first = data.first
-            this.reportesService.proSubject.next(true);
-            console.log(this.reportes);
-            this.filtro = false
-          }
-        }, (error: any) => {
+    this.reportesService.filtro(page, size, order, tipoReporte, username, fecha).subscribe(
+      (data: any) => {
+        this.filtrando = true
+        if (data.content.length == 0) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Error al Filtrar',
+            text: 'No se Encontraron Reportes Con Estos Filtros',
             timer: 3000
           })
-          console.log(error);
+          this.botonFiltrar = false
+          this.filtro = false
+          this.fecha = 'null'
+          this.username = 'null'
+          this.getFirts()
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Felicidades',
+            text: 'Estos Son Los Reportes Encontrados',
+            timer: 3000
+          })
+
+          this.reportes = data.content
+          this.paginas = new Array(data.totalPages)
+          this.last = data.last
+          this.first = data.first
+          this.reportesService.proSubject.next(true);
+          console.log(this.reportes);
           this.filtro = false
         }
-      )
+      }, (error: any) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al Filtrar',
+          timer: 3000
+        })
+        console.log(error);
+        this.filtro = false
+      }
+    )
   }
 
-  
+  descargarReporte(base: string) {
+    const dowloandLink = document.createElement('a');
+    dowloandLink.href = "data:application/pdf;base64,"+base
+    dowloandLink.download = "reporte.pdf"
+    dowloandLink.target = '_blank'
+
+    document.body.appendChild(dowloandLink)
+    dowloandLink.click()
+    document.body.removeChild(dowloandLink)
+   
+   
+
+  }
+
 
 }
