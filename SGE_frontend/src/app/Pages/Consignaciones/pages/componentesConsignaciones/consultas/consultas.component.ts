@@ -84,7 +84,11 @@ export class ConsultasComponent implements OnInit {
     // 23
     "INFORMES",
     // 24
-    "CONSULTAR PENDIENTES"
+    "CONSULTAR PENDIENTES",
+    // 25
+    "VERIFICACION CARTERA",
+    // 26
+    "CONSULTAR CONCILIADOS"
   ]
 
   //OBJETOS
@@ -306,7 +310,7 @@ export class ConsultasComponent implements OnInit {
     }
 
     this.showModal()
-    
+
   }
 
   editarConsignacion() {
@@ -375,7 +379,7 @@ export class ConsultasComponent implements OnInit {
           this.spinner = false
           this.con = data.content
           console.log(data);
-          
+
           this.con.forEach((e: any, index: number) => {
 
             if (e.isSelected) {
@@ -432,11 +436,79 @@ export class ConsultasComponent implements OnInit {
       )
     }
 
+    if (this.validarPermiso('CONSULTAR CONCILIADOS')) {
+      this.estadoConsignacion = 'DEVUELTA ' + this.estadoConsignacion
+      console.log(this.estadoConsignacion);
+
+      this.consultarService.getAllConsignaciones('DEVUELTA ' + p, this.page, this.size).subscribe(
+        (data: any) => {
+          console.log(data);
+
+          this.spinner = false
+          this.con = data.content
+          this.numeroPages = data.totalPages
+          this.con.forEach((e: any, index: number) => {
+
+            if (e.isSelected) {
+              var user = this.authService.getUsername()
+
+              if (user == null || user == undefined) {
+                return
+              }
+              var guardarArray: CambioEstado = {
+                estado: e.isSelecetedEstado,
+                idConsignacion: e.idConsignacion,
+                username: user,
+                observacion: ''
+              }
+
+              this.cambioArray.push(guardarArray)
+              setTimeout(() => {
+
+                if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
+                  this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
+                } else {
+                  this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
+                }
+
+                if (this.cambioArray.length > 0) {
+                  this.cambios = true
+                } else {
+                  this.cambios = false
+                }
+                console.log(this.cambioArray);
+              }, 100);
+
+
+            }
+          });
+
+          this.paginas = new Array(data.totalPages)
+          this.last = data.last
+          this.first = data.first
+          this.consultarService.proSubject.next(true);
+          this.con.forEach((c: any) => {
+            c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
+          })
+          this.botones = new Array<boolean>(this.con.length).fill(false)
+
+          if (this.con.length <= 0) {
+            Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+            return
+          }
+
+
+        }, (error: any) => {
+
+        }
+      )
+    }
+
     if (this.validarPermiso('CONSULTAR PENDIENTES')) {
       this.consultarService.getAllConsignaciones(p, this.page, this.size).subscribe(
         (data: any) => {
           console.log(data);
-          
+
           this.spinner = false
           this.con = data.content
           this.numeroPages = data.totalPages
@@ -844,23 +916,23 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (this.estado != 'null' || this.fecha != 'null' || this.sede != 'null') {
-      
-      if (this.fecha != "" || this.estado != 'null' || this.sede != 'null' ) {
-        
-        if( this.cambioArray.length > 0 && (this.validarPermiso('COMPROBAR CONSIGNACIONES') || this.validarPermiso('APLICAR CONSIGNACIONES'))){
-          
+
+      if (this.fecha != "" || this.estado != 'null' || this.sede != 'null') {
+
+        if (this.cambioArray.length > 0 && (this.validarPermiso('COMPROBAR CONSIGNACIONES') || this.validarPermiso('APLICAR CONSIGNACIONES'))) {
+
           this.filtro = false
-        }else{
-          
+        } else {
+
           this.filtro = true
         }
 
-        
-      }else{
+
+      } else {
         this.filtro = false
       }
     } else {
-     
+
       this.filtro = false
     }
   }
@@ -869,13 +941,13 @@ export class ConsultasComponent implements OnInit {
   //SOLO DE COMPROBAR Y APLICAR
   cambiarConsignacionTemporal(id: number, position: number, estado: string, tipoReporte: string) {
     console.log(this.cambiarEstado);
-    
+
 
     this.tipoReporte = tipoReporte
 
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
     console.log(idC);
-    
+
 
     this.isSelected.idConsignacion = id
     this.isSelected.estado = estado
@@ -887,7 +959,9 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (idC != null || idC != undefined) {
-      
+      console.log(this.cambios);
+
+
       this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
       this.cambiarBotones(position, 'ACTIVAR', id, estado)
       if (this.cambioArray.length > 0) {
@@ -903,7 +977,7 @@ export class ConsultasComponent implements OnInit {
       this.enviarIsSelected(this.isSelected)
 
     } else {
-      
+
       this.cambiarEstado.idConsignacion = id
       this.cambiarEstado.estado = estado
       this.cambiarEstado.username = user
@@ -925,7 +999,7 @@ export class ConsultasComponent implements OnInit {
     }
 
     console.log(this.cambioArray);
-    
+
   }
 
   enviarIsSelected(isSelected: IsSelected) {
@@ -948,6 +1022,8 @@ export class ConsultasComponent implements OnInit {
     var btn_devolver_aplicadas_x
     var btn_devolver_comprobadas
     var btn_devolver_comprobadas_x
+    var btn_cancelar
+    var btn_cancelar_x
     var btn_aplicar
     var btn_comprobar
 
@@ -966,6 +1042,12 @@ export class ConsultasComponent implements OnInit {
       btn_devolver_comprobadas = document.getElementById(`btn_devolver_comprobadas_${position}`)
       btn_devolver_comprobadas_x = document.getElementById(`btn_devolver_comprobadas_x${position}`)
       btn_comprobar = document.getElementById(`btn_comprobar_consignaciones_${position}`)
+    }
+
+    if (this.validarPermiso('CONCILIADOS')) {
+      btn_comprobar = document.getElementById(`btn_comprobar_consignaciones_${position}`)
+      btn_cancelar = document.getElementById(`btn_cancelar_${position}`)
+      btn_cancelar_x = document.getElementById(`btn_cancelar_x${position}`)
     }
 
     if (accion == 'DESACTIVAR') {
@@ -1012,6 +1094,14 @@ export class ConsultasComponent implements OnInit {
             btn_comprobar.outerHTML = boton_comprobar
           }
         }
+
+        if (this.validarPermiso('CONCILIADOS')) {
+          if (btn_comprobar != null && btn_cancelar != null && btn_cancelar_x != null) {
+            btn_cancelar_x.style.display = 'block'
+            btn_cancelar.style.display = 'none'
+            btn_comprobar.outerHTML = boton_comprobar
+          }
+        }
       }
     }
     if (accion == 'ACTIVAR') {
@@ -1045,6 +1135,16 @@ export class ConsultasComponent implements OnInit {
           if (btn_devolver_comprobadas != null && btn_devolver_comprobadas_x && btn_comprobar != null) {
             btn_devolver_comprobadas_x.style.display = 'none'
             btn_devolver_comprobadas.style.display = 'block'
+            btn_comprobar.outerHTML = boton_comprobar_activo
+            this.metodoCambiarTemporal(`btn_comprobar_consignaciones_${position}`, id, position, 'COMPROBADO', 'COMPROBADAS')
+
+          }
+        }
+
+        if (this.validarPermiso('CONCILIADOS')) {
+          if (btn_comprobar != null && btn_cancelar != null && btn_cancelar_x != null) {
+            btn_cancelar_x.style.display = 'none'
+            btn_cancelar.style.display = 'block'
             btn_comprobar.outerHTML = boton_comprobar_activo
             this.metodoCambiarTemporal(`btn_comprobar_consignaciones_${position}`, id, position, 'COMPROBADO', 'COMPROBADAS')
 
@@ -1090,7 +1190,6 @@ export class ConsultasComponent implements OnInit {
   //TODOS LOS CAMBIOS DE BOTONES Y SUS RESPECTIVAS VALIDACIONES
   //SOLO PARA COMPROBAR Y APLICAR
   cambiarBotones(position: number, accion: string, id: number, estado: string) {
-
     var btn_aplicar_x
     var btn_aplicar
     var btn_comprobar_x
@@ -1101,6 +1200,7 @@ export class ConsultasComponent implements OnInit {
     var btn_historial = document.getElementById(`btn_historial_${position}`)
     var btn_devolver_comprobadas = document.getElementById(`btn_devolver_comprobadas_${position}`)
     var btn_devolver_aplicadas = document.getElementById(`btn_devolver_aplicadas_${position}`)
+    var btn_cancelar = document.getElementById(`btn_cancelar_${position}`)
 
 
     if (this.validarPermiso('APLICAR')) {
@@ -1109,6 +1209,11 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (this.validarPermiso('COMPROBAR')) {
+      btn_comprobar = document.getElementById(`btn_comprobar_consignaciones_${position}`)
+      btn_comprobar_x = document.getElementById(`btn_comprobar_consignaciones_x${position}`)
+    }
+
+    if (this.validarPermiso('CONCILIADOS')) {
       btn_comprobar = document.getElementById(`btn_comprobar_consignaciones_${position}`)
       btn_comprobar_x = document.getElementById(`btn_comprobar_consignaciones_x${position}`)
     }
@@ -1135,9 +1240,11 @@ export class ConsultasComponent implements OnInit {
       var boton_devolver_aplicadas = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
         class="btn btn-sm btn-danger ms-2" id="btn_devolver_aplicadas_${position}" disabled><i class="fa-solid fa-ban"></i></button>`
 
-      console.log(btn_observaciones);
-      console.log(btn_historial);
-      console.log(btn_comprobante);
+      var boton_cancelar = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+      class="btn btn-danger btn-sm ms-2" id="btn_cancelar_${position}" disabled>
+      <i class="fa-solid fa-ban"></i></button>`
+      console.log(boton_cancelar);
+
 
 
       if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
@@ -1156,17 +1263,21 @@ export class ConsultasComponent implements OnInit {
           }
         }
 
+        if (this.validarPermiso('CONCILIADOS')) {
+          if (btn_comprobar != null && btn_comprobar_x != null && btn_cancelar != null) {
+            btn_comprobar.style.display = 'none'
+            btn_comprobar_x.style.display = 'block'
+            btn_cancelar.outerHTML = boton_cancelar
+          }
+        }
+
         if (this.validarPermiso('COMPROBAR')) {
           if (btn_comprobar != null && btn_comprobar_x != null && btn_devolver_comprobadas != null) {
             btn_comprobar.style.display = 'none'
             btn_comprobar_x.style.display = 'block'
             btn_devolver_comprobadas.outerHTML = boton_devolver_comprobadas
-
-
           }
         }
-
-
       }
     }
     if (accion == 'ACTIVAR') {
@@ -1190,6 +1301,11 @@ export class ConsultasComponent implements OnInit {
       var boton_devolver_aplicadas_activo = ` <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado" (click)="devolver(${id}, ${position}, 'DEVUELTA CAJA')"
         class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion" id="btn_devolver_aplicadas_${position}"><i class="fa-solid fa-backward"></i></button>`
 
+      var boton_cancelar_activo = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+      (click)="cancelarConsignacion(${id}, ${position}, 'CANCELADO', '')"
+      class="btn btn-sm ms-2" id="btn_cancelar_${position}" style="background-color: #960010;">
+      <i class="fa-solid fa-rectangle-xmark" style="color: white;"></i></button>`
+
       if (btn_observaciones != null && btn_historial != null && btn_comprobante != null) {
         btn_observaciones.outerHTML = boton_observaciones_activo
         this.ponerEventoClick(id, `btn_observaciones_${position}`)
@@ -1206,7 +1322,15 @@ export class ConsultasComponent implements OnInit {
             btn_devolver_comprobadas.outerHTML = boton_devolver_comprobadas_activo
             this.metodoCambiarDevolver(`btn_devolver_comprobadas_${position}`, id, position, 'DEVUELTA CONTABILIDAD', 'COMPROBADAS')
           }
+        }
 
+        if (this.validarPermiso('CONCILIADOS')) {
+          if (btn_comprobar != null && btn_comprobar_x != null && btn_cancelar != null) {
+            btn_comprobar.style.display = 'block'
+            btn_comprobar_x.style.display = 'none'
+            btn_cancelar.outerHTML = boton_cancelar_activo
+            this.metodoCancelarDevolver(`btn_cancelar_${position}`, id, position, 'CANCELADO', '')
+          }
         }
 
         if (this.validarPermiso('APLICAR')) {
@@ -1226,7 +1350,6 @@ export class ConsultasComponent implements OnInit {
   //TODOS LOS CAMBIOS DE BOTONES Y SUS RESPECTIVAS VALIDACIONES
   //SOLO PARA DEVOLVER CONTABILIDAD Y DEVOLVER CAJA
   devolver(id: number, position: number, estado: string, tipoReporte: string) {
-
     this.tipoReporte = tipoReporte
 
     this.cambiarEstado.idConsignacion = id
@@ -1243,6 +1366,86 @@ export class ConsultasComponent implements OnInit {
 
     console.log(this.cambioArray);
 
+  }
+
+  cancelarConsignacion(id: number, position: number, estado: string, tipoReporte: string) {
+    Swal.fire({
+      title: "Cancelar Consignación",
+      text: "¿Desea Cancelar La Consignación?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirmar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.tipoReporte = tipoReporte
+
+        this.cambiarEstado.idConsignacion = id
+        this.cambiarEstado.estado = estado
+
+        var user = this.authService.getUsername()
+
+        if (user == null || user == undefined) {
+          return
+        }
+        this.cambiarEstado.username = user
+
+        this.posicionDevolver = position
+
+        var idC = this.cambioArray.find((c: any) => c.idConsignacion == this.cambiarEstado.idConsignacion)
+
+        console.log(idC);
+
+        this.isSelected.idConsignacion = this.cambiarEstado.idConsignacion
+        this.isSelected.estado = this.cambiarEstado.estado
+
+        if (idC != null || idC != undefined) {
+          this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != this.cambiarEstado.idConsignacion)
+          this.cambiarDevolver(this.cambiarEstado.idConsignacion, this.posicionDevolver, 'ACTIVAR', this.cambiarEstado.estado)
+          if (this.cambioArray.length > 0) {
+            this.cambios = true
+          } else {
+            this.cambios = false
+          }
+
+        } else {
+
+          this.cambiarDevolver(this.cambiarEstado.idConsignacion, this.posicionDevolver, 'DESACTIVAR', this.cambiarEstado.estado)
+          this.cambiarEstado.idConsignacion = this.cambiarEstado.idConsignacion
+          this.cambiarEstado.estado = this.cambiarEstado.estado
+          this.cambiarEstado.observacion = this.cambiarEstado.observacion.trim()
+
+          var user = this.authService.getUsername()
+
+          if (user == null || user == undefined) {
+            return
+          }
+          this.cambiarEstado.username = user
+
+          this.cambioArray.push(this.cambiarEstado)
+
+          this.isSelected.username = this.cambiarEstado.username
+          this.isSelected.opcion = 'SELECCIONAR'
+          this.cambiarEstado = {
+            estado: '',
+            idConsignacion: 0,
+            username: '',
+            observacion: ''
+          }
+          this.enviarIsSelected(this.isSelected)
+
+          console.log(this.cambioArray);
+        }
+
+        this.cambios = true
+        Swal.fire({
+          title: "Consignación Cancelada",
+          text: "La Consignación Ha Sido Cancelada con éxito",
+          icon: "success"
+        });
+      }
+    });
 
   }
 
@@ -1262,6 +1465,11 @@ export class ConsultasComponent implements OnInit {
   metodoCambiarDevolver(idElemento: string, idConsignacion: number, position: number, estado: string, tipoReporte: string) {
     var x = document.getElementById(idElemento)
     x?.addEventListener('click', () => this.devolver(idConsignacion, position, estado, tipoReporte));
+  }
+
+  metodoCancelarDevolver(idElemento: string, idConsignacion: number, position: number, estado: string, tipoReporte: string) {
+    var x = document.getElementById(idElemento)
+    x?.addEventListener('click', () => this.cancelarConsignacion(idConsignacion, position, estado, tipoReporte));
   }
 
   //SE LLAMA EN LOS BOTONES PARA AÑADIR EL CLICK DE MOSTRAR EL COMPROBANTE
@@ -1289,6 +1497,14 @@ export class ConsultasComponent implements OnInit {
       Swal.fire('Error', 'Digite Una Observación', 'error')
       return
     }
+
+    if (this.validarPermiso('COMPROBAR CONSIGNACIONES')) {
+      if (this.cambiarEstado.estado.trim() == '' || this.cambiarEstado.estado.trim() == null) {
+        Swal.fire('Error', 'Elija Un Estado Para La Devolución', 'error')
+        return
+      }
+    }
+
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == this.cambiarEstado.idConsignacion)
 
     console.log(idC);
@@ -1333,8 +1549,9 @@ export class ConsultasComponent implements OnInit {
 
       console.log(this.cambioArray);
 
-
       this.cambios = true
+
+      $('#modalObservacion').modal('hide');
     }
 
   }
@@ -1648,9 +1865,9 @@ export class ConsultasComponent implements OnInit {
 
   validarRol() {
     var roles = this.authService.getRoles()
-    if(roles != null){
-      var rol = roles.find((r:any) => r.rol == ROLES.SuperAdministration || r.rol == ROLES.Administration)
-      if(rol != null){
+    if (roles != null) {
+      var rol = roles.find((r: any) => r.rol == ROLES.SuperAdministration || r.rol == ROLES.Administration)
+      if (rol != null) {
         return rol
       }
       return null
