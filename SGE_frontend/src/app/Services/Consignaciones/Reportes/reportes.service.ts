@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
@@ -14,8 +14,8 @@ export class ReportesService {
 
   constructor(private http:HttpClient) { }
 
-  getAll(page:number, size:number, order:string){
-    return this.http.get(`${baseUrl}/consignacion/filesReporte/getAllFiles?page=${page}&size=${size}&order=${order}`)
+  getAll(page:number, size:number, order:string): Observable<ArrayBuffer> {
+    return this.http.get(`${baseUrl}/consignacion/filesReporte/getAllFiles?page=${page}&size=${size}&order=${order}`,  { responseType: 'arraybuffer' })
   }
 
   filtro(page:number, size:number, order:string, tipoReporte:string, username:string, fechaReporte:string){
