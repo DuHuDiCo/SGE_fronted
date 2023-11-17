@@ -90,6 +90,8 @@ export class ConsultasComponent implements OnInit {
     // 26
     "CONSULTAR CONCILIADOS"
   ]
+  idActualizaciones: number[] = []
+  btnEliminar: boolean = true
 
   //OBJETOS
   modal: any = {
@@ -577,6 +579,8 @@ export class ConsultasComponent implements OnInit {
 
   //OBTENER LA CONSIGNACION POR ID (PARA EDITAR Y OTRAS FUNCIONES)
   public getConsignacionById(id: number) {
+
+
     this.consultarService.getConsignacionById(id).subscribe(
       (data: any) => {
         this.cuentasPorCobrar.cuentasCobrar = []
@@ -592,6 +596,17 @@ export class ConsultasComponent implements OnInit {
         this.cuentasPorCobrar = data
         this.detalle = data
         this.observacionDto.idConsignacion = data.idConsignacion
+        var actua = this.actu.actualizaciones.find((a: any) => a.isCurrent == true)
+        console.log(actua);
+
+        if (actua != null || actua != undefined) {
+          if (actua.estado.estado == 'PENDIENTE') {
+            this.btnEliminar = false
+          } else {
+            this.btnEliminar = true
+          }
+        }
+
 
       }, (error: any) => {
 
@@ -1695,7 +1710,7 @@ export class ConsultasComponent implements OnInit {
           this.botonFiltrar = false
           this.paginas = new Array(data.totalPages)
           this.numeroPages = data.totalPages
-          
+
           this.last = data.last
           this.first = data.first
           this.spinner = false
@@ -1873,6 +1888,67 @@ export class ConsultasComponent implements OnInit {
       return null
     }
 
+  }
+
+  agregarArrayActualizacion(id: number) {
+    var actu = this.idActualizaciones.find(idActu => idActu == id)
+
+
+    if (actu == null || actu == undefined) {
+      this.idActualizaciones.push(id)
+    } else {
+      var position = this.idActualizaciones.indexOf(id)
+
+      if (position != null || position != undefined) {
+        this.idActualizaciones.splice(position, 1);
+      }
+    }
+
+
+  }
+
+  eliminarActualizaciones(idConsig: number) {
+
+    if (this.idActualizaciones == null || this.idActualizaciones == undefined || this.idActualizaciones.length == 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debes seleccionar una Actualizacion',
+        timer: 3000
+      })
+      return
+    }
+   
+
+    this.consultarService.eliminarActualizaciones(idConsig, this.idActualizaciones).subscribe(
+      (data: any) => {
+        this.actu.actualizaciones = data.actualizaciones
+
+        var actua = this.actu.actualizaciones.find((a: any) => a.isCurrent == true)
+        console.log(actua);
+
+        if (actua != null || actua != undefined) {
+          if (actua.estado.estado == 'PENDIENTE') {
+            this.btnEliminar = false
+          } else {
+            this.btnEliminar = true
+          }
+        }
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Datos Guardados',
+          text: 'Actualizaciones Eliminadas Correctamente',
+          timer: 3000
+        })
+        console.log(data);
+
+
+      }, (error: any) => {
+        console.log(error);
+
+      }
+    )
   }
 
 }
