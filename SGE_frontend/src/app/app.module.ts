@@ -9,7 +9,7 @@ import { DashboardComponent } from './Pages/Cartera/pages/dashboard/dashboard.co
 import { NavbarComponent } from './componentesGenerales/navbar/navbar.component';
 
 import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/perfil-usuario.component';
-import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/gestion/gestion.component';
+import { GestionComponent } from './componentesGenerales/sources/cartera/gestion/gestion.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RolesPerfilesDirective } from './directivas/roles-perfiles.directive';
 import { authInterceptorProviders } from './Interceptors/auth.interceptor';
@@ -40,7 +40,7 @@ import { DashboardAdminComponent } from './Pages/Administracion/pages/dashboard-
 import { DashboardSSTComponent } from './Pages/SST/pages/dashboard-sst/dashboard-sst.component';
 import { DashboardCreditosComponent } from './Pages/Creditos/dashboard-creditos/dashboard-creditos.component';
 import { DashboarConsignacionesComponent } from './Pages/Consignaciones/pages/dashboar-consignaciones/dashboar-consignaciones.component';
-import { EstadisticasDashboardComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas-dashboard/estadisticas-dashboard.component';
+import { EstadisticasDashboardComponent } from './componentesGenerales/sources/cartera/estadisticas-dashboard/estadisticas-dashboard.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 import { CrearCreditoComponent } from './Pages/Creditos/Componentes_creditos/crear-credito/crear-credito.component';
@@ -58,7 +58,7 @@ import { ReportesSstComponent } from './Pages/SST/pages/componentes_SST/inspecci
 import { ListaChequeoComponent } from './Pages/SST/pages/componentes_SST/inspeccion/lista-chequeo/lista-chequeo.component';
 import { DashboardServiciosComponent } from './Pages/Servicios/dashboard-servicios/dashboard-servicios.component';
 import { SidebarServiciosComponent } from './Pages/Servicios/sidebar-servicios/sidebar-servicios.component';
-import { EstadisticasComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas/estadisticas.component';
+import { EstadisticasComponent } from './componentesGenerales/sources/cartera/estadisticas/estadisticas.component';
 import { DashboardSuperAdminComponent } from './Pages/AdminGeneral/dashboard-super-admin/dashboard-super-admin.component';
 import { SidebarAdminGeneralComponent } from './Pages/AdminGeneral/componentes/sidebar-admin-general/sidebar-admin-general.component';
 import { SystemRolesComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-roles/system-roles.component';
@@ -99,6 +99,7 @@ import { EstadosObligacionComponent } from './Pages/Consignaciones/pages/compone
 import { TipoObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/tipo-obligacion/tipo-obligacion.component';
 import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/asesores/asesores.component';
 import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/rankings/rankings/rankings.component';
+import { HomeCarteraComponent } from './Pages/Cartera/pages/componentesCartera/home-cartera/home-cartera.component';
 
 
 
@@ -206,6 +207,7 @@ import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsi
     TipoObligacionComponent,
     AsesoresComponent,
     RankingsComponent,
+    HomeCarteraComponent,
 
   ],
 

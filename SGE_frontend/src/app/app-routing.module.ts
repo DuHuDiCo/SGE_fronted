@@ -13,8 +13,8 @@ import { CrearCreditoComponent } from './Pages/Creditos/Componentes_creditos/cre
 import { VerCreditosComponent } from './Pages/Creditos/Componentes_creditos/ver-creditos/ver-creditos.component';
 
 import { DashboardAdminComponent } from './Pages/Administracion/pages/dashboard-admin/dashboard-admin.component';
-import { EstadisticasDashboardComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas-dashboard/estadisticas-dashboard.component';
-import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/gestion/gestion.component';
+import { EstadisticasDashboardComponent } from './componentesGenerales/sources/cartera/estadisticas-dashboard/estadisticas-dashboard.component';
+import { GestionComponent } from './componentesGenerales/sources/cartera/gestion/gestion.component';
 import { DashboardComponent } from './Pages/Cartera/pages/dashboard/dashboard.component';
 import { ConsultasComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/consultas/consultas.component';
 import { IngresarComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ingresar/ingresar.component';
@@ -39,7 +39,7 @@ import { ProcesoVentasComponent } from './Pages/Ventas/componentesVentas/proceso
 import { ListaChequeoComponent } from './Pages/SST/pages/componentes_SST/inspeccion/lista-chequeo/lista-chequeo.component';
 import { ReportesSstComponent } from './Pages/SST/pages/componentes_SST/inspeccion/reportes-sst/reportes-sst.component';
 import { ResultadosSstComponent } from './Pages/SST/pages/componentes_SST/inspeccion/resultados-sst/resultados-sst.component';
-import { EstadisticasComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas/estadisticas.component';
+import { EstadisticasComponent } from './componentesGenerales/sources/cartera/estadisticas/estadisticas.component';
 import { DashboardSuperAdminComponent } from './Pages/AdminGeneral/dashboard-super-admin/dashboard-super-admin.component';
 import { SystemRolesComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-roles/system-roles.component';
 import { SystemPermisosComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-permisos/system-permisos.component';
@@ -73,6 +73,7 @@ import { EstadosObligacionComponent } from './Pages/Consignaciones/pages/compone
 import { TipoObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/tipo-obligacion/tipo-obligacion.component';
 import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/asesores/asesores.component';
 import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/rankings/rankings/rankings.component';
+import { HomeCarteraComponent } from './Pages/Cartera/pages/componentesCartera/home-cartera/home-cartera.component';
 
 
 
@@ -109,17 +110,9 @@ const routes: Routes = [
     canActivate:[AuthenticationGuard],
     children:[
       {
-        path:"gestion",
-        component:GestionComponent,
-      },
-      {
         path:"inicio",
-        component:EstadisticasDashboardComponent
+        component:HomeCarteraComponent
       },
-      {
-        path:"estadisticas",
-        component:EstadisticasComponent
-      }
     ]
   },
   {
