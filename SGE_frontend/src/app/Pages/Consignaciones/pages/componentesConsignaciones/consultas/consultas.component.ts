@@ -92,6 +92,7 @@ export class ConsultasComponent implements OnInit {
   ]
   idActualizaciones: number[] = []
   btnEliminar: boolean = true
+  btnLoadingEliminar:boolean = false
 
   //OBJETOS
   modal: any = {
@@ -866,6 +867,7 @@ export class ConsultasComponent implements OnInit {
     }
     this.botonFiltrar = true
     this.spinner = true
+    this.numeroPages = 0
     setTimeout(() => {
       this.filtrar(this.estado, this.fecha, this.sede, this.pages, this.sizes)
     }, 2000);
@@ -1684,6 +1686,7 @@ export class ConsultasComponent implements OnInit {
   }
 
   filtrar(estado: string, fecha: any, sede: string, pages: number, sizes: number) {
+
     this.consultarService.filter(estado, fecha, sede, pages, sizes).subscribe(
       (data: any) => {
         this.filtrando = true
@@ -1908,47 +1911,65 @@ export class ConsultasComponent implements OnInit {
   }
 
   eliminarActualizaciones(idConsig: number) {
-
-    if (this.idActualizaciones == null || this.idActualizaciones == undefined || this.idActualizaciones.length == 0) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Debes seleccionar una Actualizacion',
-        timer: 3000
-      })
-      return
-    }
-   
-
-    this.consultarService.eliminarActualizaciones(idConsig, this.idActualizaciones).subscribe(
-      (data: any) => {
-        this.actu.actualizaciones = data.actualizaciones
-
-        var actua = this.actu.actualizaciones.find((a: any) => a.isCurrent == true)
-        console.log(actua);
-
-        if (actua != null || actua != undefined) {
-          if (actua.estado.estado == 'PENDIENTE') {
-            this.btnEliminar = false
-          } else {
-            this.btnEliminar = true
-          }
+    Swal.fire({
+      title: "Eliminar Actualizacion",
+      text: "¿Deseas Eliminar estas Actualizaciones?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#960010",
+      confirmButtonText: "Eliminar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (this.idActualizaciones == null || this.idActualizaciones == undefined || this.idActualizaciones.length == 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Debes seleccionar una Actualizacion',
+            timer: 3000
+          })
+          return
         }
 
-        Swal.fire({
-          icon: 'success',
-          title: 'Datos Guardados',
-          text: 'Actualizaciones Eliminadas Correctamente',
-          timer: 3000
-        })
-        console.log(data);
+        this.btnLoadingEliminar = true
 
-
-      }, (error: any) => {
-        console.log(error);
-
+        setTimeout(() => {
+          this.consultarService.eliminarActualizaciones(idConsig, this.idActualizaciones).subscribe(
+            (data: any) => {
+              this.actu.actualizaciones = data.actualizaciones
+  
+              var actua = this.actu.actualizaciones.find((a: any) => a.isCurrent == true)
+              console.log(actua);
+  
+              if (actua != null || actua != undefined) {
+                if (actua.estado.estado == 'PENDIENTE') {
+                  this.btnEliminar = false
+                } else {
+                  this.btnEliminar = true
+                }
+              }
+              this.btnLoadingEliminar = false
+              Swal.fire({
+                icon: 'success',
+                title: 'Datos Guardados',
+                text: 'Actualizaciones Eliminadas Correctamente',
+                timer: 3000
+              })
+              window.location.reload()
+  
+  
+            }, (error: any) => {
+              console.log(error);
+  
+            }
+          )
+        }, 3000);
       }
-    )
+    });
+
+  
+
+
   }
 
 }
