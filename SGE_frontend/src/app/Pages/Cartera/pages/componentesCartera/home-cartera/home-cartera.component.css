@@ -1,4 +1,4 @@
-.card{
+.card-c{
   color: #000;
   position: relative;
   margin-top: 50px;
@@ -11,7 +11,7 @@
   
 }
 
-.card-header{
+.card-header-c{
   border-radius: 25px;
   text-align: center;
   width: 90%;
@@ -44,6 +44,12 @@ label.btn.btn-outline-dark{
 
 }
 
+.tituloCard{
+  color: white;
+  background-color: #b72e3b;
+  border-color: #b72e3b;
+}
+
 .b{
   color: white;
   background-color: #960010;
@@ -53,6 +59,10 @@ label.btn.btn-outline-dark{
 .b:hover{
   background: #d40000;
   border-color: #d40000;
+}
+
+.h:hover {
+  background-color: #cacaca;
 }
 
 .btn-archivos{

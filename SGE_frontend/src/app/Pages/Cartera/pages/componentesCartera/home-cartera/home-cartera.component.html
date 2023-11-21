@@ -1,126 +1,533 @@
 <div class="container mt-4">
-    <div class="card">
+    <div class="card-c">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <h1 class="titulo">Consultar Clientes</h1>
 
                 <!-- SIDEBAR -->
-                <div class="offcanvas offcanvas-bottom text-bg-dark" tabindex="-1" id="offcanvasRight"
-                    aria-labelledby="offcanvasRightLabel" style="height: 50%;">
+                <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasRight"
+                    aria-labelledby="offcanvasRightLabel" style="height: 77%;">
                     <div class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasRightLabel">Datos Cliente</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-                            aria-label="Close"></button>
+                        <button class="btn btn-danger b" data-bs-toggle="modal" data-bs-target="#modalGestion">Nueva
+                            Gestion</button>
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalHistoricoG">Historico Gestiones</button>
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalHistoricoA">Historico Abonos</button>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
-                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="text-center">Gestor Encargado: Blanca</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="row text-center">
+                                            <div class="col-md-4">
+                                                <strong>Nro. Obligación:</strong> 7777777777
+                                            </div>
+                                            <div class="col-md-4">
+                                                <strong>Nro. Creditos:</strong> 2
+                                            </div>
+                                            <div class="col-md-4">
+                                                <strong>Condición Cliente:</strong> Normal
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <!-- INFO PERSONAL -->
+                                        <div class="card">
+                                            <div class="card-header text-center tituloCard">
+                                                Información Personal
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Cédula</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Nombre</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text">Lugar/Res</span>
+                                                            <input type="text" aria-label="First name"
+                                                                class="form-control">
+                                                            <input type="text" aria-label="Last name"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Dirección</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Telefono</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Celular</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- CREDITOS -->
+                                        <div class="card">
+                                            <div class="card-header text-center tituloCard">
+                                                Información Del Credito
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Vendedor</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Clasificación</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text">Fec/Credito</span>
+                                                            <input type="text" aria-label="First name"
+                                                                class="form-control">
+                                                            <input type="text" aria-label="Last name"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Fec/Venc</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Monto Inicial</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <!-- MORA -->
+                                        <div class="card">
+                                            <div class="card-header text-center tituloCard">
+                                                Información De La Mora
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">S.Total</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">S.Mora</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text">Mora/Venc</span>
+                                                            <input type="text" aria-label="First name"
+                                                                class="form-control">
+                                                            <input type="text" aria-label="Last name"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text">Sede</span>
+                                                            <input type="text" aria-label="First name"
+                                                                class="form-control">
+                                                            <input type="text" aria-label="Last name"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text">Cuotas</span>
+                                                            <input type="text" aria-label="First name"
+                                                                class="form-control">
+                                                            <input type="text" aria-label="Last name"
+                                                                class="form-control">
+                                                            <input type="text" aria-label="Last name"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <p class="alert alert-danger mt-3 text-center">CREDITO VENCIDO
+                                                            EN SU TOTALIDAD</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- REFERENCIAS -->
+                                        <div class="card">
+                                            <div class="card-header text-center tituloCard">
+                                                Referencias
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-floating">
+                                                    <textarea class="form-control" id="floatingTextarea2"
+                                                        style="height: 165px"></textarea>
+                                                    <label for="floatingTextarea2">Referencia</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!-- CODEUDORES -->
+                                        <div class="card">
+                                            <div class="card-header text-center tituloCard">
+                                                Codeudores
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Codeudores</span>
+                                                            <select class="form-select"
+                                                                aria-label="Default select example">
+                                                                <option selected>Open this select menu</option>
+                                                                <option value="1">One</option>
+                                                                <option value="2">Two</option>
+                                                                <option value="3">Three</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Nombre</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Dirección</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Celular</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Nro. Codeudores</span>
+                                                            <input type="text" class="form-control" placeholder="1"
+                                                                aria-describedby="inputGroup-sizing-default" disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <textarea class="form-control" placeholder="Leave a comment here"
+                                                        id="floatingTextarea2" style="height: 77px"></textarea>
+                                                    <label for="floatingTextarea2">Referencia</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- VENCIMIENTO -->
+                                        <div class="card">
+                                            <div class="card-header text-center tituloCard">
+                                                Vencimiento Documento
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Doc Venc</span>
+                                                            <input type="text" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text"
+                                                                id="inputGroup-sizing-default">Fecha</span>
+                                                            <input type="date" class="form-control"
+                                                                aria-label="Sizing example input"
+                                                                aria-describedby="inputGroup-sizing-default">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-responsive table-bordered align-middle text-center table-hover">
+                <div class="table-responsive align-middle">
+                    <table class="table table-responsive table-bordered text-center table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Cliente</th>
-                                <th scope="col">Cédula</th>
-                                <th scope="col">Banco
-                                    <div class="btn-group dropdown">
-                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                        <div class="dropdown-menu">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                              </select>
+                                <th>Cliente</th>
+                                <th class="h">
+                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
+                                        <div class="col-md-6">
+                                            Cédula
+                                        </div>
+                                        <div class="col-md-6">
+                                            <i class="fa-solid fa-caret-down"></i>
+                                            <div class="dropdown-menu">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Open this select menu</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </th>
-                                <th scope="col">Dias Vencidos</th>
-                                <th scope="col">Edad De Vencimiento
-                                    <div class="btn-group dropdown">
-                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                        <div class="dropdown-menu">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                              </select>
+                                <th class="h">
+                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
+                                        <div class="col-md-8">
+                                            Banco
+                                        </div>
+                                        <div class="col-md-4">
+                                            <i class="fa-solid fa-caret-down" type="button"
+                                                data-bs-toggle="dropdown"></i>
+                                            <div class="dropdown-menu">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Open this select menu</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </th>
-                                <th scope="col">Sucursal
-                                    <div class="btn-group dropdown">
-                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                        <div class="dropdown-menu">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                              </select>
+                                <th>Dias Vencidos</th>
+                                <th class="h">
+                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
+                                        <div class="col-md-8">
+                                            E. Vencimiento
+                                        </div>
+                                        <div class="col-md-4">
+                                            <i class="fa-solid fa-caret-down" type="button"
+                                                data-bs-toggle="dropdown"></i>
+                                            <div class="dropdown-menu">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Open this select menu</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </th>
-                                <th scope="col">Asesor
-                                    <div class="btn-group dropdown">
-                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                        <div class="dropdown-menu">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                              </select>
+                                <th class="h">
+                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
+                                        <div class="col-md-8">
+                                            Sucursal
+                                        </div>
+                                        <div class="col-md-4">
+                                            <i class="fa-solid fa-caret-down" type="button"
+                                                data-bs-toggle="dropdown"></i>
+                                            <div class="dropdown-menu">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Open this select menu</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </th>
-                                <th scope="col">Clasificación Juridica
-                                    <div class="btn-group dropdown">
-                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                        <div class="dropdown-menu">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                              </select>
+                                <th class="h">
+                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
+                                        <div class="col-md-8">
+                                            Asesor
+                                        </div>
+                                        <div class="col-md-4">
+                                            <i class="fa-solid fa-caret-down" type="button"
+                                                data-bs-toggle="dropdown"></i>
+                                            <div class="dropdown-menu">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Open this select menu</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </th>
-                                <th scope="col">Saldo Capital</th>
-                                <th scope="col">Año</th>
-                                <th scope="col">Fecha Gestión</th>
-                                <th scope="col">Fecha Compromiso
-                                    <div class="btn-group dropdown">
-                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                        <div class="dropdown-menu">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                              </select>
+                                <th class="h">
+                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
+                                        <div class="col-md-8">
+                                            Clas. Juridica
+                                        </div>
+                                        <div class="col-md-4">
+                                            <i class="fa-solid fa-caret-down" type="button"
+                                                data-bs-toggle="dropdown"></i>
+                                            <div class="dropdown-menu">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Open this select menu</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </th>
-                                <th scope="col">Clasificación
-                                    <div class="btn-group dropdown">
-                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                        <div class="dropdown-menu">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                              </select>
+                                <th>Saldo Capital</th>
+                                <th class="h">
+                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
+                                        <div class="col-md-6">
+                                            Año
+                                        </div>
+                                        <div class="col-md-6">
+                                            <i class="fa-solid fa-caret-down" type="button"
+                                                data-bs-toggle="dropdown"></i>
+                                            <div class="dropdown-menu">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Open this select menu</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>F. Gestión</th>
+                                <th class="h">
+                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
+                                        <div class="col-md-8">
+                                            F. Compromiso
+                                        </div>
+                                        <div class="col-md-4">
+                                            <i class="fa-solid fa-caret-down" type="button"
+                                                data-bs-toggle="dropdown"></i>
+                                            <div class="dropdown-menu">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Open this select menu</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
+                                        <div class="col-md-6">
+                                            Clasif
+                                        </div>
+                                        <div class="col-md-6">
+                                            <i class="fa-solid fa-caret-down" type="button"
+                                                data-bs-toggle="dropdown"></i>
+                                            <div class="dropdown-menu">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Open this select menu</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </th>
@@ -148,3 +555,135 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Nueva Gestión -->
+    <div class="modal fade" id="modalGestion" tabindex="-1" aria-labelledby="modalGestion" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalGestion">Nueva Gestión</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="floatingTextarea" style="height: 100px;"></textarea>
+                        <label for="floatingTextarea">Descripcion</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Existió contacto
+                            Telefónico/Whatsapp con el Cliente y/o Tercero (?)</label>
+                    </div>
+                    <select class="form-select mt-3 mb-3" aria-label="Default select example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="floatingTextarea" style="height: 100px;"></textarea>
+                        <label for="floatingTextarea">Datos Adicionales</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-secondary">Histórico Gestiones</button>
+                    <button type="button" class="btn btn-danger b">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Historico Gestiones -->
+<div class="modal fade" id="modalHistoricoG" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Histórico Gestiones</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive align-middle">
+                <table class="table table-bordered text-center table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Gestor</th>
+                        <th scope="col">Fecha Gestión</th>
+                        <th scope="col">F. Compromiso</th>
+                        <th scope="col">Clasificación</th>
+                        <th scope="col">V.Compro</th>
+                        <th scope="col">Llamada/Revision</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>1</th>
+                        <td>Blanca</td>
+                        <td>23/08/2023 8:25:55</td>
+                        <td>23/08/2023 8:25:55</td>
+                        <td>No Contesta</td>
+                        <td>0</td>
+                        <td>Gestion Llamada</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+  <!-- Modal Historico Abonos -->
+<div class="modal fade" id="modalHistoricoA" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Histórico Abonos</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form class="row mb-3">
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Buscar">
+                </div>
+                <div class="col-md-2">
+                  <button type="submit" class="b btn btn-success me-2"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+              </form>
+            <div class="table-responsive align-middle">
+                <table class="table table-bordered text-center table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Fecha Abono</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Sede</th>
+                        <th scope="col">Banco</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>Duvan Diaz</th>
+                        <td>23/08/2023</td>
+                        <td>2000000</td>
+                        <td>Odilio</td>
+                        <td>Descripcion</td>
+                        <td>Andes</td>
+                        <td>COL</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
