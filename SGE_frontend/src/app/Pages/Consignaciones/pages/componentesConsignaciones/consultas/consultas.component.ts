@@ -90,6 +90,9 @@ export class ConsultasComponent implements OnInit {
     // 26
     "CONSULTAR CONCILIADOS"
   ]
+  idActualizaciones: number[] = []
+  btnEliminar: boolean = true
+  btnLoadingEliminar:boolean = false
 
   //OBJETOS
   modal: any = {
@@ -577,6 +580,8 @@ export class ConsultasComponent implements OnInit {
 
   //OBTENER LA CONSIGNACION POR ID (PARA EDITAR Y OTRAS FUNCIONES)
   public getConsignacionById(id: number) {
+
+
     this.consultarService.getConsignacionById(id).subscribe(
       (data: any) => {
         this.cuentasPorCobrar.cuentasCobrar = []
@@ -592,6 +597,17 @@ export class ConsultasComponent implements OnInit {
         this.cuentasPorCobrar = data
         this.detalle = data
         this.observacionDto.idConsignacion = data.idConsignacion
+        var actua = this.actu.actualizaciones.find((a: any) => a.isCurrent == true)
+        console.log(actua);
+
+        if (actua != null || actua != undefined) {
+          if (actua.estado.estado == 'PENDIENTE') {
+            this.btnEliminar = false
+          } else {
+            this.btnEliminar = true
+          }
+        }
+
 
       }, (error: any) => {
 
@@ -851,6 +867,7 @@ export class ConsultasComponent implements OnInit {
     }
     this.botonFiltrar = true
     this.spinner = true
+    this.numeroPages = 0
     setTimeout(() => {
       this.filtrar(this.estado, this.fecha, this.sede, this.pages, this.sizes)
     }, 2000);
@@ -1669,6 +1686,7 @@ export class ConsultasComponent implements OnInit {
   }
 
   filtrar(estado: string, fecha: any, sede: string, pages: number, sizes: number) {
+
     this.consultarService.filter(estado, fecha, sede, pages, sizes).subscribe(
       (data: any) => {
         this.filtrando = true
@@ -1695,7 +1713,7 @@ export class ConsultasComponent implements OnInit {
           this.botonFiltrar = false
           this.paginas = new Array(data.totalPages)
           this.numeroPages = data.totalPages
-          
+
           this.last = data.last
           this.first = data.first
           this.spinner = false
@@ -1872,6 +1890,85 @@ export class ConsultasComponent implements OnInit {
       }
       return null
     }
+
+  }
+
+  agregarArrayActualizacion(id: number) {
+    var actu = this.idActualizaciones.find(idActu => idActu == id)
+
+
+    if (actu == null || actu == undefined) {
+      this.idActualizaciones.push(id)
+    } else {
+      var position = this.idActualizaciones.indexOf(id)
+
+      if (position != null || position != undefined) {
+        this.idActualizaciones.splice(position, 1);
+      }
+    }
+
+
+  }
+
+  eliminarActualizaciones(idConsig: number) {
+    Swal.fire({
+      title: "Eliminar Actualizacion",
+      text: "¿Deseas Eliminar estas Actualizaciones?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#960010",
+      confirmButtonText: "Eliminar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (this.idActualizaciones == null || this.idActualizaciones == undefined || this.idActualizaciones.length == 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Debes seleccionar una Actualizacion',
+            timer: 3000
+          })
+          return
+        }
+
+        this.btnLoadingEliminar = true
+
+        setTimeout(() => {
+          this.consultarService.eliminarActualizaciones(idConsig, this.idActualizaciones).subscribe(
+            (data: any) => {
+              this.actu.actualizaciones = data.actualizaciones
+  
+              var actua = this.actu.actualizaciones.find((a: any) => a.isCurrent == true)
+              console.log(actua);
+  
+              if (actua != null || actua != undefined) {
+                if (actua.estado.estado == 'PENDIENTE') {
+                  this.btnEliminar = false
+                } else {
+                  this.btnEliminar = true
+                }
+              }
+              this.btnLoadingEliminar = false
+              Swal.fire({
+                icon: 'success',
+                title: 'Datos Guardados',
+                text: 'Actualizaciones Eliminadas Correctamente',
+                timer: 3000
+              })
+              window.location.reload()
+  
+  
+            }, (error: any) => {
+              console.log(error);
+  
+            }
+          )
+        }, 3000);
+      }
+    });
+
+  
+
 
   }
 

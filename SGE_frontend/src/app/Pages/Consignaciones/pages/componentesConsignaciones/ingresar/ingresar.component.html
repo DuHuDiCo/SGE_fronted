@@ -27,8 +27,8 @@
       </div>
     </div>
     <div class="col-md-1 col-12">
-      <button style="background-color: #960010; border: #960010;" (click)="getObligacionByCedula()" class="btn btn-success btn-lg"><i
-          class="fa-solid fa-magnifying-glass"></i></button>
+      <button style="background-color: #960010; border: #960010;" (click)="getObligacionByCedula()"
+        class="btn btn-success btn-lg"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
     <div *ngIf="tabla" class="mt-2 mb-4">
       <hr class="border-4">
@@ -213,16 +213,16 @@
                     </div>
                     <div class="col-md-6">
                       <div class="usuario mt-4">
-                        <input [(ngModel)]="cliente.numeroDocumento" name="numeroDocumento" type="text" class="input-usuario"
-                          placeholder="Numero de Documento">
+                        <input [(ngModel)]="cliente.numeroDocumento" name="numeroDocumento" type="text"
+                          class="input-usuario" placeholder="Numero de Documento">
                       </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6">
                       <div class="usuario mt-4">
-                        <input [(ngModel)]="cliente.numeroObligacion" name="numeroObligacion" type="text" class="input-usuario"
-                          placeholder="Numero de Obligación">
+                        <input [(ngModel)]="cliente.numeroObligacion" name="numeroObligacion" type="text"
+                          class="input-usuario" placeholder="Numero de Obligación">
                       </div>
                     </div>
                     <div class="col-md-6">
@@ -241,7 +241,8 @@
                         <select [(ngModel)]="cliente.asesor" name="asesor" class="form-select" required
                           aria-label="select example">
                           <option value="">Elija Un Asesor</option>
-                          <option *ngFor="let a of asesores" value="{{ a.usuario.idUsuario }}">{{ a.usuario.nombres | uppercase }} {{ a.usuario.apellidos | uppercase }}
+                          <option *ngFor="let a of asesores" value="{{ a.usuario.idUsuario }}">{{ a.usuario.nombres |
+                            uppercase }} {{ a.usuario.apellidos | uppercase }}
                           </option>
                         </select>
                       </div>
@@ -249,19 +250,21 @@
                   </div>
                 </div>
               </div>
-        
+
             </div>
           </div>
           <div class="modal-footer">
-            <button *ngIf="!crearCliente" type="button" class="btn btn-danger" data-bs-dismiss="modal" style="background-color: #960010;border-color: #960010;" (click)="guardarCliente()">Guardar</button>
+            <button *ngIf="!crearCliente" type="button" class="btn btn-danger" data-bs-dismiss="modal"
+              style="background-color: #960010;border-color: #960010;" (click)="guardarCliente()">Guardar</button>
             <button *ngIf="crearCliente" type="button" class="btn btn-danger"
               style="background-color: #960010;border-color: #960010;">
               <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-secondary"
-              data-bs-dismiss="modal" (click)="cancelarCliente()">Cancelar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              (click)="cancelarCliente()">Cancelar</button>
           </div>
         </div>
       </div>
     </div>
-    
+  </div>
+</div>

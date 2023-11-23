@@ -57,4 +57,8 @@ export class ConsultarService {
     return this.http.get(`${baseUrl}/consignacion/reportePendientes?username=${username}`)
   }
 
+  eliminarActualizaciones(id:number, idActu:number[]){
+    return this.http.put(`${baseUrl}/consignacion/deleteAct?idConsignacion=${id}`, idActu)
+  }
+
 }
