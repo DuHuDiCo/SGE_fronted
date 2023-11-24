@@ -19,4 +19,4 @@ FROM nginx:1.17.1-alpine
 COPY --from=build /usr/src/app/dist/sge-frontend /usr/share/nginx/html
 COPY --from=build /usr/src/app/nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 8010
+EXPOSE 8011
