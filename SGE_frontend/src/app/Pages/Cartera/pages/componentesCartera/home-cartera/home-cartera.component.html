@@ -353,15 +353,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="table-responsive align-middle">
+                <div *ngIf="spinner" class="text-center">
+                    <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
+                      <span class="visually-hidden"></span>
+                    </div>
+                  </div>
+
+                <div *ngIf="!spinner" class="table-responsive align-middle">
                     <table class="table table-responsive table-bordered text-center table-hover">
                         <thead>
                             <tr>
-                                <th>Cliente</th>
                                 <th class="h">
                                     <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
                                         <div class="col-md-6">
-                                            Cédula
+                                            Cliente
                                         </div>
                                         <div class="col-md-6">
                                             <i class="fa-solid fa-caret-down"></i>
@@ -534,15 +539,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style="cursor: pointer;">
-                                <td>Duvancho Diaz</td>
-                                <td>111111111</td>
-                                <td>COL</td>
-                                <td>88885822</td>
-                                <td>Mayor a 360</td>
-                                <td>BOYACA</td>
-                                <td>Blanca</td>
-                                <td>Prejuridico</td>
+                            <tr class="align-middle" *ngFor="let cc of cuentasCobrarArray" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style="cursor: pointer;">
+                                <td>{{ cc.cliente }}</td>
+                                <td>{{ cc.banco.banco }}</td>
+                                <td>{{ cc.diasVencidos }}</td>
+                                <td>{{ cc.edadVencimiento }}</td>
+                                <td>{{ cc.sede.sede }}</td>
+                                <td>{{ cc.asesorCarteraResponse.usuario.nombres }} {{ cc.asesorCarteraResponse.usuario.apellidos }}</td>
+                                <td>{{ cc.clasificacionJuridica }}</td>
                                 <td>2250000</td>
                                 <td>2000</td>
                                 <td>25/05/2023</td>
