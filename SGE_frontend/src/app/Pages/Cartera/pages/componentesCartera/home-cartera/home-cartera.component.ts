@@ -19,6 +19,9 @@ export class HomeCarteraComponent implements OnInit {
   // ARRAY CUENTAS POR COBRAR
   cuentasCobrarArray:CuentasCobrarResponse[] = []
 
+  codeudores:any[] = []
+  codeudoresSelected:any[] = []
+
   // OBJETO SIDEBAR
   cuentaCobrarSelected:CuentasCobrarResponse = {
     idCuentasPorCobrar: 0,
@@ -81,6 +84,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   // PARAMETROS PARA EL SERVICE
+  //TODO:CAMBIAR A 0 CUANDO CORRIJAN EL ARCHIVO
   page:number = 1;
   size:number = 10
   fechaCreacion: string = 'fecha_creacion'
@@ -112,8 +116,12 @@ export class HomeCarteraComponent implements OnInit {
 
     this.cuentasCobrar.getCuentasCobrar('Diana1975', this.page, this.size, this.fechaCreacion).subscribe(
       (data:any) => {
+        this.paginas = new Array(data.totalPages)
         this.cuentasCobrarArray = data.content
-
+        this.last = data.last
+        this.first = data.first
+        this.numeroPages = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
         if(this.cuentasCobrarArray.length == 0){
           this.spinner = true
         } else {
@@ -131,6 +139,7 @@ export class HomeCarteraComponent implements OnInit {
   back() {
     if (!this.first) {
         this.page--
+        this.getCuentasCobrar()
         this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
           (con: boolean) => {
             this.isCon = con;
@@ -146,7 +155,8 @@ export class HomeCarteraComponent implements OnInit {
   next() {
     if (!this.last) {
         this.page++
-        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+        this.getCuentasCobrar()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
           (con: boolean) => {
             this.isCon = con;
             this.cont = this.cont + this.size
@@ -159,6 +169,7 @@ export class HomeCarteraComponent implements OnInit {
   //IR A UNA PAGINA ESPECIFICA
   goToPage(page: number) {
     this.page = page
+    this.getCuentasCobrar()
       this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
         (con: boolean) => {
           this.isCon = con;
@@ -229,10 +240,14 @@ export class HomeCarteraComponent implements OnInit {
       },
       clientes: []
     }
+    this.codeudoresSelected = []
     setTimeout(() => {
       this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
         (data:any) => {
           this.cuentaCobrarSelected = data
+          this.codeudores = data.clientes
+          this.codeudores = this.codeudores.filter((c:any) => c.tipoGarante.tipoGarante != 'TITULAR')
+
           if(this.cuentaCobrarSelected.documentoCliente != ''){
             this.spinnerSidebar = false
           }
@@ -243,5 +258,10 @@ export class HomeCarteraComponent implements OnInit {
       )
     }, 2000);
     
+  }
+
+  findCodeudores(event:any){
+    this.codeudoresSelected = this.codeudores.filter((c:any) => c.numeroDocumento == event.target.value)
+    console.log(this.codeudoresSelected);
   }
 }

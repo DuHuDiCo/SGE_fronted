@@ -23,6 +23,23 @@
   background: none;
 }
 
+th {
+  resize: horizontal;
+  overflow: hidden;
+}
+
+/* Ajusta los estilos según tus necesidades */
+th:hover {
+  background-color: #f5f5f5;
+}
+
+/* Añade una esquina para indicar que se puede redimensionar */
+th:after {
+
+  cursor: se-resize; /* Cursor de redimensionamiento en diagonal */
+}
+
+
 
 label.btn.btn-outline-dark{
   border: none;

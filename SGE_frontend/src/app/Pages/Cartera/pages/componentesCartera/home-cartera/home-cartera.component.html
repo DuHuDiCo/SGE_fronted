@@ -2,7 +2,6 @@
     <div class="card-c">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <h1 class="titulo">Consultar Clientes</h1>
 
                 <!-- SIDEBAR -->
                 <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasRight"
@@ -11,32 +10,40 @@
                         <h5 class="offcanvas-title" id="offcanvasRightLabel">Datos Cliente</h5>
                         <button class="btn btn-danger b" data-bs-toggle="modal" data-bs-target="#modalGestion">Nueva
                             Gestion</button>
-                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalHistoricoG">Historico Gestiones</button>
-                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalHistoricoA">Historico Abonos</button>
+                        <button class="btn btn-secondary" data-bs-toggle="modal"
+                            data-bs-target="#modalHistoricoG">Historico Gestiones</button>
+                        <button class="btn btn-secondary" data-bs-toggle="modal"
+                            data-bs-target="#modalHistoricoA">Historico Abonos</button>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
-                        <div *ngIf="spinnerSidebar" class="text-center">
-                            <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
-                              <span class="visually-hidden"></span>
+                        <div *ngIf="spinnerSidebar" class="text-center align-middle">
+                            <div class="spinner-border" role="status"
+                                style="width: 5rem; height: 5rem; color: #960010;">
+                                <span class="visually-hidden"></span>
                             </div>
-                          </div>
+                        </div>
                         <div *ngIf="!spinnerSidebar" class="card">
                             <div class="card-header">
-                                <h5 class="text-center">Gestor Encargado: </h5>
+                                <h5 class="text-center">Gestor Encargado: {{
+                                    cuentaCobrarSelected.asesorCarteraResponse.usuario.nombres }} {{
+                                    cuentaCobrarSelected.asesorCarteraResponse.usuario.apellidos }}</h5>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body text-center">
                                 <div class="card mb-3">
-                                    <div class="card-body">
+                                    <div class="card-body text-center">
                                         <div class="row text-center">
                                             <div class="col-md-4">
-                                                <strong>Nro. Obligación:</strong> 7777777777
+                                                <strong>Nro. Obligación:</strong> {{
+                                                cuentaCobrarSelected.numeroObligacion }}
                                             </div>
                                             <div class="col-md-4">
-                                                <strong>Nro. Creditos:</strong> 2
+                                                <strong>Nro. Creditos:</strong> {{ cuentaCobrarSelected.numeroCreditos
+                                                }}
                                             </div>
                                             <div class="col-md-4">
-                                                <strong>Condición Cliente:</strong> Normal
+                                                <strong>Condición Cliente:</strong> {{
+                                                cuentaCobrarSelected.condicionEspecial }}
                                             </div>
                                         </div>
                                     </div>
@@ -44,7 +51,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <!-- INFO PERSONAL -->
-                                        <div class="card">
+                                        <div class="card text-center">
                                             <div class="card-header text-center tituloCard">
                                                 Información Personal
                                             </div>
@@ -52,45 +59,53 @@
                                                 <div class="row justify-content-center">
                                                     <div class="col-md-4">
                                                         <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Cédula</span>
-                                                            <input [ngModel]="cuentaCobrarSelected.documentoCliente" type="text" class="form-control"
-                                                                aria-label="Sizing example input"
-                                                                aria-describedby="inputGroup-sizing-default" disabled>
+                                                            <span class="input-group-text fw-bold">Cédula</span>
+                                                            <input [ngModel]="cuentaCobrarSelected.documentoCliente"
+                                                                type="text" class="form-control" disabled>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-8">
                                                         <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Nombre</span>
+                                                            <span class="input-group-text fw-bold">Nombre</span>
                                                             <input type="text" class="form-control"
-                                                            [ngModel]="cuentaCobrarSelected.clientes[0].nombreTitular" disabled>
+                                                                [ngModel]="cuentaCobrarSelected.clientes[0].nombreTitular"
+                                                                disabled>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-6">
                                                         <div class="input-group input-group-sm">
-                                                            <span class="input-group-text">Lugar/Res</span>
-                                                            <input type="text" [ngModel]="cuentaCobrarSelected.clientes[0].municipio" class="form-control" disabled>
-                                                            <input type="text" [ngModel]="cuentaCobrarSelected.clientes[0].departamento"
+                                                            <span class="input-group-text fw-bold">Lugar/Res</span>
+                                                            <input type="text"
+                                                                [ngModel]="cuentaCobrarSelected.clientes[0].municipio"
                                                                 class="form-control" disabled>
+                                                            <input type="text"
+                                                                [ngModel]="cuentaCobrarSelected.clientes[0].departamento"
+                                                                class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Telefonos</span>
+                                                            <select class="form-select"
+                                                                [ngModel]="cuentaCobrarSelected.clientes[0].telefonos[0].numero"
+                                                                disabled>
+                                                                <option
+                                                                    *ngFor="let t of cuentaCobrarSelected.clientes[0].telefonos">
+                                                                    {{ t.numero }}</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row justify-content-center">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-8">
                                                         <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Dirección</span>
-                                                            <input type="text" class="form-control" [ngModel]="cuentaCobrarSelected.clientes[0].direcciones[0].direccion" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Telefonos</span>
-                                                           <select class="form-select" [ngModel]="cuentaCobrarSelected.clientes[0].telefonos[0].numero" disabled>
-                                                                <option *ngFor="let t of cuentaCobrarSelected.clientes[0].telefonos">{{ t.numero }}</option>
-                                                            </select>
+                                                            <span class="input-group-text fw-bold">Dirección</span>
+                                                            <input type="text" class="form-control"
+                                                                [ngModel]="cuentaCobrarSelected.clientes[0].direcciones[0].direccion"
+                                                                disabled>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -99,46 +114,45 @@
                                     </div>
                                     <div class="col-md-6">
                                         <!-- CREDITOS -->
-                                        <div class="card">
+                                        <div class="card text-center">
                                             <div class="card-header text-center tituloCard">
                                                 Información Del Credito
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Vendedor</span>
+                                                            <span class="input-group-text fw-bold">Vendedor</span>
                                                             <input type="text" class="form-control"
-                                                            [ngModel]="cuentaCobrarSelected.vendedor" disabled>
+                                                                [ngModel]="cuentaCobrarSelected.vendedor" disabled>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Clasificación</span>
+                                                            <span class="input-group-text fw-bold">Clasificación</span>
                                                             <input type="text" class="form-control"
-                                                            [ngModel]="cuentaCobrarSelected.clasificacion" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="input-group input-group-sm">
-                                                            <span class="input-group-text">Fec/Credito</span>
-                                                            <input type="date" [ngModel]="cuentaCobrarSelected.fechaCuentaCobrar"
-                                                                class="form-control" disabled>
+                                                                [ngModel]="cuentaCobrarSelected.clasificacion" disabled>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row justify-content-center">
-                                                    <div class="col-md-4">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Fec/Venc</span>
-                                                            <input type="date" class="form-control"
-                                                            [ngModel]="cuentaCobrarSelected.fechaVencimiento" disabled>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text fw-bold">Fec/Credito</span>
+                                                            <input type="date"
+                                                                [ngModel]="cuentaCobrarSelected.fechaCuentaCobrar"
+                                                                class="form-control" disabled>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Fec/Venc</span>
+                                                            <input type="date" class="form-control"
+                                                                [ngModel]="cuentaCobrarSelected.fechaVencimiento"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="col-md-4">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text"
                                                                 id="inputGroup-sizing-default">Monto Inicial</span>
@@ -146,7 +160,7 @@
                                                                 aria-label="Sizing example input"
                                                                 aria-describedby="inputGroup-sizing-default" disabled>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -156,60 +170,79 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <!-- MORA -->
-                                        <div class="card">
+                                        <div class="card text-center">
                                             <div class="card-header text-center tituloCard">
                                                 Información De La Mora
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">S.Total</span>
-                                                            <input type="number" [ngModel]="cuentaCobrarSelected.clientes[0].saldoActual" 
-                                                            class="form-control" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">S.Mora</span>
-                                                            <input type="text" [ngModel]="cuentaCobrarSelected.clientes[0].saldoVencido" 
-                                                            class="form-control" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="input-group input-group-sm">
-                                                            <span class="input-group-text">Mora/Venc</span>
-                                                            <input type="text" [ngModel]="cuentaCobrarSelected.edadVencimiento"
+                                                            <span class="input-group-text fw-bold">S.Total</span>
+                                                            <input type="number"
+                                                                [ngModel]="cuentaCobrarSelected.clientes[0].saldoActual"
                                                                 class="form-control" disabled>
-                                                            <input type="text" [ngModel]="cuentaCobrarSelected.diasVencidos"
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">S.Mora</span>
+                                                            <input type="text"
+                                                                [ngModel]="cuentaCobrarSelected.moraObligatoria"
                                                                 class="form-control" disabled>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row justify-content-center">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <div class="input-group input-group-sm">
-                                                            <span class="input-group-text">Sede</span>
-                                                            <input type="text" [ngModel]="cuentaCobrarSelected.sede.sede"
+                                                            <span class="input-group-text fw-bold">Mora/Venc</span>
+                                                            <input type="text"
+                                                                [ngModel]="cuentaCobrarSelected.edadVencimiento"
                                                                 class="form-control" disabled>
-                                                            <input type="text" [ngModel]="cuentaCobrarSelected.banco.banco"
-                                                            class="form-control" disabled>
+                                                            <input type="text"
+                                                                [ngModel]="cuentaCobrarSelected.diasVencidos"
+                                                                class="form-control" disabled>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+
+                                                    <div class="col-md-6">
                                                         <div class="input-group input-group-sm">
-                                                            <span class="input-group-text">Cuotas</span>
+                                                            <span class="input-group-text fw-bold">Cuotas</span>
                                                             <input type="text" [ngModel]="cuentaCobrarSelected.cuotas"
                                                                 class="form-control" disabled>
-                                                            <input type="text" aria-label="Last name"
+                                                            <input type="text"
+                                                                [ngModel]="cuentaCobrarSelected.cuotas - cuentaCobrarSelected.cuotasMora"
                                                                 class="form-control" disabled>
-                                                            <input type="text" [ngModel]="cuentaCobrarSelected.cuotasMora"
+                                                            <input type="text"
+                                                                [ngModel]="cuentaCobrarSelected.cuotasMora"
                                                                 class="form-control" disabled>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-8">
+
+                                                </div>
+                                                <div class="row justify-content-center mt-3">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Fecha Venc</span>
+                                                            <input type="date" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.fechaVencimiento"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text fw-bold">Sede</span>
+                                                            <input type="text"
+                                                                [ngModel]="cuentaCobrarSelected.sede.sede"
+                                                                class="form-control" disabled>
+                                                            <input type="text"
+                                                                [ngModel]="cuentaCobrarSelected.banco.banco"
+                                                                class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="cuentaCobrarSelected.clientes[0].saldoActual <= cuentaCobrarSelected.moraObligatoria"
+                                                        class="col-md-8">
                                                         <p class="alert alert-danger mt-3 text-center">CREDITO VENCIDO
                                                             EN SU TOTALIDAD</p>
                                                     </div>
@@ -219,117 +252,75 @@
                                     </div>
                                     <div class="col-md-6">
                                         <!-- REFERENCIAS -->
-                                        <div class="card">
+                                        <div class="card text-center">
                                             <div class="card-header text-center tituloCard">
                                                 Referencias
                                             </div>
                                             <div class="card-body">
                                                 <div class="form-floating">
-                                                    <textarea class="form-control" id="floatingTextarea2"
-                                                        style="height: 165px" disabled></textarea>
-                                                    <label for="floatingTextarea2">Referencia</label>
+                                                    <textarea class="form-control"
+                                                        [ngModel]="cuentaCobrarSelected.clientes[0].descripcionDetallada"
+                                                        style="height: 140px" disabled></textarea>
+                                                    <label class="fw-bold">Referencia</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row justify-content-center">
                                     <div class="col-md-6">
                                         <!-- CODEUDORES -->
-                                        <div class="card">
+                                        <div class="card text-center">
                                             <div class="card-header text-center tituloCard">
                                                 Codeudores
                                             </div>
                                             <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-4">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-12">
                                                         <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Codeudores</span>
-                                                            <select class="form-select"
-                                                                aria-label="Default select example" disabled>
-                                                                <option selected>Open this select menu</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
+                                                            <span class="input-group-text fw-bold">Codeudores</span>
+                                                                <select class="form-select" (change)="findCodeudores($event)">
+                                                                <option >Seleccione Un Codeudor</option>
+                                                                <option *ngFor="let co of codeudores" value="{{ co.numeroDocumento }}" >{{ co.nombreTitular}}</option>
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Nombre</span>
-                                                            <input type="text" class="form-control"
-                                                                aria-label="Sizing example input"
-                                                                aria-describedby="inputGroup-sizing-default" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Dirección</span>
-                                                            <input type="text" class="form-control"
-                                                                aria-label="Sizing example input"
-                                                                aria-describedby="inputGroup-sizing-default" disabled>
-                                                        </div>
-                                                    </div>
                                                 </div>
-                                                <div class="row justify-content-center">
-                                                    <div class="col-md-4">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Celular</span>
-                                                            <input type="text" class="form-control"
-                                                                aria-label="Sizing example input"
-                                                                aria-describedby="inputGroup-sizing-default" disabled>
+                                                <span *ngFor="let cs of codeudoresSelected">
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-md-12">
+                                                            <div class="input-group input-group-sm mb-3">
+                                                                <span class="input-group-text fw-bold">Dirección</span>
+                                                                <input type="text" class="form-control"
+                                                                value="{{ cs.direcciones[0].direccion }}"
+                                                                disabled>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Nro. Codeudores</span>
-                                                            <input type="text" class="form-control" placeholder="1"
-                                                                aria-describedby="inputGroup-sizing-default" disabled>
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-md-6">
+                                                            <div class="input-group input-group-sm mb-3">
+                                                                <span class="input-group-text fw-bold">Celular</span>
+                                                                <input type="text" class="form-control"
+                                                                value="{{ cs.telefonos[0].indicativo }} {{ cs.telefonos[0].numero }}"
+                                                                disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="input-group input-group-sm mb-3">
+                                                                <span class="input-group-text fw-bold">Nro. Codeudores</span>
+                                                                <input type="text" class="form-control"
+                                                                    [(ngModel)]="codeudores.length" disabled>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-floating">
-                                                    <textarea class="form-control" placeholder="Leave a comment here"
-                                                        id="floatingTextarea2" style="height: 77px" disabled></textarea>
-                                                    <label for="floatingTextarea2">Referencia</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <!-- VENCIMIENTO -->
-                                        <div class="card">
-                                            <div class="card-header text-center tituloCard">
-                                                Vencimiento Documento
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Doc Venc</span>
-                                                            <input type="text" class="form-control"
-                                                                aria-label="Sizing example input"
-                                                                aria-describedby="inputGroup-sizing-default" disabled>
-                                                        </div>
+                                                    <div class="form-floating">
+                                                        <textarea class="form-control" style="height: 77px"
+                                                        value="{{ cs.descripcionDetallada }}"
+                                                        disabled></textarea>
+                                                        <label class="fw-bold">Referencia</label>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Fecha</span>
-                                                            <input type="date" class="form-control"
-                                                                aria-label="Sizing example input"
-                                                                aria-describedby="inputGroup-sizing-default" disabled>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -340,9 +331,9 @@
                 </div>
                 <div *ngIf="spinner" class="text-center">
                     <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
-                      <span class="visually-hidden"></span>
+                        <span class="visually-hidden"></span>
                     </div>
-                  </div>
+                </div>
 
                 <div *ngIf="!spinner" class="table-responsive align-middle">
                     <table class="table table-responsive table-bordered text-center table-hover">
@@ -502,74 +493,60 @@
                                         </div>
                                     </div>
                                 </th>
-                                <th class="h">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-6">
-                                            Clasif
-                                        </div>
-                                        <div class="col-md-6">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                                <tr *ngFor="let cc of cuentasCobrarArray" class="align-middle" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style="cursor: pointer;" (click)="findCuentaCobrar(cc.numeroObligacion)">
-                                    <td>{{ cc.cliente }}</td>
-                                    <td>{{ cc.banco.banco }}</td>
-                                    <td>{{ cc.diasVencidos }}</td>
-                                    <td>{{ cc.edadVencimiento }}</td>
-                                    <td>{{ cc.sede.sede }}</td>
-                                    <td>{{ cc.asesorCarteraResponse.usuario.nombres }} {{ cc.asesorCarteraResponse.usuario.apellidos }}</td>
-                                    <td>{{ cc.clasificacionJuridica }}</td>
-                                    <td>2250000</td>
-                                    <td>2000</td>
-                                    <td>25/05/2023</td>
-                                    <td>25/05/2023</td>
-                                    <td>No Contesta</td>
-                                </tr>
-                            </tbody>
+                            <tr *ngFor="let cc of cuentasCobrarArray" class="align-middle" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasRight" style="cursor: pointer;"
+                                (click)="findCuentaCobrar(cc.numeroObligacion)">
+                                <td>{{ cc.cliente }}</td>
+                                <td>{{ cc.banco.banco }}</td>
+                                <td>{{ cc.diasVencidos }}</td>
+                                <td>{{ cc.edadVencimiento }}</td>
+                                <td>{{ cc.sede.sede }}</td>
+                                <td>{{ cc.asesorCarteraResponse.usuario.nombres }} {{
+                                    cc.asesorCarteraResponse.usuario.apellidos }}</td>
+                                <td>{{ cc.clasificacionJuridica }}</td>
+                                <td>{{ cc.clientes[0].saldoActual }}</td>
+                                <td>2000</td>
+                                <td>25/05/2023</td>
+                                <td>25/05/2023</td>
+                            </tr>
+                        </tbody>
                     </table>
                     <nav aria-label="Page navigation example" *ngIf="numeroPages > 1" class="mt-2">
                         <div class="row justify-content-center">
-                          <div class="col-md-3"></div>
-                          <div class="col-md-5">
-                            <nav aria-label="...">
-                              <ul class="pagination">
-                                <li class="page-item">
-                                  <a class="page-link b" (click)="back()" style="cursor: pointer;">Anterior</a>
-                                </li>
-                                
-                                <li class="page-item">
-                                  <div class="btn-group">
-                                    <button type="button" class="page-link dropdown-toggle"
-                                      style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
-                                      data-bs-toggle="dropdown">{{page+1}}/{{numeroPages}}</button>
-                                    <ul class="dropdown-menu" style="overflow-y: 400px;height: auto;">
-                                      <li *ngFor="let p of paginas;let i = index"><button class="dropdown-item" (click)="goToPage(i)">{{i
-                                          + 1}}</button></li>
-                    
+                            <div class="col-md-3"></div>
+                            <div class="col-md-5">
+                                <nav aria-label="...">
+                                    <ul class="pagination">
+                                        <li class="page-item">
+                                            <a class="page-link b" (click)="back()"
+                                                style="cursor: pointer;">Anterior</a>
+                                        </li>
+
+                                        <li class="page-item">
+                                            <div class="btn-group">
+                                                <button type="button" class="page-link dropdown-toggle"
+                                                    style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
+                                                    data-bs-toggle="dropdown">{{page+1}}/{{numeroPages}}</button>
+                                                <ul class="dropdown-menu" style="overflow-y: 400px;height: auto;">
+                                                    <li *ngFor="let p of paginas;let i = index"><button
+                                                            class="dropdown-item" (click)="goToPage(i)">{{i
+                                                            + 1}}</button></li>
+
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link b" (click)="next()"
+                                                style="cursor: pointer;">Siguiente</a>
+                                        </li>
                                     </ul>
-                                  </div>
-                                </li>
-                                <li class="page-item">
-                                  <a class="page-link b" (click)="next()" style="cursor: pointer;">Siguiente</a>
-                                </li>
-                              </ul>
-                            </nav>
-                          </div>
+                                </nav>
+                            </div>
                         </div>
-                      </nav>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -614,95 +591,96 @@
     </div>
 
     <!-- Modal Historico Gestiones -->
-<div class="modal fade" id="modalHistoricoG" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Histórico Gestiones</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="table-responsive align-middle">
-                <table class="table table-bordered text-center table-hover">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Gestor</th>
-                        <th scope="col">Fecha Gestión</th>
-                        <th scope="col">F. Compromiso</th>
-                        <th scope="col">Clasificación</th>
-                        <th scope="col">V.Compro</th>
-                        <th scope="col">Llamada/Revision</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th>1</th>
-                        <td>Blanca</td>
-                        <td>23/08/2023 8:25:55</td>
-                        <td>23/08/2023 8:25:55</td>
-                        <td>No Contesta</td>
-                        <td>0</td>
-                        <td>Gestion Llamada</td>
-                      </tr>
-                    </tbody>
-                </table>
+    <div class="modal fade" id="modalHistoricoG" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Histórico Gestiones</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive align-middle">
+                        <table class="table table-bordered text-center table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Gestor</th>
+                                    <th scope="col">Fecha Gestión</th>
+                                    <th scope="col">F. Compromiso</th>
+                                    <th scope="col">Clasificación</th>
+                                    <th scope="col">V.Compro</th>
+                                    <th scope="col">Llamada/Revision</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>1</th>
+                                    <td>Blanca</td>
+                                    <td>23/08/2023 8:25:55</td>
+                                    <td>23/08/2023 8:25:55</td>
+                                    <td>No Contesta</td>
+                                    <td>0</td>
+                                    <td>Gestion Llamada</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
     </div>
-  </div>
-    
-  <!-- Modal Historico Abonos -->
-<div class="modal fade" id="modalHistoricoA" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Histórico Abonos</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form class="row mb-3">
-                <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Buscar">
+
+    <!-- Modal Historico Abonos -->
+    <div class="modal fade" id="modalHistoricoA" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Histórico Abonos</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="col-md-2">
-                  <button type="submit" class="b btn btn-success me-2"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <div class="modal-body">
+                    <form class="row mb-3">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="Buscar">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="b btn btn-success me-2"><i
+                                    class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                    </form>
+                    <div class="table-responsive align-middle">
+                        <table class="table table-bordered text-center table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Cliente</th>
+                                    <th scope="col">Fecha Abono</th>
+                                    <th scope="col">Valor</th>
+                                    <th scope="col">Usuario</th>
+                                    <th scope="col">Descripción</th>
+                                    <th scope="col">Sede</th>
+                                    <th scope="col">Banco</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Duvan Diaz</th>
+                                    <td>23/08/2023</td>
+                                    <td>2000000</td>
+                                    <td>Odilio</td>
+                                    <td>Descripcion</td>
+                                    <td>Andes</td>
+                                    <td>COL</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-              </form>
-            <div class="table-responsive align-middle">
-                <table class="table table-bordered text-center table-hover">
-                    <thead>
-                      <tr>
-                        <th scope="col">Cliente</th>
-                        <th scope="col">Fecha Abono</th>
-                        <th scope="col">Valor</th>
-                        <th scope="col">Usuario</th>
-                        <th scope="col">Descripción</th>
-                        <th scope="col">Sede</th>
-                        <th scope="col">Banco</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th>Duvan Diaz</th>
-                        <td>23/08/2023</td>
-                        <td>2000000</td>
-                        <td>Odilio</td>
-                        <td>Descripcion</td>
-                        <td>Andes</td>
-                        <td>COL</td>
-                      </tr>
-                    </tbody>
-                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
     </div>
-  </div>

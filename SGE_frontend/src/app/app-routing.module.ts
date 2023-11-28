@@ -74,6 +74,7 @@ import { TipoObligacionComponent } from './Pages/Consignaciones/pages/componente
 import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/asesores/asesores.component';
 import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/rankings/rankings/rankings.component';
 import { HomeCarteraComponent } from './Pages/Cartera/pages/componentesCartera/home-cartera/home-cartera.component';
+import { ClasificacionComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion/clasificacion.component';
 
 
 
@@ -112,6 +113,10 @@ const routes: Routes = [
       {
         path:"inicio",
         component:HomeCarteraComponent
+      },
+      {
+        path:"clasificacion",
+        component:ClasificacionComponent
       },
     ]
   },
