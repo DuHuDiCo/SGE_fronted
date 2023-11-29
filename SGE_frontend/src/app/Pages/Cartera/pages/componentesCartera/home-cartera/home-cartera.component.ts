@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { CuentasCobrarResponse } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
+import { Gestion, GestionArray } from 'src/app/Types/Cartera/Gestion/Gestion';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home-cartera',
@@ -19,10 +22,13 @@ export class HomeCarteraComponent implements OnInit {
   // ARRAY CUENTAS POR COBRAR
   cuentasCobrarArray:CuentasCobrarResponse[] = []
 
+  // ARRAYS
   codeudores:any[] = []
   codeudoresSelected:any[] = []
+  gestiones:GestionArray[] = []
+  ClasificacionArray:clasificacion[] = []
 
-  // OBJETO SIDEBAR
+  // OBJETOS
   cuentaCobrarSelected:CuentasCobrarResponse = {
     idCuentasPorCobrar: 0,
     numeroObligacion: '',
@@ -81,6 +87,17 @@ export class HomeCarteraComponent implements OnInit {
       }
     },
     clientes: []
+  }
+
+  newGestion:Gestion = {
+    numeroObligacion: '',
+    fechaCompromiso: null,
+    clasificacion: null,
+    gestion: '',
+    valorCompromiso: 0,
+    asesorCartera: '',
+    contact: false,
+    detallesAdicionales: ''
   }
 
   // PARAMETROS PARA EL SERVICE
@@ -248,6 +265,9 @@ export class HomeCarteraComponent implements OnInit {
           this.codeudores = data.clientes
           this.codeudores = this.codeudores.filter((c:any) => c.tipoGarante.tipoGarante != 'TITULAR')
 
+          this.getGestiones(numeroObligacion);
+          this.getClasificacion()
+
           if(this.cuentaCobrarSelected.documentoCliente != ''){
             this.spinnerSidebar = false
           }
@@ -264,4 +284,97 @@ export class HomeCarteraComponent implements OnInit {
     this.codeudoresSelected = this.codeudores.filter((c:any) => c.numeroDocumento == event.target.value)
     console.log(this.codeudoresSelected);
   }
+
+  // GESTIONES
+  getGestiones(numeroObligacion:string){
+    this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
+      (data:any) => {
+        this.gestiones = data
+        this.newGestion.numeroObligacion = numeroObligacion
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  saveGestion(){
+
+    if(this.newGestion.gestion.trim() == '' || this.newGestion.gestion.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite La Descripción',
+        timer: 3000
+      })
+      return
+    }
+
+      if(this.newGestion.clasificacion?.trim() == '' || this.newGestion.clasificacion?.trim() == null){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Seleccione Una Clasificación',
+          timer: 3000
+        })
+        return
+      }
+
+    if(this.newGestion.clasificacion?.trim() == 'Acuerdo de Pago' || this.newGestion.clasificacion?.trim() == 'Abonando/Fecha'){
+      if(this.newGestion.fechaCompromiso instanceof Date || this.newGestion.fechaCompromiso == null){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Seleccione Una Fecha',
+          timer: 3000
+        })
+        return
+      }
+
+      if(this.newGestion.valorCompromiso == 0 || this.newGestion.valorCompromiso == null){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Digite Un Valor de Compromiso',
+          timer: 3000
+        })
+        return
+      }
+    }   
+    
+    console.log(this.newGestion);
+    
+
+    // setTimeout(() => {
+    //   this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
+    //     (data:any) => {
+    //       Swal.fire({
+    //         icon: 'success',
+    //         title: 'Felicidades',
+    //         text: 'Gestión Guardada Exitosamente',
+    //         timer: 3000
+    //       })
+    //     }, (error:any) => {
+    //       Swal.fire({
+    //         icon: 'error',
+    //         title: 'Error',
+    //         text: 'Error Al Guardar La Gestión',
+    //         timer: 3000
+    //       })
+    //     }
+    //   )
+    // }, 3000);
+  }
+
+  // CLASIFICACION
+  getClasificacion(){
+    this.cuentasCobrar.getClasificacion().subscribe(
+      (data:any) => {
+        this.ClasificacionArray = data
+        console.log(this.ClasificacionArray);
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
 }

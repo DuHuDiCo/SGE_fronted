@@ -2,7 +2,6 @@
     <div class="card-c">
         <div class="row justify-content-center">
             <div class="col-md-12">
-
                 <!-- SIDEBAR -->
                 <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasRight"
                     aria-labelledby="offcanvasRightLabel" style="height: 77%;">
@@ -530,7 +529,7 @@
                                                 <button type="button" class="page-link dropdown-toggle"
                                                     style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
                                                     data-bs-toggle="dropdown">{{page+1}}/{{numeroPages}}</button>
-                                                <ul class="dropdown-menu" style="overflow-y: 400px;height: auto;">
+                                                <ul class="dropdown-menu">
                                                     <li *ngFor="let p of paginas;let i = index"><button
                                                             class="dropdown-item" (click)="goToPage(i)">{{i
                                                             + 1}}</button></li>
@@ -562,29 +561,61 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="floatingTextarea" style="height: 100px;"></textarea>
+                        <textarea class="form-control" style="height: 100px;" [(ngModel)]="newGestion.gestion" name="gestion"></textarea>
                         <label for="floatingTextarea">Descripcion</label>
                     </div>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Existió contacto
+                        <input class="form-check-input" [checked]="true" type="checkbox" role="switch" checked>
+                        <label class="form-check-label" [(ngModel)]="newGestion.contact" >Existió contacto
                             Telefónico/Whatsapp con el Cliente y/o Tercero (?)</label>
                     </div>
-                    <select class="form-select mt-3 mb-3" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <select class="form-select mt-3 mb-3" [(ngModel)]="newGestion.clasificacion">
+                        <option [value]="null">Seleccione Una Clasificación</option>
+                        <option *ngFor="let c of ClasificacionArray" [value]="c.tipoClasificacion">{{ c.tipoClasificacion }}</option>
                     </select>
+                    <span *ngIf="newGestion.clasificacion == 'Acuerdo de Pago' || newGestion.clasificacion == 'Abonando/Fecha'">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm mb-3">
+                                    <span class="input-group-text fw-bold">Fecha Comp</span>
+                                    <input type="date" class="form-control" [(ngModel)]="newGestion.fechaCompromiso">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm mb-3">
+                                    <span class="input-group-text fw-bold">Valor Comp</span>
+                                    <input type="number" class="form-control" [(ngModel)]="newGestion.valorCompromiso">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center mt-3 mb-3">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                      Cuotas
+                                    </label>
+                                  </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                      Total
+                                    </label>
+                                  </div>
+                            </div>
+                        </div>
+                    </span>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="floatingTextarea" style="height: 100px;"></textarea>
+                        <textarea class="form-control" style="height: 100px;" [(ngModel)]="newGestion.detallesAdicionales"></textarea>
                         <label for="floatingTextarea">Datos Adicionales</label>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-secondary">Histórico Gestiones</button>
-                    <button type="button" class="btn btn-danger b">Guardar</button>
+                    <button type="button" class="btn btn-danger b" (click)="saveGestion()">Guardar</button>
                 </div>
             </div>
         </div>
@@ -613,14 +644,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th>1</th>
-                                    <td>Blanca</td>
-                                    <td>23/08/2023 8:25:55</td>
-                                    <td>23/08/2023 8:25:55</td>
-                                    <td>No Contesta</td>
-                                    <td>0</td>
-                                    <td>Gestion Llamada</td>
+                                <tr *ngFor="let g of gestiones; let i = index">
+                                    <th>{{ i + 1 }}</th>
+                                    <td>{{ g.asesorCartera }}</td>
+                                    <td>{{ g.fechaGestion }}</td>
+                                    <td>{{ g.fechaCompromiso }}</td>
+                                    <td>{{ g.clasificacion }}</td>
+                                    <td>{{ g.valorCompromiso }}</td>
+                                    <td>{{ g.gestion }}</td>
                                 </tr>
                             </tbody>
                         </table>
