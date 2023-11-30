@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardComponent } from '../../dashboard/dashboard.component';
+import { DashboardComponent } from 'src/app/Pages/Cartera/pages/dashboard/dashboard.component';
 
 @Component({
   selector: 'app-gestion',

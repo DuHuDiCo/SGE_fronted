@@ -11,7 +11,7 @@
     <ul class="nav flex-column ">
 
         <li class="nav-item">
-            <button class="nav-link active" aria-current="page" routerLink="/cartera"><i class="fa-solid fa-house-user"></i>&nbsp; Escritorio</button>
+            <button class="nav-link active" aria-current="page" routerLink="/dashboard-cartera/inicio"><i class="fa-solid fa-magnifying-glass"></i>&nbsp; Consultar</button>
         </li>
         
     </ul>
@@ -20,49 +20,20 @@
     <ul class="nav flex-column ">
         <li class="mb-1">
             <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse-u" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
-                Utilidades
+                Configuraciones
             </button>
     
             <div class="collapse" id="getting-started-collapse-u" data-bs-dismiss="offcanvas">
                 <ul class="list-unstyled fw-normal pb-1 small">
-                    <li> <button class="nav-link active"  aria-current="page"><i class="fa-solid fa-building-columns"></i>&nbsp; Tasa de Cobro</button></li>
-
-                    <li><button class="nav-link active" aria-current="page"><i class="fa-solid fa-calendar-days"></i>&nbsp; Calendario</button></li>
-
-                    <li><button class="nav-link active" aria-current="page"><i class="fa-solid fa-eye"></i>&nbsp; Revisiones</button></li>
-                    
+                    <li> <button class="nav-link active" aria-current="page" routerLink="/dashboard-cartera/clasificacion"><i class="fa-solid fa-file-word"></i>&nbsp; Clasificaciones</button></li>
                 </ul>
             </div>
         </li>
 
     </ul>
+
     <hr style="color: white;">
     <ul class="nav flex-column ">
-
-
-        <li class="mb-1">
-            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#getting-started-collapse" aria-expanded="false"><i class="fas fa-sort-down"></i>&nbsp;
-                Datos 
-            </button>
-    
-            <div class="collapse" id="getting-started-collapse" data-bs-dismiss="offcanvas">
-                <ul class="list-unstyled fw-normal pb-1 small">
-                    <li> <button class="nav-link active"  aria-current="page" routerLink="/dashboard-cartera/estadisticas"><i class="fa-solid fa-chart-simple"></i>&nbsp; Estadisticas</button></li>
-
-                    <li><button class="nav-link active" aria-current="page"><i class="fa-solid fa-file-invoice"></i>&nbsp; Facturacion</button></li>
-
-                    <li><button class="nav-link active" aria-current="page" routerLink="/dashboard-cartera/gestion"><i class="fa-solid fa-credit-card"></i>&nbsp; Gestion</button></li>
-                </ul>
-            </div>
-        </li>
-
-    </ul>
-    <hr style="color: white;">
-    <ul class="nav flex-column ">
-        
-        <li class="nav-item">
-            <button class="nav-link active" aria-current="page"><i class="fa-solid fa-gear"></i>&nbsp; Configuraciones</button>
-        </li>
         <li class="nav-item">
             <button (click) = "logout()" class="nav-link active" aria-current="page"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</button>
         </li>
