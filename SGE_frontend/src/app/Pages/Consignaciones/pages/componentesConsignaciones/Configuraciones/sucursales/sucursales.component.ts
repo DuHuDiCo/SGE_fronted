@@ -48,7 +48,7 @@ export class SucursalesComponent implements OnInit {
     this.sedes.nombreSede.toUpperCase()
     this.sedeService.saveSede(this.sedes).subscribe(
       (data:any) => {
-      Swal.fire('Felicidades', 'Sede Guardada Con Éxito', 'success')
+      Swal.fire('Datos Guardados', 'Sede Guardada Con Éxito', 'success')
       setTimeout(() => {
         window.location.reload()
       }, 3000);
@@ -74,7 +74,7 @@ export class SucursalesComponent implements OnInit {
   updateSede(){
     this.sedeService.updateSede(this.modal).subscribe(
       (data:any) => {
-        Swal.fire('Felicidades', 'Sede Actualizada Exitosamente', 'success')
+        Swal.fire('Datos Guardados', 'Sede Actualizada Exitosamente', 'success')
         setTimeout(() => {
           window.location.reload()
         }, 2000);

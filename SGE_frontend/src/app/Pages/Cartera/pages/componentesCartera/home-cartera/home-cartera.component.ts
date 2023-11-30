@@ -7,6 +7,8 @@ import { CuentasCobrarResponse } from 'src/app/Types/Cartera/CuentasPorCobrarRes
 import { Gestion, GestionArray } from 'src/app/Types/Cartera/Gestion/Gestion';
 import Swal from 'sweetalert2';
 
+declare var $: any;
+
 @Component({
   selector: 'app-home-cartera',
   templateUrl: './home-cartera.component.html',
@@ -95,7 +97,6 @@ export class HomeCarteraComponent implements OnInit {
     clasificacion: null,
     gestion: '',
     valorCompromiso: 0,
-    asesorCartera: '',
     contact: false,
     detallesAdicionales: ''
   }
@@ -109,6 +110,8 @@ export class HomeCarteraComponent implements OnInit {
   // SPINNER DE LA TABLA
   spinner:boolean = true
   spinnerSidebar:boolean = true
+  gestionButton:boolean = false
+  modalGestiones:boolean = false
 
   numeroPages: number = 0
   last: boolean = false
@@ -120,6 +123,7 @@ export class HomeCarteraComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCuentasCobrar()
+    this.getClasificacion()
   }
 
   // TRAER CUENTAS POR COBRAR
@@ -139,6 +143,7 @@ export class HomeCarteraComponent implements OnInit {
         this.first = data.first
         this.numeroPages = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
+        console.log(this.cuentasCobrarArray);
         if(this.cuentasCobrarArray.length == 0){
           this.spinner = true
         } else {
@@ -156,6 +161,7 @@ export class HomeCarteraComponent implements OnInit {
   back() {
     if (!this.first) {
         this.page--
+        this.spinner = true
         this.getCuentasCobrar()
         this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
           (con: boolean) => {
@@ -172,6 +178,7 @@ export class HomeCarteraComponent implements OnInit {
   next() {
     if (!this.last) {
         this.page++
+        this.spinner = true
         this.getCuentasCobrar()
         this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
           (con: boolean) => {
@@ -186,6 +193,7 @@ export class HomeCarteraComponent implements OnInit {
   //IR A UNA PAGINA ESPECIFICA
   goToPage(page: number) {
     this.page = page
+    this.spinner = true
     this.getCuentasCobrar()
       this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
         (con: boolean) => {
@@ -264,14 +272,21 @@ export class HomeCarteraComponent implements OnInit {
           this.cuentaCobrarSelected = data
           this.codeudores = data.clientes
           this.codeudores = this.codeudores.filter((c:any) => c.tipoGarante.tipoGarante != 'TITULAR')
-
           this.getGestiones(numeroObligacion);
-          this.getClasificacion()
-
+          this.newGestion = {
+            numeroObligacion: this.newGestion.numeroObligacion,
+            fechaCompromiso: null,
+            clasificacion: null,
+            gestion: '',
+            valorCompromiso: 0,
+            contact: false,
+            detallesAdicionales: this.newGestion.detallesAdicionales
+          }
+          console.log(this.newGestion);
+          
           if(this.cuentaCobrarSelected.documentoCliente != ''){
             this.spinnerSidebar = false
           }
-          console.log(this.cuentaCobrarSelected);
         }, (error:any) => {
           console.log(error);
         }
@@ -291,6 +306,18 @@ export class HomeCarteraComponent implements OnInit {
       (data:any) => {
         this.gestiones = data
         this.newGestion.numeroObligacion = numeroObligacion
+        this.getLastDato(numeroObligacion)
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  getLastDato(numeroDocumento:string){
+    this.cuentasCobrar.getLastDatoAdicional(numeroDocumento).subscribe(
+      (data:any) => {
+        this.newGestion.detallesAdicionales = data.detallesAdicionelesToSend
+        console.log(this.newGestion.detallesAdicionales);
       }, (error:any) => {
         console.log(error);
       }
@@ -340,29 +367,53 @@ export class HomeCarteraComponent implements OnInit {
         return
       }
     }   
+  
+    Swal.fire({
+      title: 'Guardar Gestión',
+      text: '¿Está Seguro De Crear Esta Gestión?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Crear',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(this.newGestion);
+        this.gestionButton = true
+          this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
+            (data:any) => {
+              this.gestiones.push(data)
+              console.log(this.newGestion);
+              Swal.fire({
+                icon: 'success',
+                title: 'Datos Guardados',
+                text: 'Gestión Guardada Exitosamente',
+                timer: 3000
+              })
+              this.gestionButton = false
+              this.newGestion = {
+                numeroObligacion: this.newGestion.numeroObligacion,
+                fechaCompromiso: null,
+                clasificacion: null,
+                gestion: '',
+                valorCompromiso: 0,
+                contact: false,
+                detallesAdicionales: this.newGestion.detallesAdicionales
+              }
+            }, (error:any) => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Al Guardar La Gestión',
+                timer: 3000
+              })
+              this.gestionButton = false
+            }
+          )
+      }
+    })
     
-    console.log(this.newGestion);
-    
-
-    // setTimeout(() => {
-    //   this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
-    //     (data:any) => {
-    //       Swal.fire({
-    //         icon: 'success',
-    //         title: 'Felicidades',
-    //         text: 'Gestión Guardada Exitosamente',
-    //         timer: 3000
-    //       })
-    //     }, (error:any) => {
-    //       Swal.fire({
-    //         icon: 'error',
-    //         title: 'Error',
-    //         text: 'Error Al Guardar La Gestión',
-    //         timer: 3000
-    //       })
-    //     }
-    //   )
-    // }, 3000);
   }
 
   // CLASIFICACION
@@ -375,6 +426,41 @@ export class HomeCarteraComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  cancelarGestion(){
+
+    Swal.fire({
+      title: 'Limpiar Gestión',
+      text: 'Los Datos De la Gestión Actual serán Limpiados, ¿Está Seguro?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Limpiar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.newGestion = {
+          numeroObligacion: this.newGestion.numeroObligacion,
+          fechaCompromiso: null,
+          clasificacion: null,
+          gestion: '',
+          valorCompromiso: 0,
+          contact: false,
+          detallesAdicionales: this.newGestion.detallesAdicionales
+        }
+        $('#modalGestion').modal('hide');
+      }
+    })
+  }
+
+  abrirGestiones(){
+    this.modalGestiones = true
+  }
+
+  cerrarGestiones(){
+    this.modalGestiones = false
   }
 
 }

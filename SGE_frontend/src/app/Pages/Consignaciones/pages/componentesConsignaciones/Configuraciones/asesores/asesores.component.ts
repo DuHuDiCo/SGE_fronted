@@ -44,7 +44,7 @@ export class AsesoresComponent implements OnInit {
       (data:any) => {
         Swal.fire({
           icon: 'success',
-          title: 'Felicidades',
+          title: 'Datos Guardados',
           text: 'El Asesor Ha Sido Creado Exitosamente',
           timer: 3000
         })

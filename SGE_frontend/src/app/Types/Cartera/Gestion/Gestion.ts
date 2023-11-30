@@ -4,7 +4,6 @@ export type Gestion = {
   clasificacion: string | null,
   gestion: string,
   valorCompromiso: 0,
-  asesorCartera: string,
   contact: boolean,
   detallesAdicionales: string
 }

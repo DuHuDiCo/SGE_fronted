@@ -211,7 +211,7 @@ export class BuscarClientesComponent implements OnInit {
         return
       } else {
         this.datos.telefonos.push(this.newTelefono)
-        Swal.fire('Felicidades', 'El Teléfono ha sido agregado con éxito', 'success')
+        Swal.fire('Datos Guardados', 'El Teléfono ha sido agregado con éxito', 'success')
       }
     }
     if(this.direccion === true){
@@ -234,7 +234,7 @@ export class BuscarClientesComponent implements OnInit {
       }
       else {
         this.datos.direcciones.push(this.newDireccion)
-        Swal.fire('Felicidades', 'La Nueva Direccion ha sido agregada con éxito', 'success')
+        Swal.fire('Datos Guardados', 'La Nueva Direccion ha sido agregada con éxito', 'success')
       }
     }
 
@@ -245,7 +245,7 @@ export class BuscarClientesComponent implements OnInit {
         return
       } else {
         this.datos.correos.push(this.newCorreo)
-        Swal.fire('Felicidades', 'El Correo ha sido agregado con éxito', 'success')
+        Swal.fire('Datos Guardados', 'El Correo ha sido agregado con éxito', 'success')
       }
     }
   }

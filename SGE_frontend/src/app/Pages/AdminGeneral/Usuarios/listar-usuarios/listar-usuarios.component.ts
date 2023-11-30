@@ -333,7 +333,7 @@ export class BuscarUsuariosComponent implements OnInit {
         (data:any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'Usuario Actualizado Con Éxito',
             timer: 3000
           })
@@ -383,7 +383,7 @@ export class BuscarUsuariosComponent implements OnInit {
             (data: any) => {
               Swal.fire({
                 icon: 'success',
-                title: 'Felicidades',
+                title: 'Datos Guardados',
                 text: 'La Contraseña Se Ha Reestablecido Con Éxito',
                 timer: 3000
               })

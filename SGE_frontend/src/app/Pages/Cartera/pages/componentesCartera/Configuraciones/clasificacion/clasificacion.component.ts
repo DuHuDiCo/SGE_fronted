@@ -75,7 +75,7 @@ export class ClasificacionComponent implements OnInit {
         (data:any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'Clasificación Creada Exitosamente',
             timer: 3000
           })
@@ -120,7 +120,7 @@ export class ClasificacionComponent implements OnInit {
         (data:any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'Clasificación Actualizada Exitosamente',
             timer: 3000
           })

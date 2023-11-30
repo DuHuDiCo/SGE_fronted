@@ -52,4 +52,8 @@ export class CuentasCobrarService {
     return this.http.post(`http://192.168.1.6:8021/api/v1/gestiones/saveOneGestion`, gestion)
   }
 
+  getLastDatoAdicional(numeroObligacion:string){
+    return this.http.get(`http://192.168.1.6:8021/api/v1/gestiones/getLastDatoAdicionalGestion/${numeroObligacion}`)
+  }
+
 }

@@ -118,7 +118,7 @@ export class IngresarComponent implements OnInit {
           if (this.con.consigRes.length <= 0) {
             this.ingresarService.saveConsignacion(this.consignacion).subscribe(
               (data: any) => {
-                Swal.fire('Felicidades', 'Su Consignación se ha Guardado con Éxito', 'success')
+                Swal.fire('Datos Guardados', 'Su Consignación se ha Guardado con Éxito', 'success')
                 this.consignacion = {
                   idConsignacion: 0,
                   numeroRecibo: '',
@@ -169,7 +169,7 @@ export class IngresarComponent implements OnInit {
           if (this.con.consigRes.length <= 0) {
             this.ingresarService.saveConsignacion(this.consignacion).subscribe(
               (data: any) => {
-                Swal.fire('Felicidades', 'Su Consignación se ha Guardado con Éxito', 'success')
+                Swal.fire('Datos Guardados', 'Su Consignación se ha Guardado con Éxito', 'success')
                 this.consignacion = {
                   idConsignacion: 0,
                   numeroRecibo: '',
@@ -216,7 +216,7 @@ export class IngresarComponent implements OnInit {
   confirmarObservacion(){
     this.ingresarService.saveConsignacion(this.consignacion).subscribe(
       (data: any) => {
-        Swal.fire('Felicidades', 'Su Consignación se ha Guardado con Éxito', 'success')
+        Swal.fire('Datos Guardados', 'Su Consignación se ha Guardado con Éxito', 'success')
         this.consignacion = {
           idConsignacion: 0,
           numeroRecibo: '',
@@ -325,7 +325,7 @@ export class IngresarComponent implements OnInit {
       (data:any) => {
         Swal.fire({
           icon: 'success',
-          title: 'Felicidades',
+          title: 'Datos Guardados',
           text: 'Cliente Creado Exitosamente',
           timer: 3000
         })

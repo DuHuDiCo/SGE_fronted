@@ -10,9 +10,9 @@
                         <button class="btn btn-danger b" data-bs-toggle="modal" data-bs-target="#modalGestion">Nueva
                             Gestion</button>
                         <button class="btn btn-secondary" data-bs-toggle="modal"
-                            data-bs-target="#modalHistoricoG">Historico Gestiones</button>
-                        <button class="btn btn-secondary" data-bs-toggle="modal"
-                            data-bs-target="#modalHistoricoA">Historico Abonos</button>
+                            data-bs-target="#modalHistoricoG" (click)="cerrarGestiones()">Historico Gestiones</button>
+                        <!-- <button class="btn btn-secondary" data-bs-toggle="modal"
+                            data-bs-target="#modalHistoricoA">Historico Abonos</button> -->
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
@@ -89,8 +89,7 @@
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Telefonos</span>
                                                             <select class="form-select"
-                                                                [ngModel]="cuentaCobrarSelected.clientes[0].telefonos[0].numero"
-                                                                disabled>
+                                                                [ngModel]="cuentaCobrarSelected.clientes[0].telefonos[0].numero">
                                                                 <option
                                                                     *ngFor="let t of cuentaCobrarSelected.clientes[0].telefonos">
                                                                     {{ t.numero }}</option>
@@ -98,7 +97,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row justify-content-center">
+                                                <div class="row">
                                                     <div class="col-md-8">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Dirección</span>
@@ -275,13 +274,20 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row justify-content-center">
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-8">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Codeudores</span>
                                                                 <select class="form-select" (change)="findCodeudores($event)">
                                                                 <option >Seleccione Un Codeudor</option>
                                                                 <option *ngFor="let co of codeudores" value="{{ co.numeroDocumento }}" >{{ co.nombreTitular}}</option>
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Nro. Codeudores</span>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="codeudores.length" disabled>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -297,19 +303,12 @@
                                                         </div>
                                                     </div>
                                                     <div class="row justify-content-center">
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-12">
                                                             <div class="input-group input-group-sm mb-3">
                                                                 <span class="input-group-text fw-bold">Celular</span>
                                                                 <input type="text" class="form-control"
                                                                 value="{{ cs.telefonos[0].indicativo }} {{ cs.telefonos[0].numero }}"
                                                                 disabled>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="input-group input-group-sm mb-3">
-                                                                <span class="input-group-text fw-bold">Nro. Codeudores</span>
-                                                                <input type="text" class="form-control"
-                                                                    [(ngModel)]="codeudores.length" disabled>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -513,11 +512,10 @@
                             </tr>
                         </tbody>
                     </table>
-                    <nav aria-label="Page navigation example" *ngIf="numeroPages > 1" class="mt-2">
-                        <div class="row justify-content-center">
-                            <div class="col-md-3"></div>
-                            <div class="col-md-5">
-                                <nav aria-label="...">
+                </div>
+                <nav *ngIf="numeroPages > 1" class="row justify-content-center mt-2">
+                        <div *ngIf="!spinner" class="pag">
+                                <nav>
                                     <ul class="pagination">
                                         <li class="page-item">
                                             <a class="page-link b" (click)="back()"
@@ -525,11 +523,11 @@
                                         </li>
 
                                         <li class="page-item">
-                                            <div class="btn-group">
+                                            <div class="btn-group dropup">
                                                 <button type="button" class="page-link dropdown-toggle"
                                                     style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
                                                     data-bs-toggle="dropdown">{{page+1}}/{{numeroPages}}</button>
-                                                <ul class="dropdown-menu">
+                                                <ul class="dropdown-menu"  style="overflow-y: auto; height: 400px;">
                                                     <li *ngFor="let p of paginas;let i = index"><button
                                                             class="dropdown-item" (click)="goToPage(i)">{{i
                                                             + 1}}</button></li>
@@ -543,21 +541,19 @@
                                         </li>
                                     </ul>
                                 </nav>
-                            </div>
                         </div>
                     </nav>
-                </div>
             </div>
         </div>
     </div>
 
     <!-- Modal Nueva Gestión -->
     <div class="modal fade" id="modalGestion" tabindex="-1" aria-labelledby="modalGestion" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="modalGestion">Nueva Gestión</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" data-bs-dismiss="modal" aria-label="Close" style="border: none"><i class="fa-solid fa-arrow-left"></i></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-floating mb-3">
@@ -565,8 +561,8 @@
                         <label for="floatingTextarea">Descripcion</label>
                     </div>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" [checked]="true" type="checkbox" role="switch" checked>
-                        <label class="form-check-label" [(ngModel)]="newGestion.contact" >Existió contacto
+                        <input class="form-check-input" [(ngModel)]="newGestion.contact" [checked]="true" type="checkbox" role="switch" checked>
+                        <label class="form-check-label">Existió contacto
                             Telefónico/Whatsapp con el Cliente y/o Tercero (?)</label>
                     </div>
                     <select class="form-select mt-3 mb-3" [(ngModel)]="newGestion.clasificacion">
@@ -613,9 +609,14 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-secondary">Histórico Gestiones</button>
-                    <button type="button" class="btn btn-danger b" (click)="saveGestion()">Guardar</button>
+                    <button type="button" class="btn btn-primary" (click)="cancelarGestion()">Limpiar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                    data-bs-target="#modalHistoricoG" (click)="abrirGestiones()">Histórico Gestiones</button>
+                    <button *ngIf="!gestionButton" type="button" class="btn btn-danger b" (click)="saveGestion()">Guardar</button>
+                    <button *ngIf="gestionButton" class="btn btn-danger b">
+                        Guardando...
+                        <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -623,11 +624,13 @@
 
     <!-- Modal Historico Gestiones -->
     <div class="modal fade" id="modalHistoricoG" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Histórico Gestiones</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button *ngIf="!modalGestiones" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button *ngIf="modalGestiones" type="button" class="btn-close" data-bs-toggle="modal"
+                    data-bs-target="#modalGestion"></button>
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive align-middle">
@@ -647,9 +650,9 @@
                                 <tr *ngFor="let g of gestiones; let i = index">
                                     <th>{{ i + 1 }}</th>
                                     <td>{{ g.asesorCartera }}</td>
-                                    <td>{{ g.fechaGestion }}</td>
-                                    <td>{{ g.fechaCompromiso }}</td>
-                                    <td>{{ g.clasificacion }}</td>
+                                    <td>{{ g.fechaGestion | date:'medium' }}</td>
+                                    <td>{{ g.fechaCompromiso | date:'shortDate': "MMM dd, yyyy" }}</td>
+                                    <td>{{ g.clasificacion.tipoClasificacion }}</td>
                                     <td>{{ g.valorCompromiso }}</td>
                                     <td>{{ g.gestion }}</td>
                                 </tr>
@@ -658,14 +661,16 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button *ngIf="!modalGestiones" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button *ngIf="modalGestiones" type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                    data-bs-target="#modalGestion">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modal Historico Abonos -->
-    <div class="modal fade" id="modalHistoricoA" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="modalHistoricoA" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -714,4 +719,4 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->

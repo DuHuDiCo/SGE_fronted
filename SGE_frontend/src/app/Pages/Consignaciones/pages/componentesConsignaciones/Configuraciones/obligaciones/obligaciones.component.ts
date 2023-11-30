@@ -239,7 +239,7 @@ export class ObligacionesComponent implements OnInit {
         (data:any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'La Observación Ha Sido Creada Con Éxito',
             timer: 3000
           })
