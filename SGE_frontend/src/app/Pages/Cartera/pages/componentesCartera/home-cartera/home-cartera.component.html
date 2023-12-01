@@ -1,5 +1,111 @@
-<div class="container mt-4">
+<div class="container">
     <div class="card-c">
+        <!-- OCULTAR COLUMNAS -->
+        <div class="accordion" id="accordionExample" *ngIf="!spinner">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Filtros
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="row justify-content-center mb-3">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row justify-content-center mb-2">
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <input *ngIf="Columnas.length <= 10 || !Columnas.includes('BANCO')" class="form-check-input" type="checkbox" (click)="ocultarColumnas(constantes[1])">
+                                                <label class="form-check-label">
+                                                  Banco
+                                                </label>
+                                              </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <input *ngIf="Columnas.length <= 10 || !Columnas.includes('DIAS VENC')" class="form-check-input" type="checkbox" (click)="ocultarColumnas(constantes[2])">
+                                                <label class="form-check-label">
+                                                  Dias Ven.
+                                                </label>
+                                              </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <input *ngIf="Columnas.length <= 10 || !Columnas.includes('EDAD VENC')" class="form-check-input" type="checkbox" (click)="ocultarColumnas(constantes[3])">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                  Edad Ven.
+                                                </label>
+                                              </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <input *ngIf="Columnas.length <= 10 || !Columnas.includes('SUCURSAL')" class="form-check-input" type="checkbox" (click)="ocultarColumnas(constantes[4])">
+                                                <label class="form-check-label">
+                                                  Sucursal
+                                                </label>
+                                              </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <input *ngIf="Columnas.length <= 10 || !Columnas.includes('ASESOR')" class="form-check-input" type="checkbox" (click)="ocultarColumnas(constantes[5])">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                  Asesor
+                                                </label>
+                                              </div>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <input *ngIf="Columnas.length <= 10 || !Columnas.includes('CLAS JURI')" class="form-check-input" type="checkbox" (click)="ocultarColumnas(constantes[6])">
+                                                <label class="form-check-label">
+                                                  Clas. Juri
+                                                </label>
+                                              </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <input *ngIf="Columnas.length <= 10 || !Columnas.includes('SALDO CAP')" class="form-check-input" type="checkbox" (click)="ocultarColumnas(constantes[7])">
+                                                <label class="form-check-label">
+                                                  Saldo Cap.
+                                                </label>
+                                              </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <input *ngIf="Columnas.length <= 10 || !Columnas.includes('ANIO')" class="form-check-input" type="checkbox" (click)="ocultarColumnas(constantes[8])">
+                                                <label class="form-check-label">
+                                                  Año
+                                                </label>
+                                              </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <input *ngIf="Columnas.length <= 10 || !Columnas.includes('F GESTION')" class="form-check-input" type="checkbox" (click)="ocultarColumnas(constantes[9])">
+                                                <label class="form-check-label">
+                                                  F. Gestión
+                                                </label>
+                                              </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <input *ngIf="Columnas.length <= 10 || !Columnas.includes('F COMPRO')" class="form-check-input" type="checkbox" (click)="ocultarColumnas(constantes[10])">
+                                                <label class="form-check-label">
+                                                  F. Compro.
+                                                </label>
+                                              </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <!-- SIDEBAR -->
@@ -265,7 +371,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row justify-content-center">
+                                <div class="row justify-content-start">
                                     <div class="col-md-6">
                                         <!-- CODEUDORES -->
                                         <div class="card text-center">
@@ -273,7 +379,7 @@
                                                 Codeudores
                                             </div>
                                             <div class="card-body">
-                                                <div class="row justify-content-center">
+                                                <div class="row">
                                                     <div class="col-md-8">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Codeudores</span>
@@ -337,7 +443,7 @@
                     <table class="table table-responsive table-bordered text-center table-hover">
                         <thead>
                             <tr>
-                                <th class="h">
+                                <th class="h" *ngIf="!Columnas.includes('CLIENTE')">
                                     <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
                                         <div class="col-md-6">
                                             Cliente
@@ -355,7 +461,7 @@
                                         </div>
                                     </div>
                                 </th>
-                                <th class="h">
+                                <th class="h" *ngIf="!Columnas.includes('BANCO')">
                                     <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
                                         <div class="col-md-8">
                                             Banco
@@ -374,8 +480,8 @@
                                         </div>
                                     </div>
                                 </th>
-                                <th>Dias Vencidos</th>
-                                <th class="h">
+                                <th *ngIf="!Columnas.includes('DIAS VENC')">Dias Vencidos</th>
+                                <th *ngIf="!Columnas.includes('EDAD VENC')" class="h">
                                     <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
                                         <div class="col-md-8">
                                             E. Vencimiento
@@ -394,7 +500,7 @@
                                         </div>
                                     </div>
                                 </th>
-                                <th class="h">
+                                <th *ngIf="!Columnas.includes('SUCURSAL')" class="h">
                                     <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
                                         <div class="col-md-8">
                                             Sucursal
@@ -413,7 +519,7 @@
                                         </div>
                                     </div>
                                 </th>
-                                <th class="h">
+                                <th *ngIf="!Columnas.includes('ASESOR')" class="h">
                                     <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
                                         <div class="col-md-8">
                                             Asesor
@@ -432,7 +538,7 @@
                                         </div>
                                     </div>
                                 </th>
-                                <th class="h">
+                                <th *ngIf="!Columnas.includes('CLAS JURI')" class="h">
                                     <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
                                         <div class="col-md-8">
                                             Clas. Juridica
@@ -451,8 +557,8 @@
                                         </div>
                                     </div>
                                 </th>
-                                <th>Saldo Capital</th>
-                                <th class="h">
+                                <th *ngIf="!Columnas.includes('SALDO CAP')">Saldo Capital</th>
+                                <th *ngIf="!Columnas.includes('ANIO')" class="h">
                                     <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
                                         <div class="col-md-6">
                                             Año
@@ -471,8 +577,8 @@
                                         </div>
                                     </div>
                                 </th>
-                                <th>F. Gestión</th>
-                                <th class="h">
+                                <th *ngIf="!Columnas.includes('F GESTION')">F. Gestión</th>
+                                <th *ngIf="!Columnas.includes('F COMPRO')" class="h">
                                     <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
                                         <div class="col-md-8">
                                             F. Compromiso
@@ -497,18 +603,18 @@
                             <tr *ngFor="let cc of cuentasCobrarArray" class="align-middle" data-bs-toggle="offcanvas"
                                 data-bs-target="#offcanvasRight" style="cursor: pointer;"
                                 (click)="findCuentaCobrar(cc.numeroObligacion)">
-                                <td>{{ cc.cliente }}</td>
-                                <td>{{ cc.banco.banco }}</td>
-                                <td>{{ cc.diasVencidos }}</td>
-                                <td>{{ cc.edadVencimiento }}</td>
-                                <td>{{ cc.sede.sede }}</td>
-                                <td>{{ cc.asesorCarteraResponse.usuario.nombres }} {{
+                                <td *ngIf="!Columnas.includes('CLIENTE')">{{ cc.cliente }}</td>
+                                <td *ngIf="!Columnas.includes('BANCO')">{{ cc.banco.banco }}</td>
+                                <td *ngIf="!Columnas.includes('DIAS VENC')">{{ cc.diasVencidos }}</td>
+                                <td *ngIf="!Columnas.includes('EDAD VENC')">{{ cc.edadVencimiento }}</td>
+                                <td *ngIf="!Columnas.includes('SUCURSAL')">{{ cc.sede.sede }}</td>
+                                <td *ngIf="!Columnas.includes('ASESOR')">{{ cc.asesorCarteraResponse.usuario.nombres }} {{
                                     cc.asesorCarteraResponse.usuario.apellidos }}</td>
-                                <td>{{ cc.clasificacionJuridica }}</td>
-                                <td>{{ cc.clientes[0].saldoActual }}</td>
-                                <td>2000</td>
-                                <td>25/05/2023</td>
-                                <td>25/05/2023</td>
+                                <td *ngIf="!Columnas.includes('CLAS JURI')">{{ cc.clasificacionJuridica }}</td>
+                                <td *ngIf="!Columnas.includes('SALDO CAP')">{{ cc.clientes[0].saldoActual }}</td>
+                                <td *ngIf="!Columnas.includes('ANIO')">2000</td>
+                                <td *ngIf="!Columnas.includes('F GESTION')">25/05/2023</td>
+                                <td *ngIf="!Columnas.includes('F COMPRO')">25/05/2023</td>
                             </tr>
                         </tbody>
                     </table>
@@ -574,7 +680,7 @@
                             <div class="col-md-6">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text fw-bold">Fecha Comp</span>
-                                    <input type="date" class="form-control" [(ngModel)]="newGestion.fechaCompromiso">
+                                    <input type="date" class="form-control" [(ngModel)]="newGestion.fechaCompromiso" [max]="maxFecha()" [min]="minFecha()">
                                 </div>
                             </div>
                             <div class="col-md-6">

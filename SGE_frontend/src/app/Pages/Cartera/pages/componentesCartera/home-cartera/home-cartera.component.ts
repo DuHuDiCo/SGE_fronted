@@ -29,6 +29,21 @@ export class HomeCarteraComponent implements OnInit {
   codeudoresSelected:any[] = []
   gestiones:GestionArray[] = []
   ClasificacionArray:clasificacion[] = []
+  Columnas:string[] = []
+
+  constantes:string[] = [
+    'CLIENTE',
+    'BANCO',
+    'DIAS VENC',
+    'EDAD VENC',
+    'SUCURSAL',
+    'ASESOR',
+    'CLAS JURI',
+    'SALDO CAP',
+    'ANIO',
+    'F GESTION',
+    'F COMPRO',
+  ]
 
   // OBJETOS
   cuentaCobrarSelected:CuentasCobrarResponse = {
@@ -121,9 +136,13 @@ export class HomeCarteraComponent implements OnInit {
   isCon: boolean = false
   paginas!: Array<number>
 
+  fechaActual:Date = new Date();
+  
+
   ngOnInit(): void {
     this.getCuentasCobrar()
     this.getClasificacion()
+    this.fechaActual = new Date()
   }
 
   // TRAER CUENTAS POR COBRAR
@@ -205,93 +224,97 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   findCuentaCobrar(numeroObligacion:string){
-    this.spinnerSidebar = true
-    this.cuentaCobrarSelected = {
-      idCuentasPorCobrar: 0,
-      numeroObligacion: '',
-      cliente: '',
-      documentoCliente: '',
-      fechaCuentaCobrar: new Date,
-      fechaVencimiento: new Date,
-      tipo: '',
-      valorNotaDebito: 0,
-      valorCuota: 0,
-      valorPagos: 0,
-      nombre_usuario: '',
-      clasificacion: '',
-      vendedor: '',
-      clasificacionJuridica: '',
-      detalle: '',
-      sede: {
-        idSede: 0,
-        sede: ''
-      },
-      banco: {
-        idBanco: 0,
-        banco: ''
-      },
-      diasVencidos: 0,
-      gestion: [],
-      edadVencimiento: '',
-      condicionEspecial: '',
-      numeroCreditos: 0,
-      pagare: '',
-      moraObligatoria: 0,
-      cuotasMora: 0,
-      cuotas: 0,
-      asesorCarteraResponse: {
-        idAsesorCartera: 0,
-        usuario: {
-          idUsuario: 0,
-          username: '',
-          email: '',
-          nombres: '',
-          apellidos: '',
-          sede: '',
-          tipo_documento: '',
-          numero_documento: '',
-          celular: '',
-          fecha_nacimiento: new Date,
-          fecha_creacion: new Date,
-          status: false,
-          roles: [],
-          enabled: false,
-          authorities: [],
-          accountNonLocked: false,
-          accountNonExpired: false,
-          credentialsNonExpired: false,
-          password: ''
-        }
-      },
-      clientes: []
+    if(this.newGestion.numeroObligacion == numeroObligacion){
+      return
+    } else {
+      this.spinnerSidebar = true
+      this.cuentaCobrarSelected = {
+        idCuentasPorCobrar: 0,
+        numeroObligacion: '',
+        cliente: '',
+        documentoCliente: '',
+        fechaCuentaCobrar: new Date,
+        fechaVencimiento: new Date,
+        tipo: '',
+        valorNotaDebito: 0,
+        valorCuota: 0,
+        valorPagos: 0,
+        nombre_usuario: '',
+        clasificacion: '',
+        vendedor: '',
+        clasificacionJuridica: '',
+        detalle: '',
+        sede: {
+          idSede: 0,
+          sede: ''
+        },
+        banco: {
+          idBanco: 0,
+          banco: ''
+        },
+        diasVencidos: 0,
+        gestion: [],
+        edadVencimiento: '',
+        condicionEspecial: '',
+        numeroCreditos: 0,
+        pagare: '',
+        moraObligatoria: 0,
+        cuotasMora: 0,
+        cuotas: 0,
+        asesorCarteraResponse: {
+          idAsesorCartera: 0,
+          usuario: {
+            idUsuario: 0,
+            username: '',
+            email: '',
+            nombres: '',
+            apellidos: '',
+            sede: '',
+            tipo_documento: '',
+            numero_documento: '',
+            celular: '',
+            fecha_nacimiento: new Date,
+            fecha_creacion: new Date,
+            status: false,
+            roles: [],
+            enabled: false,
+            authorities: [],
+            accountNonLocked: false,
+            accountNonExpired: false,
+            credentialsNonExpired: false,
+            password: ''
+          }
+        },
+        clientes: []
+      }
+      this.codeudoresSelected = []
+      setTimeout(() => {
+        this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
+          (data:any) => {
+            this.cuentaCobrarSelected = data
+            this.codeudores = data.clientes
+            this.codeudores = this.codeudores.filter((c:any) => c.tipoGarante.tipoGarante != 'TITULAR')
+            this.getGestiones(numeroObligacion);
+            this.newGestion = {
+              numeroObligacion: this.newGestion.numeroObligacion,
+              fechaCompromiso: null,
+              clasificacion: null,
+              gestion: '',
+              valorCompromiso: 0,
+              contact: false,
+              detallesAdicionales: this.newGestion.detallesAdicionales
+            }
+            console.log(this.newGestion);
+            
+            if(this.cuentaCobrarSelected.documentoCliente != ''){
+              this.spinnerSidebar = false
+            }
+          }, (error:any) => {
+            console.log(error);
+          }
+        )
+      }, 2000);
     }
-    this.codeudoresSelected = []
-    setTimeout(() => {
-      this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
-        (data:any) => {
-          this.cuentaCobrarSelected = data
-          this.codeudores = data.clientes
-          this.codeudores = this.codeudores.filter((c:any) => c.tipoGarante.tipoGarante != 'TITULAR')
-          this.getGestiones(numeroObligacion);
-          this.newGestion = {
-            numeroObligacion: this.newGestion.numeroObligacion,
-            fechaCompromiso: null,
-            clasificacion: null,
-            gestion: '',
-            valorCompromiso: 0,
-            contact: false,
-            detallesAdicionales: this.newGestion.detallesAdicionales
-          }
-          console.log(this.newGestion);
-          
-          if(this.cuentaCobrarSelected.documentoCliente != ''){
-            this.spinnerSidebar = false
-          }
-        }, (error:any) => {
-          console.log(error);
-        }
-      )
-    }, 2000);
     
   }
 
@@ -401,6 +424,7 @@ export class HomeCarteraComponent implements OnInit {
                 contact: false,
                 detallesAdicionales: this.newGestion.detallesAdicionales
               }
+              $('#modalGestion').modal('hide');
             }, (error:any) => {
               Swal.fire({
                 icon: 'error',
@@ -463,4 +487,27 @@ export class HomeCarteraComponent implements OnInit {
     this.modalGestiones = false
   }
 
+  ocultarColumnas(columna:string){
+    if(this.Columnas.includes(columna)){
+      var position = this.Columnas.indexOf(columna)
+      this.Columnas.splice(position, 1)
+    } else {
+      this.Columnas.push(columna)
+    }
+  }
+
+  maxFecha(): string{
+    var fechaMax = new Date();
+
+    fechaMax.setDate(this.fechaActual.getDate() + 30)
+    var fechaForm = fechaMax.toISOString().split('T')[0]
+
+    return fechaForm;
+  }
+
+  minFecha(): string{
+    var fechaMin = new Date();
+    var fechaForm = fechaMin.toISOString().split('T')[0]
+    return fechaForm;
+  }
 }
