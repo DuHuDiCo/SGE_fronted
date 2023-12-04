@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './componentesGenerales/login/login.component';
 import { OpcionesComponent } from './componentesGenerales/opciones/opciones.component';
@@ -75,6 +75,7 @@ import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsi
 import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/rankings/rankings/rankings.component';
 import { HomeCarteraComponent } from './Pages/Cartera/pages/componentesCartera/home-cartera/home-cartera.component';
 import { ClasificacionComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion/clasificacion.component';
+import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/uploads-files/uploads-files.component';
 
 
 
@@ -118,6 +119,10 @@ const routes: Routes = [
         path:"clasificacion",
         component:ClasificacionComponent
       },
+      {
+        path: "upload-data",
+        component: UploadsFilesComponent
+      }
     ]
   },
   {
