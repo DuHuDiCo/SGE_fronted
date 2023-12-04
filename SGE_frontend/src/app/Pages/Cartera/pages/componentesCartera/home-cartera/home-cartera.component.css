@@ -66,6 +66,18 @@ label.btn.btn-outline-dark{
 
 }
 
+.sticky {
+  position: fixed;
+  top: 0;
+  width: auto;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  z-index: 1000;
+  background-color: white;
+}
+
+
 .tituloCard{
   color: white;
   background-color: #b72e3b;

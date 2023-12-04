@@ -1,9 +1,28 @@
 export type Gestion = {
   numeroObligacion: string,
-  fechaCompromiso: Date | null,
-  clasificacion: string | null,
+  clasificacion: {
+    tipoClasificacion: string | null,
+    tarea: {
+      detalleTarea: string,
+      fechaFinTarea: Date,
+      clasificacion: string | null
+    },
+    nota: {
+      detalle: string
+    },
+    acuerdoPago: {
+      detalle: string,
+      valorCuotaMensual: 0,
+      tipoAcuerdo: string,
+      valorTotalAcuerdo: 0,
+      valorInteresesMora: 0,
+      honoriarioAcuerdo: 0,
+      fechaCompromiso: Date,
+      cuotasList: CuotaList[],
+      username: string
+    }
+  },
   gestion: string,
-  valorCompromiso: 0,
   contact: boolean,
   detallesAdicionales: string
 }
@@ -99,4 +118,14 @@ export type GestionArray = {
     cuotasMora: number,
     cuotas: number
   }
+}
+
+export type CuotaList = {
+  idCuota: 0,
+  numeroCuota: 0,
+  fechaVencimiento: Date,
+  valorCuota: 0,
+  capitalCuota: 0,
+  honorarios: 0,
+  cumplio: boolean
 }
