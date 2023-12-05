@@ -862,11 +862,11 @@
                     </div>
                     <select class="form-select mt-3 mb-3" [(ngModel)]="newGestion.clasificacion.tipoClasificacion">
                         <option [value]="null">Seleccione Una Clasificación</option>
-                        <option *ngFor="let c of ClasificacionArray" [value]="c.tipoClasificacion">{{ c.tipoClasificacion }}</option>
+                        <option *ngFor="let c of ClasificacionArray" [value]="c.clasificacion">{{ c.clasificacion }}</option>
                     </select>
 
                     <!-- ACUERDO PAGO -->
-                    <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'Acuerdo de Pago' || newGestion.clasificacion.tipoClasificacion == 'Abonando/Fecha'">
+                    <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'Acuerdo de Pago'">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group input-group-sm mb-3">
@@ -913,7 +913,7 @@
                             <div class="col-md-6">
                                 <select class="form-select mb-3" [(ngModel)]="newGestion.clasificacion.tarea.clasificacion">
                                     <option [value]="null">Seleccione Una Clasificación</option>
-                                    <option></option>
+                                    <option *ngFor="let c of clasificacionesT">{{ c.clasificacionTarea }}</option>
                                 </select>
                             </div>
                         </div>
@@ -978,10 +978,8 @@
                                     <th>{{ i + 1 }}</th>
                                     <td>{{ g.asesorCartera }}</td>
                                     <td>{{ g.fechaGestion | date:'medium' }}</td>
-                                    <td>{{ g.fechaCompromiso | date:'shortDate': "MMM dd, yyyy" }}</td>
-                                    <td>{{ g.clasificacion.tipoClasificacion }}</td>
-                                    <td>{{ g.valorCompromiso }}</td>
-                                    <td>{{ g.gestion }}</td>
+                                    <td>{{ g.clasificacion.clasificacion }}</td>
+                                    <td>{{ g.detallesGestion }}</td>
                                 </tr>
                             </tbody>
                         </table>

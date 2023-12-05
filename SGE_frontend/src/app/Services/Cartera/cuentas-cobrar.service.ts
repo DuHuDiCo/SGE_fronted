@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Tarea, TareaUpdate } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { Gestion } from 'src/app/Types/Cartera/Gestion/Gestion';
 import baseUrl from 'src/app/utils/helper';
@@ -55,5 +56,28 @@ export class CuentasCobrarService {
   getLastDatoAdicional(numeroObligacion:string){
     return this.http.get(`http://192.168.1.6:8021/api/v1/gestiones/getLastDatoAdicionalGestion/${numeroObligacion}`)
   }
+
+  // CLASIFICACION TAREA
+  getTareas(){
+    return this.http.get(`http://192.168.1.6:8021/api/v1/clasificacionTarea/getClasificacionesTarea`)
+  }
+
+  tareasById(id:number){
+    return this.http.get(`http://192.168.1.6:8021/api/v1/clasificacionTarea/getClasificacionTareaById/${id}`)
+  }
+
+  saveTareas(tarea:Tarea){
+    return this.http.post(`http://192.168.1.6:8021/api/v1/clasificacionTarea/saveClasificacionTarea`, tarea)
+  }
+
+  updateTarea(tarea:TareaUpdate){
+    return this.http.put(`http://192.168.1.6:8021/api/v1/clasificacionTarea/actualizarClasificacionTarea`, tarea)
+  }
+
+  deleteTarea(id:number){
+    return this.http.delete(`http://192.168.1.6:8021/api/v1/clasificacionTarea/eliminarClasificacionTarea/${id}`)
+  }
+
+
 
 }

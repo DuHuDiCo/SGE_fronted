@@ -75,6 +75,7 @@ import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsi
 import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/rankings/rankings/rankings.component';
 import { HomeCarteraComponent } from './Pages/Cartera/pages/componentesCartera/home-cartera/home-cartera.component';
 import { ClasificacionComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion/clasificacion.component';
+import { ClasificacionTareaComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion-tarea/clasificacion-tarea.component';
 
 
 
@@ -117,6 +118,10 @@ const routes: Routes = [
       {
         path:"clasificacion",
         component:ClasificacionComponent
+      },
+      {
+        path:"clasificacion-tarea",
+        component:ClasificacionTareaComponent
       },
     ]
   },

@@ -12,11 +12,11 @@ export type Gestion = {
     },
     acuerdoPago: {
       detalle: string,
-      valorCuotaMensual: 0,
+      valorCuotaMensual: number,
       tipoAcuerdo: string,
-      valorTotalAcuerdo: 0,
-      valorInteresesMora: 0,
-      honoriarioAcuerdo: 0,
+      valorTotalAcuerdo: number,
+      valorInteresesMora: number,
+      honoriarioAcuerdo: number,
       fechaCompromiso: Date,
       cuotasList: CuotaList[],
       username: string
@@ -30,25 +30,13 @@ export type Gestion = {
 export type GestionArray = {
   idGestion: number,
   numeroObligacion: string,
-  numeroDoc: string,
-  nombreCliente: string,
   fechaGestion: Date,
-  fechaCompromiso: Date,
-  gestion: string,
-  isContacted: boolean,
-  valorCompromiso: number,
+  detallesGestion: string,
+  detallesAdicionales: string,
   asesorCartera: string,
-  banco: {
-    idBanco: number,
-    banco: string
-  },
   clasificacion: {
-    idClasificacion: number,
-    tipoClasificacion: string
-  },
-  sede: {
-    idSede: number,
-    sede: string
+    idClasificacionGestion: number,
+    clasificacion: string
   },
   cpc: {
     idCuentasPorCobrar: number,
@@ -78,30 +66,20 @@ export type GestionArray = {
       {
         idGestion: number,
         numeroObligacion: string,
-        numeroDoc: string,
-        nombreCliente: string,
         fechaGestion: Date,
-        fechaCompromiso: Date,
-        gestion: string,
-        isContacted: boolean,
-        valorCompromiso: number,
-        datosAdicionales: string,
-        gestionLlamada: string,
+        detallesGestion: string,
+        detallesAdicionales: string,
         asesorCartera: {
           idAsesorCartera: number,
           usuarioId: number
         },
-        banco: {
-          idBanco: number,
-          banco: string
+        clasificacionGestion: {
+          idClasificacionGestion: number,
+          clasificacion: string
         },
         clasificacion: {
-          idClasificacion: number,
-          tipoClasificacion: string
-        },
-        sede: {
-          idSede: number,
-          sede: string
+          idClasificacionGestion: number,
+          clasificacion: string
         }
       }
     ],
@@ -121,11 +99,11 @@ export type GestionArray = {
 }
 
 export type CuotaList = {
-  idCuota: 0,
-  numeroCuota: 0,
+  idCuota: number,
+  numeroCuota: number,
   fechaVencimiento: Date,
-  valorCuota: 0,
-  capitalCuota: 0,
-  honorarios: 0,
+  valorCuota: number,
+  capitalCuota: number,
+  honorarios: number,
   cumplio: boolean
 }
