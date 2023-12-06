@@ -6,10 +6,10 @@ export type Gestion = {
       detalleTarea: string,
       fechaFinTarea: Date,
       clasificacion: string | null
-    },
+    } | null,
     nota: {
       detalle: string
-    },
+    } | null,
     acuerdoPago: {
       detalle: string,
       valorCuotaMensual: number,
@@ -20,7 +20,7 @@ export type Gestion = {
       fechaCompromiso: Date,
       cuotasList: CuotaList[],
       username: string
-    }
+    } | null
   },
   gestion: string,
   contact: boolean,
