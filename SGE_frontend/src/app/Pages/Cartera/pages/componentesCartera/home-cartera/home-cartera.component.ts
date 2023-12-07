@@ -4,7 +4,7 @@ import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.se
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Tarea } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
-import { CuentasCobrarResponse } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
+import { CuentaCobrarCalculate, CuentasCobrarResponse } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
 import { Gestion, GestionArray } from 'src/app/Types/Cartera/Gestion/Gestion';
 import Swal from 'sweetalert2';
 
@@ -105,7 +105,8 @@ export class HomeCarteraComponent implements OnInit {
         password: ''
       }
     },
-    clientes: []
+    clientes: [],
+    totalObligatoria: 0
   }
 
   newGestion:Gestion = {
@@ -146,6 +147,15 @@ export class HomeCarteraComponent implements OnInit {
       username: ''
   }
 
+  // CUENTAS COBRAR CALCULATE
+  cuentasCalcular:CuentaCobrarCalculate = {
+    numeroObligacion: '',
+    valorTotal: 0,
+    moraObligatoria: 0,
+    fechaVencimiento: new Date,
+    username: ''
+  }
+
   // PARAMETROS PARA EL SERVICE
   //TODO:CAMBIAR A 0 CUANDO CORRIJAN EL ARCHIVO
   page:number = 1;
@@ -157,7 +167,9 @@ export class HomeCarteraComponent implements OnInit {
   spinnerSidebar:boolean = true
   gestionButton:boolean = false
   modalGestiones:boolean = false
+
   isSticky = false;
+  col:boolean = true;
 
   numeroPages: number = 0
   last: boolean = false
@@ -256,6 +268,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   findCuentaCobrar(numeroObligacion:string){
+    this.col = true
     if(this.newGestion.numeroObligacion == numeroObligacion){
       return
     } else {
@@ -291,6 +304,7 @@ export class HomeCarteraComponent implements OnInit {
         numeroCreditos: 0,
         pagare: '',
         moraObligatoria: 0,
+        totalObligatoria: 0,
         cuotasMora: 0,
         cuotas: 0,
         asesorCarteraResponse: {
@@ -327,6 +341,7 @@ export class HomeCarteraComponent implements OnInit {
             this.codeudores = data.clientes
             this.codeudores = this.codeudores.filter((c:any) => c.tipoGarante.tipoGarante != 'TITULAR')
             this.getGestiones(numeroObligacion);
+            this.cuentasCalcular.numeroObligacion = numeroObligacion
             this.newGestion = {
               numeroObligacion: this.newGestion.numeroObligacion,
               clasificacion: {
@@ -535,6 +550,105 @@ export class HomeCarteraComponent implements OnInit {
     // })
     
   }
+
+  mostrarOffcanvas(){
+    if(this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Elija Una Fecha de Compromiso',
+        timer: 3000
+      })
+      return
+    }
+    if(this.acuerdo.valorCuotaMensual == 0 || this.acuerdo.valorCuotaMensual == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite Un Valor De Cuota Mensual',
+        timer: 3000
+      })
+      return
+    }
+    if(this.acuerdo.tipoAcuerdo.trim() == '' || this.acuerdo.tipoAcuerdo.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Elija Un Tipo de Acuerdo',
+        timer: 3000
+      })
+      return
+    }
+
+
+
+
+    $('#modalGestion').modal('hide');
+    $('#offcanvasTop').offcanvas('show');
+  }
+
+  mostrarModalGestion(){
+    $('#modalGestion').modal('show');
+    $('#offcanvasTop').offcanvas('hide');
+  }
+
+  calcular(){
+    if(this.cuentaCobrarSelected.totalObligatoria == 0 || this.cuentaCobrarSelected.totalObligatoria == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite El Valor Total',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cuentaCobrarSelected.moraObligatoria == 0 || this.cuentaCobrarSelected.moraObligatoria == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite La Mora Obligatoria',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.cuentaCobrarSelected.fechaVencimiento instanceof Date || this.cuentaCobrarSelected.fechaVencimiento == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Elija Una Fecha De Vencimiento',
+        timer: 3000
+      })
+      return
+    }
+
+    this.cuentasCalcular.valorTotal = this.cuentaCobrarSelected.totalObligatoria
+    this.cuentasCalcular.moraObligatoria = this.cuentaCobrarSelected.moraObligatoria
+    this.cuentasCalcular.fechaVencimiento = this.cuentaCobrarSelected.fechaVencimiento
+    this.cuentasCalcular.username = 'Diana1975'
+    
+    this.cuentasCobrar.updateCuentaCobrar(this.cuentasCalcular).subscribe(
+      (data:any) => {
+        this.cuentaCobrarSelected = data
+          Swal.fire({
+            icon: 'success',
+            title: 'Datos Guardados',
+            text: 'Datos Confirmados Con Éxito',
+            timer: 3000
+          })
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+    this.col = false
+    this.mostrarModalGestion()
+  }
+
+  calcularIntMora(){
+
+  }
+  
 
   // CLASIFICACION
   getClasificacion(){

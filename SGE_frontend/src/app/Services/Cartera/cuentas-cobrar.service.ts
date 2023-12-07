@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Tarea, TareaUpdate } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
+import { CuentaCobrarCalculate } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
 import { Gestion } from 'src/app/Types/Cartera/Gestion/Gestion';
 import baseUrl from 'src/app/utils/helper';
 
@@ -23,6 +24,10 @@ export class CuentasCobrarService {
 
   getCuentaByObligacion(numeroObligacion:string){
     return this.http.get(`http://192.168.1.6:8021/api/v1/cuentas/getCuentaCobrarByNumeroObligacion?numeroObligacion=${numeroObligacion}`)
+  }
+
+  updateCuentaCobrar(cuentaCobrar:CuentaCobrarCalculate){
+    return this.http.put(`http://192.168.1.6:8021/api/v1/cuentas/updateCuentaCobrarToCalculate`, cuentaCobrar)
   }
 
   // CLASIFICACIONES
