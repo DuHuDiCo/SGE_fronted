@@ -201,7 +201,7 @@
                                                     <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Telefonos</span>
-                                                            <select class="form-select"
+                                                            <select class="form-select" ngxClipboard [cbContent]="cuentaCobrarSelected.clientes[0].telefonos[0].numero"
                                                                 [ngModel]="cuentaCobrarSelected.clientes[0].telefonos[0].numero">
                                                                 <option
                                                                     *ngFor="let t of cuentaCobrarSelected.clientes[0].telefonos">

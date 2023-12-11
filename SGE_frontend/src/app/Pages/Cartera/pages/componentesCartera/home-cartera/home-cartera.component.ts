@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+
 import { Subscription } from 'rxjs';
 import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
@@ -780,4 +781,6 @@ export class HomeCarteraComponent implements OnInit {
       }
     )
   }
+
+  
 }
