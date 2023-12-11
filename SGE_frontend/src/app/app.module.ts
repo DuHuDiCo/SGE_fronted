@@ -105,7 +105,7 @@ import { ClasificacionComponent } from './Pages/Cartera/pages/componentesCartera
 import { ClasificacionTareaComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion-tarea/clasificacion-tarea.component';
 
 import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/uploads-files/uploads-files.component';
-import { ClipboardModule } from 'ngx-clipboard';
+
 
 
 
@@ -233,7 +233,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     HttpClientModule,
     AgregarClienteModule,
     NgxPaginationModule,
-    ClipboardModule
+    
 
   ],
 
