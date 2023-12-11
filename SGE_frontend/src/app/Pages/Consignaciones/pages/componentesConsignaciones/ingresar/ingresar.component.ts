@@ -68,8 +68,8 @@ export class IngresarComponent implements OnInit {
   plataforma: any[] = []
 
   guardarConsignacion() {
-    const recibo = this.consignacion.numeroRecibo.trim()
-    if (this.consignacion.numeroRecibo.trim() == '' || isNaN(parseInt(recibo))) {
+    const recibo = this.consignacion.numeroRecibo.replace(/\s+/g, '')
+    if (recibo.trim() == '' || isNaN(parseInt(recibo))) {
       Swal.fire('Error', 'Debe de Ingresar el Número del Recibo', 'error')
       return
     }
@@ -214,8 +214,10 @@ export class IngresarComponent implements OnInit {
   }
 
   confirmarObservacion(){
+    this.crearConsignacion = true
     this.ingresarService.saveConsignacion(this.consignacion).subscribe(
       (data: any) => {
+        this.crearConsignacion = false
         Swal.fire('Datos Guardados', 'Su Consignación se ha Guardado con Éxito', 'success')
         this.consignacion = {
           idConsignacion: 0,
@@ -234,6 +236,7 @@ export class IngresarComponent implements OnInit {
 
       }, (error: any) => {
         Swal.fire('Error', 'Error al Guardar La Consignación', 'error')
+        this.crearConsignacion = false
       }
     )
   }

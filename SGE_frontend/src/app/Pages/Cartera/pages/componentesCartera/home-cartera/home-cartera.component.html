@@ -172,7 +172,7 @@
                                                     <div class="col-md-4">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Cédula</span>
-                                                            <input [ngModel]="cuentaCobrarSelected.documentoCliente"
+                                                            <input [(ngModel)]="cuentaCobrarSelected.documentoCliente"
                                                                 type="text" class="form-control" disabled>
                                                         </div>
                                                     </div>
@@ -180,7 +180,7 @@
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Nombre</span>
                                                             <input type="text" class="form-control"
-                                                                [ngModel]="cuentaCobrarSelected.clientes[0].nombreTitular"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].nombreTitular"
                                                                 disabled>
                                                         </div>
                                                     </div>
@@ -191,10 +191,10 @@
                                                         <div class="input-group input-group-sm">
                                                             <span class="input-group-text fw-bold">Lugar/Res</span>
                                                             <input type="text"
-                                                                [ngModel]="cuentaCobrarSelected.clientes[0].municipio"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].municipio"
                                                                 class="form-control" disabled>
                                                             <input type="text"
-                                                                [ngModel]="cuentaCobrarSelected.clientes[0].departamento"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].departamento"
                                                                 class="form-control" disabled>
                                                         </div>
                                                     </div>
@@ -202,7 +202,7 @@
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Telefonos</span>
                                                             <select class="form-select"
-                                                                [ngModel]="cuentaCobrarSelected.clientes[0].telefonos[0].numero">
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].telefonos[0].numero">
                                                                 <option
                                                                     *ngFor="let t of cuentaCobrarSelected.clientes[0].telefonos">
                                                                     {{ t.numero }}</option>
@@ -215,7 +215,7 @@
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Dirección</span>
                                                             <input type="text" class="form-control"
-                                                                [ngModel]="cuentaCobrarSelected.clientes[0].direcciones[0].direccion"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].direcciones[0].direccion"
                                                                 disabled>
                                                         </div>
                                                     </div>
@@ -235,14 +235,14 @@
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Vendedor</span>
                                                             <input type="text" class="form-control"
-                                                                [ngModel]="cuentaCobrarSelected.vendedor" disabled>
+                                                                [(ngModel)]="cuentaCobrarSelected.vendedor" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Clasificación</span>
                                                             <input type="text" class="form-control"
-                                                                [ngModel]="cuentaCobrarSelected.clasificacion" disabled>
+                                                                [(ngModel)]="cuentaCobrarSelected.clasificacion" disabled>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -251,7 +251,7 @@
                                                         <div class="input-group input-group-sm">
                                                             <span class="input-group-text fw-bold">Fec/Credito</span>
                                                             <input type="date"
-                                                                [ngModel]="cuentaCobrarSelected.fechaCuentaCobrar"
+                                                                [(ngModel)]="cuentaCobrarSelected.fechaCuentaCobrar"
                                                                 class="form-control" disabled>
                                                         </div>
                                                     </div>
@@ -259,7 +259,7 @@
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Fec/Venc</span>
                                                             <input type="date" class="form-control"
-                                                                [ngModel]="cuentaCobrarSelected.fechaVencimiento"
+                                                                [(ngModel)]="cuentaCobrarSelected.fechaVencimiento"
                                                                 disabled>
                                                         </div>
                                                     </div>
@@ -291,7 +291,7 @@
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">S.Total</span>
                                                             <input type="number"
-                                                                [ngModel]="cuentaCobrarSelected.clientes[0].saldoActual"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].saldoActual"
                                                                 class="form-control" disabled>
                                                         </div>
                                                     </div>
@@ -299,7 +299,7 @@
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">S.Mora</span>
                                                             <input type="text"
-                                                                [ngModel]="cuentaCobrarSelected.moraObligatoria"
+                                                                [(ngModel)]="cuentaCobrarSelected.moraObligatoria"
                                                                 class="form-control" disabled>
                                                         </div>
                                                     </div>
@@ -309,10 +309,10 @@
                                                         <div class="input-group input-group-sm">
                                                             <span class="input-group-text fw-bold">Mora/Venc</span>
                                                             <input type="text"
-                                                                [ngModel]="cuentaCobrarSelected.edadVencimiento"
+                                                                [(ngModel)]="cuentaCobrarSelected.edadVencimiento"
                                                                 class="form-control" disabled>
                                                             <input type="text"
-                                                                [ngModel]="cuentaCobrarSelected.diasVencidos"
+                                                                [(ngModel)]="cuentaCobrarSelected.diasVencidos"
                                                                 class="form-control" disabled>
                                                         </div>
                                                     </div>
@@ -320,13 +320,13 @@
                                                     <div class="col-md-6">
                                                         <div class="input-group input-group-sm">
                                                             <span class="input-group-text fw-bold">Cuotas</span>
-                                                            <input type="text" [ngModel]="cuentaCobrarSelected.cuotas"
+                                                            <input type="text" [(ngModel)]="cuentaCobrarSelected.cuotas"
                                                                 class="form-control" disabled>
                                                             <input type="text"
-                                                                [ngModel]="cuentaCobrarSelected.cuotas - cuentaCobrarSelected.cuotasMora"
+                                                                [(ngModel)]="cuentaCobrarSelected.cuotas - cuentaCobrarSelected.cuotasMora"
                                                                 class="form-control" disabled>
                                                             <input type="text"
-                                                                [ngModel]="cuentaCobrarSelected.cuotasMora"
+                                                                [(ngModel)]="cuentaCobrarSelected.cuotasMora"
                                                                 class="form-control" disabled>
                                                         </div>
                                                     </div>
@@ -345,10 +345,10 @@
                                                         <div class="input-group input-group-sm">
                                                             <span class="input-group-text fw-bold">Sede</span>
                                                             <input type="text"
-                                                                [ngModel]="cuentaCobrarSelected.sede.sede"
+                                                                [(ngModel)]="cuentaCobrarSelected.sede.sede"
                                                                 class="form-control" disabled>
                                                             <input type="text"
-                                                                [ngModel]="cuentaCobrarSelected.banco.banco"
+                                                                [(ngModel)]="cuentaCobrarSelected.banco.banco"
                                                                 class="form-control" disabled>
                                                         </div>
                                                     </div>
@@ -370,7 +370,7 @@
                                             <div class="card-body">
                                                 <div class="form-floating">
                                                     <textarea class="form-control"
-                                                        [ngModel]="cuentaCobrarSelected.clientes[0].descripcionDetallada"
+                                                        [(ngModel)]="cuentaCobrarSelected.clientes[0].descripcionDetallada"
                                                         style="height: 140px" disabled></textarea>
                                                     <label class="fw-bold">Referencia</label>
                                                 </div>
@@ -949,13 +949,13 @@
                                 <div class="col-md-6">
                                     <div class="input-group input-group-sm mb-3">
                                         <span class="input-group-text fw-bold">Mora/Total</span>
-                                        <input type="text" class="form-control" value="TOTAL" disabled>
+                                        <input [(ngModel)]="acuerdoCal.tipoAcuerdo" type="text" class="form-control" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group input-group-sm mb-3">
                                         <span class="input-group-text fw-bold">Valor Acuerdo</span>
-                                        <input type="number" class="form-control" value="" disabled>
+                                        <input [(ngModel)]="acuerdoCal.valorTotalAcuerdo" type="number" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -963,13 +963,13 @@
                                 <div class="col-md-6">
                                     <div class="input-group input-group-sm mb-3">
                                         <span class="input-group-text fw-bold">Int Mora</span>
-                                        <input type="number" class="form-control" value="TOTAL" disabled>
+                                        <input [(ngModel)]="acuerdoCal.valorInteresesMora" type="number" class="form-control" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group input-group-sm mb-3">
                                         <span class="input-group-text fw-bold">Valor Cuota Mes</span>
-                                        <input type="number" class="form-control" value="9999" disabled>
+                                        <input [(ngModel)]="acuerdoCal.valorCuotaMensual" type="number" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -977,13 +977,13 @@
                                 <div class="col-md-6">
                                     <div class="input-group input-group-sm mb-3">
                                         <span class="input-group-text fw-bold">Fecha Corte</span>
-                                        <input type="number" class="form-control" value="2023/12/07" disabled>
+                                        <input [(ngModel)]="fechaCorte" type="date" class="form-control" readonly>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'" class="col-md-6">
                                     <div class="input-group input-group-sm mb-3">
                                         <span class="input-group-text fw-bold">Honorarios/Otros</span>
-                                        <input type="number" class="form-control" value="99999" disabled>
+                                        <input [(ngModel)]="acuerdoCal.honoriarioAcuerdo" type="number" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -1001,8 +1001,8 @@
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <tr>
-                                        <th>Cuota 1</th>
+                                      <tr *ngFor="let c of cuotas; let i = index">
+                                        <th>Cuota {{ i + 1 }}</th>
                                       </tr>
                                     </tbody>
                                   </table>

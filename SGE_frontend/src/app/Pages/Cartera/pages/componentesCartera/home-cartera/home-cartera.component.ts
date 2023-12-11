@@ -20,20 +20,19 @@ export class HomeCarteraComponent implements OnInit {
   private proSubscriptionNext!: Subscription;
   private proSubscriptionBack!: Subscription;
 
-  constructor(private cuentasCobrar:CuentasCobrarService, private authService:AuthenticationService) { }
+  constructor(private cuentasCobrar: CuentasCobrarService, private authService: AuthenticationService) { }
 
   // ARRAY CUENTAS POR COBRAR
-  cuentasCobrarArray:CuentasCobrarResponse[] = []
+  cuentasCobrarArray: CuentasCobrarResponse[] = []
 
   // ARRAYS
-  codeudores:any[] = []
-  codeudoresSelected:any[] = []
-  gestiones:any[] = []
-  ClasificacionArray:clasificacion[] = []
-  Columnas:string[] = []
-  clasificacionesT:Tarea[] = []
-
-  constantes:string[] = [
+  codeudores: any[] = []
+  codeudoresSelected: any[] = []
+  gestiones: any[] = []
+  ClasificacionArray: clasificacion[] = []
+  Columnas: string[] = []
+  clasificacionesT: Tarea[] = []
+  constantes: string[] = [
     'CLIENTE',
     'BANCO',
     'DIAS VENC',
@@ -46,9 +45,10 @@ export class HomeCarteraComponent implements OnInit {
     'F GESTION',
     'F COMPRO',
   ]
+  cuotas!: Array<number>
 
   // OBJETOS
-  cuentaCobrarSelected:CuentasCobrarResponse = {
+  cuentaCobrarSelected: any = {
     idCuentasPorCobrar: 0,
     numeroObligacion: '',
     cliente: '',
@@ -109,7 +109,7 @@ export class HomeCarteraComponent implements OnInit {
     totalObligatoria: 0
   }
 
-  newGestion:Gestion = {
+  newGestion: Gestion = {
     numeroObligacion: '',
     clasificacion: {
       tipoClasificacion: null,
@@ -123,32 +123,40 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   // NOTA
-  nota:any = {
+  nota: any = {
     detalle: ''
   }
 
   // TAREA
-  tarea:any = {
+  tarea: any = {
     detalleTarea: '',
     fechaFinTarea: new Date,
     clasificacion: ''
   }
 
   // ACUERDO DE PAGO
-  acuerdo:any = {
-      detalle: '',
-      valorCuotaMensual: 0,
-      tipoAcuerdo: '',
-      valorTotalAcuerdo: 0,
-      valorInteresesMora: 0,
-      honoriarioAcuerdo: 0,
-      fechaCompromiso: new Date,
-      cuotasList: [],
-      username: ''
+  acuerdo: any = {
+    detalle: '',
+    valorCuotaMensual: 0,
+    tipoAcuerdo: '',
+    valorTotalAcuerdo: 0,
+    valorInteresesMora: 0,
+    honoriarioAcuerdo: 0,
+    fechaCompromiso: new Date,
+    cuotasList: [],
+    username: ''
+  }
+
+  acuerdoCal: any = {
+    tipoAcuerdo: '',
+    valorTotalAcuerdo: 0,
+    valorInteresesMora: 0,
+    valorCuotaMensual: 0,
+    honoriarioAcuerdo: 0,
   }
 
   // CUENTAS COBRAR CALCULATE
-  cuentasCalcular:CuentaCobrarCalculate = {
+  cuentasCalcular: CuentaCobrarCalculate = {
     numeroObligacion: '',
     valorTotal: 0,
     moraObligatoria: 0,
@@ -158,18 +166,18 @@ export class HomeCarteraComponent implements OnInit {
 
   // PARAMETROS PARA EL SERVICE
   //TODO:CAMBIAR A 0 CUANDO CORRIJAN EL ARCHIVO
-  page:number = 1;
-  size:number = 10
+  page: number = 1;
+  size: number = 10
   fechaCreacion: string = 'fecha_creacion'
 
   // SPINNER DE LA TABLA
-  spinner:boolean = true
-  spinnerSidebar:boolean = true
-  gestionButton:boolean = false
-  modalGestiones:boolean = false
+  spinner: boolean = true
+  spinnerSidebar: boolean = true
+  gestionButton: boolean = false
+  modalGestiones: boolean = false
 
   isSticky = false;
-  col:boolean = true;
+  col: boolean = true;
 
   numeroPages: number = 0
   last: boolean = false
@@ -179,14 +187,19 @@ export class HomeCarteraComponent implements OnInit {
   isCon: boolean = false
   paginas!: Array<number>
 
-  fechaActual:Date = new Date();
-  
+  fechaActual: Date = new Date();
+  fechaCorte: string = '';
+
+  constanteHonorarios: number = 0.234
+  totalCuotas: number = 0
+
 
   ngOnInit(): void {
     this.getCuentasCobrar()
     this.getClasificacion()
     this.getClasificacionTarea()
     this.fechaActual = new Date()
+    this.fechaCorte = this.obtenerFechaActual()
   }
 
   // TRAER CUENTAS POR COBRAR
@@ -199,7 +212,7 @@ export class HomeCarteraComponent implements OnInit {
     //   }
 
     this.cuentasCobrar.getCuentasCobrar('Diana1975', this.page, this.size, this.fechaCreacion).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.paginas = new Array(data.totalPages)
         this.cuentasCobrarArray = data.content
         this.last = data.last
@@ -207,14 +220,14 @@ export class HomeCarteraComponent implements OnInit {
         this.numeroPages = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
         console.log(data);
-        if(this.cuentasCobrarArray.length == 0){
+        if (this.cuentasCobrarArray.length == 0) {
           this.spinner = true
         } else {
           this.spinner = false
         }
 
         console.log(this.cuentasCobrarArray);
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
@@ -223,16 +236,16 @@ export class HomeCarteraComponent implements OnInit {
   //PAGINA ANTERIOR
   back() {
     if (!this.first) {
-        this.page--
-        this.spinner = true
-        this.getCuentasCobrar()
-        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
-          (con: boolean) => {
-            this.isCon = con;
-            this.cont = this.cont - this.size
-            this.proSubscriptionBack.unsubscribe()
-          }
-        );
+      this.page--
+      this.spinner = true
+      this.getCuentasCobrar()
+      this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.cont - this.size
+          this.proSubscriptionBack.unsubscribe()
+        }
+      );
 
     }
   }
@@ -240,16 +253,16 @@ export class HomeCarteraComponent implements OnInit {
   // SIGUIENTE PAGINA
   next() {
     if (!this.last) {
-        this.page++
-        this.spinner = true
-        this.getCuentasCobrar()
-        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
-          (con: boolean) => {
-            this.isCon = con;
-            this.cont = this.cont + this.size
-            this.proSubscriptionBack.unsubscribe()
-          }
-        );
+      this.page++
+      this.spinner = true
+      this.getCuentasCobrar()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.cont + this.size
+          this.proSubscriptionBack.unsubscribe()
+        }
+      );
     }
   }
 
@@ -258,18 +271,18 @@ export class HomeCarteraComponent implements OnInit {
     this.page = page
     this.spinner = true
     this.getCuentasCobrar()
-      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
-        (con: boolean) => {
-          this.isCon = con;
-          this.cont = this.initialCon + (this.page * this.size);
-          this.proSubscriptionNext.unsubscribe()
-        }
-      );
+    this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+      (con: boolean) => {
+        this.isCon = con;
+        this.cont = this.initialCon + (this.page * this.size);
+        this.proSubscriptionNext.unsubscribe()
+      }
+    );
   }
 
-  findCuentaCobrar(numeroObligacion:string){
+  findCuentaCobrar(numeroObligacion: string) {
     this.col = true
-    if(this.newGestion.numeroObligacion == numeroObligacion){
+    if (this.newGestion.numeroObligacion == numeroObligacion) {
       return
     } else {
       this.spinnerSidebar = true
@@ -336,10 +349,10 @@ export class HomeCarteraComponent implements OnInit {
       this.codeudoresSelected = []
       setTimeout(() => {
         this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
-          (data:any) => {
+          (data: any) => {
             this.cuentaCobrarSelected = data
             this.codeudores = data.clientes
-            this.codeudores = this.codeudores.filter((c:any) => c.tipoGarante.tipoGarante != 'TITULAR')
+            this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
             this.getGestiones(numeroObligacion);
             this.cuentasCalcular.numeroObligacion = numeroObligacion
             this.newGestion = {
@@ -355,52 +368,52 @@ export class HomeCarteraComponent implements OnInit {
               detallesAdicionales: this.newGestion.detallesAdicionales
             }
             console.log(this.newGestion);
-            
-            if(this.cuentaCobrarSelected.documentoCliente != ''){
+
+            if (this.cuentaCobrarSelected.documentoCliente != '') {
               this.spinnerSidebar = false
             }
-          }, (error:any) => {
+          }, (error: any) => {
             console.log(error);
           }
         )
       }, 2000);
     }
-    
+
   }
 
-  findCodeudores(event:any){
-    this.codeudoresSelected = this.codeudores.filter((c:any) => c.numeroDocumento == event.target.value)
+  findCodeudores(event: any) {
+    this.codeudoresSelected = this.codeudores.filter((c: any) => c.numeroDocumento == event.target.value)
     console.log(this.codeudoresSelected);
   }
 
   // GESTIONES
-  getGestiones(numeroObligacion:string){
+  getGestiones(numeroObligacion: string) {
     this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.gestiones = data
         this.newGestion.numeroObligacion = numeroObligacion
         this.getLastDato(numeroObligacion)
         console.log(data);
-        
-      }, (error:any) => {
+
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  getLastDato(numeroDocumento:string){
+  getLastDato(numeroDocumento: string) {
     this.cuentasCobrar.getLastDatoAdicional(numeroDocumento).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.newGestion.detallesAdicionales = data.detallesAdicionelesToSend
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  saveGestion(){
+  saveGestion() {
 
-    if(this.newGestion.gestion.trim() == '' || this.newGestion.gestion.trim() == null){
+    if (this.newGestion.gestion.trim() == '' || this.newGestion.gestion.trim() == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -410,7 +423,7 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-    if(this.newGestion.clasificacion.tipoClasificacion?.trim() == '' || this.newGestion.clasificacion.tipoClasificacion?.trim() == null){
+    if (this.newGestion.clasificacion.tipoClasificacion?.trim() == '' || this.newGestion.clasificacion.tipoClasificacion?.trim() == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -419,8 +432,8 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     } else {
-      if(this.newGestion.clasificacion.tipoClasificacion.trim() == 'Tarea'){
-        if(this.tarea.fechaFinTarea instanceof Date || this.tarea.fechaFinTarea == null){
+      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'Tarea') {
+        if (this.tarea.fechaFinTarea instanceof Date || this.tarea.fechaFinTarea == null) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -430,7 +443,7 @@ export class HomeCarteraComponent implements OnInit {
           return
         }
 
-          if(this.tarea.clasificacion?.trim() == '' || this.tarea.clasificacion?.trim() == null){
+        if (this.tarea.clasificacion?.trim() == '' || this.tarea.clasificacion?.trim() == null) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -441,7 +454,7 @@ export class HomeCarteraComponent implements OnInit {
         }
 
 
-        if(this.tarea.detalleTarea?.trim() == '' || this.tarea.detalleTarea?.trim() == null){
+        if (this.tarea.detalleTarea?.trim() == '' || this.tarea.detalleTarea?.trim() == null) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -450,12 +463,12 @@ export class HomeCarteraComponent implements OnInit {
           })
           return
         }
-        
+
         this.newGestion.clasificacion.tarea = this.tarea
       }
-      
-      if(this.newGestion.clasificacion.tipoClasificacion.trim() == 'Nota'){
-        if(this.nota?.detalle.trim() == '' || this.nota?.detalle.trim() == null){
+
+      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'Nota') {
+        if (this.nota?.detalle.trim() == '' || this.nota?.detalle.trim() == null) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -466,9 +479,9 @@ export class HomeCarteraComponent implements OnInit {
         }
         this.newGestion.clasificacion.nota = this.nota
       }
-      
-      if(this.newGestion.clasificacion.tipoClasificacion.trim() == 'Acuerdo de Pago'){
-        if(this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null){
+
+      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'Acuerdo de Pago') {
+        if (this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -477,7 +490,7 @@ export class HomeCarteraComponent implements OnInit {
           })
           return
         }
-        if(this.acuerdo.valorCuotaMensual == 0 || this.acuerdo.valorCuotaMensual == null){
+        if (this.acuerdo.valorCuotaMensual == 0 || this.acuerdo.valorCuotaMensual == null) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -486,7 +499,7 @@ export class HomeCarteraComponent implements OnInit {
           })
           return
         }
-        if(this.acuerdo.tipoAcuerdo.trim() == '' || this.acuerdo.tipoAcuerdo.trim() == null){
+        if (this.acuerdo.tipoAcuerdo.trim() == '' || this.acuerdo.tipoAcuerdo.trim() == null) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -498,7 +511,7 @@ export class HomeCarteraComponent implements OnInit {
       }
     }
     console.log(this.newGestion);
-    
+
     // Swal.fire({
     //   title: 'Guardar Gestión',
     //   text: '¿Está Seguro De Crear Esta Gestión?',
@@ -548,11 +561,25 @@ export class HomeCarteraComponent implements OnInit {
     //       )
     //   }
     // })
-    
+
   }
 
-  mostrarOffcanvas(){
-    if(this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null){
+  obtenerFechaActual(): string {
+    // Obtiene la fecha actual en formato YYYY-MM-DD
+    const fecha = new Date();
+    const year = fecha.getFullYear();
+    const month = fecha.getMonth() + 1;
+    const day = fecha.getDate();
+
+    // Formatea la fecha como YYYY-MM-DD
+    const fechaFormateada = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
+
+    return fechaFormateada;
+  }
+
+  mostrarOffcanvas() {
+    
+    if (this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -561,7 +588,7 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
-    if(this.acuerdo.valorCuotaMensual == 0 || this.acuerdo.valorCuotaMensual == null){
+    if (this.acuerdo.valorCuotaMensual == 0 || this.acuerdo.valorCuotaMensual == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -570,7 +597,7 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
-    if(this.acuerdo.tipoAcuerdo.trim() == '' || this.acuerdo.tipoAcuerdo.trim() == null){
+    if (this.acuerdo.tipoAcuerdo.trim() == '' || this.acuerdo.tipoAcuerdo.trim() == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -582,18 +609,27 @@ export class HomeCarteraComponent implements OnInit {
 
 
 
+    // var gestion = this.gestiones.find((g:any) => g.clasificacion.clasificacion == 'Nota')
+    // console.log(gestion);
+
+    // if(gestion != null){
+    //   console.log(gestion);
+
+    // }
 
     $('#modalGestion').modal('hide');
     $('#offcanvasTop').offcanvas('show');
   }
 
-  mostrarModalGestion(){
+  mostrarModalGestion() {
     $('#modalGestion').modal('show');
     $('#offcanvasTop').offcanvas('hide');
   }
 
-  calcular(){
-    if(this.cuentaCobrarSelected.totalObligatoria == 0 || this.cuentaCobrarSelected.totalObligatoria == null){
+  calcular() {
+
+
+    if (this.cuentaCobrarSelected.totalObligatoria == 0 || this.cuentaCobrarSelected.totalObligatoria == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -603,7 +639,7 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-    if(this.cuentaCobrarSelected.moraObligatoria == 0 || this.cuentaCobrarSelected.moraObligatoria == null){
+    if (this.cuentaCobrarSelected.moraObligatoria == 0 || this.cuentaCobrarSelected.moraObligatoria == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -613,7 +649,7 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-    if(this.cuentaCobrarSelected.fechaVencimiento instanceof Date || this.cuentaCobrarSelected.fechaVencimiento == null){
+    if (this.cuentaCobrarSelected.fechaVencimiento instanceof Date || this.cuentaCobrarSelected.fechaVencimiento == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -622,47 +658,102 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
-
+    this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
     this.cuentasCalcular.valorTotal = this.cuentaCobrarSelected.totalObligatoria
     this.cuentasCalcular.moraObligatoria = this.cuentaCobrarSelected.moraObligatoria
     this.cuentasCalcular.fechaVencimiento = this.cuentaCobrarSelected.fechaVencimiento
     this.cuentasCalcular.username = 'Diana1975'
-    
+
+    this.calcularIntMora()
+
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      this.calcularHonorarios()
+    }
+
+    this.calcularByTipoAcuerdo()
+
+    this.calcularCuotas()
+
     this.cuentasCobrar.updateCuentaCobrar(this.cuentasCalcular).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.cuentaCobrarSelected = data
-          Swal.fire({
-            icon: 'success',
-            title: 'Datos Guardados',
-            text: 'Datos Confirmados Con Éxito',
-            timer: 3000
-          })
-      }, (error:any) => {
+        console.log(data);
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Datos Guardados',
+          text: 'Datos Confirmados Con Éxito',
+          timer: 3000
+        })
+      }, (error: any) => {
         console.log(error);
       }
     )
     this.col = false
     this.mostrarModalGestion()
+    console.log(this.acuerdo);
+    console.log(this.acuerdoCal);
+    
   }
 
-  calcularIntMora(){
-
+  // CALCULOS ACUERDO DE PAGO
+  calcularIntMora() {
+    var cal = this.cuentasCalcular.moraObligatoria * (this.constanteHonorarios / 366) * this.cuentaCobrarSelected.diasVencidos
+    var res = cal.toFixed(0)
+    this.acuerdoCal.valorInteresesMora = res
+    console.log(this.acuerdoCal.valorInteresesMora);
   }
-  
+
+  calcularHonorarios() {
+    var cal = (this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdo.valorInteresesMora)) * 0.20
+    var res = cal.toFixed(0)
+    this.acuerdoCal.honoriarioAcuerdo = res
+    console.log(this.acuerdoCal.honoriarioAcuerdo);
+  }
+
+  calcularByTipoAcuerdo() {
+    if (this.acuerdo.tipoAcuerdo == 'MORA') {
+      this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
+      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      }
+      this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)
+    }
+
+    if (this.acuerdo.tipoAcuerdo == 'TOTAL') {
+      this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
+      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      }
+      this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora)
+    }
+  }
+
+  calcularCuotas() {
+    var totalCuotas = this.acuerdoCal.valorTotalAcuerdo / this.acuerdoCal.valorCuotaMensual
+    var res = Math.ceil(totalCuotas);
+    this.totalCuotas = res
+    console.log(totalCuotas);
+
+    this.cuotas = new Array(this.totalCuotas)
+    console.log(this.cuotas);
+    
+  }
+
 
   // CLASIFICACION
-  getClasificacion(){
+  getClasificacion() {
     this.cuentasCobrar.getClasificacion().subscribe(
-      (data:any) => {
+      (data: any) => {
         this.ClasificacionArray = data
         console.log(this.ClasificacionArray);
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  cancelarGestion(){
+  cancelarGestion() {
 
     Swal.fire({
       title: 'Limpiar Gestión',
@@ -708,16 +799,16 @@ export class HomeCarteraComponent implements OnInit {
     })
   }
 
-  abrirGestiones(){
+  abrirGestiones() {
     this.modalGestiones = true
   }
 
-  cerrarGestiones(){
+  cerrarGestiones() {
     this.modalGestiones = false
   }
 
-  ocultarColumnas(columna:string){
-    if(this.Columnas.includes(columna)){
+  ocultarColumnas(columna: string) {
+    if (this.Columnas.includes(columna)) {
       var position = this.Columnas.indexOf(columna)
       this.Columnas.splice(position, 1)
     } else {
@@ -725,7 +816,7 @@ export class HomeCarteraComponent implements OnInit {
     }
   }
 
-  maxFecha(): string{
+  maxFecha(): string {
     var fechaMax = new Date();
 
     fechaMax.setDate(this.fechaActual.getDate() + 30)
@@ -734,28 +825,28 @@ export class HomeCarteraComponent implements OnInit {
     return fechaForm;
   }
 
-  minFecha(): string{
+  minFecha(): string {
     var fechaMin = new Date();
     var fechaForm = fechaMin.toISOString().split('T')[0]
     return fechaForm;
   }
 
-  seleccionarSize(numero:number){
+  seleccionarSize(numero: number) {
     switch (numero) {
       case 20:
         this.size = 20
         this.spinner = true
         this.getCuentasCobrar()
         break;
-        case 50:
-          this.spinner = true
-          this.size = 50
-          this.getCuentasCobrar()
+      case 50:
+        this.spinner = true
+        this.size = 50
+        this.getCuentasCobrar()
         break;
-        case 100:
-          this.spinner = true
-          this.size = 100
-          this.getCuentasCobrar()
+      case 100:
+        this.spinner = true
+        this.size = 100
+        this.getCuentasCobrar()
         break;
     }
   }
@@ -769,13 +860,13 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   // CLASIFICACION TAREA
-  getClasificacionTarea(){
+  getClasificacionTarea() {
     this.cuentasCobrar.getTareas().subscribe(
-      (data:any) => {
+      (data: any) => {
         this.clasificacionesT = data
         console.log(data);
-        
-      }, (error:any) => {
+
+      }, (error: any) => {
         console.log(error);
       }
     )

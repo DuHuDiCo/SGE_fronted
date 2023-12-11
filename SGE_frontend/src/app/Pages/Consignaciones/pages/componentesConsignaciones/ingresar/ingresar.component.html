@@ -155,8 +155,12 @@
             </table>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" (click)="confirmarObservacion()">Guardar De Todos
+            <button *ngIf="!crearConsignacion" type="button" class="btn btn-danger" (click)="confirmarObservacion()" style="background-color: #960010;border-color: #960010;">Guardar De Todos
               Modos</button>
+              <button *ngIf="crearConsignacion" type="button" class="btn btn-danger" style="background-color: #960010;border-color: #960010;">
+                Guardando...
+                <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+              </button>
             <button type="button" class="btn btn-secondary" (click)="cancelarConsignacion()"
               data-bs-dismiss="modal">Cancelar</button>
           </div>
