@@ -23,12 +23,13 @@ export type CuentasCobrarResponse = {
     banco: string
   },
   diasVencidos: number,
-  gestion: Gestion [],
+  gestion: Gestion[],
   edadVencimiento: string,
   condicionEspecial: string,
   numeroCreditos: number,
   pagare: string,
   moraObligatoria: number,
+  totalObligatoria: number,
   cuotasMora: number,
   cuotas: number,
   asesorCarteraResponse: {
@@ -46,16 +47,24 @@ export type CuentasCobrarResponse = {
       fecha_nacimiento: Date,
       fecha_creacion: Date,
       status: boolean,
-      roles:Roles [],
+      roles: Roles[],
       enabled: boolean,
       password: string,
-      authorities: Autorities [],
       accountNonExpired: boolean,
+      authorities: Autorities[],
       credentialsNonExpired: boolean,
       accountNonLocked: boolean
     }
   },
   clientes: Clientes []
+}
+
+export type CuentaCobrarCalculate = {
+  numeroObligacion: string,
+  valorTotal: number,
+  moraObligatoria: number,
+  fechaVencimiento: Date,
+  username: string
 }
 
 export type Gestion = {

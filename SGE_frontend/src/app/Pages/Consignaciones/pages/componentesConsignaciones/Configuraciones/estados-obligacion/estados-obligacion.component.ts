@@ -43,7 +43,7 @@ export class EstadosObligacionComponent implements OnInit {
         (data:any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'Estado Guardado Con Éxito',
             timer: 3000
           })
@@ -95,7 +95,7 @@ export class EstadosObligacionComponent implements OnInit {
         (data:any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'Estado Actualizado Con Éxito',
             timer: 3000
           })

@@ -49,7 +49,7 @@ export class EstadosComponent implements OnInit {
   save(){
     this.estadoService.saveEstado(this.estado).subscribe(
       (data:any) => {
-        Swal.fire('Felicidades', 'El Estado se ha Guardado Con éxito', 'success')
+        Swal.fire('Datos Guardados', 'El Estado se ha Guardado Con éxito', 'success')
         this.crearEstado = false
         this.estado = {
           estado: '',
@@ -96,7 +96,7 @@ export class EstadosComponent implements OnInit {
     this.editarEstado = true
     this.estadoService.updateEstado(this.modal).subscribe(
       (data:any) => {
-        Swal.fire('Felicidades', 'Estado Actualizado Exitosamente', 'success')
+        Swal.fire('Datos Guardados', 'Estado Actualizado Exitosamente', 'success')
         this.editarEstado = false
         setTimeout(() => {
           window.location.reload()

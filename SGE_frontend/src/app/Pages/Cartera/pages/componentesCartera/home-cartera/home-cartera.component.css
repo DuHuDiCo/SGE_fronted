@@ -1,3 +1,8 @@
+.container{
+  margin-top: -50px;
+}
+
+
 .card-c{
   color: #000;
   position: relative;
@@ -60,6 +65,18 @@ label.btn.btn-outline-dark{
     padding: 10px 30px;
 
 }
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: auto;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  z-index: 1000;
+  background-color: white;
+}
+
 
 .tituloCard{
   color: white;
@@ -285,6 +302,24 @@ label.btn.btn-outline-dark{
     padding: 10px;
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 } */
+
+.pag {
+    position: fixed;
+    bottom: 10px; /* Ajusta la distancia desde la parte inferior según tus necesidades */
+    border: none;
+    width: 80px; /* Ajusta el tamaño del botón según tus necesidades */
+    height: 80px; /* Ajusta el tamaño del botón según tus necesidades */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999; /* Valor alto para mantener el botón al frente */
+}
+
+.form-check-input:checked {
+  background-color: #9e212d;
+  border-color: #dee2e6;
+}
 
 .input-usuario{
     border: none;

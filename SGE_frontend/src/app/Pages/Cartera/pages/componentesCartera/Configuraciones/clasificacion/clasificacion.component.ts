@@ -17,7 +17,7 @@ export class ClasificacionComponent implements OnInit {
 
   clasificacion:clasificacion = {
     idClasificacion: 0,
-    tipoClasificacion: ''
+    clasificacion: ''
   }
 
   clasificacionModal:any = {
@@ -60,7 +60,7 @@ export class ClasificacionComponent implements OnInit {
 
   saveClasificacion(){
 
-    if(this.clasificacion.tipoClasificacion.trim() == '' || this.clasificacion.tipoClasificacion.trim() == null){
+    if(this.clasificacion.clasificacion.trim() == '' || this.clasificacion.clasificacion.trim() == null){
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -75,7 +75,7 @@ export class ClasificacionComponent implements OnInit {
         (data:any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'Clasificación Creada Exitosamente',
             timer: 3000
           })
@@ -93,7 +93,7 @@ export class ClasificacionComponent implements OnInit {
   
       this.clasificacion = {
         idClasificacion: 0,
-        tipoClasificacion: '' 
+        clasificacion: '' 
       }
       setTimeout(() => {
         window.location.reload()
@@ -120,7 +120,7 @@ export class ClasificacionComponent implements OnInit {
         (data:any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'Clasificación Actualizada Exitosamente',
             timer: 3000
           })

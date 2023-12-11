@@ -115,7 +115,7 @@ export class BuscarArchivosComponent implements OnInit {
         } else {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'Estos Son Los Archivos Encontrados',
             timer: 2500
           })
@@ -145,7 +145,7 @@ export class BuscarArchivosComponent implements OnInit {
     
     this.buscarService.saveOne(this.subirArchivo).subscribe(
       (data:any) => {
-        Swal.fire('Felicidades', 'Archivo Guardado Con éxito', 'success')
+        Swal.fire('Datos Guardados', 'Archivo Guardado Con éxito', 'success')
         setTimeout(() => {
           window.location.reload()
         }, 2000);
@@ -208,7 +208,7 @@ export class BuscarArchivosComponent implements OnInit {
     
     this.buscarService.update(this.modal).subscribe(
         (data:any) => {
-          Swal.fire('Felicidades', 'Archivo Actualizado Con éxito', 'success')
+          Swal.fire('Datos Guardados', 'Archivo Actualizado Con éxito', 'success')
           setTimeout(() => {
             window.location.reload()
           }, 2000);

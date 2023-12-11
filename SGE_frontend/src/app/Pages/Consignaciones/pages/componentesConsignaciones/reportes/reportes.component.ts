@@ -260,7 +260,7 @@ export class ReportesComponent implements OnInit {
         } else {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'Estos Son Los Reportes Encontrados',
             timer: 3000
           })

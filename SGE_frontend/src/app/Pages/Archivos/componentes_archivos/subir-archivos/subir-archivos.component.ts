@@ -289,7 +289,7 @@ export class SubirArchivosComponent implements OnInit {
       (data:any) => {
         Swal.fire({
           icon: 'success',
-          title: 'Felicidades',
+          title: 'Datos Guardados',
           text: 'Archivos Guardados Exitosamente',
           timer: 2500
         })

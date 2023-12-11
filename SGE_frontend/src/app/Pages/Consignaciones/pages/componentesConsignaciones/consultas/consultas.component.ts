@@ -333,7 +333,7 @@ export class ConsultasComponent implements OnInit {
 
       this.consultarService.updateConsignacion(this.modal).subscribe(
         (data: any) => {
-          Swal.fire('Felicidades', 'Consignación Actualizada Con éxito', 'success')
+          Swal.fire('Datos Guardados', 'Consignación Actualizada Con éxito', 'success')
           this.editarCon = false
           $('#modalObs').modal('hide');
           setTimeout(() => {
@@ -843,7 +843,7 @@ export class ConsultasComponent implements OnInit {
 
       this.consultarService.saveObservacion(this.observacionDto).subscribe(
         (data: any) => {
-          Swal.fire('Felicidades', 'Observacion Guardada Con Éxito', 'success')
+          Swal.fire('Datos Guardados', 'Observacion Guardada Con Éxito', 'success')
           this.crearObs = false
           this.detalle.observaciones.push(data)
 
@@ -931,7 +931,7 @@ export class ConsultasComponent implements OnInit {
         });
         Swal.fire({
           icon: 'success',
-          title: 'Felicidades',
+          title: 'Datos Guardados',
           text: 'Estas Fueron Las Consignaciones Encontradas',
           timer: 3000
         })
@@ -1595,7 +1595,7 @@ export class ConsultasComponent implements OnInit {
     setTimeout(() => {
       this.consultarService.cambiarEstadoConsignacion(this.cambioArray, this.tipoReporte).subscribe(
         (data: any) => {
-          Swal.fire('Felicidades', 'Cambio Realizado Con Éxito', 'success')
+          Swal.fire('Datos Guardados', 'Cambio Realizado Con Éxito', 'success')
           this.botonCambiarConsignacion = false
           setTimeout(() => {
             window.location.reload()
@@ -1638,7 +1638,7 @@ export class ConsultasComponent implements OnInit {
 
     this.cambioArray = []
 
-    Swal.fire('Felicidades', 'Cambios Cancelados Con Éxito', 'success')
+    Swal.fire('Datos Guardados', 'Cambios Cancelados Con Éxito', 'success')
 
     setTimeout(() => {
       window.location.reload()
@@ -1669,7 +1669,7 @@ export class ConsultasComponent implements OnInit {
         (data: any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'Reporte Generado Con Éxito',
             timer: 3000
           })
@@ -1850,7 +1850,7 @@ export class ConsultasComponent implements OnInit {
       (data: any) => {
         Swal.fire({
           icon: 'success',
-          title: 'Felicidades',
+          title: 'Datos Guardados',
           text: 'Cliente Creado Exitosamente',
           timer: 3000
         })
