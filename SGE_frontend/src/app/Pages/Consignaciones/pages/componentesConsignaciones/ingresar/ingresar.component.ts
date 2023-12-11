@@ -332,6 +332,7 @@ export class IngresarComponent implements OnInit {
           text: 'Cliente Creado Exitosamente',
           timer: 3000
         })
+        $('#modalCliente').modal('hide');
         this.crearCliente = false
 
         this.cedula = this.cliente.numeroDocumento

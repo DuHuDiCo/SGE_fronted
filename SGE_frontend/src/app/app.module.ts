@@ -101,7 +101,11 @@ import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsi
 import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/rankings/rankings/rankings.component';
 import { HomeCarteraComponent } from './Pages/Cartera/pages/componentesCartera/home-cartera/home-cartera.component';
 import { ClasificacionComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion/clasificacion.component';
+
 import { ClasificacionTareaComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion-tarea/clasificacion-tarea.component';
+
+import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/uploads-files/uploads-files.component';
+
 
 
 
@@ -211,7 +215,11 @@ import { ClasificacionTareaComponent } from './Pages/Cartera/pages/componentesCa
     RankingsComponent,
     HomeCarteraComponent,
     ClasificacionComponent,
+
     ClasificacionTareaComponent,
+
+    UploadsFilesComponent,
+
 
   ],
 

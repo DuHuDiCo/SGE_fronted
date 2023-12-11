@@ -92,7 +92,7 @@ export class ConsultasComponent implements OnInit {
   ]
   idActualizaciones: number[] = []
   btnEliminar: boolean = true
-  btnLoadingEliminar:boolean = false
+  btnLoadingEliminar: boolean = false
 
   //OBJETOS
   modal: any = {
@@ -398,7 +398,14 @@ export class ConsultasComponent implements OnInit {
                 observacion: ''
               }
 
-              this.cambioArray.push(guardarArray)
+              var consi = this.cambioArray.find((x: any) => x.idConsignacion == guardarArray.idConsignacion)
+
+              if (consi == null || consi == undefined) {
+                this.cambioArray.push(guardarArray)
+              }
+
+
+
               setTimeout(() => {
                 if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
                   this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
@@ -465,7 +472,11 @@ export class ConsultasComponent implements OnInit {
                 observacion: ''
               }
 
-              this.cambioArray.push(guardarArray)
+              var consi = this.cambioArray.find((x: any) => x.idConsignacion == guardarArray.idConsignacion)
+
+              if (consi == null || consi == undefined) {
+                this.cambioArray.push(guardarArray)
+              }
               setTimeout(() => {
 
                 if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
@@ -530,7 +541,11 @@ export class ConsultasComponent implements OnInit {
                 observacion: ''
               }
 
-              this.cambioArray.push(guardarArray)
+              var consi = this.cambioArray.find((x:any)=> x.idConsignacion == guardarArray.idConsignacion)
+
+              if(consi == null || consi == undefined){
+                this.cambioArray.push(guardarArray)  
+              }
               setTimeout(() => {
 
                 if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
@@ -1937,10 +1952,10 @@ export class ConsultasComponent implements OnInit {
           this.consultarService.eliminarActualizaciones(idConsig, this.idActualizaciones).subscribe(
             (data: any) => {
               this.actu.actualizaciones = data.actualizaciones
-  
+
               var actua = this.actu.actualizaciones.find((a: any) => a.isCurrent == true)
               console.log(actua);
-  
+
               if (actua != null || actua != undefined) {
                 if (actua.estado.estado == 'PENDIENTE') {
                   this.btnEliminar = false
@@ -1956,18 +1971,18 @@ export class ConsultasComponent implements OnInit {
                 timer: 3000
               })
               window.location.reload()
-  
-  
+
+
             }, (error: any) => {
               console.log(error);
-  
+
             }
           )
         }, 3000);
       }
     });
 
-  
+
 
 
   }
