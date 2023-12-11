@@ -60,6 +60,7 @@
           </tr>
         </tbody>
       </table>
+      <button class="btn btn-success" style="background-color: #960010; border: #960010;" data-bs-toggle="modal" data-bs-target="#modalCliente">Crear Nuevo Cliente</button>
     </div>
     <div class="row align-items-end">
       <div class="col-md-6 col-12">
@@ -254,7 +255,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button *ngIf="!crearCliente" type="button" class="btn btn-danger" data-bs-dismiss="modal"
+            <button *ngIf="!crearCliente" type="button" class="btn btn-danger"
               style="background-color: #960010;border-color: #960010;" (click)="guardarCliente()">Guardar</button>
             <button *ngIf="crearCliente" type="button" class="btn btn-danger"
               style="background-color: #960010;border-color: #960010;">
