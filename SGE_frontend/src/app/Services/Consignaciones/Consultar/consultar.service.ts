@@ -13,8 +13,8 @@ export class ConsultarService {
 
   public proSubject = new Subject<boolean>();
 
-  getAllConsignaciones(estado:string, page:number, size:number, order:string){
-    return this.http.get(`${baseUrl}/consignacion/getAllConsignaciones?estado=${estado}&page=${page}&size=${size}&order=${order}`)
+  getAllConsignaciones(estado:string, page:number, size:number, fechaCreacion:string){
+    return this.http.get(`${baseUrl}/consignacion/getAllConsignaciones?estado=${estado}&page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`)
   }
 
   getConsignacionById(id:number){

@@ -62,6 +62,10 @@ export class CuentasCobrarService {
     return this.http.get(`http://192.168.1.6:8021/api/v1/gestiones/getLastDatoAdicionalGestion/${numeroObligacion}`)
   }
 
+  desactivateAcuerdoPago(id:number){
+    return this.http.put(`http://192.168.1.6:8021/api/v1/gestiones/desactivateAcuerdoPago/${id}`, null)
+  }
+
   // CLASIFICACION TAREA
   getTareas(){
     return this.http.get(`http://192.168.1.6:8021/api/v1/clasificacionTarea/getClasificacionesTarea`)

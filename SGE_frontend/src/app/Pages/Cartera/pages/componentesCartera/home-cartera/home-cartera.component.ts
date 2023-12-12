@@ -47,9 +47,12 @@ export class HomeCarteraComponent implements OnInit {
     'F GESTION',
     'F COMPRO',
   ]
+  cuotas!: Array<number>
 
   // OBJETOS
-  cuentaCobrarSelected: CuentasCobrarResponse = {
+
+  cuentaCobrarSelected: any = {
+
     idCuentasPorCobrar: 0,
     numeroObligacion: '',
     cliente: '',
@@ -146,6 +149,16 @@ export class HomeCarteraComponent implements OnInit {
     fechaCompromiso: new Date,
     cuotasList: [],
     username: ''
+
+  }
+
+  acuerdoCal: any = {
+    tipoAcuerdo: '',
+    valorTotalAcuerdo: 0,
+    valorInteresesMora: 0,
+    valorCuotaMensual: 0,
+    honoriarioAcuerdo: 0,
+
   }
 
   // CUENTAS COBRAR CALCULATE
@@ -182,12 +195,23 @@ export class HomeCarteraComponent implements OnInit {
 
   fechaActual: Date = new Date();
 
+  fechaCorte: string = '';
+
+  constanteHonorarios: number = 0.234
+  totalCuotas: number = 0
+
+  fechaInicial: Date = new Date();
+  incrementoMeses: number = 1;
+  cantidadFechas: number = 0;
+  fechasIncrementadas: Date[] = [];
+
 
   ngOnInit(): void {
     this.getCuentasCobrar()
     this.getClasificacion()
     this.getClasificacionTarea()
     this.fechaActual = new Date()
+    this.fechaCorte = this.obtenerFechaActual()
   }
 
   // TRAER CUENTAS POR COBRAR
@@ -552,7 +576,23 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
+
+  obtenerFechaActual(): string {
+    // Obtiene la fecha actual en formato YYYY-MM-DD
+    const fecha = new Date();
+    const year = fecha.getFullYear();
+    const month = fecha.getMonth() + 1;
+    const day = fecha.getDate();
+
+    // Formatea la fecha como YYYY-MM-DD
+    const fechaFormateada = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
+
+    return fechaFormateada;
+  }
+
   mostrarOffcanvas() {
+
+
     if (this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null) {
       Swal.fire({
         icon: 'error',
@@ -583,6 +623,13 @@ export class HomeCarteraComponent implements OnInit {
 
 
 
+    // var gestion = this.gestiones.find((g:any) => g.clasificacion.clasificacion == 'Nota')
+    // console.log(gestion);
+
+    // if(gestion != null){
+    //   console.log(gestion);
+
+    // }
 
     $('#modalGestion').modal('hide');
     $('#offcanvasTop').offcanvas('show');
@@ -594,6 +641,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   calcular() {
+
     if (this.cuentaCobrarSelected.totalObligatoria == 0 || this.cuentaCobrarSelected.totalObligatoria == null) {
       Swal.fire({
         icon: 'error',
@@ -624,14 +672,32 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
+    this.fechaInicial = new Date(this.acuerdo.fechaCompromiso)
+    this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
     this.cuentasCalcular.valorTotal = this.cuentaCobrarSelected.totalObligatoria
     this.cuentasCalcular.moraObligatoria = this.cuentaCobrarSelected.moraObligatoria
     this.cuentasCalcular.fechaVencimiento = this.cuentaCobrarSelected.fechaVencimiento
     this.cuentasCalcular.username = 'Diana1975'
 
+
+    this.calcularIntMora()
+
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      this.calcularHonorarios()
+    }
+
+    this.calcularByTipoAcuerdo()
+
+    this.calcularCuotas()
+
+    this.generarFechas()
+
     this.cuentasCobrar.updateCuentaCobrar(this.cuentasCalcular).subscribe(
       (data: any) => {
         this.cuentaCobrarSelected = data
+        console.log(data);
+
+
         Swal.fire({
           icon: 'success',
           title: 'Datos Guardados',
@@ -644,11 +710,71 @@ export class HomeCarteraComponent implements OnInit {
     )
     this.col = false
     this.mostrarModalGestion()
+    console.log(this.acuerdo);
+    console.log(this.acuerdoCal);
+
   }
 
+
+  // CALCULOS ACUERDO DE PAGO
   calcularIntMora() {
+    var cal = this.cuentasCalcular.moraObligatoria * (this.constanteHonorarios / 366) * this.cuentaCobrarSelected.diasVencidos
+    var res = cal.toFixed(0)
+    this.acuerdoCal.valorInteresesMora = res
+    console.log(this.acuerdoCal.valorInteresesMora);
+  }
+
+
+  calcularHonorarios() {
+    var cal = (this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdo.valorInteresesMora)) * 0.20
+    var res = cal.toFixed(0)
+    this.acuerdoCal.honoriarioAcuerdo = res
+    console.log(this.acuerdoCal.honoriarioAcuerdo);
+  }
+
+
+  calcularByTipoAcuerdo() {
+    if (this.acuerdo.tipoAcuerdo == 'MORA') {
+      this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
+      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      }
+      this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)
+    }
+
+    if (this.acuerdo.tipoAcuerdo == 'TOTAL') {
+      this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
+      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      }
+      this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora)
+    }
+  }
+
+  calcularCuotas() {
+    var totalCuotas = this.acuerdoCal.valorTotalAcuerdo / this.acuerdoCal.valorCuotaMensual
+    var res = Math.ceil(totalCuotas);
+    this.totalCuotas = res
+    console.log(totalCuotas);
+
+    this.cuotas = new Array(this.totalCuotas)
+    console.log(this.cuotas);
+    this.cantidadFechas = this.totalCuotas;
 
   }
+
+  generarFechas(): void {
+    console.log(this.cantidadFechas);
+
+    this.fechasIncrementadas = [];
+    const nuevaFecha = new Date(this.fechaInicial);
+    nuevaFecha.setDate(this.fechaInicial.getDate() + 30)
+    
+
+    console.log(nuevaFecha);
+
+  }
+
 
 
   // CLASIFICACION
