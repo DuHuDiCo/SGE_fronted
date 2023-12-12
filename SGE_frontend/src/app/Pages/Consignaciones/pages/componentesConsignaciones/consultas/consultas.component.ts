@@ -587,74 +587,147 @@ export class ConsultasComponent implements OnInit {
       )
     }
 
-    if (this.validarPermiso('CREAR CONSIGNACIONES') && this.validarPermiso('CONSULTAR PENDIENTES')) {
-      this.consultarService.getAllConsignaciones(p, this.page, this.size, "DESC").subscribe(
-        (data: any) => {
-          console.log(data);
-
-          this.spinner = false
-          this.con = data.content
-          this.numeroPages = data.totalPages
-          this.con.forEach((e: any, index: number) => {
-
-            if (e.isSelected) {
-              var user = this.authService.getUsername()
-
-              if (user == null || user == undefined) {
-                return
-              }
-              var guardarArray: CambioEstado = {
-                estado: e.isSelecetedEstado,
-                idConsignacion: e.idConsignacion,
-                username: user,
-                observacion: ''
-              }
-
-              var consi = this.cambioArray.find((x:any)=> x.idConsignacion == guardarArray.idConsignacion)
-
-              if(consi == null || consi == undefined){
-                this.cambioArray.push(guardarArray)  
-              }
-              setTimeout(() => {
-
-                if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
-                  this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
-                } else {
-                  this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
+    if (this.validarPermiso('CONSULTAR PENDIENTES')) {
+      if (this.validarPermiso('CREAR CONSIGNACIONES') && this.validarPermiso('CONSULTAR PENDIENTES')) {
+        this.consultarService.getAllConsignaciones(p, this.page, this.size, "DESC").subscribe(
+          (data: any) => {
+            console.log(data);
+  
+            this.spinner = false
+            this.con = data.content
+            this.numeroPages = data.totalPages
+            this.con.forEach((e: any, index: number) => {
+  
+              if (e.isSelected) {
+                var user = this.authService.getUsername()
+  
+                if (user == null || user == undefined) {
+                  return
                 }
-
-                if (this.cambioArray.length > 0) {
-                  this.cambios = true
-                } else {
-                  this.cambios = false
+                var guardarArray: CambioEstado = {
+                  estado: e.isSelecetedEstado,
+                  idConsignacion: e.idConsignacion,
+                  username: user,
+                  observacion: ''
                 }
-                console.log(this.cambioArray);
-              }, 100);
-
-
+  
+                var consi = this.cambioArray.find((x:any)=> x.idConsignacion == guardarArray.idConsignacion)
+  
+                if(consi == null || consi == undefined){
+                  this.cambioArray.push(guardarArray)  
+                }
+                setTimeout(() => {
+  
+                  if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
+                    this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
+                  } else {
+                    this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
+                  }
+  
+                  if (this.cambioArray.length > 0) {
+                    this.cambios = true
+                  } else {
+                    this.cambios = false
+                  }
+                  console.log(this.cambioArray);
+                }, 100);
+  
+  
+              }
+            });
+  
+            this.paginas = new Array(data.totalPages)
+            this.last = data.last
+            this.first = data.first
+            this.consultarService.proSubject.next(true);
+            this.con.forEach((c: any) => {
+              c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
+            })
+            this.botones = new Array<boolean>(this.con.length).fill(false)
+  
+            if (this.con.length <= 0) {
+              Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+              return
             }
-          });
-
-          this.paginas = new Array(data.totalPages)
-          this.last = data.last
-          this.first = data.first
-          this.consultarService.proSubject.next(true);
-          this.con.forEach((c: any) => {
-            c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
-          })
-          this.botones = new Array<boolean>(this.con.length).fill(false)
-
-          if (this.con.length <= 0) {
-            Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
-            return
+  
+  
+          }, (error: any) => {
+  
           }
+        )
+      } else {
+        this.consultarService.getAllConsignaciones(p, this.page, this.size, "ASC").subscribe(
+          (data: any) => {
+            console.log(data);
+  
+            this.spinner = false
+            this.con = data.content
+            this.numeroPages = data.totalPages
+            this.con.forEach((e: any, index: number) => {
+  
+              if (e.isSelected) {
+                var user = this.authService.getUsername()
+  
+                if (user == null || user == undefined) {
+                  return
+                }
+                var guardarArray: CambioEstado = {
+                  estado: e.isSelecetedEstado,
+                  idConsignacion: e.idConsignacion,
+                  username: user,
+                  observacion: ''
+                }
+  
+                var consi = this.cambioArray.find((x:any)=> x.idConsignacion == guardarArray.idConsignacion)
+  
+                if(consi == null || consi == undefined){
+                  this.cambioArray.push(guardarArray)  
+                }
+                setTimeout(() => {
+  
+                  if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
+                    this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
+                  } else {
+                    this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
+                  }
+  
+                  if (this.cambioArray.length > 0) {
+                    this.cambios = true
+                  } else {
+                    this.cambios = false
+                  }
+                  console.log(this.cambioArray);
+                }, 100);
+  
+  
+              }
+            });
+  
+            this.paginas = new Array(data.totalPages)
+            this.last = data.last
+            this.first = data.first
+            this.consultarService.proSubject.next(true);
+            this.con.forEach((c: any) => {
+              c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
+            })
+            this.botones = new Array<boolean>(this.con.length).fill(false)
+  
+            if (this.con.length <= 0) {
+              Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+              return
+            }
+  
+  
+          }, (error: any) => {
+  
+          }
+        )
+      }
 
-
-        }, (error: any) => {
-
-        }
-      )
+      
     }
+
+    
 
   }
 

@@ -766,12 +766,12 @@ export class HomeCarteraComponent implements OnInit {
   generarFechas(): void {
     console.log(this.cantidadFechas);
 
-    this.fechasIncrementadas = [];
-    const nuevaFecha = new Date(this.fechaInicial);
-    nuevaFecha.setDate(this.fechaInicial.getDate() + 30)
-    
+    // this.fechasIncrementadas = [];
+    // var nuevaFecha = this.fechaInicial
 
-    console.log(nuevaFecha);
+    // array.forEach(element => {
+      
+    // });
 
   }
 
