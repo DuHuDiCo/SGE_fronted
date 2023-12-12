@@ -129,6 +129,7 @@ const routes: Routes = [
         component:ClasificacionTareaComponent
       },
       {
+
         path: "upload-data",
         component: UploadsFilesComponent
       }

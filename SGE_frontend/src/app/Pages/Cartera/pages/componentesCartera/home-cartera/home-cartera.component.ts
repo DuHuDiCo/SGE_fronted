@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+
 import { Subscription } from 'rxjs';
 import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
@@ -32,6 +33,7 @@ export class HomeCarteraComponent implements OnInit {
   ClasificacionArray: clasificacion[] = []
   Columnas: string[] = []
   clasificacionesT: Tarea[] = []
+
   constantes: string[] = [
     'CLIENTE',
     'BANCO',
@@ -48,7 +50,9 @@ export class HomeCarteraComponent implements OnInit {
   cuotas!: Array<number>
 
   // OBJETOS
+
   cuentaCobrarSelected: any = {
+
     idCuentasPorCobrar: 0,
     numeroObligacion: '',
     cliente: '',
@@ -145,6 +149,7 @@ export class HomeCarteraComponent implements OnInit {
     fechaCompromiso: new Date,
     cuotasList: [],
     username: ''
+
   }
 
   acuerdoCal: any = {
@@ -153,6 +158,7 @@ export class HomeCarteraComponent implements OnInit {
     valorInteresesMora: 0,
     valorCuotaMensual: 0,
     honoriarioAcuerdo: 0,
+
   }
 
   // CUENTAS COBRAR CALCULATE
@@ -188,6 +194,7 @@ export class HomeCarteraComponent implements OnInit {
   paginas!: Array<number>
 
   fechaActual: Date = new Date();
+
   fechaCorte: string = '';
 
   constanteHonorarios: number = 0.234
@@ -197,6 +204,7 @@ export class HomeCarteraComponent implements OnInit {
   incrementoMeses: number = 1;
   cantidadFechas: number = 0;
   fechasIncrementadas: Date[] = [];
+
 
   ngOnInit(): void {
     this.getCuentasCobrar()
@@ -568,6 +576,7 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
+
   obtenerFechaActual(): string {
     // Obtiene la fecha actual en formato YYYY-MM-DD
     const fecha = new Date();
@@ -582,6 +591,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   mostrarOffcanvas() {
+
 
     if (this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null) {
       Swal.fire({
@@ -632,7 +642,6 @@ export class HomeCarteraComponent implements OnInit {
 
   calcular() {
 
-
     if (this.cuentaCobrarSelected.totalObligatoria == 0 || this.cuentaCobrarSelected.totalObligatoria == null) {
       Swal.fire({
         icon: 'error',
@@ -670,6 +679,7 @@ export class HomeCarteraComponent implements OnInit {
     this.cuentasCalcular.fechaVencimiento = this.cuentaCobrarSelected.fechaVencimiento
     this.cuentasCalcular.username = 'Diana1975'
 
+
     this.calcularIntMora()
 
     if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
@@ -686,6 +696,7 @@ export class HomeCarteraComponent implements OnInit {
       (data: any) => {
         this.cuentaCobrarSelected = data
         console.log(data);
+
 
         Swal.fire({
           icon: 'success',
@@ -704,6 +715,7 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
+
   // CALCULOS ACUERDO DE PAGO
   calcularIntMora() {
     var cal = this.cuentasCalcular.moraObligatoria * (this.constanteHonorarios / 366) * this.cuentaCobrarSelected.diasVencidos
@@ -712,12 +724,14 @@ export class HomeCarteraComponent implements OnInit {
     console.log(this.acuerdoCal.valorInteresesMora);
   }
 
+
   calcularHonorarios() {
     var cal = (this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdo.valorInteresesMora)) * 0.20
     var res = cal.toFixed(0)
     this.acuerdoCal.honoriarioAcuerdo = res
     console.log(this.acuerdoCal.honoriarioAcuerdo);
   }
+
 
   calcularByTipoAcuerdo() {
     if (this.acuerdo.tipoAcuerdo == 'MORA') {
@@ -760,6 +774,7 @@ export class HomeCarteraComponent implements OnInit {
     console.log(nuevaFecha);
 
   }
+
 
 
   // CLASIFICACION
@@ -891,5 +906,19 @@ export class HomeCarteraComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  copyToClipboard(event: any) {
+    navigator.clipboard.writeText(event.target.value).then(function(){
+      Swal.fire({
+        title:"Texto Copiado",
+        toast: true,
+        position: "top-end",
+        timer : 2000,
+        showConfirmButton: false
+      });
+    }).catch(function(err){
+      alert("error")
+    })
   }
 }

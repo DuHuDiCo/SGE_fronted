@@ -115,6 +115,8 @@ import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/
 
 
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -230,7 +232,8 @@ import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/
     AppRoutingModule,
     HttpClientModule,
     AgregarClienteModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    
 
   ],
 
