@@ -1001,7 +1001,17 @@
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <tr *ngFor="let c of cuotas; let i = index">
+                                      <tr *ngFor="let c of cuotas; let i = index;">
+                                        <th>Cuota {{ i + 1 }}</th>
+                                        <th>{{ fechasIncrementadas[i] | date: 'dd/MM/yyyy' }}</th>
+                                        <th>
+                                            <div class="input-group input-group-sm mb-3">
+                                                <input [(ngModel)]="acuerdoCal.valorCuotaMensual" type="number" class="form-control">
+                                            </div>
+                                        </th>
+                                        <th>Cuota {{ i + 1 }}</th>
+                                        <th>Cuota {{ i + 1 }}</th>
+                                        <th>Cuota {{ i + 1 }}</th>
                                         <th>Cuota {{ i + 1 }}</th>
                                       </tr>
                                     </tbody>

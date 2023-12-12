@@ -128,7 +128,7 @@ const routes: Routes = [
         path:"clasificacion-tarea",
         component:ClasificacionTareaComponent
       },
-
+      {
         path: "upload-data",
         component: UploadsFilesComponent
       }

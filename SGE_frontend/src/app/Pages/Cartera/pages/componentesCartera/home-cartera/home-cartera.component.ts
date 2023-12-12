@@ -193,6 +193,10 @@ export class HomeCarteraComponent implements OnInit {
   constanteHonorarios: number = 0.234
   totalCuotas: number = 0
 
+  fechaInicial: Date = new Date();
+  incrementoMeses: number = 1;
+  cantidadFechas: number = 0;
+  fechasIncrementadas: Date[] = [];
 
   ngOnInit(): void {
     this.getCuentasCobrar()
@@ -578,7 +582,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   mostrarOffcanvas() {
-    
+
     if (this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null) {
       Swal.fire({
         icon: 'error',
@@ -658,6 +662,8 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
+
+    this.fechaInicial = new Date(this.acuerdo.fechaCompromiso)
     this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
     this.cuentasCalcular.valorTotal = this.cuentaCobrarSelected.totalObligatoria
     this.cuentasCalcular.moraObligatoria = this.cuentaCobrarSelected.moraObligatoria
@@ -674,11 +680,13 @@ export class HomeCarteraComponent implements OnInit {
 
     this.calcularCuotas()
 
+    this.generarFechas()
+
     this.cuentasCobrar.updateCuentaCobrar(this.cuentasCalcular).subscribe(
       (data: any) => {
         this.cuentaCobrarSelected = data
         console.log(data);
-        
+
         Swal.fire({
           icon: 'success',
           title: 'Datos Guardados',
@@ -693,7 +701,7 @@ export class HomeCarteraComponent implements OnInit {
     this.mostrarModalGestion()
     console.log(this.acuerdo);
     console.log(this.acuerdoCal);
-    
+
   }
 
   // CALCULOS ACUERDO DE PAGO
@@ -737,7 +745,20 @@ export class HomeCarteraComponent implements OnInit {
 
     this.cuotas = new Array(this.totalCuotas)
     console.log(this.cuotas);
+    this.cantidadFechas = this.totalCuotas;
+
+  }
+
+  generarFechas(): void {
+    console.log(this.cantidadFechas);
+
+    this.fechasIncrementadas = [];
+    const nuevaFecha = new Date(this.fechaInicial);
+    nuevaFecha.setDate(this.fechaInicial.getDate() + 30)
     
+
+    console.log(nuevaFecha);
+
   }
 
 
