@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { addMonths, isLeapYear, lastDayOfMonth } from 'date-fns';
 
 import { Subscription } from 'rxjs';
 import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.service';
@@ -763,16 +764,56 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
-  generarFechas(): void {
-    console.log(this.cantidadFechas);
+  generarFechas() {
+    var meses31 = [1, 3, 5, 7, 8, 10, 12]
+    var meses30 = [4, 6, 9, 11]
 
-    // this.fechasIncrementadas = [];
-    // var nuevaFecha = this.fechaInicial
+    const fechaInicial = new Date(this.fechaInicial);
 
-    // array.forEach(element => {
-      
-    // });
+    for (let i = 0; i < 12; i++) {
+      const fechaInicialMes = addMonths(fechaInicial, i);
 
+
+      const esFebrero = fechaInicialMes.getMonth() === 1;
+
+      // Manejar el caso de febrero
+      if (esFebrero) {
+
+
+
+        // Si es febrero, verifica si el año es bisiesto
+        const esBisiesto = isLeapYear(fechaInicialMes);
+        const ultimoDiaDeFebrero = esBisiesto ? 29 : 28;
+
+        if (fechaInicialMes.getDate() >= ultimoDiaDeFebrero) {
+          this.fechasIncrementadas.push(new Date(fechaInicialMes.getFullYear(), 1, ultimoDiaDeFebrero));
+        } else {
+          // Usa el último día de febrero
+
+          this.fechasIncrementadas.push(new Date(fechaInicialMes.getFullYear(), 1, fechaInicialMes.getDate() + 1));
+        }
+
+
+      } else {
+        // Usa el último día del mes
+
+
+        if (meses31.includes(fechaInicialMes.getMonth() + 1)) {
+          fechaInicialMes.setDate(fechaInicialMes.getDate() + 1)
+          
+        }
+
+        if (meses30.includes(fechaInicialMes.getMonth() + 1)) {
+          fechaInicialMes.setDate(fechaInicialMes.getDate())
+
+        }
+
+
+        
+        this.fechasIncrementadas.push(fechaInicialMes);
+
+      }
+    }
   }
 
 
@@ -909,15 +950,15 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   copyToClipboard(event: any) {
-    navigator.clipboard.writeText(event.target.value).then(function(){
+    navigator.clipboard.writeText(event.target.value).then(function () {
       Swal.fire({
-        title:"Texto Copiado",
+        title: "Texto Copiado",
         toast: true,
         position: "top-end",
-        timer : 2000,
+        timer: 2000,
         showConfirmButton: false
       });
-    }).catch(function(err){
+    }).catch(function (err) {
       alert("error")
     })
   }
