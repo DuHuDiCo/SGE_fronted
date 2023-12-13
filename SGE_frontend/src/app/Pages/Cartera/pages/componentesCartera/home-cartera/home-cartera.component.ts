@@ -179,7 +179,7 @@ export class HomeCarteraComponent implements OnInit {
     username: ''
   }
 
-  cuotaList:any = {
+  cuotaList: any = {
     idCuota: 0,
     numeroCuota: 0,
     fechaVencimiento: '',
@@ -749,8 +749,8 @@ export class HomeCarteraComponent implements OnInit {
     var cal = (this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
     console.log(this.cuentasCalcular.moraObligatoria);
     console.log(this.acuerdoCal.valorInteresesMora);
-    
-    
+
+
     var res = cal.toFixed(0)
     this.acuerdoCal.honoriarioAcuerdo = res
     console.log(this.acuerdoCal.honoriarioAcuerdo);
@@ -764,20 +764,20 @@ export class HomeCarteraComponent implements OnInit {
       this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
       if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
         this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
-      }else{
+      } else {
         this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)
       }
-      
+
     }
 
     if (this.acuerdo.tipoAcuerdo == 'TOTAL') {
       this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
       if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
         this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
-      }else{
+      } else {
         this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora)
       }
-      
+
     }
   }
 
@@ -791,12 +791,12 @@ export class HomeCarteraComponent implements OnInit {
     var dia = parseInt(fechaOk[2])
     var mes = parseInt(fechaOk[1])
     var year = parseInt(fechaOk[0])
-    var meses31 = [1,3,5,7,8,10,12]
-    var meses30 = [4,6,9,11]
+    var meses31 = [1, 3, 5, 7, 8, 10, 12]
+    var meses30 = [4, 6, 9, 11]
 
     for (let i = 0; i < this.cantidadFechas; i++) {
       var fechaString = `${year}-${mes}-${dia}`
-      
+
       var fechaDate = new Date(fechaString)
 
       if (mes == 12) {
@@ -808,21 +808,21 @@ export class HomeCarteraComponent implements OnInit {
       }
 
       if (mes === 2) {
-        if(parseInt(fechaOk[2])== 30 || parseInt(fechaOk[2]) == 31){
+        if (parseInt(fechaOk[2]) == 30 || parseInt(fechaOk[2]) == 31) {
           const esBisiesto = isLeapYear(fechaDate);
 
           const ultimoDiaDeFebrero = esBisiesto ? dia = 29 : dia = 28;
-        }else{
+        } else {
           dia = parseInt(fechaOk[2])
         }
-      }else{
-        if(meses30.includes(mes) && ((parseInt(fechaOk[2])) == 30 || (parseInt(fechaOk[2])) == 31)){
+      } else {
+        if (meses30.includes(mes) && ((parseInt(fechaOk[2])) == 30 || (parseInt(fechaOk[2])) == 31)) {
           dia = 30
-        }else{
-          if(meses31.includes(mes) && ((parseInt(fechaOk[2])) == 31 )){
-            dia=31
-          }else{
-            dia = parseInt(fechaOk[2]) 
+        } else {
+          if (meses31.includes(mes) && ((parseInt(fechaOk[2])) == 31)) {
+            dia = 31
+          } else {
+            dia = parseInt(fechaOk[2])
           }
         }
       }
@@ -842,7 +842,7 @@ export class HomeCarteraComponent implements OnInit {
     this.totalCuotas = res
     console.log(this.totalCuotas);
     this.cantidadFechas = this.totalCuotas;
-    
+
     this.generarFechas()
 
     var porAcu = 0
@@ -860,7 +860,7 @@ export class HomeCarteraComponent implements OnInit {
       this.cuotaList.capitalCuota = cap.toFixed(0)
 
       // HONORARIOS POR CUOTA
-      if(this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'){
+      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
         var hon = porcentaje * this.acuerdoCal.honoriarioAcuerdo
         this.cuotaList.honorarios = hon.toFixed(0)
       } else {
@@ -873,28 +873,28 @@ export class HomeCarteraComponent implements OnInit {
 
 
       // ULTIMA CUOTA
-      if(this.cuotas.length == this.totalCuotas-1){
-        var decimalesCuota = totalCuotas%1
+      if (this.cuotas.length == this.totalCuotas - 1) {
+        var decimalesCuota = totalCuotas % 1
         var ultimaCuota = this.acuerdoCal.valorCuotaMensual * decimalesCuota
         this.cuotaList.valorCuota = parseInt(ultimaCuota.toFixed(0))
 
         // CAPITAL CUOTA
-      var porcentaje = this.cuotaList.valorCuota / this.acuerdoCal.valorTotalAcuerdo
-      console.log(porcentaje);
-      var cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
-      this.cuotaList.capitalCuota = cap.toFixed(0)
+        var porcentaje = this.cuotaList.valorCuota / this.acuerdoCal.valorTotalAcuerdo
+        console.log(porcentaje);
+        var cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
+        this.cuotaList.capitalCuota = cap.toFixed(0)
 
-      // HONORARIOS POR CUOTA
-      if(this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'){
-        var hon = porcentaje * this.acuerdoCal.honoriarioAcuerdo
-        this.cuotaList.honorarios = hon.toFixed(0)
-      } else {
-        this.cuotaList.honorarios = 0
-      }
+        // HONORARIOS POR CUOTA
+        if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+          var hon = porcentaje * this.acuerdoCal.honoriarioAcuerdo
+          this.cuotaList.honorarios = hon.toFixed(0)
+        } else {
+          this.cuotaList.honorarios = 0
+        }
 
-      // INTERESES CUOTA
-      var int = porcentaje * this.acuerdoCal.valorInteresesMora
-      this.cuotaList.interesCuota = int.toFixed(0)
+        // INTERESES CUOTA
+        var int = porcentaje * this.acuerdoCal.valorInteresesMora
+        this.cuotaList.interesCuota = int.toFixed(0)
 
         this.cuotas.push(this.cuotaList)
       } else {
@@ -908,27 +908,51 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   // RECALCULAR
-  recalcularValores(position:number, event:any){
+  recalcularValores(position: number, event: any) {
     console.log(this.cuotas);
-    
-    var nuevoValor =   event.target.value -this.acuerdoCal.valorCuotaMensual
-    for (let i = this.totalCuotas-1; i > position; i--) {
-      
-      if(nuevoValor > this.cuotas[i].valorCuota){
-        nuevoValor = nuevoValor - this.cuotas[i].valorCuota
-        this.cuotas.splice(i)
-      } else {
-        alert(nuevoValor)
-        nuevoValor = nuevoValor - this.cuotas[i].valorCuota
-        if(nuevoValor <= 0){
-          this.cuotas[i].valorCuota = (nuevoValor)*-1
-          this.totalCuotas = this.cuotas.length
-          break
+
+    var nuevoValor = event.target.value - this.acuerdoCal.valorCuotaMensual
+
+
+    if (event.target.value > this.cuotas[position].valorCuota) {
+      for (let i = this.totalCuotas - 1; i > position; i--) {
+
+        if (nuevoValor > this.cuotas[i].valorCuota) {
+          nuevoValor = nuevoValor - this.cuotas[i].valorCuota
+          this.cuotas.splice(i)
+        } else {
+          alert(nuevoValor)
+          nuevoValor = nuevoValor - this.cuotas[i].valorCuota
+          if (nuevoValor <= 0) {
+            this.cuotas[i].valorCuota = (nuevoValor) * -1
+            this.totalCuotas = this.cuotas.length
+            break
+          }
         }
+
+
       }
     }
+
+    //RECALCULAR PARA SUMAR CUOTAS
+    var nuevoValorSumarCuotas = this.acuerdoCal.valorCuota - event.target.value
+
+    if (event.target.value < this.cuotas[position].valorCuota) {
+      for (let i = position; i < this.cuotas.length; i++) {
+        if (nuevoValorSumarCuotas < this.cuotas[this.cuotas.length].valorCuota) {
+          this.cuotas[this.cuotas.length].valorCuota = this.cuotas[this.cuotas.length].valorCuota + nuevoValor
+          
+        }
+
+        
+
+      }
+    }
+
+
+
     console.log(this.cuotas);
-    
+
   }
 
   // CLASIFICACION
