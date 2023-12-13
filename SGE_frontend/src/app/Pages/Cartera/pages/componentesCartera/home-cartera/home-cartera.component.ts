@@ -204,7 +204,7 @@ export class HomeCarteraComponent implements OnInit {
   fechaInicial: Date = new Date();
   incrementoMeses: number = 1;
   cantidadFechas: number = 0;
-  fechasIncrementadas: Date[] = [];
+  fechasIncrementadas: String[] = [];
 
 
   ngOnInit(): void {
@@ -802,16 +802,23 @@ export class HomeCarteraComponent implements OnInit {
 
       if (mes === 2) {
 
+        if(parseInt(fechaOk[2])== 30 || parseInt(fechaOk[2]) == 31){
+          const esBisiesto = isLeapYear(fechaDate);
 
-        const esBisiesto = isLeapYear(fechaDate);
+          const ultimoDiaDeFebrero = esBisiesto ? dia = 29 : dia = 28;
+        }else{
+          dia = parseInt(fechaOk[2])
+        }
 
-        const ultimoDiaDeFebrero = esBisiesto ? dia = 29 : dia = 28;
+
+
+        
       }else{
         if(meses30.includes(mes) && ((parseInt(fechaOk[2])) == 30 || (parseInt(fechaOk[2])) == 31)){
           dia = 30
 
         }else{
-          if(meses31.includes(mes) && ((parseInt(fechaOk[2])) == 31 || (parseInt(fechaOk[2])) == 30)){
+          if(meses31.includes(mes) && ((parseInt(fechaOk[2])) == 31 )){
             dia=31
           }else{
             dia = parseInt(fechaOk[2]) 
@@ -827,8 +834,9 @@ export class HomeCarteraComponent implements OnInit {
       
       console.log(fechaString);
 
+      var fechaok = `${dia}/${mes}/${year}`
 
-      // this.fechasIncrementadas.push(new Date(ultimoDiaDeFebrero))
+       this.fechasIncrementadas.push(fechaok)
 
 
 
