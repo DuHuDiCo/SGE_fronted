@@ -835,7 +835,7 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
-  
+  // CACULAR COUTAS
   calcularCuotas() {
     var totalCuotas = this.acuerdoCal.valorTotalAcuerdo / this.acuerdoCal.valorCuotaMensual
     var res = Math.ceil(totalCuotas);
@@ -876,7 +876,7 @@ export class HomeCarteraComponent implements OnInit {
       if(this.cuotas.length == this.totalCuotas-1){
         var decimalesCuota = totalCuotas%1
         var ultimaCuota = this.acuerdoCal.valorCuotaMensual * decimalesCuota
-        this.cuotaList.valorCuota = ultimaCuota.toFixed(0)
+        this.cuotaList.valorCuota = parseInt(ultimaCuota.toFixed(0))
 
         // CAPITAL CUOTA
       var porcentaje = this.cuotaList.valorCuota / this.acuerdoCal.valorTotalAcuerdo
@@ -905,6 +905,30 @@ export class HomeCarteraComponent implements OnInit {
     }
     console.log(this.cuotas);
 
+  }
+
+  // RECALCULAR
+  recalcularValores(position:number, event:any){
+    console.log(this.cuotas);
+    
+    var nuevoValor =   event.target.value -this.acuerdoCal.valorCuotaMensual
+    for (let i = this.totalCuotas-1; i > position; i--) {
+      
+      if(nuevoValor > this.cuotas[i].valorCuota){
+        nuevoValor = nuevoValor - this.cuotas[i].valorCuota
+        this.cuotas.splice(i)
+      } else {
+        alert(nuevoValor)
+        nuevoValor = nuevoValor - this.cuotas[i].valorCuota
+        if(nuevoValor <= 0){
+          this.cuotas[i].valorCuota = (nuevoValor)*-1
+          this.totalCuotas = this.cuotas.length
+          break
+        }
+      }
+    }
+    console.log(this.cuotas);
+    
   }
 
   // CLASIFICACION
