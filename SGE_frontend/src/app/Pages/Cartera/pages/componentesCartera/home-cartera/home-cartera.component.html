@@ -1051,7 +1051,6 @@
                                             <th scope="col">Capital Cuota</th>
                                             <th scope="col">Honorarios</th>
                                             <th scope="col">Interes</th>
-                                            <th scope="col">Cumplio</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1064,10 +1063,9 @@
                                                 <input type="number" class="form-control" value="{{c.valorCuota}}">
                                             </div>
                                         </th>
-                                        <th>Cuota {{ i + 1 }}</th>
-                                        <th>Cuota {{ i + 1 }}</th>
-                                        <th>Cuota {{ i + 1 }}</th>
-                                        <th>Cuota {{ i + 1 }}</th>
+                                        <th>{{ c.capitalCuota }}</th>
+                                        <th>{{ c.honorarios }}</th>
+                                        <th>{{ c.interesCuota }}</th>
                                       </tr>
 
                                     </tbody>

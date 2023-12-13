@@ -185,6 +185,7 @@ export class HomeCarteraComponent implements OnInit {
     fechaVencimiento: '',
     valorCuota: 0,
     capitalCuota: 0,
+    interesCuota: 0,
     honorarios: 0,
     cumplio: false
   }
@@ -661,6 +662,8 @@ export class HomeCarteraComponent implements OnInit {
 
   calcular() {
 
+    this.cuotas = []
+
     if (this.cuentaCobrarSelected.totalObligatoria == 0 || this.cuentaCobrarSelected.totalObligatoria == null) {
       Swal.fire({
         icon: 'error',
@@ -743,7 +746,11 @@ export class HomeCarteraComponent implements OnInit {
 
 
   calcularHonorarios() {
-    var cal = (this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdo.valorInteresesMora)) * 0.20
+    var cal = (this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+    console.log(this.cuentasCalcular.moraObligatoria);
+    console.log(this.acuerdoCal.valorInteresesMora);
+    
+    
     var res = cal.toFixed(0)
     this.acuerdoCal.honoriarioAcuerdo = res
     console.log(this.acuerdoCal.honoriarioAcuerdo);
@@ -757,37 +764,21 @@ export class HomeCarteraComponent implements OnInit {
       this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
       if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
         this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      }else{
+        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)
       }
-      this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)
+      
     }
 
     if (this.acuerdo.tipoAcuerdo == 'TOTAL') {
       this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
       if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
         this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      }else{
+        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora)
       }
-      this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora)
+      
     }
-  }
-
-  calcularCuotas() {
-    var totalCuotas = this.acuerdoCal.valorTotalAcuerdo / this.acuerdoCal.valorCuotaMensual
-    var res = Math.ceil(totalCuotas);
-    this.totalCuotas = res
-    console.log(totalCuotas);
-    this.cantidadFechas = this.totalCuotas;
-    
-    this.generarFechas()
-
-    for (let i = 0; i < totalCuotas; i++) {
-      this.cuotaList.valorCuota = this.acuerdoCal.valorCuotaMensual
-      this.cuotaList.fechaVencimiento = this.fechasIncrementadas[i]
-      this.cuotaList.numeroCuota = i + 1
-      this.cuotas.push(this.cuotaList)
-      this.cuotaList = {}
-    }
-    console.log(this.cuotas);
-
   }
 
   // CUOTAS
@@ -835,14 +826,84 @@ export class HomeCarteraComponent implements OnInit {
           }
         }
       }
- 
-      console.log(fechaString);
 
       var fechaok = `${dia}/${mes}/${year}`
 
       this.fechasIncrementadas.push(fechaok)
 
     }
+
+  }
+
+  
+  calcularCuotas() {
+    var totalCuotas = this.acuerdoCal.valorTotalAcuerdo / this.acuerdoCal.valorCuotaMensual
+    var res = Math.ceil(totalCuotas);
+    this.totalCuotas = res
+    console.log(this.totalCuotas);
+    this.cantidadFechas = this.totalCuotas;
+    
+    this.generarFechas()
+
+    var porAcu = 0
+
+    for (let i = 0; i < totalCuotas; i++) {
+      // CUOTA MENSUAL
+      this.cuotaList.valorCuota = this.acuerdoCal.valorCuotaMensual
+      this.cuotaList.fechaVencimiento = this.fechasIncrementadas[i]
+      this.cuotaList.numeroCuota = i + 1
+
+      // CAPITAL CUOTA
+      var porcentaje = this.cuotaList.valorCuota / this.acuerdoCal.valorTotalAcuerdo
+      console.log(porcentaje);
+      var cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
+      this.cuotaList.capitalCuota = cap.toFixed(0)
+
+      // HONORARIOS POR CUOTA
+      if(this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'){
+        var hon = porcentaje * this.acuerdoCal.honoriarioAcuerdo
+        this.cuotaList.honorarios = hon.toFixed(0)
+      } else {
+        this.cuotaList.honorarios = 0
+      }
+
+      // INTERESES CUOTA
+      var int = porcentaje * this.acuerdoCal.valorInteresesMora
+      this.cuotaList.interesCuota = int.toFixed(0)
+
+
+      // ULTIMA CUOTA
+      if(this.cuotas.length == this.totalCuotas-1){
+        var decimalesCuota = totalCuotas%1
+        var ultimaCuota = this.acuerdoCal.valorCuotaMensual * decimalesCuota
+        this.cuotaList.valorCuota = ultimaCuota.toFixed(0)
+
+        // CAPITAL CUOTA
+      var porcentaje = this.cuotaList.valorCuota / this.acuerdoCal.valorTotalAcuerdo
+      console.log(porcentaje);
+      var cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
+      this.cuotaList.capitalCuota = cap.toFixed(0)
+
+      // HONORARIOS POR CUOTA
+      if(this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'){
+        var hon = porcentaje * this.acuerdoCal.honoriarioAcuerdo
+        this.cuotaList.honorarios = hon.toFixed(0)
+      } else {
+        this.cuotaList.honorarios = 0
+      }
+
+      // INTERESES CUOTA
+      var int = porcentaje * this.acuerdoCal.valorInteresesMora
+      this.cuotaList.interesCuota = int.toFixed(0)
+
+        this.cuotas.push(this.cuotaList)
+      } else {
+        this.cuotas.push(this.cuotaList)
+      }
+
+      this.cuotaList = {}
+    }
+    console.log(this.cuotas);
 
   }
 
