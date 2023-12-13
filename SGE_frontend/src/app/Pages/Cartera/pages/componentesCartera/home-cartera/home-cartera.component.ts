@@ -48,7 +48,7 @@ export class HomeCarteraComponent implements OnInit {
     'F GESTION',
     'F COMPRO',
   ]
-  cuotas!: Array<number>
+  cuotas: any[] = []
 
   // OBJETOS
 
@@ -148,9 +148,18 @@ export class HomeCarteraComponent implements OnInit {
     valorInteresesMora: 0,
     honoriarioAcuerdo: 0,
     fechaCompromiso: new Date,
-    cuotasList: [],
+    cuotasList: [
+      {
+        idCuota: 0,
+        numeroCuota: 0,
+        fechaVencimiento: new Date(),
+        valorCuota: 0,
+        capitalCuota: 0,
+        honorarios: 0,
+        cumplio: true
+      }
+    ],
     username: ''
-
   }
 
   acuerdoCal: any = {
@@ -159,7 +168,6 @@ export class HomeCarteraComponent implements OnInit {
     valorInteresesMora: 0,
     valorCuotaMensual: 0,
     honoriarioAcuerdo: 0,
-
   }
 
   // CUENTAS COBRAR CALCULATE
@@ -169,6 +177,16 @@ export class HomeCarteraComponent implements OnInit {
     moraObligatoria: 0,
     fechaVencimiento: new Date,
     username: ''
+  }
+
+  cuotaList:any = {
+    idCuota: 0,
+    numeroCuota: 0,
+    fechaVencimiento: '',
+    valorCuota: 0,
+    capitalCuota: 0,
+    honorarios: 0,
+    cumplio: false
   }
 
   // PARAMETROS PARA EL SERVICE
@@ -691,8 +709,6 @@ export class HomeCarteraComponent implements OnInit {
 
     this.calcularCuotas()
 
-    this.generarFechas()
-
     this.cuentasCobrar.updateCuentaCobrar(this.cuentasCalcular).subscribe(
       (data: any) => {
         this.cuentaCobrarSelected = data
@@ -759,35 +775,36 @@ export class HomeCarteraComponent implements OnInit {
     var res = Math.ceil(totalCuotas);
     this.totalCuotas = res
     console.log(totalCuotas);
-
-    this.cuotas = new Array(this.totalCuotas)
-    console.log(this.cuotas);
     this.cantidadFechas = this.totalCuotas;
+    
+    this.generarFechas()
+
+    for (let i = 0; i < totalCuotas; i++) {
+      this.cuotaList.valorCuota = this.acuerdoCal.valorCuotaMensual
+      this.cuotaList.fechaVencimiento = this.fechasIncrementadas[i]
+      this.cuotaList.numeroCuota = i + 1
+      this.cuotas.push(this.cuotaList)
+      this.cuotaList = {}
+    }
+    console.log(this.cuotas);
 
   }
 
+  // CUOTAS
+
+  // CALCULAR LAS FECHAS DE LAS CUOTAS
   generarFechas() {
-    
-    
-    
     var fechaString = this.fechaInicial.toISOString()
-    
     var fechaSplit = fechaString.split("T")
     var fechaOk = fechaSplit[0].split("-")
-
     var dia = parseInt(fechaOk[2])
     var mes = parseInt(fechaOk[1])
     var year = parseInt(fechaOk[0])
-    
-    
-
     var meses31 = [1,3,5,7,8,10,12]
     var meses30 = [4,6,9,11]
 
-
     for (let i = 0; i < this.cantidadFechas; i++) {
       var fechaString = `${year}-${mes}-${dia}`
-      
       
       var fechaDate = new Date(fechaString)
 
@@ -799,9 +816,7 @@ export class HomeCarteraComponent implements OnInit {
         mes++
       }
 
-
       if (mes === 2) {
-
         if(parseInt(fechaOk[2])== 30 || parseInt(fechaOk[2]) == 31){
           const esBisiesto = isLeapYear(fechaDate);
 
@@ -809,14 +824,9 @@ export class HomeCarteraComponent implements OnInit {
         }else{
           dia = parseInt(fechaOk[2])
         }
-
-
-
-        
       }else{
         if(meses30.includes(mes) && ((parseInt(fechaOk[2])) == 30 || (parseInt(fechaOk[2])) == 31)){
           dia = 30
-
         }else{
           if(meses31.includes(mes) && ((parseInt(fechaOk[2])) == 31 )){
             dia=31
@@ -824,30 +834,17 @@ export class HomeCarteraComponent implements OnInit {
             dia = parseInt(fechaOk[2]) 
           }
         }
-
-       
-        
       }
-
-     
-
-      
+ 
       console.log(fechaString);
 
       var fechaok = `${dia}/${mes}/${year}`
 
-       this.fechasIncrementadas.push(fechaok)
-
-
-
-
-
+      this.fechasIncrementadas.push(fechaok)
 
     }
 
   }
-
-
 
   // CLASIFICACION
   getClasificacion() {
