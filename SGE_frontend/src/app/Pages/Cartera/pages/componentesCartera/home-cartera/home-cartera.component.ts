@@ -735,6 +735,8 @@ export class HomeCarteraComponent implements OnInit {
 
 
   calcularByTipoAcuerdo() {
+
+
     if (this.acuerdo.tipoAcuerdo == 'MORA') {
       this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
       if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
@@ -765,55 +767,76 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   generarFechas() {
-    var meses31 = [1, 3, 5, 7, 8, 10, 12]
-    var meses30 = [4, 6, 9, 11]
+    
+    
+    
+    var fechaString = this.fechaInicial.toISOString()
+    
+    var fechaSplit = fechaString.split("T")
+    var fechaOk = fechaSplit[0].split("-")
 
-    const fechaInicial = new Date(this.fechaInicial);
+    var dia = parseInt(fechaOk[2])
+    var mes = parseInt(fechaOk[1])
+    var year = parseInt(fechaOk[0])
+    
+    
 
-    for (let i = 0; i < 12; i++) {
-      const fechaInicialMes = addMonths(fechaInicial, i);
-
-
-      const esFebrero = fechaInicialMes.getMonth() === 1;
-
-      // Manejar el caso de febrero
-      if (esFebrero) {
-
-
-
-        // Si es febrero, verifica si el año es bisiesto
-        const esBisiesto = isLeapYear(fechaInicialMes);
-        const ultimoDiaDeFebrero = esBisiesto ? 29 : 28;
-
-        if (fechaInicialMes.getDate() >= ultimoDiaDeFebrero) {
-          this.fechasIncrementadas.push(new Date(fechaInicialMes.getFullYear(), 1, ultimoDiaDeFebrero));
-        } else {
-          // Usa el último día de febrero
-
-          this.fechasIncrementadas.push(new Date(fechaInicialMes.getFullYear(), 1, fechaInicialMes.getDate() + 1));
-        }
+    var meses31 = [1,3,5,7,8,10,12]
+    var meses30 = [4,6,9,11]
 
 
+    for (let i = 0; i < this.cantidadFechas; i++) {
+      var fechaString = `${year}-${mes}-${dia}`
+      
+      
+      var fechaDate = new Date(fechaString)
+
+      if (mes == 12) {
+        mes = 0
+        year++
+        mes++;
       } else {
-        // Usa el último día del mes
-
-
-        if (meses31.includes(fechaInicialMes.getMonth() + 1)) {
-          fechaInicialMes.setDate(fechaInicialMes.getDate() + 1)
-          
-        }
-
-        if (meses30.includes(fechaInicialMes.getMonth() + 1)) {
-          fechaInicialMes.setDate(fechaInicialMes.getDate())
-
-        }
-
-
-        
-        this.fechasIncrementadas.push(fechaInicialMes);
-
+        mes++
       }
+
+
+      if (mes === 2) {
+
+
+        const esBisiesto = isLeapYear(fechaDate);
+
+        const ultimoDiaDeFebrero = esBisiesto ? dia = 29 : dia = 28;
+      }else{
+        if(meses30.includes(mes) && ((parseInt(fechaOk[2])) == 30 || (parseInt(fechaOk[2])) == 31)){
+          dia = 30
+
+        }else{
+          if(meses31.includes(mes) && ((parseInt(fechaOk[2])) == 31 || (parseInt(fechaOk[2])) == 30)){
+            dia=31
+          }else{
+            dia = parseInt(fechaOk[2]) 
+          }
+        }
+
+       
+        
+      }
+
+     
+
+      
+      console.log(fechaString);
+
+
+      // this.fechasIncrementadas.push(new Date(ultimoDiaDeFebrero))
+
+
+
+
+
+
     }
+
   }
 
 
