@@ -941,6 +941,7 @@ export class HomeCarteraComponent implements OnInit {
           nuevoValor = nuevoValor - this.cuotas[i].valorCuota
           if (nuevoValor <= 0) {
             this.cuotas[i].valorCuota = (nuevoValor) * -1
+            this.cuotas[position].valorCuota = parseInt(event.target.value)
             this.totalCuotas = this.cuotas.length
             break
           }
@@ -949,8 +950,8 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     //RECALCULAR PARA SUMAR CUOTAS
-    var nuevoValorSumarCuotas = this.acuerdoCal.valorCuotaMensual - event.target.value
-    console.log(this.acuerdoCal.valorCuotaMensual);
+    var nuevoValorSumarCuotas = this.cuotas[position].valorCuota - event.target.value
+    console.log(this.cuotas[position].valorCuota);
     console.log(event.target.value);
 
     if (event.target.value < this.cuotas[position].valorCuota) {
@@ -1002,11 +1003,13 @@ export class HomeCarteraComponent implements OnInit {
         if (nuevoValorSumarCuotas > this.cuotas[this.cuotas.length - 1].valorCuota) {
 
           if (nuevoValorSumarCuotas <= this.acuerdoCal.valorCuotaMensual) {
-
+            alert(2)
+            console.log(nuevoValorSumarCuotas);
+            
 
             var couta = this.cuotas[this.cuotas.length - 1].valorCuota + nuevoValorSumarCuotas
             if (couta > this.acuerdoCal.valorCuotaMensual) {
-
+              alert(3)
               var excedentePrinciapl = couta - this.acuerdoCal.valorCuotaMensual
 
               var excedenteParaCuouta = nuevoValorSumarCuotas - excedentePrinciapl
@@ -1030,6 +1033,7 @@ export class HomeCarteraComponent implements OnInit {
               }
 
             } else {
+              alert(4)
               this.cuotas[this.cuotas.length - 1].valorCuota = couta
               this.cuotas[position].valorCuota = parseInt(event.target.value)
               break;
@@ -1038,25 +1042,28 @@ export class HomeCarteraComponent implements OnInit {
           }
 
           
-          var nuevoValorSumarCuotasCambio = this.cuotas[position].valorCuota - event.target.value
-          if(nuevoValorSumarCuotasCambio >= this.acuerdoCal.valorCuotaMensual){
-            var coutaCambio = this.acuerdoCal.valorCuotaMensual - this.cuotas[this.cuotas.length -1 ]
-            this.cuotas[this.cuotas.length-1].valorCuota = coutaCambio
-
-            nuevoValorSumarCuotasCambio  = nuevoValorSumarCuotasCambio - coutaCambio
-            if(nuevoValorSumarCuotasCambio > 0 &&  nuevoValorSumarCuotasCambio < this.acuerdoCal.valorCuotaMensual){
+          
+          if(nuevoValorSumarCuotas >= this.acuerdoCal.valorCuotaMensual){
+            alert(1)
+            var coutaCambio = this.acuerdoCal.valorCuotaMensual - this.cuotas[this.cuotas.length -1 ].valorCuota
+            this.cuotas[this.cuotas.length-1].valorCuota = this.acuerdoCal.valorCuotaMensual
+            
+            
+            nuevoValorSumarCuotas  = nuevoValorSumarCuotas - coutaCambio
+            if(nuevoValorSumarCuotas > 0 &&  nuevoValorSumarCuotas < this.acuerdoCal.valorCuotaMensual){
+              alert(5)
               var cuoUl = {
                 idCuota: 0,
                 numeroCuota: 0,
                 fechaVencimiento: '',
-                valorCuota: nuevoValorSumarCuotasCambio,
+                valorCuota: nuevoValorSumarCuotas,
                 capitalCuota: 0,
                 interesCuota: 0,
                 honorarios: 0,
                 cumplio: false
               }
               this.cuotas.push(cuoUl)
-              nuevoValorSumarCuotasCambio = 0
+              nuevoValorSumarCuotas = 0
               break;
             }
 
@@ -1069,6 +1076,7 @@ export class HomeCarteraComponent implements OnInit {
         }
       }
     }
+    
     console.log(this.cuotas);
   }
 
