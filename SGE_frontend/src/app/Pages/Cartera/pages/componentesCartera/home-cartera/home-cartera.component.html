@@ -1051,23 +1051,21 @@
                                             <th scope="col">Capital Cuota</th>
                                             <th scope="col">Honorarios</th>
                                             <th scope="col">Interes</th>
-                                            <th scope="col">Cumplio</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
                                       <tr *ngFor="let c of cuotas; let i = index;">
                                         <th>Cuota {{ i + 1 }}</th>
-                                        <th>{{ fechasIncrementadas[i] | date: 'dd/MM/yyyy' }}</th>
+                                        <th>{{ fechasIncrementadas[i] }}</th>
                                         <th>
                                             <div class="input-group input-group-sm mb-3">
-                                                <input [(ngModel)]="acuerdoCal.valorCuotaMensual" type="number" class="form-control">
+                                                <input type="number" class="form-control" value="{{c.valorCuota}}" (change)="recalcularValores(i, $event)">
                                             </div>
                                         </th>
-                                        <th>Cuota {{ i + 1 }}</th>
-                                        <th>Cuota {{ i + 1 }}</th>
-                                        <th>Cuota {{ i + 1 }}</th>
-                                        <th>Cuota {{ i + 1 }}</th>
+                                        <th>{{ c.capitalCuota }}</th>
+                                        <th>{{ c.honorarios }}</th>
+                                        <th>{{ c.interesCuota }}</th>
                                       </tr>
 
                                     </tbody>
