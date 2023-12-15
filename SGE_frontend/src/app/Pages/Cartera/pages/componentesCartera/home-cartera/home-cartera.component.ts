@@ -34,6 +34,7 @@ export class HomeCarteraComponent implements OnInit {
   ClasificacionArray: clasificacion[] = []
   Columnas: string[] = []
   clasificacionesT: Tarea[] = []
+  disableds!: Array<boolean>
 
   constantes: string[] = [
     'CLIENTE',
@@ -324,7 +325,7 @@ export class HomeCarteraComponent implements OnInit {
         cliente: '',
         documentoCliente: '',
         fechaCuentaCobrar: new Date,
-        fechaVencimiento: new Date,
+        fechaVencimiento: '',
         tipo: '',
         valorNotaDebito: 0,
         valorCuota: 0,
@@ -378,6 +379,29 @@ export class HomeCarteraComponent implements OnInit {
         },
         clientes: []
       }
+
+      this.acuerdo = {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: new Date,
+        cuotasList: [
+          {
+            idCuota: 0,
+            numeroCuota: 0,
+            fechaVencimiento: new Date(),
+            valorCuota: 0,
+            capitalCuota: 0,
+            honorarios: 0,
+            cumplio: true
+          }
+        ],
+        username: ''
+      }
+
       this.codeudoresSelected = []
       setTimeout(() => {
         this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
@@ -612,6 +636,11 @@ export class HomeCarteraComponent implements OnInit {
 
   mostrarOffcanvas() {
 
+    this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
+    this.cuentasCalcular.valorTotal = this.cuentaCobrarSelected.totalObligatoria
+    this.cuentasCalcular.moraObligatoria = this.cuentaCobrarSelected.moraObligatoria
+    this.cuentasCalcular.fechaVencimiento = this.cuentaCobrarSelected.fechaVencimiento
+
 
     if (this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null) {
       Swal.fire({
@@ -641,6 +670,20 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
+    this.calcularByTipoAcuerdo()
+
+    var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
+    console.log(valorMinimo);
+
+    if (this.acuerdo.valorCuotaMensual < valorMinimo) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: `El Valor Mínimo De La Cuota debe de ser de: ${valorMinimo}`,
+        timer: 3000
+      })
+      return
+    }
 
 
     // var gestion = this.gestiones.find((g:any) => g.clasificacion.clasificacion == 'Nota')
@@ -650,6 +693,7 @@ export class HomeCarteraComponent implements OnInit {
     //   console.log(gestion);
 
     // }
+    console.log(this.cuentaCobrarSelected.fechaVencimiento);
 
     $('#modalGestion').modal('hide');
     $('#offcanvasTop').offcanvas('show');
@@ -712,9 +756,19 @@ export class HomeCarteraComponent implements OnInit {
 
     this.calcularCuotas()
 
+    this.disableds = new Array(this.cuotas.length)
+    this.disableds.forEach(element => {
+      this.disableds.push(false)
+    });
+
+    this.disableds[0] = true
+    this.disableds[this.cuotas.length - 1] = true
+
     this.cuentasCobrar.updateCuentaCobrar(this.cuentasCalcular).subscribe(
       (data: any) => {
         this.cuentaCobrarSelected = data
+        var fechaVen = this.cuentaCobrarSelected.fechaVencimiento.split('T')
+        this.cuentaCobrarSelected.fechaVencimiento = fechaVen[0]
         console.log(data);
 
 
@@ -730,8 +784,6 @@ export class HomeCarteraComponent implements OnInit {
     )
     this.col = false
     this.mostrarModalGestion()
-    console.log(this.acuerdo);
-    console.log(this.acuerdoCal);
 
   }
 
@@ -779,6 +831,33 @@ export class HomeCarteraComponent implements OnInit {
       }
 
     }
+  }
+
+  metodosCalculos() {
+
+    for (let i = 0; i < this.cuotas.length; i++) {
+      //CAPITAL CUOTA
+      var porcentaje = this.cuotas[i].valorCuota / this.acuerdoCal.valorTotalAcuerdo
+      console.log(porcentaje);
+      var cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
+      this.cuotas[i].capitalCuota = parseInt(cap.toFixed(0))
+
+      // HONORARIOS POR CUOTA
+      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+        var hon = porcentaje * this.acuerdoCal.honoriarioAcuerdo
+        this.cuotas[i].honorarios = parseInt(hon.toFixed(0))
+      } else {
+        this.cuotas[i].honorarios = 0
+      }
+
+      // INTERESES CUOTA
+      var int = porcentaje * this.acuerdoCal.valorInteresesMora
+      this.cuotas[i].interesCuota = parseInt(int.toFixed(0))
+
+    }
+
+
+
   }
 
   // CUOTAS
@@ -927,24 +1006,34 @@ export class HomeCarteraComponent implements OnInit {
 
   // RECALCULAR
   recalcularValores(position: number, event: any) {
+
     console.log(this.cuotas);
 
-    var nuevoValor = event.target.value - this.acuerdoCal.valorCuotaMensual
-
+    var nuevoValor = event.target.value - this.cuotas[position].valorCuota
+    alert(nuevoValor + " inicia")
     if (event.target.value > this.cuotas[position].valorCuota) {
+      alert("target > cuota posicion")
       for (let i = this.cuotas.length - 1; i > position; i--) {
         if (nuevoValor > this.cuotas[i].valorCuota) {
+          alert("nuevoVlor > cuota posicion ultima hacia primera")
           nuevoValor = nuevoValor - this.cuotas[i].valorCuota
+
           this.cuotas.splice(i)
+
         } else {
-          alert(nuevoValor)
+          alert("nuevoVlor < cuota posicion ultima hacia primera")
           nuevoValor = nuevoValor - this.cuotas[i].valorCuota
+
+
           if (nuevoValor <= 0) {
             this.cuotas[i].valorCuota = (nuevoValor) * -1
+            alert(this.cuotas[i].valorCuota)
             this.cuotas[position].valorCuota = parseInt(event.target.value)
             this.totalCuotas = this.cuotas.length
+
             break
           }
+
         }
       }
     }
@@ -956,25 +1045,27 @@ export class HomeCarteraComponent implements OnInit {
 
     if (event.target.value < this.cuotas[position].valorCuota) {
 
-
+      alert("target < cuota posicion")
 
       for (let i = position; i < this.cuotas.length; i++) {
 
         //nuevo valor menor ultima cuota
         if (nuevoValorSumarCuotas < this.cuotas[this.cuotas.length - 1].valorCuota) {
-
+          alert("nuevoValorSumarCuotas < ultima cuota")
           var cuotamenos = this.cuotas[this.cuotas.length - 1].valorCuota + nuevoValorSumarCuotas
           if (cuotamenos > this.acuerdoCal.valorCuotaMensual) {
+            alert("cuotamenos > valor cuota mensula")
             var couta = this.cuotas[this.cuotas.length - 1].valorCuota + nuevoValorSumarCuotas
             if (couta > this.acuerdoCal.valorCuotaMensual) {
-
+              alert("cuota > valor cuota mensula")
               var excedentePrinciapl = couta - this.acuerdoCal.valorCuotaMensual
 
               var excedenteParaCuouta = nuevoValorSumarCuotas - excedentePrinciapl
 
-              this.cuotas[this.cuotas.length-1].valorCuota = this.cuotas[this.cuotas.length-1].valorCuota +excedenteParaCuouta
+              this.cuotas[this.cuotas.length - 1].valorCuota = this.cuotas[this.cuotas.length - 1].valorCuota + excedenteParaCuouta
 
               if (excedentePrinciapl > 0) {
+                alert("excendeprincipal en cuota > valot cuota mensula > 0")
                 var cuoUl = {
                   idCuota: 0,
                   numeroCuota: 0,
@@ -986,37 +1077,52 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUl)
+                this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
+
                 break;
               }
 
 
             } else {
+              alert("cuota < valor cuota mensula")
               this.cuotas[this.cuotas.length - 1].valorCuota = couta
+              this.cuotas[position].valorCuota = parseInt(event.target.value)
+
             }
 
+          } else {
+            alert("cuotamenos < valor cuota mensula")
+
+            this.cuotas[this.cuotas.length - 1].valorCuota = cuotamenos
+            this.cuotas[position].valorCuota = parseInt(event.target.value)
+
+            break
           }
+
+
 
         }
 
         //nuevo valor mayor ultima cuota
         if (nuevoValorSumarCuotas > this.cuotas[this.cuotas.length - 1].valorCuota) {
-
+          alert("nuevoValorSumarCuotas > valor ultima couta")
           if (nuevoValorSumarCuotas <= this.acuerdoCal.valorCuotaMensual) {
-            alert(2)
+            alert("nuevoValorSumarCuotas <= valor cuota mensual")
             console.log(nuevoValorSumarCuotas);
-            
+
 
             var couta = this.cuotas[this.cuotas.length - 1].valorCuota + nuevoValorSumarCuotas
             if (couta > this.acuerdoCal.valorCuotaMensual) {
-              alert(3)
+              alert("cuota > valor mensual")
               var excedentePrinciapl = couta - this.acuerdoCal.valorCuotaMensual
 
               var excedenteParaCuouta = nuevoValorSumarCuotas - excedentePrinciapl
 
-              this.cuotas[this.cuotas.length-1].valorCuota = this.cuotas[this.cuotas.length-1].valorCuota +excedenteParaCuouta
+              this.cuotas[this.cuotas.length - 1].valorCuota = this.cuotas[this.cuotas.length - 1].valorCuota + excedenteParaCuouta
 
               if (excedentePrinciapl > 0) {
+                alert("excedenteprincipal > 0 en cuota > valor mensual")
                 var cuoUl = {
                   idCuota: 0,
                   numeroCuota: 0,
@@ -1028,30 +1134,34 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUl)
+                this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
+
                 break;
               }
 
+
             } else {
-              alert(4)
+              alert(" cuota < valor mensual")
               this.cuotas[this.cuotas.length - 1].valorCuota = couta
               this.cuotas[position].valorCuota = parseInt(event.target.value)
+
               break;
             }
 
           }
 
-          
-          
-          if(nuevoValorSumarCuotas >= this.acuerdoCal.valorCuotaMensual){
-            alert(1)
-            var coutaCambio = this.acuerdoCal.valorCuotaMensual - this.cuotas[this.cuotas.length -1 ].valorCuota
-            this.cuotas[this.cuotas.length-1].valorCuota = this.acuerdoCal.valorCuotaMensual
-            
-            
-            nuevoValorSumarCuotas  = nuevoValorSumarCuotas - coutaCambio
-            if(nuevoValorSumarCuotas > 0 &&  nuevoValorSumarCuotas < this.acuerdoCal.valorCuotaMensual){
-              alert(5)
+
+
+          if (nuevoValorSumarCuotas >= this.acuerdoCal.valorCuotaMensual) {
+            alert("nuevoValorSumarCuotas >= 0 cuota valor mensual")
+            var coutaCambio = this.acuerdoCal.valorCuotaMensual - this.cuotas[this.cuotas.length - 1].valorCuota
+            this.cuotas[this.cuotas.length - 1].valorCuota = this.acuerdoCal.valorCuotaMensual
+
+
+            nuevoValorSumarCuotas = nuevoValorSumarCuotas - coutaCambio
+            if (nuevoValorSumarCuotas > 0 && nuevoValorSumarCuotas < this.acuerdoCal.valorCuotaMensual) {
+              alert("nuevoValorSumarCuotas > 0 y mayor a cuota mensual")
               var cuoUl = {
                 idCuota: 0,
                 numeroCuota: 0,
@@ -1064,20 +1174,30 @@ export class HomeCarteraComponent implements OnInit {
               }
               this.cuotas.push(cuoUl)
               nuevoValorSumarCuotas = 0
+
               break;
             }
 
 
           }
 
-          
+
 
 
         }
+
       }
     }
-    
+    this.disableds = []
+    this.disableds = new Array(this.cuotas.length)
+    this.disableds.forEach(element => {
+      this.disableds.push(false)
+    });
+
+    this.disableds[0] = true
+    this.disableds[this.cuotas.length - 1] = true
     console.log(this.cuotas);
+    this.metodosCalculos()
   }
 
   // CLASIFICACION
