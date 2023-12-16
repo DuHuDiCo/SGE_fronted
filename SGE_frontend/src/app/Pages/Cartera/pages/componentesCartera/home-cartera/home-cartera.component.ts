@@ -1160,8 +1160,10 @@ export class HomeCarteraComponent implements OnInit {
 
 
             nuevoValorSumarCuotas = nuevoValorSumarCuotas - coutaCambio
+            console.log(nuevoValorSumarCuotas);
+
             if (nuevoValorSumarCuotas > 0 && nuevoValorSumarCuotas < this.acuerdoCal.valorCuotaMensual) {
-              alert("nuevoValorSumarCuotas > 0 y mayor a cuota mensual")
+              alert("nuevoValorSumarCuotas > 0 y menor a cuota mensual")
               var cuoUl = {
                 idCuota: 0,
                 numeroCuota: 0,
@@ -1173,10 +1175,51 @@ export class HomeCarteraComponent implements OnInit {
                 cumplio: false
               }
               this.cuotas.push(cuoUl)
-              nuevoValorSumarCuotas = 0
 
+              this.cuotas[position].valorCuota = parseInt(event.target.value)
               break;
+            } else {
+              alert("nuevoValorSumarCuotas > 0 y mayor a cuota mensual")
+              var excedentePrinciapl = nuevoValorSumarCuotas - this.acuerdoCal.valorCuotaMensual
+              var excedenteParaCuouta = nuevoValorSumarCuotas - excedentePrinciapl
+
+              if (excedenteParaCuouta > 0 && excedenteParaCuouta >= this.acuerdoCal.valorCuotaMensual) {
+                alert("excedentePrinciapl > 0 y mayor = a cuota mensual")
+                var cuoUll = {
+                  idCuota: 0,
+                  numeroCuota: 0,
+                  fechaVencimiento: '',
+                  valorCuota: excedenteParaCuouta,
+                  capitalCuota: 0,
+                  interesCuota: 0,
+                  honorarios: 0,
+                  cumplio: false
+                }
+                this.cuotas.push(cuoUll)
+
+                nuevoValorSumarCuotas = nuevoValorSumarCuotas - excedenteParaCuouta
+
+              } else {
+                alert("excedentePrinciapl > 0 y menor a cuota mensual")
+                var cuoUll = {
+                  idCuota: 0,
+                  numeroCuota: 0,
+                  fechaVencimiento: '',
+                  valorCuota: excedentePrinciapl,
+                  capitalCuota: 0,
+                  interesCuota: 0,
+                  honorarios: 0,
+                  cumplio: false
+                }
+                this.cuotas.push(cuoUll)
+                nuevoValorSumarCuotas = excedentePrinciapl
+
+              }
+
+
             }
+
+
 
 
           }
