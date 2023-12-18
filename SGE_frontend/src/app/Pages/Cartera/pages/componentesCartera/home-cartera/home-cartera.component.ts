@@ -215,6 +215,8 @@ export class HomeCarteraComponent implements OnInit {
   paginas!: Array<number>
 
   fechaActual: Date = new Date();
+  fechamax: string = '';
+  fechamin: string = '';
 
   fechaCorte: string = '';
 
@@ -566,6 +568,19 @@ export class HomeCarteraComponent implements OnInit {
         }
       }
     }
+
+    var sumaComprobacion = 0
+    for (let i = 0; i < this.cuotas.length; i++) {
+      sumaComprobacion = sumaComprobacion + this.cuotas[i].valorCuota
+      console.log(sumaComprobacion);
+      
+    }
+
+    if(sumaComprobacion != this.acuerdoCal.valorTotalAcuerdo ){
+      this.calcular()
+      alert('Todo esta muy caro')
+    }
+
     console.log(this.newGestion);
 
     // Swal.fire({
@@ -651,6 +666,25 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
+    if (this.acuerdo.fechaCompromiso > this.fechamax) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Elija Una Fecha Menor a 30 Dias desde hoy',
+        timer: 3000
+      })
+      return
+    }
+    if (this.acuerdo.fechaCompromiso < this.fechamin) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No Puede Elegir Una Fecha Anterior Al Dia de Hoy',
+        timer: 3000
+      })
+      return
+    }
+
     if (this.acuerdo.valorCuotaMensual == 0 || this.acuerdo.valorCuotaMensual == null) {
       Swal.fire({
         icon: 'error',
@@ -794,6 +828,7 @@ export class HomeCarteraComponent implements OnInit {
         console.log(error);
       }
     )
+
     this.col = false
     this.mostrarModalGestion()
 
@@ -926,6 +961,21 @@ export class HomeCarteraComponent implements OnInit {
 
   // CACULAR COUTAS
   calcularCuotas() {
+    if(this.acuerdoCal.valorCuotaMensual === this.acuerdoCal.valorTotalAcuerdo){
+      var cuotaList1 = {
+        numeroCuota: 1,
+        fechaVencimiento: this.acuerdoCal.fechaCompromiso,
+        valorCuota: this.acuerdoCal.valorTotalAcuerdo,
+        capitalCuota: 0,
+        interesCuota: 0,
+        honorarios: 0,
+        cumplio: false
+      }
+      this.cuotas.push(cuotaList1)
+      this.metodosCalculos()
+      return
+    }
+
     var totalCuotas = this.acuerdoCal.valorTotalAcuerdo / this.acuerdoCal.valorCuotaMensual
     var res = Math.ceil(totalCuotas);
     this.totalCuotas = res
@@ -1016,9 +1066,6 @@ export class HomeCarteraComponent implements OnInit {
 
   // RECALCULAR
   recalcularValores(position: number, event: any) {
-
-    
-
     var nuevoValor = event.target.value - this.cuotas[position].valorCuota
     alert(nuevoValor + " inicia")
     if (event.target.value > this.cuotas[position].valorCuota) {
@@ -1031,73 +1078,48 @@ export class HomeCarteraComponent implements OnInit {
         
         if (nuevoValor > this.cuotas[i].valorCuota) {
           alert("nuevoVlor > cuota posicion ultima hacia primera")
-          
-
           for (let j = 0; j < position; j++) {
             alert("suma "+j)
             sumaCoutasAnteriores = sumaCoutasAnteriores + parseInt(this.cuotas[j].valorCuota)
             console.log(sumaCoutasAnteriores);
-            
-            
-            
-
           }
-
           var totalCuotaSumadas = sumaCoutasAnteriores + parseInt(event.target.value)
           console.log(totalCuotaSumadas);
-          
           if(totalCuotaSumadas > this.acuerdoCal.valorTotalAcuerdo){
             alert("totalCuotaSumadas > acuerdo total")
             var ultimaCuota = this.acuerdoCal.valorTotalAcuerdo -sumaCoutasAnteriores
-
             for (let k = position; k < this.cuotas.length -1; k++) {
               alert("eliminacion posicion "+k)
               this.cuotas.splice(k+1)
               i = this.cuotas.length-1
-              
             }
-
             this.cuotas[this.cuotas.length-1].valorCuota = ultimaCuota
             this.disableds[this.cuotas.length - 1] = true
-            
           }else{
             alert("totalCuotaSumadas < acuerdo total")
             nuevoValor = nuevoValor - this.cuotas[i].valorCuota
-
             this.cuotas.splice(i)
           }
-
-          
-
         } else {
           alert("nuevoVlor < cuota posicion ultima hacia primera")
           nuevoValor = nuevoValor - this.cuotas[i].valorCuota
-
-
           if (nuevoValor <= 0) {
             this.cuotas[i].valorCuota = (nuevoValor) * -1
             alert(this.cuotas[i].valorCuota)
             this.cuotas[position].valorCuota = parseInt(event.target.value)
             this.totalCuotas = this.cuotas.length
-
             break
           }
-
         }
       }
     }
-
     //RECALCULAR PARA SUMAR CUOTAS
     var nuevoValorSumarCuotas = this.cuotas[position].valorCuota - event.target.value
     console.log(this.cuotas[position].valorCuota);
     console.log(event.target.value);
-
     if (event.target.value < this.cuotas[position].valorCuota) {
-
       alert("target < cuota posicion")
-
       for (let i = position; i < this.cuotas.length; i++) {
-
         //nuevo valor menor ultima cuota
         if (nuevoValorSumarCuotas < this.cuotas[this.cuotas.length - 1].valorCuota) {
           alert("nuevoValorSumarCuotas < ultima cuota")
@@ -1108,11 +1130,8 @@ export class HomeCarteraComponent implements OnInit {
             if (couta > this.acuerdoCal.valorCuotaMensual) {
               alert("cuota > valor cuota mensula")
               var excedentePrinciapl = couta - this.acuerdoCal.valorCuotaMensual
-
               var excedenteParaCuouta = nuevoValorSumarCuotas - excedentePrinciapl
-
               this.cuotas[this.cuotas.length - 1].valorCuota = this.cuotas[this.cuotas.length - 1].valorCuota + excedenteParaCuouta
-
               if (excedentePrinciapl > 0) {
                 alert("excendeprincipal en cuota > valot cuota mensula > 0")
                 var cuoUl = {
@@ -1128,48 +1147,32 @@ export class HomeCarteraComponent implements OnInit {
                 this.cuotas.push(cuoUl)
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
-
                 break;
               }
-
-
             } else {
               alert("cuota < valor cuota mensula")
               this.cuotas[this.cuotas.length - 1].valorCuota = couta
               this.cuotas[position].valorCuota = parseInt(event.target.value)
-
             }
-
           } else {
             alert("cuotamenos < valor cuota mensula")
-
             this.cuotas[this.cuotas.length - 1].valorCuota = cuotamenos
             this.cuotas[position].valorCuota = parseInt(event.target.value)
-
             break
           }
-
-
-
         }
-
         //nuevo valor mayor ultima cuota
         if (nuevoValorSumarCuotas > this.cuotas[this.cuotas.length - 1].valorCuota) {
           alert("nuevoValorSumarCuotas > valor ultima couta")
           if (nuevoValorSumarCuotas <= this.acuerdoCal.valorCuotaMensual) {
             alert("nuevoValorSumarCuotas <= valor cuota mensual")
             console.log(nuevoValorSumarCuotas);
-
-
             var couta = this.cuotas[this.cuotas.length - 1].valorCuota + nuevoValorSumarCuotas
             if (couta > this.acuerdoCal.valorCuotaMensual) {
               alert("cuota > valor mensual")
               var excedentePrinciapl = couta - this.acuerdoCal.valorCuotaMensual
-
               var excedenteParaCuouta = nuevoValorSumarCuotas - excedentePrinciapl
-
               this.cuotas[this.cuotas.length - 1].valorCuota = this.cuotas[this.cuotas.length - 1].valorCuota + excedenteParaCuouta
-
               if (excedentePrinciapl > 0) {
                 alert("excedenteprincipal > 0 en cuota > valor mensual")
                 var cuoUl = {
@@ -1185,32 +1188,21 @@ export class HomeCarteraComponent implements OnInit {
                 this.cuotas.push(cuoUl)
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
-
                 break;
               }
-
-
             } else {
               alert(" cuota < valor mensual")
               this.cuotas[this.cuotas.length - 1].valorCuota = couta
               this.cuotas[position].valorCuota = parseInt(event.target.value)
-
               break;
             }
-
           }
-
-
-
           if (nuevoValorSumarCuotas >= this.acuerdoCal.valorCuotaMensual) {
             alert("nuevoValorSumarCuotas >= 0 cuota valor mensual")
             var coutaCambio = this.acuerdoCal.valorCuotaMensual - this.cuotas[this.cuotas.length - 1].valorCuota
             this.cuotas[this.cuotas.length - 1].valorCuota = this.acuerdoCal.valorCuotaMensual
-
-
             nuevoValorSumarCuotas = nuevoValorSumarCuotas - coutaCambio
             console.log(nuevoValorSumarCuotas);
-
             if (nuevoValorSumarCuotas > 0 && nuevoValorSumarCuotas < this.acuerdoCal.valorCuotaMensual) {
               alert("nuevoValorSumarCuotas > 0 y menor a cuota mensual")
               var cuoUl = {
@@ -1224,14 +1216,12 @@ export class HomeCarteraComponent implements OnInit {
                 cumplio: false
               }
               this.cuotas.push(cuoUl)
-
               this.cuotas[position].valorCuota = parseInt(event.target.value)
               break;
             } else {
               alert("nuevoValorSumarCuotas > 0 y mayor a cuota mensual")
               var excedentePrinciapl = nuevoValorSumarCuotas - this.acuerdoCal.valorCuotaMensual
               var excedenteParaCuouta = nuevoValorSumarCuotas - excedentePrinciapl
-
               if (excedenteParaCuouta > 0 && excedenteParaCuouta >= this.acuerdoCal.valorCuotaMensual) {
                 alert("excedentePrinciapl > 0 y mayor = a cuota mensual")
                 var cuoUll = {
@@ -1245,9 +1235,7 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUll)
-
                 nuevoValorSumarCuotas = nuevoValorSumarCuotas - excedenteParaCuouta
-
               } else {
                 alert("excedentePrinciapl > 0 y menor a cuota mensual")
                 var cuoUll = {
@@ -1262,22 +1250,10 @@ export class HomeCarteraComponent implements OnInit {
                 }
                 this.cuotas.push(cuoUll)
                 nuevoValorSumarCuotas = excedentePrinciapl
-
               }
-
-
             }
-
-
-
-
           }
-
-
-
-
         }
-
       }
     }
     this.disableds = []
@@ -1372,13 +1348,16 @@ export class HomeCarteraComponent implements OnInit {
 
     fechaMax.setDate(this.fechaActual.getDate() + 30)
     var fechaForm = fechaMax.toISOString().split('T')[0]
-
+    this.fechamax = fechaForm 
     return fechaForm;
   }
 
   minFecha(): string {
     var fechaMin = new Date();
     var fechaForm = fechaMin.toISOString().split('T')[0]
+    this.fechamin = fechaForm
+    
+    
     return fechaForm;
   }
 
