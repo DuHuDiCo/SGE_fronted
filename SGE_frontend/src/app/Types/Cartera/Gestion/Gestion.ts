@@ -1,6 +1,7 @@
 export type Gestion = {
   numeroObligacion: string,
   clasificacion: {
+    nombreClasificacion: string,
     tipoClasificacion: string | null,
     tarea: {
       detalleTarea: string,
@@ -18,7 +19,7 @@ export type Gestion = {
       valorInteresesMora: number,
       honoriarioAcuerdo: number,
       fechaCompromiso: Date,
-      cuotasList: CuotaList[],
+      cuotasList: any[],
       username: string
     } | null
   },
@@ -101,7 +102,7 @@ export type GestionArray = {
 export type CuotaList = {
   idCuota: number,
   numeroCuota: number,
-  fechaVencimiento: Date,
+  fechaVencimiento: string,
   valorCuota: number,
   capitalCuota: number,
   honorarios: number,

@@ -907,12 +907,12 @@
                             <select class="form-select mt-3 mb-3"
                                 [(ngModel)]="newGestion.clasificacion.tipoClasificacion">
                                 <option [value]="null">Seleccione Una Clasificación</option>
-                                <option *ngFor="let c of ClasificacionArray" [value]="c.clasificacion">{{
-                                    c.clasificacion }}</option>
+                                <option *ngFor="let c of ClasificacionArray" [value]="c.tipo">{{
+                                    c.nombre }}</option>
                             </select>
 
                             <!-- ACUERDO PAGO -->
-                            <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'Acuerdo de Pago'">
+                            <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="input-group input-group-sm mb-3">
@@ -960,7 +960,7 @@
                             </span>
 
                             <!-- TAREA -->
-                            <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'Tarea'">
+                            <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'TAREA'">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="input-group input-group-sm mb-3">
@@ -985,7 +985,7 @@
                             </span>
 
                             <!-- NOTA -->
-                            <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'Nota'">
+                            <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'NOTA'">
                                 <div class="form-floating mb-3">
                                     <textarea class="form-control" style="height: 100px;"
                                         [(ngModel)]="nota.detalle"></textarea>
@@ -1136,7 +1136,7 @@
     </div>
 
     <!-- Offcanvas Confirmar Datos -->
-    <div *ngIf="newGestion.clasificacion.tipoClasificacion == 'Acuerdo de Pago'" class="offcanvas offcanvas-end"
+    <div *ngIf="newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'" class="offcanvas offcanvas-end"
         data-bs-backdrop="static" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasTopLabel">Confirmar Datos</h5>

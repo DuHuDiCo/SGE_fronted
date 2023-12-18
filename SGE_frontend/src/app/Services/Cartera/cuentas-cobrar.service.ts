@@ -33,15 +33,15 @@ export class CuentasCobrarService {
   // CLASIFICACIONES
 
   getClasificacion(){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/clasificacion/getClasificaciones`)
+    return this.http.get(`http://192.168.1.6:8021/api/v1/nombreClasificacion/clasificaciones`)
   }
 
   getClasificacionById(id:number){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/clasificacion/getClasificacionById/${id}`)
+    return this.http.get(`http://192.168.1.6:8021/api/v1/nombreClasificacion/clasificacionById?id=${id}`)
   }
 
-  saveClasificacion(clasificacion:clasificacion){
-    return this.http.post(`http://192.168.1.6:8021/api/v1/clasificacion/saveClasificacion`, clasificacion)
+  saveClasificacion(clasificacion:any){
+    return this.http.post(`http://192.168.1.6:8021/api/v1/nombreClasificacion/guardarClasificacion`, clasificacion)
   }
 
   updateClasificacion(clasificacion:clasificacion){
@@ -65,28 +65,5 @@ export class CuentasCobrarService {
   desactivateAcuerdoPago(id:number){
     return this.http.put(`http://192.168.1.6:8021/api/v1/gestiones/desactivateAcuerdoPago/${id}`, null)
   }
-
-  // CLASIFICACION TAREA
-  getTareas(){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/clasificacionTarea/getClasificacionesTarea`)
-  }
-
-  tareasById(id:number){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/clasificacionTarea/getClasificacionTareaById/${id}`)
-  }
-
-  saveTareas(tarea:Tarea){
-    return this.http.post(`http://192.168.1.6:8021/api/v1/clasificacionTarea/saveClasificacionTarea`, tarea)
-  }
-
-  updateTarea(tarea:TareaUpdate){
-    return this.http.put(`http://192.168.1.6:8021/api/v1/clasificacionTarea/actualizarClasificacionTarea`, tarea)
-  }
-
-  deleteTarea(id:number){
-    return this.http.delete(`http://192.168.1.6:8021/api/v1/clasificacionTarea/eliminarClasificacionTarea/${id}`)
-  }
-
-
 
 }
