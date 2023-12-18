@@ -669,12 +669,24 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
-
+    this.calcularIntMora()
+    this.calcularHonorarios()
     this.calcularByTipoAcuerdo()
+    console.log(this.acuerdoCal.valorTotalAcuerdo);
+    
+    if (this.acuerdo.valorCuotaMensual > this.acuerdoCal.valorTotalAcuerdo) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No Puede Ingresar Un Valor Mayor al Valor del Acuerdo',
+        timer: 3000
+      })
+      return
+    }
 
     var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
     console.log(valorMinimo);
-
+    
     if (this.acuerdo.valorCuotaMensual < valorMinimo) {
       Swal.fire({
         icon: 'error',
@@ -810,8 +822,6 @@ export class HomeCarteraComponent implements OnInit {
 
 
   calcularByTipoAcuerdo() {
-
-
     if (this.acuerdo.tipoAcuerdo == 'MORA') {
       this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
       if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
@@ -1007,18 +1017,57 @@ export class HomeCarteraComponent implements OnInit {
   // RECALCULAR
   recalcularValores(position: number, event: any) {
 
-    console.log(this.cuotas);
+    
 
     var nuevoValor = event.target.value - this.cuotas[position].valorCuota
     alert(nuevoValor + " inicia")
     if (event.target.value > this.cuotas[position].valorCuota) {
       alert("target > cuota posicion")
+      var sumaCoutasAnteriores = 0
       for (let i = this.cuotas.length - 1; i > position; i--) {
+        console.log(i);
+        
+        console.log(this.cuotas.length - 1);
+        
         if (nuevoValor > this.cuotas[i].valorCuota) {
           alert("nuevoVlor > cuota posicion ultima hacia primera")
-          nuevoValor = nuevoValor - this.cuotas[i].valorCuota
+          
 
-          this.cuotas.splice(i)
+          for (let j = 0; j < position; j++) {
+            alert("suma "+j)
+            sumaCoutasAnteriores = sumaCoutasAnteriores + parseInt(this.cuotas[j].valorCuota)
+            console.log(sumaCoutasAnteriores);
+            
+            
+            
+
+          }
+
+          var totalCuotaSumadas = sumaCoutasAnteriores + parseInt(event.target.value)
+          console.log(totalCuotaSumadas);
+          
+          if(totalCuotaSumadas > this.acuerdoCal.valorTotalAcuerdo){
+            alert("totalCuotaSumadas > acuerdo total")
+            var ultimaCuota = this.acuerdoCal.valorTotalAcuerdo -sumaCoutasAnteriores
+
+            for (let k = position; k < this.cuotas.length -1; k++) {
+              alert("eliminacion posicion "+k)
+              this.cuotas.splice(k+1)
+              i = this.cuotas.length-1
+              
+            }
+
+            this.cuotas[this.cuotas.length-1].valorCuota = ultimaCuota
+            this.disableds[this.cuotas.length - 1] = true
+            
+          }else{
+            alert("totalCuotaSumadas < acuerdo total")
+            nuevoValor = nuevoValor - this.cuotas[i].valorCuota
+
+            this.cuotas.splice(i)
+          }
+
+          
 
         } else {
           alert("nuevoVlor < cuota posicion ultima hacia primera")
