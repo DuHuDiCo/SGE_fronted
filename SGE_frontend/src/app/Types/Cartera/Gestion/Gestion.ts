@@ -6,7 +6,6 @@ export type Gestion = {
     tarea: {
       detalleTarea: string,
       fechaFinTarea: Date,
-      clasificacion: string | null
     } | null,
     nota: {
       detalle: string
@@ -63,27 +62,7 @@ export type GestionArray = {
       idBanco: number,
       banco: string
     },
-    gestiones: [
-      {
-        idGestion: number,
-        numeroObligacion: string,
-        fechaGestion: Date,
-        detallesGestion: string,
-        detallesAdicionales: string,
-        asesorCartera: {
-          idAsesorCartera: number,
-          usuarioId: number
-        },
-        clasificacionGestion: {
-          idClasificacionGestion: number,
-          clasificacion: string
-        },
-        clasificacion: {
-          idClasificacionGestion: number,
-          clasificacion: string
-        }
-      }
-    ],
+    gestiones: Gestiones[],
     asesor: {
       idAsesorCartera: number,
       usuarioId: number
@@ -107,4 +86,24 @@ export type CuotaList = {
   capitalCuota: number,
   honorarios: number,
   cumplio: boolean
+}
+
+export type Gestiones = {
+  idGestion: number,
+  numeroObligacion: string,
+  fechaGestion: Date,
+  detallesGestion: string,
+  detallesAdicionales: string,
+  asesorCartera: {
+    idAsesorCartera: number,
+    usuarioId: number
+  },
+  clasificacionGestion: {
+    idClasificacionGestion: number,
+    clasificacion: string
+  },
+  clasificacion: {
+    idClasificacionGestion: number,
+    clasificacion: string
+  }
 }

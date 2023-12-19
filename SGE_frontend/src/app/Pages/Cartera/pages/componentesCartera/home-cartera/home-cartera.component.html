@@ -905,9 +905,9 @@
                                     Telefónico/Whatsapp con el Cliente y/o Tercero (?)</label>
                             </div>
                             <select class="form-select mt-3 mb-3"
-                                [(ngModel)]="newGestion.clasificacion.tipoClasificacion">
+                                [(ngModel)]="newGestion.clasificacion.nombreClasificacion" (change)="tipoClasificacion($event)">
                                 <option [value]="null">Seleccione Una Clasificación</option>
-                                <option *ngFor="let c of ClasificacionArray" [value]="c.tipo">{{
+                                <option *ngFor="let c of ClasificacionArray" [value]="c.nombre">{{
                                     c.nombre }}</option>
                             </select>
 
@@ -962,19 +962,12 @@
                             <!-- TAREA -->
                             <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'TAREA'">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="input-group input-group-sm mb-3">
                                             <span class="input-group-text fw-bold">Fecha Fin</span>
                                             <input type="date" class="form-control" [(ngModel)]="tarea.fechaFinTarea"
                                                 [min]="minFecha()">
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <select class="form-select mb-3" [(ngModel)]="tarea.clasificacion">
-                                            <option [value]="null">Seleccione Una Clasificación</option>
-                                            <option *ngFor="let c of clasificacionesT">{{ c.clasificacionTarea }}
-                                            </option>
-                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-floating mb-3">
@@ -1042,7 +1035,7 @@
                                 </div>
                             </div>
                             <div class="table-responsive align-middle">
-                                <table class="table table-responsive table-bordered text-center table-hover">
+                                <table class="table table-bordered text-center table-hover table-sm align-middle">
                                     <thead>
                                         <tr>
                                             <th scope="col">#Cuotas</th>
@@ -1055,17 +1048,17 @@
                                     </thead>
                                     <tbody>
 
-                                      <tr *ngFor="let c of cuotas; let i = index;">
-                                        <th>Cuota {{ i + 1 }}</th>
-                                        <th>{{ fechasIncrementadas[i] }}</th>
-                                        <th>
-                                            <div class="input-group input-group-sm mb-3">
-                                                <input type="number" class="form-control" value="{{c.valorCuota}}" (change)="recalcularValores(i, $event)" [disabled]="disableds[i]">
+                                      <tr *ngFor="let c of cuotas; let i = index;" style="font-size: 15px;">
+                                        <td>Cuota {{ i + 1 }}</td>
+                                        <td>{{ fechasIncrementadas[i] }}</td>
+                                        <td>
+                                            <div class="input-group input-group-sm">
+                                                <input type="number" class="form-control text-center" value="{{c.valorCuota}}" (change)="recalcularValores(i, $event)" [disabled]="disableds[i]">
                                             </div>
-                                        </th>
-                                        <th>{{ c.capitalCuota }}</th>
-                                        <th>{{ c.honorarios }}</th>
-                                        <th>{{ c.interesCuota }}</th>
+                                        </td>
+                                        <td>{{ c.capitalCuota | number }}</td>
+                                        <td>{{ c.honorarios | number }}</td>
+                                        <td>{{ c.interesCuota | number }}</td>
                                       </tr>
 
                                     </tbody>
@@ -1102,6 +1095,17 @@
                         data-bs-target="#modalGestion"></button>
                 </div>
                 <div class="modal-body">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="#">Active</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#">Link</a>
+                        </li>
+                      </ul>
                     <div class="table-responsive align-middle">
                         <table class="table table-bordered text-center table-hover">
                             <thead>
@@ -1114,7 +1118,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let g of gestiones; let i = index">
+                                <tr *ngFor="let g of gestiones; let i = index" (click)="getOneGestion(g.idGestion)" data-bs-toggle="modal" data-bs-target="#modalGestionCom" style="cursor: pointer;">
                                     <th>{{ i + 1 }}</th>
                                     <td>{{ g.asesorCartera }}</td>
                                     <td>{{ g.fechaGestion | date:'medium' }}</td>
@@ -1134,6 +1138,78 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Detalle Gestión -->
+    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Un Detalle A la Gestión</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive align-middle">
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" [(ngModel)]="acuerdo.detalle" style="height: 100px;">
+                            <label for="floatingInput">¿Desea Agregar Un Detalle?</label>
+                          </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" (click)="saveGestionWithDetalle('NO')">NO</button>
+                    <button class="btn btn-primary" (click)="saveGestionWithDetalle('SI')">SI</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Gestion Completa -->
+    <div class="modal fade" id="modalGestionCom" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Gestión Seleccionada</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive align-middle">
+                    <table class="table table-bordered text-center table-hover table-sm align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">Cuota</th>
+                                <th scope="col">Fecha Venc</th>
+                                <th scope="col">Valor Cuota</th>
+                                <th scope="col">Capital Cuota</th>
+                                <th scope="col">Honorarios</th>
+                                <th scope="col">Interes</th>
+                                <th scope="col">Pago</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                          <tr *ngFor="let g of gestionSelected.clasificacion.cuotasList">
+                            <td>{{ g.numeroCuota }}</td>
+                            <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ g.valorCuota | number }}</td>
+                            <td>{{ g.capitalCuota | number }}</td>
+                            <td>{{ g.honorarios | number }}</td>
+                            <td>{{ g.interesCuota | number }}</td>
+                            <td>
+                                <div class="form-check text-center">
+                                    <input class="form-check-input text-center" type="checkbox">
+                                  </div>
+                            </td>
+                          </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <!-- Offcanvas Confirmar Datos -->
     <div *ngIf="newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'" class="offcanvas offcanvas-end"

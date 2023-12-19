@@ -129,6 +129,35 @@ export class HomeCarteraComponent implements OnInit {
     detallesAdicionales: ''
   }
 
+  gestionSelected: any = {
+    numeroObligacion: '',
+    clasificacion: {
+      nombreClasificacion: '',
+      tipoClasificacion: '',
+      tarea: {
+        detalleTarea: '',
+        fechaFinTarea: new Date(),
+      },
+      nota: {
+        detalle: ''
+      },
+      acuerdoPago: {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: new Date(),
+        cuotasList: [],
+        username: ''
+      }
+    },
+    gestion: '',
+    contact: false,
+    detallesAdicionales: ''
+  }
+
   // NOTA
   nota: any = {
     detalle: ''
@@ -138,7 +167,6 @@ export class HomeCarteraComponent implements OnInit {
   tarea: any = {
     detalleTarea: '',
     fechaFinTarea: new Date,
-    clasificacion: ''
   }
 
   // ACUERDO DE PAGO
@@ -218,6 +246,7 @@ export class HomeCarteraComponent implements OnInit {
   incrementoMeses: number = 1;
   cantidadFechas: number = 0;
   fechasIncrementadas: string[] = [];
+  idGestion:number = 0
 
 
   ngOnInit(): void {
@@ -442,8 +471,12 @@ export class HomeCarteraComponent implements OnInit {
         this.gestiones = data
         this.newGestion.numeroObligacion = numeroObligacion
         this.getLastDato(numeroObligacion)
+        console.log(this.gestiones);
+        var gestion = this.gestiones.find((g:any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
+        this.idGestion = gestion.idGestion
+        console.log(this.idGestion);
+        
         console.log(data);
-
       }, (error: any) => {
         console.log(error);
       }
@@ -481,7 +514,7 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     } else {
-      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'Tarea') {
+      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'TAREA') {
         if (this.tarea.fechaFinTarea instanceof Date || this.tarea.fechaFinTarea == null) {
           Swal.fire({
             icon: 'error',
@@ -491,17 +524,6 @@ export class HomeCarteraComponent implements OnInit {
           })
           return
         }
-
-        if (this.tarea.clasificacion?.trim() == '' || this.tarea.clasificacion?.trim() == null) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Elija Una Clasificación Para su Tarea',
-            timer: 3000
-          })
-          return
-        }
-
 
         if (this.tarea.detalleTarea?.trim() == '' || this.tarea.detalleTarea?.trim() == null) {
           Swal.fire({
@@ -514,9 +536,60 @@ export class HomeCarteraComponent implements OnInit {
         }
 
         this.newGestion.clasificacion.tarea = this.tarea
+
+        Swal.fire({
+          title: 'Guardar Gestión',
+          text: '¿Está Seguro De Crear Esta Gestión?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Crear',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            console.log(this.newGestion);
+            this.gestionButton = true
+              this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
+                (data:any) => {
+                  this.gestiones.push(data)
+                  console.log(this.gestiones);
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Datos Guardados',
+                    text: 'Gestión Guardada Exitosamente',
+                    timer: 3000
+                  })
+                  this.gestionButton = false
+                  this.newGestion = {
+                    numeroObligacion: this.newGestion.numeroObligacion,
+                    clasificacion: {
+                      tipoClasificacion: null,
+                      tarea: null,
+                      nota: null,
+                      acuerdoPago: null,
+                      nombreClasificacion: ''
+                    },
+                    gestion: '',
+                    contact: false,
+                    detallesAdicionales: this.newGestion.detallesAdicionales
+                  }
+                  $('#modalDetalle').modal('hide');
+                }, (error:any) => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error Al Guardar La Gestión',
+                    timer: 3000
+                  })
+                  this.gestionButton = false
+                }
+              )
+          }
+        })
       }
 
-      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'Nota') {
+      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'NOTA') {
         if (this.nota?.detalle.trim() == '' || this.nota?.detalle.trim() == null) {
           Swal.fire({
             icon: 'error',
@@ -527,9 +600,62 @@ export class HomeCarteraComponent implements OnInit {
           return
         }
         this.newGestion.clasificacion.nota = this.nota
+
+        Swal.fire({
+          title: 'Guardar Gestión',
+          text: '¿Está Seguro De Crear Esta Gestión?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Crear',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            console.log(this.newGestion);
+            this.gestionButton = true
+              this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
+                (data:any) => {
+                  this.gestiones.push(data)
+                  console.log(this.gestiones);
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Datos Guardados',
+                    text: 'Gestión Guardada Exitosamente',
+                    timer: 3000
+                  })
+                  this.gestionButton = false
+                  this.newGestion = {
+                    numeroObligacion: this.newGestion.numeroObligacion,
+                    clasificacion: {
+                      tipoClasificacion: null,
+                      tarea: null,
+                      nota: null,
+                      acuerdoPago: null,
+                      nombreClasificacion: ''
+                    },
+                    gestion: '',
+                    contact: false,
+                    detallesAdicionales: this.newGestion.detallesAdicionales
+                  }
+                  $('#modalDetalle').modal('hide');
+                }, (error:any) => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error Al Guardar La Gestión',
+                    timer: 3000
+                  })
+                  this.gestionButton = false
+                }
+              )
+          }
+        })
       }
 
-      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'Acuerdo de Pago') {
+      
+
+      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'ACUERDO DE PAGO') {
         if (this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null) {
           Swal.fire({
             icon: 'error',
@@ -557,22 +683,49 @@ export class HomeCarteraComponent implements OnInit {
           })
           return
         }
+        if(this.cuotas.length == 0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Debe de Calcular las Cuotas del Acuerdo',
+            timer: 3000
+          })
+          return
+        }
+        this.newGestion.clasificacion.acuerdoPago = this.acuerdo
+        this.cuotas.forEach(element => {
+          this.newGestion.clasificacion.acuerdoPago?.cuotasList.push(element)
+        });
+        
+        this.newGestion.clasificacion.acuerdoPago?.cuotasList.splice(0, 1)
+
+        //TODO:CAMBIAR POR EL NOMBRE DE USUARIO
+        this.newGestion.clasificacion.acuerdoPago!.username = 'Diana1975'
+        console.log(this.newGestion.clasificacion.acuerdoPago);
+
+        $('#modalGestion').modal('hide');
+        $('#modalDetalle').modal('show');
       }
     }
     
-    this.newGestion.clasificacion.acuerdoPago = this.acuerdo
-    this.cuotas.forEach(element => {
-      this.newGestion.clasificacion.acuerdoPago?.cuotasList.push(element)
-    });
     
-    this.newGestion.clasificacion.acuerdoPago?.cuotasList.splice(0, 1)
 
-    //TODO:CAMBIAR POR EL NOMBRE DE USUARIO
-    this.newGestion.clasificacion.acuerdoPago!.username = 'Diana1975'
-    this.newGestion.clasificacion.nombreClasificacion = this.newGestion.clasificacion.tipoClasificacion
+  }
 
-    console.log(this.newGestion.clasificacion.acuerdoPago);
-    
+  saveGestionWithDetalle(accion:string){
+    if(accion == 'SI'){
+      if(this.acuerdo.detalle.trim() == '' || this.acuerdo.detalle.trim() == null){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Digite El detalle',
+          timer: 3000
+        })
+        return
+      } else {
+        this.newGestion.clasificacion.acuerdoPago!.detalle = this.acuerdo.detalle 
+      }
+    }
 
     var sumaComprobacion = 0
     for (let i = 0; i < this.cuotas.length; i++) {
@@ -582,8 +735,16 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     if(sumaComprobacion != this.acuerdoCal.valorTotalAcuerdo ){
-      this.calcular()
-      alert('Todo esta muy caro')
+      Swal.fire({
+        icon: 'error',
+        title: 'La suma de la cuotas no coincide con el Valor del Acuerdo',
+        text: 'Recalculando...',
+        timer: 3000
+      })
+      setTimeout(() => {
+        this.calcular()
+      }, 3000);
+      
     }
 
     console.log(this.newGestion);
@@ -625,7 +786,7 @@ export class HomeCarteraComponent implements OnInit {
                 contact: false,
                 detallesAdicionales: this.newGestion.detallesAdicionales
               }
-              $('#modalGestion').modal('hide');
+              $('#modalDetalle').modal('hide');
             }, (error:any) => {
               Swal.fire({
                 icon: 'error',
@@ -638,7 +799,104 @@ export class HomeCarteraComponent implements OnInit {
           )
       }
     })
+  }
 
+  tipoClasificacion(event:any){
+    
+    this.newGestion.clasificacion.nombreClasificacion = event.target.value
+    
+    var tipoClas = this.ClasificacionArray.find((t:any) => t.nombre == event.target.value)
+    if(tipoClas != undefined || tipoClas != null){
+      this.newGestion.clasificacion.tipoClasificacion = tipoClas.tipo
+      console.log(this.newGestion.clasificacion.tipoClasificacion);
+    }
+
+    if(this.newGestion.clasificacion.tipoClasificacion != 'ACUERDO DE PAGO'){
+      this.col = true
+    }
+
+    if(this.newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'){
+      var gestion = this.gestiones.find((g:any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
+      console.log(gestion);
+      
+      if(gestion != null || gestion != undefined){
+        Swal.fire({
+          title: 'Desactivar Acuerdo',
+          text: 'Este Cliente tiene un Acuerdo de Pago Vigente, ¿Desea Desactivarlo?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Desactivar',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+              this.newGestion.contact = true
+              this.cuentasCobrar.desactivateAcuerdoPago(this.idGestion).subscribe(
+                (data:any) => {
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Datos Guardados',
+                    text: 'Acuerdo Desactivado Con Éxito',
+                    timer: 3000
+                  })
+                  return
+                }, (error:any) => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error Al Desactivar El Acuerdo',
+                    timer: 3000
+                  })
+                  console.log(error);
+                }
+              )
+          } else {
+            var nombre = this.ClasificacionArray.filter((n:any) => n.nombre != 'ACUERDO DE PAGO')
+            this.newGestion.clasificacion.nombreClasificacion = nombre[0].nombre
+            this.newGestion.clasificacion.tipoClasificacion = nombre[0].tipo
+          }
+        }) 
+      } else {
+        this.newGestion.contact = true
+      }
+    }
+  }
+
+  getOneGestion(id:number){
+    this.gestionSelected = {
+      numeroObligacion: '',
+    clasificacion: {
+      nombreClasificacion: '',
+      tipoClasificacion: '',
+      tarea: {
+        detalleTarea: '',
+        fechaFinTarea: new Date(),
+      },
+      nota: {
+        detalle: ''
+      },
+      acuerdoPago: {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: new Date(),
+        cuotasList: [],
+        username: ''
+      }
+    },
+    gestion: '',
+    contact: false,
+    detallesAdicionales: ''
+    }
+    var gestion = this.gestiones.find((g:any) => g.idGestion == id)
+    console.log(id);
+    
+    this.gestionSelected = gestion
+    console.log(this.gestionSelected);
   }
 
 
@@ -710,7 +968,11 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
     this.calcularIntMora()
-    this.calcularHonorarios()
+
+    if(this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'){
+      this.calcularHonorarios()
+    }
+
     this.calcularByTipoAcuerdo()
     console.log(this.acuerdoCal.valorTotalAcuerdo);
     
@@ -1301,34 +1563,40 @@ export class HomeCarteraComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.newGestion = {
-          numeroObligacion: this.newGestion.numeroObligacion,
+          numeroObligacion: '',
           clasificacion: {
-            tipoClasificacion: '',
-            tarea: {
-              detalleTarea: '',
-              fechaFinTarea: new Date,
-              clasificacion: ''
-            },
-            nota: {
-              detalle: ''
-            },
-            acuerdoPago: {
-              detalle: '',
-              valorCuotaMensual: 0,
-              tipoAcuerdo: '',
-              valorTotalAcuerdo: 0,
-              valorInteresesMora: 0,
-              honoriarioAcuerdo: 0,
-              fechaCompromiso: new Date,
-              cuotasList: [],
-              username: ''
-            },
+            tipoClasificacion: null,
+            tarea: null,
+            nota: null,
+            acuerdoPago: null,
             nombreClasificacion: ''
           },
           gestion: '',
           contact: false,
           detallesAdicionales: this.newGestion.detallesAdicionales
         }
+
+        this.acuerdo = {
+          detalle: '',
+          valorCuotaMensual: 0,
+          tipoAcuerdo: '',
+          valorTotalAcuerdo: 0,
+          valorInteresesMora: 0,
+          honoriarioAcuerdo: 0,
+          fechaCompromiso: '',
+          cuotasList: [],
+          username: ''
+        }
+
+        this.nota = {
+          detalle: ''
+        }
+      
+        this.tarea = {
+          detalleTarea: '',
+          fechaFinTarea: '',
+        }
+
         $('#modalGestion').modal('hide');
       }
     })
