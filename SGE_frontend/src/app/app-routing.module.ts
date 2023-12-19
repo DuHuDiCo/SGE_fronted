@@ -79,6 +79,7 @@ import { ClasificacionComponent } from './Pages/Cartera/pages/componentesCartera
 import { ClasificacionTareaComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion-tarea/clasificacion-tarea.component';
 
 import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/uploads-files/uploads-files.component';
+import { HomeCajaComponent } from './Pages/Cartera/pages/componentesCartera/home-caja/home-caja.component';
 
 
 
@@ -132,6 +133,11 @@ const routes: Routes = [
 
         path: "upload-data",
         component: UploadsFilesComponent
+      },
+      {
+
+        path: "inicio-caja",
+        component: HomeCajaComponent
       }
 
     ]

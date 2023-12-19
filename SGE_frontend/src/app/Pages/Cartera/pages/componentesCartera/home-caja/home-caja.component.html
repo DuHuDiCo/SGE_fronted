@@ -1,1 +1,59 @@
-<p>home-caja works!</p>
+<div class="container mt-5">
+    <div class="card-c">
+
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Documento Cliente" [(ngModel)]="cedula" name="cedula"
+                        aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-danger" 
+                        style="background-color: #960010;border-color: #960010;color: white;" type="button" (click)="obtenerCuentaCobrar()"
+                        id="button-addon2"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-8 offset-md-2">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6> <strong>Cliente:</strong> {{cuentasCobrar[0].clientes[0].nombreTitular}}</h6>
+                        <h6><strong>Documento:</strong> {{cuentasCobrar[0].clientes[0].numeroDocumento}}</h6>
+                        
+                    </div>
+                    <div class="col-md-6 ">
+                        <h6><strong> Sede:</strong> {{cuentasCobrar[0].sede.sede}}</h6>
+                        <h6><Strong>Asesor Cartera:</Strong> {{cuentasCobrar[0].asesorCarteraResponse.usuario.nombres}} {{cuentasCobrar[0].asesorCarteraResponse.usuario.apellidos}}</h6>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Cuota</th>
+                                <th>Fecha Vencimiento</th>
+                                <th>Valor Cuota</th>
+                                <th>Capital Cuota</th>
+                                <th>Honorario</th>
+                                <th>Intereses</th>
+                                <th>Pago</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let c of cuentasCobrar[0].gestion[1].clasificacionGestion.cuotasList;">
+                                <td>{{c.numeroCuota}}</td>
+                                <td>{{c.fechaVencimiento}}</td>
+                                <td>{{c.valorCuota}}</td>
+                                <td>{{c.capitalCuota}}</td>
+                                <td>{{c.honorarios}}</td>
+                                <td>{{c.interesCuota}}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

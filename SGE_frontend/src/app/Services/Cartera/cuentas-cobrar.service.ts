@@ -26,6 +26,11 @@ export class CuentasCobrarService {
     return this.http.get(`http://192.168.1.6:8021/api/v1/cuentas/getCuentaCobrarByNumeroObligacion?numeroObligacion=${numeroObligacion}`)
   }
 
+  getCuentaByCedula(cedula:string){
+    return this.http.get(`http://192.168.1.6:8021/api/v1/cuentas/getCuentaCobrarByCedula?cedula=${cedula}`)
+  }
+
+  
   updateCuentaCobrar(cuentaCobrar:CuentaCobrarCalculate){
     return this.http.put(`http://192.168.1.6:8021/api/v1/cuentas/updateCuentaCobrarToCalculate`, cuentaCobrar)
   }
@@ -86,6 +91,9 @@ export class CuentasCobrarService {
   deleteTarea(id:number){
     return this.http.delete(`http://192.168.1.6:8021/api/v1/clasificacionTarea/eliminarClasificacionTarea/${id}`)
   }
+
+
+  
 
 
 

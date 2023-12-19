@@ -55,6 +55,24 @@ export class AuthenticationService {
     }
   }
 
+
+  getRolesByName(name:string){
+    var roles: string | null = localStorage.getItem("Roles")
+
+    var rolesToJson;
+
+    if(roles != null){
+      rolesToJson =  JSON.parse(roles);
+
+      var cartera = rolesToJson.filter((r:any)=>r.rol == name)
+      if(cartera != null || cartera != undefined){
+        return cartera
+      }
+      return null
+    }
+  }
+
+
   public getRolesP(){
     var roles = this.getRoles()
     if(roles != null){
