@@ -66,4 +66,8 @@ export class CuentasCobrarService {
     return this.http.put(`http://192.168.1.6:8021/api/v1/gestiones/desactivateAcuerdoPago/${id}`, null)
   }
 
+  reporte(data:any){
+    return this.http.put(`http://192.168.1.6:8021/api/v1/gestiones/linkAndReporteAcuerdoToClient`, data)
+  }
+
 }

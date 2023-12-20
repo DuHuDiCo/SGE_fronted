@@ -314,26 +314,59 @@
                                     <div class="col-md-6">
                                         <!-- MORA -->
                                         <div class="card text-center">
-                                            <div class="card-header text-center tituloCard">
+                                            <div class="card-header text-center tituloCal">
                                                 Información De La Mora
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text fw-bold">S.Total</span>
-                                                            <input type="number"
-                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].saldoActual"
+                                                            <span class="input-group-text fw-bold">Saldo Capital Vencido</span>
+                                                            <input type="text"
+                                                                [(ngModel)]="cuentaCobrarSelected.moraObligatoria"
                                                                 class="form-control" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text fw-bold">S.Mora</span>
-                                                            <input type="text"
-                                                                [(ngModel)]="cuentaCobrarSelected.moraObligatoria"
+                                                            <span class="input-group-text fw-bold">Saldo Capital Total</span>
+                                                            <input type="number"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].saldoActual"
                                                                 class="form-control" disabled>
                                                         </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Interes Mora</span>
+                                                            <input type="text"
+                                                                class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Honorarios</span>
+                                                            <input type="number" class="form-control" disabled>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Saldo Mora Total</span>
+                                                            <input type="text"
+                                                                class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Saldo Total</span>
+                                                            <input type="number" class="form-control" disabled>
+                                                        </div>
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="row justify-content-center">
@@ -390,6 +423,16 @@
                                                             EN SU TOTALIDAD</p>
                                                     </div>
                                                 </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-4">
+                                                        <button class="btn btn-danger b"><i
+                                                                class="fa-solid fa-xmark"></i></button>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <button class="btn btn-success"><i class="fa-solid fa-check"></i></button>
+                                                    </div>
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -1147,16 +1190,38 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Un Detalle A la Gestión</h1>
                 </div>
                 <div class="modal-body">
-                    <div class="table-responsive align-middle">
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control" [(ngModel)]="acuerdo.detalle" style="height: 100px;">
                             <label for="floatingInput">¿Desea Agregar Un Detalle?</label>
-                          </div>
-                    </div>
+                        </div>
+                    <select class="form-select mt-3 mb-3"
+                        [(ngModel)]="reporte.cedula" (change)="cambiarCedula($event)">
+                            <option [value]="null">Seleccione Una Cedula</option>
+                            <option *ngFor="let c of cuentaCobrarSelected.clientes" [value]="c.numeroDocumento">{{ c.numeroDocumento }} - {{ c.nombreTitular }} - {{ c.tipoGarante.tipoGarante }}</option>
+                    </select>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger" (click)="saveGestionWithDetalle('NO')">NO</button>
                     <button class="btn btn-primary" (click)="saveGestionWithDetalle('SI')">SI</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ver Reporte -->
+    <div class="modal fade" id="modalReporte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Ver Reporte de Acuerdo de Pago</h1>
+                </div>
+                <div class="modal-body">
+                    <h4>¿Desea Enviar El Reporte Al Cliente?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <a [href]="mensaje" target="_blank"><button class="btn btn-primary" (click)="mostrarBase64()" data-bs-dismiss="modal">Enviar</button></a>
+                    <a [href]="'data:application/pdf;base64,' + base64" id="base64" style="display: none;" [download]="clienteSelected.numeroDocumento + ' - ' + clienteSelected.nombreTitular"></a>
                 </div>
             </div>
         </div>
@@ -1193,10 +1258,14 @@
                             <td>{{ g.capitalCuota | number }}</td>
                             <td>{{ g.honorarios | number }}</td>
                             <td>{{ g.interesCuota | number }}</td>
-                            <td>
-                                <div class="form-check text-center">
-                                    <input class="form-check-input text-center" type="checkbox">
-                                  </div>
+                            <td class="justify-content-center">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6">
+                                        <div class="form-check text-center">
+                                            <input class="form-check-input" type="checkbox">
+                                          </div>
+                                    </div>
+                                </div>
                             </td>
                           </tr>
 

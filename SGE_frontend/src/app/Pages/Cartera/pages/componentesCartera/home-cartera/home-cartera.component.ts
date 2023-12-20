@@ -210,6 +210,24 @@ export class HomeCarteraComponent implements OnInit {
     cumplio: false
   }
 
+  reporte:any = {
+    numeroObligacion: "",
+    cedula: ""
+  }
+
+  mostrarRep:any = {
+    messageToWpp: "",
+    base64: ""
+  }
+
+  clienteSelected:any = {
+    numeroDocumento: '',
+    nombreTitular: ''
+  }
+
+  mensaje:string = ''
+  base64:string = ''
+
   // PARAMETROS PARA EL SERVICE
   //TODO:CAMBIAR A 0 CUANDO CORRIJAN EL ARCHIVO
   page: number = 1;
@@ -494,6 +512,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   saveGestion() {
+    this.reporte.numeroObligacion = this.cuentaCobrarSelected.numeroObligacion
 
     if (this.newGestion.gestion.trim() == '' || this.newGestion.gestion.trim() == null) {
       Swal.fire({
@@ -653,8 +672,6 @@ export class HomeCarteraComponent implements OnInit {
         })
       }
 
-      
-
       if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'ACUERDO DE PAGO') {
         if (this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null) {
           Swal.fire({
@@ -722,10 +739,32 @@ export class HomeCarteraComponent implements OnInit {
           timer: 3000
         })
         return
-      } else {
-        this.newGestion.clasificacion.acuerdoPago!.detalle = this.acuerdo.detalle 
       }
+      if(this.reporte.cedula.trim() == '' || this.reporte.cedula.trim() == null){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Digite El detalle',
+          timer: 3000
+        })
+        return
+      }
+    } 
+
+    if(accion == 'NO'){
+      if(this.reporte.cedula.trim() == '' || this.reporte.cedula.trim() == null){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Elija La Cédula del Cliente o Codeudor',
+          timer: 3000
+        })
+        return
+      }
+      this.newGestion.clasificacion.acuerdoPago!.detalle = this.acuerdo.detalle
     }
+       
+    
 
     var sumaComprobacion = 0
     for (let i = 0; i < this.cuotas.length; i++) {
@@ -766,6 +805,7 @@ export class HomeCarteraComponent implements OnInit {
             (data:any) => {
               this.gestiones.push(data)
               console.log(this.gestiones);
+              this.mostrarReporte()
               Swal.fire({
                 icon: 'success',
                 title: 'Datos Guardados',
@@ -787,6 +827,7 @@ export class HomeCarteraComponent implements OnInit {
                 detallesAdicionales: this.newGestion.detallesAdicionales
               }
               $('#modalDetalle').modal('hide');
+              $('#modalReporte').modal('show');
             }, (error:any) => {
               Swal.fire({
                 icon: 'error',
@@ -897,6 +938,34 @@ export class HomeCarteraComponent implements OnInit {
     
     this.gestionSelected = gestion
     console.log(this.gestionSelected);
+  }
+
+  mostrarReporte(){
+    this.cuentasCobrar.reporte(this.reporte).subscribe(
+      (data:any) => {
+        this.mostrarRep = data
+        this.mensaje = this.mostrarRep.messageToWpp
+        this.base64 = this.mostrarRep.base64
+        console.log(this.mensaje);
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+
+    var cliente = this.cuentaCobrarSelected.clientes.find((c:any) => c.numeroDocumento = this.reporte.cedula)
+    this.clienteSelected.numeroDocumento = cliente.numeroDocumento
+    this.clienteSelected.nombreTitular = cliente.nombreTitular
+    console.log(this.clienteSelected);
+  }
+
+  cambiarCedula(event:any){
+    this.reporte.cedula = this.reporte.cedula
+    console.log(this.reporte);
+  }
+
+  mostrarBase64(){
+    var ele = document.getElementById('base64')
+    ele?.click()
   }
 
 
@@ -1027,16 +1096,6 @@ export class HomeCarteraComponent implements OnInit {
         icon: 'error',
         title: 'Error',
         text: 'Digite El Valor Total',
-        timer: 3000
-      })
-      return
-    }
-
-    if (this.cuentaCobrarSelected.moraObligatoria == 0 || this.cuentaCobrarSelected.moraObligatoria == null) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Digite La Mora Obligatoria',
         timer: 3000
       })
       return
