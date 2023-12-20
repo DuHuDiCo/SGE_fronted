@@ -105,5 +105,15 @@ export type CuotaList = {
   valorCuota: number,
   capitalCuota: number,
   honorarios: number,
-  cumplio: boolean
+  cumplio: boolean,
+  interesCuota: number
+  pagos: Pagos
+}
+
+export type Pagos = {
+  idPago: number,
+  valorPago: number;
+  fechaPago: Date;
+  usuarioId : number;
+  saldoCuota :number;
 }

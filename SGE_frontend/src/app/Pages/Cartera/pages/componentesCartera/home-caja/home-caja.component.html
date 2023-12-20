@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
+        <div class="row mt-3" *ngIf="false">
             <div class="col-md-8 offset-md-2">
                 <div class="row">
                     <div class="col-md-6">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
 
-                <div class="row mt-4">
+                <div class="row mt-4" >
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -40,14 +40,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let c of cuentasCobrar[0].gestion[1].clasificacionGestion.cuotasList;">
+                            <tr *ngFor="let c of coutasList;">
                                 <td>{{c.numeroCuota}}</td>
                                 <td>{{c.fechaVencimiento}}</td>
                                 <td>{{c.valorCuota}}</td>
                                 <td>{{c.capitalCuota}}</td>
                                 <td>{{c.honorarios}}</td>
                                 <td>{{c.interesCuota}}</td>
-                                <td></td>
+                                <td>
+                                    <span ></span>
+                                   
+                                </td>
                             </tr>
                         </tbody>
                     </table>
