@@ -4,11 +4,29 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Documento Cliente" [(ngModel)]="cedula" name="cedula"
-                        aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <button class="btn btn-outline-danger" 
-                        style="background-color: #960010;border-color: #960010;color: white;" type="button" (click)="obtenerCuentaCobrar()"
-                        id="button-addon2"><i class="fas fa-search"></i></button>
+                    <input type="text" class="form-control" placeholder="Documento Cliente" [(ngModel)]="cedula"
+                        name="cedula" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-danger"
+                        style="background-color: #960010;border-color: #960010;color: white;" type="button"
+                        (click)="obtenerCuentaCobrar()" id="button-addon2"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-8 offset-md-2">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Numero Obligacion</th>
+                                <th>Titular</th>
+                                <th>Cedula</th>
+                                <th>Sede</th>
+                                <th>Fecha Credito</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
@@ -18,15 +36,16 @@
                     <div class="col-md-6">
                         <h6> <strong>Cliente:</strong> {{cuentasCobrar[0].clientes[0].nombreTitular}}</h6>
                         <h6><strong>Documento:</strong> {{cuentasCobrar[0].clientes[0].numeroDocumento}}</h6>
-                        
+
                     </div>
                     <div class="col-md-6 ">
                         <h6><strong> Sede:</strong> {{cuentasCobrar[0].sede.sede}}</h6>
-                        <h6><Strong>Asesor Cartera:</Strong> {{cuentasCobrar[0].asesorCarteraResponse.usuario.nombres}} {{cuentasCobrar[0].asesorCarteraResponse.usuario.apellidos}}</h6>
+                        <h6><Strong>Asesor Cartera:</Strong> {{cuentasCobrar[0].asesorCarteraResponse.usuario.nombres}}
+                            {{cuentasCobrar[0].asesorCarteraResponse.usuario.apellidos}}</h6>
                     </div>
                 </div>
 
-                <div class="row mt-4" >
+                <div class="row mt-4">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -48,8 +67,8 @@
                                 <td>{{c.honorarios}}</td>
                                 <td>{{c.interesCuota}}</td>
                                 <td>
-                                    <span ></span>
-                                   
+                                    <span></span>
+
                                 </td>
                             </tr>
                         </tbody>

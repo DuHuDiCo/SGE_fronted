@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { error } from 'jquery';
 import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.service';
 import { CuentasCobrarResponse, Gestion } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
 import { CuotaList } from 'src/app/Types/Cartera/Gestion/Gestion';
@@ -14,7 +15,7 @@ export class HomeCajaComponent implements OnInit {
 
   cedula: string = ''
 
-  cuentasCobrar: CuentasCobrarResponse[] = []
+  cuentasCobrar: any[] = []
   coutasList: CuotaList[] = []
 
   constructor(private cuentaCobrarService: CuentasCobrarService) { }
@@ -24,7 +25,20 @@ export class HomeCajaComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  obtenerCuentaCobrar() {
+
+  obtenerCuentaCobrar(){
+    this.cuentaCobrarService.getCuentaByDato(this.cedula).subscribe(
+      (data:any)=>{
+        this.cuentasCobrar = data;
+      },(error:any)=>{
+        console.log(error);
+        
+      }
+    )
+
+  }
+
+  obtenerDatosCuentaCobrar() {
     this.cuentaCobrarService.getCuentaByCedula(this.cedula).subscribe(
       (data: any) => {
         this.cuentasCobrar = data;
