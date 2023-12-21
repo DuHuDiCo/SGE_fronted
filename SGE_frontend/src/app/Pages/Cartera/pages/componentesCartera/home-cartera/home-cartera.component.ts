@@ -50,6 +50,8 @@ export class HomeCarteraComponent implements OnInit {
     'F COMPRO',
   ]
   cuotas: any[] = []
+  paginas!: Array<number>
+  fechasIncrementadas: string[] = [];
 
   // OBJETOS
 
@@ -185,6 +187,7 @@ export class HomeCarteraComponent implements OnInit {
   acuerdoCal: any = {
     tipoAcuerdo: '',
     valorTotalAcuerdo: 0,
+    valorTotalMora: 0,
     valorInteresesMora: 0,
     valorCuotaMensual: 0,
     honoriarioAcuerdo: 0,
@@ -225,6 +228,7 @@ export class HomeCarteraComponent implements OnInit {
     nombreTitular: ''
   }
 
+  //VARIABLES
   mensaje:string = ''
   base64:string = ''
 
@@ -249,7 +253,6 @@ export class HomeCarteraComponent implements OnInit {
   initialCon: number = 1;
   cont: number = 1
   isCon: boolean = false
-  paginas!: Array<number>
 
   fechaActual: Date = new Date();
   fechamax: string = '';
@@ -263,8 +266,11 @@ export class HomeCarteraComponent implements OnInit {
   fechaInicial: Date = new Date();
   incrementoMeses: number = 1;
   cantidadFechas: number = 0;
-  fechasIncrementadas: string[] = [];
   idGestion:number = 0
+
+  resetButton:boolean = false
+  deshabilitarInputs:boolean = true
+  saldoCapitalTotalFirst:number = 0
 
 
   ngOnInit(): void {
@@ -363,7 +369,7 @@ export class HomeCarteraComponent implements OnInit {
         numeroObligacion: '',
         cliente: '',
         documentoCliente: '',
-        fechaCuentaCobrar: new Date,
+        fechaCuentaCobrar: '',
         fechaVencimiento: '',
         tipo: '',
         valorNotaDebito: 0,
@@ -446,6 +452,10 @@ export class HomeCarteraComponent implements OnInit {
         this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
           (data: any) => {
             this.cuentaCobrarSelected = data
+            this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
+            console.log(this.saldoCapitalTotalFirst);
+            console.log(this.cuentaCobrarSelected);
+            this.calcularFirst()
             this.codeudores = data.clientes
             this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
             this.getGestiones(numeroObligacion);
@@ -490,10 +500,11 @@ export class HomeCarteraComponent implements OnInit {
         this.newGestion.numeroObligacion = numeroObligacion
         this.getLastDato(numeroObligacion)
         console.log(this.gestiones);
+
         var gestion = this.gestiones.find((g:any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
-        this.idGestion = gestion.idGestion
-        console.log(this.idGestion);
-        
+        if(gestion != null || gestion != undefined){
+          this.idGestion = gestion.idGestion
+        }
         console.log(data);
       }, (error: any) => {
         console.log(error);
@@ -1231,6 +1242,168 @@ export class HomeCarteraComponent implements OnInit {
 
 
 
+  }
+
+  //METODOS CALCULADORA OFFCANVAS INFERIOR
+
+  calcularFirst(){
+    this.acuerdoCal = {
+      tipoAcuerdo: '',
+      valorTotalAcuerdo: 0,
+      valorTotalMora: 0,
+      valorInteresesMora: 0,
+      valorCuotaMensual: 0,
+      honoriarioAcuerdo: 0,
+    }
+
+    //INTERESES MORA
+    var resIntMora = this.cuentaCobrarSelected.moraObligatoria * (this.constanteHonorarios / 366) * this.cuentaCobrarSelected.diasVencidos
+    this.acuerdoCal.valorInteresesMora = resIntMora.toFixed(0)
+    
+    //HONORARIOS
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      var resHonorarios = (parseInt(this.cuentaCobrarSelected.moraObligatoria)  + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+      this.acuerdoCal.honoriarioAcuerdo = resHonorarios.toFixed(0)
+    }
+
+    //MORA Y TOTAL
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+    } else {
+      this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
+    }
+
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      this.acuerdoCal.valorTotalAcuerdo = parseInt(this.cuentaCobrarSelected.clientes[0].saldoActual) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+    } else {
+      this.acuerdoCal.valorTotalAcuerdo = parseInt(this.cuentaCobrarSelected.clientes[0].saldoActual) + parseInt(this.acuerdoCal.valorInteresesMora)
+    }
+
+    
+  }
+
+  calculadora(){
+    if(this.cuentaCobrarSelected.clientes[0].saldoActual == 0 || this.cuentaCobrarSelected.clientes[0].saldoActual == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite El Saldo Capital Total',
+        timer: 3000
+      })
+      return
+    }
+    if(this.cuentaCobrarSelected.clientes[0].saldoActual < this.cuentaCobrarSelected.moraObligatoria){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'El Saldo Capital Total no puede ser menor al Saldo Capital Vencido',
+        timer: 3000
+      })
+      return
+    }
+    if(this.cuentaCobrarSelected.clientes[0].saldoActual > this.saldoCapitalTotalFirst){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'El Saldo Capital Total No Puede ser Mayor Ni Igual Al De BD',
+        timer: 3000
+      })
+      return
+    }
+
+    this.calculadoraIntereses()
+
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      this.calculadoraHonorarios()
+    }
+
+    this.calculadoraMoraAndTotal()
+
+  }
+
+  confirmarDatos(){
+    if(this.deshabilitarInputs == false){
+      this.deshabilitarInputs = true
+    } else {
+      this.deshabilitarInputs = false
+    }
+    
+  }
+
+  reiniciarCalculadora(){
+    this.resetButton = true
+    this.cuentasCobrar.getCuentaByObligacion(this.cuentaCobrarSelected.numeroObligacion).subscribe(
+      (data:any) => {
+        this.cuentaCobrarSelected = data
+        this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
+        this.calcularFirst()
+        this.resetButton = false
+      }, (error:any) => {
+        console.log(error);
+        this.resetButton = false
+      }
+    )
+  }
+
+  calculadoraIntereses(){
+    var boton_saldo_capital = document.getElementById('boton_saldo_capital') as HTMLInputElement;
+
+      var moraObligatoria = boton_saldo_capital.value
+
+      var res = parseInt(moraObligatoria) * (this.constanteHonorarios / 366) * this.cuentaCobrarSelected.diasVencidos
+      this.acuerdoCal.valorInteresesMora = res.toFixed(0) 
+  }
+
+  calculadoraHonorarios(){
+    var boton_saldo_capital = document.getElementById('boton_saldo_capital') as HTMLInputElement;
+
+    var moraObligatoria = boton_saldo_capital.value
+    var res = (parseInt(moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+    this.acuerdoCal.honoriarioAcuerdo = res.toFixed(0)
+  }
+
+  calculadoraMoraAndTotal(){
+    var boton_saldo_capital = document.getElementById('boton_saldo_capital') as HTMLInputElement;
+    var boton_saldo_total = document.getElementById('boton_saldo_total') as HTMLInputElement;
+
+    var moraObligatoria = boton_saldo_capital.value
+    var valorTotal = boton_saldo_total.value
+
+    console.log(this.acuerdoCal.honoriarioAcuerdo);
+    
+
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      this.acuerdoCal.valorTotalMora = parseInt(moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+    } else {
+      this.acuerdoCal.valorTotalMora = parseInt(moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
+    }
+
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+    } else {
+      this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
+    }
+  }
+
+  calcularDiasVencidos(event:any){
+    var fechaVen = new Date(this.cuentaCobrarSelected.fechaVencimiento)
+    var diferenciaMilisegundos = Math.abs(this.fechaActual.getTime() - fechaVen.getTime());
+    var diferenciaDias = Math.ceil(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+    this.cuentaCobrarSelected.diasVencidos = diferenciaDias;
+
+    //CAMBIAR METODO DEL GETUTC
+    if(fechaVen.getUTCDate() >= this.fechaActual.getUTCDate()){
+      alert(fechaVen.getUTCDate())
+      alert(this.fechaActual.getUTCDate())
+      this.cuentaCobrarSelected.diasVencidos = 0
+    }
+
+    if(this.cuentaCobrarSelected.diasVencidos == 0){
+      this.cuentaCobrarSelected.moraObligatoria = 0
+      this.calculadora()
+    }
+
+    console.log(this.cuentaCobrarSelected.diasVencidos);
   }
 
   // CUOTAS
