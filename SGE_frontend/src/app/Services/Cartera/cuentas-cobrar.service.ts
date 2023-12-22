@@ -19,55 +19,55 @@ export class CuentasCobrarService {
   public proSubject = new Subject<boolean>();
 
   getCuentasCobrar(username:string, page:number, size:number, fechaCreacion:string){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/cuentas/cuentasCobrar?username=${username}&page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`)
+    return this.http.get(`http://192.168.1.191:8021/api/v1/cuentas/cuentasCobrar?username=${username}&page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`)
   }
 
   getCuentaByObligacion(numeroObligacion:string){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/cuentas/getCuentaCobrarByNumeroObligacion?numeroObligacion=${numeroObligacion}`)
+    return this.http.get(`http://192.168.1.191:8021/api/v1/cuentas/getCuentaCobrarByNumeroObligacion?numeroObligacion=${numeroObligacion}`)
   }
 
   updateCuentaCobrar(cuentaCobrar:CuentaCobrarCalculate){
-    return this.http.put(`http://192.168.1.6:8021/api/v1/cuentas/updateCuentaCobrarToCalculate`, cuentaCobrar)
+    return this.http.put(`http://192.168.1.191:8021/api/v1/cuentas/updateCuentaCobrarToCalculate`, cuentaCobrar)
   }
 
   // CLASIFICACIONES
 
   getClasificacion(){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/nombreClasificacion/clasificaciones`)
+    return this.http.get(`http://192.168.1.191:8021/api/v1/nombreClasificacion/clasificaciones`)
   }
 
   getClasificacionById(id:number){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/nombreClasificacion/clasificacionById?id=${id}`)
+    return this.http.get(`http://192.168.1.191:8021/api/v1/nombreClasificacion/clasificacionById?id=${id}`)
   }
 
   saveClasificacion(clasificacion:any){
-    return this.http.post(`http://192.168.1.6:8021/api/v1/nombreClasificacion/guardarClasificacion`, clasificacion)
+    return this.http.post(`http://192.168.1.191:8021/api/v1/nombreClasificacion/guardarClasificacion`, clasificacion)
   }
 
   updateClasificacion(clasificacion:clasificacion){
-    return this.http.put(`http://192.168.1.6:8021/api/v1/clasificacion/updateClasificacion`, clasificacion)
+    return this.http.put(`http://192.168.1.191:8021/api/v1/clasificacion/updateClasificacion`, clasificacion)
   }
 
   // GESTIONES
 
   getGestiones(numeroObligacion:string){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/gestiones/getGestionByNumObligacion/${numeroObligacion}`)
+    return this.http.get(`http://192.168.1.191:8021/api/v1/gestiones/getGestionByNumObligacion/${numeroObligacion}`)
   }
 
   saveGestion(gestion:Gestion){
-    return this.http.post(`http://192.168.1.6:8021/api/v1/gestiones/saveOneGestion`, gestion)
+    return this.http.post(`http://192.168.1.191:8021/api/v1/gestiones/saveOneGestion`, gestion)
   }
 
   getLastDatoAdicional(numeroObligacion:string){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/gestiones/getLastDatoAdicionalGestion/${numeroObligacion}`)
+    return this.http.get(`http://192.168.1.191:8021/api/v1/gestiones/getLastDatoAdicionalGestion/${numeroObligacion}`)
   }
 
   desactivateAcuerdoPago(id:number){
-    return this.http.put(`http://192.168.1.6:8021/api/v1/gestiones/desactivateAcuerdoPago/${id}`, null)
+    return this.http.put(`http://192.168.1.191:8021/api/v1/gestiones/desactivateAcuerdoPago/${id}`, null)
   }
 
   reporte(data:any){
-    return this.http.put(`http://192.168.1.6:8021/api/v1/gestiones/linkAndReporteAcuerdoToClient`, data)
+    return this.http.put(`http://192.168.1.191:8021/api/v1/gestiones/linkAndReporteAcuerdoToClient`, data)
   }
 
 }

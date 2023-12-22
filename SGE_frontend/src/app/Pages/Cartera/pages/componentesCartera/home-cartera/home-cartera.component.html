@@ -322,13 +322,13 @@
                                                     <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Saldo Capital Vencido</span>
-                                                            <input id="boton_saldo_capital" type="text" [(ngModel)]="cuentaCobrarSelected.moraObligatoria" class="form-control" [disabled]="deshabilitarInputs">
+                                                            <input (change)="calculadora($event)" id="boton_saldo_capital" type="text" [(ngModel)]="cuentaCobrarSelected.moraObligatoria" class="form-control" [disabled]="deshabilitarInputs">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Saldo Capital Total</span>
-                                                            <input id="boton_saldo_total" type="number" [(ngModel)]="cuentaCobrarSelected.clientes[0].saldoActual" class="form-control" [disabled]="deshabilitarInputs">
+                                                            <input (change)="calculadora($event)" id="boton_saldo_total" type="number" [(ngModel)]="cuentaCobrarSelected.clientes[0].saldoActual" class="form-control" [disabled]="deshabilitarInputs">
                                                         </div>
                                                         
                                                     </div>
@@ -337,7 +337,7 @@
                                                     <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Interes Mora</span>
-                                                            <input [(ngModel)]="acuerdoCal.valorInteresesMora" type="text" class="form-control" [disabled]="deshabilitarInputs">
+                                                            <input [(ngModel)]="acuerdoCal.valorInteresesMora" type="text" class="form-control" (change)="cambiarIntereses($event)" [disabled]="deshabilitarInputs">
                                                         </div>
                                                     </div>
                                                     <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'" class="col-md-6">
@@ -423,10 +423,10 @@
                                                         </button>
                                                     </div>
                                                     <div *ngIf="!deshabilitarInputs" class="col-md-2">
-                                                        <button class="btn btn-warning" (click)="calculadora()"><i class="fa-solid fa-calculator"></i></button>
-                                                    </div>
-                                                    <div class="col-md-2">
                                                         <button class="btn btn-success" (click)="confirmarDatos()"><i class="fa-solid fa-check"></i></button>
+                                                    </div>
+                                                    <div *ngIf="deshabilitarInputs" class="col-md-2">
+                                                        <button class="btn btn-success" (click)="habilitar()"><i class="fa-solid fa-check"></i></button>
                                                     </div>
                                                 </div>
                                                 

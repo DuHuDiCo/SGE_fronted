@@ -271,6 +271,10 @@ export class HomeCarteraComponent implements OnInit {
   resetButton:boolean = false
   deshabilitarInputs:boolean = true
   saldoCapitalTotalFirst:number = 0
+  moraObligatoriaFirst:number = 0
+
+  sinDiasVencidos:number | null = 1
+  isCalculate:boolean = true
 
 
   ngOnInit(): void {
@@ -453,6 +457,8 @@ export class HomeCarteraComponent implements OnInit {
           (data: any) => {
             this.cuentaCobrarSelected = data
             this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
+            this.moraObligatoriaFirst = data.moraObligatoria
+            console.log(this.moraObligatoriaFirst);
             console.log(this.saldoCapitalTotalFirst);
             console.log(this.cuentaCobrarSelected);
             this.calcularFirst()
@@ -1282,7 +1288,7 @@ export class HomeCarteraComponent implements OnInit {
     
   }
 
-  calculadora(){
+  calculadora(event:any){
     if(this.cuentaCobrarSelected.clientes[0].saldoActual == 0 || this.cuentaCobrarSelected.clientes[0].saldoActual == null){
       Swal.fire({
         icon: 'error',
@@ -1319,15 +1325,35 @@ export class HomeCarteraComponent implements OnInit {
 
     this.calculadoraMoraAndTotal()
 
+    this.deshabilitarInputs = true
+    this.isCalculate = false
+
   }
 
   confirmarDatos(){
+    if(this.isCalculate == false){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debes de Calcular los Datos',
+        timer: 3000
+      })
+      return
+    }
+
     if(this.deshabilitarInputs == false){
       this.deshabilitarInputs = true
     } else {
       this.deshabilitarInputs = false
     }
+
+    this.isCalculate = false
     
+  }
+
+  habilitar(){
+    this.deshabilitarInputs = false
+    this.isCalculate = false
   }
 
   reiniciarCalculadora(){
@@ -1368,8 +1394,6 @@ export class HomeCarteraComponent implements OnInit {
 
     var moraObligatoria = boton_saldo_capital.value
     var valorTotal = boton_saldo_total.value
-
-    console.log(this.acuerdoCal.honoriarioAcuerdo);
     
 
     if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
@@ -1386,24 +1410,70 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   calcularDiasVencidos(event:any){
+    var fechaActual = this.fechaActual;
+
     var fechaVen = new Date(this.cuentaCobrarSelected.fechaVencimiento)
-    var diferenciaMilisegundos = Math.abs(this.fechaActual.getTime() - fechaVen.getTime());
+    fechaVen.setDate(fechaVen.getDate() + 1);
+    fechaVen.setHours(fechaActual.getHours(), fechaActual.getMinutes(), fechaActual.getSeconds(), fechaActual.getMilliseconds());
+
+    var diferenciaMilisegundos = Math.abs(fechaActual.getTime() - fechaVen.getTime());
     var diferenciaDias = Math.ceil(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
     this.cuentaCobrarSelected.diasVencidos = diferenciaDias;
+    
 
-    //CAMBIAR METODO DEL GETUTC
-    if(fechaVen.getUTCDate() >= this.fechaActual.getUTCDate()){
-      alert(fechaVen.getUTCDate())
-      alert(this.fechaActual.getUTCDate())
+    if(fechaVen >= fechaActual){
       this.cuentaCobrarSelected.diasVencidos = 0
+      this.cuentaCobrarSelected.moraObligatoria = 0
+      this.calculadora(event)
+      this.acuerdoCal.valorTotalMora = 0
+      this.sinDiasVencidos = 0
     }
 
-    if(this.cuentaCobrarSelected.diasVencidos == 0){
-      this.cuentaCobrarSelected.moraObligatoria = 0
-      this.calculadora()
+    if(fechaVen < fechaActual && this.sinDiasVencidos == 1){
+      this.calculadora(event)
+      this.sinDiasVencidos = 1
+    }
+
+    if(this.sinDiasVencidos == 0 && fechaVen < fechaActual){
+      if(this.cuentaCobrarSelected.diasVencidos != 0){
+        this.cuentaCobrarSelected.moraObligatoria = this.moraObligatoriaFirst
+  
+        var res = parseInt(this.cuentaCobrarSelected.moraObligatoria) * (this.constanteHonorarios / 366) * this.cuentaCobrarSelected.diasVencidos
+        this.acuerdoCal.valorInteresesMora = res.toFixed(0)
+  
+        if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+          var res = (parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+          this.acuerdoCal.honoriarioAcuerdo = res.toFixed(0)
+        }
+  
+        if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+          this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        } else {
+          this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
+        }
+    
+        if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+          this.acuerdoCal.valorTotalAcuerdo = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        } else {
+          this.acuerdoCal.valorTotalAcuerdo = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
+        }
+      }
+      this.sinDiasVencidos = 1
     }
 
     console.log(this.cuentaCobrarSelected.diasVencidos);
+  }
+
+  cambiarIntereses(event:any){
+    var boton_saldo_total = document.getElementById('boton_saldo_total') as HTMLInputElement;
+    var valorTotal = boton_saldo_total.value
+
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+    } else {
+      this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
+    }
+    this.isCalculate = true
   }
 
   // CUOTAS
