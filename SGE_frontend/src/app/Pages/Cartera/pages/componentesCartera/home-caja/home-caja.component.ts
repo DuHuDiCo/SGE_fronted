@@ -16,6 +16,8 @@ export class HomeCajaComponent implements OnInit {
   cedula: string = ''
 
   cuentasCobrar: any[] = []
+
+  cuentasCobrarGestiones: any[] = []
   coutasList: CuotaList[] = []
 
   constructor(private cuentaCobrarService: CuentasCobrarService) { }
@@ -26,25 +28,39 @@ export class HomeCajaComponent implements OnInit {
   }
 
 
-  obtenerCuentaCobrar(){
+  obtenerCuentaCobrar() {
     this.cuentaCobrarService.getCuentaByDato(this.cedula).subscribe(
-      (data:any)=>{
+      (data: any) => {
         this.cuentasCobrar = data;
-      },(error:any)=>{
+        if (data.length == 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No existe una cuenta por cobrar',
+            timer: 3000
+          })
+        }
+        console.log(this.cuentasCobrar);
+        this.cuentasCobrarGestiones = []
+
+      }, (error: any) => {
         console.log(error);
-        
+
       }
     )
 
   }
 
-  obtenerDatosCuentaCobrar() {
-    this.cuentaCobrarService.getCuentaByCedula(this.cedula).subscribe(
+  obtenerDatosCuentaCobrar(cedula: string) {
+    alert(cedula)
+    this.cuentaCobrarService.getCuentaByCedula(cedula).subscribe(
       (data: any) => {
-        this.cuentasCobrar = data;
+        console.log(data);
+        this.cuentasCobrarGestiones = data;
 
-        if (this.cuentasCobrar!= null || this.cuentasCobrar != undefined) {
-          this.cuentasCobrar.forEach((c: CuentasCobrarResponse) => {
+
+        if (this.cuentasCobrarGestiones != null || this.cuentasCobrarGestiones != undefined) {
+          this.cuentasCobrarGestiones.forEach((c: any) => {
             if (c.gestion.length > 0) {
               var gestion = c.gestion.filter((g: Gestion) => g.clasificacionGestion.isActive && g.clasificacionGestion.clasificacion == "ACUERDO DE PAGO")
               console.log(gestion);
@@ -55,6 +71,7 @@ export class HomeCajaComponent implements OnInit {
                     this.coutasList.push(c)
                   }, 1000);
                 })
+
               } else {
                 Swal.fire({
                   icon: 'error',
@@ -75,7 +92,7 @@ export class HomeCajaComponent implements OnInit {
 
           })
         }
-
+        this.cuentasCobrar = []
 
       }, (error: any) => {
         console.log(error);

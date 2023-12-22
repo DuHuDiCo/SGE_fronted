@@ -15,8 +15,12 @@
 
         <div class="row mt-3">
             <div class="col-md-8 offset-md-2">
-                <div class="table-responsive">
-                    <table class="table">
+
+                <div class="alert alert-warning" role="alert" *ngIf="cuentasCobrar.length <= 0">
+                    Ingresa un Dato para buscar una cuenta por cobrar
+                </div>
+                <div class="table-responsive" *ngIf="cuentasCobrar.length > 0">
+                    <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Numero Obligacion</th>
@@ -26,26 +30,36 @@
                                 <th>Fecha Credito</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            <tr *ngFor="let c of cuentasCobrar" style="cursor: pointer;" (click)="obtenerDatosCuentaCobrar(c.numeroObligacion)">
+                                <td>{{c.numeroObligacion}}</td>
+                                <td>{{c.cliente.split("-")[1]}}</td>
+                                <td>{{c.documentoCliente}}</td>
+                                <td>{{c.sede.sede}}</td>
+                                <td>{{c.fechaCuentaCobrar | date:'dd/MM/yyyy'}}</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-        <div class="row mt-3" *ngIf="false">
-            <div class="col-md-8 offset-md-2">
-                <div class="row">
+
+                <div class="row" *ngIf="cuentasCobrarGestiones.length > 0">
+                    
+                </div>
+
+                <div class="row" *ngIf="cuentasCobrarGestiones.length > 0">
                     <div class="col-md-6">
-                        <h6> <strong>Cliente:</strong> {{cuentasCobrar[0].clientes[0].nombreTitular}}</h6>
-                        <h6><strong>Documento:</strong> {{cuentasCobrar[0].clientes[0].numeroDocumento}}</h6>
+                        <h6> <strong>Cliente:</strong> {{cuentasCobrarGestiones[0].clientes[0].nombreTitular}}</h6>
+                        <h6><strong>Documento:</strong> {{cuentasCobrarGestiones[0].clientes[0].numeroDocumento}}</h6>
 
                     </div>
                     <div class="col-md-6 ">
-                        <h6><strong> Sede:</strong> {{cuentasCobrar[0].sede.sede}}</h6>
-                        <h6><Strong>Asesor Cartera:</Strong> {{cuentasCobrar[0].asesorCarteraResponse.usuario.nombres}}
-                            {{cuentasCobrar[0].asesorCarteraResponse.usuario.apellidos}}</h6>
+                        <h6><strong> Sede:</strong> {{cuentasCobrarGestiones[0].sede.sede}}</h6>
+                        <h6><Strong>Asesor Cartera:</Strong> {{cuentasCobrarGestiones[0].asesorCarteraResponse.usuario.nombres}}
+                            {{cuentasCobrarGestiones[0].asesorCarteraResponse.usuario.apellidos}}</h6>
                     </div>
                 </div>
 
-                <div class="row mt-4">
+                <div class="row mt-4" *ngIf="cuentasCobrarGestiones.length > 0">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -55,7 +69,7 @@
                                 <th>Capital Cuota</th>
                                 <th>Honorario</th>
                                 <th>Intereses</th>
-                                <th>Pago</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -66,16 +80,13 @@
                                 <td>{{c.capitalCuota}}</td>
                                 <td>{{c.honorarios}}</td>
                                 <td>{{c.interesCuota}}</td>
-                                <td>
-                                    <span></span>
-
-                                </td>
+                               
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
+       
     </div>
 </div>
