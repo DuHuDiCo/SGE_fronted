@@ -875,48 +875,66 @@ export class HomeCarteraComponent implements OnInit {
 
     if(this.newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'){
       var gestion = this.gestiones.find((g:any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
-      console.log(gestion);
+      this.gestionSelected = gestion
+      console.log(this.gestionSelected);
       
-      if(gestion != null || gestion != undefined){
+      if(this.gestionSelected != null || this.gestionSelected != undefined){
+
         Swal.fire({
-          title: 'Desactivar Acuerdo',
-          text: 'Este Cliente tiene un Acuerdo de Pago Vigente, ¿Desea Desactivarlo?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Desactivar',
-          cancelButtonText: 'Cancelar'
-        }).then((result) => {
-          if (result.isConfirmed) {
-              this.newGestion.contact = true
-              this.cuentasCobrar.desactivateAcuerdoPago(this.idGestion).subscribe(
-                (data:any) => {
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Datos Guardados',
-                    text: 'Acuerdo Desactivado Con Éxito',
-                    timer: 3000
-                  })
-                  return
-                }, (error:any) => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Error Al Desactivar El Acuerdo',
-                    timer: 3000
-                  })
-                  console.log(error);
-                }
-              )
-          } else {
-            var nombre = this.ClasificacionArray.filter((n:any) => n.nombre != 'ACUERDO DE PAGO')
-            this.newGestion.clasificacion.nombreClasificacion = nombre[0].nombre
-            this.newGestion.clasificacion.tipoClasificacion = nombre[0].tipo
-          }
-        }) 
-      } else {
-        this.newGestion.contact = true
+          icon: 'error',
+          title: 'Error',
+          text: 'Este Cliente tiene un Acuerdo de Pago Vigente',
+          timer: 3000
+        })
+
+        var nombre = this.ClasificacionArray.filter((n:any) => n.nombre != 'ACUERDO DE PAGO')
+        this.newGestion.clasificacion.nombreClasificacion = nombre[0].nombre
+        this.newGestion.clasificacion.tipoClasificacion = nombre[0].tipo
+
+        setTimeout(() => {
+          $('#modalGestion').modal('hide');
+          $('#modalGestionCom').modal('show');
+        }, 3000);
+
+      //   Swal.fire({
+      //     title: 'Desactivar Acuerdo',
+      //     text: 'Este Cliente tiene un Acuerdo de Pago Vigente, ¿Desea Desactivarlo?',
+      //     icon: 'warning',
+      //     showCancelButton: true,
+      //     confirmButtonColor: '#3085d6',
+      //     cancelButtonColor: '#d33',
+      //     confirmButtonText: 'Desactivar',
+      //     cancelButtonText: 'Cancelar'
+      //   }).then((result) => {
+      //     if (result.isConfirmed) {
+      //         this.newGestion.contact = true
+      //         this.cuentasCobrar.desactivateAcuerdoPago(this.idGestion).subscribe(
+      //           (data:any) => {
+      //             Swal.fire({
+      //               icon: 'success',
+      //               title: 'Datos Guardados',
+      //               text: 'Acuerdo Desactivado Con Éxito',
+      //               timer: 3000
+      //             })
+      //             return
+      //           }, (error:any) => {
+      //             Swal.fire({
+      //               icon: 'error',
+      //               title: 'Error',
+      //               text: 'Error Al Desactivar El Acuerdo',
+      //               timer: 3000
+      //             })
+      //             console.log(error);
+      //           }
+      //         )
+      //     } else {
+            // var nombre = this.ClasificacionArray.filter((n:any) => n.nombre != 'ACUERDO DE PAGO')
+            // this.newGestion.clasificacion.nombreClasificacion = nombre[0].nombre
+            // this.newGestion.clasificacion.tipoClasificacion = nombre[0].tipo
+      //     }
+      //   }) 
+      // } else {
+      //   this.newGestion.contact = true
       }
     }
   }
@@ -1085,7 +1103,6 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-
     // var gestion = this.gestiones.find((g:any) => g.clasificacion.clasificacion == 'Nota')
     // console.log(gestion);
 
@@ -1094,9 +1111,7 @@ export class HomeCarteraComponent implements OnInit {
 
     // }
     console.log(this.cuentaCobrarSelected.fechaVencimiento);
-
-    $('#modalGestion').modal('hide');
-    $('#offcanvasTop').offcanvas('show');
+    this.calcular()
   }
 
   mostrarModalGestion() {
@@ -1154,27 +1169,7 @@ export class HomeCarteraComponent implements OnInit {
     this.disableds[0] = true
     this.disableds[this.cuotas.length - 1] = true
 
-    this.cuentasCobrar.updateCuentaCobrar(this.cuentasCalcular).subscribe(
-      (data: any) => {
-        this.cuentaCobrarSelected = data
-        var fechaVen = this.cuentaCobrarSelected.fechaVencimiento.split('T')
-        this.cuentaCobrarSelected.fechaVencimiento = fechaVen[0]
-        console.log(data);
-
-
-        Swal.fire({
-          icon: 'success',
-          title: 'Datos Guardados',
-          text: 'Datos Confirmados Con Éxito',
-          timer: 3000
-        })
-      }, (error: any) => {
-        console.log(error);
-      }
-    )
-
     this.col = false
-    this.mostrarModalGestion()
 
   }
 

@@ -854,7 +854,7 @@
                                     cc.asesorCarteraResponse.usuario.apellidos }}</td>
                                 <td *ngIf="!Columnas.includes('CLAS JURI')">{{ cc.clasificacionJuridica }}</td>
                                 <td *ngIf="!Columnas.includes('SALDO CAP')">{{ cc.clientes[0].saldoActual }}</td>
-                                <td *ngIf="!Columnas.includes('ANIO')">2000</td>
+                                <td *ngIf="!Columnas.includes('ANIO')">{{ cc.fechaCuentaCobrar | date:'yyyy' }}</td>
                                 <td *ngIf="!Columnas.includes('F GESTION')">25/05/2023</td>
                                 <td *ngIf="!Columnas.includes('F COMPRO')">25/05/2023</td>
                             </tr>
@@ -1279,7 +1279,7 @@
         </div>
       </div>
 
-    <!-- Offcanvas Confirmar Datos -->
+    <!-- Offcanvas Confirmar Datos
     <div *ngIf="newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'" class="offcanvas offcanvas-end"
         data-bs-backdrop="static" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
         <div class="offcanvas-header">
@@ -1322,6 +1322,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 
