@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { Tarea, TareaUpdate } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { CuentaCobrarCalculate } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
-import { Gestion } from 'src/app/Types/Cartera/Gestion/Gestion';
+import { Gestion, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
 import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
@@ -68,6 +68,23 @@ export class CuentasCobrarService {
 
   reporte(data:any){
     return this.http.put(`http://192.168.1.191:8021/api/v1/gestiones/linkAndReporteAcuerdoToClient`, data)
+  }
+
+  // TIPO VENCIMIENTO
+  saveTipoVencimiento(tipoVencimiento:TipoVencimiento){
+    return this.http.post(`http://192.168.1.191:8021/api/v1/tiposVencimiento/guardarTipoVencimiento`, tipoVencimiento)
+  }
+
+  getTipoVencimiento(){
+    return this.http.get(`http://192.168.1.191:8021/api/v1/tiposVencimiento/obtenerTodosTiposVencimientos`)
+  }
+
+  getTipoVencimientoById(id:number){
+    return this.http.get(`http://192.168.1.191:8021/api/v1/tiposVencimiento/obtenerTiposVencimientoPorId/${id}`)
+  }
+
+  updateTipoVencimiento(tipoVencimiento:TipoVencimiento){
+    return this.http.put(`http://192.168.1.191:8021/api/v1/tiposVencimiento/updateTipoVencimiento`, tipoVencimiento)
   }
 
 }

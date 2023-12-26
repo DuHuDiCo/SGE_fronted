@@ -107,3 +107,8 @@ export type Gestiones = {
     clasificacion: string
   }
 }
+
+export type TipoVencimiento = {
+  idTipoVencimiento: number,
+  tipoVencimiento: string
+}

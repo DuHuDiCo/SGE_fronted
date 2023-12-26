@@ -76,6 +76,7 @@ import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsi
 import { HomeCarteraComponent } from './Pages/Cartera/pages/componentesCartera/home-cartera/home-cartera.component';
 import { ClasificacionComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion/clasificacion.component';
 import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/uploads-files/uploads-files.component';
+import { TipoVencimientoComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/tipo-vencimiento/tipo-vencimiento.component';
 
 
 
@@ -121,9 +122,12 @@ const routes: Routes = [
         component:ClasificacionComponent
       },
       {
-
         path: "upload-data",
         component: UploadsFilesComponent
+      },
+      {
+        path: "tipo-vencimiento",
+        component: TipoVencimientoComponent
       }
 
     ]

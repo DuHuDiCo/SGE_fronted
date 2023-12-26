@@ -275,6 +275,9 @@ export class HomeCarteraComponent implements OnInit {
 
   sinDiasVencidos:number | null = 1
   isCalculate:boolean = true
+  disabledFecha:boolean = false
+
+  desactivarAcu:boolean = false
 
 
   ngOnInit(): void {
@@ -451,6 +454,20 @@ export class HomeCarteraComponent implements OnInit {
         username: ''
       }
 
+      this.newGestion = {
+        numeroObligacion: '',
+        clasificacion: {
+          tipoClasificacion: null,
+          tarea: null,
+          nota: null,
+          acuerdoPago: null,
+          nombreClasificacion: ''
+        },
+        gestion: '',
+        contact: false,
+        detallesAdicionales: ''
+      }
+
       this.codeudoresSelected = []
       setTimeout(() => {
         this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
@@ -458,9 +475,6 @@ export class HomeCarteraComponent implements OnInit {
             this.cuentaCobrarSelected = data
             this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
             this.moraObligatoriaFirst = data.moraObligatoria
-            console.log(this.moraObligatoriaFirst);
-            console.log(this.saldoCapitalTotalFirst);
-            console.log(this.cuentaCobrarSelected);
             this.calcularFirst()
             this.codeudores = data.clientes
             this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
@@ -843,6 +857,8 @@ export class HomeCarteraComponent implements OnInit {
                 contact: false,
                 detallesAdicionales: this.newGestion.detallesAdicionales
               }
+              this.col = true
+              this.cuotas = []
               $('#modalDetalle').modal('hide');
               $('#modalReporte').modal('show');
             }, (error:any) => {
@@ -859,6 +875,52 @@ export class HomeCarteraComponent implements OnInit {
     })
   }
 
+  desactivarAcuerdo(){
+      Swal.fire({
+          title: 'Desactivar Acuerdo',
+          text: '¿Desea Desactivar El Acuerdo de Pago?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Desactivar',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+              this.cuentasCobrar.desactivateAcuerdoPago(this.gestionSelected.idGestion).subscribe(
+                (data:any) => {
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Datos Guardados',
+                    text: 'Acuerdo Desactivado Con Éxito',
+                    timer: 3000
+                  })
+                  this.newGestion.contact = true
+                  this.getGestiones(this.newGestion.numeroObligacion)
+                  setTimeout(() => {
+                    $('#modalGestion').modal('show');
+                    $('#modalGestionCom').modal('hide');
+                  }, 2000);
+                }, (error:any) => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error Al Desactivar El Acuerdo',
+                    timer: 3000
+                  })
+                  console.log(error);
+                }
+              )
+          } else {
+            var nombre = this.ClasificacionArray.filter((n:any) => n.nombre != 'ACUERDO DE PAGO')
+            this.newGestion.clasificacion.nombreClasificacion = nombre[0].nombre
+            this.newGestion.clasificacion.tipoClasificacion = nombre[0].tipo
+
+            this.newGestion.contact = false
+          }
+        }) 
+  }
+
   tipoClasificacion(event:any){
     
     this.newGestion.clasificacion.nombreClasificacion = event.target.value
@@ -871,6 +933,8 @@ export class HomeCarteraComponent implements OnInit {
 
     if(this.newGestion.clasificacion.tipoClasificacion != 'ACUERDO DE PAGO'){
       this.col = true
+      this.newGestion.contact = false
+      this.disabledFecha = false
     }
 
     if(this.newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'){
@@ -880,6 +944,8 @@ export class HomeCarteraComponent implements OnInit {
       
       if(this.gestionSelected != null || this.gestionSelected != undefined){
 
+        this.newGestion.contact = false
+
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -887,54 +953,17 @@ export class HomeCarteraComponent implements OnInit {
           timer: 3000
         })
 
-        var nombre = this.ClasificacionArray.filter((n:any) => n.nombre != 'ACUERDO DE PAGO')
-        this.newGestion.clasificacion.nombreClasificacion = nombre[0].nombre
+        var nombre = this.ClasificacionArray.filter((n:any) => n.tipo != 'ACUERDO DE PAGO')
         this.newGestion.clasificacion.tipoClasificacion = nombre[0].tipo
+        event.target.value = nombre[0].nombre  
 
         setTimeout(() => {
           $('#modalGestion').modal('hide');
           $('#modalGestionCom').modal('show');
         }, 3000);
 
-      //   Swal.fire({
-      //     title: 'Desactivar Acuerdo',
-      //     text: 'Este Cliente tiene un Acuerdo de Pago Vigente, ¿Desea Desactivarlo?',
-      //     icon: 'warning',
-      //     showCancelButton: true,
-      //     confirmButtonColor: '#3085d6',
-      //     cancelButtonColor: '#d33',
-      //     confirmButtonText: 'Desactivar',
-      //     cancelButtonText: 'Cancelar'
-      //   }).then((result) => {
-      //     if (result.isConfirmed) {
-      //         this.newGestion.contact = true
-      //         this.cuentasCobrar.desactivateAcuerdoPago(this.idGestion).subscribe(
-      //           (data:any) => {
-      //             Swal.fire({
-      //               icon: 'success',
-      //               title: 'Datos Guardados',
-      //               text: 'Acuerdo Desactivado Con Éxito',
-      //               timer: 3000
-      //             })
-      //             return
-      //           }, (error:any) => {
-      //             Swal.fire({
-      //               icon: 'error',
-      //               title: 'Error',
-      //               text: 'Error Al Desactivar El Acuerdo',
-      //               timer: 3000
-      //             })
-      //             console.log(error);
-      //           }
-      //         )
-      //     } else {
-            // var nombre = this.ClasificacionArray.filter((n:any) => n.nombre != 'ACUERDO DE PAGO')
-            // this.newGestion.clasificacion.nombreClasificacion = nombre[0].nombre
-            // this.newGestion.clasificacion.tipoClasificacion = nombre[0].tipo
-      //     }
-      //   }) 
-      // } else {
-      //   this.newGestion.contact = true
+      } else {
+        this.newGestion.contact = true
       }
     }
   }
@@ -1052,7 +1081,7 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
-
+    
     if (this.acuerdo.valorCuotaMensual == 0 || this.acuerdo.valorCuotaMensual == null) {
       Swal.fire({
         icon: 'error',
@@ -1103,14 +1132,7 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-    // var gestion = this.gestiones.find((g:any) => g.clasificacion.clasificacion == 'Nota')
-    // console.log(gestion);
-
-    // if(gestion != null){
-    //   console.log(gestion);
-
-    // }
-    console.log(this.cuentaCobrarSelected.fechaVencimiento);
+    this.disabledFecha = true
     this.calcular()
   }
 
@@ -1284,7 +1306,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   calculadora(event:any){
-    if(this.cuentaCobrarSelected.clientes[0].saldoActual == 0 || this.cuentaCobrarSelected.clientes[0].saldoActual == null){
+    if(this.cuentaCobrarSelected.clientes[0].saldoActual >= 0 || this.cuentaCobrarSelected.clientes[0].saldoActual == null){
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -1298,6 +1320,15 @@ export class HomeCarteraComponent implements OnInit {
         icon: 'error',
         title: 'Error',
         text: 'El Saldo Capital Total no puede ser menor al Saldo Capital Vencido',
+        timer: 3000
+      })
+      return
+    }
+    if(this.cuentaCobrarSelected.moraObligatoria < 0){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'El Saldo Capital Total no puede ser menor a 0',
         timer: 3000
       })
       return
@@ -1359,6 +1390,7 @@ export class HomeCarteraComponent implements OnInit {
         this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
         this.calcularFirst()
         this.resetButton = false
+        this.isCalculate = true
       }, (error:any) => {
         console.log(error);
         this.resetButton = false
@@ -1463,12 +1495,23 @@ export class HomeCarteraComponent implements OnInit {
     var boton_saldo_total = document.getElementById('boton_saldo_total') as HTMLInputElement;
     var valorTotal = boton_saldo_total.value
 
-    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-      this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+    if(this.acuerdoCal.valorInteresesMora < 0){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite Un Valor Válido',
+        timer: 3000
+      })
+      return
     } else {
-      this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
+      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+        this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      } else {
+        this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
+      }
+      this.isCalculate = true
     }
-    this.isCalculate = true
+    
   }
 
   // CUOTAS
@@ -1893,6 +1936,11 @@ export class HomeCarteraComponent implements OnInit {
           detalleTarea: '',
           fechaFinTarea: '',
         }
+
+        this.cuotas = []
+
+        this.col = true
+        this.disabledFecha = false
 
         $('#modalGestion').modal('hide');
       }
