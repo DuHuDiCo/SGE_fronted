@@ -14,7 +14,7 @@
         </div>
 
         <div class="row mt-3">
-            <div class="col-md-8 offset-md-2">
+            <div class="col-md-10 offset-md-1">
 
                 <div class="alert alert-warning" role="alert" *ngIf="cuentasCobrar.length <= 0">
                     Ingresa un Dato para buscar una cuenta por cobrar
@@ -31,7 +31,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let c of cuentasCobrar" style="cursor: pointer;" (click)="obtenerDatosCuentaCobrar(c.numeroObligacion)">
+                            <tr *ngFor="let c of cuentasCobrar" style="cursor: pointer;"
+                                (click)="obtenerDatosCuentaCobrar(c.numeroObligacion)">
                                 <td>{{c.numeroObligacion}}</td>
                                 <td>{{c.cliente.split("-")[1]}}</td>
                                 <td>{{c.documentoCliente}}</td>
@@ -42,51 +43,114 @@
                     </table>
                 </div>
 
-                <div class="row" *ngIf="cuentasCobrarGestiones.length > 0">
-                    
-                </div>
+
 
                 <div class="row" *ngIf="cuentasCobrarGestiones.length > 0">
                     <div class="col-md-6">
                         <h6> <strong>Cliente:</strong> {{cuentasCobrarGestiones[0].clientes[0].nombreTitular}}</h6>
                         <h6><strong>Documento:</strong> {{cuentasCobrarGestiones[0].clientes[0].numeroDocumento}}</h6>
+                        <h6><strong>N° Obligacion</strong> {{cuentasCobrarGestiones[0].numeroObligacion}}</h6>
 
                     </div>
                     <div class="col-md-6 ">
                         <h6><strong> Sede:</strong> {{cuentasCobrarGestiones[0].sede.sede}}</h6>
-                        <h6><Strong>Asesor Cartera:</Strong> {{cuentasCobrarGestiones[0].asesorCarteraResponse.usuario.nombres}}
+                        <h6><Strong>Asesor Cartera:</Strong>
+                            {{cuentasCobrarGestiones[0].asesorCarteraResponse.usuario.nombres}}
                             {{cuentasCobrarGestiones[0].asesorCarteraResponse.usuario.apellidos}}</h6>
                     </div>
                 </div>
 
+                <div class="row mt-3" *ngIf="cuentasCobrarGestiones.length > 0">
+                    <div class="col-md-6">
+                        <h6><strong>Valor Total Acuerdo: </strong>
+                            {{gestionesCuenta[0].clasificacionGestion.valorTotalAcuerdo | number}}</h6>
+                        <h6><strong>Fecha Acuerdo: </strong> {{gestionesCuenta[0].clasificacionGestion.fechaAcuerdo |
+                            date:'dd/MM/yyyy'}}</h6>
+                    </div>
+                    <div class="col-md-6 ">
+                        <h6><strong>Saldo Actual Acuerdo: </strong> {{saldoAcuerdoPago | number}}</h6>
+                    </div>
+                </div>
+                <div class="row mt-2 mb-3" *ngIf="cuentasCobrarGestiones.length > 0">
+                    <div class="col-md-7"></div>
+                    <div class="col-md-5">
+
+                        <button class="btn btn-danger" *ngIf="activarGuardarPago" (click)="generarRecibo()" style="background-color: #960010;border-color: #960010;" > <i
+                            class="fas fa-check"></i> Guardar Pagos</button>&nbsp;
+                        <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i
+                                class="fas fa-plus"></i> Agregar pago</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Agregar Pago</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-10 offset-md-1">
+                                                <div class="row">
+                                                    <label for="">Valor Recibido</label>
+                                                    <input type="text" [(ngModel)]="pago.valor" name="valor"
+                                                        class="form-control">
+                                                </div>
+                                                <div class="row mt-2">
+                                                    <label for="">Detalle</label>
+                                                    <textarea name="detalle" [(ngModel)]="pago.detalle" id="" cols="10"
+                                                        rows="5" class="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" (click)="agregarPagoACuotas()"
+                                            data-bs-dismiss="modal">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row mt-4" *ngIf="cuentasCobrarGestiones.length > 0">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Cuota</th>
-                                <th>Fecha Vencimiento</th>
-                                <th>Valor Cuota</th>
-                                <th>Capital Cuota</th>
-                                <th>Honorario</th>
-                                <th>Intereses</th>
-                                
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let c of coutasList;">
-                                <td>{{c.numeroCuota}}</td>
-                                <td>{{c.fechaVencimiento}}</td>
-                                <td>{{c.valorCuota}}</td>
-                                <td>{{c.capitalCuota}}</td>
-                                <td>{{c.honorarios}}</td>
-                                <td>{{c.interesCuota}}</td>
-                               
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Cuota</th>
+                                    <th>Fecha Vencimiento</th>
+                                    <th>Valor Cuota</th>
+                                    <th>Capital Cuota</th>
+                                    <th>Honorario</th>
+                                    <th>Intereses</th>
+                                    <th *ngIf="coutasList[0].pagos != null || coutasList[0].pagos != null">Pagos</th>
+                                    <th>Saldo Cuota</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let c of coutasList;">
+                                    <td>{{c.numeroCuota}}</td>
+                                    <td>{{c.fechaVencimiento | date:'dd/MM/yyyy'}}</td>
+                                    <td>{{c.valorCuota | number}}</td>
+                                    <td>{{c.capitalCuota | number}}</td>
+                                    <td>{{c.honorarios | number}}</td>
+                                    <td>{{c.interesCuota | number}}</td>
+                                    <td *ngIf="coutasList[0].pagos != null || coutasList[0].pagos != null">{{c.pagos ==
+                                        null?0:c.pagos.valorPago | number}}</td>
+                                    <td>{{c.pagos == null? c.valorCuota :c.pagos.saldoCuota | number}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-       
+
     </div>
 </div>

@@ -107,7 +107,7 @@ export type CuotaList = {
   honorarios: number,
   cumplio: boolean,
   interesCuota: number
-  pagos: Pagos
+  pagos: Pagos | null
 }
 
 export type Pagos = {
@@ -115,5 +115,24 @@ export type Pagos = {
   valorPago: number;
   fechaPago: Date;
   usuarioId : number;
+  saldoCuota :number;
+}
+
+export type CuotasRequest={
+  numeroCuota: number,
+  fechaVencimiento: Date,
+  valorCuota: number,
+  capitalCuota: number,
+  honorarios: number,
+  cumplio: boolean,
+  interesCuota: number
+  pagos: PagosRequest |null
+}
+
+export type PagosRequest = {
+
+  valorPago: number;
+  fechaPago: Date;
+  username : string;
   saldoCuota :number;
 }

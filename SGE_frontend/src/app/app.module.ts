@@ -118,6 +118,7 @@ import { HomeCajaComponent } from './Pages/Cartera/pages/componentesCartera/home
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -223,6 +224,7 @@ import { HomeCajaComponent } from './Pages/Cartera/pages/componentesCartera/home
 
     UploadsFilesComponent,
       HomeCajaComponent,
+      
 
 
   ],
