@@ -96,6 +96,10 @@ export class CuentasCobrarService {
     return this.http.delete(`http://192.168.1.6:8021/api/v1/clasificacionTarea/eliminarClasificacionTarea/${id}`)
   }
 
+  //PAGOS
+  crearRecibo(pagoCuota:any){
+    return this.http.post(`http://192.168.1.191:8021/api/v1/pagos/guardarPago`, pagoCuota)
+  }
 
   
 

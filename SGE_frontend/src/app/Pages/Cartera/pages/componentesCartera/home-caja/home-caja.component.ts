@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { error } from 'jquery';
 import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.service';
+import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { CoutasList, CuentasCobrarResponse, Gestion } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
 import { CuotaList, CuotasRequest, Pagos, PagosRequest } from 'src/app/Types/Cartera/Gestion/Gestion';
 import { CuentasPorCobrar } from 'src/app/Types/Consignaciones';
@@ -13,6 +14,8 @@ import Swal from 'sweetalert2';
 })
 export class HomeCajaComponent implements OnInit {
 
+  savePago: boolean = false
+  search: boolean = false
   cedula: string = ''
   numeroRecibo: string = ''
   cuentasCobrar: any[] = []
@@ -21,14 +24,21 @@ export class HomeCajaComponent implements OnInit {
   coutasList: CuotaList[] = []
   gestionesCuenta: Gestion[] = []
   saldoAcuerdoPago: number = 0
+  saldoInteresesAcuerdo: number = 0
+  saldoHonoriariosAcuerdo: number = 0
+  totalIntereses: number = 0
+  totalHonorarios: number = 0
+  totalCapital: number = 0
   coutasRequest: CuotasRequest[] = []
-  activarGuardarPago:boolean = false
+  activarGuardarPago: boolean = false
   pago: any = {
     valor: 0,
-    detalle: ''
+    detalle: '',
+    medioPago: '',
+    numeroRecibo: ''
   }
-  valorTotalIngresado:number = 0
-  constructor(private cuentaCobrarService: CuentasCobrarService) { }
+  valorTotalIngresado: number = 0
+  constructor(private cuentaCobrarService: CuentasCobrarService, private auth: AuthenticationService) { }
 
 
 
@@ -37,8 +47,10 @@ export class HomeCajaComponent implements OnInit {
 
 
   obtenerCuentaCobrar() {
+    this.search = true
     this.cuentaCobrarService.getCuentaByDato(this.cedula).subscribe(
       (data: any) => {
+        this.search = false
         this.cuentasCobrar = data;
         if (data.length == 0) {
           Swal.fire({
@@ -52,6 +64,7 @@ export class HomeCajaComponent implements OnInit {
         this.cuentasCobrarGestiones = []
 
       }, (error: any) => {
+        this.search = false
         console.log(error);
 
       }
@@ -81,11 +94,20 @@ export class HomeCajaComponent implements OnInit {
 
                 this.coutasList.forEach((c: CuotaList) => {
                   this.totalCuotasAcuerdo = this.totalCuotasAcuerdo + c.valorCuota
+                  this.totalCapital = this.totalCapital + c.capitalCuota
+                  this.totalHonorarios = this.totalHonorarios + c.honorarios
+                  this.totalIntereses = this.totalIntereses + c.interesCuota
                   if (c.pagos != null || c.pagos != undefined) {
                     console.log(c.pagos.valorPago);
                     this.saldoAcuerdoPago = cc.gestion[0].clasificacionGestion.valorTotalAcuerdo - c.pagos!.valorPago
+                    this.saldoInteresesAcuerdo = this.totalIntereses - c.interesCuota
+                    this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo + c.honorarios
+
+
                   } else {
-                    this.saldoAcuerdoPago = cc.gestion[0].clasificacionGestion.valorTotalAcuerdo
+                    this.saldoAcuerdoPago = this.saldoAcuerdoPago + c.valorCuota
+                    this.saldoInteresesAcuerdo = this.totalIntereses - c.interesCuota
+                    this.saldoHonoriariosAcuerdo = this.totalHonorarios - c.honorarios
                   }
 
 
@@ -106,7 +128,7 @@ export class HomeCajaComponent implements OnInit {
                     var pagos: PagosRequest = {
                       valorPago: c.pagos.valorPago,
                       fechaPago: c.pagos.fechaPago,
-                      username: '',
+
                       saldoCuota: c.pagos.saldoCuota
                     }
                     couta.pagos = pagos
@@ -119,7 +141,10 @@ export class HomeCajaComponent implements OnInit {
 
                   this.coutasRequest.push(couta)
                 })
-
+                console.log(this.saldoAcuerdoPago);
+                console.log(this.totalCapital);
+                console.log(this.totalHonorarios);
+                console.log(this.totalIntereses);
 
                 console.log(this.totalCuotasAcuerdo);
 
@@ -165,6 +190,18 @@ export class HomeCajaComponent implements OnInit {
 
 
   agregarPagoACuotas() {
+
+    if (this.pago.detalle.trim() == '' || this.pago.detalle.trim() == null || this.pago.detalle.trim() == undefined) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debes ingresar el concepto del pago',
+        timer: 3000
+      })
+
+      return
+    }
+
     var date = new Date()
     var valorTotal = this.pago.valor
     this.valorTotalIngresado = this.valorTotalIngresado + parseInt(this.pago.valor)
@@ -178,7 +215,11 @@ export class HomeCajaComponent implements OnInit {
         text: 'Ingrese datos numericos',
         timer: 3000
       })
+      return
     }
+
+
+
 
     if (this.pago.valor >= this.totalCuotasAcuerdo) {
       valorTotal = this.totalCuotasAcuerdo;
@@ -188,7 +229,15 @@ export class HomeCajaComponent implements OnInit {
 
     if (valorTotal > 0) {
       this.coutasList.forEach((c: CuotaList, i: number) => {
-
+        if (this.pago.valor < c.valorCuota) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Valor ingresado menor al valor de la cuota pactada',
+            timer: 3000
+          })
+          return
+        }
 
         if (c.pagos != null || c.pagos != undefined) {
           if (c.pagos.saldoCuota > 0) {
@@ -213,7 +262,7 @@ export class HomeCajaComponent implements OnInit {
             var pagos: PagosRequest = {
               valorPago: c.valorCuota,
               fechaPago: date,
-              username: '',
+
               saldoCuota: 0
             }
 
@@ -249,7 +298,7 @@ export class HomeCajaComponent implements OnInit {
             var pagos: PagosRequest = {
               valorPago: valorTotal,
               fechaPago: date,
-              username: '',
+
               saldoCuota: c.valorCuota - valorTotal
             }
             var pagosOriginal: Pagos = {
@@ -304,18 +353,56 @@ export class HomeCajaComponent implements OnInit {
   }
 
   generarRecibo() {
+    this.activarGuardarPago = false
+    this.savePago = true
+    if (this.pago.numeroRecibo.trim() == '' || this.pago.numeroRecibo.trim() == null || this.pago.numeroRecibo.trim() == undefined) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debes ingresar el numero de recibo',
+        timer: 3000
+      })
+      this.activarGuardarPago = true
+      this.savePago = false
+      return
+    }
+
+
 
     var recibo = {
       numeroObligacion: this.cuentasCobrarGestiones[0].numeroObligacion,
-      numeroRecibo: '',
+      numeroRecibo: this.pago.numeroRecibo,
       cuotasDto: this.coutasRequest,
       valorTotal: this.valorTotalIngresado,
-      saldoAcuerdo: this.saldoAcuerdoPago,
-      detalle: this.pago.detalle
+      saldo: this.saldoAcuerdoPago,
+      detalle: this.pago.detalle,
+      metodoPago: this.pago.medioPago,
+      username: ''
     }
 
-    console.log(recibo);
-    
+    var user = this.auth.getUsername();
+    if (user != null || user != undefined) {
+      recibo.username = user;
+      console.log(recibo);
+
+      this.cuentaCobrarService.crearRecibo(recibo).subscribe(
+        (data: any) => {
+          console.log(data);
+
+          console.log(recibo);
+          this.activarGuardarPago = false
+          this.savePago = false
+        }, (error: any) => {
+          this.activarGuardarPago = false
+          this.savePago = false
+          console.log(error);
+
+        }
+      )
+    }
+
+
+
 
   }
 

@@ -133,6 +133,5 @@ export type PagosRequest = {
 
   valorPago: number;
   fechaPago: Date;
-  username : string;
   saldoCuota :number;
 }
