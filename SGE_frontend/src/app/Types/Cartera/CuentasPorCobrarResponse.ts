@@ -24,6 +24,10 @@ export type CuentasCobrarResponse = {
   },
   diasVencidos: number,
   gestion: Gestion[],
+  tiposVencimiento: {
+    idTipoVencimiento: number,
+    tipoVencimiento: string
+  },
   edadVencimiento: string,
   condicionEspecial: string,
   numeroCreditos: number,

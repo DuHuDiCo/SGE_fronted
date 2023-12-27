@@ -75,11 +75,12 @@ import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsi
 import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/rankings/rankings/rankings.component';
 import { HomeCarteraComponent } from './Pages/Cartera/pages/componentesCartera/home-cartera/home-cartera.component';
 import { ClasificacionComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion/clasificacion.component';
-
-import { ClasificacionTareaComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion-tarea/clasificacion-tarea.component';
-
 import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/uploads-files/uploads-files.component';
+
+import { TipoVencimientoComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/tipo-vencimiento/tipo-vencimiento.component';
+
 import { HomeCajaComponent } from './Pages/Cartera/pages/componentesCartera/home-caja/home-caja.component';
+
 
 
 
@@ -125,19 +126,20 @@ const routes: Routes = [
         component:ClasificacionComponent
       },
       {
-
-        path:"clasificacion-tarea",
-        component:ClasificacionTareaComponent
-      },
-      {
-
         path: "upload-data",
         component: UploadsFilesComponent
       },
       {
 
-        path: "inicio-caja",
-        component: HomeCajaComponent
+        path: "tipo-vencimiento",
+        component: TipoVencimientoComponent
+
+
+
+      },
+      {
+         path: "inicio-caja",
+         component: HomeCajaComponent
       }
 
     ]

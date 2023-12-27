@@ -1,4 +1,5 @@
 export type clasificacion = {
-    idClasificacion: number,
-    clasificacion: string
-  }
+  idNombreClasificacion: number,
+  nombre: string,
+  tipo: string
+}

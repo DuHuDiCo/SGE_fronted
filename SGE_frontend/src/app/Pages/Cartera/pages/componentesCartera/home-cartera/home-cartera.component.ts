@@ -8,8 +8,11 @@ import { AuthenticationService } from 'src/app/Services/authentication/authentic
 import { Tarea } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { CuentaCobrarCalculate, CuentasCobrarResponse } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
-import { Gestion, GestionArray } from 'src/app/Types/Cartera/Gestion/Gestion';
+
+import { Gestion, GestionArray, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
+
 import { ROLES } from 'src/app/Types/Roles';
+
 import Swal from 'sweetalert2';
 
 declare var $: any;
@@ -36,6 +39,7 @@ export class HomeCarteraComponent implements OnInit {
   ClasificacionArray: clasificacion[] = []
   Columnas: string[] = []
   clasificacionesT: Tarea[] = []
+  tiposVen:TipoVencimiento[] = []
   disableds!: Array<boolean>
 
   constantes: string[] = [
@@ -51,7 +55,11 @@ export class HomeCarteraComponent implements OnInit {
     'F GESTION',
     'F COMPRO',
   ]
+
+  filtrosArray: string[] = []
   cuotas: any[] = []
+  paginas!: Array<number>
+  fechasIncrementadas: string[] = [];
 
   // OBJETOS
 
@@ -123,7 +131,37 @@ export class HomeCarteraComponent implements OnInit {
       tipoClasificacion: null,
       tarea: null,
       nota: null,
-      acuerdoPago: null
+      acuerdoPago: null,
+      nombreClasificacion: ''
+    },
+    gestion: '',
+    contact: false,
+    detallesAdicionales: ''
+  }
+
+  gestionSelected: any = {
+    numeroObligacion: '',
+    clasificacion: {
+      nombreClasificacion: '',
+      tipoClasificacion: '',
+      tarea: {
+        detalleTarea: '',
+        fechaFinTarea: new Date(),
+      },
+      nota: {
+        detalle: ''
+      },
+      acuerdoPago: {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: new Date(),
+        cuotasList: [],
+        username: ''
+      }
     },
     gestion: '',
     contact: false,
@@ -139,7 +177,6 @@ export class HomeCarteraComponent implements OnInit {
   tarea: any = {
     detalleTarea: '',
     fechaFinTarea: new Date,
-    clasificacion: ''
   }
 
   // ACUERDO DE PAGO
@@ -150,24 +187,15 @@ export class HomeCarteraComponent implements OnInit {
     valorTotalAcuerdo: 0,
     valorInteresesMora: 0,
     honoriarioAcuerdo: 0,
-    fechaCompromiso: new Date,
-    cuotasList: [
-      {
-        idCuota: 0,
-        numeroCuota: 0,
-        fechaVencimiento: new Date(),
-        valorCuota: 0,
-        capitalCuota: 0,
-        honorarios: 0,
-        cumplio: true
-      }
-    ],
+    fechaCompromiso: '',
+    cuotasList: [],
     username: ''
   }
 
   acuerdoCal: any = {
     tipoAcuerdo: '',
     valorTotalAcuerdo: 0,
+    valorTotalMora: 0,
     valorInteresesMora: 0,
     valorCuotaMensual: 0,
     honoriarioAcuerdo: 0,
@@ -193,6 +221,25 @@ export class HomeCarteraComponent implements OnInit {
     cumplio: false
   }
 
+  reporte:any = {
+    numeroObligacion: "",
+    cedula: ""
+  }
+
+  mostrarRep:any = {
+    messageToWpp: "",
+    base64: ""
+  }
+
+  clienteSelected:any = {
+    numeroDocumento: '',
+    nombreTitular: ''
+  }
+
+  //VARIABLES
+  mensaje:string = ''
+  base64:string = ''
+
   // PARAMETROS PARA EL SERVICE
   //TODO:CAMBIAR A 0 CUANDO CORRIJAN EL ARCHIVO
   page: number = 1;
@@ -214,7 +261,6 @@ export class HomeCarteraComponent implements OnInit {
   initialCon: number = 1;
   cont: number = 1
   isCon: boolean = false
-  paginas!: Array<number>
 
   fechaActual: Date = new Date();
   fechamax: string = '';
@@ -228,7 +274,18 @@ export class HomeCarteraComponent implements OnInit {
   fechaInicial: Date = new Date();
   incrementoMeses: number = 1;
   cantidadFechas: number = 0;
-  fechasIncrementadas: string[] = [];
+  idGestion:number = 0
+
+  resetButton:boolean = false
+  deshabilitarInputs:boolean = true
+  saldoCapitalTotalFirst:number = 0
+  moraObligatoriaFirst:number = 0
+
+  sinDiasVencidos:number | null = 1
+  isCalculate:boolean = true
+  disabledFecha:boolean = false
+
+  desactivarAcu:boolean = false
 
 
   ngOnInit(): void {
@@ -252,9 +309,20 @@ export class HomeCarteraComponent implements OnInit {
 
     this.getCuentasCobrar()
     this.getClasificacion()
-    this.getClasificacionTarea()
+    this.getTipoVen()
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
+  }
+
+  getTipoVen(){
+    this.cuentasCobrar.getTipoVencimiento().subscribe(
+      (data:any) => { 
+        this.tiposVen = data
+        console.log(this.tiposVen);
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
   }
 
   // TRAER CUENTAS POR COBRAR
@@ -346,7 +414,7 @@ export class HomeCarteraComponent implements OnInit {
         numeroObligacion: '',
         cliente: '',
         documentoCliente: '',
-        fechaCuentaCobrar: new Date,
+        fechaCuentaCobrar: '',
         fechaVencimiento: '',
         tipo: '',
         valorNotaDebito: 0,
@@ -424,11 +492,28 @@ export class HomeCarteraComponent implements OnInit {
         username: ''
       }
 
+      this.newGestion = {
+        numeroObligacion: '',
+        clasificacion: {
+          tipoClasificacion: null,
+          tarea: null,
+          nota: null,
+          acuerdoPago: null,
+          nombreClasificacion: ''
+        },
+        gestion: '',
+        contact: false,
+        detallesAdicionales: ''
+      }
+
       this.codeudoresSelected = []
       setTimeout(() => {
         this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
           (data: any) => {
             this.cuentaCobrarSelected = data
+            this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
+            this.moraObligatoriaFirst = data.moraObligatoria
+            this.calcularFirst()
             this.codeudores = data.clientes
             this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
             this.getGestiones(numeroObligacion);
@@ -439,7 +524,8 @@ export class HomeCarteraComponent implements OnInit {
                 tipoClasificacion: '',
                 tarea: null,
                 nota: null,
-                acuerdoPago: null
+                acuerdoPago: null,
+                nombreClasificacion: ''
               },
               gestion: '',
               contact: false,
@@ -471,8 +557,13 @@ export class HomeCarteraComponent implements OnInit {
         this.gestiones = data
         this.newGestion.numeroObligacion = numeroObligacion
         this.getLastDato(numeroObligacion)
-        console.log(data);
+        console.log(this.gestiones);
 
+        var gestion = this.gestiones.find((g:any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
+        if(gestion != null || gestion != undefined){
+          this.idGestion = gestion.idGestion
+        }
+        console.log(data);
       }, (error: any) => {
         console.log(error);
       }
@@ -490,6 +581,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   saveGestion() {
+    this.reporte.numeroObligacion = this.cuentaCobrarSelected.numeroObligacion
 
     if (this.newGestion.gestion.trim() == '' || this.newGestion.gestion.trim() == null) {
       Swal.fire({
@@ -510,7 +602,7 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     } else {
-      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'Tarea') {
+      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'TAREA') {
         if (this.tarea.fechaFinTarea instanceof Date || this.tarea.fechaFinTarea == null) {
           Swal.fire({
             icon: 'error',
@@ -520,17 +612,6 @@ export class HomeCarteraComponent implements OnInit {
           })
           return
         }
-
-        if (this.tarea.clasificacion?.trim() == '' || this.tarea.clasificacion?.trim() == null) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Elija Una Clasificación Para su Tarea',
-            timer: 3000
-          })
-          return
-        }
-
 
         if (this.tarea.detalleTarea?.trim() == '' || this.tarea.detalleTarea?.trim() == null) {
           Swal.fire({
@@ -543,9 +624,60 @@ export class HomeCarteraComponent implements OnInit {
         }
 
         this.newGestion.clasificacion.tarea = this.tarea
+
+        Swal.fire({
+          title: 'Guardar Gestión',
+          text: '¿Está Seguro De Crear Esta Gestión?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Crear',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            console.log(this.newGestion);
+            this.gestionButton = true
+              this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
+                (data:any) => {
+                  this.gestiones.push(data)
+                  console.log(this.gestiones);
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Datos Guardados',
+                    text: 'Gestión Guardada Exitosamente',
+                    timer: 3000
+                  })
+                  this.gestionButton = false
+                  this.newGestion = {
+                    numeroObligacion: this.newGestion.numeroObligacion,
+                    clasificacion: {
+                      tipoClasificacion: null,
+                      tarea: null,
+                      nota: null,
+                      acuerdoPago: null,
+                      nombreClasificacion: ''
+                    },
+                    gestion: '',
+                    contact: false,
+                    detallesAdicionales: this.newGestion.detallesAdicionales
+                  }
+                  $('#modalDetalle').modal('hide');
+                }, (error:any) => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error Al Guardar La Gestión',
+                    timer: 3000
+                  })
+                  this.gestionButton = false
+                }
+              )
+          }
+        })
       }
 
-      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'Nota') {
+      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'NOTA') {
         if (this.nota?.detalle.trim() == '' || this.nota?.detalle.trim() == null) {
           Swal.fire({
             icon: 'error',
@@ -556,9 +688,60 @@ export class HomeCarteraComponent implements OnInit {
           return
         }
         this.newGestion.clasificacion.nota = this.nota
+
+        Swal.fire({
+          title: 'Guardar Gestión',
+          text: '¿Está Seguro De Crear Esta Gestión?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Crear',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            console.log(this.newGestion);
+            this.gestionButton = true
+              this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
+                (data:any) => {
+                  this.gestiones.push(data)
+                  console.log(this.gestiones);
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Datos Guardados',
+                    text: 'Gestión Guardada Exitosamente',
+                    timer: 3000
+                  })
+                  this.gestionButton = false
+                  this.newGestion = {
+                    numeroObligacion: this.newGestion.numeroObligacion,
+                    clasificacion: {
+                      tipoClasificacion: null,
+                      tarea: null,
+                      nota: null,
+                      acuerdoPago: null,
+                      nombreClasificacion: ''
+                    },
+                    gestion: '',
+                    contact: false,
+                    detallesAdicionales: this.newGestion.detallesAdicionales
+                  }
+                  $('#modalDetalle').modal('hide');
+                }, (error:any) => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error Al Guardar La Gestión',
+                    timer: 3000
+                  })
+                  this.gestionButton = false
+                }
+              )
+          }
+        })
       }
 
-      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'Acuerdo de Pago') {
+      if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'ACUERDO DE PAGO') {
         if (this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null) {
           Swal.fire({
             icon: 'error',
@@ -586,8 +769,71 @@ export class HomeCarteraComponent implements OnInit {
           })
           return
         }
+        if(this.cuotas.length == 0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Debe de Calcular las Cuotas del Acuerdo',
+            timer: 3000
+          })
+          return
+        }
+        this.newGestion.clasificacion.acuerdoPago = this.acuerdo
+        this.cuotas.forEach(element => {
+          this.newGestion.clasificacion.acuerdoPago?.cuotasList.push(element)
+        });
+        
+        this.newGestion.clasificacion.acuerdoPago?.cuotasList.splice(0, 1)
+
+        //TODO:CAMBIAR POR EL NOMBRE DE USUARIO
+        this.newGestion.clasificacion.acuerdoPago!.username = 'Diana1975'
+        console.log(this.newGestion.clasificacion.acuerdoPago);
+
+        $('#modalGestion').modal('hide');
+        $('#modalDetalle').modal('show');
       }
     }
+    
+    
+
+  }
+
+  saveGestionWithDetalle(accion:string){
+    if(accion == 'SI'){
+      if(this.acuerdo.detalle.trim() == '' || this.acuerdo.detalle.trim() == null){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Digite El detalle',
+          timer: 3000
+        })
+        return
+      }
+      if(this.reporte.cedula.trim() == '' || this.reporte.cedula.trim() == null){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Digite El detalle',
+          timer: 3000
+        })
+        return
+      }
+    } 
+
+    if(accion == 'NO'){
+      if(this.reporte.cedula.trim() == '' || this.reporte.cedula.trim() == null){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Elija La Cédula del Cliente o Codeudor',
+          timer: 3000
+        })
+        return
+      }
+      this.newGestion.clasificacion.acuerdoPago!.detalle = this.acuerdo.detalle
+    }
+       
+    
 
     var sumaComprobacion = 0
     for (let i = 0; i < this.cuotas.length; i++) {
@@ -597,62 +843,231 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     if(sumaComprobacion != this.acuerdoCal.valorTotalAcuerdo ){
-      this.calcular()
-      alert('Todo esta muy caro')
+      Swal.fire({
+        icon: 'error',
+        title: 'La suma de la cuotas no coincide con el Valor del Acuerdo',
+        text: 'Recalculando...',
+        timer: 3000
+      })
+      setTimeout(() => {
+        this.calcular()
+      }, 3000);
+      
     }
 
     console.log(this.newGestion);
 
-    // Swal.fire({
-    //   title: 'Guardar Gestión',
-    //   text: '¿Está Seguro De Crear Esta Gestión?',
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#3085d6',
-    //   cancelButtonColor: '#d33',
-    //   confirmButtonText: 'Crear',
-    //   cancelButtonText: 'Cancelar'
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     console.log(this.newGestion);
-    //     this.gestionButton = true
-    //       this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
-    //         (data:any) => {
-    //           this.gestiones.push(data)
-    //           console.log(this.gestiones);
-    //           Swal.fire({
-    //             icon: 'success',
-    //             title: 'Datos Guardados',
-    //             text: 'Gestión Guardada Exitosamente',
-    //             timer: 3000
-    //           })
-    //           this.gestionButton = false
-    //           this.newGestion = {
-    //             numeroObligacion: this.newGestion.numeroObligacion,
-    //             clasificacion: {
-    //               tipoClasificacion: null,
-    //               tarea: null,
-    //               nota: null,
-    //               acuerdoPago: null
-    //             },
-    //             gestion: '',
-    //             contact: false,
-    //             detallesAdicionales: this.newGestion.detallesAdicionales
-    //           }
-    //           $('#modalGestion').modal('hide');
-    //         }, (error:any) => {
-    //           Swal.fire({
-    //             icon: 'error',
-    //             title: 'Error',
-    //             text: 'Error Al Guardar La Gestión',
-    //             timer: 3000
-    //           })
-    //           this.gestionButton = false
-    //         }
-    //       )
-    //   }
-    // })
+    Swal.fire({
+      title: 'Guardar Gestión',
+      text: '¿Está Seguro De Crear Esta Gestión?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Crear',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(this.newGestion);
+        this.gestionButton = true
+          this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
+            (data:any) => {
+              this.gestiones.push(data)
+              console.log(this.gestiones);
+              this.mostrarReporte()
+              Swal.fire({
+                icon: 'success',
+                title: 'Datos Guardados',
+                text: 'Gestión Guardada Exitosamente',
+                timer: 3000
+              })
+              this.gestionButton = false
+              this.newGestion = {
+                numeroObligacion: this.newGestion.numeroObligacion,
+                clasificacion: {
+                  tipoClasificacion: null,
+                  tarea: null,
+                  nota: null,
+                  acuerdoPago: null,
+                  nombreClasificacion: ''
+                },
+                gestion: '',
+                contact: false,
+                detallesAdicionales: this.newGestion.detallesAdicionales
+              }
+              this.col = true
+              this.cuotas = []
+              $('#modalDetalle').modal('hide');
+              $('#modalReporte').modal('show');
+            }, (error:any) => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Al Guardar La Gestión',
+                timer: 3000
+              })
+              this.gestionButton = false
+            }
+          )
+      }
+    })
+  }
 
+  desactivarAcuerdo(){
+      Swal.fire({
+          title: 'Desactivar Acuerdo',
+          text: '¿Desea Desactivar El Acuerdo de Pago?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Desactivar',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+              this.cuentasCobrar.desactivateAcuerdoPago(this.gestionSelected.idGestion).subscribe(
+                (data:any) => {
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Datos Guardados',
+                    text: 'Acuerdo Desactivado Con Éxito',
+                    timer: 3000
+                  })
+                  this.newGestion.contact = true
+                  this.getGestiones(this.newGestion.numeroObligacion)
+                  setTimeout(() => {
+                    $('#modalGestion').modal('show');
+                    $('#modalGestionCom').modal('hide');
+                  }, 2000);
+                }, (error:any) => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error Al Desactivar El Acuerdo',
+                    timer: 3000
+                  })
+                  console.log(error);
+                }
+              )
+          } else {
+            var nombre = this.ClasificacionArray.filter((n:any) => n.nombre != 'ACUERDO DE PAGO')
+            this.newGestion.clasificacion.nombreClasificacion = nombre[0].nombre
+            this.newGestion.clasificacion.tipoClasificacion = nombre[0].tipo
+
+            this.newGestion.contact = false
+          }
+        }) 
+  }
+
+  tipoClasificacion(event:any){
+    
+    this.newGestion.clasificacion.nombreClasificacion = event.target.value
+    
+    var tipoClas = this.ClasificacionArray.find((t:any) => t.nombre == event.target.value)
+    if(tipoClas != undefined || tipoClas != null){
+      this.newGestion.clasificacion.tipoClasificacion = tipoClas.tipo
+      console.log(this.newGestion.clasificacion.tipoClasificacion);
+    }
+
+    if(this.newGestion.clasificacion.tipoClasificacion != 'ACUERDO DE PAGO'){
+      this.col = true
+      this.newGestion.contact = false
+      this.disabledFecha = false
+    }
+
+    if(this.newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'){
+      var gestion = this.gestiones.find((g:any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
+      this.gestionSelected = gestion
+      console.log(this.gestionSelected);
+      
+      if(this.gestionSelected != null || this.gestionSelected != undefined){
+
+        this.newGestion.contact = false
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Este Cliente tiene un Acuerdo de Pago Vigente',
+          timer: 3000
+        })
+
+        var nombre = this.ClasificacionArray.filter((n:any) => n.tipo != 'ACUERDO DE PAGO')
+        this.newGestion.clasificacion.tipoClasificacion = nombre[0].tipo
+        event.target.value = nombre[0].nombre  
+
+        setTimeout(() => {
+          $('#modalGestion').modal('hide');
+          $('#modalGestionCom').modal('show');
+        }, 3000);
+
+      } else {
+        this.newGestion.contact = true
+      }
+    }
+  }
+
+  getOneGestion(id:number){
+    this.gestionSelected = {
+      numeroObligacion: '',
+    clasificacion: {
+      nombreClasificacion: '',
+      tipoClasificacion: '',
+      tarea: {
+        detalleTarea: '',
+        fechaFinTarea: new Date(),
+      },
+      nota: {
+        detalle: ''
+      },
+      acuerdoPago: {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: new Date(),
+        cuotasList: [],
+        username: ''
+      }
+    },
+    gestion: '',
+    contact: false,
+    detallesAdicionales: ''
+    }
+    var gestion = this.gestiones.find((g:any) => g.idGestion == id)
+    console.log(id);
+    
+    this.gestionSelected = gestion
+    console.log(this.gestionSelected);
+  }
+
+  mostrarReporte(){
+    this.cuentasCobrar.reporte(this.reporte).subscribe(
+      (data:any) => {
+        this.mostrarRep = data
+        this.mensaje = this.mostrarRep.messageToWpp
+        this.base64 = this.mostrarRep.base64
+        console.log(this.mensaje);
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+
+    var cliente = this.cuentaCobrarSelected.clientes.find((c:any) => c.numeroDocumento = this.reporte.cedula)
+    this.clienteSelected.numeroDocumento = cliente.numeroDocumento
+    this.clienteSelected.nombreTitular = cliente.nombreTitular
+    console.log(this.clienteSelected);
+  }
+
+  cambiarCedula(event:any){
+    this.reporte.cedula = this.reporte.cedula
+    console.log(this.reporte);
+  }
+
+  mostrarBase64(){
+    var ele = document.getElementById('base64')
+    ele?.click()
   }
 
 
@@ -704,7 +1119,7 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
-
+    
     if (this.acuerdo.valorCuotaMensual == 0 || this.acuerdo.valorCuotaMensual == null) {
       Swal.fire({
         icon: 'error',
@@ -724,7 +1139,11 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
     this.calcularIntMora()
-    this.calcularHonorarios()
+
+    if(this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'){
+      this.calcularHonorarios()
+    }
+
     this.calcularByTipoAcuerdo()
     console.log(this.acuerdoCal.valorTotalAcuerdo);
     
@@ -751,18 +1170,8 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-
-    // var gestion = this.gestiones.find((g:any) => g.clasificacion.clasificacion == 'Nota')
-    // console.log(gestion);
-
-    // if(gestion != null){
-    //   console.log(gestion);
-
-    // }
-    console.log(this.cuentaCobrarSelected.fechaVencimiento);
-
-    $('#modalGestion').modal('hide');
-    $('#offcanvasTop').offcanvas('show');
+    this.disabledFecha = true
+    this.calcular()
   }
 
   mostrarModalGestion() {
@@ -779,16 +1188,6 @@ export class HomeCarteraComponent implements OnInit {
         icon: 'error',
         title: 'Error',
         text: 'Digite El Valor Total',
-        timer: 3000
-      })
-      return
-    }
-
-    if (this.cuentaCobrarSelected.moraObligatoria == 0 || this.cuentaCobrarSelected.moraObligatoria == null) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Digite La Mora Obligatoria',
         timer: 3000
       })
       return
@@ -830,27 +1229,7 @@ export class HomeCarteraComponent implements OnInit {
     this.disableds[0] = true
     this.disableds[this.cuotas.length - 1] = true
 
-    this.cuentasCobrar.updateCuentaCobrar(this.cuentasCalcular).subscribe(
-      (data: any) => {
-        this.cuentaCobrarSelected = data
-        var fechaVen = this.cuentaCobrarSelected.fechaVencimiento.split('T')
-        this.cuentaCobrarSelected.fechaVencimiento = fechaVen[0]
-        console.log(data);
-
-
-        Swal.fire({
-          icon: 'success',
-          title: 'Datos Guardados',
-          text: 'Datos Confirmados Con Éxito',
-          timer: 3000
-        })
-      }, (error: any) => {
-        console.log(error);
-      }
-    )
-
     this.col = false
-    this.mostrarModalGestion()
 
   }
 
@@ -860,6 +1239,7 @@ export class HomeCarteraComponent implements OnInit {
     var cal = this.cuentasCalcular.moraObligatoria * (this.constanteHonorarios / 366) * this.cuentaCobrarSelected.diasVencidos
     var res = cal.toFixed(0)
     this.acuerdoCal.valorInteresesMora = res
+    this.acuerdo.valorInteresesMora = this.acuerdoCal.valorInteresesMora
     console.log(this.acuerdoCal.valorInteresesMora);
   }
 
@@ -872,6 +1252,7 @@ export class HomeCarteraComponent implements OnInit {
 
     var res = cal.toFixed(0)
     this.acuerdoCal.honoriarioAcuerdo = res
+    this.acuerdo.honoriarioAcuerdo = this.acuerdoCal.honoriarioAcuerdo
     console.log(this.acuerdoCal.honoriarioAcuerdo);
   }
 
@@ -884,7 +1265,6 @@ export class HomeCarteraComponent implements OnInit {
       } else {
         this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)
       }
-
     }
 
     if (this.acuerdo.tipoAcuerdo == 'TOTAL') {
@@ -894,8 +1274,8 @@ export class HomeCarteraComponent implements OnInit {
       } else {
         this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora)
       }
-
     }
+    this.acuerdo.valorTotalAcuerdo = this.acuerdoCal.valorTotalAcuerdo
   }
 
   metodosCalculos() {
@@ -923,6 +1303,253 @@ export class HomeCarteraComponent implements OnInit {
 
 
 
+  }
+
+  //METODOS CALCULADORA OFFCANVAS INFERIOR
+
+  calcularFirst(){
+    this.acuerdoCal = {
+      tipoAcuerdo: '',
+      valorTotalAcuerdo: 0,
+      valorTotalMora: 0,
+      valorInteresesMora: 0,
+      valorCuotaMensual: 0,
+      honoriarioAcuerdo: 0,
+    }
+
+    //INTERESES MORA
+    var resIntMora = this.cuentaCobrarSelected.moraObligatoria * (this.constanteHonorarios / 366) * this.cuentaCobrarSelected.diasVencidos
+    this.acuerdoCal.valorInteresesMora = resIntMora.toFixed(0)
+    
+    //HONORARIOS
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      var resHonorarios = (parseInt(this.cuentaCobrarSelected.moraObligatoria)  + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+      this.acuerdoCal.honoriarioAcuerdo = resHonorarios.toFixed(0)
+    }
+
+    //MORA Y TOTAL
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+    } else {
+      this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
+    }
+
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      this.acuerdoCal.valorTotalAcuerdo = parseInt(this.cuentaCobrarSelected.clientes[0].saldoActual) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+    } else {
+      this.acuerdoCal.valorTotalAcuerdo = parseInt(this.cuentaCobrarSelected.clientes[0].saldoActual) + parseInt(this.acuerdoCal.valorInteresesMora)
+    }
+
+    
+  }
+
+  calculadora(event:any){
+    if(this.cuentaCobrarSelected.clientes[0].saldoActual >= 0 || this.cuentaCobrarSelected.clientes[0].saldoActual == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite El Saldo Capital Total',
+        timer: 3000
+      })
+      return
+    }
+    if(this.cuentaCobrarSelected.clientes[0].saldoActual < this.cuentaCobrarSelected.moraObligatoria){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'El Saldo Capital Total no puede ser menor al Saldo Capital Vencido',
+        timer: 3000
+      })
+      return
+    }
+    if(this.cuentaCobrarSelected.moraObligatoria < 0){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'El Saldo Capital Total no puede ser menor a 0',
+        timer: 3000
+      })
+      return
+    }
+    if(this.cuentaCobrarSelected.clientes[0].saldoActual > this.saldoCapitalTotalFirst){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'El Saldo Capital Total No Puede ser Mayor Ni Igual Al De BD',
+        timer: 3000
+      })
+      return
+    }
+
+    this.calculadoraIntereses()
+
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      this.calculadoraHonorarios()
+    }
+
+    this.calculadoraMoraAndTotal()
+
+    this.deshabilitarInputs = true
+    this.isCalculate = false
+
+  }
+
+  confirmarDatos(){
+    if(this.isCalculate == false){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debes de Calcular los Datos',
+        timer: 3000
+      })
+      return
+    }
+
+    if(this.deshabilitarInputs == false){
+      this.deshabilitarInputs = true
+    } else {
+      this.deshabilitarInputs = false
+    }
+
+    this.isCalculate = false
+    
+  }
+
+  habilitar(){
+    this.deshabilitarInputs = false
+    this.isCalculate = false
+  }
+
+  reiniciarCalculadora(){
+    this.resetButton = true
+    this.cuentasCobrar.getCuentaByObligacion(this.cuentaCobrarSelected.numeroObligacion).subscribe(
+      (data:any) => {
+        this.cuentaCobrarSelected = data
+        this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
+        this.calcularFirst()
+        this.resetButton = false
+        this.isCalculate = true
+      }, (error:any) => {
+        console.log(error);
+        this.resetButton = false
+      }
+    )
+  }
+
+  calculadoraIntereses(){
+    var boton_saldo_capital = document.getElementById('boton_saldo_capital') as HTMLInputElement;
+
+      var moraObligatoria = boton_saldo_capital.value
+
+      var res = parseInt(moraObligatoria) * (this.constanteHonorarios / 366) * this.cuentaCobrarSelected.diasVencidos
+      this.acuerdoCal.valorInteresesMora = res.toFixed(0) 
+  }
+
+  calculadoraHonorarios(){
+    var boton_saldo_capital = document.getElementById('boton_saldo_capital') as HTMLInputElement;
+
+    var moraObligatoria = boton_saldo_capital.value
+    var res = (parseInt(moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+    this.acuerdoCal.honoriarioAcuerdo = res.toFixed(0)
+  }
+
+  calculadoraMoraAndTotal(){
+    var boton_saldo_capital = document.getElementById('boton_saldo_capital') as HTMLInputElement;
+    var boton_saldo_total = document.getElementById('boton_saldo_total') as HTMLInputElement;
+
+    var moraObligatoria = boton_saldo_capital.value
+    var valorTotal = boton_saldo_total.value
+    
+
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      this.acuerdoCal.valorTotalMora = parseInt(moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+    } else {
+      this.acuerdoCal.valorTotalMora = parseInt(moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
+    }
+
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+    } else {
+      this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
+    }
+  }
+
+  calcularDiasVencidos(event:any){
+    var fechaActual = this.fechaActual;
+
+    var fechaVen = new Date(this.cuentaCobrarSelected.fechaVencimiento)
+    fechaVen.setDate(fechaVen.getDate() + 1);
+    fechaVen.setHours(fechaActual.getHours(), fechaActual.getMinutes(), fechaActual.getSeconds(), fechaActual.getMilliseconds());
+
+    var diferenciaMilisegundos = Math.abs(fechaActual.getTime() - fechaVen.getTime());
+    var diferenciaDias = Math.ceil(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+    this.cuentaCobrarSelected.diasVencidos = diferenciaDias;
+    
+
+    if(fechaVen >= fechaActual){
+      this.cuentaCobrarSelected.diasVencidos = 0
+      this.cuentaCobrarSelected.moraObligatoria = 0
+      this.calculadora(event)
+      this.acuerdoCal.valorTotalMora = 0
+      this.sinDiasVencidos = 0
+    }
+
+    if(fechaVen < fechaActual && this.sinDiasVencidos == 1){
+      this.calculadora(event)
+      this.sinDiasVencidos = 1
+    }
+
+    if(this.sinDiasVencidos == 0 && fechaVen < fechaActual){
+      if(this.cuentaCobrarSelected.diasVencidos != 0){
+        this.cuentaCobrarSelected.moraObligatoria = this.moraObligatoriaFirst
+  
+        var res = parseInt(this.cuentaCobrarSelected.moraObligatoria) * (this.constanteHonorarios / 366) * this.cuentaCobrarSelected.diasVencidos
+        this.acuerdoCal.valorInteresesMora = res.toFixed(0)
+  
+        if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+          var res = (parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+          this.acuerdoCal.honoriarioAcuerdo = res.toFixed(0)
+        }
+  
+        if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+          this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        } else {
+          this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
+        }
+    
+        if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+          this.acuerdoCal.valorTotalAcuerdo = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        } else {
+          this.acuerdoCal.valorTotalAcuerdo = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
+        }
+      }
+      this.sinDiasVencidos = 1
+    }
+
+    console.log(this.cuentaCobrarSelected.diasVencidos);
+  }
+
+  cambiarIntereses(event:any){
+    var boton_saldo_total = document.getElementById('boton_saldo_total') as HTMLInputElement;
+    var valorTotal = boton_saldo_total.value
+
+    if(this.acuerdoCal.valorInteresesMora < 0){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite Un Valor Válido',
+        timer: 3000
+      })
+      return
+    } else {
+      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+        this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      } else {
+        this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
+      }
+      this.isCalculate = true
+    }
+    
   }
 
   // CUOTAS
@@ -1314,33 +1941,45 @@ export class HomeCarteraComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.newGestion = {
-          numeroObligacion: this.newGestion.numeroObligacion,
+          numeroObligacion: '',
           clasificacion: {
-            tipoClasificacion: '',
-            tarea: {
-              detalleTarea: '',
-              fechaFinTarea: new Date,
-              clasificacion: ''
-            },
-            nota: {
-              detalle: ''
-            },
-            acuerdoPago: {
-              detalle: '',
-              valorCuotaMensual: 0,
-              tipoAcuerdo: '',
-              valorTotalAcuerdo: 0,
-              valorInteresesMora: 0,
-              honoriarioAcuerdo: 0,
-              fechaCompromiso: new Date,
-              cuotasList: [],
-              username: ''
-            }
+            tipoClasificacion: null,
+            tarea: null,
+            nota: null,
+            acuerdoPago: null,
+            nombreClasificacion: ''
           },
           gestion: '',
           contact: false,
           detallesAdicionales: this.newGestion.detallesAdicionales
         }
+
+        this.acuerdo = {
+          detalle: '',
+          valorCuotaMensual: 0,
+          tipoAcuerdo: '',
+          valorTotalAcuerdo: 0,
+          valorInteresesMora: 0,
+          honoriarioAcuerdo: 0,
+          fechaCompromiso: '',
+          cuotasList: [],
+          username: ''
+        }
+
+        this.nota = {
+          detalle: ''
+        }
+      
+        this.tarea = {
+          detalleTarea: '',
+          fechaFinTarea: '',
+        }
+
+        this.cuotas = []
+
+        this.col = true
+        this.disabledFecha = false
+
         $('#modalGestion').modal('hide');
       }
     })
@@ -1361,6 +2000,17 @@ export class HomeCarteraComponent implements OnInit {
     } else {
       this.Columnas.push(columna)
     }
+  }
+
+  activarFiltros(columna:string){
+    if(this.filtrosArray.includes(columna)){
+      var position = this.filtrosArray.indexOf(columna)
+      this.filtrosArray.splice(position, 1)
+    } else {
+      this.filtrosArray.push(columna)
+    }
+    console.log(this.filtrosArray);
+    
   }
 
   maxFecha(): string {
@@ -1407,19 +2057,6 @@ export class HomeCarteraComponent implements OnInit {
 
     // Cambia la clase según la posición de desplazamiento
     this.isSticky = scrollPosition >= 250;
-  }
-
-  // CLASIFICACION TAREA
-  getClasificacionTarea() {
-    this.cuentasCobrar.getTareas().subscribe(
-      (data: any) => {
-        this.clasificacionesT = data
-        console.log(data);
-
-      }, (error: any) => {
-        console.log(error);
-      }
-    )
   }
 
   copyToClipboard(event: any) {

@@ -15,9 +15,9 @@ export class ClasificacionComponent implements OnInit {
   // ARRAY CLASIFICACIONES
   ClasificacionArray:clasificacion[] = []
 
-  clasificacion:clasificacion = {
-    idClasificacion: 0,
-    clasificacion: ''
+  clasificacion:any = {
+    nombreClasificacion: '',
+    tipo: ''
   }
 
   clasificacionModal:any = {
@@ -60,15 +60,26 @@ export class ClasificacionComponent implements OnInit {
 
   saveClasificacion(){
 
-    if(this.clasificacion.clasificacion.trim() == '' || this.clasificacion.clasificacion.trim() == null){
+    if(this.clasificacion.nombreClasificacion.trim() == '' || this.clasificacion.nombreClasificacion.trim() == null){
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Digite Un Tipo de Clasificación',
+        text: 'Digite Un Nombre de Clasificación',
         timer: 3000
       })
       return
     }
+    if(this.clasificacion.tipo.trim() == '' || this.clasificacion.tipo.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Seleccione Un Tipo De Clasificación',
+        timer: 3000
+      })
+      return
+    }
+    console.log(this.clasificacion);
+    
     this.crearButton = true
     setTimeout(() => {
       this.clasificacionService.saveClasificacion(this.clasificacion).subscribe(
@@ -87,13 +98,15 @@ export class ClasificacionComponent implements OnInit {
             text: 'Error al Crear La Clasificación',
             timer: 3000
           })
+          console.log(error);
+          
           this.crearButton = false
         }
       )
   
       this.clasificacion = {
-        idClasificacion: 0,
-        clasificacion: '' 
+        nombreClasificacion: '',
+        tipo: ''
       }
       setTimeout(() => {
         window.location.reload()
