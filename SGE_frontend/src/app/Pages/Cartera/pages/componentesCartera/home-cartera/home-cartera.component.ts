@@ -7,7 +7,7 @@ import { AuthenticationService } from 'src/app/Services/authentication/authentic
 import { Tarea } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { CuentaCobrarCalculate, CuentasCobrarResponse } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
-import { Gestion, GestionArray } from 'src/app/Types/Cartera/Gestion/Gestion';
+import { Gestion, GestionArray, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
 import Swal from 'sweetalert2';
 
 declare var $: any;
@@ -34,6 +34,7 @@ export class HomeCarteraComponent implements OnInit {
   ClasificacionArray: clasificacion[] = []
   Columnas: string[] = []
   clasificacionesT: Tarea[] = []
+  tiposVen:TipoVencimiento[] = []
   disableds!: Array<boolean>
 
   constantes: string[] = [
@@ -49,6 +50,8 @@ export class HomeCarteraComponent implements OnInit {
     'F GESTION',
     'F COMPRO',
   ]
+
+  filtrosArray: string[] = []
   cuotas: any[] = []
   paginas!: Array<number>
   fechasIncrementadas: string[] = [];
@@ -283,8 +286,20 @@ export class HomeCarteraComponent implements OnInit {
   ngOnInit(): void {
     this.getCuentasCobrar()
     this.getClasificacion()
+    this.getTipoVen()
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
+  }
+
+  getTipoVen(){
+    this.cuentasCobrar.getTipoVencimiento().subscribe(
+      (data:any) => { 
+        this.tiposVen = data
+        console.log(this.tiposVen);
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
   }
 
   // TRAER CUENTAS POR COBRAR
@@ -1962,6 +1977,17 @@ export class HomeCarteraComponent implements OnInit {
     } else {
       this.Columnas.push(columna)
     }
+  }
+
+  activarFiltros(columna:string){
+    if(this.filtrosArray.includes(columna)){
+      var position = this.filtrosArray.indexOf(columna)
+      this.filtrosArray.splice(position, 1)
+    } else {
+      this.filtrosArray.push(columna)
+    }
+    console.log(this.filtrosArray);
+    
   }
 
   maxFecha(): string {

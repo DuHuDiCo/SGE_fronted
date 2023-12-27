@@ -143,6 +143,205 @@
                 </div>
             </div>
         </div>
+
+        <!-- FILTROS -->
+        <div class="accordion" id="accordionExample" *ngIf="!spinner">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionFiltros" aria-expanded="true" aria-controls="collapseOne">
+                        Filtros
+                    </button>
+                </h2>
+                <div id="accordionFiltros" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="row justify-content-center mb-3">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row justify-content-center mb-2">
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                    (click)="activarFiltros(constantes[1])">
+                                                    <label class="form-check-label">
+                                                        Banco
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                    (click)="activarFiltros(constantes[2])">
+                                                    <label class="form-check-label">
+                                                        Dias Ven.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                    (click)="activarFiltros(constantes[3])">
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                        Edad Ven.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                    (click)="activarFiltros(constantes[4])">
+                                                    <label class="form-check-label">
+                                                        Sucursal
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                    (click)="activarFiltros(constantes[6])">
+                                                    <label class="form-check-label">
+                                                        Clas. Juri
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                    (click)="activarFiltros(constantes[7])">
+                                                    <label class="form-check-label">
+                                                        Saldo Cap.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                    (click)="activarFiltros(constantes[8])">
+                                                    <label class="form-check-label">
+                                                        Año
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                    (click)="activarFiltros(constantes[9])">
+                                                    <label class="form-check-label">
+                                                        F. Gestión
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                    (click)="activarFiltros(constantes[10])">
+                                                    <label class="form-check-label">
+                                                        F. Compro.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="filtrosArray.length > 0" class="row justify-content-center mb-3">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row justify-content-center">
+                                            <div *ngIf="filtrosArray.includes(constantes[1])" class="col-md-2 mb-3">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Seleccione Un Banco</option>
+                                                    <option value="COL">COL</option>
+                                                    <option value="POP">POP</option>
+                                                </select>
+                                            </div>
+                                            <div *ngIf="filtrosArray.includes(constantes[2])" class="col-md-2 mb-3">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Seleccione Los Dias Vencidos</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                  </select>
+                                            </div>
+                                            <div *ngIf="filtrosArray.includes(constantes[3])" class="col-md-2 mb-3">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Seleccione La Edad De Vencimiento</option>
+                                                    <option *ngFor="let t of tiposVen" value="{{ t.tipoVencimiento }}">{{ t.tipoVencimiento }}</option>
+                                                  </select>
+                                            </div>
+
+                                            <div *ngIf="filtrosArray.includes(constantes[4])" class="col-md-2 mb-3">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Seleccione Una Sucursal</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                  </select>
+                                            </div>
+                                            <div *ngIf="filtrosArray.includes(constantes[6])" class="col-md-2 mb-3">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Seleccione Una Clasificación Jurídica</option>
+                                                    <option value="Normal">Normal</option>
+                                                    <option value="Prejuridico">Prejuridico</option>
+                                                    <option value="Juridico">Juridico</option>
+                                                  </select>
+                                            </div>
+                                            <div *ngIf="filtrosArray.includes(constantes[7])" class="col-md-2 mb-3">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Seleccione Un Saldo</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                  </select>
+                                            </div>
+                                            <div *ngIf="filtrosArray.includes(constantes[8])" class="col-md-2 mb-3">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Seleccione Un Año</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                  </select>
+                                            </div>
+                                            <div *ngIf="filtrosArray.includes(constantes[9])" class="col-md-2 mb-3">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Seleccione Una Fecha Gestión</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                  </select>
+                                            </div>
+                                            <div *ngIf="filtrosArray.includes(constantes[10])" class="col-md-2 mb-3">
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Seleccione Una Fecha Compromiso</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                  </select>
+                                            </div>
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-1">
+                                                    <button *ngIf="filtrosArray.length != 0" class="btn btn-danger b">Filtrar</button>  
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row justify-content-center"> 
             <div class="col-md-12">
                 <!-- SIDEBAR -->
@@ -530,156 +729,61 @@
                         <thead>
                             <tr>
                                 <th class="h" *ngIf="!Columnas.includes('CLIENTE')">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-6">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             Cliente
-                                        </div>
-                                        <div class="col-md-6">
-                                            <i class="fa-solid fa-caret-down"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th class="h" *ngIf="!Columnas.includes('BANCO')">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-8">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             Banco
-                                        </div>
-                                        <div class="col-md-4">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th *ngIf="!Columnas.includes('DIAS VENC')">Dias Vencidos</th>
                                 <th *ngIf="!Columnas.includes('EDAD VENC')" class="h">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-8">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             E. Vencimiento
-                                        </div>
-                                        <div class="col-md-4">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th *ngIf="!Columnas.includes('SUCURSAL')" class="h">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-8">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             Sucursal
-                                        </div>
-                                        <div class="col-md-4">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th *ngIf="!Columnas.includes('ASESOR')" class="h">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-8">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             Asesor
-                                        </div>
-                                        <div class="col-md-4">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th *ngIf="!Columnas.includes('CLAS JURI')" class="h">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-8">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             Clas. Juridica
-                                        </div>
-                                        <div class="col-md-4">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th *ngIf="!Columnas.includes('SALDO CAP')">Saldo Capital</th>
                                 <th *ngIf="!Columnas.includes('ANIO')" class="h">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-6">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             Año
-                                        </div>
-                                        <div class="col-md-6">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th *ngIf="!Columnas.includes('F GESTION')">F. Gestión</th>
                                 <th *ngIf="!Columnas.includes('F COMPRO')" class="h">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-8">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             F. Compromiso
-                                        </div>
-                                        <div class="col-md-4">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
@@ -688,156 +792,61 @@
                             <tr *ngIf="isSticky" [ngClass]="{'sticky': isSticky}"
                                 class="justify-content-center text-center">
                                 <th class="h" *ngIf="!Columnas.includes('CLIENTE')">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-6">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             Cliente
-                                        </div>
-                                        <div class="col-md-6">
-                                            <i class="fa-solid fa-caret-down"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th class="h" *ngIf="!Columnas.includes('BANCO')">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-8">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             Banco
-                                        </div>
-                                        <div class="col-md-4">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th *ngIf="!Columnas.includes('DIAS VENC')">Dias Vencidos</th>
                                 <th *ngIf="!Columnas.includes('EDAD VENC')" class="h">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-8">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             E. Vencimiento
-                                        </div>
-                                        <div class="col-md-4">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th *ngIf="!Columnas.includes('SUCURSAL')" class="h">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-8">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             Sucursal
-                                        </div>
-                                        <div class="col-md-4">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th *ngIf="!Columnas.includes('ASESOR')" class="h">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-8">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             Asesor
-                                        </div>
-                                        <div class="col-md-4">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th *ngIf="!Columnas.includes('CLAS JURI')" class="h">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-8">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             Clas. Juridica
-                                        </div>
-                                        <div class="col-md-4">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th *ngIf="!Columnas.includes('SALDO CAP')">Saldo Capital</th>
                                 <th *ngIf="!Columnas.includes('ANIO')" class="h">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-6">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             Año
-                                        </div>
-                                        <div class="col-md-6">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
                                 <th *ngIf="!Columnas.includes('F GESTION')">F. Gestión</th>
                                 <th *ngIf="!Columnas.includes('F COMPRO')" class="h">
-                                    <div class="row justify-content-center" type="button" data-bs-toggle="dropdown">
-                                        <div class="col-md-8">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
                                             F. Compromiso
-                                        </div>
-                                        <div class="col-md-4">
-                                            <i class="fa-solid fa-caret-down" type="button"
-                                                data-bs-toggle="dropdown"></i>
-                                            <div class="dropdown-menu">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </th>
@@ -850,7 +859,7 @@
                                 <td *ngIf="!Columnas.includes('CLIENTE')">{{ cc.cliente }}</td>
                                 <td *ngIf="!Columnas.includes('BANCO')">{{ cc.banco.banco }}</td>
                                 <td *ngIf="!Columnas.includes('DIAS VENC')">{{ cc.diasVencidos }}</td>
-                                <td *ngIf="!Columnas.includes('EDAD VENC')">{{ cc.edadVencimiento }}</td>
+                                <td *ngIf="!Columnas.includes('EDAD VENC')">{{ cc.tiposVencimiento.tipoVencimiento }}</td>
                                 <td *ngIf="!Columnas.includes('SUCURSAL')">{{ cc.sede.sede }}</td>
                                 <td *ngIf="!Columnas.includes('ASESOR')">{{ cc.asesorCarteraResponse.usuario.nombres }}
                                     {{
@@ -1277,7 +1286,9 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-              <button *ngIf="gestionSelected.clasificacion.isActive == true" type="button" class="btn btn-danger b" (click)="desactivarAcuerdo()">Desactivar</button>
+                <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+                    <button *ngIf="gestionSelected.clasificacion.isActive == true" type="button" class="btn btn-danger b" (click)="desactivarAcuerdo()">Desactivar</button>
+                </span>
             </div>
           </div>
         </div>
