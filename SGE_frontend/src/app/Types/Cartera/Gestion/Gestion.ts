@@ -81,11 +81,12 @@ export type GestionArray = {
 export type CuotaList = {
   idCuota: number,
   numeroCuota: number,
-  fechaVencimiento: string,
+  fechaVencimiento: Date,
   valorCuota: number,
   capitalCuota: number,
   honorarios: number,
-
+  pagos: Pagos,
+  interesCuota:number,
   cumplio: boolean
 }
 
@@ -123,7 +124,7 @@ export type Pagos = {
   saldoCuota :number;
 }
 
-export type CuotasRequest={
+export type CuotasRequest = {
   numeroCuota: number,
   fechaVencimiento: Date,
   valorCuota: number,
