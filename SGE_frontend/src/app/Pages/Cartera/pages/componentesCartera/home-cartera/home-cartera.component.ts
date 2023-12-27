@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { addMonths, isLeapYear, lastDayOfMonth } from 'date-fns';
 
 import { Subscription } from 'rxjs';
@@ -7,7 +8,11 @@ import { AuthenticationService } from 'src/app/Services/authentication/authentic
 import { Tarea } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { CuentaCobrarCalculate, CuentasCobrarResponse } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
+
 import { Gestion, GestionArray, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
+
+import { ROLES } from 'src/app/Types/Roles';
+
 import Swal from 'sweetalert2';
 
 declare var $: any;
@@ -22,7 +27,7 @@ export class HomeCarteraComponent implements OnInit {
   private proSubscriptionNext!: Subscription;
   private proSubscriptionBack!: Subscription;
 
-  constructor(private cuentasCobrar: CuentasCobrarService, private authService: AuthenticationService) { }
+  constructor(private cuentasCobrar: CuentasCobrarService, private authService: AuthenticationService, private router:Router) { }
 
   // ARRAY CUENTAS POR COBRAR
   cuentasCobrarArray: CuentasCobrarResponse[] = []
@@ -284,6 +289,24 @@ export class HomeCarteraComponent implements OnInit {
 
 
   ngOnInit(): void {
+    
+
+    var cartera = this.authService.getRolesByName(ROLES.Administration);
+    if(cartera != null || cartera != undefined){
+      var permiso = this.validarPermisoEnRolCartera("Eliminar", cartera)
+      if(permiso != null || permiso != undefined){
+    
+        if(permiso[0].permiso == "Eliminar"){
+          this.router.navigate(['/dashboard-cartera/inicio-caja'])
+        }
+      }
+      
+      
+    }
+
+
+
+
     this.getCuentasCobrar()
     this.getClasificacion()
     this.getTipoVen()
@@ -2048,5 +2071,12 @@ export class HomeCarteraComponent implements OnInit {
     }).catch(function (err) {
       alert("error")
     })
+  }
+
+
+  validarPermisoEnRolCartera(permiso:string, rolesCartera:any){
+    var permisos = rolesCartera[0].permisos.filter((p:any)=>p.permiso == permiso)
+    return permisos
+    
   }
 }

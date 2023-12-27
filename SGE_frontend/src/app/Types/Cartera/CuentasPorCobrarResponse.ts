@@ -78,7 +78,7 @@ export type Gestion = {
   nombreCliente: string,
   fechaGestion: Date,
   fechaCompromiso: Date,
-  clasificacion: string,
+  clasificacionGestion: ClasificacionGestion,
   gestion: string,
   valorCompromiso: string,
   gestionLlamada: string,
@@ -94,6 +94,37 @@ export type Gestion = {
     idSede: number,
     sede: string
   }
+}
+
+export type ClasificacionGestion={
+  clasificacion: string
+  cuotasList: CoutasList[],
+  detalle: string,
+  fechaAcuerdo: Date,
+  fechaCompromiso: Date,
+  honorarioAcuerdo: number,
+  idClasifiacionGestion: number,
+  isActive: boolean,
+  nombresClasificacion : {
+    idNombreClasificacion :number,
+    nombre:string,
+    tipo:string
+  },
+  tipoAcuerdo: string,
+  valorCuotaMensual:number,
+  valorInteresMora:number,
+  valorTotalAcuerdo:number
+}
+
+export type CoutasList={
+  capitalCuota: number,
+  cumplio:boolean,
+  fechaVencimiento:string,
+  idCuota: number,
+  interesCuota:number,
+  numeroCuota:number,
+  valorCuota:number,
+  honorarios:number
 }
 
 export type Roles = {

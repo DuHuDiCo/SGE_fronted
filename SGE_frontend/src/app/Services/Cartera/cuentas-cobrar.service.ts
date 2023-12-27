@@ -26,6 +26,15 @@ export class CuentasCobrarService {
     return this.http.get(`http://192.168.1.191:8021/api/v1/cuentas/getCuentaCobrarByNumeroObligacion?numeroObligacion=${numeroObligacion}`)
   }
 
+  getCuentaByCedula(cedula:string){
+    return this.http.get(`http://192.168.1.6:8021/api/v1/cuentas/getCuentaCobrarByCedula?cedula=${cedula}`)
+  }
+
+  getCuentaByDato(dato:string){
+    return this.http.get(`http://192.168.1.6:8021/api/v1/cuentas/cuentasByDato?dato=${dato}`)
+  }
+
+  
   updateCuentaCobrar(cuentaCobrar:CuentaCobrarCalculate){
     return this.http.put(`http://192.168.1.191:8021/api/v1/cuentas/updateCuentaCobrarToCalculate`, cuentaCobrar)
   }
@@ -85,6 +94,12 @@ export class CuentasCobrarService {
 
   updateTipoVencimiento(tipoVencimiento:TipoVencimiento){
     return this.http.put(`http://192.168.1.191:8021/api/v1/tiposVencimiento/updateTipoVencimiento`, tipoVencimiento)
+  }
+
+
+  //PAGOS
+  crearRecibo(pagoCuota:any){
+    return this.http.post(`http://192.168.1.191:8021/api/v1/pagos/guardarPago`, pagoCuota)
   }
 
 }

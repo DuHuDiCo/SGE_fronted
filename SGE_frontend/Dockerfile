@@ -1,9 +1,15 @@
-#stage 1: build
 FROM node:16-alpine AS build
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
+
+# Cambiar la zona horaria a America/New_York (ajústala según tus necesidades)
+RUN apk --no-cache add tzdata && \
+    cp /usr/share/zoneinfo/America/Bogota  /etc/localtime && \
+    echo "America/Bogota" > /etc/timezone && \
+    apk del tzdata
+
 
 RUN npm install
 
@@ -12,6 +18,7 @@ COPY . .
 RUN npm run build 
 
 RUN ls -alt
+
 
 #stage 2
 FROM nginx:1.17.1-alpine

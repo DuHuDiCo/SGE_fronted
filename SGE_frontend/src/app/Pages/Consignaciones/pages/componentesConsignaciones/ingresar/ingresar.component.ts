@@ -167,6 +167,8 @@ export class IngresarComponent implements OnInit {
           this.con = data
           console.log(data);
           if (this.con.consigRes.length <= 0) {
+            console.log(this.consignacion.fechaPago);
+            
             this.ingresarService.saveConsignacion(this.consignacion).subscribe(
               (data: any) => {
                 Swal.fire('Datos Guardados', 'Su Consignación se ha Guardado con Éxito', 'success')

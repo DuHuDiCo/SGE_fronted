@@ -104,7 +104,11 @@ import { ClasificacionComponent } from './Pages/Cartera/pages/componentesCartera
 
 
 import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/uploads-files/uploads-files.component';
+
 import { TipoVencimientoComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/tipo-vencimiento/tipo-vencimiento.component';
+
+import { HomeCajaComponent } from './Pages/Cartera/pages/componentesCartera/home-caja/home-caja.component';
+
 
 
 
@@ -220,7 +224,11 @@ import { TipoVencimientoComponent } from './Pages/Cartera/pages/componentesCarte
 
 
     UploadsFilesComponent,
+
         TipoVencimientoComponent,
+
+      HomeCajaComponent,
+      
 
 
   ],
