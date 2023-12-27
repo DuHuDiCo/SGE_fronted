@@ -80,6 +80,8 @@ import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/
 import { TipoVencimientoComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/tipo-vencimiento/tipo-vencimiento.component';
 
 import { HomeCajaComponent } from './Pages/Cartera/pages/componentesCartera/home-caja/home-caja.component';
+import { GuardAsesoraGuard } from './Guards/Cartera/guard-asesora.guard';
+import { GuardCajaGuard } from './Guards/Cartera/guard-caja.guard';
 
 
 
@@ -119,7 +121,8 @@ const routes: Routes = [
     children:[
       {
         path:"inicio",
-        component:HomeCarteraComponent
+        component:HomeCarteraComponent,
+        canActivate: [GuardAsesoraGuard]
       },
       {
         path:"clasificacion",
@@ -130,16 +133,13 @@ const routes: Routes = [
         component: UploadsFilesComponent
       },
       {
-
         path: "tipo-vencimiento",
         component: TipoVencimientoComponent
-
-
-
       },
       {
          path: "inicio-caja",
-         component: HomeCajaComponent
+         component: HomeCajaComponent,
+         canActivate: [GuardCajaGuard]
       }
 
     ]
