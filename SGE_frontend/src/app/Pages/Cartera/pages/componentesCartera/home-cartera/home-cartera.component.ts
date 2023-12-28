@@ -289,24 +289,6 @@ export class HomeCarteraComponent implements OnInit {
 
 
   ngOnInit(): void {
-    
-
-    var cartera = this.authService.getRolesByName(ROLES.Administration);
-    if(cartera != null || cartera != undefined){
-      var permiso = this.validarPermisoEnRolCartera("Eliminar", cartera)
-      if(permiso != null || permiso != undefined){
-    
-        if(permiso[0].permiso == "Eliminar"){
-          this.router.navigate(['/dashboard-cartera/inicio-caja'])
-        }
-      }
-      
-      
-    }
-
-
-
-
     this.getCuentasCobrar()
     this.getClasificacion()
     this.getTipoVen()
@@ -2077,6 +2059,6 @@ export class HomeCarteraComponent implements OnInit {
   validarPermisoEnRolCartera(permiso:string, rolesCartera:any){
     var permisos = rolesCartera[0].permisos.filter((p:any)=>p.permiso == permiso)
     return permisos
-    
+
   }
 }

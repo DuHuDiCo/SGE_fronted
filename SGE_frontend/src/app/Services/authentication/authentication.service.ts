@@ -65,6 +65,7 @@ export class AuthenticationService {
       rolesToJson =  JSON.parse(roles);
 
       var cartera = rolesToJson.filter((r:any)=>r.rol == name)
+      
       if(cartera != null || cartera != undefined){
         return cartera
       }
