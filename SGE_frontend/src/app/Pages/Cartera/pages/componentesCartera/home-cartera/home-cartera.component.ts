@@ -9,7 +9,7 @@ import { Tarea } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { CuentaCobrarCalculate, CuentasCobrarResponse } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
 
-import { Gestion, GestionArray, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
+import { Filtros, Gestion, GestionArray, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
 
 import { ROLES } from 'src/app/Types/Roles';
 
@@ -234,6 +234,24 @@ export class HomeCarteraComponent implements OnInit {
   clienteSelected:any = {
     numeroDocumento: '',
     nombreTitular: ''
+  }
+
+  //FILTROS
+  filtros:Filtros = {
+    banco: null,
+    diasVencidosInicio: null,
+    diasVencidosFin: null,
+    edadVencimiento: null,
+    sede: null,
+    clasiJuridica: null,
+    saldoCapitalInicio: null,
+    saldoCapitalFin: null,
+    fechaCpcInicio: null,
+    fechaCpcFin: null,
+    fechaGestionInicio: null,
+    fechaGestionFin: null,
+    fechaCompromisoInicio: null,
+    fechaCompromisoFin: null
   }
 
   //VARIABLES
@@ -1238,7 +1256,6 @@ export class HomeCarteraComponent implements OnInit {
     console.log(this.acuerdoCal.honoriarioAcuerdo);
   }
 
-
   calcularByTipoAcuerdo() {
     if (this.acuerdo.tipoAcuerdo == 'MORA') {
       this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
@@ -2055,10 +2072,44 @@ export class HomeCarteraComponent implements OnInit {
     })
   }
 
-
   validarPermisoEnRolCartera(permiso:string, rolesCartera:any){
     var permisos = rolesCartera[0].permisos.filter((p:any)=>p.permiso == permiso)
     return permisos
 
   }
+
+  //FILTROS
+  filtro(){
+
+    if(this.filtros.banco == null || this.filtros.banco.trim() == '' && this.filtros.clasiJuridica == null || this.filtros.clasiJuridica?.trim() == '' &&
+    this.filtros.sede == null || this.filtros.sede?.trim() == ''){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe de llenar al menos Un Filtro',
+        timer: 3000
+      })
+    }
+
+    this.cuentasCobrar.filtro(this.page, this.size, this.fechaCreacion, this.filtros).subscribe(
+      (data:any) => {
+        this.paginas = new Array(data.totalPages)
+        this.cuentasCobrarArray = data.content
+        this.last = data.last
+        this.first = data.first
+        this.numeroPages = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+        console.log(data);
+        if (this.cuentasCobrarArray.length == 0) {
+          this.spinner = true
+        } else {
+          this.spinner = false
+        }
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+
 }

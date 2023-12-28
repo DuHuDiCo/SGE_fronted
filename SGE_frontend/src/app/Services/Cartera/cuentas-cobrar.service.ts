@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { Tarea, TareaUpdate } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { CuentaCobrarCalculate } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
-import { Gestion, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
+import { Filtros, Gestion, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
 import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
@@ -37,6 +37,11 @@ export class CuentasCobrarService {
   
   updateCuentaCobrar(cuentaCobrar:CuentaCobrarCalculate){
     return this.http.put(`http://192.168.1.191:8021/api/v1/cuentas/updateCuentaCobrarToCalculate`, cuentaCobrar)
+  }
+
+  //FILTRO
+  filtro(page:number, size:number, fechaCreacion:string, dto:Filtros, ){
+    return this.http.post(`http://192.168.1.191:8021/api/v1/cuentas/filtrosCuentas?page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`, dto)
   }
 
   // CLASIFICACIONES

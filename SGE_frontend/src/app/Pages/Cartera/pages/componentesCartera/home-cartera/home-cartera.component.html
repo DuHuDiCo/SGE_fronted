@@ -255,7 +255,7 @@
                                     <div class="card-body">
                                         <div class="row justify-content-center">
                                             <div *ngIf="filtrosArray.includes(constantes[1])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
+                                                <select [(ngModel)]="filtros.banco" name="banco" class="form-select">
                                                     <option selected>Seleccione Un Banco</option>
                                                     <option value="COL">COL</option>
                                                     <option value="POP">POP</option>
@@ -277,7 +277,7 @@
                                             </div>
 
                                             <div *ngIf="filtrosArray.includes(constantes[4])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
+                                                <select [(ngModel)]="filtros.sede" name="sede" class="form-select" aria-label="Default select example">
                                                     <option selected>Seleccione Una Sucursal</option>
                                                     <option value="1">One</option>
                                                     <option value="2">Two</option>
@@ -286,7 +286,7 @@
                                             </div>
                                             <div *ngIf="filtrosArray.includes(constantes[6])" class="col-md-2 mb-3">
                                                 <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione Una Clasificación Jurídica</option>
+                                                    <option [(ngModel)]="filtros.clasiJuridica" name="clasiJuridica" selected>Seleccione Una Clasificación Jurídica</option>
                                                     <option value="Normal">Normal</option>
                                                     <option value="Prejuridico">Prejuridico</option>
                                                     <option value="Juridico">Juridico</option>
@@ -326,7 +326,7 @@
                                             </div>
                                             <div class="row justify-content-center">
                                                 <div class="col-md-1">
-                                                    <button *ngIf="filtrosArray.length != 0" class="btn btn-danger b">Filtrar</button>  
+                                                    <button *ngIf="filtrosArray.length != 0" class="btn btn-danger b" (click)="filtro()">Filtrar</button>  
                                                 </div>
                                             </div>
                                         </div>
