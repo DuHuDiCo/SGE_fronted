@@ -22,7 +22,8 @@ export class GuardCajaGuard implements CanActivate {
     var admin = this.authService.getRolesByName(ROLES.Administration);
 
     if(admin.length > 0){
-      return true
+      this.router.navigate(['/dashboard-cartera/inicio']);
+      return false
     }
 
     var cartera = this.authService.getRolesByName(ROLES.Cartera);
