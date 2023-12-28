@@ -39,13 +39,8 @@ export class RolesPerfilesDirective implements OnInit {
 
   private convertirString():void {
     this.rolesUser.forEach((x: Roles) => {
-      
       this.rolesString.push(x.rol)
-
     });
-
-
-
   }
 
 

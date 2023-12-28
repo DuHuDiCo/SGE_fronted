@@ -1,11 +1,11 @@
 export type Gestion = {
   numeroObligacion: string,
   clasificacion: {
+    nombreClasificacion: string,
     tipoClasificacion: string | null,
     tarea: {
       detalleTarea: string,
       fechaFinTarea: Date,
-      clasificacion: string | null
     } | null,
     nota: {
       detalle: string
@@ -18,7 +18,7 @@ export type Gestion = {
       valorInteresesMora: number,
       honoriarioAcuerdo: number,
       fechaCompromiso: Date,
-      cuotasList: CuotaList[],
+      cuotasList: any[],
       username: string
     } | null
   },
@@ -62,27 +62,7 @@ export type GestionArray = {
       idBanco: number,
       banco: string
     },
-    gestiones: [
-      {
-        idGestion: number,
-        numeroObligacion: string,
-        fechaGestion: Date,
-        detallesGestion: string,
-        detallesAdicionales: string,
-        asesorCartera: {
-          idAsesorCartera: number,
-          usuarioId: number
-        },
-        clasificacionGestion: {
-          idClasificacionGestion: number,
-          clasificacion: string
-        },
-        clasificacion: {
-          idClasificacionGestion: number,
-          clasificacion: string
-        }
-      }
-    ],
+    gestiones: Gestiones[],
     asesor: {
       idAsesorCartera: number,
       usuarioId: number
@@ -105,9 +85,35 @@ export type CuotaList = {
   valorCuota: number,
   capitalCuota: number,
   honorarios: number,
-  cumplio: boolean,
-  interesCuota: number
-  pagos: Pagos | null
+  pagos: Pagos,
+  interesCuota:number,
+  cumplio: boolean
+}
+
+export type Gestiones = {
+  idGestion: number,
+  numeroObligacion: string,
+  fechaGestion: Date,
+  detallesGestion: string,
+  detallesAdicionales: string,
+  asesorCartera: {
+    idAsesorCartera: number,
+    usuarioId: number
+  },
+  clasificacionGestion: {
+    idClasificacionGestion: number,
+    clasificacion: string
+  },
+  clasificacion: {
+    idClasificacionGestion: number,
+    clasificacion: string
+  }
+}
+
+export type TipoVencimiento = {
+  idTipoVencimiento: number,
+  tipoVencimiento: string
+
 }
 
 export type Pagos = {
@@ -118,7 +124,7 @@ export type Pagos = {
   saldoCuota :number;
 }
 
-export type CuotasRequest={
+export type CuotasRequest = {
   numeroCuota: number,
   fechaVencimiento: Date,
   valorCuota: number,
@@ -134,4 +140,5 @@ export type PagosRequest = {
   valorPago: number;
   fechaPago: Date;
   saldoCuota :number;
+
 }

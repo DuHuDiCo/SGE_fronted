@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { Tarea, TareaUpdate } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { CuentaCobrarCalculate } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
-import { Gestion } from 'src/app/Types/Cartera/Gestion/Gestion';
+import { Gestion, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
 import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
@@ -19,11 +19,11 @@ export class CuentasCobrarService {
   public proSubject = new Subject<boolean>();
 
   getCuentasCobrar(username:string, page:number, size:number, fechaCreacion:string){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/cuentas/cuentasCobrar?username=${username}&page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`)
+    return this.http.get(`http://192.168.1.191:8021/api/v1/cuentas/cuentasCobrar?username=${username}&page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`)
   }
 
   getCuentaByObligacion(numeroObligacion:string){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/cuentas/getCuentaCobrarByNumeroObligacion?numeroObligacion=${numeroObligacion}`)
+    return this.http.get(`http://192.168.1.191:8021/api/v1/cuentas/getCuentaCobrarByNumeroObligacion?numeroObligacion=${numeroObligacion}`)
   }
 
   getCuentaByCedula(cedula:string){
@@ -36,73 +36,70 @@ export class CuentasCobrarService {
 
   
   updateCuentaCobrar(cuentaCobrar:CuentaCobrarCalculate){
-    return this.http.put(`http://192.168.1.6:8021/api/v1/cuentas/updateCuentaCobrarToCalculate`, cuentaCobrar)
+    return this.http.put(`http://192.168.1.191:8021/api/v1/cuentas/updateCuentaCobrarToCalculate`, cuentaCobrar)
   }
 
   // CLASIFICACIONES
 
   getClasificacion(){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/clasificacion/getClasificaciones`)
+    return this.http.get(`http://192.168.1.191:8021/api/v1/nombreClasificacion/clasificaciones`)
   }
 
   getClasificacionById(id:number){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/clasificacion/getClasificacionById/${id}`)
+    return this.http.get(`http://192.168.1.191:8021/api/v1/nombreClasificacion/clasificacionById?id=${id}`)
   }
 
-  saveClasificacion(clasificacion:clasificacion){
-    return this.http.post(`http://192.168.1.6:8021/api/v1/clasificacion/saveClasificacion`, clasificacion)
+  saveClasificacion(clasificacion:any){
+    return this.http.post(`http://192.168.1.191:8021/api/v1/nombreClasificacion/guardarClasificacion`, clasificacion)
   }
 
   updateClasificacion(clasificacion:clasificacion){
-    return this.http.put(`http://192.168.1.6:8021/api/v1/clasificacion/updateClasificacion`, clasificacion)
+    return this.http.put(`http://192.168.1.191:8021/api/v1/clasificacion/updateClasificacion`, clasificacion)
   }
 
   // GESTIONES
 
   getGestiones(numeroObligacion:string){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/gestiones/getGestionByNumObligacion/${numeroObligacion}`)
+    return this.http.get(`http://192.168.1.191:8021/api/v1/gestiones/getGestionByNumObligacion/${numeroObligacion}`)
   }
 
   saveGestion(gestion:Gestion){
-    return this.http.post(`http://192.168.1.6:8021/api/v1/gestiones/saveOneGestion`, gestion)
+    return this.http.post(`http://192.168.1.191:8021/api/v1/gestiones/saveOneGestion`, gestion)
   }
 
   getLastDatoAdicional(numeroObligacion:string){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/gestiones/getLastDatoAdicionalGestion/${numeroObligacion}`)
+    return this.http.get(`http://192.168.1.191:8021/api/v1/gestiones/getLastDatoAdicionalGestion/${numeroObligacion}`)
   }
 
   desactivateAcuerdoPago(id:number){
-    return this.http.put(`http://192.168.1.6:8021/api/v1/gestiones/desactivateAcuerdoPago/${id}`, null)
+    return this.http.put(`http://192.168.1.191:8021/api/v1/gestiones/desactivateAcuerdoPago/${id}`, null)
   }
 
-  // CLASIFICACION TAREA
-  getTareas(){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/clasificacionTarea/getClasificacionesTarea`)
+  reporte(data:any){
+    return this.http.put(`http://192.168.1.191:8021/api/v1/gestiones/linkAndReporteAcuerdoToClient`, data)
   }
 
-  tareasById(id:number){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/clasificacionTarea/getClasificacionTareaById/${id}`)
+  // TIPO VENCIMIENTO
+  saveTipoVencimiento(tipoVencimiento:TipoVencimiento){
+    return this.http.post(`http://192.168.1.191:8021/api/v1/tiposVencimiento/guardarTipoVencimiento`, tipoVencimiento)
   }
 
-  saveTareas(tarea:Tarea){
-    return this.http.post(`http://192.168.1.6:8021/api/v1/clasificacionTarea/saveClasificacionTarea`, tarea)
+  getTipoVencimiento(){
+    return this.http.get(`http://192.168.1.191:8021/api/v1/tiposVencimiento/obtenerTodosTiposVencimientos`)
   }
 
-  updateTarea(tarea:TareaUpdate){
-    return this.http.put(`http://192.168.1.6:8021/api/v1/clasificacionTarea/actualizarClasificacionTarea`, tarea)
+  getTipoVencimientoById(id:number){
+    return this.http.get(`http://192.168.1.191:8021/api/v1/tiposVencimiento/obtenerTiposVencimientoPorId/${id}`)
   }
 
-  deleteTarea(id:number){
-    return this.http.delete(`http://192.168.1.6:8021/api/v1/clasificacionTarea/eliminarClasificacionTarea/${id}`)
+  updateTipoVencimiento(tipoVencimiento:TipoVencimiento){
+    return this.http.put(`http://192.168.1.191:8021/api/v1/tiposVencimiento/updateTipoVencimiento`, tipoVencimiento)
   }
+
 
   //PAGOS
   crearRecibo(pagoCuota:any){
     return this.http.post(`http://192.168.1.191:8021/api/v1/pagos/guardarPago`, pagoCuota)
   }
-
-  
-
-
 
 }
