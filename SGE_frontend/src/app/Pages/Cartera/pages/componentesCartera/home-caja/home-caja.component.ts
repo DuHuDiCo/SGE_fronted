@@ -3,9 +3,10 @@ import { error } from 'jquery';
 import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { CoutasList, CuentasCobrarResponse, Gestion } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
-import { CuotaList, CuotasRequest, Pagos, PagosRequest } from 'src/app/Types/Cartera/Gestion/Gestion';
+import { CuotaList, CuotasRequest, Pagos, PagosRequest, ReciboPago } from 'src/app/Types/Cartera/Gestion/Gestion';
 import { CuentasPorCobrar } from 'src/app/Types/Consignaciones';
 import Swal from 'sweetalert2';
+declare var $: any;
 
 @Component({
   selector: 'app-home-caja',
@@ -14,6 +15,7 @@ import Swal from 'sweetalert2';
 })
 export class HomeCajaComponent implements OnInit {
 
+  base64Recibo: string = ""
   savePago: boolean = false
   search: boolean = false
   cedula: string = ''
@@ -30,6 +32,7 @@ export class HomeCajaComponent implements OnInit {
   totalIntereses: number = 0
   totalHonorarios: number = 0
   totalCapital: number = 0
+  mostrarRecibo: boolean = false
   coutasRequest: CuotasRequest[] = []
   activarGuardarPago: boolean = false
   pago: any = {
@@ -40,6 +43,9 @@ export class HomeCajaComponent implements OnInit {
     cumpliendo: false
   }
   valorTotalIngresado: number = 0
+  recibosPago: ReciboPago[] = []
+
+
   constructor(private cuentaCobrarService: CuentasCobrarService, private auth: AuthenticationService) { }
 
 
@@ -50,6 +56,10 @@ export class HomeCajaComponent implements OnInit {
 
   obtenerCuentaCobrar() {
     this.search = true
+    this.coutasList = []
+    this.coutasRequest = []
+    this.cuentasCobrarGestiones = []
+
     this.cuentaCobrarService.getCuentaByDato(this.cedula).subscribe(
       (data: any) => {
         this.search = false
@@ -75,7 +85,18 @@ export class HomeCajaComponent implements OnInit {
   }
 
   obtenerDatosCuentaCobrar(cedula: string) {
-    (cedula)
+
+    if (cedula.trim() == '' || cedula.trim() == null || cedula.trim() == undefined) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debes ingresar un dato',
+        timer: 3000
+      })
+
+      return
+    }
+
     this.cuentaCobrarService.getCuentaByCedula(cedula).subscribe(
       (data: any) => {
         console.log(data);
@@ -95,20 +116,35 @@ export class HomeCajaComponent implements OnInit {
                 })
 
                 this.coutasList.forEach((c: CuotaList) => {
+
+
+
                   this.totalCuotasAcuerdo = this.totalCuotasAcuerdo + c.valorCuota
                   this.totalCapital = this.totalCapital + c.capitalCuota
                   this.totalHonorarios = this.totalHonorarios + c.honorarios
                   this.totalIntereses = this.totalIntereses + c.interesCuota
                   if (c.pagos != null || c.pagos != undefined) {
+
+                    if (c.pagos.reciboPago != null || c.pagos.reciboPago != undefined) {
+                      this.recibosPago.push(c.pagos.reciboPago)
+                    }
+
                     console.log(c.pagos.valorPago);
-                    this.saldoAcuerdoPago = this.saldoAcuerdoPago + c.valorCuota
+                    if (c.pagos.saldoCuota > 0) {
+
+                      this.saldoAcuerdoPago = this.saldoAcuerdoPago + c.pagos.saldoCuota
+
+                    }
+
                     this.saldoInteresesAcuerdo = this.totalIntereses + c.interesCuota
                     this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo + c.honorarios
                     this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo + c.capitalCuota
 
 
                   } else {
-                    this.saldoAcuerdoPago = this.totalCuotasAcuerdo
+
+                    this.saldoAcuerdoPago = this.saldoAcuerdoPago + c.valorCuota
+
                     this.saldoInteresesAcuerdo = this.totalIntereses
                     this.saldoHonoriariosAcuerdo = this.totalHonorarios
                     this.saldoCapitalAcuerdo = this.totalCapital
@@ -124,7 +160,7 @@ export class HomeCajaComponent implements OnInit {
                     honorarios: c.honorarios,
                     cumplio: false,
                     interesCuota: c.interesCuota,
-                    pagos: null
+                    pagosDto: null
 
                   }
 
@@ -135,7 +171,7 @@ export class HomeCajaComponent implements OnInit {
 
                       saldoCuota: c.pagos.saldoCuota
                     }
-                    couta.pagos = pagos
+                    couta.pagosDto = pagos
                     if (c.pagos!.valorPago == 0) {
                       c.pagos!.saldoCuota = c.valorCuota
                     }
@@ -213,16 +249,27 @@ export class HomeCajaComponent implements OnInit {
         text: 'Debes seleccionar un medio pago',
         timer: 3000
       })
+      
+      return
+    }
 
+    if (this.pago.valor < 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debes ingresar un valor mayor a cero',
+        timer: 3000
+      })
+      
       return
     }
 
     var date = new Date()
     var valorTotal = this.pago.valor
-    if (valorTotal < this.totalCuotasAcuerdo){
+    if (valorTotal < this.totalCuotasAcuerdo) {
       this.valorTotalIngresado = valorTotal
     }
-      console.log(valorTotal);
+    console.log(valorTotal);
 
     if (isNaN(this.pago.valor)) {
 
@@ -239,7 +286,7 @@ export class HomeCajaComponent implements OnInit {
 
 
     if (this.pago.valor >= this.totalCuotasAcuerdo) {
-
+      alert()
       valorTotal = this.totalCuotasAcuerdo;
       this.saldoAcuerdoPago = this.totalCuotasAcuerdo
       this.valorTotalIngresado = this.valorTotalIngresado + parseInt(valorTotal)
@@ -256,7 +303,10 @@ export class HomeCajaComponent implements OnInit {
             text: 'Valor ingresado menor al valor de la cuota pactada',
             timer: 3000
           })
-          return
+          this.valorTotalIngresado = 0
+          valorTotal = 0
+          throw new Error('Valor ingresado menor al valor de la cuota pactada')
+          
         }
 
         if (c.pagos != null || c.pagos != undefined) {
@@ -265,14 +315,14 @@ export class HomeCajaComponent implements OnInit {
             valorTotal = valorTotal - c.pagos.saldoCuota
 
 
-            this.coutasRequest[i].capitalCuota = this.coutasRequest[i].capitalCuota - this.coutasRequest[i].pagos!.saldoCuota
+            this.coutasRequest[i].capitalCuota = this.coutasRequest[i].capitalCuota - this.coutasRequest[i].pagosDto!.saldoCuota
             this.coutasList[i].capitalCuota = this.coutasList[i].capitalCuota - this.coutasList[i].pagos!.saldoCuota
 
-            this.coutasRequest[i].pagos!.saldoCuota = 0
+            this.coutasRequest[i].pagosDto!.saldoCuota = 0
             this.coutasList[i].pagos!.saldoCuota = 0
 
-            this.coutasRequest[i].pagos!.valorPago = c.valorCuota
-            this.coutasList[i].pagos!.valorPago = this.coutasRequest[i].pagos!.valorPago
+            this.coutasRequest[i].pagosDto!.valorPago = c.valorCuota
+            this.coutasList[i].pagos!.valorPago = this.coutasRequest[i].pagosDto!.valorPago
 
 
 
@@ -300,7 +350,8 @@ export class HomeCajaComponent implements OnInit {
               valorPago: pagos.valorPago,
               fechaPago: pagos.fechaPago,
               usuarioId: 0,
-              saldoCuota: pagos.saldoCuota
+              saldoCuota: pagos.saldoCuota,
+              reciboPago: null
             }
 
             if (valorTotal > c.valorCuota) {
@@ -311,7 +362,7 @@ export class HomeCajaComponent implements OnInit {
             if (valorTotal == c.valorCuota) {
               valorTotal = valorTotal - c.valorCuota
 
-              this.coutasRequest[i].pagos = pagos
+              this.coutasRequest[i].pagosDto = pagos
               this.coutasList[i].pagos = pagosOriginal
 
               this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - this.coutasRequest[i].capitalCuota
@@ -371,7 +422,7 @@ export class HomeCajaComponent implements OnInit {
             if (valorTotal > 0 && valorTotal > c.valorCuota) {
               valorTotal = valorTotal - c.valorCuota
 
-              this.coutasRequest[i].pagos = pagos
+              this.coutasRequest[i].pagosDto = pagos
               this.coutasList[i].pagos = pagosOriginal
 
               this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
@@ -415,7 +466,8 @@ export class HomeCajaComponent implements OnInit {
               valorPago: pagos.valorPago,
               fechaPago: pagos.fechaPago,
               usuarioId: 0,
-              saldoCuota: pagos.saldoCuota
+              saldoCuota: pagos.saldoCuota,
+              reciboPago: null
             }
 
 
@@ -428,7 +480,7 @@ export class HomeCajaComponent implements OnInit {
                 this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
                 this.coutasRequest[i].honorarios = 0
                 this.coutasList[i].honorarios = 0
-                
+
               }
             }
 
@@ -438,7 +490,7 @@ export class HomeCajaComponent implements OnInit {
                 this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.coutasRequest[i].interesCuota
                 this.coutasRequest[i].interesCuota = 0
                 this.coutasList[i].interesCuota = 0
-                
+
               }
             }
 
@@ -446,18 +498,18 @@ export class HomeCajaComponent implements OnInit {
               this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - difere
               this.coutasRequest[i].capitalCuota = this.coutasRequest[i].capitalCuota - difere
               this.coutasList[i].capitalCuota = this.coutasList[i].capitalCuota - difere
-              
+
 
             }
 
 
             valorTotal = valorTotal - valorTotal
-            this.coutasRequest[i].pagos = pagos
+            this.coutasRequest[i].pagosDto = pagos
             this.coutasList[i].pagos = pagosOriginal
 
             if (this.coutasList[i].capitalCuota > 0) {
               this.coutasList[i].pagos.saldoCuota = this.coutasList[i].capitalCuota
-              this.coutasRequest[i].pagos!.saldoCuota = this.coutasList[i].capitalCuota
+              this.coutasRequest[i].pagosDto!.saldoCuota = this.coutasList[i].capitalCuota
             }
 
             console.log(valorTotal);
@@ -553,6 +605,9 @@ export class HomeCajaComponent implements OnInit {
         (data: any) => {
           console.log(data);
 
+          this.mostrarReciboPago(data.base64)
+
+
           console.log(recibo);
           this.activarGuardarPago = false
           this.savePago = false
@@ -568,6 +623,26 @@ export class HomeCajaComponent implements OnInit {
 
 
 
+  }
+
+  obtenerReciboPosition(position: number) {
+    this.mostrarRecibo = false;
+    var recibo = this.recibosPago[position]
+    if (recibo != null || recibo != undefined) {
+      this.base64Recibo = "data:application/pdf;base64," + recibo.ruta
+      var re: any = document.getElementById('mostrarRecibo')
+      re.src = this.base64Recibo
+
+
+    }
+  }
+
+
+  mostrarReciboPago(data:any) {
+    this.base64Recibo = "data:application/pdf;base64," + data
+      var re: any = document.getElementById('mostrarReciboPago')
+      re.src = this.base64Recibo
+    $('#reciboPago').modal('show');
   }
 
 }
