@@ -27,7 +27,9 @@ export class HomeCarteraComponent implements OnInit {
   private proSubscriptionNext!: Subscription;
   private proSubscriptionBack!: Subscription;
 
-  constructor(private cuentasCobrar: CuentasCobrarService, private authService: AuthenticationService, private router:Router) { }
+  constructor(private cuentasCobrar: CuentasCobrarService, private authService: AuthenticationService, private router:Router) {
+    this.listaDeAnios = this.obtenerListaDeAnios()
+   }
 
   // ARRAY CUENTAS POR COBRAR
   cuentasCobrarArray: CuentasCobrarResponse[] = []
@@ -55,11 +57,11 @@ export class HomeCarteraComponent implements OnInit {
     'F GESTION',
     'F COMPRO',
   ]
-
-  filtrosArray: string[] = []
   cuotas: any[] = []
   paginas!: Array<number>
   fechasIncrementadas: string[] = [];
+  listaDeAnios: number[] = [];
+  sedes:any[] = []
 
   // OBJETOS
 
@@ -238,12 +240,14 @@ export class HomeCarteraComponent implements OnInit {
 
   //FILTROS
   filtros:Filtros = {
-    banco: null,
+    banco: [],
     diasVencidosInicio: null,
     diasVencidosFin: null,
-    edadVencimiento: null,
-    sede: null,
-    clasiJuridica: null,
+    edadVencimiento: [],
+    sede: [],
+    //TODO: CAMBIAR POR VACIO
+    username: 'Diana1975',
+    clasiJuridica: [],
     saldoCapitalInicio: null,
     saldoCapitalFin: null,
     fechaCpcInicio: null,
@@ -253,6 +257,11 @@ export class HomeCarteraComponent implements OnInit {
     fechaCompromisoInicio: null,
     fechaCompromisoFin: null
   }
+
+  bancosArray:string[] = []
+  edadVenArray:string[] = []
+  sedesArray:string[] = []
+  clasJurArray:string[] = []
 
   //VARIABLES
   mensaje:string = ''
@@ -310,6 +319,7 @@ export class HomeCarteraComponent implements OnInit {
     this.getCuentasCobrar()
     this.getClasificacion()
     this.getTipoVen()
+    this.getSedes()
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
   }
@@ -323,6 +333,34 @@ export class HomeCarteraComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  getSedes(){
+    this.cuentasCobrar.getSedes().subscribe(
+      (data:any) => {
+        this.sedes = data
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  obtenerListaDeAnios(): number[] {
+    const anioInicial = 1990;
+    const anioActual = new Date().getFullYear();
+    
+    const listaDeAnios = [];
+    for (let anio = anioInicial; anio <= anioActual; anio++) {
+      listaDeAnios.push(anio);
+    }
+    return listaDeAnios;
+  }
+
+  calcularFechasAnio(event:any) {
+    this.filtros.fechaCpcInicio = new Date(event.target.value, 0, 1); // 0 representa enero
+    this.filtros.fechaCpcFin = new Date(event.target.value, 11, 31); // 11 representa diciembre
+    console.log(this.filtros.fechaCpcInicio);
+    console.log(this.filtros.fechaCpcFin);
   }
 
   // TRAER CUENTAS POR COBRAR
@@ -2001,17 +2039,6 @@ export class HomeCarteraComponent implements OnInit {
     }
   }
 
-  activarFiltros(columna:string){
-    if(this.filtrosArray.includes(columna)){
-      var position = this.filtrosArray.indexOf(columna)
-      this.filtrosArray.splice(position, 1)
-    } else {
-      this.filtrosArray.push(columna)
-    }
-    console.log(this.filtrosArray);
-    
-  }
-
   maxFecha(): string {
     var fechaMax = new Date();
 
@@ -2080,16 +2107,39 @@ export class HomeCarteraComponent implements OnInit {
 
   //FILTROS
   filtro(){
+    this.filtros.banco = this.bancosArray
+    this.filtros.clasiJuridica = this.clasJurArray
+    this.filtros.sede = this.sedesArray
+    this.filtros.edadVencimiento = this.edadVenArray
 
-    if(this.filtros.banco == null || this.filtros.banco.trim() == '' && this.filtros.clasiJuridica == null || this.filtros.clasiJuridica?.trim() == '' &&
-    this.filtros.sede == null || this.filtros.sede?.trim() == ''){
+    console.log(this.filtros);
+    
+    
+    if (
+      (this.filtros.banco.length == 0) &&
+      (this.filtros.diasVencidosInicio == 0 || this.filtros.diasVencidosInicio == null) &&
+      (this.filtros.diasVencidosFin == 0 || this.filtros.diasVencidosFin == null) &&
+      (this.filtros.edadVencimiento.length == 0) &&
+      (this.filtros.sede.length == 0) &&
+      (this.filtros.clasiJuridica.length == 0) &&
+      (this.filtros.saldoCapitalInicio == 0 || this.filtros.saldoCapitalInicio == null) &&
+      (this.filtros.saldoCapitalFin == 0 || this.filtros.saldoCapitalFin == null) &&
+      (this.filtros.fechaCpcInicio == null) &&
+      (this.filtros.fechaCpcFin == null) &&
+      (this.filtros.fechaGestionInicio == null) &&
+      (this.filtros.fechaGestionFin == null) &&
+      (this.filtros.fechaCompromisoInicio == null) &&
+      (this.filtros.fechaCompromisoFin == null)
+    ) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
         text: 'Debe de llenar al menos Un Filtro',
-        timer: 3000
-      })
+        timer: 3000,
+      });
+      return;
     }
+    
 
     this.cuentasCobrar.filtro(this.page, this.size, this.fechaCreacion, this.filtros).subscribe(
       (data:any) => {
@@ -2101,15 +2151,63 @@ export class HomeCarteraComponent implements OnInit {
         this.cuentasCobrar.proSubject.next(true);
         console.log(data);
         if (this.cuentasCobrarArray.length == 0) {
-          this.spinner = true
-        } else {
-          this.spinner = false
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No hay Cuentas Con Estos Filtros',
+            timer: 3000,
+          });
+          this.getCuentasCobrar()
+          return;
         }
+        $('#offcanvasFilter').offcanvas('hide');
       }, (error:any) => {
         console.log(error);
       }
     )
   }
+
+  metodoBancos(banco:string){
+    if(this.bancosArray.includes(banco)){
+      var position = this.bancosArray.indexOf(banco)
+      this.bancosArray.splice(position, 1)
+    } else {
+      this.bancosArray.push(banco)
+    }
+    console.log(this.bancosArray);
+  }
+
+  metodoEdadVen(edad:string){
+    if(this.edadVenArray.includes(edad)){
+      var position = this.edadVenArray.indexOf(edad)
+      this.edadVenArray.splice(position, 1)
+    } else {
+      this.edadVenArray.push(edad)
+    }
+    console.log(this.edadVenArray);
+  }
+
+  metodoSede(sede:string){
+    if(this.sedesArray.includes(sede)){
+      var position = this.sedesArray.indexOf(sede)
+      this.sedesArray.splice(position, 1)
+    } else {
+      this.sedesArray.push(sede)
+    }
+    console.log(this.sedesArray);
+  }
+
+  metodoClas(clas:string){
+    if(this.clasJurArray.includes(clas)){
+      var position = this.clasJurArray.indexOf(clas)
+      this.clasJurArray.splice(position, 1)
+    } else {
+      this.clasJurArray.push(clas)
+    }
+    console.log(this.clasJurArray);
+  }
+
+
 
 
 }

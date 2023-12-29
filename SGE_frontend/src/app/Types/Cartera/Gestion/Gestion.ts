@@ -144,12 +144,13 @@ export type PagosRequest = {
 }
 
 export type Filtros = {
-  banco: string | null,
+  banco: string[],
   diasVencidosInicio: number | null,
   diasVencidosFin: number | null,
-  edadVencimiento: string | null,
-  sede: string | null,
-  clasiJuridica: string | null,
+  edadVencimiento: string[],
+  sede: string[],
+  username: string,
+  clasiJuridica: string[],
   saldoCapitalInicio: number | null,
   saldoCapitalFin: number | null,
   fechaCpcInicio: Date | null,

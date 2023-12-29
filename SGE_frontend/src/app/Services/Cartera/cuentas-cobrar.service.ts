@@ -101,6 +101,11 @@ export class CuentasCobrarService {
     return this.http.put(`http://192.168.1.191:8021/api/v1/tiposVencimiento/updateTipoVencimiento`, tipoVencimiento)
   }
 
+  //SEDES
+  getSedes(){
+    return this.http.get(`http://192.168.1.191:8021/api/v1/sedesController/obtenerTodasSedes`)
+  }
+
 
   //PAGOS
   crearRecibo(pagoCuota:any){
