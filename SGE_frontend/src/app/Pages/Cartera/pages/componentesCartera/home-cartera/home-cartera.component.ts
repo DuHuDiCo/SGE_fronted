@@ -409,6 +409,7 @@ export class HomeCarteraComponent implements OnInit {
             this.isCon = con;
             this.cont = this.cont - this.size
             this.proSubscriptionBack.unsubscribe()
+            this.spinner = false
           }
         );
       } else {
@@ -419,6 +420,7 @@ export class HomeCarteraComponent implements OnInit {
           this.isCon = con;
           this.cont = this.cont - this.size
           this.proSubscriptionBack.unsubscribe()
+          this.spinner = false
         }
       );
       }
@@ -457,15 +459,29 @@ export class HomeCarteraComponent implements OnInit {
   //IR A UNA PAGINA ESPECIFICA
   goToPage(page: number) {
     this.page = page
-    this.spinner = true
-    this.getCuentasCobrar()
-    this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
-      (con: boolean) => {
-        this.isCon = con;
-        this.cont = this.initialCon + (this.page * this.size);
-        this.proSubscriptionNext.unsubscribe()
-      }
-    );
+    if(this.filtrando){
+      this.spinner = true
+      this.filtro()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.size);
+          this.proSubscriptionNext.unsubscribe()
+          this.spinner = false
+        }
+      );
+    } else {
+      this.spinner = true
+      this.getCuentasCobrar()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.size);
+          this.proSubscriptionNext.unsubscribe()
+        }
+      );
+    }
+    
   }
 
   findCuentaCobrar(numeroObligacion: string) {
@@ -842,7 +858,8 @@ export class HomeCarteraComponent implements OnInit {
             timer: 3000
           })
           return
-        }
+        }        
+
         this.newGestion.clasificacion.acuerdoPago = this.acuerdo
         this.cuotas.forEach(element => {
           this.newGestion.clasificacion.acuerdoPago?.cuotasList.push(element)
@@ -960,8 +977,20 @@ export class HomeCarteraComponent implements OnInit {
                 contact: false,
                 detallesAdicionales: this.newGestion.detallesAdicionales
               }
-              this.col = true
               this.cuotas = []
+              this.disabledFecha = false
+              this.acuerdo = {
+                detalle: '',
+                valorCuotaMensual: 0,
+                tipoAcuerdo: '',
+                valorTotalAcuerdo: 0,
+                valorInteresesMora: 0,
+                honoriarioAcuerdo: 0,
+                fechaCompromiso: '',
+                cuotasList: [],
+                username: ''
+              }
+              this.col = true              
               $('#modalDetalle').modal('hide');
               $('#modalReporte').modal('show');
             }, (error:any) => {
@@ -1242,6 +1271,11 @@ export class HomeCarteraComponent implements OnInit {
   mostrarModalGestion() {
     $('#modalGestion').modal('show');
     $('#offcanvasTop').offcanvas('hide');
+  }
+
+  modalGestionSelected(){
+    $('#modalHistoricoG').modal('show');
+    $('#modalGestionCom').modal('hide');
   }
 
   calcular() {
@@ -2085,22 +2119,42 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   seleccionarSize(numero: number) {
-    switch (numero) {
-      case 20:
-        this.size = 20
-        this.spinner = true
-        this.getCuentasCobrar()
-        break;
-      case 50:
-        this.spinner = true
-        this.size = 50
-        this.getCuentasCobrar()
-        break;
-      case 100:
-        this.spinner = true
-        this.size = 100
-        this.getCuentasCobrar()
-        break;
+    if(this.filtrando){
+      switch (numero) {
+        case 20:
+          this.size = 20
+          this.spinner = true
+          this.filtro()
+          break;
+        case 50:
+          this.spinner = true
+          this.size = 50
+          this.filtro()
+          break;
+        case 100:
+          this.spinner = true
+          this.size = 100
+          this.filtro()
+          break;
+      }
+    } else {
+      switch (numero) {
+        case 20:
+          this.size = 20
+          this.spinner = true
+          this.getCuentasCobrar()
+          break;
+        case 50:
+          this.spinner = true
+          this.size = 50
+          this.getCuentasCobrar()
+          break;
+        case 100:
+          this.spinner = true
+          this.size = 100
+          this.getCuentasCobrar()
+          break;
+      }
     }
   }
 

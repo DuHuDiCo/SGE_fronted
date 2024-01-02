@@ -145,204 +145,6 @@
             </div>
         </div>
 
-        <!-- FILTROS -->
-        <!-- <div class="accordion" id="accordionExample" *ngIf="!spinner">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#accordionFiltros" aria-expanded="true" aria-controls="collapseOne">
-                        Filtros
-                    </button>
-                </h2>
-                <div id="accordionFiltros" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <div class="row justify-content-center mb-3">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row justify-content-center mb-2">
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[1])">
-                                                    <label class="form-check-label">
-                                                        Banco
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[2])">
-                                                    <label class="form-check-label">
-                                                        Dias Ven.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[3])">
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                        Edad Ven.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[4])">
-                                                    <label class="form-check-label">
-                                                        Sucursal
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[6])">
-                                                    <label class="form-check-label">
-                                                        Clas. Juri
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[7])">
-                                                    <label class="form-check-label">
-                                                        Saldo Cap.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[8])">
-                                                    <label class="form-check-label">
-                                                        Año
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[9])">
-                                                    <label class="form-check-label">
-                                                        F. Gestión
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[10])">
-                                                    <label class="form-check-label">
-                                                        F. Compro.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div *ngIf="filtrosArray.length > 0" class="row justify-content-center mb-3">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row justify-content-center">
-                                            <div *ngIf="filtrosArray.includes(constantes[1])" class="col-md-2 mb-3">
-                                                <select [(ngModel)]="filtros.banco" name="banco" class="form-select">
-                                                    <option selected>Seleccione Un Banco</option>
-                                                    <option value="COL">COL</option>
-                                                    <option value="POP">POP</option>
-                                                </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[2])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione Los Dias Vencidos</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                  </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[3])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione La Edad De Vencimiento</option>
-                                                    <option *ngFor="let t of tiposVen" value="{{ t.tipoVencimiento }}">{{ t.tipoVencimiento }}</option>
-                                                  </select>
-                                            </div>
-
-                                            <div *ngIf="filtrosArray.includes(constantes[4])" class="col-md-2 mb-3">
-                                                <select [(ngModel)]="filtros.sede" name="sede" class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione Una Sucursal</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                  </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[6])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option [(ngModel)]="filtros.clasiJuridica" name="clasiJuridica" selected>Seleccione Una Clasificación Jurídica</option>
-                                                    <option value="Normal">Normal</option>
-                                                    <option value="Prejuridico">Prejuridico</option>
-                                                    <option value="Juridico">Juridico</option>
-                                                  </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[7])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione Un Saldo</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                  </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[8])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione Un Año</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                  </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[9])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione Una Fecha Gestión</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                  </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[10])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione Una Fecha Compromiso</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                  </select>
-                                            </div>
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-1">
-                                                    <button *ngIf="filtrosArray.length != 0" class="btn btn-danger b" (click)="filtro()">Filtrar</button>  
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <!-- SIDEBAR -->
@@ -588,7 +390,7 @@
                                                         <div class="input-group input-group-sm">
                                                             <span class="input-group-text fw-bold">Mora/Venc</span>
                                                             <input type="text"
-                                                                [(ngModel)]="cuentaCobrarSelected.edadVencimiento"
+                                                                [(ngModel)]="cuentaCobrarSelected.tiposVencimiento.tipoVencimiento"
                                                                 class="form-control" disabled>
                                                             <input type="text"
                                                                 [(ngModel)]="cuentaCobrarSelected.diasVencidos"
@@ -907,8 +709,14 @@
                                 <td *ngIf="!Columnas.includes('CLAS JURI')">{{ cc.clasificacionJuridica }}</td>
                                 <td *ngIf="!Columnas.includes('SALDO CAP')">{{ cc.totalObligatoria }}</td>
                                 <td *ngIf="!Columnas.includes('ANIO')">{{ cc.fechaCuentaCobrar | date:'yyyy' }}</td>
-                                <td *ngIf="!Columnas.includes('F GESTION')">25/05/2023</td>
-                                <td *ngIf="!Columnas.includes('F COMPRO')">25/05/2023</td>
+                                <td *ngIf="!Columnas.includes('F GESTION')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
+                                    cc.gestion[cc.gestion.length-1].fechaGestion | date:"d/M/yyyy" }}</td>
+                                <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.nombresClasificacion.tipo == 'TAREA' ? 
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaTarea | date:"d/M/yyyy") : 
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.nombresClasificacion.tipo == 'NOTA' ? 'NOTA' : 
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso | date:"d/M/yyyy")))}}                                 
+                                 </td>
                             </tr>
                         </tbody>
                     </table>
@@ -1336,7 +1144,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" (click)="modalGestionSelected()">Cerrar</button>
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
                         <button *ngIf="gestionSelected.clasificacion.isActive == true" type="button"
                             class="btn btn-danger b" (click)="desactivarAcuerdo()">Desactivar</button>
@@ -1364,20 +1172,22 @@
                             </select> -->
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Bancos</h6>
+                                    <h6 class="fw-bold">Bancos</h6>
                                 </blockquote>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="COL" (click)="metodoBancos('COL')">
+                                    <input class="form-check-input" type="checkbox" value="COL"
+                                        (click)="metodoBancos('COL')">
                                     <label class="form-check-label">
                                         <cite title="Source Title">COL</cite>
                                     </label>
-                                  </div>
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="POP" (click)="metodoBancos('POP')">
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="POP"
+                                        (click)="metodoBancos('POP')">
                                     <label class="form-check-label">
                                         <cite title="Source Title">POP</cite>
                                     </label>
-                                  </div>
+                                </div>
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -1394,14 +1204,14 @@
 
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Dias Vencidos</h6>
+                                    <h6 class="fw-bold">Dias Vencidos</h6>
                                 </blockquote>
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text fw-bold">Desde/Hasta</span>
                                     <input type="number" [(ngModel)]="filtros.diasVencidosInicio" class="form-control">
                                     <input type="number" [(ngModel)]="filtros.diasVencidosFin" class="form-control">
                                 </div>
-                              </figure>
+                            </figure>
                         </div>
                         <div class="col-md-12 mb-3">
                             <!-- <select [(ngModel)]="filtros.edadVencimiento" class="form-select" aria-label="Default select example">
@@ -1411,14 +1221,15 @@
                             </select> -->
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Edad Vencimiento</h6>
+                                    <h6 class="fw-bold">Edad Vencimiento</h6>
                                 </blockquote>
                                 <div class="form-check" *ngFor="let t of tiposVen; let i = index">
-                                    <input value="{{ t.tipoVencimiento }}" class="form-check-input" type="checkbox" (click)="metodoEdadVen(t.tipoVencimiento)">
+                                    <input value="{{ t.tipoVencimiento }}" class="form-check-input" type="checkbox"
+                                        (click)="metodoEdadVen(t.tipoVencimiento)">
                                     <label class="form-check-label">
                                         <cite title="Source Title">{{ t.tipoVencimiento}}</cite>
                                     </label>
-                                  </div>
+                                </div>
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -1428,14 +1239,15 @@
                             </select> -->
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Sedes</h6>
+                                    <h6 class="fw-bold">Sedes</h6>
                                 </blockquote>
                                 <div class="form-check" *ngFor="let s of sedes; let i = index">
-                                    <input value="{{ s.sede }}" class="form-check-input" type="checkbox" (click)="metodoSede(s.sede)">
+                                    <input value="{{ s.sede }}" class="form-check-input" type="checkbox"
+                                        (click)="metodoSede(s.sede)">
                                     <label class="form-check-label">
                                         <cite title="Source Title">{{ s.sede }}</cite>
                                     </label>
-                                  </div>
+                                </div>
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -1448,26 +1260,29 @@
                             </select> -->
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Clasificación Jurídica</h6>
+                                    <h6 class="fw-bold">Clasificación Jurídica</h6>
                                 </blockquote>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="Normal" (click)="metodoClas('Normal')">
+                                    <input class="form-check-input" type="checkbox" value="Normal"
+                                        (click)="metodoClas('Normal')">
                                     <label class="form-check-label">
                                         <cite title="Source Title">Normal</cite>
                                     </label>
-                                  </div>
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="Prejuridico" (click)="metodoClas('Prejuridico')">
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Prejuridico"
+                                        (click)="metodoClas('Prejuridico')">
                                     <label class="form-check-label">
                                         <cite title="Source Title">Prejuridico</cite>
                                     </label>
-                                  </div>
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="Juridico" (click)="metodoClas('Juridico')">
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Juridico"
+                                        (click)="metodoClas('Juridico')">
                                     <label class="form-check-label">
                                         <cite title="Source Title">Juridico</cite>
                                     </label>
-                                  </div>
+                                </div>
                             </figure>
                         </div>
                         <!-- <div class="col-md-12 mb-3">
@@ -1484,7 +1299,7 @@
                         </div> -->
                         <figure>
                             <blockquote class="blockquote">
-                              <h6 class="fw-bold">Saldo</h6>
+                                <h6 class="fw-bold">Saldo</h6>
                             </blockquote>
                             <div class="input-group input-group-sm">
                                 <span class="input-group-text fw-bold">Desde/Hasta</span>
@@ -1492,18 +1307,18 @@
                                 <input type="number" [(ngModel)]="filtros.saldoCapitalFin" class="form-control">
                             </div>
                         </figure>
-                        
+
                         <div class="col-md-12 mb-3">
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Año</h6>
+                                    <h6 class="fw-bold">Año</h6>
                                 </blockquote>
                                 <select (change)="calcularFechasAnio($event)" class="form-select">
                                     <option [value]="null" selected>Seleccione Un Año</option>
                                     <option *ngFor="let a of listaDeAnios" [value]="a">{{ a }}</option>
                                 </select>
                             </figure>
-                            
+
                         </div>
                         <div class="col-md-12 mb-3">
                             <!-- <div class="col-md-12 mb-3">
@@ -1520,7 +1335,7 @@
                             </div> -->
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Fecha Gestión</h6>
+                                    <h6 class="fw-bold">Fecha Gestión</h6>
                                 </blockquote>
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text fw-bold">Desde/Hasta</span>
@@ -1547,23 +1362,26 @@
                                 </div> -->
                                 <figure>
                                     <blockquote class="blockquote">
-                                      <h6 class="fw-bold">Fecha Compromiso</h6>
+                                        <h6 class="fw-bold">Fecha Compromiso</h6>
                                     </blockquote>
                                     <div class="input-group input-group-sm">
                                         <span class="input-group-text fw-bold">Desde/Hasta</span>
-                                        <input type="date" [(ngModel)]="filtros.fechaCompromisoInicio" class="form-control">
-                                        <input type="date" [(ngModel)]="filtros.fechaCompromisoFin" class="form-control">
+                                        <input type="date" [(ngModel)]="filtros.fechaCompromisoInicio"
+                                            class="form-control">
+                                        <input type="date" [(ngModel)]="filtros.fechaCompromisoFin"
+                                            class="form-control">
                                     </div>
                                 </figure>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-md-4">
-                                <button *ngIf="!botonFiltro" class="btn btn-danger b" (click)="filtro()">Filtrar</button>
+                                <button *ngIf="!botonFiltro" class="btn btn-danger b"
+                                    (click)="filtro()">Filtrar</button>
                                 <button *ngIf="botonFiltro" class="btn btn-danger b">
                                     Filtrando...
                                     <span class="spinner-border spinner-border-sm float-right" role="status"
-                                    aria-hidden="true"></span>
+                                        aria-hidden="true"></span>
                                 </button>
                             </div>
                         </div>
