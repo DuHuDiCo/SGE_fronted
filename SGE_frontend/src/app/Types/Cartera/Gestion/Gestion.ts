@@ -142,3 +142,22 @@ export type PagosRequest = {
   saldoCuota :number;
 
 }
+
+export type Filtros = {
+  banco: string[],
+  diasVencidosInicio: number | null,
+  diasVencidosFin: number | null,
+  edadVencimiento: string[],
+  sede: string[],
+  username: string,
+  clasiJuridica: string[],
+  saldoCapitalInicio: number | null,
+  saldoCapitalFin: number | null,
+  fechaCpcInicio: Date | null,
+  fechaCpcFin: Date | null,
+  fechaGestionInicio: Date | null,
+  fechaGestionFin: Date | null,
+  fechaCompromisoInicio: string | null,
+  fechaCompromisoFin: string | null,
+  isActive: boolean
+}
