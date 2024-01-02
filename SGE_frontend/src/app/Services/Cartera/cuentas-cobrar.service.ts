@@ -27,21 +27,23 @@ export class CuentasCobrarService {
   }
 
   getCuentaByCedula(cedula:string){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/cuentas/getCuentaCobrarByCedula?cedula=${cedula}`)
+    return this.http.get(`http://192.168.1.29:8021/api/v1/cuentas/getCuentaCobrarByCedula?cedula=${cedula}`)
   }
 
   getCuentaByDato(dato:string){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/cuentas/cuentasByDato?dato=${dato}`)
+    return this.http.get(`http://192.168.1.29:8021/api/v1/cuentas/cuentasByDato?dato=${dato}`)
   }
 
   
   updateCuentaCobrar(cuentaCobrar:CuentaCobrarCalculate){
     return this.http.put(`http://192.168.1.29:8021/api/v1/cuentas/updateCuentaCobrarToCalculate`, cuentaCobrar)
+
   }
 
   //FILTRO
   filtro(page:number, size:number, fechaCreacion:string, dto:Filtros, ){
     return this.http.post(`http://192.168.1.29:8021/api/v1/cuentas/filtrosCuentas?page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`, dto)
+
   }
 
   // CLASIFICACIONES
@@ -99,11 +101,13 @@ export class CuentasCobrarService {
 
   updateTipoVencimiento(tipoVencimiento:TipoVencimiento){
     return this.http.put(`http://192.168.1.29:8021/api/v1/tiposVencimiento/updateTipoVencimiento`, tipoVencimiento)
+
   }
 
   //SEDES
   getSedes(){
     return this.http.get(`http://192.168.1.29:8021/api/v1/sedesController/obtenerTodasSedes`)
+
   }
 
 

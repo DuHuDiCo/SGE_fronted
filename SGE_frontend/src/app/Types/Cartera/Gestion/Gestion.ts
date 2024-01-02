@@ -86,8 +86,9 @@ export type CuotaList = {
   capitalCuota: number,
   honorarios: number,
   pagos: Pagos,
-  interesCuota:number,
-  cumplio: boolean
+  interesCuota: number,
+  cumplio: boolean,
+  
 }
 
 export type Gestiones = {
@@ -120,8 +121,9 @@ export type Pagos = {
   idPago: number,
   valorPago: number;
   fechaPago: Date;
-  usuarioId : number;
-  saldoCuota :number;
+  usuarioId: number;
+  saldoCuota: number;
+  reciboPago:ReciboPago | null
 }
 
 export type CuotasRequest = {
@@ -132,14 +134,25 @@ export type CuotasRequest = {
   honorarios: number,
   cumplio: boolean,
   interesCuota: number
-  pagos: PagosRequest |null
+  pagosDto: PagosRequest | null
 }
 
 export type PagosRequest = {
 
   valorPago: number;
   fechaPago: Date;
-  saldoCuota :number;
+  saldoCuota: number;
+
+}
+
+
+export type ReciboPago = {
+  idRecibo: number,
+  numeroRecibo: string,
+  valorRecibo: number,
+  fechaRecibo: Date,
+  ruta: string
+  nombreArchivo: string
 
 }
 
@@ -160,4 +173,5 @@ export type Filtros = {
   fechaCompromisoInicio: string | null,
   fechaCompromisoFin: string | null,
   isActive: boolean
+
 }
