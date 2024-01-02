@@ -60,6 +60,15 @@ export class HomeCajaComponent implements OnInit {
     this.coutasRequest = []
     this.cuentasCobrarGestiones = []
 
+    this.totalCuotasAcuerdo = 0
+    this.saldoAcuerdoPago = 0
+    this.saldoInteresesAcuerdo = 0
+    this.saldoHonoriariosAcuerdo = 0
+    this.saldoCapitalAcuerdo = 0
+    this.totalIntereses = 0
+    this.totalHonorarios = 0
+    this.totalCapital = 0
+
     this.cuentaCobrarService.getCuentaByDato(this.cedula).subscribe(
       (data: any) => {
         this.search = false
@@ -249,7 +258,7 @@ export class HomeCajaComponent implements OnInit {
         text: 'Debes seleccionar un medio pago',
         timer: 3000
       })
-      
+
       return
     }
 
@@ -260,7 +269,7 @@ export class HomeCajaComponent implements OnInit {
         text: 'Debes ingresar un valor mayor a cero',
         timer: 3000
       })
-      
+
       return
     }
 
@@ -306,7 +315,7 @@ export class HomeCajaComponent implements OnInit {
           this.valorTotalIngresado = 0
           valorTotal = 0
           throw new Error('Valor ingresado menor al valor de la cuota pactada')
-          
+
         }
 
         if (c.pagos != null || c.pagos != undefined) {
@@ -638,10 +647,10 @@ export class HomeCajaComponent implements OnInit {
   }
 
 
-  mostrarReciboPago(data:any) {
+  mostrarReciboPago(data: any) {
     this.base64Recibo = "data:application/pdf;base64," + data
-      var re: any = document.getElementById('mostrarReciboPago')
-      re.src = this.base64Recibo
+    var re: any = document.getElementById('mostrarReciboPago')
+    re.src = this.base64Recibo
     $('#reciboPago').modal('show');
   }
 
