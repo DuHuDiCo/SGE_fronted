@@ -255,7 +255,8 @@ export class HomeCarteraComponent implements OnInit {
     fechaGestionInicio: null,
     fechaGestionFin: null,
     fechaCompromisoInicio: null,
-    fechaCompromisoFin: null
+    fechaCompromisoFin: null,
+    isActive: false
   }
 
   bancosArray:string[] = []
@@ -269,7 +270,7 @@ export class HomeCarteraComponent implements OnInit {
 
   // PARAMETROS PARA EL SERVICE
   //TODO:CAMBIAR A 0 CUANDO CORRIJAN EL ARCHIVO
-  page: number = 1;
+  page: number = 0;
   size: number = 10
   fechaCreacion: string = 'fecha_creacion'
 
@@ -313,6 +314,8 @@ export class HomeCarteraComponent implements OnInit {
   disabledFecha:boolean = false
 
   desactivarAcu:boolean = false
+  botonFiltro:boolean = false
+  filtrando:boolean = false
 
 
   ngOnInit(): void {
@@ -371,7 +374,7 @@ export class HomeCarteraComponent implements OnInit {
     //   if (user == null || user == undefined) {
     //     return
     //   }
-
+    this.filtrando = false
     this.cuentasCobrar.getCuentasCobrar('Diana1975', this.page, this.size, this.fechaCreacion).subscribe(
       (data: any) => {
         this.paginas = new Array(data.totalPages)
@@ -398,6 +401,17 @@ export class HomeCarteraComponent implements OnInit {
   back() {
     if (!this.first) {
       this.page--
+      if(this.filtrando){
+        this.spinner = true
+        this.filtro()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont - this.size
+            this.proSubscriptionBack.unsubscribe()
+          }
+        );
+      } else {
       this.spinner = true
       this.getCuentasCobrar()
       this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
@@ -407,23 +421,36 @@ export class HomeCarteraComponent implements OnInit {
           this.proSubscriptionBack.unsubscribe()
         }
       );
-
+      }
     }
   }
 
   // SIGUIENTE PAGINA
   next() {
     if (!this.last) {
-      this.page++
       this.spinner = true
-      this.getCuentasCobrar()
-      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
-        (con: boolean) => {
-          this.isCon = con;
-          this.cont = this.cont + this.size
-          this.proSubscriptionBack.unsubscribe()
-        }
-      );
+      this.page++
+      if(this.filtrando){
+        this.filtro()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont + this.size
+            this.proSubscriptionNext.unsubscribe()
+            this.spinner = false
+          }
+        );
+      } else {
+        this.spinner = true
+        this.getCuentasCobrar()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont + this.size
+            this.proSubscriptionNext.unsubscribe()
+          }
+        );
+      }
     }
   }
 
@@ -2114,7 +2141,6 @@ export class HomeCarteraComponent implements OnInit {
 
     console.log(this.filtros);
     
-    
     if (
       (this.filtros.banco.length == 0) &&
       (this.filtros.diasVencidosInicio == 0 || this.filtros.diasVencidosInicio == null) &&
@@ -2140,9 +2166,11 @@ export class HomeCarteraComponent implements OnInit {
       return;
     }
     
-
+    this.botonFiltro = true
     this.cuentasCobrar.filtro(this.page, this.size, this.fechaCreacion, this.filtros).subscribe(
       (data:any) => {
+        this.botonFiltro = false
+        this.filtrando = true
         this.paginas = new Array(data.totalPages)
         this.cuentasCobrarArray = data.content
         this.last = data.last
@@ -2162,6 +2190,7 @@ export class HomeCarteraComponent implements OnInit {
         }
         $('#offcanvasFilter').offcanvas('hide');
       }, (error:any) => {
+        this.botonFiltro = false
         console.log(error);
       }
     )

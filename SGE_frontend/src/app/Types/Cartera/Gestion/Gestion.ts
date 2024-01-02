@@ -157,6 +157,7 @@ export type Filtros = {
   fechaCpcFin: Date | null,
   fechaGestionInicio: Date | null,
   fechaGestionFin: Date | null,
-  fechaCompromisoInicio: Date | null,
-  fechaCompromisoFin: Date | null
+  fechaCompromisoInicio: string | null,
+  fechaCompromisoFin: string | null,
+  isActive: boolean
 }

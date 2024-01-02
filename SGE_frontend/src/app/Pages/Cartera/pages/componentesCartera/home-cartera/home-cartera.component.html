@@ -1559,7 +1559,12 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-md-4">
-                                <button class="btn btn-danger b" (click)="filtro()">Filtrar</button>
+                                <button *ngIf="!botonFiltro" class="btn btn-danger b" (click)="filtro()">Filtrar</button>
+                                <button *ngIf="botonFiltro" class="btn btn-danger b">
+                                    Filtrando...
+                                    <span class="spinner-border spinner-border-sm float-right" role="status"
+                                    aria-hidden="true"></span>
+                                </button>
                             </div>
                         </div>
                     </div>
