@@ -652,6 +652,7 @@ export class HomeCarteraComponent implements OnInit {
 
   // GESTIONES
   getGestiones(numeroObligacion: string) {
+    this.gestiones = []
     this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
       (data: any) => {
         this.newGestion.numeroObligacion = numeroObligacion
@@ -1154,19 +1155,27 @@ export class HomeCarteraComponent implements OnInit {
       contact: false,
       detallesAdicionales: ''
     }
+
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
     console.log(id);
 
     this.gestionSelected = gestion
+    console.log(this.gestionSelected);
 
+    if(this.gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO'){
+      this.obtenerCuotas()
+    }
+    
+  }
+
+  obtenerCuotas(){
+    this.cuotasList = []
 
     this.gestionSelected.clasificacion.cuotasList.forEach((c: any) => {
       this.cuotasList.push(c)
     });
 
     this.cuotasList.forEach((c: CuotaList) => {
-
-
 
       this.totalCuotasAcuerdo = this.totalCuotasAcuerdo + c.valorCuota
       this.totalCapital = this.totalCapital + c.capitalCuota
@@ -1225,9 +1234,6 @@ export class HomeCarteraComponent implements OnInit {
           c.pagos!.saldoCuota = c.valorCuota
         }
       }
-
-
-
       this.coutasRequest.push(couta)
     })
 
@@ -2425,9 +2431,6 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-
-
-
   ordenarGestiones(gestiones: any[]) {
     var gesTrue = gestiones.filter((ges: any) => ges.clasificacion.isActive)
     gesTrue.forEach((ges: any) => {
@@ -2455,8 +2458,6 @@ export class HomeCarteraComponent implements OnInit {
       this.gestiones.push(ges)
     });
   }
-
-
 
   agregarPagoACuotas() {
 
@@ -2856,7 +2857,6 @@ export class HomeCarteraComponent implements OnInit {
 
 
   }
-
 
   mostrarReciboPago(data: any) {
     this.base64Recibo = "data:application/pdf;base64," + data

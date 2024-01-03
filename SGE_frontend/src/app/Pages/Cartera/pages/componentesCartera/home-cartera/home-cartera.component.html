@@ -1,14 +1,15 @@
 <div class="container">
-    <div class="floating-button-container" >
-        <button  [@fadeInFromBottom]="true" class="floating-button" data-bs-toggle="modal" data-bs-target="#modalObligacion">
-          <div class="icon-container">
-            <i class="fa-solid fa-magnifying-glass fa-2x"></i>
-          </div><br>
-          <div class="text-container">
-            <span class="text">Buscar</span> <!-- Nuevo elemento de texto para mostrar en el hover -->
-          </div>
+    <div class="floating-button-container">
+        <button [@fadeInFromBottom]="true" class="floating-button" data-bs-toggle="modal"
+            data-bs-target="#modalObligacion">
+            <div class="icon-container">
+                <i class="fa-solid fa-magnifying-glass fa-2x"></i>
+            </div><br>
+            <div class="text-container">
+                <span class="text">Buscar</span> <!-- Nuevo elemento de texto para mostrar en el hover -->
+            </div>
         </button>
-      </div>
+    </div>
     <div class="card-c">
         <div *ngIf="newGestion.gestion.trim() != '' || newGestion.gestion.trim() != ''" class="row justify-content-end"
             data-bs-target="#offcanvasRight">
@@ -160,7 +161,7 @@
                 <!-- SIDEBAR -->
                 <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasRight"
                     aria-labelledby="offcanvasRightLabel" style="height: 77%;">
-                    <div class="offcanvas-header">
+                    <div *ngIf="!spinnerSidebar" class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasRightLabel">Datos Cliente</h5>
                         <button *ngIf="deshabilitarInputs" class="btn btn-danger b" data-bs-toggle="modal"
                             data-bs-target="#modalGestion">Nueva
@@ -722,11 +723,15 @@
                                 <td *ngIf="!Columnas.includes('F GESTION')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
                                     cc.gestion[cc.gestion.length-1].fechaGestion | date:"d/M/yyyy" }}</td>
                                 <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.nombresClasificacion.tipo == 'TAREA' ? 
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaTarea | date:"d/M/yyyy") : 
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.nombresClasificacion.tipo == 'NOTA' ? 'NOTA' : 
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso | date:"d/M/yyyy")))}}                                 
-                                 </td>
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.nombresClasificacion.tipo ==
+                                    'TAREA' ?
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaTarea | date:"d/M/yyyy")
+                                    :
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.nombresClasificacion.tipo ==
+                                    'NOTA' ? 'NOTA' :
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso |
+                                    date:"d/M/yyyy")))}}
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -1015,17 +1020,6 @@
                         data-bs-target="#modalGestion"></button>
                 </div>
                 <div class="modal-body">
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Active</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                    </ul>
                     <div class="table-responsive align-middle">
                         <table class="table table-bordered text-center table-hover">
                             <thead>
@@ -1065,7 +1059,8 @@
     </div>
 
     <!-- Modal Detalle Gestión -->
-    <div class="modal fade" id="modalDetalle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modalDetalle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1091,7 +1086,8 @@
     </div>
 
     <!-- Modal Ver Reporte -->
-    <div class="modal fade" id="modalReporte" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="modalReporte" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1112,7 +1108,7 @@
     </div>
 
     <!-- Modal Gestion Completa -->
-    <div class="modal fade" id="modalGestionCom" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalGestionCom" tabindex="-1" data-bs-show="true" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1121,82 +1117,172 @@
                 </div>
                 <div class="modal-body">
                     <!-- PARTE ACUERDO DE PAGO-->
-                    <div class="row m-3">
-                        <div class="col-md-12 ">
-                            <form action="">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <label for="">Valor del Pago</label>
-                                        <input type="text" [(ngModel)]="pago.valor" class="form-control" name="valor">
+                    <span *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO'">
+                        <div class="row m-3">
+                            <div class="col-md-12 ">
+                                <form action="">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="">Valor del Pago</label>
+                                            <input type="text" [(ngModel)]="pago.valor" class="form-control" name="valor">
+                                        </div>
+    
+                                        <div class="col-md-4">
+                                            <label for="">Numero Recibo</label>
+                                            <input type="text" [(ngModel)]="pago.recibo" class="form-control" name="recibo">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="">Detalle</label>
+                                            <textarea name="detalle" [(ngModel)]="pago.detalle" class="form-control" id="" cols="30"
+                                                rows="1"></textarea>
+                                        </div>
+                                        <button class="btn btn-primary" (click)="agregarPagoACuotas()">Guardar</button>
                                     </div>
-
-                                    <div class="col-md-4">
-                                        <label for="">Numero Recibo</label>
-                                        <input type="text" [(ngModel)]="pago.recibo" class="form-control" name="recibo">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="">Detalle</label>
-                                        <textarea name="detalle" [(ngModel)]="pago.detalle" class="form-control" id="" cols="30"
-                                            rows="1"></textarea>
-                                    </div>
-                                    <button class="btn btn-primary" (click)="agregarPagoACuotas()">Guardar</button>
-                                </div>
-
-                            </form>
-
+    
+                                </form>
+    
+                            </div>
+    
                         </div>
-
-                    </div>
-
-                    <div class="table-responsive align-middle">
-                        <table class="table table-bordered text-center table-hover table-sm align-middle">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Cuota</th>
-                                    <th scope="col">Fecha Venc</th>
-                                    <th scope="col">Valor Cuota</th>
-                                    <th scope="col">Capital Cuota</th>
-                                    <th scope="col">Honorarios</th>
-                                    <th scope="col">Interes</th>
-                                    <th scope="col">Pago</th>
-                                </tr>
-                            </thead>
-                            <tbody *ngIf="gestionSelected != null">
-
-                                <tr *ngFor="let g of cuotasList">
-                                    <td>{{ g.numeroCuota }}</td>
-                                    <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
-                                    <td>{{ g.valorCuota | number }}</td>
-                                    <td>{{ g.capitalCuota | number }}</td>
-                                    <td>{{ g.honorarios | number }}</td>
-                                    <td>{{ g.interesCuota | number }}</td>
-                                    <td class="justify-content-center">
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-6">
-                                                <div class="form-check text-center">
-                                                    <input cli class="form-check-input" type="checkbox"
-                                                        [checked]="g.cumplio==true"
-                                                        [disabled]="g.cumplio==true">
+    
+                        <div class="table-responsive align-middle">
+                            <table class="table table-bordered text-center table-hover table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Cuota</th>
+                                        <th scope="col">Fecha Venc</th>
+                                        <th scope="col">Valor Cuota</th>
+                                        <th scope="col">Capital Cuota</th>
+                                        <th scope="col">Honorarios</th>
+                                        <th scope="col">Interes</th>
+                                        <th scope="col">Pago</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="gestionSelected != null">
+    
+                                    <tr *ngFor="let g of cuotasList">
+                                        <td>{{ g.numeroCuota }}</td>
+                                        <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
+                                        <td>{{ g.valorCuota | number }}</td>
+                                        <td>{{ g.capitalCuota | number }}</td>
+                                        <td>{{ g.honorarios | number }}</td>
+                                        <td>{{ g.interesCuota | number }}</td>
+                                        <td class="justify-content-center">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-6">
+                                                    <div class="form-check text-center">
+                                                        <input cli class="form-check-input" type="checkbox"
+                                                            [checked]="g.cumplio==true"
+                                                            [disabled]="g.cumplio==true">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+    
+                                </tbody>
+                            </table>
+                        </div>
+                    </span>
 
-                            </tbody>
-                        </table>
+                    <!-- TAREA -->
+                    <div class="card" *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA'">
+                        <div class="card-body">
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <textarea [(ngModel)]="gestionSelected.detallesGestion" class="form-control"
+                                            readonly></textarea>
+                                        <label for="floatingTextarea">Descripción</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text fw-bold">Fecha Tarea</span>
+                                        <input type="text" class="form-control"
+                                            [value]="gestionSelected.clasificacion.fechaFinTarea | date:'dd/MM/yyyy'" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text fw-bold">Detalle Tarea</span>
+                                        <input type="text" class="form-control" [(ngModel)]="gestionSelected.clasificacion.detalleTarea" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <textarea [(ngModel)]="gestionSelected.detallesAdicionales" class="form-control"
+                                            readonly></textarea>
+                                        <label for="floatingTextarea">Detalles Adicionales</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- NOTA -->
+                    <div class="card" *ngIf="gestionSelected.clasificacion.clasificacion == 'NOTA'">
+                        <div class="card-body">
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <textarea [(ngModel)]="gestionSelected.detallesGestion" class="form-control"
+                                            readonly></textarea>
+                                        <label for="floatingTextarea">Descripción</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <textarea [(ngModel)]="gestionSelected.clasificacion.detalleNota" class="form-control"
+                                            readonly></textarea>
+                                        <label for="floatingTextarea">Detalle Nota</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text fw-bold">Fecha Nota</span>
+                                        <input type="text" class="form-control" [value]="gestionSelected.clasificacion.fechaNota | date:'dd/MM/yyyy'" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <textarea [(ngModel)]="gestionSelected.detallesAdicionales" class="form-control"
+                                            readonly></textarea>
+                                        <label for="floatingTextarea">Detalles Adicionales</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="modalGestionSelected()">Cerrar</button>
+
+                    <!-- BOTONES ACUERDO DE PAGO -->
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
-                        <button *ngIf="gestionSelected.clasificacion.isActive == true" type="button"
+                        <button *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true" type="button"
                             class="btn btn-danger b" (click)="desactivarAcuerdo()">Desactivar</button>
                     </span>
 
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
-                        <button *ngIf="gestionSelected.clasificacion.isActive == true" type="button"
+                        <button *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true" type="button"
                             class="btn btn-danger b" (click)="desactivarAcuerdo()">Aplicar Pagos</button>
+                    </span>
+
+                    <!-- BOTONES TAREA -->
+                    <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+                        <button *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA'" type="button"
+                            class="btn btn-danger b">Desactivar</button>
                     </span>
                 </div>
             </div>
@@ -1372,30 +1458,31 @@
 
 
     <!-- MODAL BUSCAR OBLIGACION -->
-  <div class="modal fade" id="modalObligacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Buscar Obligación</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="input-group mb-3">
-                <span class="input-group-text fw-bold">Dato</span>
-                <input [(ngModel)]="buscarObligacion"
-                    type="text" class="form-control">
+    <div class="modal fade" id="modalObligacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Buscar Obligación</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text fw-bold">Dato</span>
+                        <input [(ngModel)]="buscarObligacion" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button *ngIf="!botonFiltrarObligacion" type="button" class="btn btn-danger b"
+                        (click)="getByDato()">Buscar</button>
+                    <button *ngIf="botonFiltrarObligacion" class="btn btn-danger b">
+                        Filtrando...
+                        <span class="spinner-border spinner-border-sm float-right" role="status"
+                            aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button *ngIf="!botonFiltrarObligacion" type="button" class="btn btn-danger b" (click)="getByDato()">Buscar</button>
-          <button *ngIf="botonFiltrarObligacion" class="btn btn-danger b">
-            Filtrando...
-            <span class="spinner-border spinner-border-sm float-right" role="status"
-                aria-hidden="true"></span>
-        </button>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
