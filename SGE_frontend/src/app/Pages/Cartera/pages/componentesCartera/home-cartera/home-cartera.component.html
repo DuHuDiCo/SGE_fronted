@@ -717,7 +717,7 @@
                                     {{
                                     cc.asesorCarteraResponse.usuario.apellidos }}</td>
                                 <td *ngIf="!Columnas.includes('CLAS JURI')">{{ cc.clasificacionJuridica }}</td>
-                                <td *ngIf="!Columnas.includes('SALDO CAP')">{{ cc.totalObligatoria }}</td>
+                                <td *ngIf="!Columnas.includes('SALDO CAP')">{{ cc.totalObligatoria | number }}</td>
                                 <td *ngIf="!Columnas.includes('ANIO')">{{ cc.fechaCuentaCobrar | date:'yyyy' }}</td>
                                 <td *ngIf="!Columnas.includes('F GESTION')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
                                     cc.gestion[cc.gestion.length-1].fechaGestion | date:"d/M/yyyy" }}</td>
@@ -1035,6 +1035,7 @@
                                     <th scope="col">Fecha Gestión</th>
                                     <th scope="col">Clasificación</th>
                                     <th scope="col">Detalle Gestión</th>
+                                    <th scope="col">Estado</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1042,9 +1043,12 @@
                                     data-bs-toggle="modal" data-bs-target="#modalGestionCom" style="cursor: pointer;">
                                     <th>{{ i + 1 }}</th>
                                     <td>{{ g.asesorCartera }}</td>
-                                    <td>{{ g.fechaGestion | date:'medium' }}</td>
+                                    <td>{{ g.fechaGestion | date:'dd/MM/yyyy' }} {{ g.fechaGestion | date:'shortTime' }}
+                                    </td>
                                     <td>{{ g.clasificacion.clasificacion }}</td>
                                     <td>{{ g.detallesGestion }}</td>
+                                    <td>{{ g.clasificacion.isActive ? 'Activo':g.clasificacion.nombresClasificacion.tipo
+                                        != "ACUERDO DE PAGO"?'Sin Estado':'No Activo' }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1116,6 +1120,34 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- PARTE ACUERDO DE PAGO-->
+                    <div class="row m-3">
+                        <div class="col-md-12 ">
+                            <form action="">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="">Valor del Pago</label>
+                                        <input type="text" [(ngModel)]="pago.valor" class="form-control" name="valor">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="">Numero Recibo</label>
+                                        <input type="text" [(ngModel)]="pago.recibo" class="form-control" name="recibo">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="">Detalle</label>
+                                        <textarea name="detalle" [(ngModel)]="pago.detalle" class="form-control" id="" cols="30"
+                                            rows="1"></textarea>
+                                    </div>
+                                    <button class="btn btn-primary" (click)="agregarPagoACuotas()">Guardar</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
                     <div class="table-responsive align-middle">
                         <table class="table table-bordered text-center table-hover table-sm align-middle">
                             <thead>
@@ -1131,7 +1163,7 @@
                             </thead>
                             <tbody *ngIf="gestionSelected != null">
 
-                                <tr *ngFor="let g of gestionSelected.clasificacion.cuotasList">
+                                <tr *ngFor="let g of cuotasList">
                                     <td>{{ g.numeroCuota }}</td>
                                     <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
                                     <td>{{ g.valorCuota | number }}</td>
@@ -1142,7 +1174,9 @@
                                         <div class="row justify-content-center">
                                             <div class="col-md-6">
                                                 <div class="form-check text-center">
-                                                    <input class="form-check-input" type="checkbox">
+                                                    <input cli class="form-check-input" type="checkbox"
+                                                        [checked]="g.cumplio==true"
+                                                        [disabled]="g.cumplio==true">
                                                 </div>
                                             </div>
                                         </div>
@@ -1158,6 +1192,11 @@
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
                         <button *ngIf="gestionSelected.clasificacion.isActive == true" type="button"
                             class="btn btn-danger b" (click)="desactivarAcuerdo()">Desactivar</button>
+                    </span>
+
+                    <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+                        <button *ngIf="gestionSelected.clasificacion.isActive == true" type="button"
+                            class="btn btn-danger b" (click)="desactivarAcuerdo()">Aplicar Pagos</button>
                     </span>
                 </div>
             </div>

@@ -65,18 +65,100 @@
                     </div>
                 </div>
 
-                <div class="row mt-3" *ngIf="cuentasCobrarGestiones.length > 0">
+                <div class="row mt-3" *ngIf="coutasList.length > 0">
                     <div class="col-md-6">
                         <h6><strong>Valor Total Acuerdo: </strong>
                             {{gestionesCuenta[0].clasificacionGestion.valorTotalAcuerdo | number}}</h6>
                         <h6><strong>Fecha Acuerdo: </strong> {{gestionesCuenta[0].clasificacionGestion.fechaAcuerdo |
-                            date:'dd/MM/yyyy'}}</h6>
+                            date:'dd/MM/yyyy'}}</h6><br>
+                        <h6><strong>Saldo Actual Acuerdo: </strong> {{saldoAcuerdoPago | number}}</h6>
+                        <h6><strong>Pagos Realizados: </strong> <a data-bs-toggle="modal" href="#exampleModalToggle"
+                                role="button" class="btn btn-danger btn-sm"
+                                style="background-color: #960010;border-color: #960010;"><i class="fas fa-eye"></i></a>
+                        </h6>
+
+
+                        <div class="modal fade" id="exampleModalToggle" aria-hidden="true"
+                            aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalToggleLabel">Pagos</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="table responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Numero Recibo</th>
+                                                        <th>Fecha Recibo</th>
+                                                        <th>Valor</th>
+                                                        <th>Pdf</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <tr *ngFor="let recibo of recibosPago;let i = index;">
+
+                                                        <td>{{i+1}}</td>
+                                                        <td>{{recibo.numeroRecibo}}</td>
+                                                        <td>{{recibo.fechaRecibo | date:'dd/MM/yyyy'}}</td>
+                                                        <td>{{recibo.valorRecibo | number}}</td>
+                                                        <td><button class="btn btn-primary"
+                                                                (click)="obtenerReciboPosition(i)"
+                                                                class="btn btn-danger btn-sm"
+                                                                style="background-color: #960010;border-color: #960010;"
+                                                                data-bs-target="#exampleModalToggle2"
+                                                                data-bs-toggle="modal" data-bs-dismiss="modal"><i
+                                                                    class="fas fa-eye"></i></button>
+
+
+                                                    </tr>
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="exampleModalToggle2" aria-hidden="true"
+                            aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalToggleLabel2">Recibo</h5>
+                                        <button type="button" class="btn-close" data-bs-target="#exampleModalToggle"
+                                            data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <embed id="mostrarRecibo" src="" height="500px" width="465px"
+                                            type="application/pdf">
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
                     </div>
                     <div class="col-md-6 ">
-                        <h6><strong>Saldo Actual Acuerdo: </strong> {{saldoAcuerdoPago | number}}</h6>
+
+                        <h6><strong>Saldo Intreses Acuerdo: </strong> {{saldoInteresesAcuerdo | number}}</h6>
+                        <h6><strong>Saldo Honorario Acuerdo: </strong> {{saldoHonoriariosAcuerdo | number}}</h6>
+                        <h6><strong>Saldo Capital Acuerdo: </strong> {{saldoCapitalAcuerdo | number}}</h6>
+
                     </div>
                 </div>
-                <div class="row mt-2 mb-3" *ngIf="cuentasCobrarGestiones.length > 0">
+                <div class="row mt-2 mb-3" *ngIf="coutasList.length > 0">
                     <div class="col-md-7">
                         <div class="row">
                             <div class="col-md-8"></div>
@@ -88,8 +170,8 @@
                         </div>
                     </div>
                     <div class="col-md-5">
-                        <button class="btn btn-danger btn-outline-danger" *ngIf="savePago" (click)="generarRecibo()" 
-                            style="background-color: #960010;border-color: #960010;"> 
+                        <button class="btn btn-danger btn-outline-danger" *ngIf="savePago" (click)="generarRecibo()"
+                            style="background-color: #960010;border-color: #960010;">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             <span class="visually-hidden">Loading...</span></button>
                         <button class="btn btn-danger" *ngIf="activarGuardarPago" (click)="generarRecibo()"
@@ -164,7 +246,7 @@
                                     </div>
                                     <div class="modal-footer">
 
-                                        <button type="button" class="btn btn-primary" (click)="agregarPagoACuotas()"
+                                        <button type="button" style="background-color: #960010;border-color: #960010;" class="btn btn-primary" (click)="agregarPagoACuotas()"
                                             data-bs-dismiss="modal">Guardar Pago</button>
                                     </div>
                                 </div>
@@ -172,7 +254,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mt-4" *ngIf="cuentasCobrarGestiones.length > 0">
+                <div class="row mt-4" *ngIf="coutasList.length > 0">
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -208,5 +290,20 @@
             </div>
         </div>
 
+    </div>
+</div>
+<div class="modal fade" id="reciboPago" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Recibo de Pago</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+            </div>
+            <div class="modal-body">
+                <embed id="mostrarReciboPago" src="" height="500px" width="465px" type="application/pdf">
+
+            </div>
+
+        </div>
     </div>
 </div>

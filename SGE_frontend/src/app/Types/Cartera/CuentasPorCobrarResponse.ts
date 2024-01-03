@@ -105,6 +105,7 @@ export type ClasificacionGestion={
   honorarioAcuerdo: number,
   idClasifiacionGestion: number,
   isActive: boolean,
+  isCumpliendo: boolean,
   nombresClasificacion : {
     idNombreClasificacion :number,
     nombre:string,
