@@ -1732,7 +1732,19 @@ export class ConsultasComponent implements OnInit {
 
   //METODO PARA CAMBIAR EL ESTADO DE LA CONSIGNACION
   cambiarConsignacion() {
+    if(this.tipoReporte == ''){
+      if(this.validarPermiso('APLICAR')){
+        this.tipoReporte = 'APLICADAS'
+      }
+
+      if(this.validarPermiso('COMPROBAR')){
+        this.tipoReporte = 'COMPROBADAS'
+      }
+    }
+
     this.botonCambiarConsignacion = true
+    console.log(this.tipoReporte);
+    
 
     setTimeout(() => {
       this.consultarService.cambiarEstadoConsignacion(this.cambioArray, this.tipoReporte).subscribe(
