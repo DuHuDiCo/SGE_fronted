@@ -33,7 +33,7 @@ export class HomeCarteraComponent implements OnInit {
 
   // ARRAY CUENTAS POR COBRAR
   cuentasCobrarArray: CuentasCobrarResponse[] = []
-
+  mostrarRecibo: boolean = false
   // ARRAYS
   codeudores: any[] = []
   codeudoresSelected: any[] = []
@@ -43,6 +43,7 @@ export class HomeCarteraComponent implements OnInit {
   clasificacionesT: Tarea[] = []
   tiposVen: TipoVencimiento[] = []
   disableds!: Array<boolean>
+  mostrarAgregarPago:boolean=false
   pago: any = {
     valor: 0,
     detalle: '',
@@ -64,7 +65,7 @@ export class HomeCarteraComponent implements OnInit {
   activarGuardarPago: boolean = false
   pagoCuota: number = 0
   savePago: boolean = false
-  base64Recibo:string = ""
+  base64Recibo: string = ""
   recibosPago: ReciboPago[] = []
   constantes: string[] = [
     'CLIENTE',
@@ -2368,7 +2369,7 @@ export class HomeCarteraComponent implements OnInit {
 
   agregarPagoACuotas() {
 
-
+    this.mostrarAgregarPago = false
     if (this.pago.detalle.trim() == '' || this.pago.detalle.trim() == null || this.pago.detalle.trim() == undefined) {
       Swal.fire({
         icon: 'error',
@@ -2376,7 +2377,7 @@ export class HomeCarteraComponent implements OnInit {
         text: 'Debes ingresar el concepto del pago',
         timer: 3000
       })
-
+      this.mostrarAgregarPago = true
       return
     }
 
@@ -2387,7 +2388,7 @@ export class HomeCarteraComponent implements OnInit {
         text: 'Debes seleccionar un medio pago',
         timer: 3000
       })
-
+      this.mostrarAgregarPago = true
       return
     }
 
@@ -2398,7 +2399,7 @@ export class HomeCarteraComponent implements OnInit {
         text: 'Debes ingresar un valor mayor a cero',
         timer: 3000
       })
-
+      this.mostrarAgregarPago = true
       return
     }
 
@@ -2697,7 +2698,7 @@ export class HomeCarteraComponent implements OnInit {
 
     console.log(this.coutasRequest);
 
-
+    
 
   }
 
@@ -2707,7 +2708,7 @@ export class HomeCarteraComponent implements OnInit {
     console.log(this.saldoInteresesAcuerdo);
     this.activarGuardarPago = false
     this.savePago = true
-    if (this.pago.numeroRecibo.trim() == '' || this.pago.numeroRecibo.trim() == null || this.pago.numeroRecibo.trim() == undefined) {
+    if (this.pago.recibo.trim() == '' || this.pago.recibo.trim() == null || this.pago.recibo.trim() == undefined) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -2765,6 +2766,18 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
+
+  obtenerReciboPosition(position: number) {
+    this.mostrarRecibo = false;
+    var recibo = this.recibosPago[position]
+    if (recibo != null || recibo != undefined) {
+      this.base64Recibo = "data:application/pdf;base64," + recibo.ruta
+      var re: any = document.getElementById('mostrarRecibo')
+      re.src = this.base64Recibo
+
+
+    }
+  }
 
   mostrarReciboPago(data: any) {
     this.base64Recibo = "data:application/pdf;base64," + data
