@@ -24,6 +24,7 @@ export class HomeCajaComponent implements OnInit {
   totalCuotasAcuerdo: number = 0
   cuentasCobrarGestiones: any[] = []
   coutasList: CuotaList[] = []
+  coutasSelected:number[] = []
   gestionesCuenta: Gestion[] = []
   saldoAcuerdoPago: number = 0
   saldoInteresesAcuerdo: number = 0
@@ -653,5 +654,8 @@ export class HomeCajaComponent implements OnInit {
     re.src = this.base64Recibo
     $('#reciboPago').modal('show');
   }
+
+
+
 
 }

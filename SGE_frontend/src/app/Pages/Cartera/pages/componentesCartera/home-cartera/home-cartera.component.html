@@ -905,7 +905,7 @@
                                     {{
                                     cc.asesorCarteraResponse.usuario.apellidos }}</td>
                                 <td *ngIf="!Columnas.includes('CLAS JURI')">{{ cc.clasificacionJuridica }}</td>
-                                <td *ngIf="!Columnas.includes('SALDO CAP')">{{ cc.totalObligatoria }}</td>
+                                <td *ngIf="!Columnas.includes('SALDO CAP')">{{ cc.totalObligatoria | number }}</td>
                                 <td *ngIf="!Columnas.includes('ANIO')">{{ cc.fechaCuentaCobrar | date:'yyyy' }}</td>
                                 <td *ngIf="!Columnas.includes('F GESTION')">25/05/2023</td>
                                 <td *ngIf="!Columnas.includes('F COMPRO')">25/05/2023</td>
@@ -1217,6 +1217,7 @@
                                     <th scope="col">Fecha Gestión</th>
                                     <th scope="col">Clasificación</th>
                                     <th scope="col">Detalle Gestión</th>
+                                    <th scope="col">Estado</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1224,9 +1225,12 @@
                                     data-bs-toggle="modal" data-bs-target="#modalGestionCom" style="cursor: pointer;">
                                     <th>{{ i + 1 }}</th>
                                     <td>{{ g.asesorCartera }}</td>
-                                    <td>{{ g.fechaGestion | date:'medium' }}</td>
+                                    <td>{{ g.fechaGestion | date:'dd/MM/yyyy' }} {{ g.fechaGestion | date:'shortTime' }}
+                                    </td>
                                     <td>{{ g.clasificacion.clasificacion }}</td>
                                     <td>{{ g.detallesGestion }}</td>
+                                    <td>{{ g.clasificacion.isActive ? 'Activo':g.clasificacion.nombresClasificacion.tipo
+                                        != "ACUERDO DE PAGO"?'Sin Estado':'No Activo' }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1298,6 +1302,34 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+
+                    <div class="row m-3">
+                        <div class="col-md-12 ">
+                            <form action="">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="">Valor del Pago</label>
+                                        <input type="text" [(ngModel)]="pago.valor" class="form-control" name="valor">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="">Numero Recibo</label>
+                                        <input type="text" [(ngModel)]="pago.recibo" class="form-control" name="recibo">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="">Detalle</label>
+                                        <textarea name="detalle" [(ngModel)]="pago.detalle" class="form-control" id="" cols="30"
+                                            rows="1"></textarea>
+                                    </div>
+                                    <button class="btn btn-primary" (click)="agregarPagoACuotas()">Guardar</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
                     <div class="table-responsive align-middle">
                         <table class="table table-bordered text-center table-hover table-sm align-middle">
                             <thead>
@@ -1313,7 +1345,7 @@
                             </thead>
                             <tbody *ngIf="gestionSelected != null">
 
-                                <tr *ngFor="let g of gestionSelected.clasificacion.cuotasList">
+                                <tr *ngFor="let g of cuotasList">
                                     <td>{{ g.numeroCuota }}</td>
                                     <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
                                     <td>{{ g.valorCuota | number }}</td>
@@ -1324,7 +1356,9 @@
                                         <div class="row justify-content-center">
                                             <div class="col-md-6">
                                                 <div class="form-check text-center">
-                                                    <input class="form-check-input" type="checkbox">
+                                                    <input cli class="form-check-input" type="checkbox"
+                                                        [checked]="g.cumplio==true"
+                                                        [disabled]="g.cumplio==true">
                                                 </div>
                                             </div>
                                         </div>
@@ -1340,6 +1374,11 @@
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
                         <button *ngIf="gestionSelected.clasificacion.isActive == true" type="button"
                             class="btn btn-danger b" (click)="desactivarAcuerdo()">Desactivar</button>
+                    </span>
+
+                    <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+                        <button *ngIf="gestionSelected.clasificacion.isActive == true" type="button"
+                            class="btn btn-danger b" (click)="desactivarAcuerdo()">Aplicar Pagos</button>
                     </span>
                 </div>
             </div>
@@ -1364,20 +1403,22 @@
                             </select> -->
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Bancos</h6>
+                                    <h6 class="fw-bold">Bancos</h6>
                                 </blockquote>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="COL" (click)="metodoBancos('COL')">
+                                    <input class="form-check-input" type="checkbox" value="COL"
+                                        (click)="metodoBancos('COL')">
                                     <label class="form-check-label">
                                         <cite title="Source Title">COL</cite>
                                     </label>
-                                  </div>
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="POP" (click)="metodoBancos('POP')">
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="POP"
+                                        (click)="metodoBancos('POP')">
                                     <label class="form-check-label">
                                         <cite title="Source Title">POP</cite>
                                     </label>
-                                  </div>
+                                </div>
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -1394,14 +1435,14 @@
 
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Dias Vencidos</h6>
+                                    <h6 class="fw-bold">Dias Vencidos</h6>
                                 </blockquote>
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text fw-bold">Desde/Hasta</span>
                                     <input type="number" [(ngModel)]="filtros.diasVencidosInicio" class="form-control">
                                     <input type="number" [(ngModel)]="filtros.diasVencidosFin" class="form-control">
                                 </div>
-                              </figure>
+                            </figure>
                         </div>
                         <div class="col-md-12 mb-3">
                             <!-- <select [(ngModel)]="filtros.edadVencimiento" class="form-select" aria-label="Default select example">
@@ -1411,14 +1452,15 @@
                             </select> -->
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Edad Vencimiento</h6>
+                                    <h6 class="fw-bold">Edad Vencimiento</h6>
                                 </blockquote>
                                 <div class="form-check" *ngFor="let t of tiposVen; let i = index">
-                                    <input value="{{ t.tipoVencimiento }}" class="form-check-input" type="checkbox" (click)="metodoEdadVen(t.tipoVencimiento)">
+                                    <input value="{{ t.tipoVencimiento }}" class="form-check-input" type="checkbox"
+                                        (click)="metodoEdadVen(t.tipoVencimiento)">
                                     <label class="form-check-label">
                                         <cite title="Source Title">{{ t.tipoVencimiento}}</cite>
                                     </label>
-                                  </div>
+                                </div>
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -1428,14 +1470,15 @@
                             </select> -->
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Sedes</h6>
+                                    <h6 class="fw-bold">Sedes</h6>
                                 </blockquote>
                                 <div class="form-check" *ngFor="let s of sedes; let i = index">
-                                    <input value="{{ s.sede }}" class="form-check-input" type="checkbox" (click)="metodoSede(s.sede)">
+                                    <input value="{{ s.sede }}" class="form-check-input" type="checkbox"
+                                        (click)="metodoSede(s.sede)">
                                     <label class="form-check-label">
                                         <cite title="Source Title">{{ s.sede }}</cite>
                                     </label>
-                                  </div>
+                                </div>
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -1448,26 +1491,29 @@
                             </select> -->
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Clasificación Jurídica</h6>
+                                    <h6 class="fw-bold">Clasificación Jurídica</h6>
                                 </blockquote>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="Normal" (click)="metodoClas('Normal')">
+                                    <input class="form-check-input" type="checkbox" value="Normal"
+                                        (click)="metodoClas('Normal')">
                                     <label class="form-check-label">
                                         <cite title="Source Title">Normal</cite>
                                     </label>
-                                  </div>
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="Prejuridico" (click)="metodoClas('Prejuridico')">
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Prejuridico"
+                                        (click)="metodoClas('Prejuridico')">
                                     <label class="form-check-label">
                                         <cite title="Source Title">Prejuridico</cite>
                                     </label>
-                                  </div>
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="Juridico" (click)="metodoClas('Juridico')">
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Juridico"
+                                        (click)="metodoClas('Juridico')">
                                     <label class="form-check-label">
                                         <cite title="Source Title">Juridico</cite>
                                     </label>
-                                  </div>
+                                </div>
                             </figure>
                         </div>
                         <!-- <div class="col-md-12 mb-3">
@@ -1484,7 +1530,7 @@
                         </div> -->
                         <figure>
                             <blockquote class="blockquote">
-                              <h6 class="fw-bold">Saldo</h6>
+                                <h6 class="fw-bold">Saldo</h6>
                             </blockquote>
                             <div class="input-group input-group-sm">
                                 <span class="input-group-text fw-bold">Desde/Hasta</span>
@@ -1492,18 +1538,18 @@
                                 <input type="number" [(ngModel)]="filtros.saldoCapitalFin" class="form-control">
                             </div>
                         </figure>
-                        
+
                         <div class="col-md-12 mb-3">
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Año</h6>
+                                    <h6 class="fw-bold">Año</h6>
                                 </blockquote>
                                 <select (change)="calcularFechasAnio($event)" class="form-select">
                                     <option [value]="null" selected>Seleccione Un Año</option>
                                     <option *ngFor="let a of listaDeAnios" [value]="a">{{ a }}</option>
                                 </select>
                             </figure>
-                            
+
                         </div>
                         <div class="col-md-12 mb-3">
                             <!-- <div class="col-md-12 mb-3">
@@ -1520,7 +1566,7 @@
                             </div> -->
                             <figure>
                                 <blockquote class="blockquote">
-                                  <h6 class="fw-bold">Fecha Gestión</h6>
+                                    <h6 class="fw-bold">Fecha Gestión</h6>
                                 </blockquote>
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text fw-bold">Desde/Hasta</span>
@@ -1547,23 +1593,26 @@
                                 </div> -->
                                 <figure>
                                     <blockquote class="blockquote">
-                                      <h6 class="fw-bold">Fecha Compromiso</h6>
+                                        <h6 class="fw-bold">Fecha Compromiso</h6>
                                     </blockquote>
                                     <div class="input-group input-group-sm">
                                         <span class="input-group-text fw-bold">Desde/Hasta</span>
-                                        <input type="date" [(ngModel)]="filtros.fechaCompromisoInicio" class="form-control">
-                                        <input type="date" [(ngModel)]="filtros.fechaCompromisoFin" class="form-control">
+                                        <input type="date" [(ngModel)]="filtros.fechaCompromisoInicio"
+                                            class="form-control">
+                                        <input type="date" [(ngModel)]="filtros.fechaCompromisoFin"
+                                            class="form-control">
                                     </div>
                                 </figure>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-md-4">
-                                <button *ngIf="!botonFiltro" class="btn btn-danger b" (click)="filtro()">Filtrar</button>
+                                <button *ngIf="!botonFiltro" class="btn btn-danger b"
+                                    (click)="filtro()">Filtrar</button>
                                 <button *ngIf="botonFiltro" class="btn btn-danger b">
                                     Filtrando...
                                     <span class="spinner-border spinner-border-sm float-right" role="status"
-                                    aria-hidden="true"></span>
+                                        aria-hidden="true"></span>
                                 </button>
                             </div>
                         </div>
