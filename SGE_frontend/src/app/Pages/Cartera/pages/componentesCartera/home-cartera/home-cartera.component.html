@@ -1,4 +1,14 @@
 <div class="container">
+    <div class="floating-button-container" >
+        <button  [@fadeInFromBottom]="true" class="floating-button" data-bs-toggle="modal" data-bs-target="#modalObligacion">
+          <div class="icon-container">
+            <i class="fa-solid fa-magnifying-glass fa-2x"></i>
+          </div><br>
+          <div class="text-container">
+            <span class="text">Buscar</span> <!-- Nuevo elemento de texto para mostrar en el hover -->
+          </div>
+        </button>
+      </div>
     <div class="card-c">
         <div *ngIf="newGestion.gestion.trim() != '' || newGestion.gestion.trim() != ''" class="row justify-content-end"
             data-bs-target="#offcanvasRight">
@@ -1051,7 +1061,7 @@
     </div>
 
     <!-- Modal Detalle Gestión -->
-    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalDetalle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1077,7 +1087,7 @@
     </div>
 
     <!-- Modal Ver Reporte -->
-    <div class="modal fade" id="modalReporte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalReporte" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1165,11 +1175,6 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <!-- <select [(ngModel)]="filtros.banco" name="banco" class="form-select">
-                                <option selected>Seleccione Un Banco</option>
-                                <option value="COL">COL</option>
-                                <option value="POP">POP</option>
-                            </select> -->
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold">Bancos</h6>
@@ -1191,17 +1196,6 @@
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <!-- <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text fw-bold">Inicio</span>
-                                <input [(ngModel)]="filtros.diasVencidosInicio" type="number" class="form-control">
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <div class="input-group input-group-sm mb-3">
-                                    <span class="input-group-text fw-bold">Fin</span>
-                                    <input [(ngModel)]="filtros.diasVencidosFin" type="number" class="form-control">
-                                </div>
-                            </div> -->
-
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold">Dias Vencidos</h6>
@@ -1214,11 +1208,6 @@
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <!-- <select [(ngModel)]="filtros.edadVencimiento" class="form-select" aria-label="Default select example">
-                                <option selected>Seleccione La Edad De Vencimiento</option>
-                                <option *ngFor="let t of tiposVen" value="{{ t.tipoVencimiento }}">{{ t.tipoVencimiento
-                                    }}</option>
-                            </select> -->
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold">Edad Vencimiento</h6>
@@ -1233,10 +1222,6 @@
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <!-- <select [(ngModel)]="filtros.sede" name="sede" class="form-select">
-                                <option selected>Seleccione Una Sucursal</option>
-                                <option *ngFor="let s of sedes" value="{{ s.sede }}">{{ s.sede }}</option>
-                            </select> -->
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold">Sedes</h6>
@@ -1251,13 +1236,6 @@
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <!-- <select [(ngModel)]="filtros.clasiJuridica" class="form-select" aria-label="Default select example">
-                                <option name="clasiJuridica" selected>Seleccione Una
-                                    Clasificación Jurídica</option>
-                                <option value="Normal">Normal</option>
-                                <option value="Prejuridico">Prejuridico</option>
-                                <option value="Juridico">Juridico</option>
-                            </select> -->
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold">Clasificación Jurídica</h6>
@@ -1285,18 +1263,6 @@
                                 </div>
                             </figure>
                         </div>
-                        <!-- <div class="col-md-12 mb-3">
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text fw-bold">Inicio</span>
-                                <input [(ngModel)]="filtros.saldoCapitalInicio" type="number" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text fw-bold">Fin</span>
-                                <input [(ngModel)]="filtros.saldoCapitalFin" type="number" class="form-control">
-                            </div>
-                        </div> -->
                         <figure>
                             <blockquote class="blockquote">
                                 <h6 class="fw-bold">Saldo</h6>
@@ -1321,18 +1287,6 @@
 
                         </div>
                         <div class="col-md-12 mb-3">
-                            <!-- <div class="col-md-12 mb-3">
-                                <div class="input-group input-group-sm mb-3">
-                                    <span class="input-group-text fw-bold">Inicio</span>
-                                    <input [(ngModel)]="filtros.fechaGestionInicio" type="date" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <div class="input-group input-group-sm mb-3">
-                                    <span class="input-group-text fw-bold">Fin</span>
-                                    <input [(ngModel)]="filtros.fechaGestionFin" type="date" class="form-control">
-                                </div>
-                            </div> -->
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold">Fecha Gestión</h6>
@@ -1346,20 +1300,6 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <div class="col-md-12 mb-3">
-                                <!-- <div class="col-md-12 mb-3">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <span class="input-group-text fw-bold">Inicio</span>
-                                        <input [(ngModel)]="filtros.fechaCompromisoInicio" type="date"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-12 mb-3">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <span class="input-group-text fw-bold">Fin</span>
-                                        <input [(ngModel)]="filtros.fechaCompromisoFin" type="date"
-                                            class="form-control">
-                                    </div>
-                                </div> -->
                                 <figure>
                                     <blockquote class="blockquote">
                                         <h6 class="fw-bold">Fecha Compromiso</h6>
@@ -1392,48 +1332,31 @@
     </div>
 
 
-    <!-- Offcanvas Confirmar Datos
-    <div *ngIf="newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'" class="offcanvas offcanvas-end"
-        data-bs-backdrop="static" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasTopLabel">Confirmar Datos</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
-                (click)="mostrarModalGestion()"></button>
+    <!-- MODAL BUSCAR OBLIGACION -->
+  <div class="modal fade" id="modalObligacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Buscar Obligación</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body">
-            <div class="row justify-content-center">
-                <div class="col-md-12 mb-3">
-                    <div class="input-group input-group-sm mb-3">
-                        <span class="input-group-text fw-bold">Valor Total</span>
-                        <input type="number" class="form-control" [(ngModel)]="cuentaCobrarSelected.totalObligatoria">
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-12 mb-3">
-                    <div class="input-group input-group-sm mb-3">
-                        <span class="input-group-text fw-bold">Mora Obligatoria</span>
-                        <input type="number" class="form-control" [(ngModel)]="cuentaCobrarSelected.moraObligatoria">
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-12 mb-3">
-                    <div class="input-group input-group-sm mb-3">
-                        <span class="input-group-text fw-bold">Fecha Venc</span>
-                        <input type="date" class="form-control" [(ngModel)]="cuentaCobrarSelected.fechaVencimiento">
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <button class="btn btn-danger b" (click)="mostrarModalGestion()"><i
-                            class="fa-solid fa-xmark"></i></button>
-                </div>
-                <div class="col-md-2">
-                    <button class="btn btn-success" (click)="calcular()"><i class="fa-solid fa-check"></i></button>
-                </div>
+        <div class="modal-body">
+            <div class="input-group mb-3">
+                <span class="input-group-text fw-bold">Dato</span>
+                <input [(ngModel)]="buscarObligacion"
+                    type="text" class="form-control">
             </div>
         </div>
-    </div> -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button *ngIf="!botonFiltrarObligacion" type="button" class="btn btn-danger b" (click)="getByDato()">Buscar</button>
+          <button *ngIf="botonFiltrarObligacion" class="btn btn-danger b">
+            Filtrando...
+            <span class="spinner-border spinner-border-sm float-right" role="status"
+                aria-hidden="true"></span>
+        </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

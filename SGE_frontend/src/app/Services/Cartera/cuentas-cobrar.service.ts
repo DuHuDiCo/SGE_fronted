@@ -27,11 +27,11 @@ export class CuentasCobrarService {
   }
 
   getCuentaByCedula(cedula:string){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/cuentas/getCuentaCobrarByCedula?cedula=${cedula}`)
+    return this.http.get(`http://192.168.1.29:8021/api/v1/cuentas/getCuentaCobrarByCedula?cedula=${cedula}`)
   }
 
   getCuentaByDato(dato:string){
-    return this.http.get(`http://192.168.1.6:8021/api/v1/cuentas/cuentasByDato?dato=${dato}`)
+    return this.http.get(`http://192.168.1.29:8021/api/v1/cuentas/cuentasByDato?dato=${dato}`)
   }
 
   

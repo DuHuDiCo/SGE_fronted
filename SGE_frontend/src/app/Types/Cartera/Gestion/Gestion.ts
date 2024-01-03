@@ -18,7 +18,7 @@ export type Gestion = {
       valorInteresesMora: number,
       honoriarioAcuerdo: number,
       fechaCompromiso: Date,
-      cuotasList: any[],
+      cuotasList: CuotaList[],
       username: string
     } | null
   },

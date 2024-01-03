@@ -317,6 +317,10 @@ export class HomeCarteraComponent implements OnInit {
   botonFiltro:boolean = false
   filtrando:boolean = false
 
+  // VARIABLE PARA FILTRAR OBLIGACION
+  buscarObligacion:string = ''
+  botonFiltrarObligacion: boolean = false
+
 
   ngOnInit(): void {
     this.getCuentasCobrar()
@@ -559,17 +563,7 @@ export class HomeCarteraComponent implements OnInit {
         valorInteresesMora: 0,
         honoriarioAcuerdo: 0,
         fechaCompromiso: new Date,
-        cuotasList: [
-          {
-            idCuota: 0,
-            numeroCuota: 0,
-            fechaVencimiento: new Date(),
-            valorCuota: 0,
-            capitalCuota: 0,
-            honorarios: 0,
-            cumplio: true
-          }
-        ],
+        cuotasList: [],
         username: ''
       }
 
@@ -864,8 +858,6 @@ export class HomeCarteraComponent implements OnInit {
         this.cuotas.forEach(element => {
           this.newGestion.clasificacion.acuerdoPago?.cuotasList.push(element)
         });
-        
-        this.newGestion.clasificacion.acuerdoPago?.cuotasList.splice(0, 1)
 
         //TODO:CAMBIAR POR EL NOMBRE DE USUARIO
         this.newGestion.clasificacion.acuerdoPago!.username = 'Diana1975'
@@ -988,6 +980,13 @@ export class HomeCarteraComponent implements OnInit {
                 honoriarioAcuerdo: 0,
                 fechaCompromiso: '',
                 cuotasList: [],
+                username: ''
+              }
+              this.cuentasCalcular = {
+                numeroObligacion: '',
+                valorTotal: 0,
+                moraObligatoria: 0,
+                fechaVencimiento: new Date,
                 username: ''
               }
               this.col = true              
@@ -2288,6 +2287,43 @@ export class HomeCarteraComponent implements OnInit {
       this.clasJurArray.push(clas)
     }
     console.log(this.clasJurArray);
+  }
+
+  getByDato(){
+    if(this.buscarObligacion.trim() == '' || this.buscarObligacion.trim() == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Digite Una Cédula',
+        timer: 3000
+      })
+      return
+    }
+    this.botonFiltrarObligacion = true
+    this.cuentasCobrar.getCuentaByDato(this.buscarObligacion).subscribe(
+      (data:any) => {
+        this.botonFiltrarObligacion = false
+        this.cuentasCobrarArray = data
+        console.log(data);
+        this.numeroPages = 1
+        this.cuentasCobrar.proSubject.next(true);
+        $('#modalObligacion').modal('hide');
+        
+        if(this.cuentasCobrarArray == null || this.cuentasCobrarArray.length == 0 ){
+          this.spinner = true
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No Hay Obligaciones Con Este Filtro',
+            timer: 3000
+          })
+          // this.getCuentasCobrar()
+        }
+      }, (error:any) => {
+        this.botonFiltrarObligacion = false
+        console.log(error);
+      }
+    )
   }
 
 
