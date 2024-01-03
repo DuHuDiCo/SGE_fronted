@@ -156,6 +156,7 @@
             </div>
         </div>
 
+
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <!-- SIDEBAR -->
@@ -1117,26 +1118,43 @@
                 </div>
                 <div class="modal-body">
                     <!-- PARTE ACUERDO DE PAGO-->
-                    <span *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO'">
-                        <div class="row m-3">
-                            <div class="col-md-12 ">
-                                <form action="">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="">Valor del Pago</label>
-                                            <input type="text" [(ngModel)]="pago.valor" class="form-control" name="valor">
-                                        </div>
-    
-                                        <div class="col-md-4">
-                                            <label for="">Numero Recibo</label>
-                                            <input type="text" [(ngModel)]="pago.recibo" class="form-control" name="recibo">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="">Detalle</label>
-                                            <textarea name="detalle" [(ngModel)]="pago.detalle" class="form-control" id="" cols="30"
-                                                rows="1"></textarea>
-                                        </div>
-                                        <button class="btn btn-primary" (click)="agregarPagoACuotas()">Guardar</button>
+
+                    <div class="row m-3">
+                        <div class="row">
+                            <div class="col-md-6 ">
+
+                                <h6><strong>Saldo Intreses Acuerdo: </strong> {{saldoInteresesAcuerdo | number}}</h6>
+                                <h6><strong>Saldo Honorario Acuerdo: </strong> {{saldoHonoriariosAcuerdo | number}}</h6>
+                                <h6><strong>Saldo Capital Acuerdo: </strong> {{saldoCapitalAcuerdo | number}}</h6>
+                                <h6><strong>Pagos Realizados: </strong> <a data-bs-toggle="modal"
+                                        href="#exampleModalToggle" role="button" class="btn btn-danger btn-sm"
+                                        style="background-color: #960010;border-color: #960010;"><i
+                                            class="fas fa-eye"></i></a>
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><strong>Valor Total Acuerdo: </strong>
+                                    {{gestionSelected.clasificacion.valorTotalAcuerdo | number}}</h6>
+                                <h6><strong>Fecha Acuerdo: </strong>
+                                    {{gestionSelected.clasificacion.fechaAcuerdo |
+                                    date:'dd/MM/yyyy'}}</h6>
+                                <h6><strong>Saldo Actual Acuerdo: </strong> {{saldoAcuerdoPago | number}}</h6>
+                                <h6><strong>Agregar Pago: </strong> <a 
+                                        role="button" class="btn btn-danger btn-sm" (click)="mostrarAgregarPago=true"
+                                        style="background-color: #960010;border-color: #960010;"><i
+                                            class="fas fa-plus"></i></a>
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="col-md-12 " *ngIf="mostrarAgregarPago">
+
+
+                            <form action="">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="">Valor del Pago</label>
+                                        <input type="text" [(ngModel)]="pago.valor" class="form-control" name="valor">
+
                                     </div>
     
                                 </form>
@@ -1195,6 +1213,7 @@
                                             readonly></textarea>
                                         <label for="floatingTextarea">Descripción</label>
                                     </div>
+
                                 </div>
                             </div>
                             <div class="row justify-content-center">
@@ -1203,6 +1222,7 @@
                                         <span class="input-group-text fw-bold">Fecha Tarea</span>
                                         <input type="text" class="form-control"
                                             [value]="gestionSelected.clasificacion.fechaFinTarea | date:'dd/MM/yyyy'" readonly>
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -1223,6 +1243,7 @@
                             </div>
                         </div>
                     </div>
+
 
                     <!-- NOTA -->
                     <div class="card" *ngIf="gestionSelected.clasificacion.clasificacion == 'NOTA'">
@@ -1264,6 +1285,7 @@
                             </div>
                         </div>
                       </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="modalGestionSelected()">Cerrar</button>
@@ -1275,8 +1297,10 @@
                     </span>
 
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+
                         <button *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true" type="button"
                             class="btn btn-danger b" (click)="desactivarAcuerdo()">Aplicar Pagos</button>
+
                     </span>
 
                     <!-- BOTONES TAREA -->
@@ -1457,6 +1481,7 @@
     </div>
 
 
+
     <!-- MODAL BUSCAR OBLIGACION -->
     <div class="modal fade" id="modalObligacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -1482,7 +1507,91 @@
                             aria-hidden="true"></span>
                     </button>
                 </div>
+
+</div>
+
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Pagos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                <div class="table responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Numero Recibo</th>
+                                <th>Fecha Recibo</th>
+                                <th>Valor</th>
+                                <th>Pdf</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor="let recibo of recibosPago;let i = index;">
+
+                                <td>{{i+1}}</td>
+                                <td>{{recibo.numeroRecibo}}</td>
+                                <td>{{recibo.fechaRecibo | date:'dd/MM/yyyy'}}</td>
+                                <td>{{recibo.valorRecibo | number}}</td>
+                                <td><button class="btn btn-primary" (click)="obtenerReciboPosition(i)"
+                                        class="btn btn-danger btn-sm"
+                                        style="background-color: #960010;border-color: #960010;"
+                                        data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
+                                        data-bs-dismiss="modal"><i class="fas fa-eye"></i></button>
+
+
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Recibo</h5>
+                <button type="button" class="btn-close" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <embed id="mostrarRecibo" src="" height="500px" width="465px" type="application/pdf">
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade" id="reciboPago" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Recibo de Pago</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <embed id="mostrarReciboPago" src="" height="500px" width="465px" type="application/pdf">
+
+            </div>
+
+        </div>
+    </div>
+
 </div>
