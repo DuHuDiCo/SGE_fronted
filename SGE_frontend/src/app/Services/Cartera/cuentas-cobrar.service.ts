@@ -113,11 +113,11 @@ export class CuentasCobrarService {
 
   //PAGOS
   crearRecibo(pagoCuota:any){
-    return this.http.post(`http://192.168.1.31:8021/api/v1/pagos/guardarPago`, pagoCuota)
+    return this.http.post(`http://192.168.1.30:8021/api/v1/pagos/guardarPago`, pagoCuota)
   }
 
   enviarCuotaPagada(id:number[]){
-    return this.http.put(`http://192.168.1.31:8021/api/v1/gestiones/cuotaPago`, id)
+    return this.http.put(`http://192.168.1.30:8021/api/v1/gestiones/cuotaPago`, id)
   }
 
 }

@@ -43,7 +43,7 @@ export class HomeCarteraComponent implements OnInit {
   clasificacionesT: Tarea[] = []
   tiposVen: TipoVencimiento[] = []
   disableds!: Array<boolean>
-  mostrarAgregarPago:boolean=false
+  mostrarAgregarPago: boolean = false
   pago: any = {
     valor: 0,
     detalle: '',
@@ -342,7 +342,7 @@ export class HomeCarteraComponent implements OnInit {
   filtrando: boolean = false
 
   // VARIABLE PARA FILTRAR OBLIGACION
-  buscarObligacion:string = ''
+  buscarObligacion: string = ''
   botonFiltrarObligacion: boolean = false
 
 
@@ -451,7 +451,7 @@ export class HomeCarteraComponent implements OnInit {
             this.cont = this.cont - this.size
             this.proSubscriptionBack.unsubscribe()
             this.spinner = false
-        }
+          }
         );
       }
     }
@@ -489,7 +489,7 @@ export class HomeCarteraComponent implements OnInit {
   //IR A UNA PAGINA ESPECIFICA
   goToPage(page: number) {
     this.page = page
-    if(this.filtrando){
+    if (this.filtrando) {
       this.spinner = true
       this.filtro()
       this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
@@ -511,7 +511,7 @@ export class HomeCarteraComponent implements OnInit {
         }
       );
     }
-    
+
   }
 
   findCuentaCobrar(numeroObligacion: string) {
@@ -878,7 +878,7 @@ export class HomeCarteraComponent implements OnInit {
             timer: 3000
           })
           return
-        }        
+        }
 
         this.newGestion.clasificacion.acuerdoPago = this.acuerdo
         this.cuotas.forEach(element => {
@@ -972,64 +972,64 @@ export class HomeCarteraComponent implements OnInit {
       if (result.isConfirmed) {
         console.log(this.newGestion);
         this.gestionButton = true
-          this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
-            (data:any) => {
-              this.gestiones.push(data)
-              console.log(this.gestiones);
-              this.mostrarReporte()
-              Swal.fire({
-                icon: 'success',
-                title: 'Datos Guardados',
-                text: 'Gestión Guardada Exitosamente',
-                timer: 3000
-              })
-              this.gestionButton = false
-              this.newGestion = {
-                numeroObligacion: this.newGestion.numeroObligacion,
-                clasificacion: {
-                  tipoClasificacion: null,
-                  tarea: null,
-                  nota: null,
-                  acuerdoPago: null,
-                  nombreClasificacion: ''
-                },
-                gestion: '',
-                contact: false,
-                detallesAdicionales: this.newGestion.detallesAdicionales
-              }
-              this.cuotas = []
-              this.disabledFecha = false
-              this.acuerdo = {
-                detalle: '',
-                valorCuotaMensual: 0,
-                tipoAcuerdo: '',
-                valorTotalAcuerdo: 0,
-                valorInteresesMora: 0,
-                honoriarioAcuerdo: 0,
-                fechaCompromiso: '',
-                cuotasList: [],
-                username: ''
-              }
-              this.cuentasCalcular = {
-                numeroObligacion: '',
-                valorTotal: 0,
-                moraObligatoria: 0,
-                fechaVencimiento: new Date,
-                username: ''
-              }
-              this.col = true              
-              $('#modalDetalle').modal('hide');
-              $('#modalReporte').modal('show');
-            }, (error:any) => {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error Al Guardar La Gestión',
-                timer: 3000
-              })
-              this.gestionButton = false
+        this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
+          (data: any) => {
+            this.gestiones.push(data)
+            console.log(this.gestiones);
+            this.mostrarReporte()
+            Swal.fire({
+              icon: 'success',
+              title: 'Datos Guardados',
+              text: 'Gestión Guardada Exitosamente',
+              timer: 3000
+            })
+            this.gestionButton = false
+            this.newGestion = {
+              numeroObligacion: this.newGestion.numeroObligacion,
+              clasificacion: {
+                tipoClasificacion: null,
+                tarea: null,
+                nota: null,
+                acuerdoPago: null,
+                nombreClasificacion: ''
+              },
+              gestion: '',
+              contact: false,
+              detallesAdicionales: this.newGestion.detallesAdicionales
             }
-          )
+            this.cuotas = []
+            this.disabledFecha = false
+            this.acuerdo = {
+              detalle: '',
+              valorCuotaMensual: 0,
+              tipoAcuerdo: '',
+              valorTotalAcuerdo: 0,
+              valorInteresesMora: 0,
+              honoriarioAcuerdo: 0,
+              fechaCompromiso: '',
+              cuotasList: [],
+              username: ''
+            }
+            this.cuentasCalcular = {
+              numeroObligacion: '',
+              valorTotal: 0,
+              moraObligatoria: 0,
+              fechaVencimiento: new Date,
+              username: ''
+            }
+            this.col = true
+            $('#modalDetalle').modal('hide');
+            $('#modalReporte').modal('show');
+          }, (error: any) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error Al Guardar La Gestión',
+              timer: 3000
+            })
+            this.gestionButton = false
+          }
+        )
       }
     })
   }
@@ -1157,20 +1157,29 @@ export class HomeCarteraComponent implements OnInit {
       detallesAdicionales: ''
     }
 
+
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
     console.log(id);
 
     this.gestionSelected = gestion
     console.log(this.gestionSelected);
 
-    if(this.gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO'){
+    if (this.gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO') {
       this.obtenerCuotas()
     }
-    
+
   }
 
-  obtenerCuotas(){
+  obtenerCuotas() {
     this.cuotasList = []
+    this.totalCuotasAcuerdo = 0
+    this.totalCapital = 0
+    this.totalHonorarios = 0
+    this.totalIntereses = 0
+    this.saldoInteresesAcuerdo = 0
+    this.saldoHonoriariosAcuerdo = 0
+    this.saldoCapitalAcuerdo = 0
+    this.saldoAcuerdoPago = 0
 
     this.gestionSelected.clasificacion.cuotasList.forEach((c: any) => {
       this.cuotasList.push(c)
@@ -1378,7 +1387,7 @@ export class HomeCarteraComponent implements OnInit {
     $('#offcanvasTop').offcanvas('hide');
   }
 
-  modalGestionSelected(){
+  modalGestionSelected() {
     $('#modalHistoricoG').modal('show');
     $('#modalGestionCom').modal('hide');
   }
@@ -2224,7 +2233,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   seleccionarSize(numero: number) {
-    if(this.filtrando){
+    if (this.filtrando) {
       switch (numero) {
         case 20:
           this.size = 20
@@ -2395,8 +2404,8 @@ export class HomeCarteraComponent implements OnInit {
     console.log(this.clasJurArray);
   }
 
-  getByDato(){
-    if(this.buscarObligacion.trim() == '' || this.buscarObligacion.trim() == null){
+  getByDato() {
+    if (this.buscarObligacion.trim() == '' || this.buscarObligacion.trim() == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -2407,15 +2416,15 @@ export class HomeCarteraComponent implements OnInit {
     }
     this.botonFiltrarObligacion = true
     this.cuentasCobrar.getCuentaByDato(this.buscarObligacion).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.botonFiltrarObligacion = false
         this.cuentasCobrarArray = data
         console.log(data);
         this.numeroPages = 1
         this.cuentasCobrar.proSubject.next(true);
         $('#modalObligacion').modal('hide');
-        
-        if(this.cuentasCobrarArray == null || this.cuentasCobrarArray.length == 0 ){
+
+        if (this.cuentasCobrarArray == null || this.cuentasCobrarArray.length == 0) {
           this.spinner = true
           Swal.fire({
             icon: 'error',
@@ -2425,7 +2434,7 @@ export class HomeCarteraComponent implements OnInit {
           })
           // this.getCuentasCobrar()
         }
-      }, (error:any) => {
+      }, (error: any) => {
         this.botonFiltrarObligacion = false
         console.log(error);
       }
@@ -2791,7 +2800,7 @@ export class HomeCarteraComponent implements OnInit {
 
     console.log(this.coutasRequest);
 
-    
+
 
   }
 
@@ -2835,23 +2844,23 @@ export class HomeCarteraComponent implements OnInit {
       recibo.username = user;
       console.log(recibo);
 
-      // this.cuentasCobrar.crearRecibo(recibo).subscribe(
-      //   (data: any) => {
-      //     console.log(data);
+      this.cuentasCobrar.crearRecibo(recibo).subscribe(
+        (data: any) => {
+          console.log(data);
 
-      //     this.mostrarReciboPago(data.base64)
+          this.mostrarReciboPago(data.base64)
 
 
-      //     console.log(recibo);
-      //     this.activarGuardarPago = false
-      //     this.savePago = false
-      //   }, (error: any) => {
-      //     this.activarGuardarPago = false
-      //     this.savePago = false
-      //     console.log(error);
+          console.log(recibo);
+          this.activarGuardarPago = false
+          this.savePago = false
+        }, (error: any) => {
+          this.activarGuardarPago = false
+          this.savePago = false
+          console.log(error);
 
-      //   }
-      // )
+        }
+      )
     }
 
 
