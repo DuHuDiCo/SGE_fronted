@@ -1622,49 +1622,89 @@
         </div>
     </div>
 
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Pagos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Numero Recibo</th>
+                                <th>Fecha Recibo</th>
+                                <th>Valor</th>
+                                <th>Pdf</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-    <!-- Offcanvas Confirmar Datos
-    <div *ngIf="newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'" class="offcanvas offcanvas-end"
-        data-bs-backdrop="static" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasTopLabel">Confirmar Datos</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
-                (click)="mostrarModalGestion()"></button>
+                            <tr *ngFor="let recibo of recibosPago;let i = index;">
+
+                                <td>{{i+1}}</td>
+                                <td>{{recibo.numeroRecibo}}</td>
+                                <td>{{recibo.fechaRecibo | date:'dd/MM/yyyy'}}</td>
+                                <td>{{recibo.valorRecibo | number}}</td>
+                                <td><button class="btn btn-primary" (click)="obtenerReciboPosition(i)"
+                                        class="btn btn-danger btn-sm"
+                                        style="background-color: #960010;border-color: #960010;"
+                                        data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
+                                        data-bs-dismiss="modal"><i class="fas fa-eye"></i></button>
+
+
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
-        <div class="offcanvas-body">
-            <div class="row justify-content-center">
-                <div class="col-md-12 mb-3">
-                    <div class="input-group input-group-sm mb-3">
-                        <span class="input-group-text fw-bold">Valor Total</span>
-                        <input type="number" class="form-control" [(ngModel)]="cuentaCobrarSelected.totalObligatoria">
-                    </div>
-                </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Recibo</h5>
+                <button type="button" class="btn-close" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-md-12 mb-3">
-                    <div class="input-group input-group-sm mb-3">
-                        <span class="input-group-text fw-bold">Mora Obligatoria</span>
-                        <input type="number" class="form-control" [(ngModel)]="cuentaCobrarSelected.moraObligatoria">
-                    </div>
-                </div>
+            <div class="modal-body">
+                <embed id="mostrarRecibo" src="" height="500px" width="465px" type="application/pdf">
+
+
             </div>
-            <div class="row justify-content-center">
-                <div class="col-md-12 mb-3">
-                    <div class="input-group input-group-sm mb-3">
-                        <span class="input-group-text fw-bold">Fecha Venc</span>
-                        <input type="date" class="form-control" [(ngModel)]="cuentaCobrarSelected.fechaVencimiento">
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <button class="btn btn-danger b" (click)="mostrarModalGestion()"><i
-                            class="fa-solid fa-xmark"></i></button>
-                </div>
-                <div class="col-md-2">
-                    <button class="btn btn-success" (click)="calcular()"><i class="fa-solid fa-check"></i></button>
-                </div>
-            </div>
+
         </div>
-    </div> -->
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="reciboPago" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Recibo de Pago</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <embed id="mostrarReciboPago" src="" height="500px" width="465px" type="application/pdf">
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
 </div>
