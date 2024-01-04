@@ -78,7 +78,7 @@ export type Gestion = {
   nombreCliente: string,
   fechaGestion: Date,
   fechaCompromiso: Date,
-  clasificacionGestion: ClasificacionGestion,
+  clasificacionGestion: any,
   gestion: string,
   valorCompromiso: string,
   gestionLlamada: string,

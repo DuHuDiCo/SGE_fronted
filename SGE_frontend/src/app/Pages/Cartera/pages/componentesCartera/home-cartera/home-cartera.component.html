@@ -1,4 +1,15 @@
 <div class="container">
+    <div class="floating-button-container">
+        <button [@fadeInFromBottom]="true" class="floating-button" data-bs-toggle="modal"
+            data-bs-target="#modalObligacion">
+            <div class="icon-container">
+                <i class="fa-solid fa-magnifying-glass fa-2x"></i>
+            </div><br>
+            <div class="text-container">
+                <span class="text">Buscar</span> <!-- Nuevo elemento de texto para mostrar en el hover -->
+            </div>
+        </button>
+    </div>
     <div class="card-c">
         <div *ngIf="newGestion.gestion.trim() != '' || newGestion.gestion.trim() != ''" class="row justify-content-end"
             data-bs-target="#offcanvasRight">
@@ -145,210 +156,13 @@
             </div>
         </div>
 
-        <!-- FILTROS -->
-        <!-- <div class="accordion" id="accordionExample" *ngIf="!spinner">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#accordionFiltros" aria-expanded="true" aria-controls="collapseOne">
-                        Filtros
-                    </button>
-                </h2>
-                <div id="accordionFiltros" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <div class="row justify-content-center mb-3">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row justify-content-center mb-2">
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[1])">
-                                                    <label class="form-check-label">
-                                                        Banco
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[2])">
-                                                    <label class="form-check-label">
-                                                        Dias Ven.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[3])">
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                        Edad Ven.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[4])">
-                                                    <label class="form-check-label">
-                                                        Sucursal
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[6])">
-                                                    <label class="form-check-label">
-                                                        Clas. Juri
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[7])">
-                                                    <label class="form-check-label">
-                                                        Saldo Cap.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[8])">
-                                                    <label class="form-check-label">
-                                                        Año
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[9])">
-                                                    <label class="form-check-label">
-                                                        F. Gestión
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                    (click)="activarFiltros(constantes[10])">
-                                                    <label class="form-check-label">
-                                                        F. Compro.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div *ngIf="filtrosArray.length > 0" class="row justify-content-center mb-3">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row justify-content-center">
-                                            <div *ngIf="filtrosArray.includes(constantes[1])" class="col-md-2 mb-3">
-                                                <select [(ngModel)]="filtros.banco" name="banco" class="form-select">
-                                                    <option selected>Seleccione Un Banco</option>
-                                                    <option value="COL">COL</option>
-                                                    <option value="POP">POP</option>
-                                                </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[2])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione Los Dias Vencidos</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                  </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[3])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione La Edad De Vencimiento</option>
-                                                    <option *ngFor="let t of tiposVen" value="{{ t.tipoVencimiento }}">{{ t.tipoVencimiento }}</option>
-                                                  </select>
-                                            </div>
-
-                                            <div *ngIf="filtrosArray.includes(constantes[4])" class="col-md-2 mb-3">
-                                                <select [(ngModel)]="filtros.sede" name="sede" class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione Una Sucursal</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                  </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[6])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option [(ngModel)]="filtros.clasiJuridica" name="clasiJuridica" selected>Seleccione Una Clasificación Jurídica</option>
-                                                    <option value="Normal">Normal</option>
-                                                    <option value="Prejuridico">Prejuridico</option>
-                                                    <option value="Juridico">Juridico</option>
-                                                  </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[7])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione Un Saldo</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                  </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[8])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione Un Año</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                  </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[9])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione Una Fecha Gestión</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                  </select>
-                                            </div>
-                                            <div *ngIf="filtrosArray.includes(constantes[10])" class="col-md-2 mb-3">
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected>Seleccione Una Fecha Compromiso</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                  </select>
-                                            </div>
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-1">
-                                                    <button *ngIf="filtrosArray.length != 0" class="btn btn-danger b" (click)="filtro()">Filtrar</button>  
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
 
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <!-- SIDEBAR -->
                 <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasRight"
                     aria-labelledby="offcanvasRightLabel" style="height: 77%;">
-                    <div class="offcanvas-header">
+                    <div *ngIf="!spinnerSidebar" class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasRightLabel">Datos Cliente</h5>
                         <button *ngIf="deshabilitarInputs" class="btn btn-danger b" data-bs-toggle="modal"
                             data-bs-target="#modalGestion">Nueva
@@ -588,7 +402,7 @@
                                                         <div class="input-group input-group-sm">
                                                             <span class="input-group-text fw-bold">Mora/Venc</span>
                                                             <input type="text"
-                                                                [(ngModel)]="cuentaCobrarSelected.edadVencimiento"
+                                                                [(ngModel)]="cuentaCobrarSelected.tiposVencimiento.tipoVencimiento"
                                                                 class="form-control" disabled>
                                                             <input type="text"
                                                                 [(ngModel)]="cuentaCobrarSelected.diasVencidos"
@@ -907,8 +721,18 @@
                                 <td *ngIf="!Columnas.includes('CLAS JURI')">{{ cc.clasificacionJuridica }}</td>
                                 <td *ngIf="!Columnas.includes('SALDO CAP')">{{ cc.totalObligatoria | number }}</td>
                                 <td *ngIf="!Columnas.includes('ANIO')">{{ cc.fechaCuentaCobrar | date:'yyyy' }}</td>
-                                <td *ngIf="!Columnas.includes('F GESTION')">25/05/2023</td>
-                                <td *ngIf="!Columnas.includes('F COMPRO')">25/05/2023</td>
+                                <td *ngIf="!Columnas.includes('F GESTION')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
+                                    cc.gestion[cc.gestion.length-1].fechaGestion | date:"d/M/yyyy" }}</td>
+                                <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.nombresClasificacion.tipo ==
+                                    'TAREA' ?
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaTarea | date:"d/M/yyyy")
+                                    :
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.nombresClasificacion.tipo ==
+                                    'NOTA' ? 'NOTA' :
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso |
+                                    date:"d/M/yyyy")))}}
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -1197,17 +1021,6 @@
                         data-bs-target="#modalGestion"></button>
                 </div>
                 <div class="modal-body">
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Active</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                    </ul>
                     <div class="table-responsive align-middle">
                         <table class="table table-bordered text-center table-hover">
                             <thead>
@@ -1247,7 +1060,8 @@
     </div>
 
     <!-- Modal Detalle Gestión -->
-    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalDetalle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1273,7 +1087,8 @@
     </div>
 
     <!-- Modal Ver Reporte -->
-    <div class="modal fade" id="modalReporte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalReporte" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1294,7 +1109,7 @@
     </div>
 
     <!-- Modal Gestion Completa -->
-    <div class="modal fade" id="modalGestionCom" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalGestionCom" tabindex="-1" data-bs-show="true" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1303,82 +1118,195 @@
                 </div>
                 <div class="modal-body">
                     <!-- PARTE ACUERDO DE PAGO-->
+
                     <div class="row m-3">
-                        <div class="col-md-12 ">
+                        <div class="row">
+                            <div class="col-md-6 ">
+
+                                <h6><strong>Saldo Intreses Acuerdo: </strong> {{saldoInteresesAcuerdo | number}}</h6>
+                                <h6><strong>Saldo Honorario Acuerdo: </strong> {{saldoHonoriariosAcuerdo | number}}</h6>
+                                <h6><strong>Saldo Capital Acuerdo: </strong> {{saldoCapitalAcuerdo | number}}</h6>
+                                <h6><strong>Pagos Realizados: </strong> <a data-bs-toggle="modal"
+                                        href="#exampleModalToggle" role="button" class="btn btn-danger btn-sm"
+                                        style="background-color: #960010;border-color: #960010;"><i
+                                            class="fas fa-eye"></i></a>
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><strong>Valor Total Acuerdo: </strong>
+                                    {{gestionSelected.clasificacion.valorTotalAcuerdo | number}}</h6>
+                                <h6><strong>Fecha Acuerdo: </strong>
+                                    {{gestionSelected.clasificacion.fechaAcuerdo |
+                                    date:'dd/MM/yyyy'}}</h6>
+                                <h6><strong>Saldo Actual Acuerdo: </strong> {{saldoAcuerdoPago | number}}</h6>
+                                <h6><strong>Agregar Pago: </strong> <a 
+                                        role="button" class="btn btn-danger btn-sm" (click)="mostrarAgregarPago=true"
+                                        style="background-color: #960010;border-color: #960010;"><i
+                                            class="fas fa-plus"></i></a>
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="col-md-12 " *ngIf="mostrarAgregarPago">
+
+
                             <form action="">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="">Valor del Pago</label>
                                         <input type="text" [(ngModel)]="pago.valor" class="form-control" name="valor">
-                                    </div>
 
-                                    <div class="col-md-4">
-                                        <label for="">Numero Recibo</label>
-                                        <input type="text" [(ngModel)]="pago.recibo" class="form-control" name="recibo">
                                     </div>
-                                    <div class="col-md-4">
-                                        <label for="">Detalle</label>
-                                        <textarea name="detalle" [(ngModel)]="pago.detalle" class="form-control" id="" cols="30"
-                                            rows="1"></textarea>
-                                    </div>
-                                    <button class="btn btn-primary" (click)="agregarPagoACuotas()">Guardar</button>
+    
                                 </div>
-
-                            </form>
-
+                                </form>
+                            </div>
+    
+    
                         </div>
-
-                    </div>
-
-                    <div class="table-responsive align-middle">
-                        <table class="table table-bordered text-center table-hover table-sm align-middle">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Cuota</th>
-                                    <th scope="col">Fecha Venc</th>
-                                    <th scope="col">Valor Cuota</th>
-                                    <th scope="col">Capital Cuota</th>
-                                    <th scope="col">Honorarios</th>
-                                    <th scope="col">Interes</th>
-                                    <th scope="col">Pago</th>
-                                </tr>
-                            </thead>
-                            <tbody *ngIf="gestionSelected != null">
-
-                                <tr *ngFor="let g of cuotasList">
-                                    <td>{{ g.numeroCuota }}</td>
-                                    <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
-                                    <td>{{ g.valorCuota | number }}</td>
-                                    <td>{{ g.capitalCuota | number }}</td>
-                                    <td>{{ g.honorarios | number }}</td>
-                                    <td>{{ g.interesCuota | number }}</td>
-                                    <td class="justify-content-center">
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-6">
-                                                <div class="form-check text-center">
-                                                    <input cli class="form-check-input" type="checkbox"
-                                                        [checked]="g.cumplio==true"
-                                                        [disabled]="g.cumplio==true">
+    
+                        <div class="table-responsive align-middle">
+                            <table class="table table-bordered text-center table-hover table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Cuota</th>
+                                        <th scope="col">Fecha Venc</th>
+                                        <th scope="col">Valor Cuota</th>
+                                        <th scope="col">Capital Cuota</th>
+                                        <th scope="col">Honorarios</th>
+                                        <th scope="col">Interes</th>
+                                        <th scope="col">Pago</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="gestionSelected != null">
+    
+                                    <tr *ngFor="let g of cuotasList">
+                                        <td>{{ g.numeroCuota }}</td>
+                                        <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
+                                        <td>{{ g.valorCuota | number }}</td>
+                                        <td>{{ g.capitalCuota | number }}</td>
+                                        <td>{{ g.honorarios | number }}</td>
+                                        <td>{{ g.interesCuota | number }}</td>
+                                        <td class="justify-content-center">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-6">
+                                                    <div class="form-check text-center">
+                                                        <input cli class="form-check-input" type="checkbox"
+                                                            [checked]="g.cumplio==true"
+                                                            [disabled]="g.cumplio==true">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+    
+                                </tbody>
+                            </table>
+                        </div>
 
-                            </tbody>
-                        </table>
+                    <!-- TAREA -->
+                    <div class="card" *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA'">
+                        <div class="card-body">
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <textarea [(ngModel)]="gestionSelected.detallesGestion" class="form-control"
+                                            readonly></textarea>
+                                        <label for="floatingTextarea">Descripción</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text fw-bold">Fecha Tarea</span>
+                                        <input type="text" class="form-control"
+                                            [value]="gestionSelected.clasificacion.fechaFinTarea | date:'dd/MM/yyyy'" readonly>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text fw-bold">Detalle Tarea</span>
+                                        <input type="text" class="form-control" [(ngModel)]="gestionSelected.clasificacion.detalleTarea" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <textarea [(ngModel)]="gestionSelected.detallesAdicionales" class="form-control"
+                                            readonly></textarea>
+                                        <label for="floatingTextarea">Detalles Adicionales</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+
+                    <!-- NOTA -->
+                    <div class="card" *ngIf="gestionSelected.clasificacion.clasificacion == 'NOTA'">
+                        <div class="card-body">
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <textarea [(ngModel)]="gestionSelected.detallesGestion" class="form-control"
+                                            readonly></textarea>
+                                        <label for="floatingTextarea">Descripción</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <textarea [(ngModel)]="gestionSelected.clasificacion.detalleNota" class="form-control"
+                                            readonly></textarea>
+                                        <label for="floatingTextarea">Detalle Nota</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text fw-bold">Fecha Nota</span>
+                                        <input type="text" class="form-control" [value]="gestionSelected.clasificacion.fechaNota | date:'dd/MM/yyyy'" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <textarea [(ngModel)]="gestionSelected.detallesAdicionales" class="form-control"
+                                            readonly></textarea>
+                                        <label for="floatingTextarea">Detalles Adicionales</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" (click)="modalGestionSelected()">Cerrar</button>
+
+                    <!-- BOTONES ACUERDO DE PAGO -->
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
-                        <button *ngIf="gestionSelected.clasificacion.isActive == true" type="button"
+                        <button *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true" type="button"
                             class="btn btn-danger b" (click)="desactivarAcuerdo()">Desactivar</button>
                     </span>
 
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
-                        <button *ngIf="gestionSelected.clasificacion.isActive == true" type="button"
+
+                        <button *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true" type="button"
                             class="btn btn-danger b" (click)="desactivarAcuerdo()">Aplicar Pagos</button>
+
+                    </span>
+
+                    <!-- BOTONES TAREA -->
+                    <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+                        <button *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA'" type="button"
+                            class="btn btn-danger b">Desactivar</button>
                     </span>
                 </div>
             </div>
@@ -1396,11 +1324,6 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <!-- <select [(ngModel)]="filtros.banco" name="banco" class="form-select">
-                                <option selected>Seleccione Un Banco</option>
-                                <option value="COL">COL</option>
-                                <option value="POP">POP</option>
-                            </select> -->
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold">Bancos</h6>
@@ -1422,17 +1345,6 @@
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <!-- <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text fw-bold">Inicio</span>
-                                <input [(ngModel)]="filtros.diasVencidosInicio" type="number" class="form-control">
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <div class="input-group input-group-sm mb-3">
-                                    <span class="input-group-text fw-bold">Fin</span>
-                                    <input [(ngModel)]="filtros.diasVencidosFin" type="number" class="form-control">
-                                </div>
-                            </div> -->
-
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold">Dias Vencidos</h6>
@@ -1445,11 +1357,6 @@
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <!-- <select [(ngModel)]="filtros.edadVencimiento" class="form-select" aria-label="Default select example">
-                                <option selected>Seleccione La Edad De Vencimiento</option>
-                                <option *ngFor="let t of tiposVen" value="{{ t.tipoVencimiento }}">{{ t.tipoVencimiento
-                                    }}</option>
-                            </select> -->
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold">Edad Vencimiento</h6>
@@ -1464,10 +1371,6 @@
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <!-- <select [(ngModel)]="filtros.sede" name="sede" class="form-select">
-                                <option selected>Seleccione Una Sucursal</option>
-                                <option *ngFor="let s of sedes" value="{{ s.sede }}">{{ s.sede }}</option>
-                            </select> -->
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold">Sedes</h6>
@@ -1482,13 +1385,6 @@
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <!-- <select [(ngModel)]="filtros.clasiJuridica" class="form-select" aria-label="Default select example">
-                                <option name="clasiJuridica" selected>Seleccione Una
-                                    Clasificación Jurídica</option>
-                                <option value="Normal">Normal</option>
-                                <option value="Prejuridico">Prejuridico</option>
-                                <option value="Juridico">Juridico</option>
-                            </select> -->
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold">Clasificación Jurídica</h6>
@@ -1516,18 +1412,6 @@
                                 </div>
                             </figure>
                         </div>
-                        <!-- <div class="col-md-12 mb-3">
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text fw-bold">Inicio</span>
-                                <input [(ngModel)]="filtros.saldoCapitalInicio" type="number" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text fw-bold">Fin</span>
-                                <input [(ngModel)]="filtros.saldoCapitalFin" type="number" class="form-control">
-                            </div>
-                        </div> -->
                         <figure>
                             <blockquote class="blockquote">
                                 <h6 class="fw-bold">Saldo</h6>
@@ -1552,18 +1436,6 @@
 
                         </div>
                         <div class="col-md-12 mb-3">
-                            <!-- <div class="col-md-12 mb-3">
-                                <div class="input-group input-group-sm mb-3">
-                                    <span class="input-group-text fw-bold">Inicio</span>
-                                    <input [(ngModel)]="filtros.fechaGestionInicio" type="date" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <div class="input-group input-group-sm mb-3">
-                                    <span class="input-group-text fw-bold">Fin</span>
-                                    <input [(ngModel)]="filtros.fechaGestionFin" type="date" class="form-control">
-                                </div>
-                            </div> -->
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold">Fecha Gestión</h6>
@@ -1577,20 +1449,6 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <div class="col-md-12 mb-3">
-                                <!-- <div class="col-md-12 mb-3">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <span class="input-group-text fw-bold">Inicio</span>
-                                        <input [(ngModel)]="filtros.fechaCompromisoInicio" type="date"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-12 mb-3">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <span class="input-group-text fw-bold">Fin</span>
-                                        <input [(ngModel)]="filtros.fechaCompromisoFin" type="date"
-                                            class="form-control">
-                                    </div>
-                                </div> -->
                                 <figure>
                                     <blockquote class="blockquote">
                                         <h6 class="fw-bold">Fecha Compromiso</h6>
