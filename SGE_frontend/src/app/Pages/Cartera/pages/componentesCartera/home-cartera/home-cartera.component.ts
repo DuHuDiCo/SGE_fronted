@@ -1158,6 +1158,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     this.coutasRequest = []
+    this.recibosPago = []
 
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
     console.log(id);
