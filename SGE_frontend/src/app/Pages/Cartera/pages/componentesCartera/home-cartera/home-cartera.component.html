@@ -169,17 +169,17 @@
                             Gestion</button>
                         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalHistoricoG"
                             (click)="cerrarGestiones()">Historico Gestiones</button>
-                        <!-- <button class="btn btn-secondary" data-bs-toggle="modal"
-                            data-bs-target="#modalHistoricoA">Historico Abonos</button> -->
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
-                        <div *ngIf="spinnerSidebar" class="text-center align-middle">
-                            <div class="spinner-border" role="status"
-                                style="width: 5rem; height: 5rem; color: #960010;">
+                        <div *ngIf="spinnerSidebar" class="d-flex align-items-center justify-content-center" style="height: 70vh;">
+                            <div class="text-center">
+                              <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
                                 <span class="visually-hidden"></span>
+                              </div>
                             </div>
-                        </div>
+                          </div>
+                          
                         <div *ngIf="!spinnerSidebar" class="card">
                             <div class="card-header">
                                 <h5 class="text-center">Gestor Encargado: {{
@@ -1079,8 +1079,8 @@
                     </select>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" (click)="saveGestionWithDetalle('NO')">NO</button>
-                    <button class="btn btn-primary" (click)="saveGestionWithDetalle('SI')">SI</button>
+                    <button class="btn btn-danger" (click)="saveGestionWithDetalle('NO')">GUARDAR SIN DETALLE</button>
+                    <button class="btn btn-primary" (click)="saveGestionWithDetalle('SI')">GUARDAR CON DETALLE</button>
                 </div>
             </div>
         </div>
@@ -1116,7 +1116,7 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Gestión Seleccionada</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" *ngIf="gestionSelected != null">
                     <!-- PARTE ACUERDO DE PAGO-->
                     <span *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO'">
                         <div class="row m-3">

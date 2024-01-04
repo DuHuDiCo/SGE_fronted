@@ -885,8 +885,6 @@ export class HomeCarteraComponent implements OnInit {
           this.newGestion.clasificacion.acuerdoPago?.cuotasList.push(element)
         });
 
-        this.newGestion.clasificacion.acuerdoPago?.cuotasList.splice(0, 1)
-
         //TODO:CAMBIAR POR EL NOMBRE DE USUARIO
         this.newGestion.clasificacion.acuerdoPago!.username = 'Diana1975'
         console.log(this.newGestion.clasificacion.acuerdoPago);
@@ -974,7 +972,7 @@ export class HomeCarteraComponent implements OnInit {
         this.gestionButton = true
           this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
             (data:any) => {
-              this.gestiones.push(data)
+              this.getGestiones(this.newGestion.numeroObligacion)
               console.log(this.gestiones);
               this.mostrarReporte()
               Swal.fire({
@@ -1102,6 +1100,8 @@ export class HomeCarteraComponent implements OnInit {
       console.log(this.gestionSelected);
 
       if (this.gestionSelected != null || this.gestionSelected != undefined) {
+
+        this.getOneGestion(this.gestionSelected.idGestion)
 
         this.newGestion.contact = false
 
