@@ -1157,6 +1157,7 @@ export class HomeCarteraComponent implements OnInit {
       detallesAdicionales: ''
     }
 
+    this.coutasRequest = []
 
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
     console.log(id);
@@ -2854,6 +2855,7 @@ export class HomeCarteraComponent implements OnInit {
           console.log(recibo);
           this.activarGuardarPago = false
           this.savePago = false
+          this.coutasRequest = []
         }, (error: any) => {
           this.activarGuardarPago = false
           this.savePago = false
