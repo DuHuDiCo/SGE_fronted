@@ -1119,88 +1119,90 @@
                 <div class="modal-body">
                     <!-- PARTE ACUERDO DE PAGO-->
 
-                    <div class="row m-3">
-                        <div class="row">
-                            <div class="col-md-6 ">
-
-                                <h6><strong>Saldo Intreses Acuerdo: </strong> {{saldoInteresesAcuerdo | number}}</h6>
-                                <h6><strong>Saldo Honorario Acuerdo: </strong> {{saldoHonoriariosAcuerdo | number}}</h6>
-                                <h6><strong>Saldo Capital Acuerdo: </strong> {{saldoCapitalAcuerdo | number}}</h6>
-                                <h6><strong>Pagos Realizados: </strong> <a data-bs-toggle="modal"
-                                        href="#exampleModalToggle" role="button" class="btn btn-danger btn-sm"
-                                        style="background-color: #960010;border-color: #960010;"><i
-                                            class="fas fa-eye"></i></a>
-                                </h6>
+                    <span *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO'">
+                        <div class="row m-3">
+                            <div class="row">
+                                <div class="col-md-6 ">
+    
+                                    <h6><strong>Saldo Intreses Acuerdo: </strong> {{saldoInteresesAcuerdo | number}}</h6>
+                                    <h6><strong>Saldo Honorario Acuerdo: </strong> {{saldoHonoriariosAcuerdo | number}}</h6>
+                                    <h6><strong>Saldo Capital Acuerdo: </strong> {{saldoCapitalAcuerdo | number}}</h6>
+                                    <h6><strong>Pagos Realizados: </strong> <a data-bs-toggle="modal"
+                                            href="#exampleModalToggle" role="button" class="btn btn-danger btn-sm"
+                                            style="background-color: #960010;border-color: #960010;"><i
+                                                class="fas fa-eye"></i></a>
+                                    </h6>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6><strong>Valor Total Acuerdo: </strong>
+                                        {{gestionSelected.clasificacion.valorTotalAcuerdo | number}}</h6>
+                                    <h6><strong>Fecha Acuerdo: </strong>
+                                        {{gestionSelected.clasificacion.fechaAcuerdo |
+                                        date:'dd/MM/yyyy'}}</h6>
+                                    <h6><strong>Saldo Actual Acuerdo: </strong> {{saldoAcuerdoPago | number}}</h6>
+                                    <h6><strong>Agregar Pago: </strong> <a 
+                                            role="button" class="btn btn-danger btn-sm" (click)="mostrarAgregarPago=true"
+                                            style="background-color: #960010;border-color: #960010;"><i
+                                                class="fas fa-plus"></i></a>
+                                    </h6>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <h6><strong>Valor Total Acuerdo: </strong>
-                                    {{gestionSelected.clasificacion.valorTotalAcuerdo | number}}</h6>
-                                <h6><strong>Fecha Acuerdo: </strong>
-                                    {{gestionSelected.clasificacion.fechaAcuerdo |
-                                    date:'dd/MM/yyyy'}}</h6>
-                                <h6><strong>Saldo Actual Acuerdo: </strong> {{saldoAcuerdoPago | number}}</h6>
-                                <h6><strong>Agregar Pago: </strong> <a 
-                                        role="button" class="btn btn-danger btn-sm" (click)="mostrarAgregarPago=true"
-                                        style="background-color: #960010;border-color: #960010;"><i
-                                            class="fas fa-plus"></i></a>
-                                </h6>
-                            </div>
-                        </div>
-                        <div class="col-md-12 " *ngIf="mostrarAgregarPago">
-
-
-                            <form action="">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <label for="">Valor del Pago</label>
-                                        <input type="text" [(ngModel)]="pago.valor" class="form-control" name="valor">
-
+                            <div class="col-md-12 " *ngIf="mostrarAgregarPago">
+    
+    
+                                <form action="">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="">Valor del Pago</label>
+                                            <input type="text" [(ngModel)]="pago.valor" class="form-control" name="valor">
+    
+                                        </div>
                                     </div>
-    
-                                </form>
-    
+        
+                                    </form>
+        
+                                </div>
+        
                             </div>
-    
-                        </div>
-    
-                        <div class="table-responsive align-middle">
-                            <table class="table table-bordered text-center table-hover table-sm align-middle">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Cuota</th>
-                                        <th scope="col">Fecha Venc</th>
-                                        <th scope="col">Valor Cuota</th>
-                                        <th scope="col">Capital Cuota</th>
-                                        <th scope="col">Honorarios</th>
-                                        <th scope="col">Interes</th>
-                                        <th scope="col">Pago</th>
-                                    </tr>
-                                </thead>
-                                <tbody *ngIf="gestionSelected != null">
-    
-                                    <tr *ngFor="let g of cuotasList">
-                                        <td>{{ g.numeroCuota }}</td>
-                                        <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
-                                        <td>{{ g.valorCuota | number }}</td>
-                                        <td>{{ g.capitalCuota | number }}</td>
-                                        <td>{{ g.honorarios | number }}</td>
-                                        <td>{{ g.interesCuota | number }}</td>
-                                        <td class="justify-content-center">
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6">
-                                                    <div class="form-check text-center">
-                                                        <input cli class="form-check-input" type="checkbox"
-                                                            [checked]="g.cumplio==true"
-                                                            [disabled]="g.cumplio==true">
+        
+                            <div class="table-responsive align-middle">
+                                <table class="table table-bordered text-center table-hover table-sm align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Cuota</th>
+                                            <th scope="col">Fecha Venc</th>
+                                            <th scope="col">Valor Cuota</th>
+                                            <th scope="col">Capital Cuota</th>
+                                            <th scope="col">Honorarios</th>
+                                            <th scope="col">Interes</th>
+                                            <th scope="col">Pago</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="gestionSelected != null">
+        
+                                        <tr *ngFor="let g of cuotasList">
+                                            <td>{{ g.numeroCuota }}</td>
+                                            <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
+                                            <td>{{ g.valorCuota | number }}</td>
+                                            <td>{{ g.capitalCuota | number }}</td>
+                                            <td>{{ g.honorarios | number }}</td>
+                                            <td>{{ g.interesCuota | number }}</td>
+                                            <td class="justify-content-center">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-6">
+                                                        <div class="form-check text-center">
+                                                            <input cli class="form-check-input" type="checkbox"
+                                                                [checked]="g.cumplio==true"
+                                                                [disabled]="g.cumplio==true">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-    
-                                </tbody>
-                            </table>
-                        </div>
+                                            </td>
+                                        </tr>
+        
+                                    </tbody>
+                                </table>
+                            </div>
                     </span>
 
                     <!-- TAREA -->
@@ -1508,7 +1510,7 @@
                     </button>
                 </div>
 
-</div>
+    </div>
 
 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
     tabindex="-1">
@@ -1576,7 +1578,6 @@
     </div>
 
 </div>
-
 
 
 <div class="modal fade" id="reciboPago" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
