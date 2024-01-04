@@ -1169,7 +1169,7 @@
                                             <textarea name="detalle" [(ngModel)]="pago.detalle" class="form-control"
                                                 id="" cols="30" rows="1"></textarea>
                                         </div>
-                                        <div class="row">
+                                        <div class="row mt-2">
                                             <div class="col-md-4 offset-md-4">
                                                 <button class="btn btn-primary"
                                                     (click)="agregarPagoACuotas()" style="background-color: #960010;border-color: #960010;">Agregar Pago</button>
@@ -1322,7 +1322,7 @@
 
                         <button
                             *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true"
-                            type="button" class="btn btn-danger b" (click)="desactivarAcuerdo()">Aplicar Pagos</button>
+                            type="button" class="btn btn-danger b" (click)="generarRecibo()">Aplicar Pagos</button>
 
                     </span>
 

@@ -2817,7 +2817,7 @@ export class HomeCarteraComponent implements OnInit {
 
     var recibo = {
       numeroObligacion: this.cuentasCobrarArray[0].numeroObligacion,
-      numeroRecibo: this.pago.numeroRecibo,
+      numeroRecibo: this.pago.recibo,
       cuotasDto: this.coutasRequest,
       valorTotal: this.valorTotalIngresado,
       acuerdoTotal: this.saldoAcuerdoPago,
