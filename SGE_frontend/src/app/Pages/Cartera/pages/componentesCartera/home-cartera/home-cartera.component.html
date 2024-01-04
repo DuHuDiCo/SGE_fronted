@@ -1118,14 +1118,15 @@
                 </div>
                 <div class="modal-body">
                     <!-- PARTE ACUERDO DE PAGO-->
-
                     <span *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO'">
                         <div class="row m-3">
                             <div class="row">
                                 <div class="col-md-6 ">
-    
-                                    <h6><strong>Saldo Intreses Acuerdo: </strong> {{saldoInteresesAcuerdo | number}}</h6>
-                                    <h6><strong>Saldo Honorario Acuerdo: </strong> {{saldoHonoriariosAcuerdo | number}}</h6>
+
+                                    <h6><strong>Saldo Intreses Acuerdo: </strong> {{saldoInteresesAcuerdo | number}}
+                                    </h6>
+                                    <h6><strong>Saldo Honorario Acuerdo: </strong> {{saldoHonoriariosAcuerdo | number}}
+                                    </h6>
                                     <h6><strong>Saldo Capital Acuerdo: </strong> {{saldoCapitalAcuerdo | number}}</h6>
                                     <h6><strong>Pagos Realizados: </strong> <a data-bs-toggle="modal"
                                             href="#exampleModalToggle" role="button" class="btn btn-danger btn-sm"
@@ -1140,71 +1141,85 @@
                                         {{gestionSelected.clasificacion.fechaAcuerdo |
                                         date:'dd/MM/yyyy'}}</h6>
                                     <h6><strong>Saldo Actual Acuerdo: </strong> {{saldoAcuerdoPago | number}}</h6>
-                                    <h6><strong>Agregar Pago: </strong> <a 
-                                            role="button" class="btn btn-danger btn-sm" (click)="mostrarAgregarPago=true"
+                                    <h6><strong>Agregar Pago: </strong> <a role="button" class="btn btn-danger btn-sm"
+                                            (click)="mostrarAgregarPago=true"
                                             style="background-color: #960010;border-color: #960010;"><i
                                                 class="fas fa-plus"></i></a>
                                     </h6>
                                 </div>
                             </div>
                             <div class="col-md-12 " *ngIf="mostrarAgregarPago">
-    
-    
+
+
                                 <form action="">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="">Valor del Pago</label>
-                                            <input type="text" [(ngModel)]="pago.valor" class="form-control" name="valor">
-    
+                                            <input type="text" [(ngModel)]="pago.valor" class="form-control"
+                                                name="valor">
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="">Numero Recibo</label>
+                                            <input type="text" [(ngModel)]="pago.recibo" class="form-control"
+                                                name="recibo">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="">Detalle</label>
+                                            <textarea name="detalle" [(ngModel)]="pago.detalle" class="form-control"
+                                                id="" cols="30" rows="1"></textarea>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-md-4 offset-md-4">
+                                                <button class="btn btn-primary"
+                                                    (click)="agregarPagoACuotas()" style="background-color: #960010;border-color: #960010;">Agregar Pago</button>
+                                            </div>
                                         </div>
                                     </div>
-        
-                                    </form>
-        
-                                </div>
-        
+                                </form>
+
                             </div>
-        
-                            <div class="table-responsive align-middle">
-                                <table class="table table-bordered text-center table-hover table-sm align-middle">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Cuota</th>
-                                            <th scope="col">Fecha Venc</th>
-                                            <th scope="col">Valor Cuota</th>
-                                            <th scope="col">Capital Cuota</th>
-                                            <th scope="col">Honorarios</th>
-                                            <th scope="col">Interes</th>
-                                            <th scope="col">Pago</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody *ngIf="gestionSelected != null">
-        
-                                        <tr *ngFor="let g of cuotasList">
-                                            <td>{{ g.numeroCuota }}</td>
-                                            <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
-                                            <td>{{ g.valorCuota | number }}</td>
-                                            <td>{{ g.capitalCuota | number }}</td>
-                                            <td>{{ g.honorarios | number }}</td>
-                                            <td>{{ g.interesCuota | number }}</td>
-                                            <td class="justify-content-center">
-                                                <div class="row justify-content-center">
-                                                    <div class="col-md-6">
-                                                        <div class="form-check text-center">
-                                                            <input cli class="form-check-input" type="checkbox"
-                                                                [checked]="g.cumplio==true"
-                                                                [disabled]="g.cumplio==true">
-                                                        </div>
+
+                        </div>
+
+                        <div class="table-responsive align-middle">
+                            <table class="table table-bordered text-center table-hover table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Cuota</th>
+                                        <th scope="col">Fecha Venc</th>
+                                        <th scope="col">Valor Cuota</th>
+                                        <th scope="col">Capital Cuota</th>
+                                        <th scope="col">Honorarios</th>
+                                        <th scope="col">Interes</th>
+                                        <th scope="col">Pago</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="gestionSelected != null">
+
+                                    <tr *ngFor="let g of cuotasList">
+                                        <td>{{ g.numeroCuota }}</td>
+                                        <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
+                                        <td>{{ g.valorCuota | number }}</td>
+                                        <td>{{ g.capitalCuota | number }}</td>
+                                        <td>{{ g.honorarios | number }}</td>
+                                        <td>{{ g.interesCuota | number }}</td>
+                                        <td class="justify-content-center">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-6">
+                                                    <div class="form-check text-center">
+                                                        <input cli class="form-check-input" type="checkbox"
+                                                            [checked]="g.cumplio==true" [disabled]="g.cumplio==true">
                                                     </div>
                                                 </div>
-                                            </td>
-                                        </tr>
-        
-                                    </tbody>
-                                </table>
-                            </div>
-                    </span>
+                                            </div>
+                                        </td>
+                                    </tr>
 
+                                </tbody>
+                            </table>
+                        </div>
+                    </span>
                     <!-- TAREA -->
                     <div class="card" *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA'">
                         <div class="card-body">
@@ -1223,14 +1238,16 @@
                                     <div class="input-group mb-3">
                                         <span class="input-group-text fw-bold">Fecha Tarea</span>
                                         <input type="text" class="form-control"
-                                            [value]="gestionSelected.clasificacion.fechaFinTarea | date:'dd/MM/yyyy'" readonly>
+                                            [value]="gestionSelected.clasificacion.fechaFinTarea | date:'dd/MM/yyyy'"
+                                            readonly>
 
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group mb-3">
                                         <span class="input-group-text fw-bold">Detalle Tarea</span>
-                                        <input type="text" class="form-control" [(ngModel)]="gestionSelected.clasificacion.detalleTarea" readonly>
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="gestionSelected.clasificacion.detalleTarea" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -1262,8 +1279,8 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-12 mb-3">
                                     <div class="form-floating">
-                                        <textarea [(ngModel)]="gestionSelected.clasificacion.detalleNota" class="form-control"
-                                            readonly></textarea>
+                                        <textarea [(ngModel)]="gestionSelected.clasificacion.detalleNota"
+                                            class="form-control" readonly></textarea>
                                         <label for="floatingTextarea">Detalle Nota</label>
                                     </div>
                                 </div>
@@ -1272,7 +1289,9 @@
                                 <div class="col-md-12">
                                     <div class="input-group mb-3">
                                         <span class="input-group-text fw-bold">Fecha Nota</span>
-                                        <input type="text" class="form-control" [value]="gestionSelected.clasificacion.fechaNota | date:'dd/MM/yyyy'" readonly>
+                                        <input type="text" class="form-control"
+                                            [value]="gestionSelected.clasificacion.fechaNota | date:'dd/MM/yyyy'"
+                                            readonly>
                                     </div>
                                 </div>
                             </div>
@@ -1286,7 +1305,7 @@
                                 </div>
                             </div>
                         </div>
-                      </div>
+                    </div>
 
                 </div>
                 <div class="modal-footer">
@@ -1294,14 +1313,16 @@
 
                     <!-- BOTONES ACUERDO DE PAGO -->
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
-                        <button *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true" type="button"
-                            class="btn btn-danger b" (click)="desactivarAcuerdo()">Desactivar</button>
+                        <button
+                            *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true"
+                            type="button" class="btn btn-danger b" (click)="desactivarAcuerdo()">Desactivar</button>
                     </span>
 
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
 
-                        <button *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true" type="button"
-                            class="btn btn-danger b" (click)="desactivarAcuerdo()">Aplicar Pagos</button>
+                        <button
+                            *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true"
+                            type="button" class="btn btn-danger b" (click)="generarRecibo()">Aplicar Pagos</button>
 
                     </span>
 
@@ -1510,7 +1531,11 @@
                     </button>
                 </div>
 
+            </div>
+
+        </div>
     </div>
+</div>
 
 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
     tabindex="-1">
