@@ -1255,16 +1255,18 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   mostrarReporte() {
-    this.cuentasCobrar.reporte(this.reporte).subscribe(
-      (data: any) => {
-        this.mostrarRep = data
-        this.mensaje = this.mostrarRep.messageToWpp
-        this.base64 = this.mostrarRep.base64
-        console.log(this.mensaje);
-      }, (error: any) => {
-        console.log(error);
-      }
-    )
+    setTimeout(() => {
+      this.cuentasCobrar.reporte(this.reporte).subscribe(
+        (data: any) => {
+          this.mostrarRep = data
+          this.mensaje = this.mostrarRep.messageToWpp
+          this.base64 = this.mostrarRep.base64
+          console.log(this.mensaje);
+        }, (error: any) => {
+          console.log(error);
+        }
+      )
+    }, 2000);
 
     var cliente = this.cuentaCobrarSelected.clientes.find((c: any) => c.numeroDocumento = this.reporte.cedula)
     this.clienteSelected.numeroDocumento = cliente.numeroDocumento
