@@ -270,7 +270,7 @@ export class HomeCarteraComponent implements OnInit {
     edadVencimiento: [],
     sede: [],
     //TODO: CAMBIAR POR VACIO
-    username: 'Diana1975',
+    username: 'Blanca Mazo',
     clasiJuridica: [],
     saldoCapitalInicio: null,
     saldoCapitalFin: null,
@@ -403,7 +403,7 @@ export class HomeCarteraComponent implements OnInit {
     //     return
     //   }
     this.filtrando = false
-    this.cuentasCobrar.getCuentasCobrar('Diana1975', this.page, this.size, this.fechaCreacion).subscribe(
+    this.cuentasCobrar.getCuentasCobrar('Blanca Mazo', this.page, this.size, this.fechaCreacion).subscribe(
       (data: any) => {
         this.paginas = new Array(data.totalPages)
         this.cuentasCobrarArray = data.content
@@ -886,7 +886,7 @@ export class HomeCarteraComponent implements OnInit {
         });
 
         //TODO:CAMBIAR POR EL NOMBRE DE USUARIO
-        this.newGestion.clasificacion.acuerdoPago!.username = 'Diana1975'
+        this.newGestion.clasificacion.acuerdoPago!.username = 'Blanca Mazo'
         console.log(this.newGestion.clasificacion.acuerdoPago);
 
         $('#modalGestion').modal('hide');
@@ -1425,7 +1425,7 @@ export class HomeCarteraComponent implements OnInit {
     this.cuentasCalcular.valorTotal = this.cuentaCobrarSelected.totalObligatoria
     this.cuentasCalcular.moraObligatoria = this.cuentaCobrarSelected.moraObligatoria
     this.cuentasCalcular.fechaVencimiento = this.cuentaCobrarSelected.fechaVencimiento
-    this.cuentasCalcular.username = 'Diana1975'
+    this.cuentasCalcular.username = 'Blanca Mazo'
 
 
     this.calcularIntMora()
