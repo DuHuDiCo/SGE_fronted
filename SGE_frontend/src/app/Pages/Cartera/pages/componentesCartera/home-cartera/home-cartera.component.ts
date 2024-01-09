@@ -972,7 +972,9 @@ export class HomeCarteraComponent implements OnInit {
         this.gestionButton = true
         this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
           (data: any) => {
+
             this.getGestiones(this.newGestion.numeroObligacion)
+
             console.log(this.gestiones);
             this.mostrarReporte()
             Swal.fire({
@@ -1157,6 +1159,9 @@ export class HomeCarteraComponent implements OnInit {
       detallesAdicionales: ''
     }
 
+    this.coutasRequest = []
+    this.recibosPago = []
+
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
     console.log(id);
 
@@ -1171,6 +1176,14 @@ export class HomeCarteraComponent implements OnInit {
 
   obtenerCuotas() {
     this.cuotasList = []
+    this.totalCuotasAcuerdo = 0
+    this.totalCapital = 0
+    this.totalHonorarios = 0
+    this.totalIntereses = 0
+    this.saldoInteresesAcuerdo = 0
+    this.saldoHonoriariosAcuerdo = 0
+    this.saldoCapitalAcuerdo = 0
+    this.saldoAcuerdoPago = 0
 
     this.gestionSelected.clasificacion.cuotasList.forEach((c: any) => {
       this.cuotasList.push(c)
@@ -2845,23 +2858,24 @@ export class HomeCarteraComponent implements OnInit {
       recibo.username = user;
       console.log(recibo);
 
-      // this.cuentasCobrar.crearRecibo(recibo).subscribe(
-      //   (data: any) => {
-      //     console.log(data);
+      this.cuentasCobrar.crearRecibo(recibo).subscribe(
+        (data: any) => {
+          console.log(data);
 
-      //     this.mostrarReciboPago(data.base64)
+          this.mostrarReciboPago(data.base64)
 
 
-      //     console.log(recibo);
-      //     this.activarGuardarPago = false
-      //     this.savePago = false
-      //   }, (error: any) => {
-      //     this.activarGuardarPago = false
-      //     this.savePago = false
-      //     console.log(error);
+          console.log(recibo);
+          this.activarGuardarPago = false
+          this.savePago = false
+          this.coutasRequest = []
+        }, (error: any) => {
+          this.activarGuardarPago = false
+          this.savePago = false
+          console.log(error);
 
-      //   }
-      // )
+        }
+      )
     }
 
 
