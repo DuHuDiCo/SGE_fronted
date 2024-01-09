@@ -1916,6 +1916,7 @@ export class HomeCarteraComponent implements OnInit {
         }
 
         cuotaListUltima.fechaVencimiento = this.fechasIncrementadas[i]
+        cuotaList.numeroCuota = i + 1
         // CAPITAL CUOTA
         var porcentaje = cuotaList.valorCuota / this.acuerdoCal.valorTotalAcuerdo
         console.log(porcentaje);
