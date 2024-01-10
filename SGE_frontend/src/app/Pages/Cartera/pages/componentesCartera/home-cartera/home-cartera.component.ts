@@ -160,7 +160,6 @@ export class HomeCarteraComponent implements OnInit {
       acuerdoPago: null,
       nombreClasificacion: ''
     },
-    gestion: '',
     contact: false,
     detallesAdicionales: ''
   }
@@ -602,7 +601,6 @@ export class HomeCarteraComponent implements OnInit {
           acuerdoPago: null,
           nombreClasificacion: ''
         },
-        gestion: '',
         contact: false,
         detallesAdicionales: ''
       }
@@ -628,7 +626,6 @@ export class HomeCarteraComponent implements OnInit {
                 acuerdoPago: null,
                 nombreClasificacion: ''
               },
-              gestion: '',
               contact: false,
               detallesAdicionales: this.newGestion.detallesAdicionales
             }
@@ -683,16 +680,6 @@ export class HomeCarteraComponent implements OnInit {
 
   saveGestion() {
     this.reporte.numeroObligacion = this.cuentaCobrarSelected.numeroObligacion
-
-    if (this.newGestion.gestion.trim() == '' || this.newGestion.gestion.trim() == null) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Digite La Descripción',
-        timer: 3000
-      })
-      return
-    }
 
     if (this.newGestion.clasificacion.tipoClasificacion?.trim() == '' || this.newGestion.clasificacion.tipoClasificacion?.trim() == null) {
       Swal.fire({
@@ -759,7 +746,6 @@ export class HomeCarteraComponent implements OnInit {
                     acuerdoPago: null,
                     nombreClasificacion: ''
                   },
-                  gestion: '',
                   contact: false,
                   detallesAdicionales: this.newGestion.detallesAdicionales
                 }
@@ -823,7 +809,6 @@ export class HomeCarteraComponent implements OnInit {
                     acuerdoPago: null,
                     nombreClasificacion: ''
                   },
-                  gestion: '',
                   contact: false,
                   detallesAdicionales: this.newGestion.detallesAdicionales
                 }
@@ -913,7 +898,7 @@ export class HomeCarteraComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Digite El detalle',
+          text: 'Elija La Cédula del Cliente o Codeudor',
           timer: 3000
         })
         return
@@ -970,66 +955,67 @@ export class HomeCarteraComponent implements OnInit {
       if (result.isConfirmed) {
         console.log(this.newGestion);
         this.gestionButton = true
-        this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
-          (data: any) => {
-
-            this.getGestiones(this.newGestion.numeroObligacion)
-
-            console.log(this.gestiones);
-            this.mostrarReporte()
-            Swal.fire({
-              icon: 'success',
-              title: 'Datos Guardados',
-              text: 'Gestión Guardada Exitosamente',
-              timer: 3000
-            })
-            this.gestionButton = false
-            this.newGestion = {
-              numeroObligacion: this.newGestion.numeroObligacion,
-              clasificacion: {
-                tipoClasificacion: null,
-                tarea: null,
-                nota: null,
-                acuerdoPago: null,
-                nombreClasificacion: ''
-              },
-              gestion: '',
-              contact: false,
-              detallesAdicionales: this.newGestion.detallesAdicionales
+        setTimeout(() => {
+          this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
+            (data: any) => {
+  
+              this.getGestiones(this.newGestion.numeroObligacion)
+  
+              console.log(this.gestiones);
+              this.mostrarReporte()
+              Swal.fire({
+                icon: 'success',
+                title: 'Datos Guardados',
+                text: 'Gestión Guardada Exitosamente',
+                timer: 3000
+              })
+              this.gestionButton = false
+              this.newGestion = {
+                numeroObligacion: this.newGestion.numeroObligacion,
+                clasificacion: {
+                  tipoClasificacion: null,
+                  tarea: null,
+                  nota: null,
+                  acuerdoPago: null,
+                  nombreClasificacion: ''
+                },
+                contact: false,
+                detallesAdicionales: this.newGestion.detallesAdicionales
+              }
+              this.cuotas = []
+              this.disabledFecha = false
+              this.acuerdo = {
+                detalle: '',
+                valorCuotaMensual: 0,
+                tipoAcuerdo: '',
+                valorTotalAcuerdo: 0,
+                valorInteresesMora: 0,
+                honoriarioAcuerdo: 0,
+                fechaCompromiso: '',
+                cuotasList: [],
+                username: ''
+              }
+              this.cuentasCalcular = {
+                numeroObligacion: '',
+                valorTotal: 0,
+                moraObligatoria: 0,
+                fechaVencimiento: new Date,
+                username: ''
+              }
+              this.col = true
+              $('#modalDetalle').modal('hide');
+              $('#modalReporte').modal('show');
+            }, (error: any) => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Al Guardar La Gestión',
+                timer: 3000
+              })
+              this.gestionButton = false
             }
-            this.cuotas = []
-            this.disabledFecha = false
-            this.acuerdo = {
-              detalle: '',
-              valorCuotaMensual: 0,
-              tipoAcuerdo: '',
-              valorTotalAcuerdo: 0,
-              valorInteresesMora: 0,
-              honoriarioAcuerdo: 0,
-              fechaCompromiso: '',
-              cuotasList: [],
-              username: ''
-            }
-            this.cuentasCalcular = {
-              numeroObligacion: '',
-              valorTotal: 0,
-              moraObligatoria: 0,
-              fechaVencimiento: new Date,
-              username: ''
-            }
-            this.col = true
-            $('#modalDetalle').modal('hide');
-            $('#modalReporte').modal('show');
-          }, (error: any) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Error Al Guardar La Gestión',
-              timer: 3000
-            })
-            this.gestionButton = false
-          }
-        )
+          )
+        }, 3000);
       }
     })
   }
@@ -1280,8 +1266,10 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   mostrarBase64() {
-    var ele = document.getElementById('base64')
-    ele?.click()
+    setTimeout(() => {
+      var ele = document.getElementById('base64')
+      ele?.click()
+    }, 2000);
   }
 
 
@@ -2180,7 +2168,6 @@ export class HomeCarteraComponent implements OnInit {
             acuerdoPago: null,
             nombreClasificacion: ''
           },
-          gestion: '',
           contact: false,
           detallesAdicionales: this.newGestion.detallesAdicionales
         }
