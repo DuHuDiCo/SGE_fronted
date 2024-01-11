@@ -22,7 +22,6 @@ export type Gestion = {
       username: string
     } | null
   },
-  gestion: string,
   contact: boolean,
   detallesAdicionales: string
 }

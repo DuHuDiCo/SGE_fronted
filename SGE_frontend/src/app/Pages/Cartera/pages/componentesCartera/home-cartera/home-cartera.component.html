@@ -11,7 +11,7 @@
         </button>
     </div>
     <div class="card-c">
-        <div *ngIf="newGestion.gestion.trim() != '' || newGestion.gestion.trim() != ''" class="row justify-content-end"
+        <div *ngIf="newGestion.clasificacion.tipoClasificacion != null" class="row justify-content-end"
             data-bs-target="#offcanvasRight">
             <div class="col-md-4">
                 <div class="alert alert-danger text-end" role="alert" data-bs-toggle="offcanvas"
@@ -810,11 +810,6 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col" [ngClass]="{'col-md-12': col, 'col-md-4': !col}">
-                            <div class="form-floating mb-3">
-                                <textarea class="form-control" style="height: 100px;" [(ngModel)]="newGestion.gestion"
-                                    name="gestion"></textarea>
-                                <label for="floatingTextarea">Descripcion</label>
-                            </div>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" [(ngModel)]="newGestion.contact" [checked]="true"
                                     type="checkbox" role="switch" checked>
@@ -1072,6 +1067,7 @@
                         <input type="email" class="form-control" [(ngModel)]="acuerdo.detalle" style="height: 100px;">
                         <label for="floatingInput">¿Desea Agregar Un Detalle?</label>
                     </div>
+                    <h6>Seleccione El Cliente Al Que Desea Agregar El Acuerdo</h6>
                     <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.cedula" (change)="cambiarCedula($event)">
                         <option [value]="null">Seleccione Una Cedula</option>
                         <option *ngFor="let c of cuentaCobrarSelected.clientes" [value]="c.numeroDocumento">{{
