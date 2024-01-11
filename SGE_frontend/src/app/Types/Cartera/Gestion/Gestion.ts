@@ -23,7 +23,8 @@ export type Gestion = {
     } | null
   },
   contact: boolean,
-  detallesAdicionales: string
+  detallesAdicionales: string,
+  username: string
 }
 
 export type GestionArray = {

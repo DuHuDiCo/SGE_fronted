@@ -161,7 +161,8 @@ export class HomeCarteraComponent implements OnInit {
       nombreClasificacion: ''
     },
     contact: false,
-    detallesAdicionales: ''
+    detallesAdicionales: '',
+    username: ''
   }
 
   gestionSelected: any = {
@@ -248,7 +249,8 @@ export class HomeCarteraComponent implements OnInit {
 
   reporte: any = {
     numeroObligacion: "",
-    cedula: ""
+    cedula: "",
+    username: ""
   }
 
   mostrarRep: any = {
@@ -269,7 +271,7 @@ export class HomeCarteraComponent implements OnInit {
     edadVencimiento: [],
     sede: [],
     //TODO: CAMBIAR POR VACIO
-    username: 'Blanca Mazo',
+    username: 'Diana1975',
     clasiJuridica: [],
     saldoCapitalInicio: null,
     saldoCapitalFin: null,
@@ -350,6 +352,7 @@ export class HomeCarteraComponent implements OnInit {
     this.getClasificacion()
     this.getTipoVen()
     this.getSedes()
+    this.getAsesores()
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
   }
@@ -402,7 +405,7 @@ export class HomeCarteraComponent implements OnInit {
     //     return
     //   }
     this.filtrando = false
-    this.cuentasCobrar.getCuentasCobrar('Blanca Mazo', this.page, this.size, this.fechaCreacion).subscribe(
+    this.cuentasCobrar.getCuentasCobrar('Diana1975', this.page, this.size, this.fechaCreacion).subscribe(
       (data: any) => {
         this.paginas = new Array(data.totalPages)
         this.cuentasCobrarArray = data.content
@@ -602,7 +605,8 @@ export class HomeCarteraComponent implements OnInit {
           nombreClasificacion: ''
         },
         contact: false,
-        detallesAdicionales: ''
+        detallesAdicionales: '',
+        username: ''
       }
 
       this.codeudoresSelected = []
@@ -627,7 +631,8 @@ export class HomeCarteraComponent implements OnInit {
                 nombreClasificacion: ''
               },
               contact: false,
-              detallesAdicionales: this.newGestion.detallesAdicionales
+              detallesAdicionales: this.newGestion.detallesAdicionales,
+              username: ''
             }
             console.log(this.newGestion);
 
@@ -747,7 +752,8 @@ export class HomeCarteraComponent implements OnInit {
                     nombreClasificacion: ''
                   },
                   contact: false,
-                  detallesAdicionales: this.newGestion.detallesAdicionales
+                  detallesAdicionales: this.newGestion.detallesAdicionales,
+                  username: ''
                 }
                 $('#modalDetalle').modal('hide');
               }, (error: any) => {
@@ -810,7 +816,8 @@ export class HomeCarteraComponent implements OnInit {
                     nombreClasificacion: ''
                   },
                   contact: false,
-                  detallesAdicionales: this.newGestion.detallesAdicionales
+                  detallesAdicionales: this.newGestion.detallesAdicionales,
+                  username: ''
                 }
                 $('#modalDetalle').modal('hide');
               }, (error: any) => {
@@ -871,7 +878,7 @@ export class HomeCarteraComponent implements OnInit {
         });
 
         //TODO:CAMBIAR POR EL NOMBRE DE USUARIO
-        this.newGestion.clasificacion.acuerdoPago!.username = 'Blanca Mazo'
+        this.newGestion.clasificacion.acuerdoPago!.username = 'Diana1975'
         console.log(this.newGestion.clasificacion.acuerdoPago);
 
         $('#modalGestion').modal('hide');
@@ -884,6 +891,15 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   saveGestionWithDetalle(accion: string) {
+
+    // var user = this.authService.getUsername()
+
+    //   if (user == null || user == undefined) {
+    //     return
+    //   }
+
+    this.newGestion.username = 'Diana1975'
+
     if (accion == 'SI') {
       if (this.acuerdo.detalle.trim() == '' || this.acuerdo.detalle.trim() == null) {
         Swal.fire({
@@ -980,7 +996,8 @@ export class HomeCarteraComponent implements OnInit {
                   nombreClasificacion: ''
                 },
                 contact: false,
-                detallesAdicionales: this.newGestion.detallesAdicionales
+                detallesAdicionales: this.newGestion.detallesAdicionales,
+                username: ''
               }
               this.cuotas = []
               this.disabledFecha = false
@@ -1241,6 +1258,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   mostrarReporte() {
+    this.reporte.username = 'Diana1975'
     setTimeout(() => {
       this.cuentasCobrar.reporte(this.reporte).subscribe(
         (data: any) => {
@@ -1258,6 +1276,16 @@ export class HomeCarteraComponent implements OnInit {
     this.clienteSelected.numeroDocumento = cliente.numeroDocumento
     this.clienteSelected.nombreTitular = cliente.nombreTitular
     console.log(this.clienteSelected);
+  }
+
+  getAsesores(){
+    this.cuentasCobrar.getAsesoresCartera().subscribe(
+      (data:any) => {
+        console.log(data);
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
   }
 
   cambiarCedula(event: any) {
@@ -1415,7 +1443,7 @@ export class HomeCarteraComponent implements OnInit {
     this.cuentasCalcular.valorTotal = this.cuentaCobrarSelected.totalObligatoria
     this.cuentasCalcular.moraObligatoria = this.cuentaCobrarSelected.moraObligatoria
     this.cuentasCalcular.fechaVencimiento = this.cuentaCobrarSelected.fechaVencimiento
-    this.cuentasCalcular.username = 'Blanca Mazo'
+    this.cuentasCalcular.username = 'Diana1975'
 
 
     this.calcularIntMora()
@@ -2169,7 +2197,8 @@ export class HomeCarteraComponent implements OnInit {
             nombreClasificacion: ''
           },
           contact: false,
-          detallesAdicionales: this.newGestion.detallesAdicionales
+          detallesAdicionales: this.newGestion.detallesAdicionales,
+          username: ''
         }
 
         this.acuerdo = {

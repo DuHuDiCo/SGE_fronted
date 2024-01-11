@@ -875,12 +875,19 @@
                             <!-- TAREA -->
                             <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'TAREA'">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6 mt-3">
                                         <div class="input-group input-group-sm mb-3">
                                             <span class="input-group-text fw-bold">Fecha Fin</span>
                                             <input type="date" class="form-control" [(ngModel)]="tarea.fechaFinTarea"
                                                 [min]="minFecha()">
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select class="form-select mt-3 mb-3" [(ngModel)]="newGestion.username">
+                                            <option [value]="null">Seleccione Un Asesor</option>
+                                            <option *ngFor="let c of ClasificacionArray" [value]="c.nombre">{{
+                                                c.nombre }}</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-floating mb-3">
