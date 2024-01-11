@@ -108,6 +108,9 @@ import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/
 import { TipoVencimientoComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/tipo-vencimiento/tipo-vencimiento.component';
 
 import { HomeCajaComponent } from './Pages/Cartera/pages/componentesCartera/home-caja/home-caja.component';
+import { ClasificacionJuridicaComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion-juridica/clasificacion-juridica.component';
+import { CondicionEspecialComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/condicion-especial/condicion-especial.component';
+import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/firmas/firmas.component';
 
 
 
@@ -228,6 +231,9 @@ import { HomeCajaComponent } from './Pages/Cartera/pages/componentesCartera/home
         TipoVencimientoComponent,
 
       HomeCajaComponent,
+        ClasificacionJuridicaComponent,
+        CondicionEspecialComponent,
+        FirmasComponent,
       
 
 
