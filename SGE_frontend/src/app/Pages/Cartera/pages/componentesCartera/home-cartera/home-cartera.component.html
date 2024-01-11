@@ -885,8 +885,8 @@
                                     <div class="col-md-6">
                                         <select class="form-select mt-3 mb-3" [(ngModel)]="newGestion.username">
                                             <option [value]="null">Seleccione Un Asesor</option>
-                                            <option *ngFor="let c of ClasificacionArray" [value]="c.nombre">{{
-                                                c.nombre }}</option>
+                                            <option *ngFor="let a of asesores" [value]="a.usuario.username">{{
+                                                a.usuario.nombres }}</option>
                                         </select>
                                     </div>
                                 </div>

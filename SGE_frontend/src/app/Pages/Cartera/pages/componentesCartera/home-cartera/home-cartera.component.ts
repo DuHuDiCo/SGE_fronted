@@ -288,6 +288,7 @@ export class HomeCarteraComponent implements OnInit {
   edadVenArray: string[] = []
   sedesArray: string[] = []
   clasJurArray: string[] = []
+  asesores:any[] = []
 
   //VARIABLES
   mensaje: string = ''
@@ -1281,6 +1282,7 @@ export class HomeCarteraComponent implements OnInit {
   getAsesores(){
     this.cuentasCobrar.getAsesoresCartera().subscribe(
       (data:any) => {
+        this.asesores = data
         console.log(data);
       }, (error:any) => {
         console.log(error);
