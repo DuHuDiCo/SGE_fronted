@@ -34,7 +34,6 @@ export class CondicionEspecialComponent implements OnInit {
     this.cuentasCobrar.getAllCondicionEspecial().subscribe(
       (data:any) => {
         this.condicionArray = data
-        console.log(data);
       }, (error:any) => {
         console.log(error);
       }

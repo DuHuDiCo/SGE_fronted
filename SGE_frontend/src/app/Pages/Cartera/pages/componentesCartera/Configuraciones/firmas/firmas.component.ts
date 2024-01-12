@@ -32,7 +32,6 @@ export class FirmasComponent implements OnInit {
     this.cuentasCobrar.getAllFirmas().subscribe(
       (data:any) => {
         this.firmasArray = data
-        console.log(data);
       }, (error:any) => {
         console.log(error);
       }
@@ -40,7 +39,6 @@ export class FirmasComponent implements OnInit {
   }
 
   save(){
-    console.log(this.firma);
     
     if(this.firma.base64 == '' || this.firma.base64 == null){
       Swal.fire({
@@ -83,7 +81,6 @@ export class FirmasComponent implements OnInit {
     this.cuentasCobrar.getAsesoresCartera().subscribe(
       (data:any) => {
         this.asesores = data
-        console.log(data);
       }, (error:any) => {
         console.log(error);
       }
@@ -102,7 +99,6 @@ export class FirmasComponent implements OnInit {
     this.extraerBase64(archivo).then((file: any) => {
       this.firma.base64 = file.base;
     })
-    console.log(this.firma);
     
   }
 

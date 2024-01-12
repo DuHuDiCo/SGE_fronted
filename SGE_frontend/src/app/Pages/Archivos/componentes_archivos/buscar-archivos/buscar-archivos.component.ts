@@ -89,7 +89,6 @@ export class BuscarArchivosComponent implements OnInit {
               text: 'Elija Una Obligación',
               timer: 2500
             })
-          console.log(this.datos);
         }, (error:any) => {
           Swal.fire({
             icon: 'error',
@@ -133,7 +132,6 @@ export class BuscarArchivosComponent implements OnInit {
       (data:any) => {
         this.tiposArchivos = data
         this.tipoArc = data.length
-        console.log(data);
       }, (error:any) => {
         console.log(error);
       }
@@ -141,7 +139,6 @@ export class BuscarArchivosComponent implements OnInit {
   }
 
   saveOne(){
-    console.log(this.subirArchivo);
     
     this.buscarService.saveOne(this.subirArchivo).subscribe(
       (data:any) => {
@@ -193,7 +190,6 @@ export class BuscarArchivosComponent implements OnInit {
       this.modal.idArchivo = archivo.idArchivo
       this.modal.nombreOriginal = archivo.nombreOriginal
       this.modal.tipoArchivo = archivo.tipoArchivo.tipoArchivo
-      console.log(this.modal);
     }
   }
 
@@ -212,7 +208,6 @@ export class BuscarArchivosComponent implements OnInit {
           setTimeout(() => {
             window.location.reload()
           }, 2000);
-        console.log(this.modal);
         }, (error:any) => {
           Swal.fire('Error', 'Erro al Actualizar El Archivo', 'error')
           console.log(error);

@@ -91,7 +91,6 @@ export class BuscarUsuariosComponent implements OnInit {
     this.usuariosService.listarUsuarios(this.page, this.size).subscribe(
       (data: any) => {
         this.usuarios = data.content;
-        console.log(data);
 
         this.paginas = new Array(data.totalPages)
         this.last = data.last
@@ -268,7 +267,6 @@ export class BuscarUsuariosComponent implements OnInit {
     this.sede.getSedes().subscribe(
       (data: any) => {
         this.Sede = data
-        console.log(data);
       }, (error: any) => {
         console.log(error);
         Swal.fire('Error', 'Error al cargar las Sedes', 'error');
@@ -360,7 +358,7 @@ export class BuscarUsuariosComponent implements OnInit {
       (data: any) => {
         this.usuario = data
       }, (error: any) => {
-        console.log();
+        console.log(error);
       }
     )
   }
