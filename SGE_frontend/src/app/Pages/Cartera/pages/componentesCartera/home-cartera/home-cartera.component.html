@@ -1184,8 +1184,8 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="">Numero Recibo</label>
-                                            <input type="text" [(ngModel)]="pago.recibo" class="form-control"
-                                                name="recibo">
+                                            <input type="text" [(ngModel)]="pago.numeroRecibo" class="form-control"
+                                                name="numeroRecibo">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="">Detalle</label>
@@ -1343,9 +1343,9 @@
 
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
 
-                        <button
-                            *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true"
-                            type="button" class="btn btn-danger b" (click)="generarRecibo()" data-bs-dismiss="modal">Aplicar Pagos</button>
+                        <button 
+                            *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true && mostrarAgregarPago"
+                            type="button" class="btn btn-danger b" (click)="generarRecibo()" >Aplicar Pagos</button>
 
                     </span>
 

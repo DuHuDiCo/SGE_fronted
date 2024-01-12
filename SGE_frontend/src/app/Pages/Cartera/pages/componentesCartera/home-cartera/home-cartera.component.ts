@@ -2847,11 +2847,11 @@ export class HomeCarteraComponent implements OnInit {
     console.log(this.saldoInteresesAcuerdo);
     this.activarGuardarPago = false
     this.savePago = true
-    if (this.pago.recibo.trim() == '' || this.pago.recibo.trim() == null || this.pago.recibo.trim() == undefined) {
+    if (this.pago.numeroRecibo == '' || this.pago.numeroRecibo == null || this.pago.valor == 0 || this.pago.detalle == "") {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Debes ingresar el numero de recibo',
+        text: 'Debes Agregar Un Pago',
         timer: 3000
       })
       this.activarGuardarPago = true
@@ -2863,7 +2863,7 @@ export class HomeCarteraComponent implements OnInit {
 
     var recibo = {
       numeroObligacion: this.cuentaCobrarSelected.numeroObligacion,
-      numeroRecibo: this.pago.recibo,
+      numeroRecibo: this.pago.numeroRecibo,
       cuotasDto: this.coutasRequest,
       valorTotal: this.valorTotalIngresado,
       acuerdoTotal: this.saldoAcuerdoPago,
