@@ -82,6 +82,9 @@ import { TipoVencimientoComponent } from './Pages/Cartera/pages/componentesCarte
 import { HomeCajaComponent } from './Pages/Cartera/pages/componentesCartera/home-caja/home-caja.component';
 import { GuardAsesoraGuard } from './Guards/Cartera/guard-asesora.guard';
 import { GuardCajaGuard } from './Guards/Cartera/guard-caja.guard';
+import { ClasificacionJuridicaComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion-juridica/clasificacion-juridica.component';
+import { CondicionEspecialComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/condicion-especial/condicion-especial.component';
+import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/firmas/firmas.component';
 
 
 
@@ -135,6 +138,18 @@ const routes: Routes = [
       {
         path: "tipo-vencimiento",
         component: TipoVencimientoComponent
+      },
+      {
+        path: "clasificacion-juridica",
+        component: ClasificacionJuridicaComponent
+      },
+      {
+        path: "condicion-especial",
+        component: CondicionEspecialComponent
+      },
+      {
+        path: "crear-firmas",
+        component: FirmasComponent
       },
       {
          path: "inicio-caja",

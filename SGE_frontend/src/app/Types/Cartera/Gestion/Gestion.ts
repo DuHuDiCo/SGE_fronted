@@ -23,7 +23,8 @@ export type Gestion = {
     } | null
   },
   contact: boolean,
-  detallesAdicionales: string
+  detallesAdicionales: string,
+  username: string
 }
 
 export type GestionArray = {
@@ -173,4 +174,13 @@ export type Filtros = {
   fechaCompromisoFin: string | null,
   isActive: boolean
 
+}
+
+export type Notificacion = {
+  idNotificaciones: number,
+  tipoGestion: string,
+  fechaCreacion: Date,
+  fechaFinalizacion: Date,
+  numeroObligacion: string,
+  designatedTo: number
 }

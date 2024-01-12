@@ -104,12 +104,46 @@ export class CuentasCobrarService {
 
   }
 
+  //CLASIFICACION JURIDICA
+  getAllClasificacionJuridica(){
+    return this.http.get(`http://192.168.1.36:8021/api/v1/clasificacionJuridica/getAllClasificacionJuridica`)
+  }
+
+  saveClasificacionJuridica(clasificacion:any){
+    return this.http.post(`http://192.168.1.36:8021/api/v1/clasificacionJuridica/saveClasificacionJuridica`, clasificacion)
+  }
+
+  updateClasificacionJuridica(clasificacion:any){
+    return this.http.put(`http://192.168.1.36:8021/api/v1/clasificacionJuridica/updateClasificacionJuridica`, clasificacion)
+  }
+
+  getClasificacionJuridicaById(id:number){
+    return this.http.get(`http://192.168.1.36:8021/api/v1/clasificacionJuridica/getClasificacionJuridicaById/${id}`)
+  }
+
+
+  // CONDICION ESPECIAL
+  getAllCondicionEspecial(){
+    return this.http.get(`http://192.168.1.36:8021/api/v1/condicionEspecial/getAllCondiciones`)
+  }
+
+  getCondicionEspecilById(id:number){
+    return this.http.get(`http://192.168.1.36:8021/api/v1/condicionEspecial/getCondicionById/${id}`)
+  }
+
+  saveCondicionEspecial(condicionEspecial:any){
+    return this.http.post(`http://192.168.1.36:8021/api/v1/condicionEspecial/saveCondicionEspecial`, condicionEspecial)
+  }
+
+  updateCondicionEspecial(condicionEspecial:any){
+    return this.http.put(`http://192.168.1.36:8021/api/v1/condicionEspecial/updateCondicion`, condicionEspecial)
+  }
+
   //SEDES
   getSedes(){
     return this.http.get(`http://192.168.1.36:8021/api/v1/sedesController/obtenerTodasSedes`)
 
   }
-
 
   //PAGOS
   crearRecibo(pagoCuota:any){
@@ -118,6 +152,47 @@ export class CuentasCobrarService {
 
   enviarCuotaPagada(id:number[]){
     return this.http.put(`http://192.168.1.36:8021/api/v1/gestiones/cuotaPago`, id)
+
+  }
+
+  // FIRMAS
+  getAllFirmas(){
+    return this.http.get(`http://192.168.1.36:8021/api/v1/firmasController/obtenerTodasFirmas`)
+  }
+
+  saveFirma(firma:any){
+    return this.http.post(`http://192.168.1.36:8021/api/v1/firmasController/saveFirma`, firma)
+  }
+
+  deleteFirma(id:number){
+    return this.http.delete(`http://192.168.1.36:8021/api/v1/firmasController/DeleteById/${id}`)
+  }
+
+  getAsesoresCartera(){
+    return this.http.get(`http://192.168.1.36:8021/api/v1/asesorCartera/getAllAsesores`)
+  }
+
+  // CONDICION ESPECIAL
+  getAllCondiciones(){
+    return this.http.get(`http://192.168.1.36:8021/api/v1/condicionEspecial/getAllCondiciones`)
+  }
+
+  saveCondicion(condicion:any){
+    return this.http.post(`http://192.168.1.36:8021/api/v1/condicionEspecial/saveCondicionEspecial`, condicion)
+  }
+
+  getCondicionById(id:number){
+    return this.http.get(`http://192.168.1.36:8021/api/v1/condicionEspecial/getCondicionById/${id}`)
+  }
+
+  updateCondicion(condicion:any){
+    return this.http.put(`http://192.168.1.36:8021/api/v1/condicionEspecial/updateCondicion`, condicion)
+  }
+
+  // NOTIFICACIONES
+  getNotificaciones(username:string){
+    return this.http.get(`http://192.168.1.36:8021/api/v1/notificaciones/?username=${username}`)
+
   }
 
 }
