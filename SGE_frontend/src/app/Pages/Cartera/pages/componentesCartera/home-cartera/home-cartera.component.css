@@ -368,7 +368,7 @@ label.btn.btn-outline-dark {
 .noti {
   position: fixed;
   margin-right: 10px;
-  margin-top: 150px;
+  margin-top: 200px;
   right: 0;
   border: none;
   width: 50px;
@@ -381,7 +381,7 @@ label.btn.btn-outline-dark {
 }
 
 .scrollable-menu {
-  max-height: 1000px; /* Ajusta la altura máxima según tus necesidades */
+  max-height: 500px; /* Ajusta la altura máxima según tus necesidades */
   overflow-y: auto;
 }
 

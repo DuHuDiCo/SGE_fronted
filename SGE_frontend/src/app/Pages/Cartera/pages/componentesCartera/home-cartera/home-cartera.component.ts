@@ -272,7 +272,7 @@ export class HomeCarteraComponent implements OnInit {
     edadVencimiento: [],
     sede: [],
     //TODO: CAMBIAR POR VACIO
-    username: 'Diana1975',
+    username: '',
     clasiJuridica: [],
     saldoCapitalInicio: null,
     saldoCapitalFin: null,
@@ -344,6 +344,8 @@ export class HomeCarteraComponent implements OnInit {
   botonFiltro: boolean = false
   filtrando: boolean = false
 
+  botonPdf: boolean = false
+
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
   botonFiltrarObligacion: boolean = false
@@ -402,13 +404,14 @@ export class HomeCarteraComponent implements OnInit {
   // TRAER CUENTAS POR COBRAR
   getCuentasCobrar() {
 
-    // var user = this.authService.getUsername()
+    var user = this.authService.getUsername()
 
-    //   if (user == null || user == undefined) {
-    //     return
-    //   }
+      if (user == null || user == undefined) {
+        return
+      }
+
     this.filtrando = false
-    this.cuentasCobrar.getCuentasCobrar('Diana1975', this.page, this.size, this.fechaCreacion).subscribe(
+    this.cuentasCobrar.getCuentasCobrar(user, this.page, this.size, this.fechaCreacion).subscribe(
       (data: any) => {
         this.paginas = new Array(data.totalPages)
         this.cuentasCobrarArray = data.content
@@ -808,6 +811,7 @@ export class HomeCarteraComponent implements OnInit {
                   text: 'Gestión Guardada Exitosamente',
                   timer: 3000
                 })
+                this.getNotificaciones()
                 this.gestionButton = false
                 this.newGestion = {
                   numeroObligacion: this.newGestion.numeroObligacion,
@@ -880,8 +884,14 @@ export class HomeCarteraComponent implements OnInit {
           this.newGestion.clasificacion.acuerdoPago?.cuotasList.push(element)
         });
 
+        var user = this.authService.getUsername()
+
+        if (user == null || user == undefined) {
+          return
+        }
+
         //TODO:CAMBIAR POR EL NOMBRE DE USUARIO
-        this.newGestion.clasificacion.acuerdoPago!.username = 'Diana1975'
+        this.newGestion.clasificacion.acuerdoPago!.username = user
         console.log(this.newGestion.clasificacion.acuerdoPago);
 
         $('#modalGestion').modal('hide');
@@ -893,26 +903,16 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
-  saveGestionWithDetalle(accion: string) {
+  saveGestionWithDetalle() {
 
-    // var user = this.authService.getUsername()
+    var user = this.authService.getUsername()
 
-    //   if (user == null || user == undefined) {
-    //     return
-    //   }
-
-    this.newGestion.username = 'Diana1975'
-
-    if (accion == 'SI') {
-      if (this.acuerdo.detalle.trim() == '' || this.acuerdo.detalle.trim() == null) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Digite El detalle',
-          timer: 3000
-        })
+      if (user == null || user == undefined) {
         return
       }
+
+    this.newGestion.username = user
+
       if (this.reporte.cedula.trim() == '' || this.reporte.cedula.trim() == null) {
         Swal.fire({
           icon: 'error',
@@ -922,22 +922,8 @@ export class HomeCarteraComponent implements OnInit {
         })
         return
       }
-    }
 
-    if (accion == 'NO') {
-      if (this.reporte.cedula.trim() == '' || this.reporte.cedula.trim() == null) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Elija La Cédula del Cliente o Codeudor',
-          timer: 3000
-        })
-        return
-      }
-      this.newGestion.clasificacion.acuerdoPago!.detalle = this.acuerdo.detalle
-    }
-
-
+    this.newGestion.clasificacion.acuerdoPago!.detalle = this.acuerdo.detalle
 
     var sumaComprobacion = 0
     for (let i = 0; i < this.cuotas.length; i++) {
@@ -979,12 +965,14 @@ export class HomeCarteraComponent implements OnInit {
             (data: any) => {
   
               this.getGestiones(this.newGestion.numeroObligacion)
+              this.getNotificaciones()
   
               console.log(this.gestiones);
               this.mostrarReporte()
               Swal.fire({
                 icon: 'success',
                 title: 'Datos Guardados',
+                showConfirmButton: false,
                 text: 'Gestión Guardada Exitosamente',
                 timer: 3000
               })
@@ -1261,7 +1249,13 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   mostrarReporte() {
-    this.reporte.username = 'Diana1975'
+    var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+
+    this.reporte.username = user
     setTimeout(() => {
       this.cuentasCobrar.reporte(this.reporte).subscribe(
         (data: any) => {
@@ -1279,6 +1273,43 @@ export class HomeCarteraComponent implements OnInit {
     this.clienteSelected.numeroDocumento = cliente.numeroDocumento
     this.clienteSelected.nombreTitular = cliente.nombreTitular
     console.log(this.clienteSelected);
+  }
+
+  descargarAcuerdo(){
+    var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+
+    this.reporte.numeroObligacion = this.cuentaCobrarSelected.numeroObligacion
+    this.reporte.cedula = this.cuentaCobrarSelected.documentoCliente
+    this.reporte.username = user
+    
+    this.botonPdf = true
+
+    console.log(this.reporte);
+      this.cuentasCobrar.reporte(this.reporte).subscribe(
+        (data: any) => {
+          this.mostrarRep = data
+          this.mensaje = this.mostrarRep.messageToWpp
+          this.base64 = this.mostrarRep.base64
+          setTimeout(() => {
+            var down = document.getElementById('basePdf')
+            down?.click()
+            console.log(this.base64);
+            this.botonPdf = false
+          }, 1000);
+        }, (error: any) => {
+          console.log(error);
+          this.botonPdf = false
+        }
+      )
+
+      var cliente = this.cuentaCobrarSelected.clientes.find((c: any) => c.numeroDocumento = this.reporte.cedula)
+      this.clienteSelected.numeroDocumento = cliente.numeroDocumento
+      this.clienteSelected.nombreTitular = cliente.nombreTitular
+      console.log(this.clienteSelected);
   }
 
   getAsesores(){
@@ -1442,12 +1473,18 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
+    var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+
     this.fechaInicial = new Date(this.acuerdo.fechaCompromiso)
     this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
     this.cuentasCalcular.valorTotal = this.cuentaCobrarSelected.totalObligatoria
     this.cuentasCalcular.moraObligatoria = this.cuentaCobrarSelected.moraObligatoria
     this.cuentasCalcular.fechaVencimiento = this.cuentaCobrarSelected.fechaVencimiento
-    this.cuentasCalcular.username = 'Diana1975'
+    this.cuentasCalcular.username = user
 
 
     this.calcularIntMora()
@@ -2929,7 +2966,13 @@ export class HomeCarteraComponent implements OnInit {
 
   // NOTIFICACIONES
   getNotificaciones(){
-    this.cuentasCobrar.getNotificaciones('Diana1975').subscribe(
+    var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+    
+    this.cuentasCobrar.getNotificaciones(user).subscribe(
       (data:any) => {
         this.notiArray = data
         console.log(data);

@@ -17,15 +17,22 @@
             {{ notiArray.length }}
           </span>
         </button>
-        <ul class="dropdown-menu scrollable-menu">
-            <div class="list-group">
-                <a *ngFor="let n of notiArray" class="list-group-item list-group-item-action" aria-current="true">
+        <ul class="dropdown-menu scrollable-menu" style="background-color: rgb(201, 201, 201);">
+            <div class="list-group" style="width: 300px;">
+                <a *ngFor="let n of notiArray" class="list-group-item list-group-item-action" aria-current="true" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasRight" (click)="findCuentaCobrar(n.numeroObligacion)"  style="background-color: rgb(201, 201, 201);">
                   <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h5>
-                    <small>{{ n.fechaCreacion | date:'yyyy/M/d' }}</small>
+                    <small>{{ n.fechaCreacion | date:'d/M/yyyy' }}</small>
                   </div>
-                  <p class="mb-1">Para: {{ n.fechaFinalizacion | date:'yyyy/M/d' }}</p>
-                  <small>And some small print.</small>
+                  <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | date:'d/M/yyyy' }}</p>
+                  <small><b>Cliente:</b> {{ n.cliente }}</small>
+                </a>
+            </div>
+            <div *ngIf="notiArray.length == 0" class="list-group">
+                <a class="list-group-item list-group-item-action" aria-current="true">
+                  <p class="mb-1">No Tiene Notificaciones Pendientes En El Momento.</p>
+                  <small>Vuelva Más Tarde.</small>
                 </a>
             </div>
         </ul>
@@ -744,11 +751,11 @@
                                 <td *ngIf="!Columnas.includes('F GESTION')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
                                     cc.gestion[cc.gestion.length-1].fechaGestion | date:"d/M/yyyy" }}</td>
                                 <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.nombresClasificacion.tipo ==
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
                                     'TAREA' ?
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaTarea | date:"d/M/yyyy")
                                     :
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.nombresClasificacion.tipo ==
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
                                     'NOTA' ? 'NOTA' :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso |
                                     date:"d/M/yyyy")))}}
@@ -1051,7 +1058,6 @@
                                     <th scope="col">Gestor</th>
                                     <th scope="col">Fecha Gestión</th>
                                     <th scope="col">Clasificación</th>
-                                    <th scope="col">Detalle Gestión</th>
                                     <th scope="col">Estado</th>
                                 </tr>
                             </thead>
@@ -1063,7 +1069,6 @@
                                     <td>{{ g.fechaGestion | date:'dd/MM/yyyy' }} {{ g.fechaGestion | date:'shortTime' }}
                                     </td>
                                     <td>{{ g.clasificacion.clasificacion }}</td>
-                                    <td>{{ g.detallesGestion }}</td>
                                     <td>{{ g.clasificacion.isActive ? 'Activo':g.clasificacion.nombresClasificacion.tipo
                                         != "ACUERDO DE PAGO"?'Sin Estado':'No Activo' }}</td>
                                 </tr>
@@ -1072,6 +1077,15 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button *ngIf="!botonPdf" class="btn b" (click)="descargarAcuerdo()"><i class="fa-solid fa-download"></i>&nbsp;Generar Acuerdo</button>
+                    <a type="hidden" [href]="'data:application/pdf;base64,' + base64" id="basePdf" style="display: none;" [download]="clienteSelected.numeroDocumento + ' - ' + clienteSelected.nombreTitular"></a>
+                    
+                    <button *ngIf="botonPdf" class="btn btn-danger b">
+                        Descargando...
+                        <span class="spinner-border spinner-border-sm float-right" role="status"
+                            aria-hidden="true"></span>
+                    </button>
+                        
                     <button *ngIf="!modalGestiones" type="button" class="btn btn-secondary"
                         data-bs-dismiss="modal">Cerrar</button>
                     <button *ngIf="modalGestiones" type="button" class="btn btn-secondary" data-bs-toggle="modal"
@@ -1102,8 +1116,7 @@
                     </select>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" (click)="saveGestionWithDetalle('NO')">GUARDAR SIN DETALLE</button>
-                    <button class="btn btn-primary" (click)="saveGestionWithDetalle('SI')">GUARDAR CON DETALLE</button>
+                    <button class="btn btn-danger" (click)="saveGestionWithDetalle()">Guardar Gestión</button>
                 </div>
             </div>
         </div>
