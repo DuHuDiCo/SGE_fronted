@@ -101,6 +101,7 @@ export class CuentasCobrarService {
 
   updateTipoVencimiento(tipoVencimiento:TipoVencimiento){
     return this.http.put(`http://192.168.1.36:8021/api/v1/tiposVencimiento/updateTipoVencimiento`, tipoVencimiento)
+
   }
 
   //CLASIFICACION JURIDICA
@@ -119,6 +120,7 @@ export class CuentasCobrarService {
   getClasificacionJuridicaById(id:number){
     return this.http.get(`http://192.168.1.36:8021/api/v1/clasificacionJuridica/getClasificacionJuridicaById/${id}`)
   }
+
 
   // CONDICION ESPECIAL
   getAllCondicionEspecial(){
@@ -150,6 +152,7 @@ export class CuentasCobrarService {
 
   enviarCuotaPagada(id:number[]){
     return this.http.put(`http://192.168.1.36:8021/api/v1/gestiones/cuotaPago`, id)
+
   }
 
   // FIRMAS
@@ -189,6 +192,7 @@ export class CuentasCobrarService {
   // NOTIFICACIONES
   getNotificaciones(username:string){
     return this.http.get(`http://192.168.1.36:8021/api/v1/notificaciones/?username=${username}`)
+
   }
 
 }
