@@ -9,7 +9,7 @@ import { Tarea } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { CuentaCobrarCalculate, CuentasCobrarResponse } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
 
-import { CuotaList, CuotasRequest, Filtros, Gestion, GestionArray, Gestiones, Pagos, PagosRequest, ReciboPago, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
+import { CuotaList, CuotasRequest, Filtros, Gestion, GestionArray, Gestiones, Notificacion, Pagos, PagosRequest, ReciboPago, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
 
 import { ROLES } from 'src/app/Types/Roles';
 
@@ -86,6 +86,7 @@ export class HomeCarteraComponent implements OnInit {
   listaDeAnios: number[] = [];
   sedes: any[] = []
   cuotasSelected: any[] = []
+  notiArray:Notificacion[] = []
 
   // OBJETOS
 
@@ -202,7 +203,7 @@ export class HomeCarteraComponent implements OnInit {
   // TAREA
   tarea: any = {
     detalleTarea: '',
-    fechaFinTarea: new Date,
+    fechaFinTarea: '',
   }
 
   // ACUERDO DE PAGO
@@ -354,6 +355,7 @@ export class HomeCarteraComponent implements OnInit {
     this.getTipoVen()
     this.getSedes()
     this.getAsesores()
+    this.getNotificaciones()
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
   }
@@ -697,7 +699,7 @@ export class HomeCarteraComponent implements OnInit {
       return
     } else {
       if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'TAREA') {
-        if (this.tarea.fechaFinTarea instanceof Date || this.tarea.fechaFinTarea == null) {
+        if (this.tarea.fechaFinTarea.trim() == '' || this.tarea.fechaFinTarea.trim() == null) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -2923,6 +2925,18 @@ export class HomeCarteraComponent implements OnInit {
     var re: any = document.getElementById('mostrarReciboPago')
     re.src = this.base64Recibo
     $('#reciboPago').modal('show');
+  }
+
+  // NOTIFICACIONES
+  getNotificaciones(){
+    this.cuentasCobrar.getNotificaciones('Diana1975').subscribe(
+      (data:any) => {
+        this.notiArray = data
+        console.log(data);
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
   }
 
 }

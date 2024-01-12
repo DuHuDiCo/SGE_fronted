@@ -365,6 +365,27 @@ label.btn.btn-outline-dark {
   /* Valor alto para mantener el botón al frente */
 }
 
+.noti {
+  position: fixed;
+  margin-right: 10px;
+  margin-top: 150px;
+  right: 0;
+  border: none;
+  width: 50px;
+  height: 100px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.scrollable-menu {
+  max-height: 1000px; /* Ajusta la altura máxima según tus necesidades */
+  overflow-y: auto;
+}
+
+
 .form-check-input:checked {
   background-color: #9e212d;
   border-color: #dee2e6;

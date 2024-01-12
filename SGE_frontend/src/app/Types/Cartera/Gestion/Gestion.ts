@@ -175,3 +175,12 @@ export type Filtros = {
   isActive: boolean
 
 }
+
+export type Notificacion = {
+  idNotificaciones: number,
+  tipoGestion: string,
+  fechaCreacion: Date,
+  fechaFinalizacion: Date,
+  numeroObligacion: string,
+  designatedTo: number
+}

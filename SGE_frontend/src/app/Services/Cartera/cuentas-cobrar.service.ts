@@ -186,4 +186,9 @@ export class CuentasCobrarService {
     return this.http.put(`http://192.168.1.36:8021/api/v1/condicionEspecial/updateCondicion`, condicion)
   }
 
+  // NOTIFICACIONES
+  getNotificaciones(username:string){
+    return this.http.get(`http://192.168.1.36:8021/api/v1/notificaciones/?username=${username}`)
+  }
+
 }

@@ -10,6 +10,26 @@
             </div>
         </button>
     </div>
+    <div class="dropstart noti">
+        <button class="btn b dropdown-toggle position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-envelopes-bulk"></i>
+          <span class="position-absolute start-100 translate-middle badge rounded-pill bg-secondary">
+            {{ notiArray.length }}
+          </span>
+        </button>
+        <ul class="dropdown-menu scrollable-menu">
+            <div class="list-group">
+                <a *ngFor="let n of notiArray" class="list-group-item list-group-item-action" aria-current="true">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h5>
+                    <small>{{ n.fechaCreacion | date:'yyyy/M/d' }}</small>
+                  </div>
+                  <p class="mb-1">Para: {{ n.fechaFinalizacion | date:'yyyy/M/d' }}</p>
+                  <small>And some small print.</small>
+                </a>
+            </div>
+        </ul>
+      </div>
     <div class="card-c">
         <div *ngIf="newGestion.clasificacion.tipoClasificacion != null" class="row justify-content-end"
             data-bs-target="#offcanvasRight">
@@ -886,7 +906,7 @@
                                         <select class="form-select mt-3 mb-3" [(ngModel)]="newGestion.username">
                                             <option [value]="null">Seleccione Un Asesor</option>
                                             <option *ngFor="let a of asesores" [value]="a.usuario.username">{{
-                                                a.usuario.nombres }}</option>
+                                                a.usuario.nombres }} {{ a.usuario.apellidos }}</option>
                                         </select>
                                     </div>
                                 </div>
