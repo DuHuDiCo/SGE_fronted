@@ -401,12 +401,37 @@ export class HomeCarteraComponent implements OnInit {
 
   // TRAER CUENTAS POR COBRAR
   getCuentasCobrar() {
+    this.filtrando = false
+    var admin = this.authService.getRolesByName(ROLES.Administration);
+    
+    var cartera = this.authService.getRolesByName(ROLES.Cartera);
+    
+    var permiso = this.validarPermisoEnRolCartera("VER TODOS", cartera);
+    
+    if(admin.length != 0 || permiso != undefined && permiso.length != 0){
+      this.cuentasCobrar.getCuentasCobrarAdmin(this.page, this.size, this.fechaCreacion).subscribe(
+        (data:any) => {
+          this.paginas = new Array(data.totalPages)
+          this.cuentasCobrarArray = data.content
+          this.last = data.last
+          this.first = data.first
+          this.numeroPages = data.totalPages
+          this.cuentasCobrar.proSubject.next(true);
+          if (this.cuentasCobrarArray.length == 0) {
+            this.spinner = true
+          } else {
+            this.spinner = false
+          }
+        }, (error:any) => {
+          console.log(error);
+        }
+      )
+    } else {
+      var user = this.authService.getUsername()
 
-    var user = this.authService.getUsername()
-
-    if (user == null || user == undefined) {
-      return
-    }
+      if (user == null || user == undefined) {
+        return
+      }
 
     this.filtrando = false
     this.cuentasCobrar.getCuentasCobrar(user, this.page, this.size, this.fechaCreacion).subscribe(
@@ -422,14 +447,12 @@ export class HomeCarteraComponent implements OnInit {
         } else {
           this.spinner = false
         }
-
-
-
       }, (error: any) => {
         console.log(error);
       }
     )
-  }
+  }    
+}
 
   //PAGINA ANTERIOR
   back() {
@@ -2318,9 +2341,10 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   validarPermisoEnRolCartera(permiso: string, rolesCartera: any) {
-    var permisos = rolesCartera[0].permisos.filter((p: any) => p.permiso == permiso)
-    return permisos
-
+      if(rolesCartera != undefined && rolesCartera.length > 0){
+        var permisos = rolesCartera[0].permisos.filter((p: any) => p.permiso == permiso)
+        return permisos
+      }
   }
 
   //FILTROS
@@ -2360,6 +2384,16 @@ export class HomeCarteraComponent implements OnInit {
         timer: 3000,
       });
       return;
+    }
+
+    var admin = this.authService.getRolesByName(ROLES.Administration);
+    
+    var cartera = this.authService.getRolesByName(ROLES.Cartera);
+    
+    var permiso = this.validarPermisoEnRolCartera("VER TODOS", cartera);
+    
+    if(admin.length != 0 || permiso != undefined && permiso.length != 0){
+      this.filtros.username = ''
     }
 
     this.botonFiltro = true
