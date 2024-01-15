@@ -38,8 +38,8 @@ export class GuardAsesoraGuard implements CanActivate {
       return false; // Evita que continúe la navegación
     }
 
-    var permiso = this.validarPermisoEnRolCartera("CREAR ASESORES", cartera);
-    if (!(permiso && permiso.length > 0 && permiso[0].permiso == "CREAR ASESORES")) {
+    var permiso = this.validarPermisoEnRolCartera("ASESOR CARTERA", cartera);
+    if (!(permiso.length > 0)) {
       // No tiene el permiso, redirige
       this.router.navigate(['/dashboard-cartera/inicio-caja']);
       return false; // Evita que continúe la navegación

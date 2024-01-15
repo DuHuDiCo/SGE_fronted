@@ -2325,6 +2325,12 @@ export class HomeCarteraComponent implements OnInit {
 
   //FILTROS
   filtro() {
+    var user = this.authService.getUsername();
+
+    if (user != null || user != undefined) {
+      this.filtros.username = user
+    }  
+
     this.filtros.banco = this.bancosArray
     this.filtros.clasiJuridica = this.clasJurArray
     this.filtros.sede = this.sedesArray
