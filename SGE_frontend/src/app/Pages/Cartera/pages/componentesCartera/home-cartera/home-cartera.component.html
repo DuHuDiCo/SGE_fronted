@@ -1178,13 +1178,13 @@
                                         date:'dd/MM/yyyy'}}</h6>
                                     <h6><strong>Saldo Actual Acuerdo: </strong> {{saldoAcuerdoPago | number}}</h6>
                                     <h6><strong>Agregar Pago: </strong> <a role="button" class="btn btn-danger btn-sm"
-                                            (click)="mostrarAgregarPago=true"
+                                            (click)="ocultarAgregarPago=true"
                                             style="background-color: #960010;border-color: #960010;"><i
                                                 class="fas fa-plus"></i></a>
                                     </h6>
                                 </div>
                             </div>
-                            <div class="col-md-12 " *ngIf="mostrarAgregarPago">
+                            <div class="col-md-12 " *ngIf="ocultarAgregarPago">
 
 
                                 <form action="">
@@ -1197,8 +1197,8 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="">Numero Recibo</label>
-                                            <input type="text" [(ngModel)]="pago.recibo" class="form-control"
-                                                name="recibo">
+                                            <input type="text" [(ngModel)]="pago.numeroRecibo" class="form-control"
+                                                name="numeroRecibo">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="">Detalle</label>
@@ -1356,9 +1356,9 @@
 
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
 
-                        <button
-                            *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true"
-                            type="button" class="btn btn-danger b" (click)="generarRecibo()" data-bs-dismiss="modal">Aplicar Pagos</button>
+                        <button 
+                            *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true && mostrarAgregarPago"
+                            type="button" class="btn btn-danger b" (click)="generarRecibo()" >Aplicar Pagos</button>
 
                     </span>
 

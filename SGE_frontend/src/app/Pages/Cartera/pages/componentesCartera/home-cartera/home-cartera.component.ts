@@ -44,6 +44,7 @@ export class HomeCarteraComponent implements OnInit {
   tiposVen: TipoVencimiento[] = []
   disableds!: Array<boolean>
   mostrarAgregarPago: boolean = false
+  ocultarAgregarPago: boolean = false
   pago: any = {
     valor: 0,
     detalle: '',
@@ -86,7 +87,7 @@ export class HomeCarteraComponent implements OnInit {
   listaDeAnios: number[] = [];
   sedes: any[] = []
   cuotasSelected: any[] = []
-  notiArray:Notificacion[] = []
+  notiArray: Notificacion[] = []
 
   // OBJETOS
 
@@ -289,7 +290,7 @@ export class HomeCarteraComponent implements OnInit {
   edadVenArray: string[] = []
   sedesArray: string[] = []
   clasJurArray: string[] = []
-  asesores:any[] = []
+  asesores: any[] = []
 
   //VARIABLES
   mensaje: string = ''
@@ -431,6 +432,7 @@ export class HomeCarteraComponent implements OnInit {
       if (user == null || user == undefined) {
         return
       }
+
     this.filtrando = false
     this.cuentasCobrar.getCuentasCobrar(user, this.page, this.size, this.fechaCreacion).subscribe(
       (data: any) => {
@@ -915,21 +917,21 @@ export class HomeCarteraComponent implements OnInit {
 
     var user = this.authService.getUsername()
 
-      if (user == null || user == undefined) {
-        return
-      }
+    if (user == null || user == undefined) {
+      return
+    }
 
     this.newGestion.username = user
 
-      if (this.reporte.cedula.trim() == '' || this.reporte.cedula.trim() == null) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Elija La Cédula del Cliente o Codeudor',
-          timer: 3000
-        })
-        return
-      }
+    if (this.reporte.cedula.trim() == '' || this.reporte.cedula.trim() == null) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Elija La Cédula del Cliente o Codeudor',
+        timer: 3000
+      })
+      return
+    }
 
     this.newGestion.clasificacion.acuerdoPago!.detalle = this.acuerdo.detalle
 
@@ -968,10 +970,10 @@ export class HomeCarteraComponent implements OnInit {
         setTimeout(() => {
           this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
             (data: any) => {
-  
+
               this.getGestiones(this.newGestion.numeroObligacion)
               this.getNotificaciones()
-  
+
               this.mostrarReporte()
               Swal.fire({
                 icon: 'success',
@@ -1249,9 +1251,9 @@ export class HomeCarteraComponent implements OnInit {
   mostrarReporte() {
     var user = this.authService.getUsername()
 
-      if (user == null || user == undefined) {
-        return
-      }
+    if (user == null || user == undefined) {
+      return
+    }
 
     this.reporte.username = user
     setTimeout(() => {
@@ -1271,45 +1273,45 @@ export class HomeCarteraComponent implements OnInit {
     this.clienteSelected.nombreTitular = cliente.nombreTitular
   }
 
-  descargarAcuerdo(){
+  descargarAcuerdo() {
     var user = this.authService.getUsername()
 
-      if (user == null || user == undefined) {
-        return
-      }
+    if (user == null || user == undefined) {
+      return
+    }
 
     this.reporte.numeroObligacion = this.cuentaCobrarSelected.numeroObligacion
     this.reporte.cedula = this.cuentaCobrarSelected.documentoCliente
     this.reporte.username = user
-    
+
     this.botonPdf = true
 
-      this.cuentasCobrar.reporte(this.reporte).subscribe(
-        (data: any) => {
-          this.mostrarRep = data
-          this.mensaje = this.mostrarRep.messageToWpp
-          this.base64 = this.mostrarRep.base64
-          setTimeout(() => {
-            var down = document.getElementById('basePdf')
-            down?.click()
-            this.botonPdf = false
-          }, 1000);
-        }, (error: any) => {
-          console.log(error);
+    this.cuentasCobrar.reporte(this.reporte).subscribe(
+      (data: any) => {
+        this.mostrarRep = data
+        this.mensaje = this.mostrarRep.messageToWpp
+        this.base64 = this.mostrarRep.base64
+        setTimeout(() => {
+          var down = document.getElementById('basePdf')
+          down?.click()
           this.botonPdf = false
-        }
-      )
+        }, 1000);
+      }, (error: any) => {
+        console.log(error);
+        this.botonPdf = false
+      }
+    )
 
-      var cliente = this.cuentaCobrarSelected.clientes.find((c: any) => c.numeroDocumento = this.reporte.cedula)
-      this.clienteSelected.numeroDocumento = cliente.numeroDocumento
-      this.clienteSelected.nombreTitular = cliente.nombreTitular
+    var cliente = this.cuentaCobrarSelected.clientes.find((c: any) => c.numeroDocumento = this.reporte.cedula)
+    this.clienteSelected.numeroDocumento = cliente.numeroDocumento
+    this.clienteSelected.nombreTitular = cliente.nombreTitular
   }
 
-  getAsesores(){
+  getAsesores() {
     this.cuentasCobrar.getAsesoresCartera().subscribe(
-      (data:any) => {
+      (data: any) => {
         this.asesores = data
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
@@ -1464,9 +1466,9 @@ export class HomeCarteraComponent implements OnInit {
 
     var user = this.authService.getUsername()
 
-      if (user == null || user == undefined) {
-        return
-      }
+    if (user == null || user == undefined) {
+      return
+    }
 
     this.fechaInicial = new Date(this.acuerdo.fechaCompromiso)
     this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
@@ -1866,7 +1868,7 @@ export class HomeCarteraComponent implements OnInit {
 
   // CACULAR COUTAS
   calcularCuotas() {
-    if(this.acuerdoCal.valorCuotaMensual < 0){
+    if (this.acuerdoCal.valorCuotaMensual < 0) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -1995,7 +1997,7 @@ export class HomeCarteraComponent implements OnInit {
 
   // RECALCULAR
   recalcularValores(position: number, event: any) {
-    if(event.target.value < 0){
+    if (event.target.value < 0) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -2004,7 +2006,7 @@ export class HomeCarteraComponent implements OnInit {
       });
       event.target.value = this.cuotas[position].valorCuota
       return
-      
+
     }
     var nuevoValor = event.target.value - this.cuotas[position].valorCuota
     if (event.target.value > this.cuotas[position].valorCuota) {
@@ -2351,7 +2353,7 @@ export class HomeCarteraComponent implements OnInit {
 
     if (user != null || user != undefined) {
       this.filtros.username = user
-    }  
+    }
 
     this.filtros.banco = this.bancosArray
     this.filtros.clasiJuridica = this.clasJurArray
@@ -2525,7 +2527,8 @@ export class HomeCarteraComponent implements OnInit {
 
   agregarPagoACuotas() {
 
-    this.mostrarAgregarPago = false
+    this.mostrarAgregarPago = true
+    this.ocultarAgregarPago = false
     if (this.pago.detalle.trim() == '' || this.pago.detalle.trim() == null || this.pago.detalle.trim() == undefined) {
       Swal.fire({
         icon: 'error',
@@ -2533,7 +2536,8 @@ export class HomeCarteraComponent implements OnInit {
         text: 'Debes ingresar el concepto del pago',
         timer: 3000
       })
-      this.mostrarAgregarPago = true
+      this.mostrarAgregarPago = false
+      this.ocultarAgregarPago = true
       return
     }
 
@@ -2544,7 +2548,8 @@ export class HomeCarteraComponent implements OnInit {
         text: 'Debes seleccionar un medio pago',
         timer: 3000
       })
-      this.mostrarAgregarPago = true
+      this.mostrarAgregarPago = false
+      this.ocultarAgregarPago = true
       return
     }
 
@@ -2555,7 +2560,8 @@ export class HomeCarteraComponent implements OnInit {
         text: 'Debes ingresar un valor mayor a cero',
         timer: 3000
       })
-      this.mostrarAgregarPago = true
+      this.mostrarAgregarPago = false
+      this.ocultarAgregarPago = true
       return
     }
 
@@ -2822,29 +2828,22 @@ export class HomeCarteraComponent implements OnInit {
       }
       this.pago.valor = 0
       this.activarGuardarPago = true
+
+
     }
   }
 
   generarRecibo() {
     this.activarGuardarPago = false
     this.savePago = true
-    if (this.pago.recibo.trim() == '' || this.pago.recibo.trim() == null || this.pago.recibo.trim() == undefined) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Debes ingresar el numero de recibo',
-        timer: 3000
-      })
-      this.activarGuardarPago = true
-      this.savePago = false
-      return
-    }
+
+
 
 
 
     var recibo = {
       numeroObligacion: this.cuentaCobrarSelected.numeroObligacion,
-      numeroRecibo: this.pago.recibo,
+      numeroRecibo: this.pago.numeroRecibo,
       cuotasDto: this.coutasRequest,
       valorTotal: this.valorTotalIngresado,
       acuerdoTotal: this.saldoAcuerdoPago,
@@ -2865,7 +2864,7 @@ export class HomeCarteraComponent implements OnInit {
         (data: any) => {
 
           this.mostrarReciboPago(data.base64)
-
+          this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
 
           this.activarGuardarPago = false
           this.savePago = false
@@ -2879,8 +2878,8 @@ export class HomeCarteraComponent implements OnInit {
       )
     }
 
-
-
+    $('#modalGestionCom').modal('hide');
+    
 
   }
 
@@ -2906,17 +2905,17 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   // NOTIFICACIONES
-  getNotificaciones(){
+  getNotificaciones() {
     var user = this.authService.getUsername()
 
-      if (user == null || user == undefined) {
-        return
-      }
-    
+    if (user == null || user == undefined) {
+      return
+    }
+
     this.cuentasCobrar.getNotificaciones(user).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.notiArray = data
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
