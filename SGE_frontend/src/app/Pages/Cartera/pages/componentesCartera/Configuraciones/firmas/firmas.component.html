@@ -28,30 +28,33 @@
         </div>
         
 
-        <!-- <div class="row justify-content-center">
+        <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="table-responsive">
                     <table class="table table-bordered align-middle text-center">
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Nombre</th>
+                            <th>Archivo</th>
                             <th>Acciones</th>
                           </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let c of condicionArray; let i = index">
+                            <tr *ngFor="let f of firmasArray; let i = index">
                                 <td>{{ i + 1 }}</td>
-                                <td>{{ c.condicionEspecial }}</td>
+                                <td>{{ f.ruta }}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar" (click)="getById(c.idCondicionEspecial)"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    <button *ngIf="!eliminarFirma" class="btn btn-sm b" (click)="delete(f.idFirma)"><i class="fa-solid fa-trash"></i></button>
+                                    <button *ngIf="eliminarFirma" class="btn b">
+                                        <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
                       </table>
                 </div>
             </div>
-        </div> -->
+        </div>
 
     </div>
 </div>
