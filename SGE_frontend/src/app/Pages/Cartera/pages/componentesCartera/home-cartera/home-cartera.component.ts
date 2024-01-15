@@ -44,6 +44,7 @@ export class HomeCarteraComponent implements OnInit {
   tiposVen: TipoVencimiento[] = []
   disableds!: Array<boolean>
   mostrarAgregarPago: boolean = false
+  ocultarAgregarPago: boolean = false
   pago: any = {
     valor: 0,
     detalle: '',
@@ -2486,7 +2487,8 @@ export class HomeCarteraComponent implements OnInit {
 
   agregarPagoACuotas() {
 
-    this.mostrarAgregarPago = false
+    this.mostrarAgregarPago = true
+    this.ocultarAgregarPago = false
     if (this.pago.detalle.trim() == '' || this.pago.detalle.trim() == null || this.pago.detalle.trim() == undefined) {
       Swal.fire({
         icon: 'error',
@@ -2494,7 +2496,8 @@ export class HomeCarteraComponent implements OnInit {
         text: 'Debes ingresar el concepto del pago',
         timer: 3000
       })
-      this.mostrarAgregarPago = true
+      this.mostrarAgregarPago = false
+      this.ocultarAgregarPago = true
       return
     }
 
@@ -2505,7 +2508,8 @@ export class HomeCarteraComponent implements OnInit {
         text: 'Debes seleccionar un medio pago',
         timer: 3000
       })
-      this.mostrarAgregarPago = true
+      this.mostrarAgregarPago = false
+      this.ocultarAgregarPago = true
       return
     }
 
@@ -2516,7 +2520,8 @@ export class HomeCarteraComponent implements OnInit {
         text: 'Debes ingresar un valor mayor a cero',
         timer: 3000
       })
-      this.mostrarAgregarPago = true
+      this.mostrarAgregarPago = false
+      this.ocultarAgregarPago = true
       return
     }
 

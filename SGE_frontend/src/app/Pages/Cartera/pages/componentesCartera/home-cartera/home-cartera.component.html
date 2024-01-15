@@ -1178,13 +1178,13 @@
                                         date:'dd/MM/yyyy'}}</h6>
                                     <h6><strong>Saldo Actual Acuerdo: </strong> {{saldoAcuerdoPago | number}}</h6>
                                     <h6><strong>Agregar Pago: </strong> <a role="button" class="btn btn-danger btn-sm"
-                                            (click)="mostrarAgregarPago=true"
+                                            (click)="ocultarAgregarPago=true"
                                             style="background-color: #960010;border-color: #960010;"><i
                                                 class="fas fa-plus"></i></a>
                                     </h6>
                                 </div>
                             </div>
-                            <div class="col-md-12 " *ngIf="mostrarAgregarPago">
+                            <div class="col-md-12 " *ngIf="ocultarAgregarPago">
 
 
                                 <form action="">
