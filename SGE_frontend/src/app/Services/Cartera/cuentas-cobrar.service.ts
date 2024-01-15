@@ -22,6 +22,10 @@ export class CuentasCobrarService {
     return this.http.get(`${baseUrl}/cuentas/cuentasCobrar?username=${username}&page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`)
   }
 
+  getCuentasCobrarAdmin(page:number, size:number, fechaCreacion:string){
+    return this.http.get(`${baseUrl}/cuentas/cuentasCobrarAdmin?page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`)
+  }
+
   getCuentaByObligacion(numeroObligacion:string){
     return this.http.get(`${baseUrl}/cuentas/getCuentaCobrarByNumeroObligacion?numeroObligacion=${numeroObligacion}`)
   }
