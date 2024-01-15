@@ -38,7 +38,7 @@ export class GuardCajaGuard implements CanActivate {
 
     var permiso = this.validarPermisoEnRolCartera("ASESOR CAJA", cartera);
 
-    if (permiso && permiso.length > 0 && permiso[0].permiso == "ASESOR CARTERA") {
+    if (permiso.length == 0) {
       // No tiene el permiso, redirige
       this.router.navigate(['/dashboard-cartera/inicio']);
       return false; // Evita que continúe la navegación
