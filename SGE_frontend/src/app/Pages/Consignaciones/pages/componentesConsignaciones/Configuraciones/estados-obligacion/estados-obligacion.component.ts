@@ -70,7 +70,6 @@ export class EstadosObligacionComponent implements OnInit {
     this.obligacionService.getAllEstado().subscribe(
       (data:any) => {
         this.estados = data
-        console.log(this.estados);
       }, (error:any) => {
         console.log(error);
       }

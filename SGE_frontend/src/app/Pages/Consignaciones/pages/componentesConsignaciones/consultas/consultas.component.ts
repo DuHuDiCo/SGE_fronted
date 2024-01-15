@@ -381,7 +381,6 @@ export class ConsultasComponent implements OnInit {
         (data: any) => {
           this.spinner = false
           this.con = data.content
-          console.log(data);
 
           this.con.forEach((e: any, index: number) => {
 
@@ -417,7 +416,6 @@ export class ConsultasComponent implements OnInit {
                 } else {
                   this.cambios = false
                 }
-                console.log(this.cambioArray);
               }, 100);
 
 
@@ -436,7 +434,6 @@ export class ConsultasComponent implements OnInit {
             Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
             return
           }
-          console.log(data);
 
 
           this.botones = new Array<boolean>(this.con.length).fill(false)
@@ -448,11 +445,9 @@ export class ConsultasComponent implements OnInit {
 
     if (this.validarPermiso('CONSULTAR CONCILIADOS')) {
       this.estadoConsignacion = 'DEVUELTA ' + this.estadoConsignacion
-      console.log(this.estadoConsignacion);
 
       this.consultarService.getAllConsignaciones('DEVUELTA ' + p, this.page, this.size, "DESC").subscribe(
         (data: any) => {
-          console.log(data);
 
           this.spinner = false
           this.con = data.content
@@ -490,7 +485,6 @@ export class ConsultasComponent implements OnInit {
                 } else {
                   this.cambios = false
                 }
-                console.log(this.cambioArray);
               }, 100);
 
 
@@ -521,7 +515,6 @@ export class ConsultasComponent implements OnInit {
     if (this.validarPermiso('CONSULTAR PENDIENTES') && this.validarPermiso('COMPROBAR CONSIGNACIONES')) {
       this.consultarService.getAllConsignaciones(p, this.page, this.size, "ASC").subscribe(
         (data: any) => {
-          console.log(data);
 
           this.spinner = false
           this.con = data.content
@@ -559,7 +552,6 @@ export class ConsultasComponent implements OnInit {
                 } else {
                   this.cambios = false
                 }
-                console.log(this.cambioArray);
               }, 100);
 
 
@@ -591,7 +583,6 @@ export class ConsultasComponent implements OnInit {
       if (this.validarPermiso('CREAR CONSIGNACIONES') && this.validarPermiso('CONSULTAR PENDIENTES')) {
         this.consultarService.getAllConsignaciones(p, this.page, this.size, "DESC").subscribe(
           (data: any) => {
-            console.log(data);
   
             this.spinner = false
             this.con = data.content
@@ -629,7 +620,6 @@ export class ConsultasComponent implements OnInit {
                   } else {
                     this.cambios = false
                   }
-                  console.log(this.cambioArray);
                 }, 100);
   
   
@@ -658,7 +648,6 @@ export class ConsultasComponent implements OnInit {
       } else {
         this.consultarService.getAllConsignaciones(p, this.page, this.size, "ASC").subscribe(
           (data: any) => {
-            console.log(data);
   
             this.spinner = false
             this.con = data.content
@@ -696,7 +685,6 @@ export class ConsultasComponent implements OnInit {
                   } else {
                     this.cambios = false
                   }
-                  console.log(this.cambioArray);
                 }, 100);
   
   
@@ -755,7 +743,6 @@ export class ConsultasComponent implements OnInit {
         this.detalle = data
         this.observacionDto.idConsignacion = data.idConsignacion
         var actua = this.actu.actualizaciones.find((a: any) => a.isCurrent == true)
-        console.log(actua);
 
         if (actua != null || actua != undefined) {
           if (actua.estado.estado == 'PENDIENTE') {
@@ -1114,13 +1101,11 @@ export class ConsultasComponent implements OnInit {
   //METODO USADO EN EL HTML PARA LLAMAR LAS FUNCIONES DE CAMBIAR LOS BOTONES
   //SOLO DE COMPROBAR Y APLICAR
   cambiarConsignacionTemporal(id: number, position: number, estado: string, tipoReporte: string) {
-    console.log(this.cambiarEstado);
 
 
     this.tipoReporte = tipoReporte
 
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
-    console.log(idC);
 
 
     this.isSelected.idConsignacion = id
@@ -1133,7 +1118,6 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (idC != null || idC != undefined) {
-      console.log(this.cambios);
 
 
       this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
@@ -1172,17 +1156,14 @@ export class ConsultasComponent implements OnInit {
       this.cambios = true
     }
 
-    console.log(this.cambioArray);
 
   }
 
   enviarIsSelected(isSelected: IsSelected) {
-    console.log(isSelected);
 
     this.consultarService.isSelected(isSelected).subscribe(
       (data: any) => {
         this.selected = data.isSelected
-        console.log(this.selected);
       }, (error: any) => {
         console.log(error);
       }
@@ -1417,7 +1398,6 @@ export class ConsultasComponent implements OnInit {
       var boton_cancelar = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
       class="btn btn-danger btn-sm ms-2" id="btn_cancelar_${position}" disabled>
       <i class="fa-solid fa-ban"></i></button>`
-      console.log(boton_cancelar);
 
 
 
@@ -1538,7 +1518,6 @@ export class ConsultasComponent implements OnInit {
 
     this.posicionDevolver = position
 
-    console.log(this.cambioArray);
 
   }
 
@@ -1569,7 +1548,6 @@ export class ConsultasComponent implements OnInit {
 
         var idC = this.cambioArray.find((c: any) => c.idConsignacion == this.cambiarEstado.idConsignacion)
 
-        console.log(idC);
 
         this.isSelected.idConsignacion = this.cambiarEstado.idConsignacion
         this.isSelected.estado = this.cambiarEstado.estado
@@ -1609,7 +1587,6 @@ export class ConsultasComponent implements OnInit {
           }
           this.enviarIsSelected(this.isSelected)
 
-          console.log(this.cambioArray);
         }
 
         this.cambios = true
@@ -1681,7 +1658,6 @@ export class ConsultasComponent implements OnInit {
 
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == this.cambiarEstado.idConsignacion)
 
-    console.log(idC);
 
     this.isSelected.idConsignacion = this.cambiarEstado.idConsignacion
     this.isSelected.estado = this.cambiarEstado.estado
@@ -1721,7 +1697,6 @@ export class ConsultasComponent implements OnInit {
       }
       this.enviarIsSelected(this.isSelected)
 
-      console.log(this.cambioArray);
 
       this.cambios = true
 
@@ -1743,7 +1718,6 @@ export class ConsultasComponent implements OnInit {
     }
 
     this.botonCambiarConsignacion = true
-    console.log(this.tipoReporte);
     
 
     setTimeout(() => {
@@ -1847,7 +1821,6 @@ export class ConsultasComponent implements OnInit {
     this.obligacionService.getAllAsesores().subscribe(
       (data: any) => {
         this.asesores = data
-        console.log(this.asesores);
       }, (error: any) => {
         console.log(error);
       }
@@ -1889,7 +1862,6 @@ export class ConsultasComponent implements OnInit {
           this.con.forEach((c: any) => {
             c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
           })
-          console.log(data);
           this.consultarService.proSubject.next(true);
         }
       }, (error: any) => {
@@ -1997,7 +1969,6 @@ export class ConsultasComponent implements OnInit {
 
     this.crearCliente = true
 
-    console.log(this.cliente);
 
 
     this.ingresarService.saveCliente(this.cliente).subscribe(
@@ -2108,7 +2079,6 @@ export class ConsultasComponent implements OnInit {
               this.actu.actualizaciones = data.actualizaciones
 
               var actua = this.actu.actualizaciones.find((a: any) => a.isCurrent == true)
-              console.log(actua);
 
               if (actua != null || actua != undefined) {
                 if (actua.estado.estado == 'PENDIENTE') {

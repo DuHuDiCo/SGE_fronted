@@ -44,7 +44,6 @@ export class RankingsComponent implements OnInit {
     this.rankings.getEstadisticas(username).subscribe(
       (data: any) => {
         this.Ranking = data
-        console.log(data);
       }, (error: any) => {
         console.log(error);
         Swal.fire('Error', 'Error al cargar los Rankings de las Consignaciones', 'error');
