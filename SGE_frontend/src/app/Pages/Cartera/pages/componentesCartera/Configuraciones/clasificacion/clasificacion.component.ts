@@ -36,7 +36,6 @@ export class ClasificacionComponent implements OnInit {
     this.clasificacionService.getClasificacion().subscribe(
       (data:any) => {
         this.ClasificacionArray = data
-        console.log(this.ClasificacionArray);
       }, (error:any) => {
         console.log(error);
       }
@@ -78,7 +77,6 @@ export class ClasificacionComponent implements OnInit {
       })
       return
     }
-    console.log(this.clasificacion);
     
     this.crearButton = true
     setTimeout(() => {
@@ -126,7 +124,6 @@ export class ClasificacionComponent implements OnInit {
       })
       return
     }
-    console.log(this.clasificacionModal);
     this.editarButton = true
     setTimeout(() => {
       this.clasificacionService.updateClasificacion(this.clasificacionModal).subscribe(

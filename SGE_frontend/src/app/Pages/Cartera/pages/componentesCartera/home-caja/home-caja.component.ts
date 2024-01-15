@@ -82,7 +82,6 @@ export class HomeCajaComponent implements OnInit {
             timer: 3000
           })
         }
-        console.log(this.cuentasCobrar);
         this.cuentasCobrarGestiones = []
 
       }, (error: any) => {
@@ -109,7 +108,6 @@ export class HomeCajaComponent implements OnInit {
 
     this.cuentaCobrarService.getCuentaByCedula(cedula).subscribe(
       (data: any) => {
-        console.log(data);
         this.cuentasCobrarGestiones = data;
 
 
@@ -139,7 +137,6 @@ export class HomeCajaComponent implements OnInit {
                       this.recibosPago.push(c.pagos.reciboPago)
                     }
 
-                    console.log(c.pagos.valorPago);
                     if (c.pagos.saldoCuota > 0) {
 
                       this.saldoAcuerdoPago = this.saldoAcuerdoPago + c.pagos.saldoCuota
@@ -191,16 +188,6 @@ export class HomeCajaComponent implements OnInit {
 
                   this.coutasRequest.push(couta)
                 })
-                console.log(this.saldoAcuerdoPago);
-                console.log(this.totalCapital);
-                console.log(this.totalHonorarios);
-                console.log(this.totalIntereses);
-
-                console.log(this.totalCuotasAcuerdo);
-
-
-
-                console.log(this.coutasRequest);
 
 
               } else {
@@ -279,7 +266,6 @@ export class HomeCajaComponent implements OnInit {
     if (valorTotal < this.totalCuotasAcuerdo) {
       this.valorTotalIngresado = valorTotal
     }
-    console.log(valorTotal);
 
     if (isNaN(this.pago.valor)) {
 
@@ -333,12 +319,6 @@ export class HomeCajaComponent implements OnInit {
 
             this.coutasRequest[i].pagosDto!.valorPago = c.valorCuota
             this.coutasList[i].pagos!.valorPago = this.coutasRequest[i].pagosDto!.valorPago
-
-
-
-
-            console.log(this.coutasRequest[i])
-            console.log(c)
           }
         }
 
@@ -388,12 +368,6 @@ export class HomeCajaComponent implements OnInit {
               this.coutasList[i].capitalCuota = 0
               this.coutasList[i].honorarios = 0
               this.coutasList[i].interesCuota = 0
-
-              console.log(this.saldoCapitalAcuerdo);
-              console.log(this.saldoHonoriariosAcuerdo);
-              console.log(this.saldoInteresesAcuerdo);
-
-
             }
 
 
@@ -449,13 +423,6 @@ export class HomeCajaComponent implements OnInit {
               this.coutasList[i].capitalCuota = 0
 
             }
-
-
-
-
-            console.log(valorTotal);
-            console.log(this.coutasRequest[i])
-            console.log(c)
 
 
           } else {
@@ -521,10 +488,6 @@ export class HomeCajaComponent implements OnInit {
               this.coutasList[i].pagos.saldoCuota = this.coutasList[i].capitalCuota
               this.coutasRequest[i].pagosDto!.saldoCuota = this.coutasList[i].capitalCuota
             }
-
-            console.log(valorTotal);
-            console.log(this.coutasRequest[i])
-            console.log(c)
           }
 
 
@@ -565,16 +528,10 @@ export class HomeCajaComponent implements OnInit {
       this.activarGuardarPago = true
     }
 
-    console.log(this.coutasRequest);
-    console.log(this.coutasList);
-
 
   }
 
   generarRecibo() {
-    console.log(this.saldoCapitalAcuerdo);
-    console.log(this.saldoHonoriariosAcuerdo);
-    console.log(this.saldoInteresesAcuerdo);
     this.activarGuardarPago = false
     this.savePago = true
     if (this.pago.numeroRecibo.trim() == '' || this.pago.numeroRecibo.trim() == null || this.pago.numeroRecibo.trim() == undefined) {
@@ -609,16 +566,13 @@ export class HomeCajaComponent implements OnInit {
     var user = this.auth.getUsername();
     if (user != null || user != undefined) {
       recibo.username = user;
-      console.log(recibo);
 
       this.cuentaCobrarService.crearRecibo(recibo).subscribe(
         (data: any) => {
-          console.log(data);
 
           this.mostrarReciboPago(data.base64)
 
 
-          console.log(recibo);
           this.activarGuardarPago = false
           this.savePago = false
         }, (error: any) => {

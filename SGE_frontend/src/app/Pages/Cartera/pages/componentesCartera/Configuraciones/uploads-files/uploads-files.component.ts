@@ -36,7 +36,6 @@ export class UploadsFilesComponent implements OnInit {
 
     })
 
-    console.log(this.files);
 
   }
 
@@ -67,7 +66,6 @@ export class UploadsFilesComponent implements OnInit {
   subirFile() {
     this.uploadsFiles.subirGestiones(this.files).subscribe(
       (data:any)=>{
-        console.log(data);
         
       },(error:any)=>{
         console.log(error);

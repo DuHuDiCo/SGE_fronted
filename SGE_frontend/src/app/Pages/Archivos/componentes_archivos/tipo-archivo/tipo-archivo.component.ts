@@ -40,7 +40,6 @@ export class TipoArchivoComponent implements OnInit {
     this.tipoArchivoService.getAll().subscribe(
       (data:any) => {
         this.tiposArchivos = data
-        console.log(data);
       }, (error:any) => {
         console.log(error);
       }
@@ -52,7 +51,6 @@ export class TipoArchivoComponent implements OnInit {
       (data:any) => {
         this.modal.idTipoArchivo = id
         this.modal.tipoArchivo = data.tipoArchivo
-        console.log(data);
         
       }, (error:any) => {
         console.log(error);

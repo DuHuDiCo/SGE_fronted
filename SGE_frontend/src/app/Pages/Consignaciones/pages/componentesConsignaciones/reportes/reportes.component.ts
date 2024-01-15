@@ -62,10 +62,8 @@ export class ReportesComponent implements OnInit {
 
             this.last = data.last
             this.first = data.first
-            console.log(data);
 
             this.reportesService.proSubject.next(true);
-            console.log(this.reportes);
           }, (error: any) => {
             console.log(error);
           }
@@ -83,7 +81,6 @@ export class ReportesComponent implements OnInit {
             this.last = data.last
             this.first = data.first
             this.reportesService.proSubject.next(true);
-            console.log(this.reportes);
           }, (error: any) => {
             console.log(error);
           }
@@ -271,7 +268,6 @@ export class ReportesComponent implements OnInit {
           this.last = data.last
           this.first = data.first
           this.reportesService.proSubject.next(true);
-          console.log(this.reportes);
           this.filtro = false
         }
       }, (error: any) => {

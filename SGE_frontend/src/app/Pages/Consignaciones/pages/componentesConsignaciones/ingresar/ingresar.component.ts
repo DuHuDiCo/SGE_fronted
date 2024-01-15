@@ -165,9 +165,7 @@ export class IngresarComponent implements OnInit {
       this.ingresarService.confirmarConsignacion(this.consignacion.numeroRecibo, this.consignacion.fechaPago, this.consignacion.valor, this.consignacion.username).subscribe(
         (data: any) => {
           this.con = data
-          console.log(data);
           if (this.con.consigRes.length <= 0) {
-            console.log(this.consignacion.fechaPago);
             
             this.ingresarService.saveConsignacion(this.consignacion).subscribe(
               (data: any) => {
@@ -323,7 +321,6 @@ export class IngresarComponent implements OnInit {
     
     this.crearCliente = true
 
-    console.log(this.cliente);
     
 
     this.ingresarService.saveCliente(this.cliente).subscribe(
@@ -379,7 +376,6 @@ export class IngresarComponent implements OnInit {
     this.sedeService.getSedes().subscribe(
       (data:any) => {
         this.sedes = data
-        console.log(data);
       }, (error:any) => {
         console.log(error);
         
@@ -391,7 +387,6 @@ export class IngresarComponent implements OnInit {
     this.obligacionService.getAllAsesores().subscribe(
       (data: any) => {
         this.asesores = data
-        console.log(this.asesores);
       }, (error: any) => {
         console.log(error);
       }
@@ -421,7 +416,6 @@ export class IngresarComponent implements OnInit {
     this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
       (data: any) => {
         this.obligacion = data
-        console.log(data);
         if (this.obligacion.length > 0) {
           this.tabla = true
           return

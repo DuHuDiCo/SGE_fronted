@@ -22,7 +22,6 @@ export class GuardAsesoraGuard implements CanActivate {
     
     var admin = this.authService.getRolesByName(ROLES.Administration);
 
-    console.log(admin);
     
 
     if(admin.length > 0){
@@ -31,7 +30,6 @@ export class GuardAsesoraGuard implements CanActivate {
     
     var cartera = this.authService.getRolesByName(ROLES.Cartera);
 
-    console.log(cartera);
     
 
     if (cartera.length == 0) {
@@ -41,7 +39,6 @@ export class GuardAsesoraGuard implements CanActivate {
     }
 
     var permiso = this.validarPermisoEnRolCartera("CREAR ASESORES", cartera);
-    console.log(permiso);
     if (!(permiso && permiso.length > 0 && permiso[0].permiso == "CREAR ASESORES")) {
       // No tiene el permiso, redirige
       this.router.navigate(['/dashboard-cartera/inicio-caja']);

@@ -272,7 +272,7 @@ export class HomeCarteraComponent implements OnInit {
     edadVencimiento: [],
     sede: [],
     //TODO: CAMBIAR POR VACIO
-    username: 'Diana1975',
+    username: '',
     clasiJuridica: [],
     saldoCapitalInicio: null,
     saldoCapitalFin: null,
@@ -344,6 +344,8 @@ export class HomeCarteraComponent implements OnInit {
   botonFiltro: boolean = false
   filtrando: boolean = false
 
+  botonPdf: boolean = false
+
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
   botonFiltrarObligacion: boolean = false
@@ -364,7 +366,6 @@ export class HomeCarteraComponent implements OnInit {
     this.cuentasCobrar.getTipoVencimiento().subscribe(
       (data: any) => {
         this.tiposVen = data
-        console.log(this.tiposVen);
       }, (error: any) => {
         console.log(error);
       }
@@ -395,20 +396,19 @@ export class HomeCarteraComponent implements OnInit {
   calcularFechasAnio(event: any) {
     this.filtros.fechaCpcInicio = new Date(event.target.value, 0, 1); // 0 representa enero
     this.filtros.fechaCpcFin = new Date(event.target.value, 11, 31); // 11 representa diciembre
-    console.log(this.filtros.fechaCpcInicio);
-    console.log(this.filtros.fechaCpcFin);
   }
 
   // TRAER CUENTAS POR COBRAR
   getCuentasCobrar() {
 
-    // var user = this.authService.getUsername()
+    var user = this.authService.getUsername()
 
-    //   if (user == null || user == undefined) {
-    //     return
-    //   }
+      if (user == null || user == undefined) {
+        return
+      }
+
     this.filtrando = false
-    this.cuentasCobrar.getCuentasCobrar('Diana1975', this.page, this.size, this.fechaCreacion).subscribe(
+    this.cuentasCobrar.getCuentasCobrar(user, this.page, this.size, this.fechaCreacion).subscribe(
       (data: any) => {
         this.paginas = new Array(data.totalPages)
         this.cuentasCobrarArray = data.content
@@ -416,7 +416,6 @@ export class HomeCarteraComponent implements OnInit {
         this.first = data.first
         this.numeroPages = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
-        console.log(data);
         if (this.cuentasCobrarArray.length == 0) {
           this.spinner = true
         } else {
@@ -425,7 +424,6 @@ export class HomeCarteraComponent implements OnInit {
 
 
 
-        console.log(this.cuentasCobrarArray);
       }, (error: any) => {
         console.log(error);
       }
@@ -637,7 +635,6 @@ export class HomeCarteraComponent implements OnInit {
               detallesAdicionales: this.newGestion.detallesAdicionales,
               username: ''
             }
-            console.log(this.newGestion);
 
             if (this.cuentaCobrarSelected.documentoCliente != '') {
               this.spinnerSidebar = false
@@ -653,7 +650,6 @@ export class HomeCarteraComponent implements OnInit {
 
   findCodeudores(event: any) {
     this.codeudoresSelected = this.codeudores.filter((c: any) => c.numeroDocumento == event.target.value)
-    console.log(this.codeudoresSelected);
   }
 
   // GESTIONES
@@ -663,13 +659,11 @@ export class HomeCarteraComponent implements OnInit {
       (data: any) => {
         this.newGestion.numeroObligacion = numeroObligacion
         this.getLastDato(numeroObligacion)
-        console.log(this.gestiones);
         this.ordenarGestiones(data)
         var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
         if (gestion != null || gestion != undefined) {
           this.idGestion = gestion.idGestion
         }
-        console.log(data);
       }, (error: any) => {
         console.log(error);
       }
@@ -732,12 +726,10 @@ export class HomeCarteraComponent implements OnInit {
           cancelButtonText: 'Cancelar'
         }).then((result) => {
           if (result.isConfirmed) {
-            console.log(this.newGestion);
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
                 this.gestiones.push(data)
-                console.log(this.gestiones);
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
@@ -796,18 +788,17 @@ export class HomeCarteraComponent implements OnInit {
           cancelButtonText: 'Cancelar'
         }).then((result) => {
           if (result.isConfirmed) {
-            console.log(this.newGestion);
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
                 this.gestiones.push(data)
-                console.log(this.gestiones);
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
                   text: 'Gestión Guardada Exitosamente',
                   timer: 3000
                 })
+                this.getNotificaciones()
                 this.gestionButton = false
                 this.newGestion = {
                   numeroObligacion: this.newGestion.numeroObligacion,
@@ -880,9 +871,14 @@ export class HomeCarteraComponent implements OnInit {
           this.newGestion.clasificacion.acuerdoPago?.cuotasList.push(element)
         });
 
+        var user = this.authService.getUsername()
+
+        if (user == null || user == undefined) {
+          return
+        }
+
         //TODO:CAMBIAR POR EL NOMBRE DE USUARIO
-        this.newGestion.clasificacion.acuerdoPago!.username = 'Diana1975'
-        console.log(this.newGestion.clasificacion.acuerdoPago);
+        this.newGestion.clasificacion.acuerdoPago!.username = user
 
         $('#modalGestion').modal('hide');
         $('#modalDetalle').modal('show');
@@ -893,26 +889,16 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
-  saveGestionWithDetalle(accion: string) {
+  saveGestionWithDetalle() {
 
-    // var user = this.authService.getUsername()
+    var user = this.authService.getUsername()
 
-    //   if (user == null || user == undefined) {
-    //     return
-    //   }
-
-    this.newGestion.username = 'Diana1975'
-
-    if (accion == 'SI') {
-      if (this.acuerdo.detalle.trim() == '' || this.acuerdo.detalle.trim() == null) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Digite El detalle',
-          timer: 3000
-        })
+      if (user == null || user == undefined) {
         return
       }
+
+    this.newGestion.username = user
+
       if (this.reporte.cedula.trim() == '' || this.reporte.cedula.trim() == null) {
         Swal.fire({
           icon: 'error',
@@ -922,27 +908,12 @@ export class HomeCarteraComponent implements OnInit {
         })
         return
       }
-    }
 
-    if (accion == 'NO') {
-      if (this.reporte.cedula.trim() == '' || this.reporte.cedula.trim() == null) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Elija La Cédula del Cliente o Codeudor',
-          timer: 3000
-        })
-        return
-      }
-      this.newGestion.clasificacion.acuerdoPago!.detalle = this.acuerdo.detalle
-    }
-
-
+    this.newGestion.clasificacion.acuerdoPago!.detalle = this.acuerdo.detalle
 
     var sumaComprobacion = 0
     for (let i = 0; i < this.cuotas.length; i++) {
       sumaComprobacion = sumaComprobacion + this.cuotas[i].valorCuota
-      console.log(sumaComprobacion);
 
     }
 
@@ -959,7 +930,6 @@ export class HomeCarteraComponent implements OnInit {
 
     }
 
-    console.log(this.newGestion);
 
     Swal.fire({
       title: 'Guardar Gestión',
@@ -972,19 +942,19 @@ export class HomeCarteraComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(this.newGestion);
         this.gestionButton = true
         setTimeout(() => {
           this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
             (data: any) => {
   
               this.getGestiones(this.newGestion.numeroObligacion)
+              this.getNotificaciones()
   
-              console.log(this.gestiones);
               this.mostrarReporte()
               Swal.fire({
                 icon: 'success',
                 title: 'Datos Guardados',
+                showConfirmButton: false,
                 text: 'Gestión Guardada Exitosamente',
                 timer: 3000
               })
@@ -1093,7 +1063,6 @@ export class HomeCarteraComponent implements OnInit {
     var tipoClas = this.ClasificacionArray.find((t: any) => t.nombre == event.target.value)
     if (tipoClas != undefined || tipoClas != null) {
       this.newGestion.clasificacion.tipoClasificacion = tipoClas.tipo
-      console.log(this.newGestion.clasificacion.tipoClasificacion);
     }
 
     if (this.newGestion.clasificacion.tipoClasificacion != 'ACUERDO DE PAGO') {
@@ -1105,7 +1074,6 @@ export class HomeCarteraComponent implements OnInit {
     if (this.newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO') {
       var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
       this.gestionSelected = gestion
-      console.log(this.gestionSelected);
 
       if (this.gestionSelected != null || this.gestionSelected != undefined) {
 
@@ -1169,10 +1137,8 @@ export class HomeCarteraComponent implements OnInit {
     this.recibosPago = []
 
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
-    console.log(id);
 
     this.gestionSelected = gestion
-    console.log(this.gestionSelected);
 
     if (this.gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO') {
       this.obtenerCuotas()
@@ -1207,7 +1173,6 @@ export class HomeCarteraComponent implements OnInit {
           this.recibosPago.push(c.pagos.reciboPago)
         }
 
-        console.log(c.pagos.valorPago);
         if (c.pagos.saldoCuota > 0) {
 
           this.saldoAcuerdoPago = this.saldoAcuerdoPago + c.pagos.saldoCuota
@@ -1257,18 +1222,22 @@ export class HomeCarteraComponent implements OnInit {
       this.coutasRequest.push(couta)
     })
 
-    console.log(this.gestionSelected);
   }
 
   mostrarReporte() {
-    this.reporte.username = 'Diana1975'
+    var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+
+    this.reporte.username = user
     setTimeout(() => {
       this.cuentasCobrar.reporte(this.reporte).subscribe(
         (data: any) => {
           this.mostrarRep = data
           this.mensaje = this.mostrarRep.messageToWpp
           this.base64 = this.mostrarRep.base64
-          console.log(this.mensaje);
         }, (error: any) => {
           console.log(error);
         }
@@ -1278,14 +1247,46 @@ export class HomeCarteraComponent implements OnInit {
     var cliente = this.cuentaCobrarSelected.clientes.find((c: any) => c.numeroDocumento = this.reporte.cedula)
     this.clienteSelected.numeroDocumento = cliente.numeroDocumento
     this.clienteSelected.nombreTitular = cliente.nombreTitular
-    console.log(this.clienteSelected);
+  }
+
+  descargarAcuerdo(){
+    var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+
+    this.reporte.numeroObligacion = this.cuentaCobrarSelected.numeroObligacion
+    this.reporte.cedula = this.cuentaCobrarSelected.documentoCliente
+    this.reporte.username = user
+    
+    this.botonPdf = true
+
+      this.cuentasCobrar.reporte(this.reporte).subscribe(
+        (data: any) => {
+          this.mostrarRep = data
+          this.mensaje = this.mostrarRep.messageToWpp
+          this.base64 = this.mostrarRep.base64
+          setTimeout(() => {
+            var down = document.getElementById('basePdf')
+            down?.click()
+            this.botonPdf = false
+          }, 1000);
+        }, (error: any) => {
+          console.log(error);
+          this.botonPdf = false
+        }
+      )
+
+      var cliente = this.cuentaCobrarSelected.clientes.find((c: any) => c.numeroDocumento = this.reporte.cedula)
+      this.clienteSelected.numeroDocumento = cliente.numeroDocumento
+      this.clienteSelected.nombreTitular = cliente.nombreTitular
   }
 
   getAsesores(){
     this.cuentasCobrar.getAsesoresCartera().subscribe(
       (data:any) => {
         this.asesores = data
-        console.log(data);
       }, (error:any) => {
         console.log(error);
       }
@@ -1294,7 +1295,6 @@ export class HomeCarteraComponent implements OnInit {
 
   cambiarCedula(event: any) {
     this.reporte.cedula = this.reporte.cedula
-    console.log(this.reporte);
   }
 
   mostrarBase64() {
@@ -1379,7 +1379,6 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     this.calcularByTipoAcuerdo()
-    console.log(this.acuerdoCal.valorTotalAcuerdo);
 
     if (this.acuerdo.valorCuotaMensual > this.acuerdoCal.valorTotalAcuerdo) {
       Swal.fire({
@@ -1392,7 +1391,6 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
-    console.log(valorMinimo);
 
     if (this.acuerdo.valorCuotaMensual < valorMinimo) {
       Swal.fire({
@@ -1442,12 +1440,18 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
+    var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+
     this.fechaInicial = new Date(this.acuerdo.fechaCompromiso)
     this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
     this.cuentasCalcular.valorTotal = this.cuentaCobrarSelected.totalObligatoria
     this.cuentasCalcular.moraObligatoria = this.cuentaCobrarSelected.moraObligatoria
     this.cuentasCalcular.fechaVencimiento = this.cuentaCobrarSelected.fechaVencimiento
-    this.cuentasCalcular.username = 'Diana1975'
+    this.cuentasCalcular.username = user
 
 
     this.calcularIntMora()
@@ -1479,20 +1483,16 @@ export class HomeCarteraComponent implements OnInit {
     var res = cal.toFixed(0)
     this.acuerdoCal.valorInteresesMora = res
     this.acuerdo.valorInteresesMora = this.acuerdoCal.valorInteresesMora
-    console.log(this.acuerdoCal.valorInteresesMora);
   }
 
 
   calcularHonorarios() {
     var cal = (this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
-    console.log(this.cuentasCalcular.moraObligatoria);
-    console.log(this.acuerdoCal.valorInteresesMora);
 
 
     var res = cal.toFixed(0)
     this.acuerdoCal.honoriarioAcuerdo = res
     this.acuerdo.honoriarioAcuerdo = this.acuerdoCal.honoriarioAcuerdo
-    console.log(this.acuerdoCal.honoriarioAcuerdo);
   }
 
   calcularByTipoAcuerdo() {
@@ -1521,7 +1521,6 @@ export class HomeCarteraComponent implements OnInit {
     for (let i = 0; i < this.cuotas.length; i++) {
       //CAPITAL CUOTA
       var porcentaje = this.cuotas[i].valorCuota / this.acuerdoCal.valorTotalAcuerdo
-      console.log(porcentaje);
       var cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
       this.cuotas[i].capitalCuota = parseInt(cap.toFixed(0))
 
@@ -1764,7 +1763,6 @@ export class HomeCarteraComponent implements OnInit {
       this.sinDiasVencidos = 1
     }
 
-    console.log(this.cuentaCobrarSelected.diasVencidos);
   }
 
   cambiarIntereses(event: any) {
@@ -1876,7 +1874,6 @@ export class HomeCarteraComponent implements OnInit {
     var totalCuotas = this.acuerdoCal.valorTotalAcuerdo / this.acuerdoCal.valorCuotaMensual
     var res = Math.ceil(totalCuotas);
     this.totalCuotas = res
-    console.log(this.totalCuotas);
     this.cantidadFechas = this.totalCuotas;
 
     this.generarFechas()
@@ -1901,7 +1898,6 @@ export class HomeCarteraComponent implements OnInit {
 
       // CAPITAL CUOTA
       var porcentaje = cuotaList.valorCuota / this.acuerdoCal.valorTotalAcuerdo
-      console.log(porcentaje);
       var cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
       cuotaList.capitalCuota = parseInt(cap.toFixed(0))
 
@@ -1941,7 +1937,6 @@ export class HomeCarteraComponent implements OnInit {
         cuotaListUltima.numeroCuota = i + 1
         // CAPITAL CUOTA
         var porcentaje = cuotaList.valorCuota / this.acuerdoCal.valorTotalAcuerdo
-        console.log(porcentaje);
         var cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
         cuotaListUltima.capitalCuota = parseInt(cap.toFixed(0))
 
@@ -1973,7 +1968,6 @@ export class HomeCarteraComponent implements OnInit {
 
 
     }
-    console.log(this.cuotas);
 
   }
 
@@ -1994,17 +1988,13 @@ export class HomeCarteraComponent implements OnInit {
     if (event.target.value > this.cuotas[position].valorCuota) {
       var sumaCoutasAnteriores = 0
       for (let i = this.cuotas.length - 1; i > position; i--) {
-        console.log(i);
 
-        console.log(this.cuotas.length - 1);
 
         if (nuevoValor > this.cuotas[i].valorCuota) {
           for (let j = 0; j < position; j++) {
             sumaCoutasAnteriores = sumaCoutasAnteriores + parseInt(this.cuotas[j].valorCuota)
-            console.log(sumaCoutasAnteriores);
           }
           var totalCuotaSumadas = sumaCoutasAnteriores + parseInt(event.target.value)
-          console.log(totalCuotaSumadas);
           if (totalCuotaSumadas > this.acuerdoCal.valorTotalAcuerdo) {
             var ultimaCuota = this.acuerdoCal.valorTotalAcuerdo - sumaCoutasAnteriores
             for (let k = position; k < this.cuotas.length - 1; k++) {
@@ -2030,8 +2020,6 @@ export class HomeCarteraComponent implements OnInit {
     }
     //RECALCULAR PARA SUMAR CUOTAS
     var nuevoValorSumarCuotas = this.cuotas[position].valorCuota - event.target.value
-    console.log(this.cuotas[position].valorCuota);
-    console.log(event.target.value);
     if (event.target.value < this.cuotas[position].valorCuota) {
       for (let i = position; i < this.cuotas.length; i++) {
         //nuevo valor menor ultima cuota
@@ -2072,7 +2060,6 @@ export class HomeCarteraComponent implements OnInit {
         //nuevo valor mayor ultima cuota
         if (nuevoValorSumarCuotas > this.cuotas[this.cuotas.length - 1].valorCuota) {
           if (nuevoValorSumarCuotas <= this.acuerdoCal.valorCuotaMensual) {
-            console.log(nuevoValorSumarCuotas);
             var couta = this.cuotas[this.cuotas.length - 1].valorCuota + nuevoValorSumarCuotas
             if (couta > this.acuerdoCal.valorCuotaMensual) {
               var excedentePrinciapl = couta - this.acuerdoCal.valorCuotaMensual
@@ -2104,7 +2091,6 @@ export class HomeCarteraComponent implements OnInit {
             var coutaCambio = this.acuerdoCal.valorCuotaMensual - this.cuotas[this.cuotas.length - 1].valorCuota
             this.cuotas[this.cuotas.length - 1].valorCuota = this.acuerdoCal.valorCuotaMensual
             nuevoValorSumarCuotas = nuevoValorSumarCuotas - coutaCambio
-            console.log(nuevoValorSumarCuotas);
             if (nuevoValorSumarCuotas > 0 && nuevoValorSumarCuotas < this.acuerdoCal.valorCuotaMensual) {
               var cuoUl = {
                 idCuota: 0,
@@ -2162,7 +2148,6 @@ export class HomeCarteraComponent implements OnInit {
 
     this.disableds[0] = true
     this.disableds[this.cuotas.length - 1] = true
-    console.log(this.cuotas);
     this.metodosCalculos()
   }
 
@@ -2171,7 +2156,6 @@ export class HomeCarteraComponent implements OnInit {
     this.cuentasCobrar.getClasificacion().subscribe(
       (data: any) => {
         this.ClasificacionArray = data
-        console.log(this.ClasificacionArray);
       }, (error: any) => {
         console.log(error);
       }
@@ -2345,7 +2329,6 @@ export class HomeCarteraComponent implements OnInit {
     this.filtros.sede = this.sedesArray
     this.filtros.edadVencimiento = this.edadVenArray
 
-    console.log(this.filtros);
 
     if (
       (this.filtros.banco.length == 0) &&
@@ -2383,7 +2366,6 @@ export class HomeCarteraComponent implements OnInit {
         this.first = data.first
         this.numeroPages = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
-        console.log(data);
         if (this.cuentasCobrarArray.length == 0) {
           Swal.fire({
             icon: 'error',
@@ -2409,7 +2391,6 @@ export class HomeCarteraComponent implements OnInit {
     } else {
       this.bancosArray.push(banco)
     }
-    console.log(this.bancosArray);
   }
 
   metodoEdadVen(edad: string) {
@@ -2419,7 +2400,6 @@ export class HomeCarteraComponent implements OnInit {
     } else {
       this.edadVenArray.push(edad)
     }
-    console.log(this.edadVenArray);
   }
 
   metodoSede(sede: string) {
@@ -2429,7 +2409,6 @@ export class HomeCarteraComponent implements OnInit {
     } else {
       this.sedesArray.push(sede)
     }
-    console.log(this.sedesArray);
   }
 
   metodoClas(clas: string) {
@@ -2439,7 +2418,6 @@ export class HomeCarteraComponent implements OnInit {
     } else {
       this.clasJurArray.push(clas)
     }
-    console.log(this.clasJurArray);
   }
 
   getByDato() {
@@ -2457,7 +2435,6 @@ export class HomeCarteraComponent implements OnInit {
       (data: any) => {
         this.botonFiltrarObligacion = false
         this.cuentasCobrarArray = data
-        console.log(data);
         this.numeroPages = 1
         this.cuentasCobrar.proSubject.next(true);
         $('#modalObligacion').modal('hide');
@@ -2548,7 +2525,6 @@ export class HomeCarteraComponent implements OnInit {
     if (valorTotal < this.totalCuotasAcuerdo) {
       this.valorTotalIngresado = valorTotal
     }
-    console.log(valorTotal);
 
     if (isNaN(this.pago.valor)) {
 
@@ -2574,7 +2550,6 @@ export class HomeCarteraComponent implements OnInit {
 
     if (valorTotal > 0) {
       this.cuotasList.forEach((c: CuotaList, i: number) => {
-        console.log(c);
 
         if (this.pago.valor < c.valorCuota) {
           Swal.fire({
@@ -2603,12 +2578,6 @@ export class HomeCarteraComponent implements OnInit {
 
             this.coutasRequest[i].pagosDto!.valorPago = c.valorCuota
             this.cuotasList[i].pagos!.valorPago = this.coutasRequest[i].pagosDto!.valorPago
-
-
-
-
-            console.log(this.coutasRequest[i])
-            console.log(c)
           }
         }
 
@@ -2658,12 +2627,6 @@ export class HomeCarteraComponent implements OnInit {
               this.cuotasList[i].capitalCuota = 0
               this.cuotasList[i].honorarios = 0
               this.cuotasList[i].interesCuota = 0
-
-              console.log(this.saldoCapitalAcuerdo);
-              console.log(this.saldoHonoriariosAcuerdo);
-              console.log(this.saldoInteresesAcuerdo);
-
-
             }
 
 
@@ -2719,15 +2682,6 @@ export class HomeCarteraComponent implements OnInit {
               this.cuotasList[i].capitalCuota = 0
 
             }
-
-
-
-
-            console.log(valorTotal);
-            console.log(this.coutasRequest[i])
-            console.log(c)
-
-
           } else {
             if (valorTotal == 0) {
               i = 0
@@ -2791,10 +2745,6 @@ export class HomeCarteraComponent implements OnInit {
               this.cuotasList[i].pagos.saldoCuota = this.cuotasList[i].capitalCuota
               this.coutasRequest[i].pagosDto!.saldoCuota = this.cuotasList[i].capitalCuota
             }
-
-            console.log(valorTotal);
-            console.log(this.coutasRequest[i])
-            console.log(c)
           }
 
 
@@ -2834,17 +2784,9 @@ export class HomeCarteraComponent implements OnInit {
       this.pago.valor = 0
       this.activarGuardarPago = true
     }
-
-    console.log(this.coutasRequest);
-
-
-
   }
 
   generarRecibo() {
-    console.log(this.saldoCapitalAcuerdo);
-    console.log(this.saldoHonoriariosAcuerdo);
-    console.log(this.saldoInteresesAcuerdo);
     this.activarGuardarPago = false
     this.savePago = true
     if (this.pago.numeroRecibo == '' || this.pago.numeroRecibo == null || this.pago.valor == 0 || this.pago.detalle == "") {
@@ -2879,16 +2821,13 @@ export class HomeCarteraComponent implements OnInit {
     var user = this.authService.getUsername();
     if (user != null || user != undefined) {
       recibo.username = user;
-      console.log(recibo);
 
       this.cuentasCobrar.crearRecibo(recibo).subscribe(
         (data: any) => {
-          console.log(data);
 
           this.mostrarReciboPago(data.base64)
 
 
-          console.log(recibo);
           this.activarGuardarPago = false
           this.savePago = false
           this.coutasRequest = []
@@ -2929,10 +2868,15 @@ export class HomeCarteraComponent implements OnInit {
 
   // NOTIFICACIONES
   getNotificaciones(){
-    this.cuentasCobrar.getNotificaciones('Diana1975').subscribe(
+    var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+    
+    this.cuentasCobrar.getNotificaciones(user).subscribe(
       (data:any) => {
         this.notiArray = data
-        console.log(data);
       }, (error:any) => {
         console.log(error);
       }

@@ -34,7 +34,6 @@ export class TipoVencimientoComponent implements OnInit {
     this.cuentasCobrar.getTipoVencimiento().subscribe(
       (data:any) => { 
         this.tiposVen = data
-        console.log(this.tiposVen);
       }, (error:any) => {
         console.log(error);
       }

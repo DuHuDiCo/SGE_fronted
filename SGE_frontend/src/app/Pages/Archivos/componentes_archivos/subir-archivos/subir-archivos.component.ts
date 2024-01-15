@@ -63,7 +63,6 @@ export class SubirArchivosComponent implements OnInit {
       case 'COMENZAR':
         this.botonComenzar = false
         this.botonCedula = true
-        console.log(this.archivo);
         Swal.fire({
           icon: 'success',
           title: 'El Proceso Ha Comenzado',
@@ -180,7 +179,6 @@ export class SubirArchivosComponent implements OnInit {
     this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
       (data: any) => {
         this.obligacion = data
-        console.log(data);
         if (this.obligacion.length > 0) {
           this.tabla = true
           Swal.fire({
@@ -209,7 +207,6 @@ export class SubirArchivosComponent implements OnInit {
     this.tipoArchivoService.getAll().subscribe(
       (data:any) => {
         this.tiposArchivos = data
-        console.log(data);
       }, (error:any) => {
         console.log(error);
       }
@@ -256,8 +253,6 @@ export class SubirArchivosComponent implements OnInit {
         tipoArchivo: '',
         nombreArchivo: ''
       }
-      console.log(this.archivo);
-      console.log(this.nombresArchivos);
 
     })
   }

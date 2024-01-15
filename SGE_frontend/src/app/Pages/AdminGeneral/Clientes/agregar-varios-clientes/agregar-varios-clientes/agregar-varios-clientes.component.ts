@@ -69,7 +69,6 @@ export class AgregarVariosClientesComponent implements OnInit{
             return
           } 
           this.tabla = true
-          console.log(data);
           return
         }
 

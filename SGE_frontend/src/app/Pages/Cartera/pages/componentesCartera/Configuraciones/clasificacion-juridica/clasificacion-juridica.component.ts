@@ -68,7 +68,6 @@ export class ClasificacionJuridicaComponent implements OnInit {
     this.cuentasCobrar.getAllClasificacionJuridica().subscribe(
       (data:any) => {
         this.clasificacionArray = data
-        console.log(data);
         
       }, (error:any) => {
         console.log(error);
@@ -80,7 +79,6 @@ export class ClasificacionJuridicaComponent implements OnInit {
     this.cuentasCobrar.getClasificacionJuridicaById(id).subscribe(
       (data:any) => {
         this.newClasificacionJuridica = data
-        console.log(data);
         
       }, (error:any) => {
         console.log(error);

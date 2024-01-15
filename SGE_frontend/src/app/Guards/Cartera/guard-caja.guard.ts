@@ -28,7 +28,6 @@ export class GuardCajaGuard implements CanActivate {
 
     var cartera = this.authService.getRolesByName(ROLES.Cartera);
 
-    console.log(cartera);
     
 
     if (cartera.length == 0) {

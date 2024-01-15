@@ -182,5 +182,6 @@ export type Notificacion = {
   fechaCreacion: Date,
   fechaFinalizacion: Date,
   numeroObligacion: string,
+  cliente: string,
   designatedTo: number
 }
