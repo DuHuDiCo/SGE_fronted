@@ -161,7 +161,7 @@ export class HomeCarteraComponent implements OnInit {
       tarea: null,
       nota: null,
       acuerdoPago: null,
-      nombreClasificacion: ''
+      nombreClasificacion: "Seleccionar Una Clasificacion"
     },
     contact: false,
     detallesAdicionales: '',
@@ -1967,7 +1967,7 @@ export class HomeCarteraComponent implements OnInit {
         cuotaListUltima.fechaVencimiento = this.fechasIncrementadas[i]
         cuotaListUltima.numeroCuota = i + 1
         // CAPITAL CUOTA
-        var porcentaje = cuotaList.valorCuota / this.acuerdoCal.valorTotalAcuerdo
+        var porcentaje = cuotaListUltima.valorCuota / this.acuerdoCal.valorTotalAcuerdo
         var cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
         cuotaListUltima.capitalCuota = parseInt(cap.toFixed(0))
 
@@ -2871,7 +2871,7 @@ export class HomeCarteraComponent implements OnInit {
     
     
     
-     var user = this.authService.getUsername();
+    var user = this.authService.getUsername();
     if (user != null || user != undefined) {
       recibo.username = user;
 

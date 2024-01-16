@@ -1,7 +1,7 @@
 export type Gestion = {
   numeroObligacion: string,
   clasificacion: {
-    nombreClasificacion: string,
+    nombreClasificacion: string | null,
     tipoClasificacion: string | null,
     tarea: {
       detalleTarea: string,

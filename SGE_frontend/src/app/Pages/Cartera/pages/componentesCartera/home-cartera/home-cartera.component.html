@@ -837,16 +837,17 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col" [ngClass]="{'col-md-12': col, 'col-md-4': !col}">
-                            <div class="form-check form-switch">
+                            <div class="form-check form-switch mb-2">
                                 <input class="form-check-input" [(ngModel)]="newGestion.contact" [checked]="true"
                                     type="checkbox" role="switch" checked>
                                 <label class="form-check-label">Existió contacto
                                     Telefónico/Whatsapp con el Cliente y/o Tercero (?)</label>
                             </div>
-                            <select class="form-select mt-3 mb-3"
-                                [(ngModel)]="newGestion.clasificacion.nombreClasificacion"
-                                (change)="tipoClasificacion($event)">
-                                <option [value]="null">Seleccione Una Clasificación</option>
+                            <label for="">Seleccinar Una Clasificacion</label>
+                            <select class="form-select mb-3" style="border: 1px black solid;"
+                                [(ngModel)]="newGestion.clasificacion.nombreClasificacion" name="nombreClasificacion"
+                                (change)="tipoClasificacion($event)" >
+                                
                                 <option *ngFor="let c of ClasificacionArray" [value]="c.nombre">{{
                                     c.nombre }}</option>
                             </select>
@@ -1109,7 +1110,7 @@
                         <label for="floatingInput">¿Desea Agregar Un Detalle?</label>
                     </div>
                     <h6>Seleccione El Cliente Al Que Desea Agregar El Acuerdo</h6>
-                    <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.cedula" (change)="cambiarCedula($event)">
+                    <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.cedula" (change)="cambiarCedula($event)" style="border: 1px black solid;">
                         <option [value]="null">Seleccione Una Cedula</option>
                         <option *ngFor="let c of cuentaCobrarSelected.clientes" [value]="c.numeroDocumento">{{
                             c.numeroDocumento }} - {{ c.nombreTitular }} - {{ c.tipoGarante.tipoGarante }}</option>

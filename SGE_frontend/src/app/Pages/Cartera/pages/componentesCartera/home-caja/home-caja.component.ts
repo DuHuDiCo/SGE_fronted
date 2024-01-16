@@ -24,7 +24,7 @@ export class HomeCajaComponent implements OnInit {
   totalCuotasAcuerdo: number = 0
   cuentasCobrarGestiones: any[] = []
   coutasList: CuotaList[] = []
-  coutasSelected:number[] = []
+  coutasSelected: number[] = []
   gestionesCuenta: Gestion[] = []
   saldoAcuerdoPago: number = 0
   saldoInteresesAcuerdo: number = 0
@@ -45,6 +45,7 @@ export class HomeCajaComponent implements OnInit {
   }
   valorTotalIngresado: number = 0
   recibosPago: ReciboPago[] = []
+  recibosPagoSinFiltrar: ReciboPago[] = []
 
 
   constructor(private cuentaCobrarService: CuentasCobrarService, private auth: AuthenticationService) { }
@@ -134,7 +135,7 @@ export class HomeCajaComponent implements OnInit {
                   if (c.pagos != null || c.pagos != undefined) {
 
                     if (c.pagos.reciboPago != null || c.pagos.reciboPago != undefined) {
-                      this.recibosPago.push(c.pagos.reciboPago)
+                      this.recibosPagoSinFiltrar.push(c.pagos.reciboPago)
                     }
 
                     if (c.pagos.saldoCuota > 0) {
@@ -166,7 +167,7 @@ export class HomeCajaComponent implements OnInit {
                     capitalCuota: c.capitalCuota,
                     honorarios: c.honorarios,
                     cumplio: false,
-                    pago:false,
+                    pago: false,
                     interesCuota: c.interesCuota,
                     pagosDto: null,
                     idCuota: c.idCuota
@@ -188,6 +189,8 @@ export class HomeCajaComponent implements OnInit {
 
 
                   this.coutasRequest.push(couta)
+                  ///////////
+                  this.recibosPago = this.recibosPagoSinFiltrar.filter((r: ReciboPago, i: number, array) => array.findIndex(obj => JSON.stringify(obj) === JSON.stringify(r)) === i)
                 })
 
 
@@ -517,6 +520,8 @@ export class HomeCajaComponent implements OnInit {
           this.pago.cumpliendo = true
         }
 
+        this.coutasRequest[i].pago = c.pago
+
       })
 
 
@@ -533,6 +538,10 @@ export class HomeCajaComponent implements OnInit {
   }
 
   generarRecibo() {
+
+
+    var coutasFiltradas = this.coutasRequest.filter((c: CuotasRequest) => !c.pago && c.pagosDto != null)
+
     this.activarGuardarPago = false
     this.savePago = true
     if (this.pago.numeroRecibo.trim() == '' || this.pago.numeroRecibo.trim() == null || this.pago.numeroRecibo.trim() == undefined) {
@@ -552,7 +561,7 @@ export class HomeCajaComponent implements OnInit {
     var recibo = {
       numeroObligacion: this.cuentasCobrarGestiones[0].numeroObligacion,
       numeroRecibo: this.pago.numeroRecibo,
-      cuotasDto: this.coutasRequest,
+      cuotasDto: coutasFiltradas,
       valorTotal: this.valorTotalIngresado,
       acuerdoTotal: this.saldoAcuerdoPago,
       capitalTotal: this.saldoCapitalAcuerdo,
@@ -583,6 +592,8 @@ export class HomeCajaComponent implements OnInit {
 
         }
       )
+      
+
     }
 
 
