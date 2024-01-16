@@ -88,6 +88,7 @@ export type CuotaList = {
   pagos: Pagos,
   interesCuota: number,
   cumplio: boolean,
+  pago:boolean
   
 }
 
@@ -127,12 +128,14 @@ export type Pagos = {
 }
 
 export type CuotasRequest = {
+  idCuota:number,
   numeroCuota: number,
   fechaVencimiento: Date,
   valorCuota: number,
   capitalCuota: number,
   honorarios: number,
   cumplio: boolean,
+  pago:boolean
   interesCuota: number
   pagosDto: PagosRequest | null
 }

@@ -166,9 +166,10 @@ export class HomeCajaComponent implements OnInit {
                     capitalCuota: c.capitalCuota,
                     honorarios: c.honorarios,
                     cumplio: false,
+                    pago:false,
                     interesCuota: c.interesCuota,
-                    pagosDto: null
-
+                    pagosDto: null,
+                    idCuota: c.idCuota
                   }
 
                   if (c.pagos != null || c.pagos != undefined) {

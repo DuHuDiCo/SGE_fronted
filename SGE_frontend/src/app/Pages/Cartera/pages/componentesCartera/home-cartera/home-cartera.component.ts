@@ -67,7 +67,8 @@ export class HomeCarteraComponent implements OnInit {
   pagoCuota: number = 0
   savePago: boolean = false
   base64Recibo: string = ""
-  recibosPago: ReciboPago[] = []
+  recibosPagoSinFiltrar: ReciboPago[] = []
+  recibosPago!: ReciboPago[];
   constantes: string[] = [
     'CLIENTE',
     'BANCO',
@@ -1194,7 +1195,9 @@ export class HomeCarteraComponent implements OnInit {
       if (c.pagos != null || c.pagos != undefined) {
 
         if (c.pagos.reciboPago != null || c.pagos.reciboPago != undefined) {
-          this.recibosPago.push(c.pagos.reciboPago)
+          this.recibosPagoSinFiltrar.push(c.pagos.reciboPago)
+          
+          
         }
 
         if (c.pagos.saldoCuota > 0) {
@@ -1226,9 +1229,10 @@ export class HomeCarteraComponent implements OnInit {
         capitalCuota: c.capitalCuota,
         honorarios: c.honorarios,
         cumplio: false,
+        pago:false,
         interesCuota: c.interesCuota,
-        pagosDto: null
-
+        pagosDto: null,
+        idCuota: c.idCuota
       }
 
       if (c.pagos != null || c.pagos != undefined) {
@@ -1246,6 +1250,9 @@ export class HomeCarteraComponent implements OnInit {
       this.coutasRequest.push(couta)
     })
 
+
+    ///////////
+    this.recibosPago = this.recibosPagoSinFiltrar.filter((r:ReciboPago, i:number, array)=>array.findIndex(obj =>JSON.stringify(obj) === JSON.stringify(r)) === i)
   }
 
   mostrarReporte() {
@@ -2818,6 +2825,9 @@ export class HomeCarteraComponent implements OnInit {
           this.pago.cumpliendo = true
         }
 
+
+        this.coutasRequest[i].pago = c.pago
+
       })
 
 
@@ -2834,17 +2844,19 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   generarRecibo() {
+
+    var coutasFiltradas = this.coutasRequest.filter((c:CuotasRequest)=>!c.pago && c.pagosDto != null)
+
+   
     this.activarGuardarPago = false
     this.savePago = true
-
-
 
 
 
     var recibo = {
       numeroObligacion: this.cuentaCobrarSelected.numeroObligacion,
       numeroRecibo: this.pago.numeroRecibo,
-      cuotasDto: this.coutasRequest,
+      cuotasDto: coutasFiltradas,
       valorTotal: this.valorTotalIngresado,
       acuerdoTotal: this.saldoAcuerdoPago,
       capitalTotal: this.saldoCapitalAcuerdo,
@@ -2856,7 +2868,10 @@ export class HomeCarteraComponent implements OnInit {
       username: ''
     }
 
-    var user = this.authService.getUsername();
+    
+    
+    
+     var user = this.authService.getUsername();
     if (user != null || user != undefined) {
       recibo.username = user;
 
