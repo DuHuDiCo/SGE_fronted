@@ -111,6 +111,7 @@ import { HomeCajaComponent } from './Pages/Cartera/pages/componentesCartera/home
 import { ClasificacionJuridicaComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion-juridica/clasificacion-juridica.component';
 import { CondicionEspecialComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/condicion-especial/condicion-especial.component';
 import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/firmas/firmas.component';
+import { DateFormatPipe } from './Pipes/date-format.pipe';
 
 
 
@@ -234,6 +235,7 @@ import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Config
         ClasificacionJuridicaComponent,
         CondicionEspecialComponent,
         FirmasComponent,
+        DateFormatPipe,
       
 
 

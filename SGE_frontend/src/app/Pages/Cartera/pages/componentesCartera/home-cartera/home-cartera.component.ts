@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { addMonths, isLeapYear, lastDayOfMonth } from 'date-fns';
+import { addMonths, format, isLeapYear, lastDayOfMonth } from 'date-fns';
 
 import { Subscription } from 'rxjs';
 import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.service';
@@ -2945,4 +2945,11 @@ export class HomeCarteraComponent implements OnInit {
     var acuerdo = this.gestiones.find((g:Gestiones)=>g.clasificacion.clasificacion == ClasificacionGestion.AcuerdoPago)
     return acuerdo != null || acuerdo != undefined ? true:false;
   }
+
+  formatFechaDesdeBackend(fecha:any): string {
+    console.log(typeof fecha);
+    
+    return format(fecha, 'dd/MM/yyyy hh:mm a');
+  }
+
 }

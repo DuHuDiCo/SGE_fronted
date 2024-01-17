@@ -1067,7 +1067,7 @@
                                     data-bs-toggle="modal" data-bs-target="#modalGestionCom" style="cursor: pointer;">
                                     <th>{{ i + 1 }}</th>
                                     <td>{{ g.asesorCartera }}</td>
-                                    <td>{{ g.fechaGestion | date:'dd/MM/yyyy' }} {{ g.fechaGestion | date:'shortTime' }}
+                                    <td>{{ formatFechaDesdeBackend(g.fechaGestion) }}
                                     </td>
                                     <td>{{ g.clasificacion.nombresClasificacion.nombre }}</td>
                                     <td>{{ g.clasificacion.isActive ? 'Activo':g.clasificacion.nombresClasificacion.tipo
