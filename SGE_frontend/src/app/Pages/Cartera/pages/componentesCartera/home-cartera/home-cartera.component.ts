@@ -9,7 +9,7 @@ import { Tarea } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { CuentaCobrarCalculate, CuentasCobrarResponse } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
 
-import { CuotaList, CuotasRequest, Filtros, Gestion, GestionArray, Gestiones, Notificacion, Pagos, PagosRequest, ReciboPago, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
+import { ClasificacionGestion, CuotaList, CuotasRequest, Filtros, Gestion, GestionArray, Gestiones, Notificacion, Pagos, PagosRequest, ReciboPago, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
 
 import { ROLES } from 'src/app/Types/Roles';
 
@@ -362,6 +362,8 @@ export class HomeCarteraComponent implements OnInit {
     this.getNotificaciones()
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
+
+
   }
 
   getTipoVen() {
@@ -404,14 +406,41 @@ export class HomeCarteraComponent implements OnInit {
   getCuentasCobrar() {
     this.filtrando = false
     var admin = this.authService.getRolesByName(ROLES.Administration);
-    
+
     var cartera = this.authService.getRolesByName(ROLES.Cartera);
-    
+
     var permiso = this.validarPermisoEnRolCartera("VER TODOS", cartera);
-    
-    if(admin.length != 0 || permiso != undefined && permiso.length != 0){
+
+    if (admin.length != 0 || permiso != undefined && permiso.length != 0) {
       this.cuentasCobrar.getCuentasCobrarAdmin(this.page, this.size, this.fechaCreacion).subscribe(
-        (data:any) => {
+        (data: any) => {
+          this.paginas = new Array(data.totalPages)
+          this.cuentasCobrarArray = data.content
+          console.log(this.cuentasCobrarArray)
+          this.last = data.last
+          this.first = data.first
+          this.numeroPages = data.totalPages
+          this.cuentasCobrar.proSubject.next(true);
+          if (this.cuentasCobrarArray.length == 0) {
+            this.spinner = true
+          } else {
+            this.spinner = false
+          }
+        }, (error: any) => {
+          console.log(error);
+        }
+        
+      )
+    } else {
+      var user = this.authService.getUsername()
+
+      if (user == null || user == undefined) {
+        return
+      }
+
+      this.filtrando = false
+      this.cuentasCobrar.getCuentasCobrar(user, this.page, this.size, this.fechaCreacion).subscribe(
+        (data: any) => {
           this.paginas = new Array(data.totalPages)
           this.cuentasCobrarArray = data.content
           this.last = data.last
@@ -423,37 +452,12 @@ export class HomeCarteraComponent implements OnInit {
           } else {
             this.spinner = false
           }
-        }, (error:any) => {
+        }, (error: any) => {
           console.log(error);
         }
       )
-    } else {
-      var user = this.authService.getUsername()
-
-      if (user == null || user == undefined) {
-        return
-      }
-
-    this.filtrando = false
-    this.cuentasCobrar.getCuentasCobrar(user, this.page, this.size, this.fechaCreacion).subscribe(
-      (data: any) => {
-        this.paginas = new Array(data.totalPages)
-        this.cuentasCobrarArray = data.content
-        this.last = data.last
-        this.first = data.first
-        this.numeroPages = data.totalPages
-        this.cuentasCobrar.proSubject.next(true);
-        if (this.cuentasCobrarArray.length == 0) {
-          this.spinner = true
-        } else {
-          this.spinner = false
-        }
-      }, (error: any) => {
-        console.log(error);
-      }
-    )
-  }    
-}
+    }
+  }
 
   //PAGINA ANTERIOR
   back() {
@@ -1196,8 +1200,8 @@ export class HomeCarteraComponent implements OnInit {
 
         if (c.pagos.reciboPago != null || c.pagos.reciboPago != undefined) {
           this.recibosPagoSinFiltrar.push(c.pagos.reciboPago)
-          
-          
+
+
         }
 
         if (c.pagos.saldoCuota > 0) {
@@ -1229,7 +1233,7 @@ export class HomeCarteraComponent implements OnInit {
         capitalCuota: c.capitalCuota,
         honorarios: c.honorarios,
         cumplio: false,
-        pago:false,
+        pago: false,
         interesCuota: c.interesCuota,
         pagosDto: null,
         idCuota: c.idCuota
@@ -1252,7 +1256,7 @@ export class HomeCarteraComponent implements OnInit {
 
 
     ///////////
-    this.recibosPago = this.recibosPagoSinFiltrar.filter((r:ReciboPago, i:number, array)=>array.findIndex(obj =>JSON.stringify(obj) === JSON.stringify(r)) === i)
+    this.recibosPago = this.recibosPagoSinFiltrar.filter((r: ReciboPago, i: number, array) => array.findIndex(obj => JSON.stringify(obj) === JSON.stringify(r)) === i)
   }
 
   mostrarReporte() {
@@ -2348,10 +2352,10 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   validarPermisoEnRolCartera(permiso: string, rolesCartera: any) {
-      if(rolesCartera != undefined && rolesCartera.length > 0){
-        var permisos = rolesCartera[0].permisos.filter((p: any) => p.permiso == permiso)
-        return permisos
-      }
+    if (rolesCartera != undefined && rolesCartera.length > 0) {
+      var permisos = rolesCartera[0].permisos.filter((p: any) => p.permiso == permiso)
+      return permisos
+    }
   }
 
   //FILTROS
@@ -2394,12 +2398,12 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     var admin = this.authService.getRolesByName(ROLES.Administration);
-    
+
     var cartera = this.authService.getRolesByName(ROLES.Cartera);
-    
+
     var permiso = this.validarPermisoEnRolCartera("VER TODOS", cartera);
-    
-    if(admin.length != 0 || permiso != undefined && permiso.length != 0){
+
+    if (admin.length != 0 || permiso != undefined && permiso.length != 0) {
       this.filtros.username = ''
     }
 
@@ -2845,9 +2849,9 @@ export class HomeCarteraComponent implements OnInit {
 
   generarRecibo() {
 
-    var coutasFiltradas = this.coutasRequest.filter((c:CuotasRequest)=>!c.pago && c.pagosDto != null)
+    var coutasFiltradas = this.coutasRequest.filter((c: CuotasRequest) => !c.pago && c.pagosDto != null)
 
-   
+
     this.activarGuardarPago = false
     this.savePago = true
 
@@ -2868,9 +2872,9 @@ export class HomeCarteraComponent implements OnInit {
       username: ''
     }
 
-    
-    
-    
+
+
+
     var user = this.authService.getUsername();
     if (user != null || user != undefined) {
       recibo.username = user;
@@ -2894,7 +2898,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     $('#modalGestionCom').modal('hide');
-    
+
 
   }
 
@@ -2936,4 +2940,9 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
+
+  validarAcuerdoActivo():boolean{
+    var acuerdo = this.gestiones.find((g:Gestiones)=>g.clasificacion.clasificacion == ClasificacionGestion.AcuerdoPago)
+    return acuerdo != null || acuerdo != undefined ? true:false;
+  }
 }

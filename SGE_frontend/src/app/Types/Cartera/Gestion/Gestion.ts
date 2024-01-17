@@ -188,3 +188,9 @@ export type Notificacion = {
   cliente: string,
   designatedTo: number
 }
+
+export enum ClasificacionGestion{
+  AcuerdoPago = "ACUERDO DE PAGO",
+  Nota = "NOTA",
+  Tarea = "TAREA"
+}
