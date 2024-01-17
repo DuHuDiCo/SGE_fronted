@@ -1,12 +1,12 @@
 <div class="container">
     <div class="floating-button-container">
         <button [@fadeInFromBottom]="true" class="floating-button" data-bs-toggle="modal"
-            data-bs-target="#modalObligacion">
+            data-bs-target="#modalObligacion" (click)="focus()">
             <div class="icon-container">
                 <i class="fa-solid fa-magnifying-glass fa-2x"></i>
             </div><br>
             <div class="text-container">
-                <span class="text">Buscar</span> <!-- Nuevo elemento de texto para mostrar en el hover -->
+                <span class="text">Buscar</span>
             </div>
         </button>
     </div>
@@ -1150,8 +1150,8 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Gestión Seleccionada</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 *ngIf="gestionSelected.clasificacion.nombresClasificacion != null" class="modal-title fs-5" id="exampleModalLabel">{{ gestionSelected.clasificacion.nombresClasificacion.nombre }}</h1>
+                    <button (click)="modalGestionSelected()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" *ngIf="gestionSelected != null">
                     <!-- PARTE ACUERDO DE PAGO-->
@@ -1316,7 +1316,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-12 mb-3">
                                     <div class="form-floating">
-                                        <textarea [(ngModel)]="gestionSelected.clasificacion.detalleNota" rows="10" cols="5"
+                                        <textarea [(ngModel)]="gestionSelected.clasificacion.detalleNota" style="height: 180px;"
                                             class="form-control" readonly></textarea>
                                         <label for="floatingTextarea">Detalle Nota</label>
                                     </div>
@@ -1335,7 +1335,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-12 mb-3">
                                     <div class="form-floating">
-                                        <textarea [(ngModel)]="gestionSelected.detallesAdicionales" class="form-control"
+                                        <textarea [(ngModel)]="gestionSelected.detallesAdicionales" class="form-control" style="height: 100px;"
                                             readonly></textarea>
                                         <label for="floatingTextarea">Detalles Adicionales</label>
                                     </div>

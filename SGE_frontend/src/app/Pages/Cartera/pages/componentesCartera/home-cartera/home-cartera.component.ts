@@ -1168,6 +1168,8 @@ export class HomeCarteraComponent implements OnInit {
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
 
     this.gestionSelected = gestion
+    console.log(this.gestionSelected);
+    
 
     if (this.gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO') {
       this.obtenerCuotas()
