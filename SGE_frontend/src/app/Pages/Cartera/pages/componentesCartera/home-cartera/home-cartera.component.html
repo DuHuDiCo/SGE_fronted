@@ -5,7 +5,7 @@
                 <i class="fa-solid fa-magnifying-glass fa-2x"></i>
             </div><br>
             <div class="text-container">
-                <span class="text">Buscar</span> <!-- Nuevo elemento de texto para mostrar en el hover -->
+                <span class="text">Buscar</span>
             </div>
         </button>
     </div>
@@ -79,16 +79,39 @@
         </ul>
     </div>
     <div class="card-c">
-        <div *ngIf="newGestion.clasificacion.tipoClasificacion != null" class="row justify-content-end"
-            data-bs-target="#offcanvasRight">
-            <div class="col-md-4">
-                <div class="alert alert-danger text-end" role="alert" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasRight" style="cursor: pointer;"
-                    (click)="findCuentaCobrar(newGestion.numeroObligacion)">
-                    <h6>Editando Gestion De {{ newGestion.numeroObligacion }}</h6>
+        <div class="row">
+            <div *ngIf="buscarObligacion != '' || (this.filtros.banco.length != 0) ||
+            (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
+            (this.filtros.diasVencidosFin != 0 && this.filtros.diasVencidosFin != null) ||
+            (this.filtros.edadVencimiento.length != 0) ||
+            (this.filtros.sede.length != 0) ||
+            (this.filtros.clasiJuridica.length != 0) ||
+            (this.filtros.saldoCapitalInicio != 0 && this.filtros.saldoCapitalInicio != null) ||
+            (this.filtros.saldoCapitalFin != 0 && this.filtros.saldoCapitalFin != null) ||
+            (this.filtros.fechaCpcInicio != null) ||
+            (this.filtros.fechaCpcFin != null) ||
+            (this.filtros.fechaGestionInicio != null) ||
+            (this.filtros.fechaGestionFin != null) ||
+            (this.filtros.fechaCompromisoInicio != null) ||
+            (this.filtros.fechaCompromisoFin != null)" class="col-md-2">
+                <button (click)="reiniciarFiltros('LIMPIAR')" class="btn btn-primary justify-content-start mb-3">Limpiar Filtros</button>
+            </div>
+
+            <div class="col-md-10">
+                <div *ngIf="newGestion.clasificacion.tipoClasificacion != null" class="row justify-content-end"
+                data-bs-target="#offcanvasRight">
+                <div class="col-md-4">
+                    <div class="alert alert-danger text-end" role="alert" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasRight" style="cursor: pointer;"
+                        (click)="findCuentaCobrar(newGestion.numeroObligacion)">
+                        <h6>Editando Gestion De {{ newGestion.numeroObligacion }}</h6>
+                    </div>
                 </div>
             </div>
+            </div>
+
         </div>
+
         <!-- OCULTAR COLUMNAS -->
         <div class="accordion" id="accordionExample" *ngIf="!spinner">
             <div class="accordion-item">
@@ -229,7 +252,7 @@
             <div class="col-md-12">
                 <!-- SIDEBAR -->
                 <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasRight"
-                    aria-labelledby="offcanvasRightLabel" style="height: 77%;">
+                    aria-labelledby="offcanvasRightLabel" style="height: 95%;">
                     <div *ngIf="!spinnerSidebar" class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasRightLabel">Datos Cliente</h5>
                         <button *ngIf="deshabilitarInputs" class="btn btn-danger b" data-bs-toggle="modal"
@@ -252,9 +275,9 @@
 
                         <div *ngIf="!spinnerSidebar" class="card">
                             <div class="card-header">
-                                <h5 class="text-center">Gestor Encargado: {{
+                                <h6 class="text-center">Gestor Encargado: {{
                                     cuentaCobrarSelected.asesorCarteraResponse.usuario.nombres }} {{
-                                    cuentaCobrarSelected.asesorCarteraResponse.usuario.apellidos }}</h5>
+                                    cuentaCobrarSelected.asesorCarteraResponse.usuario.apellidos }}</h6>
                             </div>
                             <div class="card-body text-center">
                                 <div class="card mb-3">
@@ -275,128 +298,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <!-- INFO PERSONAL -->
-                                        <div class="card text-center">
-                                            <div class="card-header text-center tituloCard">
-                                                Información Personal
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="row justify-content-center">
-                                                    <div class="col-md-4">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text fw-bold">Cédula</span>
-                                                            <input [(ngModel)]="cuentaCobrarSelected.documentoCliente"
-                                                                type="text" class="form-control" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text fw-bold">Nombre</span>
-                                                            <input type="text" class="form-control"
-                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].nombreTitular"
-                                                                disabled>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <div class="row justify-content-center">
-                                                    <div class="col-md-6">
-                                                        <div class="input-group input-group-sm">
-                                                            <span class="input-group-text fw-bold">Lugar/Res</span>
-                                                            <input type="text"
-                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].municipio"
-                                                                class="form-control" disabled>
-                                                            <input type="text"
-                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].departamento"
-                                                                class="form-control" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text fw-bold">Telefonos</span>
-                                                            <select class="form-select"
-                                                                (change)="copyToClipboard($event)" id="element"
-                                                                [ngModel]="cuentaCobrarSelected.clientes[0].telefonos[0].numero">
-
-                                                                <option
-                                                                    *ngFor="let t of cuentaCobrarSelected.clientes[0].telefonos">
-                                                                    {{ t.numero }}</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text fw-bold">Dirección</span>
-                                                            <input type="text" class="form-control"
-                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].direcciones[0].direccion"
-                                                                disabled>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <!-- CREDITOS -->
-                                        <div class="card text-center">
-                                            <div class="card-header text-center tituloCard">
-                                                Información Del Credito
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text fw-bold">Vendedor</span>
-                                                            <input type="text" class="form-control"
-                                                                [(ngModel)]="cuentaCobrarSelected.vendedor" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text fw-bold">Clasificación</span>
-                                                            <input type="text" class="form-control"
-                                                                [(ngModel)]="cuentaCobrarSelected.clasificacion"
-                                                                disabled>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row justify-content-center">
-                                                    <div class="col-md-6">
-                                                        <div class="input-group input-group-sm">
-                                                            <span class="input-group-text fw-bold">Fec/Credito</span>
-                                                            <input type="date"
-                                                                [(ngModel)]="cuentaCobrarSelected.fechaCuentaCobrar"
-                                                                class="form-control" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text fw-bold">Fec/Venc</span>
-                                                            <input type="date" class="form-control"
-                                                                [(ngModel)]="cuentaCobrarSelected.fechaVencimiento"
-                                                                disabled>
-                                                        </div>
-                                                    </div>
-                                                    <!-- <div class="col-md-4">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text"
-                                                                id="inputGroup-sizing-default">Monto Inicial</span>
-                                                            <input type="text" class="form-control"
-                                                                aria-label="Sizing example input"
-                                                                aria-describedby="inputGroup-sizing-default" disabled>
-                                                        </div>
-                                                    </div> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <!-- MORA -->
@@ -547,22 +448,70 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <!-- REFERENCIAS -->
-                                        <div class="card text-center mb-2">
+                                        <!-- INFO PERSONAL -->
+                                        <div class="card text-center">
                                             <div class="card-header text-center tituloCard">
-                                                Referencias
+                                                Información Personal
                                             </div>
                                             <div class="card-body">
-                                                <div class="form-floating">
-                                                    <textarea class="form-control"
-                                                        [(ngModel)]="cuentaCobrarSelected.clientes[0].descripcionDetallada"
-                                                        style="height: 140px" disabled></textarea>
-                                                    <label class="fw-bold">Referencia</label>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Cédula</span>
+                                                            <input [(ngModel)]="cuentaCobrarSelected.documentoCliente"
+                                                                type="text" class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Nombre</span>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].nombreTitular"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text fw-bold">Lugar/Res</span>
+                                                            <input type="text"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].municipio"
+                                                                class="form-control" disabled>
+                                                            <input type="text"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].departamento"
+                                                                class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Telefonos</span>
+                                                            <select class="form-select" style="border: 1px black solid;"
+                                                                (change)="copyToClipboard($event)" id="element"
+                                                                [ngModel]="cuentaCobrarSelected.clientes[0].telefonos[0].numero">
+                                                                <option value="">Seleccione Un Teléfono</option>
+                                                                <option
+                                                                    *ngFor="let t of cuentaCobrarSelected.clientes[0].telefonos">
+                                                                    {{ t.numero }}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Dirección</span>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].direcciones[0].direccion"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="row justify-content-start">
+                                        <div class="row justify-content-start mt-2">
                                             <div class="col-md-12">
                                                 <!-- CODEUDORES -->
                                                 <div class="card text-center">
@@ -575,7 +524,7 @@
                                                                 <div class="input-group input-group-sm mb-3">
                                                                     <span
                                                                         class="input-group-text fw-bold">Codeudores</span>
-                                                                    <select class="form-select"
+                                                                    <select class="form-select" style="border: 1px black solid;"
                                                                         (change)="findCodeudores($event)">
                                                                         <option>Seleccione Un Codeudor</option>
                                                                         <option *ngFor="let co of codeudores"
@@ -624,6 +573,70 @@
                                                             </div>
                                                         </span>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <!-- CREDITO -->
+                                        <div class="card text-center">
+                                            <div class="card-header text-center tituloCard">
+                                                Información Del Credito
+                                            </div>
+                                            <div class="card-body" style="height: 170px;">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Vendedor</span>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.vendedor" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Clasificación</span>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.clasificacion"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text fw-bold">Fec/Credito</span>
+                                                            <input type="date"
+                                                                [(ngModel)]="cuentaCobrarSelected.fechaCuentaCobrar"
+                                                                class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Fec/Venc</span>
+                                                            <input type="date" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.fechaVencimiento"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- REFERENCIAS -->
+                                        <div class="card text-center mb-2">
+                                            <div class="card-header text-center tituloCard">
+                                                Referencias
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-floating">
+                                                    <textarea class="form-control"
+                                                        [(ngModel)]="cuentaCobrarSelected.clientes[0].descripcionDetallada"
+                                                        style="height: 140px" disabled></textarea>
+                                                    <label class="fw-bold">Referencia</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -894,7 +907,7 @@
                             <!-- ACUERDO PAGO -->
                             <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col" [ngClass]="{'col-md-12': !col, 'col-md-6': col}">
                                         <div class="input-group input-group-sm mb-3">
                                             <span class="input-group-text fw-bold">Fecha Comp</span>
                                             <input type="date" class="form-control"
@@ -902,7 +915,7 @@
                                                 [min]="minFecha()" [disabled]="disabledFecha">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col" [ngClass]="{'col-md-12': !col, 'col-md-6': col}">
                                         <div class="input-group input-group-sm mb-3">
                                             <span class="input-group-text fw-bold">Valor Cuota</span>
                                             <input type="number" class="form-control"
@@ -950,7 +963,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <select class="form-select mt-3 mb-3" [(ngModel)]="newGestion.username">
+                                        <select class="form-select mt-3 mb-3" [(ngModel)]="newGestion.username" style="border: 1px black solid;">
                                             <option [value]="null">Seleccione Un Asesor</option>
                                             <option *ngFor="let a of asesores" [value]="a.usuario.username">{{
                                                 a.usuario.nombres }} {{ a.usuario.apellidos }}</option>
@@ -1193,10 +1206,10 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Gestión Seleccionada</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 *ngIf="gestionSelected.clasificacion.nombresClasificacion != undefined" class="modal-title fs-5" id="exampleModalLabel">{{ gestionSelected.clasificacion.nombresClasificacion.nombre }}</h1>
+                    <button (click)="modalGestionSelected()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" *ngIf="gestionSelected != null">
+                <div class="modal-body" *ngIf="gestionSelected.clasificacion.clasificacion != null && gestionSelected.clasificacion.clasificacion != undefined">
                     <!-- PARTE ACUERDO DE PAGO-->
                     <span *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO'">
                         <div class="row m-3">
@@ -1360,8 +1373,8 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-12 mb-3">
                                     <div class="form-floating">
-                                        <textarea [(ngModel)]="gestionSelected.clasificacion.detalleNota" rows="10"
-                                            cols="5" class="form-control" readonly></textarea>
+                                        <textarea [(ngModel)]="gestionSelected.clasificacion.detalleNota" style="height: 180px;"
+                                            class="form-control" readonly></textarea>
                                         <label for="floatingTextarea">Detalle Nota</label>
                                     </div>
                                 </div>
@@ -1379,7 +1392,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-12 mb-3">
                                     <div class="form-floating">
-                                        <textarea [(ngModel)]="gestionSelected.detallesAdicionales" class="form-control"
+                                        <textarea [(ngModel)]="gestionSelected.detallesAdicionales" class="form-control" style="height: 100px;"
                                             readonly></textarea>
                                         <label for="floatingTextarea">Detalles Adicionales</label>
                                     </div>
@@ -1434,14 +1447,14 @@
                                 </blockquote>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="COL"
-                                        (click)="metodoBancos('COL')">
+                                        (click)="metodoBancos('COL')" #col>
                                     <label class="form-check-label">
                                         <cite title="Source Title">COL</cite>
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="POP"
-                                        (click)="metodoBancos('POP')">
+                                        (click)="metodoBancos('POP')" #col>
                                     <label class="form-check-label">
                                         <cite title="Source Title">POP</cite>
                                     </label>
@@ -1467,7 +1480,7 @@
                                 </blockquote>
                                 <div class="form-check" *ngFor="let t of tiposVen; let i = index">
                                     <input value="{{ t.tipoVencimiento }}" class="form-check-input" type="checkbox"
-                                        (click)="metodoEdadVen(t.tipoVencimiento)">
+                                        (click)="metodoEdadVen(t.tipoVencimiento)" #col>
                                     <label class="form-check-label">
                                         <cite title="Source Title">{{ t.tipoVencimiento}}</cite>
                                     </label>
@@ -1481,7 +1494,7 @@
                                 </blockquote>
                                 <div class="form-check" *ngFor="let s of sedes; let i = index">
                                     <input value="{{ s.sede }}" class="form-check-input" type="checkbox"
-                                        (click)="metodoSede(s.sede)">
+                                        (click)="metodoSede(s.sede)" #col>
                                     <label class="form-check-label">
                                         <cite title="Source Title">{{ s.sede }}</cite>
                                     </label>
@@ -1495,23 +1508,23 @@
                                 </blockquote>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="Normal"
-                                        (click)="metodoClas('Normal')">
+                                        (click)="metodoClas('NORMAL')" #col>
                                     <label class="form-check-label">
                                         <cite title="Source Title">Normal</cite>
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="Prejuridico"
-                                        (click)="metodoClas('Prejuridico')">
+                                        (click)="metodoClas('PREJURIDICO')" #col>
                                     <label class="form-check-label">
                                         <cite title="Source Title">Prejuridico</cite>
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="Juridico"
-                                        (click)="metodoClas('Juridico')">
+                                        (click)="metodoClas('ADMINISTRATIVO')" #col>
                                     <label class="form-check-label">
-                                        <cite title="Source Title">Juridico</cite>
+                                        <cite title="Source Title">Administrativo</cite>
                                     </label>
                                 </div>
                             </figure>
@@ -1567,12 +1580,21 @@
                                 </figure>
                             </div>
                         </div>
-                        <div class="row justify-content-center">
+                        <div class="row">
+                            <div class="col-md-4 ms-2 me-5">
+                                <button *ngIf="!limpiarFiltro" class="btn btn-primary"
+                                    (click)="reiniciarFiltros('')">Limpiar</button>
+                                <button *ngIf="limpiarFiltro" class="btn btn-primary">
+                                    Limpiar...
+                                    <span class="spinner-border spinner-border-sm float-right" role="status"
+                                        aria-hidden="true"></span>
+                                </button>
+                            </div>
                             <div class="col-md-4">
                                 <button *ngIf="!botonFiltro" class="btn btn-danger b"
                                     (click)="filtro()">Filtrar</button>
                                 <button *ngIf="botonFiltro" class="btn btn-danger b">
-                                    Filtrando...
+                                    Filtrar...
                                     <span class="spinner-border spinner-border-sm float-right" role="status"
                                         aria-hidden="true"></span>
                                 </button>

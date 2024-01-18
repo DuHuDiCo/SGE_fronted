@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { addMonths, format, isLeapYear, lastDayOfMonth, parse, parseISO } from 'date-fns';
 
@@ -290,6 +290,8 @@ export class HomeCarteraComponent implements OnInit {
     isActive: false
   }
 
+  limpiarFiltro:boolean = false
+
   bancosArray: string[] = []
   edadVenArray: string[] = []
   sedesArray: string[] = []
@@ -355,6 +357,7 @@ export class HomeCarteraComponent implements OnInit {
   buscarObligacion: string = ''
   botonFiltrarObligacion: boolean = false
 
+  @ViewChildren('col') colcheck!: QueryList<ElementRef>;
 
   ngOnInit(): void {
     this.getCuentasCobrar()
@@ -364,9 +367,7 @@ export class HomeCarteraComponent implements OnInit {
     this.getAsesores()
     this.getNotificaciones()
     this.fechaActual = new Date()
-    this.fechaCorte = this.obtenerFechaActual()
-
-
+    this.fechaCorte = this.obtenerFechaActual()    
   }
 
   getTipoVen() {
@@ -1105,32 +1106,36 @@ export class HomeCarteraComponent implements OnInit {
 
     if (this.newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO') {
       var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
-      this.gestionSelected = gestion
 
-      if (this.gestionSelected != null || this.gestionSelected != undefined) {
-
-        this.getOneGestion(this.gestionSelected.idGestion)
-
-        this.newGestion.contact = false
-
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Este Cliente tiene un Acuerdo de Pago Vigente',
-          timer: 3000
-        })
-
-        var nombre = this.ClasificacionArray.filter((n: any) => n.tipo != 'ACUERDO DE PAGO')
-        this.newGestion.clasificacion.tipoClasificacion = nombre[0].tipo
-        event.target.value = nombre[0].nombre
-
-        setTimeout(() => {
-          $('#modalGestion').modal('hide');
-          $('#modalGestionCom').modal('show');
-        }, 3000);
-
-      } else {
+      if(gestion == undefined){
         this.newGestion.contact = true
+        return
+      } else {
+        this.gestionSelected = gestion
+        console.log(this.gestionSelected);
+
+        if (this.gestionSelected != null || this.gestionSelected != undefined) {
+
+          this.getOneGestion(this.gestionSelected.idGestion)  
+  
+          this.newGestion.contact = false
+  
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Este Cliente tiene un Acuerdo de Pago Vigente',
+            timer: 3000
+          })
+  
+          var nombre = this.ClasificacionArray.filter((n: any) => n.tipo != 'ACUERDO DE PAGO')
+          this.newGestion.clasificacion.tipoClasificacion = nombre[0].tipo
+          event.target.value = nombre[0].nombre
+  
+          setTimeout(() => {
+            $('#modalGestion').modal('hide');
+            $('#modalGestionCom').modal('show');
+          }, 3000);
+        }
       }
     }
   }
@@ -1171,6 +1176,8 @@ export class HomeCarteraComponent implements OnInit {
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
 
     this.gestionSelected = gestion
+    console.log(this.gestionSelected);
+    
 
     if (this.gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO') {
       this.obtenerCuotas()
@@ -2374,6 +2381,8 @@ export class HomeCarteraComponent implements OnInit {
     this.filtros.sede = this.sedesArray
     this.filtros.edadVencimiento = this.edadVenArray
 
+    console.log(this.filtros);
+    
 
     if (
       (this.filtros.banco.length == 0) &&
@@ -2415,6 +2424,7 @@ export class HomeCarteraComponent implements OnInit {
       (data: any) => {
         this.botonFiltro = false
         this.filtrando = true
+        this.buscarObligacion = ''
         this.paginas = new Array(data.totalPages)
         this.cuentasCobrarArray = data.content
         this.last = data.last
@@ -2439,13 +2449,51 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
+  reiniciarFiltros(accion:string){
+    this.filtros = {
+      banco: [],
+      diasVencidosInicio: null,
+      diasVencidosFin: null,
+      edadVencimiento: [],
+      sede: [],
+      username: '',
+      clasiJuridica: [],
+      saldoCapitalInicio: null,
+      saldoCapitalFin: null,
+      fechaCpcInicio: null,
+      fechaCpcFin: null,
+      fechaGestionInicio: null,
+      fechaGestionFin: null,
+      fechaCompromisoInicio: null,
+      fechaCompromisoFin: null,
+      isActive: false
+    }
+
+    this.bancosArray = []
+    this.edadVenArray = []
+    this.sedesArray = []
+    this.clasJurArray = []
+
+    if(accion == 'LIMPIAR'){
+      this.buscarObligacion = ''
+    }
+
+    for (const i of this.colcheck.toArray()) {
+      i.nativeElement.checked = false
+    }
+
+    this.getCuentasCobrar()
+    this.spinner = true
+    $('#offcanvasFilter').offcanvas('hide');
+  }
+
   metodoBancos(banco: string) {
     if (this.bancosArray.includes(banco)) {
       var position = this.bancosArray.indexOf(banco)
       this.bancosArray.splice(position, 1)
     } else {
       this.bancosArray.push(banco)
-    }
+    }    
   }
 
   metodoEdadVen(edad: string) {
@@ -2492,6 +2540,30 @@ export class HomeCarteraComponent implements OnInit {
         this.cuentasCobrarArray = data
         this.numeroPages = 1
         this.cuentasCobrar.proSubject.next(true);
+
+        this.filtros = {
+          banco: [],
+          diasVencidosInicio: null,
+          diasVencidosFin: null,
+          edadVencimiento: [],
+          sede: [],
+          username: '',
+          clasiJuridica: [],
+          saldoCapitalInicio: null,
+          saldoCapitalFin: null,
+          fechaCpcInicio: null,
+          fechaCpcFin: null,
+          fechaGestionInicio: null,
+          fechaGestionFin: null,
+          fechaCompromisoInicio: null,
+          fechaCompromisoFin: null,
+          isActive: false
+        }
+    
+        for (const i of this.colcheck.toArray()) {
+          i.nativeElement.checked = false
+        }
+
         $('#modalObligacion').modal('hide');
 
         if (this.cuentasCobrarArray == null || this.cuentasCobrarArray.length == 0) {
