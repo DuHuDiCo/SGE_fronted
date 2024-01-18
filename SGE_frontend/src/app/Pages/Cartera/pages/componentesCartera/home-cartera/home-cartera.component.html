@@ -41,11 +41,18 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="todas" role="tabpanel" aria-labelledby="home-tab">
                     <div class="list-group" style="width: 300px;">
-                        <a *ngFor="let n of notiArray" class="list-group-item list-group-item-action" aria-current="true"
-                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                            (click)="findCuentaCobrar(n.numeroObligacion)" style="background-color: rgb(201, 201, 201);">
+                        <a *ngFor="let n of notiArray" class="list-group-item" aria-current="true" style="background-color: rgb(201, 201, 201);">
+                            <div class="row justify-content-center mb-2">
+                                <div class="col-md-4">
+                                    <button (click)="desactivarNoti(n.idNotificaciones)" class="btn btn-sm b"><i class="fa-solid fa-check"></i></button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button (click)="findCuentaCobrar(n.numeroObligacion)" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasRight" style="cursor: pointer;" class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
+                                </div>
+                            </div>
                             <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h5>
+                                <h6 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h6>
                                 <small>{{ n.fechaCreacion | dateFormat}}</small>
                             </div>
                             <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | dateFormat}}</p>
@@ -55,9 +62,15 @@
                 </div>
                 <div class="tab-pane fade" id="vencidas" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="list-group" style="width: 300px;">
-                        <a *ngFor="let n of notiArrayVencidas" class="list-group-item list-group-item-action" aria-current="true"
-                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                            (click)="findCuentaCobrar(n.numeroObligacion)" style="background-color: rgb(201, 201, 201);">
+                        <a *ngFor="let n of notiArrayVencidas" class="list-group-item" aria-current="true" style="background-color: rgb(201, 201, 201);">
+                            <div class="row justify-content-center mb-2">
+                                <div class="col-md-4">
+                                    <button class="btn btn-sm b"><i class="fa-solid fa-check"></i></button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
+                                </div>
+                            </div>
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h5>
                                 <small>{{ n.fechaCreacion | dateFormat}}</small>

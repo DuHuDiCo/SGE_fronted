@@ -3028,6 +3028,39 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
+  desactivarNoti(id:number){
+    Swal.fire({
+      title: 'Confirmar Notificación',
+      text: '¿Desea Confirmar La Notificación?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cuentasCobrar.desactivateNotificacion(id).subscribe(
+          (data: any) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Datos Guardados',
+              text: 'Notificación Confirmada Con Éxito',
+              timer: 3000
+            })
+          }, (error: any) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error Al Confirma La Notificación',
+              timer: 3000
+            })
+            console.log(error);
+          }
+        )
+      } 
+    })
+  }
 
   validarAcuerdoActivo(): boolean {
     var acuerdo = this.gestiones.find((g: Gestiones) => g.clasificacion.clasificacion == ClasificacionGestion.AcuerdoPago)

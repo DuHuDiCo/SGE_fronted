@@ -47,7 +47,6 @@ export class CuentasCobrarService {
   //FILTRO
   filtro(page:number, size:number, fechaCreacion:string, dto:Filtros, ){
     return this.http.post(`${baseUrl}/cuentas/filtrosCuentas?page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`, dto)
-
   }
 
   // CLASIFICACIONES
@@ -196,12 +195,14 @@ export class CuentasCobrarService {
   // NOTIFICACIONES
   getNotificacionesVencidas(username:string){
     return this.http.get(`${baseUrl}/notificaciones/getAllNotificacionesVencidas?username=${username}`)
-
   }
 
   getAllNotificaciones(username:string |null){
     return this.http.get(`${baseUrl}/notificaciones/getAllNotificaciones?username=${username}`)
+  }
 
+  desactivateNotificacion(idNotificion:number){
+    return this.http.put(`${baseUrl}/notificaciones/desactivateNotification?idNotificion=${idNotificion}`, null)
   }
 
 
