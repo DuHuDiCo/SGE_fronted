@@ -41,7 +41,7 @@ import { DashboardSSTComponent } from './Pages/SST/pages/dashboard-sst/dashboard
 import { DashboardCreditosComponent } from './Pages/Creditos/dashboard-creditos/dashboard-creditos.component';
 import { DashboarConsignacionesComponent } from './Pages/Consignaciones/pages/dashboar-consignaciones/dashboar-consignaciones.component';
 import { EstadisticasDashboardComponent } from './componentesGenerales/sources/cartera/estadisticas-dashboard/estadisticas-dashboard.component';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { CrearCreditoComponent } from './Pages/Creditos/Componentes_creditos/crear-credito/crear-credito.component';
 import { VerCreditosComponent } from './Pages/Creditos/Componentes_creditos/ver-creditos/ver-creditos.component';
@@ -79,7 +79,7 @@ import { SidebarPerfilComponent } from './Pages/Perfil/componentes/sidebar-perfi
 
 import { ConfiguracionPerfilComponent } from './Pages/Perfil/configuracion-perfil/configuracion-perfil.component';
 import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/datos-perfil.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ɵInternalFormsSharedModule } from '@angular/forms';
 import { AgregarClienteModule } from './moduls/agregar-cliente/agregar-cliente.module';
 import { BuscarUsuariosComponent } from './Pages/AdminGeneral/Usuarios/listar-usuarios/listar-usuarios.component';
 import { RolesUsuarioComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/roles-usuario/roles-usuario.component';
@@ -112,6 +112,8 @@ import { ClasificacionJuridicaComponent } from './Pages/Cartera/pages/componente
 import { CondicionEspecialComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/condicion-especial/condicion-especial.component';
 import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/firmas/firmas.component';
 import { DateFormatPipe } from './Pipes/date-format.pipe';
+import { FormatoMonedaDirective } from './directivas/DirectivaFormatCurrency/formato-moneda.directive';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 
 
 
@@ -229,15 +231,16 @@ import { DateFormatPipe } from './Pipes/date-format.pipe';
 
     UploadsFilesComponent,
 
-        TipoVencimientoComponent,
+    TipoVencimientoComponent,
 
-      HomeCajaComponent,
-        ClasificacionJuridicaComponent,
-        CondicionEspecialComponent,
-        FirmasComponent,
-        DateFormatPipe,
-      
+    HomeCajaComponent,
+    ClasificacionJuridicaComponent,
+    CondicionEspecialComponent,
+    FirmasComponent,
+    DateFormatPipe,
+    FormatoMonedaDirective,
 
+    FormatoMonedaDirective
 
   ],
 
@@ -249,12 +252,12 @@ import { DateFormatPipe } from './Pipes/date-format.pipe';
     HttpClientModule,
     AgregarClienteModule,
     NgxPaginationModule,
-    
+    CommonModule
 
   ],
 
 
-  providers: [authInterceptorProviders],
+  providers: [authInterceptorProviders, CurrencyPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

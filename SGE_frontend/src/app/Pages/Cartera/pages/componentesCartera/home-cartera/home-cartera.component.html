@@ -1,7 +1,6 @@
 <div class="container">
     <div class="floating-button-container">
-        <button [@fadeInFromBottom]="true" class="floating-button" data-bs-toggle="modal"
-            data-bs-target="#modalObligacion">
+        <button [@fadeInFromBottom]="true" class="floating-button" (click)="abrirModalBuscar()">
             <div class="icon-container">
                 <i class="fa-solid fa-magnifying-glass fa-2x"></i>
             </div><br>
@@ -10,37 +9,75 @@
             </div>
         </button>
     </div>
-    <button class="btn btn-danger b filter" data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasFilter">
+    <button class="btn btn-danger b filter" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilter">
         <h6 class="text-center mt-1" style="font-size: 13px;">Filtros</h6>
     </button>
+
+    <!-- tarjetas notificaciones -->
     <div class="dropstart noti">
-        <button class="btn b dropdown-toggle position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn b dropdown-toggle position-relative" type="button" id="dropdownMenuClickableInside"
+            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             <i class="fa-solid fa-envelopes-bulk"></i>
-          <span class="position-absolute start-100 translate-middle badge rounded-pill bg-secondary">
-            {{ notiArray.length }}
-          </span>
+            <span class="position-absolute start-100 translate-middle badge rounded-pill bg-secondary">
+                {{ notiArray.length }}
+            </span>
         </button>
+
         <ul class="dropdown-menu scrollable-menu" style="background-color: rgb(201, 201, 201);">
-            <div class="list-group" style="width: 300px;">
-                <a *ngFor="let n of notiArray" class="list-group-item list-group-item-action" aria-current="true" data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasRight" (click)="findCuentaCobrar(n.numeroObligacion)"  style="background-color: rgb(201, 201, 201);">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h5>
-                    <small>{{ n.fechaCreacion | date:'d/M/yyyy' }}</small>
-                  </div>
-                  <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | date:'d/M/yyyy' }}</p>
-                  <small><b>Cliente:</b> {{ n.cliente }}</small>
-                </a>
+
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#todas"
+                        type="button" role="tab" aria-controls="home" aria-selected="true">Todas</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#vencidas"
+                        type="button" role="tab" aria-controls="profile" aria-selected="false">Vencidas</button>
+                </li>
+
+            </ul>
+
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="todas" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="list-group" style="width: 300px;">
+                        <a *ngFor="let n of notiArray" class="list-group-item list-group-item-action" aria-current="true"
+                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                            (click)="findCuentaCobrar(n.numeroObligacion)" style="background-color: rgb(201, 201, 201);">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h5>
+                                <small>{{ n.fechaCreacion | dateFormat}}</small>
+                            </div>
+                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | dateFormat}}</p>
+                            <small><b>Cliente:</b> {{ n.cliente }}</small>
+                        </a>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="vencidas" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="list-group" style="width: 300px;">
+                        <a *ngFor="let n of notiArrayVencidas" class="list-group-item list-group-item-action" aria-current="true"
+                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                            (click)="findCuentaCobrar(n.numeroObligacion)" style="background-color: rgb(201, 201, 201);">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h5>
+                                <small>{{ n.fechaCreacion | dateFormat}}</small>
+                            </div>
+                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion  | dateFormat }}</p>
+                            <small><b>Cliente:</b> {{ n.cliente }}</small>
+                        </a>
+                    </div>
+                </div>
+
             </div>
+            
             <div *ngIf="notiArray.length == 0" class="list-group">
                 <a class="list-group-item list-group-item-action" aria-current="true">
-                  <p class="mb-1">No Tiene Notificaciones Pendientes En El Momento.</p>
-                  <small>Vuelva Más Tarde.</small>
+                    <p class="mb-1">No Tiene Notificaciones Pendientes En El Momento.</p>
+                    <small>Vuelva Más Tarde.</small>
                 </a>
             </div>
         </ul>
-      </div>
+    </div>
     <div class="card-c">
         <div *ngIf="newGestion.clasificacion.tipoClasificacion != null" class="row justify-content-end"
             data-bs-target="#offcanvasRight">
@@ -203,14 +240,16 @@
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
-                        <div *ngIf="spinnerSidebar" class="d-flex align-items-center justify-content-center" style="height: 70vh;">
+                        <div *ngIf="spinnerSidebar" class="d-flex align-items-center justify-content-center"
+                            style="height: 70vh;">
                             <div class="text-center">
-                              <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
-                                <span class="visually-hidden"></span>
-                              </div>
+                                <div class="spinner-border" role="status"
+                                    style="width: 5rem; height: 5rem; color: #960010;">
+                                    <span class="visually-hidden"></span>
+                                </div>
                             </div>
-                          </div>
-                          
+                        </div>
+
                         <div *ngIf="!spinnerSidebar" class="card">
                             <div class="card-header">
                                 <h5 class="text-center">Gestor Encargado: {{
@@ -846,8 +885,8 @@
                             <label for="">Seleccinar Una Clasificacion</label>
                             <select class="form-select mb-3" style="border: 1px black solid;"
                                 [(ngModel)]="newGestion.clasificacion.nombreClasificacion" name="nombreClasificacion"
-                                (change)="tipoClasificacion($event)" >
-                                
+                                (change)="tipoClasificacion($event)">
+
                                 <option *ngFor="let c of ClasificacionArray" [value]="c.nombre">{{
                                     c.nombre }}</option>
                             </select>
@@ -1067,7 +1106,7 @@
                                     data-bs-toggle="modal" data-bs-target="#modalGestionCom" style="cursor: pointer;">
                                     <th>{{ i + 1 }}</th>
                                     <td>{{ g.asesorCartera }}</td>
-                                    <td>{{ formatFechaDesdeBackend(g.fechaGestion) }}
+                                    <td>{{ g.fechaGestion | dateFormat }}
                                     </td>
                                     <td>{{ g.clasificacion.nombresClasificacion.nombre }}</td>
                                     <td>{{ g.clasificacion.isActive ? 'Activo':g.clasificacion.nombresClasificacion.tipo
@@ -1078,15 +1117,18 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button *ngIf="!botonPdf && validarAcuerdoActivo()" class="btn b" (click)="descargarAcuerdo()"><i class="fa-solid fa-download"></i>&nbsp;Generar Acuerdo</button>
-                    <a type="hidden" [href]="'data:application/pdf;base64,' + base64" id="basePdf" style="display: none;" [download]="clienteSelected.numeroDocumento + ' - ' + clienteSelected.nombreTitular"></a>
-                    
+                    <button *ngIf="!botonPdf && validarAcuerdoActivo()" class="btn b" (click)="descargarAcuerdo()"><i
+                            class="fa-solid fa-download"></i>&nbsp;Generar Acuerdo</button>
+                    <a type="hidden" [href]="'data:application/pdf;base64,' + base64" id="basePdf"
+                        style="display: none;"
+                        [download]="clienteSelected.numeroDocumento + ' - ' + clienteSelected.nombreTitular"></a>
+
                     <button *ngIf="botonPdf && validarAcuerdoActivo()" class="btn btn-danger b">
                         Descargando...
                         <span class="spinner-border spinner-border-sm float-right" role="status"
                             aria-hidden="true"></span>
                     </button>
-                        
+
                     <button *ngIf="!modalGestiones" type="button" class="btn btn-secondary"
                         data-bs-dismiss="modal">Cerrar</button>
                     <button *ngIf="modalGestiones" type="button" class="btn btn-secondary" data-bs-toggle="modal"
@@ -1110,7 +1152,8 @@
                         <label for="floatingInput">¿Desea Agregar Un Detalle?</label>
                     </div>
                     <h6>Seleccione El Cliente Al Que Desea Agregar El Acuerdo</h6>
-                    <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.cedula" (change)="cambiarCedula($event)" style="border: 1px black solid;">
+                    <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.cedula" (change)="cambiarCedula($event)"
+                        style="border: 1px black solid;">
                         <option [value]="null">Seleccione Una Cedula</option>
                         <option *ngFor="let c of cuentaCobrarSelected.clientes" [value]="c.numeroDocumento">{{
                             c.numeroDocumento }} - {{ c.nombreTitular }} - {{ c.tipoGarante.tipoGarante }}</option>
@@ -1208,8 +1251,9 @@
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-md-4 offset-md-4">
-                                                <button class="btn btn-primary"
-                                                    (click)="agregarPagoACuotas()" style="background-color: #960010;border-color: #960010;">Agregar Pago</button>
+                                                <button class="btn btn-primary" (click)="agregarPagoACuotas()"
+                                                    style="background-color: #960010;border-color: #960010;">Agregar
+                                                    Pago</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1316,8 +1360,8 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-12 mb-3">
                                     <div class="form-floating">
-                                        <textarea [(ngModel)]="gestionSelected.clasificacion.detalleNota" rows="10" cols="5"
-                                            class="form-control" readonly></textarea>
+                                        <textarea [(ngModel)]="gestionSelected.clasificacion.detalleNota" rows="10"
+                                            cols="5" class="form-control" readonly></textarea>
                                         <label for="floatingTextarea">Detalle Nota</label>
                                     </div>
                                 </div>
@@ -1357,9 +1401,9 @@
 
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
 
-                        <button 
+                        <button
                             *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true && mostrarAgregarPago"
-                            type="button" class="btn btn-danger b" (click)="generarRecibo()" >Aplicar Pagos</button>
+                            type="button" class="btn btn-danger b" (click)="generarRecibo()">Aplicar Pagos</button>
 
                     </span>
 
@@ -1554,7 +1598,7 @@
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <span class="input-group-text fw-bold">Dato</span>
-                        <input [(ngModel)]="buscarObligacion" type="text" class="form-control">
+                        <input [(ngModel)]="buscarObligacion" #datoBuscar type="text" class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -1,6 +1,6 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { addMonths, format, isLeapYear, lastDayOfMonth } from 'date-fns';
+import { addMonths, format, isLeapYear, lastDayOfMonth, parse, parseISO } from 'date-fns';
 
 import { Subscription } from 'rxjs';
 import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.service';
@@ -23,6 +23,8 @@ declare var $: any;
   styleUrls: ['./home-cartera.component.css']
 })
 export class HomeCarteraComponent implements OnInit {
+
+  @ViewChild('datoBuscar', { static: false }) miInput!: ElementRef;
 
   private proSubscriptionNext!: Subscription;
   private proSubscriptionBack!: Subscription;
@@ -89,6 +91,7 @@ export class HomeCarteraComponent implements OnInit {
   sedes: any[] = []
   cuotasSelected: any[] = []
   notiArray: Notificacion[] = []
+  notiArrayVencidas: Notificacion[] = []
 
   // OBJETOS
 
@@ -429,7 +432,7 @@ export class HomeCarteraComponent implements OnInit {
         }, (error: any) => {
           console.log(error);
         }
-        
+
       )
     } else {
       var user = this.authService.getUsername()
@@ -2931,9 +2934,22 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-    this.cuentasCobrar.getNotificaciones(user).subscribe(
+    this.cuentasCobrar.getNotificacionesVencidas(user).subscribe(
       (data: any) => {
-        this.notiArray = data
+        this.notiArrayVencidas = data
+
+
+        if (user == null || user == undefined) {
+          return
+        }
+        this.cuentasCobrar.getAllNotificaciones(user).subscribe(
+          (data: any) => {
+            this.notiArray = data
+          }, (error: any) => {
+            console.log(error);
+
+          }
+        )
       }, (error: any) => {
         console.log(error);
       }
@@ -2941,15 +2957,28 @@ export class HomeCarteraComponent implements OnInit {
   }
 
 
-  validarAcuerdoActivo():boolean{
-    var acuerdo = this.gestiones.find((g:Gestiones)=>g.clasificacion.clasificacion == ClasificacionGestion.AcuerdoPago)
-    return acuerdo != null || acuerdo != undefined ? true:false;
+  validarAcuerdoActivo(): boolean {
+    var acuerdo = this.gestiones.find((g: Gestiones) => g.clasificacion.clasificacion == ClasificacionGestion.AcuerdoPago)
+    return acuerdo != null || acuerdo != undefined ? true : false;
   }
 
-  formatFechaDesdeBackend(fecha:any): string {
-    console.log(typeof fecha);
-    
-    return format(fecha, 'dd/MM/yyyy hh:mm a');
+  formatFechaDesdeBackend(fecha: Date): string {
+    const date = new Date(fecha)
+
+    return `${date.getUTCDate()}/${date.getUTCMonth()}/${date.getUTCFullYear()} ${date.getUTCHours() + 5}:${date.getUTCMinutes()}:${date.getUTCSeconds()}`
+  }
+
+  abrirModalBuscar() {
+    $('#modalObligacion').modal('show')
+    $('#modalObligacion').on('shown.bs.modal', () => {
+      this.focusInput();
+    });
+  }
+
+  focusInput() {
+
+    this.miInput.nativeElement.focus();
+
   }
 
 }

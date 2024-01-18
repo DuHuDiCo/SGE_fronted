@@ -194,9 +194,15 @@ export class CuentasCobrarService {
   }
 
   // NOTIFICACIONES
-  getNotificaciones(username:string){
-    return this.http.get(`${baseUrl}/notificaciones/?username=${username}`)
+  getNotificacionesVencidas(username:string){
+    return this.http.get(`${baseUrl}/notificaciones/getAllNotificacionesVencidas?username=${username}`)
 
   }
+
+  getAllNotificaciones(username:string |null){
+    return this.http.get(`${baseUrl}/notificaciones/getAllNotificaciones?username=${username}`)
+
+  }
+
 
 }

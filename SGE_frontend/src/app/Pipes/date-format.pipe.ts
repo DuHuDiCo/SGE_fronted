@@ -7,10 +7,32 @@ import { format } from 'date-fns';
 export class DateFormatPipe implements PipeTransform {
 
   transform(value: Date): string {
-   console.log(value);
+    const date = new Date(value)
+
+    const dateString = date.toISOString().split("-")
+    var dia = dateString[2].split("T")[0]
+    var mes = dateString[1]
+    var year = dateString[0]
+    var hora = (date.getUTCHours()).toString()
+    var minute = date.getUTCMinutes().toString()
+    var segundo = date.getUTCSeconds().toString()
+    
+    dia = (dia.length == 1 ? `0${dia}` : dia)
    
 
-    return format(value, 'dd/MM/yyyy hh:mm a');
+    mes = mes.length == 1 ? `0${mes}` : mes
+    year = year.length == 1 ? `0${year}` : year
+    hora = hora.length == 1 ? `0${hora}` : hora
+    minute = minute.length == 1 ? `0${minute}` : minute
+    segundo = segundo.length == 1 ? `0${segundo}` : segundo
+
+
+    if(hora == null || hora == undefined || hora == "" || hora == '00' || minute == null || minute == undefined || minute == "" || minute == '00'
+    || segundo == null || segundo == undefined || segundo == ""  || segundo == '00'){
+      return `${dia}/${mes}/${year}`  
+    }
+
+    return `${dia}/${mes}/${year} ${hora}:${minute}:${segundo}`
   }
 
 }
