@@ -34,6 +34,10 @@
                     <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#vencidas"
                         type="button" role="tab" aria-controls="profile" aria-selected="false">Vencidas</button>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#realizadas"
+                        type="button" role="tab" aria-controls="profile" aria-selected="false">Realizadas</button>
+                </li>
 
             </ul>
 
@@ -59,7 +63,15 @@
                             <small><b>Cliente:</b> {{ n.cliente }}</small>
                         </a>
                     </div>
+                    <div *ngIf="notiArray.length == 0" class="list-group">
+                        <a class="list-group-item list-group-item-action" aria-current="true">
+                            <p class="mb-1">No Tiene Notificaciones Pendientes En El Momento.</p>
+                            <small>Vuelva Más Tarde.</small>
+                        </a>
+                    </div>
                 </div>
+                
+
                 <div class="tab-pane fade" id="vencidas" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="list-group" style="width: 300px;">
                         <a *ngFor="let n of notiArrayVencidas" class="list-group-item" aria-current="true" style="background-color: rgb(201, 201, 201);">
@@ -79,16 +91,49 @@
                             <small><b>Cliente:</b> {{ n.cliente }}</small>
                         </a>
                     </div>
+                    <div *ngIf="notiArrayVencidas.length == 0" class="list-group">
+                        <a class="list-group-item list-group-item-action" aria-current="true">
+                            <p class="mb-1">No Tiene Notificaciones Vencidas En El Momento.</p>
+                            <small>Vuelva Más Tarde.</small>
+                        </a>
+                    </div>
                 </div>
+
+                
+
+                <div class="tab-pane fade" id="realizadas" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="list-group" style="width: 300px;">
+                        <a *ngFor="let n of notiArrayRealizadas" class="list-group-item" aria-current="true" style="background-color: rgb(201, 201, 201);">
+                            <div class="row justify-content-center mb-2">
+                                <div class="col-md-4">
+                                    <button (click)="hideNotiRealizada(n.idNotificaciones)" class="btn btn-sm b"><i class="fa-solid fa-circle-minus"></i></button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button (click)="findCuentaCobrar(n.numeroObligacion)" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasRight" style="cursor: pointer;" class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h6>
+                                <small>{{ n.fechaCreacion | dateFormat}}</small>
+                            </div>
+                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | dateFormat}}</p>
+                            <small><b>Cliente:</b> {{ n.cliente }}</small>
+                        </a>
+                    </div>
+                    <div *ngIf="notiArrayRealizadas.length == 0" class="list-group">
+                        <a class="list-group-item list-group-item-action" aria-current="true">
+                            <p class="mb-1">No Tiene Notificaciones Realizadas En El Momento.</p>
+                            <small>Vuelva Más Tarde.</small>
+                        </a>
+                    </div>
+                </div>
+
+                
 
             </div>
             
-            <div *ngIf="notiArray.length == 0" class="list-group">
-                <a class="list-group-item list-group-item-action" aria-current="true">
-                    <p class="mb-1">No Tiene Notificaciones Pendientes En El Momento.</p>
-                    <small>Vuelva Más Tarde.</small>
-                </a>
-            </div>
+            
         </ul>
     </div>
     <div class="card-c">
@@ -110,7 +155,7 @@
                 <button (click)="reiniciarFiltros('LIMPIAR')" class="btn btn-primary justify-content-start mb-3">Limpiar Filtros</button>
             </div>
 
-            <div class="col-md-10">
+            <div class="col" [ngClass]="{'col-md-12': !variableLimpiar, 'col-md-10': variableLimpiar}">
                 <div *ngIf="newGestion.clasificacion.tipoClasificacion != null" class="row justify-content-end"
                 data-bs-target="#offcanvasRight">
                 <div class="col-md-4">
@@ -976,7 +1021,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <select class="form-select mt-3 mb-3" [(ngModel)]="newGestion.username" style="border: 1px black solid;">
+                                        <select class="form-select mt-3 mb-3" [(ngModel)]="newGestion.usernameToSetNotificacion" style="border: 1px black solid;">
                                             <option [value]="null">Seleccione Un Asesor</option>
                                             <option *ngFor="let a of asesores" [value]="a.usuario.username">{{
                                                 a.usuario.nombres }} {{ a.usuario.apellidos }}</option>
@@ -1460,14 +1505,14 @@
                                 </blockquote>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="COL"
-                                        (click)="metodoBancos('COL')" #col>
+                                        (click)="metodoBancos('COL')" #variableCol>
                                     <label class="form-check-label">
                                         <cite title="Source Title">COL</cite>
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="POP"
-                                        (click)="metodoBancos('POP')" #col>
+                                        (click)="metodoBancos('POP')" #variableCol>
                                     <label class="form-check-label">
                                         <cite title="Source Title">POP</cite>
                                     </label>
@@ -1493,7 +1538,7 @@
                                 </blockquote>
                                 <div class="form-check" *ngFor="let t of tiposVen; let i = index">
                                     <input value="{{ t.tipoVencimiento }}" class="form-check-input" type="checkbox"
-                                        (click)="metodoEdadVen(t.tipoVencimiento)" #col>
+                                        (click)="metodoEdadVen(t.tipoVencimiento)" #variableCol>
                                     <label class="form-check-label">
                                         <cite title="Source Title">{{ t.tipoVencimiento}}</cite>
                                     </label>
@@ -1507,7 +1552,7 @@
                                 </blockquote>
                                 <div class="form-check" *ngFor="let s of sedes; let i = index">
                                     <input value="{{ s.sede }}" class="form-check-input" type="checkbox"
-                                        (click)="metodoSede(s.sede)" #col>
+                                        (click)="metodoSede(s.sede)" #variableCol>
                                     <label class="form-check-label">
                                         <cite title="Source Title">{{ s.sede }}</cite>
                                     </label>
@@ -1521,21 +1566,21 @@
                                 </blockquote>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="Normal"
-                                        (click)="metodoClas('NORMAL')" #col>
+                                        (click)="metodoClas('NORMAL')" #variableCol>
                                     <label class="form-check-label">
                                         <cite title="Source Title">Normal</cite>
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="Prejuridico"
-                                        (click)="metodoClas('PREJURIDICO')" #col>
+                                        (click)="metodoClas('PREJURIDICO')" #variableCol>
                                     <label class="form-check-label">
                                         <cite title="Source Title">Prejuridico</cite>
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="Juridico"
-                                        (click)="metodoClas('ADMINISTRATIVO')" #col>
+                                        (click)="metodoClas('ADMINISTRATIVO')" #variableCol>
                                     <label class="form-check-label">
                                         <cite title="Source Title">Administrativo</cite>
                                     </label>

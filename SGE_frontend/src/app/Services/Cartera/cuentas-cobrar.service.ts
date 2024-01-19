@@ -201,8 +201,16 @@ export class CuentasCobrarService {
     return this.http.get(`${baseUrl}/notificaciones/getAllNotificaciones?username=${username}`)
   }
 
+  getNotificacionesRealizadas(username:string){
+    return this.http.get(`${baseUrl}/notificaciones/getAllNotificacionesRealizadas?username=${username}`)
+  }
+
   desactivateNotificacion(idNotificion:number){
     return this.http.put(`${baseUrl}/notificaciones/desactivateNotification?idNotificion=${idNotificion}`, null)
+  }
+
+  hideNotificacion(idNotificion:number){
+    return this.http.put(`${baseUrl}/notificaciones/hideNotification?idNotificion=${idNotificion}`, null)
   }
 
 

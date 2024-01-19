@@ -24,7 +24,8 @@ export type Gestion = {
   },
   contact: boolean,
   detallesAdicionales: string,
-  username: string
+  usernameToSetNotificacion: string,
+  userNotifying: string
 }
 
 export type GestionArray = {

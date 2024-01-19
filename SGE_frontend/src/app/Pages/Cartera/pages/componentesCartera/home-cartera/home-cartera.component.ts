@@ -92,6 +92,7 @@ export class HomeCarteraComponent implements OnInit {
   cuotasSelected: any[] = []
   notiArray: Notificacion[] = []
   notiArrayVencidas: Notificacion[] = []
+  notiArrayRealizadas: Notificacion[] = []
 
   // OBJETOS
 
@@ -168,7 +169,8 @@ export class HomeCarteraComponent implements OnInit {
     },
     contact: false,
     detallesAdicionales: '',
-    username: ''
+    usernameToSetNotificacion: '',
+    userNotifying: ''
   }
 
   gestionSelected: any = {
@@ -356,8 +358,9 @@ export class HomeCarteraComponent implements OnInit {
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
   botonFiltrarObligacion: boolean = false
+  variableLimpiar:boolean = false
 
-  @ViewChildren('col') colcheck!: QueryList<ElementRef>;
+  @ViewChildren('variableCol') colcheck!: QueryList<ElementRef>;
 
   ngOnInit(): void {
     this.getCuentasCobrar()
@@ -640,7 +643,8 @@ export class HomeCarteraComponent implements OnInit {
         },
         contact: false,
         detallesAdicionales: '',
-        username: ''
+        usernameToSetNotificacion: '',
+        userNotifying: ''
       }
 
       this.codeudoresSelected = []
@@ -666,7 +670,8 @@ export class HomeCarteraComponent implements OnInit {
               },
               contact: false,
               detallesAdicionales: this.newGestion.detallesAdicionales,
-              username: ''
+              usernameToSetNotificacion: '',
+              userNotifying: ''
             }
 
             if (this.cuentaCobrarSelected.documentoCliente != '') {
@@ -746,7 +751,34 @@ export class HomeCarteraComponent implements OnInit {
           return
         }
 
+        if (this.newGestion.usernameToSetNotificacion?.trim() == '' || this.newGestion.usernameToSetNotificacion?.trim() == null) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Seleccione Un Asesor',
+            timer: 3000
+          })
+          return
+        }
+
+        if (this.tarea.detalleTarea?.trim() == '' || this.tarea.detalleTarea?.trim() == null) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Digite el Detalle de su Tarea',
+            timer: 3000
+          })
+          return
+        }
+
         this.newGestion.clasificacion.tarea = this.tarea
+        var user = this.authService.getUsername()
+
+        if (user == null || user == undefined) {
+          return
+        }
+
+        this.newGestion.userNotifying = user
 
         Swal.fire({
           title: 'Guardar Gestión',
@@ -781,7 +813,8 @@ export class HomeCarteraComponent implements OnInit {
                   },
                   contact: false,
                   detallesAdicionales: this.newGestion.detallesAdicionales,
-                  username: ''
+                  usernameToSetNotificacion: '',
+                  userNotifying: ''
                 }
                 $('#modalDetalle').modal('hide');
               }, (error: any) => {
@@ -809,6 +842,14 @@ export class HomeCarteraComponent implements OnInit {
           return
         }
         this.newGestion.clasificacion.nota = this.nota
+
+        var user = this.authService.getUsername()
+
+        if (user == null || user == undefined) {
+          return
+        }
+
+        this.newGestion.userNotifying = user
 
         Swal.fire({
           title: 'Guardar Gestión',
@@ -844,7 +885,8 @@ export class HomeCarteraComponent implements OnInit {
                   },
                   contact: false,
                   detallesAdicionales: this.newGestion.detallesAdicionales,
-                  username: ''
+                  usernameToSetNotificacion: '',
+                  userNotifying: ''
                 }
                 $('#modalDetalle').modal('hide');
               }, (error: any) => {
@@ -924,13 +966,15 @@ export class HomeCarteraComponent implements OnInit {
 
   saveGestionWithDetalle() {
 
+
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
       return
     }
 
-    this.newGestion.username = user
+    this.newGestion.userNotifying = user
+    this.newGestion.usernameToSetNotificacion = user
 
     if (this.reporte.cedula.trim() == '' || this.reporte.cedula.trim() == null) {
       Swal.fire({
@@ -1003,7 +1047,8 @@ export class HomeCarteraComponent implements OnInit {
                 },
                 contact: false,
                 detallesAdicionales: this.newGestion.detallesAdicionales,
-                username: ''
+                usernameToSetNotificacion: '',
+                userNotifying: ''
               }
               this.cuotas = []
               this.disabledFecha = false
@@ -2231,7 +2276,8 @@ export class HomeCarteraComponent implements OnInit {
           },
           contact: false,
           detallesAdicionales: this.newGestion.detallesAdicionales,
-          username: ''
+          usernameToSetNotificacion: '',
+          userNotifying: ''
         }
 
         this.acuerdo = {
@@ -2383,7 +2429,6 @@ export class HomeCarteraComponent implements OnInit {
 
     console.log(this.filtros);
     
-
     if (
       (this.filtros.banco.length == 0) &&
       (this.filtros.diasVencidosInicio == 0 || this.filtros.diasVencidosInicio == null) &&
@@ -2431,6 +2476,26 @@ export class HomeCarteraComponent implements OnInit {
         this.first = data.first
         this.numeroPages = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
+
+        if(this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
+        (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
+        (this.filtros.diasVencidosFin != 0 && this.filtros.diasVencidosFin != null) ||
+        (this.filtros.edadVencimiento.length != 0) ||
+        (this.filtros.sede.length != 0) ||
+        (this.filtros.clasiJuridica.length != 0) ||
+        (this.filtros.saldoCapitalInicio != 0 && this.filtros.saldoCapitalInicio != null) ||
+        (this.filtros.saldoCapitalFin != 0 && this.filtros.saldoCapitalFin != null) ||
+        (this.filtros.fechaCpcInicio != null) ||
+        (this.filtros.fechaCpcFin != null) ||
+        (this.filtros.fechaGestionInicio != null) ||
+        (this.filtros.fechaGestionFin != null) ||
+        (this.filtros.fechaCompromisoInicio != null) ||
+        (this.filtros.fechaCompromisoFin != null)){
+          this.variableLimpiar = true
+        } else {
+          this.variableLimpiar = false
+        }
+
         if (this.cuentasCobrarArray.length == 0) {
           Swal.fire({
             icon: 'error',
@@ -2481,6 +2546,25 @@ export class HomeCarteraComponent implements OnInit {
     for (const i of this.colcheck.toArray()) {
       i.nativeElement.checked = false
     }
+
+    if(this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
+        (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
+        (this.filtros.diasVencidosFin != 0 && this.filtros.diasVencidosFin != null) ||
+        (this.filtros.edadVencimiento.length != 0) ||
+        (this.filtros.sede.length != 0) ||
+        (this.filtros.clasiJuridica.length != 0) ||
+        (this.filtros.saldoCapitalInicio != 0 && this.filtros.saldoCapitalInicio != null) ||
+        (this.filtros.saldoCapitalFin != 0 && this.filtros.saldoCapitalFin != null) ||
+        (this.filtros.fechaCpcInicio != null) ||
+        (this.filtros.fechaCpcFin != null) ||
+        (this.filtros.fechaGestionInicio != null) ||
+        (this.filtros.fechaGestionFin != null) ||
+        (this.filtros.fechaCompromisoInicio != null) ||
+        (this.filtros.fechaCompromisoFin != null)){
+          this.variableLimpiar = true
+        } else {
+          this.variableLimpiar = false
+        }
 
     this.getCuentasCobrar()
     this.spinner = true
@@ -2559,9 +2643,33 @@ export class HomeCarteraComponent implements OnInit {
           fechaCompromisoFin: null,
           isActive: false
         }
+
+        this.bancosArray = []
+        this.edadVenArray = []
+        this.sedesArray = []
+        this.clasJurArray = []
     
         for (const i of this.colcheck.toArray()) {
           i.nativeElement.checked = false
+        }
+
+        if(this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
+        (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
+        (this.filtros.diasVencidosFin != 0 && this.filtros.diasVencidosFin != null) ||
+        (this.filtros.edadVencimiento.length != 0) ||
+        (this.filtros.sede.length != 0) ||
+        (this.filtros.clasiJuridica.length != 0) ||
+        (this.filtros.saldoCapitalInicio != 0 && this.filtros.saldoCapitalInicio != null) ||
+        (this.filtros.saldoCapitalFin != 0 && this.filtros.saldoCapitalFin != null) ||
+        (this.filtros.fechaCpcInicio != null) ||
+        (this.filtros.fechaCpcFin != null) ||
+        (this.filtros.fechaGestionInicio != null) ||
+        (this.filtros.fechaGestionFin != null) ||
+        (this.filtros.fechaCompromisoInicio != null) ||
+        (this.filtros.fechaCompromisoFin != null)){
+          this.variableLimpiar = true
+        } else {
+          this.variableLimpiar = false
         }
 
         $('#modalObligacion').modal('hide');
@@ -3009,17 +3117,25 @@ export class HomeCarteraComponent implements OnInit {
     this.cuentasCobrar.getNotificacionesVencidas(user).subscribe(
       (data: any) => {
         this.notiArrayVencidas = data
-
-
         if (user == null || user == undefined) {
           return
         }
         this.cuentasCobrar.getAllNotificaciones(user).subscribe(
           (data: any) => {
             this.notiArray = data
+
+            if (user == null || user == undefined) {
+              return
+            }
+
+            this.cuentasCobrar.getNotificacionesRealizadas(user).subscribe(
+              (data:any) => {
+                this.notiArrayRealizadas = data
+              }
+            )
+
           }, (error: any) => {
             console.log(error);
-
           }
         )
       }, (error: any) => {
@@ -3048,11 +3164,47 @@ export class HomeCarteraComponent implements OnInit {
               text: 'Notificación Confirmada Con Éxito',
               timer: 3000
             })
+            this.getNotificaciones()
           }, (error: any) => {
             Swal.fire({
               icon: 'error',
               title: 'Error',
               text: 'Error Al Confirma La Notificación',
+              timer: 3000
+            })
+            console.log(error);
+          }
+        )
+      } 
+    })
+  }
+
+  hideNotiRealizada(id:number){
+    Swal.fire({
+      title: 'Eliminar Notificación',
+      text: '¿Desea Eliminar La Notificación?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cuentasCobrar.hideNotificacion(id).subscribe(
+          (data: any) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Datos Guardados',
+              text: 'Notificación Eliminada Con Éxito',
+              timer: 3000
+            })
+            this.getNotificaciones()
+          }, (error: any) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error Al Eliminar La Notificación',
               timer: 3000
             })
             console.log(error);
