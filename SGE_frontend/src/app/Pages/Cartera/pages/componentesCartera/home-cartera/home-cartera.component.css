@@ -375,6 +375,10 @@ label.btn.btn-outline-dark {
   z-index: 999;
 }
 
+.pagination ::ng-deep .ngx-pagination .current {
+  background: #960010
+}
+
 .scrollable-menu {
   max-height: 500px; /* Ajusta la altura máxima según tus necesidades */
   overflow-y: auto;
