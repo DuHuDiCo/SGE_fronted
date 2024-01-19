@@ -355,6 +355,7 @@ export class HomeCarteraComponent implements OnInit {
   filtrando: boolean = false
 
   botonPdf: boolean = false
+  pageGestion: number = 1;
 
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
@@ -905,6 +906,15 @@ export class HomeCarteraComponent implements OnInit {
       }
 
       if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'ACUERDO DE PAGO') {
+        if(this.acuerdo.detalle.trim() == '' || this.acuerdo.detalle.trim() == null){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Digite El Detalle',
+            timer: 3000
+          })
+          return
+        }
         if (this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null) {
           Swal.fire({
             icon: 'error',
