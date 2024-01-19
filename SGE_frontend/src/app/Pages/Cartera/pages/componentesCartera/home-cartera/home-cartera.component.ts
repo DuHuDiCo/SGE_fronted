@@ -1230,8 +1230,10 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   obtenerGestionSelected(){
+        
     this.gestionSelected = this.gestiones[this.positionGestionSelected]
-    if (this.gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO') {
+    console.log(this.gestionSelected);
+    if (this.gestionSelected.clasificacion.nombresClasificacion.tipo == 'ACUERDO DE PAGO') {
       this.obtenerCuotas()
     }
   }
