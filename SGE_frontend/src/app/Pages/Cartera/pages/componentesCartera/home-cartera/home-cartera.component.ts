@@ -67,6 +67,7 @@ export class HomeCarteraComponent implements OnInit {
   cuotasList: CuotaList[] = []
   activarGuardarPago: boolean = false
   pagoCuota: number = 0
+  positionGestionSelected!:number;
   savePago: boolean = false
   base64Recibo: string = ""
   recibosPagoSinFiltrar: ReciboPago[] = []
@@ -1220,15 +1221,32 @@ export class HomeCarteraComponent implements OnInit {
 
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
 
-    this.gestionSelected = gestion
-    console.log(this.gestionSelected);
+    this.positionGestionSelected = this.gestiones.indexOf(gestion)
     
 
+    this.obtenerGestionSelected()
+    
+
+  }
+
+  obtenerGestionSelected(){
+    this.gestionSelected = this.gestiones[this.positionGestionSelected]
     if (this.gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO') {
       this.obtenerCuotas()
     }
-
   }
+
+
+  siguienteGestion(){
+    this.positionGestionSelected++;
+    this.gestionSelected = this.gestiones[this.positionGestionSelected]
+  }
+
+  anteriorGestion(){
+    this.positionGestionSelected--;
+    this.gestionSelected = this.gestiones[this.positionGestionSelected]
+  }
+
 
   obtenerCuotas() {
     this.cuotasList = []
