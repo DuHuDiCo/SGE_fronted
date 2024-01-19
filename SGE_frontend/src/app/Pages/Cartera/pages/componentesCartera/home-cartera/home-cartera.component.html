@@ -41,9 +41,10 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="todas" role="tabpanel" aria-labelledby="home-tab">
                     <div class="list-group" style="width: 300px;">
-                        <a *ngFor="let n of notiArray" class="list-group-item list-group-item-action" aria-current="true"
-                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                            (click)="findCuentaCobrar(n.numeroObligacion)" style="background-color: rgb(201, 201, 201);">
+                        <a *ngFor="let n of notiArray" class="list-group-item list-group-item-action"
+                            aria-current="true" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                            (click)="findCuentaCobrar(n.numeroObligacion)"
+                            style="background-color: rgb(201, 201, 201);">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h5>
                                 <small>{{ n.fechaCreacion | dateFormat}}</small>
@@ -55,21 +56,22 @@
                 </div>
                 <div class="tab-pane fade" id="vencidas" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="list-group" style="width: 300px;">
-                        <a *ngFor="let n of notiArrayVencidas" class="list-group-item list-group-item-action" aria-current="true"
-                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                            (click)="findCuentaCobrar(n.numeroObligacion)" style="background-color: rgb(201, 201, 201);">
+                        <a *ngFor="let n of notiArrayVencidas" class="list-group-item list-group-item-action"
+                            aria-current="true" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                            (click)="findCuentaCobrar(n.numeroObligacion)"
+                            style="background-color: rgb(201, 201, 201);">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h5>
                                 <small>{{ n.fechaCreacion | dateFormat}}</small>
                             </div>
-                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion  | dateFormat }}</p>
+                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | dateFormat }}</p>
                             <small><b>Cliente:</b> {{ n.cliente }}</small>
                         </a>
                     </div>
                 </div>
 
             </div>
-            
+
             <div *ngIf="notiArray.length == 0" class="list-group">
                 <a class="list-group-item list-group-item-action" aria-current="true">
                     <p class="mb-1">No Tiene Notificaciones Pendientes En El Momento.</p>
@@ -94,20 +96,21 @@
             (this.filtros.fechaGestionFin != null) ||
             (this.filtros.fechaCompromisoInicio != null) ||
             (this.filtros.fechaCompromisoFin != null)" class="col-md-2">
-                <button (click)="reiniciarFiltros('LIMPIAR')" class="btn btn-primary justify-content-start mb-3">Limpiar Filtros</button>
+                <button (click)="reiniciarFiltros('LIMPIAR')" class="btn btn-primary justify-content-start mb-3">Limpiar
+                    Filtros</button>
             </div>
 
             <div class="col-md-10">
                 <div *ngIf="newGestion.clasificacion.tipoClasificacion != null" class="row justify-content-end"
-                data-bs-target="#offcanvasRight">
-                <div class="col-md-4">
-                    <div class="alert alert-danger text-end" role="alert" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasRight" style="cursor: pointer;"
-                        (click)="findCuentaCobrar(newGestion.numeroObligacion)">
-                        <h6>Editando Gestion De {{ newGestion.numeroObligacion }}</h6>
+                    data-bs-target="#offcanvasRight">
+                    <div class="col-md-4">
+                        <div class="alert alert-danger text-end" role="alert" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasRight" style="cursor: pointer;"
+                            (click)="findCuentaCobrar(newGestion.numeroObligacion)">
+                            <h6>Editando Gestion De {{ newGestion.numeroObligacion }}</h6>
+                        </div>
                     </div>
                 </div>
-            </div>
             </div>
 
         </div>
@@ -524,7 +527,8 @@
                                                                 <div class="input-group input-group-sm mb-3">
                                                                     <span
                                                                         class="input-group-text fw-bold">Codeudores</span>
-                                                                    <select class="form-select" style="border: 1px black solid;"
+                                                                    <select class="form-select"
+                                                                        style="border: 1px black solid;"
                                                                         (change)="findCodeudores($event)">
                                                                         <option>Seleccione Un Codeudor</option>
                                                                         <option *ngFor="let co of codeudores"
@@ -963,7 +967,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <select class="form-select mt-3 mb-3" [(ngModel)]="newGestion.username" style="border: 1px black solid;">
+                                        <select class="form-select mt-3 mb-3" [(ngModel)]="newGestion.username"
+                                            style="border: 1px black solid;">
                                             <option [value]="null">Seleccione Un Asesor</option>
                                             <option *ngFor="let a of asesores" [value]="a.usuario.username">{{
                                                 a.usuario.nombres }} {{ a.usuario.apellidos }}</option>
@@ -1206,10 +1211,13 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 *ngIf="gestionSelected.clasificacion.nombresClasificacion != undefined" class="modal-title fs-5" id="exampleModalLabel">{{ gestionSelected.clasificacion.nombresClasificacion.nombre }}</h1>
-                    <button (click)="modalGestionSelected()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 *ngIf="gestionSelected.clasificacion.nombresClasificacion != undefined" class="modal-title fs-5"
+                        id="exampleModalLabel">{{ gestionSelected.clasificacion.nombresClasificacion.nombre }}</h1>
+                    <button (click)="modalGestionSelected()" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
-                <div class="modal-body" *ngIf="gestionSelected.clasificacion.clasificacion != null && gestionSelected.clasificacion.clasificacion != undefined">
+                <div class="modal-body"
+                    *ngIf="gestionSelected.clasificacion.clasificacion != null && gestionSelected.clasificacion.clasificacion != undefined">
                     <!-- PARTE ACUERDO DE PAGO-->
                     <span *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO'">
                         <div class="row m-3">
@@ -1373,8 +1381,8 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-12 mb-3">
                                     <div class="form-floating">
-                                        <textarea [(ngModel)]="gestionSelected.clasificacion.detalleNota" style="height: 180px;"
-                                            class="form-control" readonly></textarea>
+                                        <textarea [(ngModel)]="gestionSelected.clasificacion.detalleNota"
+                                            style="height: 180px;" class="form-control" readonly></textarea>
                                         <label for="floatingTextarea">Detalle Nota</label>
                                     </div>
                                 </div>
@@ -1392,8 +1400,8 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-12 mb-3">
                                     <div class="form-floating">
-                                        <textarea [(ngModel)]="gestionSelected.detallesAdicionales" class="form-control" style="height: 100px;"
-                                            readonly></textarea>
+                                        <textarea [(ngModel)]="gestionSelected.detallesAdicionales" class="form-control"
+                                            style="height: 100px;" readonly></textarea>
                                         <label for="floatingTextarea">Detalles Adicionales</label>
                                     </div>
                                 </div>
@@ -1401,8 +1409,26 @@
                         </div>
                     </div>
 
+                    <div class="card"  style="border:none;">
+                        <div class="card-body">
+                            <div class="row mt-3  text-center ">
+                                
+                                <div class="col-md-10 offset-md-1">
+                                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                        <button type="button" class="btn btn-outline-secondary" (click)="anteriorGestion()" [disabled]="positionGestionSelected == 0">Gestion Anterior</button>
+
+                                        <button type="button" class="btn btn-outline-secondary" (click)="siguienteGestion()"  [disabled]="positionGestionSelected >= gestiones.length -1">Gestion Siguiente</button>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+                    </div>
                 </div>
+
                 <div class="modal-footer">
+
                     <button type="button" class="btn btn-secondary" (click)="modalGestionSelected()">Cerrar</button>
 
                     <!-- BOTONES ACUERDO DE PAGO -->
@@ -1425,6 +1451,7 @@
                         <button *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA'" type="button"
                             class="btn btn-danger b">Desactivar</button>
                     </span>
+
                 </div>
             </div>
         </div>
