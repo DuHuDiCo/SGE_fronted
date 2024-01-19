@@ -182,12 +182,15 @@ export type Filtros = {
 
 export type Notificacion = {
   idNotificaciones: number,
-  tipoGestion: string,
-  fechaCreacion: Date,
-  fechaFinalizacion: Date,
-  numeroObligacion: string,
-  cliente: string,
-  designatedTo: number
+    tipoGestion: string,
+    fechaCreacion: Date,
+    fechaFinalizacion: Date,
+    numeroObligacion: string,
+    cliente: string,
+    isActive: boolean,
+    designatedBy: string,
+    designatedTo: number,
+    verRealizadas: string
 }
 
 export enum ClasificacionGestion{
