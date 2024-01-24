@@ -230,6 +230,7 @@ export class HomeCarteraComponent implements OnInit {
   acuerdoCal: any = {
     tipoAcuerdo: '',
     valorTotalAcuerdo: 0,
+    saldoAcuerdo: 0,
     valorTotalMora: 0,
     valorInteresesMora: 0,
     valorCuotaMensual: 0,
@@ -347,7 +348,7 @@ export class HomeCarteraComponent implements OnInit {
   moraObligatoriaFirst: number = 0
 
   sinDiasVencidos: number | null = 1
-  isCalculate: boolean = true
+  isCalculate: boolean = false
   disabledFecha: boolean = false
 
   desactivarAcu: boolean = false
@@ -356,6 +357,7 @@ export class HomeCarteraComponent implements OnInit {
 
   botonPdf: boolean = false
   pageGestion: number = 1;
+  calculating:boolean = false
 
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
@@ -1005,18 +1007,17 @@ export class HomeCarteraComponent implements OnInit {
 
     }
 
-    if (sumaComprobacion != this.acuerdoCal.valorTotalAcuerdo) {
-      Swal.fire({
-        icon: 'error',
-        title: 'La suma de la cuotas no coincide con el Valor del Acuerdo',
-        text: 'Recalculando...',
-        timer: 3000
-      })
-      setTimeout(() => {
-        this.calcular()
-      }, 3000);
-
-    }
+    // if (sumaComprobacion != this.acuerdoCal.valorTotalAcuerdo) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'La suma de la cuotas no coincide con el Valor del Acuerdo',
+    //     text: 'Recalculando...',
+    //     timer: 3000
+    //   })
+    //   setTimeout(() => {
+    //     this.calcular()
+    //   }, 3000);
+    // }
 
 
     Swal.fire({
@@ -1439,12 +1440,21 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   mostrarOffcanvas() {
+    console.log(this.calculating);
+    
+    if(this.calculating == false){
+      this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
+      this.cuentasCalcular.valorTotal = this.cuentaCobrarSelected.totalObligatoria
+      this.cuentasCalcular.moraObligatoria = this.cuentaCobrarSelected.moraObligatoria
+    }
 
-    this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
-    this.cuentasCalcular.valorTotal = this.cuentaCobrarSelected.totalObligatoria
-    this.cuentasCalcular.moraObligatoria = this.cuentaCobrarSelected.moraObligatoria
+    if(this.calculating == true){
+      this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
+      this.cuentasCalcular.valorTotal = this.acuerdoCal.saldoAcuerdo
+      this.cuentasCalcular.moraObligatoria = this.acuerdoCal.valorTotalMora
+    }
+
     this.cuentasCalcular.fechaVencimiento = this.cuentaCobrarSelected.fechaVencimiento
-
 
     if (this.acuerdo.fechaCompromiso instanceof Date || this.acuerdo.fechaCompromiso == null) {
       Swal.fire({
@@ -1492,7 +1502,10 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
-    this.calcularIntMora()
+
+    if(this.calculating == false){
+      this.calcularIntMora()
+    }
 
     if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
       this.calcularHonorarios()
@@ -1568,19 +1581,7 @@ export class HomeCarteraComponent implements OnInit {
 
     this.fechaInicial = new Date(this.acuerdo.fechaCompromiso)
     this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
-    this.cuentasCalcular.valorTotal = this.cuentaCobrarSelected.totalObligatoria
-    this.cuentasCalcular.moraObligatoria = this.cuentaCobrarSelected.moraObligatoria
-    this.cuentasCalcular.fechaVencimiento = this.cuentaCobrarSelected.fechaVencimiento
     this.cuentasCalcular.username = user
-
-
-    this.calcularIntMora()
-
-    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-      this.calcularHonorarios()
-    }
-
-    this.calcularByTipoAcuerdo()
 
     this.calcularCuotas()
 
@@ -1602,13 +1603,12 @@ export class HomeCarteraComponent implements OnInit {
     var cal = this.cuentasCalcular.moraObligatoria * (this.constanteHonorarios / 366) * this.cuentaCobrarSelected.diasVencidos
     var res = cal.toFixed(0)
     this.acuerdoCal.valorInteresesMora = res
-    this.acuerdo.valorInteresesMora = this.acuerdoCal.valorInteresesMora
+    this.acuerdo.valorInteresesMora = this.acuerdoCal.valorInteresesMora 
   }
 
 
   calcularHonorarios() {
     var cal = (this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
-
 
     var res = cal.toFixed(0)
     this.acuerdoCal.honoriarioAcuerdo = res
@@ -1628,9 +1628,17 @@ export class HomeCarteraComponent implements OnInit {
     if (this.acuerdo.tipoAcuerdo == 'TOTAL') {
       this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
       if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        if(this.calculating == true){
+          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal
+        } else {
+          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        }
       } else {
-        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora)
+        if(this.calculating == true){
+          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal
+        } else {
+          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora)
+        }
       }
     }
     this.acuerdo.valorTotalAcuerdo = this.acuerdoCal.valorTotalAcuerdo
@@ -1699,9 +1707,9 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-      this.acuerdoCal.valorTotalAcuerdo = parseInt(this.cuentaCobrarSelected.clientes[0].saldoActual) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      this.acuerdoCal.saldoAcuerdo = parseInt(this.cuentaCobrarSelected.clientes[0].saldoActual) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
     } else {
-      this.acuerdoCal.valorTotalAcuerdo = parseInt(this.cuentaCobrarSelected.clientes[0].saldoActual) + parseInt(this.acuerdoCal.valorInteresesMora)
+      this.acuerdoCal.saldoAcuerdo = parseInt(this.cuentaCobrarSelected.clientes[0].saldoActual) + parseInt(this.acuerdoCal.valorInteresesMora)
     }
 
 
@@ -1755,6 +1763,7 @@ export class HomeCarteraComponent implements OnInit {
 
     this.deshabilitarInputs = true
     this.isCalculate = false
+    this.calculating = true
 
   }
 
@@ -1792,7 +1801,8 @@ export class HomeCarteraComponent implements OnInit {
         this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
         this.calcularFirst()
         this.resetButton = false
-        this.isCalculate = true
+        this.isCalculate = false
+        this.calculating = false
       }, (error: any) => {
         console.log(error);
         this.resetButton = false
@@ -1832,9 +1842,9 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-      this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
     } else {
-      this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
+      this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
     }
   }
 
@@ -1906,11 +1916,12 @@ export class HomeCarteraComponent implements OnInit {
       return
     } else {
       if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-        this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
       } else {
-        this.acuerdoCal.valorTotalAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
+        this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
       }
       this.isCalculate = true
+      this.calculating = true
     }
 
   }
