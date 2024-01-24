@@ -46,14 +46,17 @@
                 <div class="tab-pane fade show active" id="todas" role="tabpanel" aria-labelledby="home-tab">
                     <div class="list-group" style="width: 300px;">
 
-                        <a *ngFor="let n of notiArray" class="list-group-item" aria-current="true" style="background-color: rgb(201, 201, 201);">
+                        <a *ngFor="let n of notiArray" class="list-group-item" aria-current="true"
+                            style="background-color: rgb(201, 201, 201);">
                             <div class="row justify-content-center mb-2">
                                 <div class="col-md-4">
-                                    <button (click)="desactivarNoti(n.idNotificaciones)" class="btn btn-sm b"><i class="fa-solid fa-check"></i></button>
+                                    <button (click)="desactivarNoti(n.idNotificaciones)" class="btn btn-sm b"><i
+                                            class="fa-solid fa-check"></i></button>
                                 </div>
                                 <div class="col-md-4">
                                     <button (click)="findCuentaCobrar(n.numeroObligacion)" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasRight" style="cursor: pointer;" class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
+                                        data-bs-target="#offcanvasRight" style="cursor: pointer;"
+                                        class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
                                 </div>
                             </div>
 
@@ -73,12 +76,13 @@
                         </a>
                     </div>
                 </div>
-                
+
 
                 <div class="tab-pane fade" id="vencidas" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="list-group" style="width: 300px;">
 
-                        <a *ngFor="let n of notiArrayVencidas" class="list-group-item" aria-current="true" style="background-color: rgb(201, 201, 201);">
+                        <a *ngFor="let n of notiArrayVencidas" class="list-group-item" aria-current="true"
+                            style="background-color: rgb(201, 201, 201);">
                             <div class="row justify-content-center mb-2">
                                 <div class="col-md-4">
                                     <button class="btn btn-sm b"><i class="fa-solid fa-check"></i></button>
@@ -105,18 +109,21 @@
                     </div>
                 </div>
 
-                
+
 
                 <div class="tab-pane fade" id="realizadas" role="tabpanel" aria-labelledby="home-tab">
                     <div class="list-group" style="width: 300px;">
-                        <a *ngFor="let n of notiArrayRealizadas" class="list-group-item" aria-current="true" style="background-color: rgb(201, 201, 201);">
+                        <a *ngFor="let n of notiArrayRealizadas" class="list-group-item" aria-current="true"
+                            style="background-color: rgb(201, 201, 201);">
                             <div class="row justify-content-center mb-2">
                                 <div class="col-md-4">
-                                    <button (click)="hideNotiRealizada(n.idNotificaciones)" class="btn btn-sm b"><i class="fa-solid fa-circle-minus"></i></button>
+                                    <button (click)="hideNotiRealizada(n.idNotificaciones)" class="btn btn-sm b"><i
+                                            class="fa-solid fa-circle-minus"></i></button>
                                 </div>
                                 <div class="col-md-4">
                                     <button (click)="findCuentaCobrar(n.numeroObligacion)" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasRight" style="cursor: pointer;" class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
+                                        data-bs-target="#offcanvasRight" style="cursor: pointer;"
+                                        class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
                                 </div>
                             </div>
                             <div class="d-flex w-100 justify-content-between">
@@ -136,12 +143,12 @@
                     </div>
                 </div>
 
-                
+
 
             </div>
 
-            
-            
+
+
 
         </ul>
     </div>
@@ -423,15 +430,16 @@
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Saldo Mora
                                                                 Total</span>
-                                                            <input [(ngModel)]="acuerdoCal.valorTotalMora" type="text"
-                                                                class="form-control" disabled>
+
+                                                            <span class="input-group-text ps-5 pe-5">{{acuerdoCal.valorTotalMora | number}}</span>
+                                                           
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Saldo Total</span>
-                                                            <input [(ngModel)]="acuerdoCal.valorTotalAcuerdo"
-                                                                type="number" class="form-control" disabled>
+                                                            <span class="input-group-text ps-5 pe-5">{{acuerdoCal.valorTotalAcuerdo | number}}</span>
+                                                            
                                                         </div>
 
                                                     </div>
@@ -976,7 +984,8 @@
                             <!-- ACUERDO PAGO -->
                             <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" [(ngModel)]="acuerdo.detalle" style="height: 100px;">
+                                    <input type="email" class="form-control" [(ngModel)]="acuerdo.detalle"
+                                        style="height: 100px;">
                                     <label for="floatingInput">Detalle Acuerdo</label>
                                 </div>
                                 <div class="row">
@@ -1037,7 +1046,9 @@
                                     </div>
                                     <div class="col-md-6">
 
-                                        <select class="form-select mt-3 mb-3" [(ngModel)]="newGestion.usernameToSetNotificacion" style="border: 1px black solid;">
+                                        <select class="form-select mt-3 mb-3"
+                                            [(ngModel)]="newGestion.usernameToSetNotificacion"
+                                            style="border: 1px black solid;">
 
                                             <option [value]="null">Seleccione Un Asesor</option>
                                             <option *ngFor="let a of asesores" [value]="a.usuario.username">{{
@@ -1071,15 +1082,14 @@
                                 <div class="col-md-6">
                                     <div class="input-group input-group-sm mb-3">
                                         <span class="input-group-text fw-bold">Mora/Total</span>
-                                        <input [(ngModel)]="acuerdoCal.tipoAcuerdo" type="text" class="form-control"
-                                            readonly>
+                                        <span class="input-group-text  ps-5 pe-5">{{acuerdoCal.tipoAcuerdo }}</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group input-group-sm mb-3">
                                         <span class="input-group-text fw-bold">Valor Acuerdo</span>
-                                        <input [(ngModel)]="acuerdoCal.valorTotalAcuerdo" type="number"
-                                            class="form-control" readonly>
+                                        <span class="input-group-text  ps-5 pe-5">{{acuerdoCal.valorTotalAcuerdo |
+                                            number}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -1087,15 +1097,16 @@
                                 <div class="col-md-6">
                                     <div class="input-group input-group-sm mb-3">
                                         <span class="input-group-text fw-bold">Int Mora</span>
-                                        <input [(ngModel)]="acuerdoCal.valorInteresesMora" type="number"
-                                            class="form-control" readonly>
+                                        <span class="input-group-text  ps-5 pe-5">{{acuerdoCal.valorInteresesMora |
+                                            number}}</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group input-group-sm mb-3">
                                         <span class="input-group-text fw-bold">Valor Cuota Mes</span>
-                                        <input [(ngModel)]="acuerdoCal.valorCuotaMensual" type="number"
-                                            class="form-control" readonly>
+                                        <span class="input-group-text  ps-5 pe-5">{{acuerdoCal.valorCuotaMensual |
+                                            number}}</span>
+
                                     </div>
                                 </div>
                             </div>
@@ -1190,8 +1201,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let g of gestiones | paginate: { itemsPerPage: 10, currentPage: pageGestion}; let i = index" (click)="getOneGestion(g.idGestion)"
-                                    data-bs-toggle="modal" data-bs-target="#modalGestionCom" style="cursor: pointer;">
+                                <tr *ngFor="let g of gestiones | paginate: { itemsPerPage: 10, currentPage: pageGestion}; let i = index"
+                                    (click)="getOneGestion(g.idGestion)" data-bs-toggle="modal"
+                                    data-bs-target="#modalGestionCom" style="cursor: pointer;">
                                     <th>{{ (pageGestion - 1) * 10 + i + 1 }}</th>
                                     <td>{{ g.asesorCartera }}</td>
                                     <td>{{ g.fechaGestion | dateFormat }}
@@ -1204,8 +1216,8 @@
                         </table>
                         <div class="row">
                             <div class="col-md-8 offset-4">
-                                <pagination-controls class="pagination" (pageChange)="pageGestion = $event;" previousLabel="Anterior"
-                                nextLabel="Siguiente"></pagination-controls>
+                                <pagination-controls class="pagination" (pageChange)="pageGestion = $event;"
+                                    previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
                             </div>
                         </div>
                     </div>
@@ -1481,19 +1493,24 @@
                         </div>
                     </div>
 
-                    <div class="card"  style="border:none;">
+                    <div class="card" style="border:none;">
                         <div class="card-body">
                             <div class="row mt-3  text-center ">
-                                
+
                                 <div class="col-md-10 offset-md-1">
                                     <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                        <button type="button" class="btn btn-outline-secondary" (click)="anteriorGestion()" [disabled]="positionGestionSelected == 0">Gestion Anterior</button>
+                                        <button type="button" class="btn btn-outline-secondary"
+                                            (click)="anteriorGestion()"
+                                            [disabled]="positionGestionSelected == 0">Gestion Anterior</button>
 
-                                        <button type="button" class="btn btn-outline-secondary" (click)="siguienteGestion()"  [disabled]="positionGestionSelected >= gestiones.length -1">Gestion Siguiente</button>
+                                        <button type="button" class="btn btn-outline-secondary"
+                                            (click)="siguienteGestion()"
+                                            [disabled]="positionGestionSelected >= gestiones.length -1">Gestion
+                                            Siguiente</button>
                                     </div>
                                 </div>
                             </div>
-                           
+
                         </div>
 
                     </div>
@@ -1745,7 +1762,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalToggleLabel">Pagos</h5>
-                <button type="button" class="btn-close" data-bs-target="#modalGestionCom" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-target="#modalGestionCom" data-bs-toggle="modal"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="table responsive">

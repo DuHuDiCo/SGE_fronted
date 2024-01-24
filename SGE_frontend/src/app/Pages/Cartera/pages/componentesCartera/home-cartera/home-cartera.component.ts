@@ -1,4 +1,4 @@
-import { Component, ElementRef,  HostListener, OnInit, QueryList, ViewChild, ViewChildren  } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { addMonths, format, isLeapYear, lastDayOfMonth, parse, parseISO } from 'date-fns';
 
@@ -67,7 +67,7 @@ export class HomeCarteraComponent implements OnInit {
   cuotasList: CuotaList[] = []
   activarGuardarPago: boolean = false
   pagoCuota: number = 0
-  positionGestionSelected!:number;
+  positionGestionSelected!: number;
   savePago: boolean = false
   base64Recibo: string = ""
   recibosPagoSinFiltrar: ReciboPago[] = []
@@ -293,7 +293,7 @@ export class HomeCarteraComponent implements OnInit {
     isActive: false
   }
 
-  limpiarFiltro:boolean = false
+  limpiarFiltro: boolean = false
 
   bancosArray: string[] = []
   edadVenArray: string[] = []
@@ -360,7 +360,7 @@ export class HomeCarteraComponent implements OnInit {
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
   botonFiltrarObligacion: boolean = false
-  variableLimpiar:boolean = false
+  variableLimpiar: boolean = false
 
   @ViewChildren('variableCol') colcheck!: QueryList<ElementRef>;
 
@@ -372,7 +372,7 @@ export class HomeCarteraComponent implements OnInit {
     this.getAsesores()
     this.getNotificaciones()
     this.fechaActual = new Date()
-    this.fechaCorte = this.obtenerFechaActual()    
+    this.fechaCorte = this.obtenerFechaActual()
   }
 
   getTipoVen() {
@@ -906,7 +906,7 @@ export class HomeCarteraComponent implements OnInit {
       }
 
       if (this.newGestion.clasificacion.tipoClasificacion.trim() == 'ACUERDO DE PAGO') {
-        if(this.acuerdo.detalle.trim() == '' || this.acuerdo.detalle.trim() == null){
+        if (this.acuerdo.detalle.trim() == '' || this.acuerdo.detalle.trim() == null) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -1163,7 +1163,7 @@ export class HomeCarteraComponent implements OnInit {
     if (this.newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO') {
       var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
 
-      if(gestion == undefined){
+      if (gestion == undefined) {
         this.newGestion.contact = true
         return
       } else {
@@ -1172,21 +1172,21 @@ export class HomeCarteraComponent implements OnInit {
 
         if (this.gestionSelected != null || this.gestionSelected != undefined) {
 
-          this.getOneGestion(this.gestionSelected.idGestion)  
-  
+          this.getOneGestion(this.gestionSelected.idGestion)
+
           this.newGestion.contact = false
-  
+
           Swal.fire({
             icon: 'error',
             title: 'Error',
             text: 'Este Cliente tiene un Acuerdo de Pago Vigente',
             timer: 3000
           })
-  
+
           var nombre = this.ClasificacionArray.filter((n: any) => n.tipo != 'ACUERDO DE PAGO')
           this.newGestion.clasificacion.tipoClasificacion = nombre[0].tipo
           event.target.value = nombre[0].nombre
-  
+
           setTimeout(() => {
             $('#modalGestion').modal('hide');
             $('#modalGestionCom').modal('show');
@@ -1232,15 +1232,15 @@ export class HomeCarteraComponent implements OnInit {
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
 
     this.positionGestionSelected = this.gestiones.indexOf(gestion)
-    
+
 
     this.obtenerGestionSelected()
-    
+
 
   }
 
-  obtenerGestionSelected(){
-        
+  obtenerGestionSelected() {
+
     this.gestionSelected = this.gestiones[this.positionGestionSelected]
     console.log(this.gestionSelected);
     if (this.gestionSelected.clasificacion.nombresClasificacion.tipo == 'ACUERDO DE PAGO') {
@@ -1249,12 +1249,12 @@ export class HomeCarteraComponent implements OnInit {
   }
 
 
-  siguienteGestion(){
+  siguienteGestion() {
     this.positionGestionSelected++;
     this.gestionSelected = this.gestiones[this.positionGestionSelected]
   }
 
-  anteriorGestion(){
+  anteriorGestion() {
     this.positionGestionSelected--;
     this.gestionSelected = this.gestiones[this.positionGestionSelected]
   }
@@ -1640,8 +1640,15 @@ export class HomeCarteraComponent implements OnInit {
 
     for (let i = 0; i < this.cuotas.length; i++) {
       //CAPITAL CUOTA
+
       var porcentaje = this.cuotas[i].valorCuota / this.acuerdoCal.valorTotalAcuerdo
-      var cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
+      var cap = 0
+      if (this.acuerdoCal.tipoAcuerdo == "MORA") {
+        cap = porcentaje * this.cuentaCobrarSelected.moraObligatoria
+      }
+      if (this.acuerdoCal.tipoAcuerdo == "TOTAL") {
+        cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
+      }
       this.cuotas[i].capitalCuota = parseInt(cap.toFixed(0))
 
       // HONORARIOS POR CUOTA
@@ -1926,13 +1933,7 @@ export class HomeCarteraComponent implements OnInit {
 
       var fechaDate = new Date(fechaString)
 
-      if (mes == 12) {
-        mes = 0
-        year++
-        mes++;
-      } else {
-        mes++
-      }
+      
 
       if (mes === 2) {
         if (parseInt(fechaOk[2]) == 30 || parseInt(fechaOk[2]) == 31) {
@@ -1955,8 +1956,18 @@ export class HomeCarteraComponent implements OnInit {
       }
 
       var fechaok = `${dia}/${mes}/${year}`
+      console.log(fechaok);
+
 
       this.fechasIncrementadas.push(fechaok)
+
+      if (mes == 12) {
+        mes = 0
+        year++
+        mes++;
+      } else {
+        mes++
+      }
 
     }
 
@@ -2018,7 +2029,14 @@ export class HomeCarteraComponent implements OnInit {
 
       // CAPITAL CUOTA
       var porcentaje = cuotaList.valorCuota / this.acuerdoCal.valorTotalAcuerdo
-      var cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
+      var cap = 0
+      if (this.acuerdoCal.tipoAcuerdo == "MORA") {
+        cap = porcentaje * this.cuentaCobrarSelected.moraObligatoria
+      }
+      if (this.acuerdoCal.tipoAcuerdo == "TOTAL") {
+        cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
+      }
+
       cuotaList.capitalCuota = parseInt(cap.toFixed(0))
 
       // HONORARIOS POR CUOTA
@@ -2057,7 +2075,13 @@ export class HomeCarteraComponent implements OnInit {
         cuotaListUltima.numeroCuota = i + 1
         // CAPITAL CUOTA
         var porcentaje = cuotaListUltima.valorCuota / this.acuerdoCal.valorTotalAcuerdo
-        var cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
+        var cap = 0
+        if (this.acuerdoCal.tipoAcuerdo == "MORA") {
+          cap = porcentaje * this.cuentaCobrarSelected.moraObligatoria
+        }
+        if (this.acuerdoCal.tipoAcuerdo == "TOTAL") {
+          cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
+        }
         cuotaListUltima.capitalCuota = parseInt(cap.toFixed(0))
 
         // HONORARIOS POR CUOTA
@@ -2336,6 +2360,7 @@ export class HomeCarteraComponent implements OnInit {
         this.col = true
         this.disabledFecha = false
 
+        this.fechasIncrementadas = []
         $('#modalGestion').modal('hide');
       }
     })
@@ -2458,7 +2483,7 @@ export class HomeCarteraComponent implements OnInit {
     this.filtros.edadVencimiento = this.edadVenArray
 
     console.log(this.filtros);
-    
+
     if (
       (this.filtros.banco.length == 0) &&
       (this.filtros.diasVencidosInicio == 0 || this.filtros.diasVencidosInicio == null) &&
@@ -2507,20 +2532,20 @@ export class HomeCarteraComponent implements OnInit {
         this.numeroPages = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
 
-        if(this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
-        (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
-        (this.filtros.diasVencidosFin != 0 && this.filtros.diasVencidosFin != null) ||
-        (this.filtros.edadVencimiento.length != 0) ||
-        (this.filtros.sede.length != 0) ||
-        (this.filtros.clasiJuridica.length != 0) ||
-        (this.filtros.saldoCapitalInicio != 0 && this.filtros.saldoCapitalInicio != null) ||
-        (this.filtros.saldoCapitalFin != 0 && this.filtros.saldoCapitalFin != null) ||
-        (this.filtros.fechaCpcInicio != null) ||
-        (this.filtros.fechaCpcFin != null) ||
-        (this.filtros.fechaGestionInicio != null) ||
-        (this.filtros.fechaGestionFin != null) ||
-        (this.filtros.fechaCompromisoInicio != null) ||
-        (this.filtros.fechaCompromisoFin != null)){
+        if (this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
+          (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
+          (this.filtros.diasVencidosFin != 0 && this.filtros.diasVencidosFin != null) ||
+          (this.filtros.edadVencimiento.length != 0) ||
+          (this.filtros.sede.length != 0) ||
+          (this.filtros.clasiJuridica.length != 0) ||
+          (this.filtros.saldoCapitalInicio != 0 && this.filtros.saldoCapitalInicio != null) ||
+          (this.filtros.saldoCapitalFin != 0 && this.filtros.saldoCapitalFin != null) ||
+          (this.filtros.fechaCpcInicio != null) ||
+          (this.filtros.fechaCpcFin != null) ||
+          (this.filtros.fechaGestionInicio != null) ||
+          (this.filtros.fechaGestionFin != null) ||
+          (this.filtros.fechaCompromisoInicio != null) ||
+          (this.filtros.fechaCompromisoFin != null)) {
           this.variableLimpiar = true
         } else {
           this.variableLimpiar = false
@@ -2544,7 +2569,7 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  reiniciarFiltros(accion:string){
+  reiniciarFiltros(accion: string) {
     this.filtros = {
       banco: [],
       diasVencidosInicio: null,
@@ -2569,7 +2594,7 @@ export class HomeCarteraComponent implements OnInit {
     this.sedesArray = []
     this.clasJurArray = []
 
-    if(accion == 'LIMPIAR'){
+    if (accion == 'LIMPIAR') {
       this.buscarObligacion = ''
     }
 
@@ -2577,24 +2602,24 @@ export class HomeCarteraComponent implements OnInit {
       i.nativeElement.checked = false
     }
 
-    if(this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
-        (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
-        (this.filtros.diasVencidosFin != 0 && this.filtros.diasVencidosFin != null) ||
-        (this.filtros.edadVencimiento.length != 0) ||
-        (this.filtros.sede.length != 0) ||
-        (this.filtros.clasiJuridica.length != 0) ||
-        (this.filtros.saldoCapitalInicio != 0 && this.filtros.saldoCapitalInicio != null) ||
-        (this.filtros.saldoCapitalFin != 0 && this.filtros.saldoCapitalFin != null) ||
-        (this.filtros.fechaCpcInicio != null) ||
-        (this.filtros.fechaCpcFin != null) ||
-        (this.filtros.fechaGestionInicio != null) ||
-        (this.filtros.fechaGestionFin != null) ||
-        (this.filtros.fechaCompromisoInicio != null) ||
-        (this.filtros.fechaCompromisoFin != null)){
-          this.variableLimpiar = true
-        } else {
-          this.variableLimpiar = false
-        }
+    if (this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
+      (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
+      (this.filtros.diasVencidosFin != 0 && this.filtros.diasVencidosFin != null) ||
+      (this.filtros.edadVencimiento.length != 0) ||
+      (this.filtros.sede.length != 0) ||
+      (this.filtros.clasiJuridica.length != 0) ||
+      (this.filtros.saldoCapitalInicio != 0 && this.filtros.saldoCapitalInicio != null) ||
+      (this.filtros.saldoCapitalFin != 0 && this.filtros.saldoCapitalFin != null) ||
+      (this.filtros.fechaCpcInicio != null) ||
+      (this.filtros.fechaCpcFin != null) ||
+      (this.filtros.fechaGestionInicio != null) ||
+      (this.filtros.fechaGestionFin != null) ||
+      (this.filtros.fechaCompromisoInicio != null) ||
+      (this.filtros.fechaCompromisoFin != null)) {
+      this.variableLimpiar = true
+    } else {
+      this.variableLimpiar = false
+    }
 
     this.getCuentasCobrar()
     this.spinner = true
@@ -2607,7 +2632,7 @@ export class HomeCarteraComponent implements OnInit {
       this.bancosArray.splice(position, 1)
     } else {
       this.bancosArray.push(banco)
-    }    
+    }
   }
 
   metodoEdadVen(edad: string) {
@@ -2678,25 +2703,25 @@ export class HomeCarteraComponent implements OnInit {
         this.edadVenArray = []
         this.sedesArray = []
         this.clasJurArray = []
-    
+
         for (const i of this.colcheck.toArray()) {
           i.nativeElement.checked = false
         }
 
-        if(this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
-        (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
-        (this.filtros.diasVencidosFin != 0 && this.filtros.diasVencidosFin != null) ||
-        (this.filtros.edadVencimiento.length != 0) ||
-        (this.filtros.sede.length != 0) ||
-        (this.filtros.clasiJuridica.length != 0) ||
-        (this.filtros.saldoCapitalInicio != 0 && this.filtros.saldoCapitalInicio != null) ||
-        (this.filtros.saldoCapitalFin != 0 && this.filtros.saldoCapitalFin != null) ||
-        (this.filtros.fechaCpcInicio != null) ||
-        (this.filtros.fechaCpcFin != null) ||
-        (this.filtros.fechaGestionInicio != null) ||
-        (this.filtros.fechaGestionFin != null) ||
-        (this.filtros.fechaCompromisoInicio != null) ||
-        (this.filtros.fechaCompromisoFin != null)){
+        if (this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
+          (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
+          (this.filtros.diasVencidosFin != 0 && this.filtros.diasVencidosFin != null) ||
+          (this.filtros.edadVencimiento.length != 0) ||
+          (this.filtros.sede.length != 0) ||
+          (this.filtros.clasiJuridica.length != 0) ||
+          (this.filtros.saldoCapitalInicio != 0 && this.filtros.saldoCapitalInicio != null) ||
+          (this.filtros.saldoCapitalFin != 0 && this.filtros.saldoCapitalFin != null) ||
+          (this.filtros.fechaCpcInicio != null) ||
+          (this.filtros.fechaCpcFin != null) ||
+          (this.filtros.fechaGestionInicio != null) ||
+          (this.filtros.fechaGestionFin != null) ||
+          (this.filtros.fechaCompromisoInicio != null) ||
+          (this.filtros.fechaCompromisoFin != null)) {
           this.variableLimpiar = true
         } else {
           this.variableLimpiar = false
@@ -3159,7 +3184,7 @@ export class HomeCarteraComponent implements OnInit {
             }
 
             this.cuentasCobrar.getNotificacionesRealizadas(user).subscribe(
-              (data:any) => {
+              (data: any) => {
                 this.notiArrayRealizadas = data
               }
             )
@@ -3174,7 +3199,7 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  desactivarNoti(id:number){
+  desactivarNoti(id: number) {
     Swal.fire({
       title: 'Confirmar Notificación',
       text: '¿Desea Confirmar La Notificación?',
@@ -3205,11 +3230,11 @@ export class HomeCarteraComponent implements OnInit {
             console.log(error);
           }
         )
-      } 
+      }
     })
   }
 
-  hideNotiRealizada(id:number){
+  hideNotiRealizada(id: number) {
     Swal.fire({
       title: 'Eliminar Notificación',
       text: '¿Desea Eliminar La Notificación?',
@@ -3240,7 +3265,7 @@ export class HomeCarteraComponent implements OnInit {
             console.log(error);
           }
         )
-      } 
+      }
     })
   }
 
