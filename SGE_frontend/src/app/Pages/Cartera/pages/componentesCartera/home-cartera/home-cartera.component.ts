@@ -1956,7 +1956,7 @@ export class HomeCarteraComponent implements OnInit {
       }
 
       var fechaok = `${dia}/${mes}/${year}`
-      console.log(fechaok);
+      
 
 
       this.fechasIncrementadas.push(fechaok)
