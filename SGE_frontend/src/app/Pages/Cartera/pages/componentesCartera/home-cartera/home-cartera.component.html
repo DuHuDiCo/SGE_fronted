@@ -184,7 +184,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <!-- OCULTAR COLUMNAS -->
@@ -986,9 +985,8 @@
                             <!-- ACUERDO PAGO -->
                             <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" [(ngModel)]="acuerdo.detalle"
-                                        style="height: 100px;">
-                                    <label for="floatingInput">Detalle Acuerdo</label>
+                                    <textarea class="form-control" style="height: 100px;" [(ngModel)]="acuerdo.detalle"></textarea>
+                                    <label class="fw-bold">Detalle Acuerdo</label>
                                 </div>
                                 <div class="row">
                                     <div class="col" [ngClass]="{'col-md-12': !col, 'col-md-6': col}">
@@ -1248,7 +1246,7 @@
 
     <!-- Modal Detalle Gestión -->
     <div class="modal fade" id="modalDetalle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-hidden="true">
+        aria-hidden="true" data-bs-show="show">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1262,9 +1260,29 @@
                         <option *ngFor="let c of cuentaCobrarSelected.clientes" [value]="c.numeroDocumento">{{
                             c.numeroDocumento }} - {{ c.nombreTitular }} - {{ c.tipoGarante.tipoGarante }}</option>
                     </select>
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="input-group mb-3">
+                                <input [(ngModel)]="reporte.numeroAlterno" type="text" class="form-control" [disabled]="ingresarTel">
+                            </div>
+                        </div>
+                        <div *ngIf="ingresarTel" class="col-md-4">
+                            <button class="btn b" (click)="ingresarTelefono()">Ingresar Teléfono</button>
+                        </div>
+
+                        <div *ngIf="!ingresarTel" class="col-md-4">
+                            <button class="btn b" (click)="ingresarTelefono()">Cancelar</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" (click)="saveGestionWithDetalle()">Guardar Gestión</button>
+                    <button *ngIf="!botonGuardarGes" class="btn b" (click)="saveGestionWithDetalle()">Guardar Gestión</button>
+
+                    <button *ngIf="botonGuardarGes" class="btn btn-danger b">
+                        Guardando...
+                        <span class="spinner-border spinner-border-sm float-right" role="status"
+                            aria-hidden="true"></span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1411,31 +1429,22 @@
                     <!-- TAREA -->
                     <div class="card" *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA'">
                         <div class="card-body">
-                            <!-- <div class="row justify-content-center">
-                                <div class="col-md-12 mb-3">
-                                    <div class="form-floating">
-                                        <textarea [(ngModel)]="gestionSelected.detallesGestion" class="form-control"
-                                            readonly></textarea>
-                                        <label for="floatingTextarea">Descripción</label>
-                                    </div>
-
-                                </div>
-                            </div> -->
                             <div class="row justify-content-center">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
+                                    <div class="form-floating mb-3">
+                                        <textarea class="form-control" style="height: 100px"
+                                        [(ngModel)]="gestionSelected.clasificacion.detalleTarea" readonly></textarea>
+                                        <label class="fw-bold">Detalle Tarea</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12">
                                     <div class="input-group mb-3">
                                         <span class="input-group-text fw-bold">Fecha Tarea</span>
                                         <input type="text" class="form-control"
                                             [value]="gestionSelected.clasificacion.fechaFinTarea | date:'dd/MM/yyyy'"
                                             readonly>
-
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text fw-bold">Detalle Tarea</span>
-                                        <input type="text" class="form-control"
-                                            [(ngModel)]="gestionSelected.clasificacion.detalleTarea" readonly>
                                     </div>
                                 </div>
                             </div>
