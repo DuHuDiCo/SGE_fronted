@@ -259,6 +259,7 @@ export class HomeCarteraComponent implements OnInit {
 
   reporte: any = {
     numeroObligacion: "",
+    numeroAlterno: "",
     cedula: "",
     username: ""
   }
@@ -358,6 +359,8 @@ export class HomeCarteraComponent implements OnInit {
   botonPdf: boolean = false
   pageGestion: number = 1;
   calculating:boolean = false
+  ingresarTel:boolean = true
+  botonGuardarGes:boolean = false
 
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
@@ -977,6 +980,15 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
+  ingresarTelefono(){
+    if(this.ingresarTel == false){
+      this.ingresarTel = true
+      this.reporte.numeroAlterno = null
+    } else {
+      this.ingresarTel = false
+    }
+  }
+
   saveGestionWithDetalle() {
 
 
@@ -1007,19 +1019,6 @@ export class HomeCarteraComponent implements OnInit {
 
     }
 
-    // if (sumaComprobacion != this.acuerdoCal.valorTotalAcuerdo) {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: 'La suma de la cuotas no coincide con el Valor del Acuerdo',
-    //     text: 'Recalculando...',
-    //     timer: 3000
-    //   })
-    //   setTimeout(() => {
-    //     this.calcular()
-    //   }, 3000);
-    // }
-
-
     Swal.fire({
       title: 'Guardar Gestión',
       text: '¿Está Seguro De Crear Esta Gestión?',
@@ -1031,7 +1030,7 @@ export class HomeCarteraComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.gestionButton = true
+        this.botonGuardarGes = true
         setTimeout(() => {
           this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
             (data: any) => {
@@ -1047,7 +1046,7 @@ export class HomeCarteraComponent implements OnInit {
                 text: 'Gestión Guardada Exitosamente',
                 timer: 3000
               })
-              this.gestionButton = false
+              this.botonGuardarGes = false
               this.newGestion = {
                 numeroObligacion: this.newGestion.numeroObligacion,
                 clasificacion: {
@@ -1082,6 +1081,12 @@ export class HomeCarteraComponent implements OnInit {
                 fechaVencimiento: new Date,
                 username: ''
               }
+              this.reporte = {
+                numeroObligacion: "",
+                numeroAlterno: "",
+                cedula: "",
+                username: ""
+              }
               this.col = true
               $('#modalDetalle').modal('hide');
               $('#modalReporte').modal('show');
@@ -1092,7 +1097,7 @@ export class HomeCarteraComponent implements OnInit {
                 text: 'Error Al Guardar La Gestión',
                 timer: 3000
               })
-              this.gestionButton = false
+              this.botonGuardarGes = false
             }
           )
         }, 3000);
@@ -1340,8 +1345,6 @@ export class HomeCarteraComponent implements OnInit {
       this.coutasRequest.push(couta)
     })
 
-
-    ///////////
     this.recibosPago = this.recibosPagoSinFiltrar.filter((r: ReciboPago, i: number, array) => array.findIndex(obj => JSON.stringify(obj) === JSON.stringify(r)) === i)
   }
 
@@ -1801,7 +1804,7 @@ export class HomeCarteraComponent implements OnInit {
         this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
         this.calcularFirst()
         this.resetButton = false
-        this.isCalculate = false
+        this.isCalculate = true
         this.calculating = false
       }, (error: any) => {
         console.log(error);
