@@ -695,6 +695,8 @@ export class HomeCarteraComponent implements OnInit {
 
   findCodeudores(event: any) {
     this.codeudoresSelected = this.codeudores.filter((c: any) => c.numeroDocumento == event.target.value)
+    console.log(this.codeudoresSelected);
+    
   }
 
   // GESTIONES
@@ -857,7 +859,8 @@ export class HomeCarteraComponent implements OnInit {
         }
 
         this.newGestion.userNotifying = user
-
+        this.newGestion.usernameToSetNotificacion = user
+        
         Swal.fire({
           title: 'Guardar Gestión',
           text: '¿Está Seguro De Crear Esta Gestión?',
