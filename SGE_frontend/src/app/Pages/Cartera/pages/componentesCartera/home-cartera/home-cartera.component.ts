@@ -994,7 +994,6 @@ export class HomeCarteraComponent implements OnInit {
 
   saveGestionWithDetalle() {
 
-
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
@@ -1049,6 +1048,8 @@ export class HomeCarteraComponent implements OnInit {
                 text: 'Gestión Guardada Exitosamente',
                 timer: 3000
               })
+              console.log(this.newGestion);
+              
               this.botonGuardarGes = false
               this.newGestion = {
                 numeroObligacion: this.newGestion.numeroObligacion,
@@ -1083,12 +1084,6 @@ export class HomeCarteraComponent implements OnInit {
                 moraObligatoria: 0,
                 fechaVencimiento: new Date,
                 username: ''
-              }
-              this.reporte = {
-                numeroObligacion: "",
-                numeroAlterno: "",
-                cedula: "",
-                username: ""
               }
               this.col = true
               $('#modalDetalle').modal('hide');
@@ -1359,6 +1354,8 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     this.reporte.username = user
+    console.log(this.reporte);
+    
     setTimeout(() => {
       this.cuentasCobrar.reporte(this.reporte).subscribe(
         (data: any) => {
