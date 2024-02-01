@@ -1719,7 +1719,9 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   calculadora(event: any) {
-    if (this.cuentaCobrarSelected.clientes[0].saldoActual >= 0 || this.cuentaCobrarSelected.clientes[0].saldoActual == null) {
+    console.log(this.cuentaCobrarSelected.clientes[0].saldoActual);
+    
+    if (this.cuentaCobrarSelected.clientes[0].saldoActual <= 0 || this.cuentaCobrarSelected.clientes[0].saldoActual == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -1920,9 +1922,12 @@ export class HomeCarteraComponent implements OnInit {
     } else {
       if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
         this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
       } else {
         this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
+        this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
       }
+      
       this.isCalculate = true
       this.calculating = true
     }
