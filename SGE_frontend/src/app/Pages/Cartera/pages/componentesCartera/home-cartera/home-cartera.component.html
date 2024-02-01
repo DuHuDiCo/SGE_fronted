@@ -430,16 +430,20 @@
                                                             <span class="input-group-text fw-bold">Saldo Mora
                                                                 Total</span>
 
-                                                            <span class="input-group-text ps-5 pe-5">{{acuerdoCal.valorTotalMora | number}}</span>
-                                                           
+                                                            <span
+                                                                class="input-group-text ps-5 pe-5">{{acuerdoCal.valorTotalMora
+                                                                | number}}</span>
+
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Saldo Total</span>
 
-                                                            <span class="input-group-text ps-5 pe-5">{{acuerdoCal.saldoAcuerdo | number}}</span>
-                                                            
+                                                            <span
+                                                                class="input-group-text ps-5 pe-5">{{acuerdoCal.saldoAcuerdo
+                                                                | number}}</span>
+
 
                                                         </div>
 
@@ -647,8 +651,7 @@
                                                                         <span
                                                                             class="input-group-text fw-bold">Cédula</span>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ cs.numeroDocumento }}"
-                                                                            disabled>
+                                                                            value="{{ cs.numeroDocumento }}" disabled>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -994,7 +997,8 @@
                             <!-- ACUERDO PAGO -->
                             <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'">
                                 <div class="form-floating mb-3">
-                                    <textarea class="form-control" style="height: 100px;" [(ngModel)]="acuerdo.detalle"></textarea>
+                                    <textarea class="form-control" style="height: 100px;"
+                                        [(ngModel)]="acuerdo.detalle"></textarea>
                                     <label class="fw-bold">Detalle Acuerdo</label>
                                 </div>
                                 <div class="row">
@@ -1272,7 +1276,8 @@
                     <div class="row justify-content-center">
                         <div class="col-md-8">
                             <div class="input-group mb-3">
-                                <input [(ngModel)]="reporte.numeroAlterno" type="text" class="form-control" [disabled]="ingresarTel">
+                                <input [(ngModel)]="reporte.numeroAlterno" type="text" class="form-control"
+                                    [disabled]="ingresarTel">
                             </div>
                         </div>
                         <div *ngIf="ingresarTel" class="col-md-4">
@@ -1285,7 +1290,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button *ngIf="!botonGuardarGes" class="btn b" (click)="saveGestionWithDetalle()">Guardar Gestión</button>
+                    <button *ngIf="!botonGuardarGes" class="btn b" (click)="saveGestionWithDetalle()">Guardar
+                        Gestión</button>
 
                     <button *ngIf="botonGuardarGes" class="btn btn-danger b">
                         Guardando...
@@ -1442,7 +1448,8 @@
                                 <div class="col-md-12">
                                     <div class="form-floating mb-3">
                                         <textarea class="form-control" style="height: 100px"
-                                        [(ngModel)]="gestionSelected.clasificacion.detalleTarea" readonly></textarea>
+                                            [(ngModel)]="gestionSelected.clasificacion.detalleTarea"
+                                            readonly></textarea>
                                         <label class="fw-bold">Detalle Tarea</label>
                                     </div>
                                 </div>
