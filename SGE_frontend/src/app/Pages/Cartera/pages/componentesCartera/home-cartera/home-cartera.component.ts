@@ -704,6 +704,7 @@ export class HomeCarteraComponent implements OnInit {
     this.gestiones = []
     this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
       (data: any) => {
+        console.log(data);
         this.newGestion.numeroObligacion = numeroObligacion
         this.getLastDato(numeroObligacion)
         this.ordenarGestiones(data)
@@ -789,6 +790,9 @@ export class HomeCarteraComponent implements OnInit {
 
         this.newGestion.userNotifying = user
 
+        console.log(this.newGestion);
+        
+
         Swal.fire({
           title: 'Guardar Gestión',
           text: '¿Está Seguro De Crear Esta Gestión?',
@@ -803,7 +807,7 @@ export class HomeCarteraComponent implements OnInit {
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
-                this.gestiones.push(data)
+                this.getGestiones(this.newGestion.numeroObligacion)
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
@@ -861,6 +865,9 @@ export class HomeCarteraComponent implements OnInit {
         this.newGestion.userNotifying = user
         this.newGestion.usernameToSetNotificacion = user
         
+        console.log(this.newGestion);
+        
+
         Swal.fire({
           title: 'Guardar Gestión',
           text: '¿Está Seguro De Crear Esta Gestión?',
@@ -875,7 +882,7 @@ export class HomeCarteraComponent implements OnInit {
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
-                this.gestiones.push(data)
+                this.getGestiones(this.newGestion.numeroObligacion)
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
@@ -1033,13 +1040,10 @@ export class HomeCarteraComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.botonGuardarGes = true
-        setTimeout(() => {
           this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
             (data: any) => {
-
               this.getGestiones(this.newGestion.numeroObligacion)
               this.getNotificaciones()
-
               this.mostrarReporte()
               Swal.fire({
                 icon: 'success',
@@ -1098,7 +1102,6 @@ export class HomeCarteraComponent implements OnInit {
               this.botonGuardarGes = false
             }
           )
-        }, 3000);
       }
     })
   }
@@ -1622,9 +1625,17 @@ export class HomeCarteraComponent implements OnInit {
     if (this.acuerdo.tipoAcuerdo == 'MORA') {
       this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
       if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        if(this.calculating == true){
+          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        } else {
+          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        }
       } else {
-        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)
+        if(this.calculating == true){
+          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria
+        } else {
+          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)
+        }
       }
     }
 
@@ -1927,6 +1938,7 @@ export class HomeCarteraComponent implements OnInit {
         this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
         this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
       }
+      console.log(this.acuerdoCal);
       
       this.isCalculate = true
       this.calculating = true
@@ -2327,6 +2339,12 @@ export class HomeCarteraComponent implements OnInit {
 
   cancelarGestion() {
 
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+
     Swal.fire({
       title: 'Limpiar Gestión',
       text: 'Los Datos De la Gestión Actual serán Limpiados, ¿Está Seguro?',
@@ -2339,7 +2357,7 @@ export class HomeCarteraComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.newGestion = {
-          numeroObligacion: '',
+          numeroObligacion: this.newGestion.numeroObligacion,
           clasificacion: {
             tipoClasificacion: null,
             tarea: null,
@@ -2776,10 +2794,9 @@ export class HomeCarteraComponent implements OnInit {
       tareas.forEach((ges: any) => {
         this.gestiones.push(ges)
       });
-
     }
 
-    var notas = this.gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'NOTA' && ges.clasificacion.isActive)
+    var notas = this.gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'NOTA')
     if (notas != null || notas != undefined) {
       notas.forEach((ges: any) => {
         this.gestiones.push(ges)
