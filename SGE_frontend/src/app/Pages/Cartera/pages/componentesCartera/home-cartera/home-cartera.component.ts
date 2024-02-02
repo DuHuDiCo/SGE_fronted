@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { addMonths, format, isLeapYear, lastDayOfMonth, parse, parseISO } from 'date-fns';
 
@@ -26,10 +26,13 @@ export class HomeCarteraComponent implements OnInit {
 
   @ViewChild('datoBuscar', { static: false }) miInput!: ElementRef;
 
+  @ViewChild('telefono')
+  mySelect!: ElementRef<HTMLSelectElement>;
+
   private proSubscriptionNext!: Subscription;
   private proSubscriptionBack!: Subscription;
 
-  constructor(private cuentasCobrar: CuentasCobrarService, private authService: AuthenticationService, private router: Router) {
+  constructor(private cuentasCobrar: CuentasCobrarService, private authService: AuthenticationService, private router: Router, private renderer: Renderer2, private elementRef: ElementRef) {
     this.listaDeAnios = this.obtenerListaDeAnios()
   }
 
@@ -1013,6 +1016,16 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
+    if (this.reporte.numeroAlterno.trim() == '' || this.reporte.numeroAlterno.trim() == null) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Elija El Número Del cliente',
+        timer: 3000
+      })
+      return
+    }
+
     this.newGestion.clasificacion.acuerdoPago!.detalle = this.acuerdo.detalle
 
     var sumaComprobacion = 0
@@ -1417,12 +1430,22 @@ export class HomeCarteraComponent implements OnInit {
   cambiarCedula(event: any) {
     this.reporte.cedula = this.reporte.cedula
 
+    if(this.reporte.cedula == null || this.reporte.cedula == ''){
+      this.renderer.setAttribute(this.mySelect.nativeElement, 'disabled', 'true')
+    } else {
+      this.renderer.removeAttribute(this.mySelect.nativeElement, 'disabled');
+    }
+
     this.telefonos = []
 
-    this.clientes = this.cuentaCobrarSelected.clientes.filter((c: any) => c.numeroDocumento == this.reporte.cedula)    
+    if(this.reporte.cedula != '' || this.reporte.cedula != null || this.reporte.cedula != 'null'){
+      console.log(this.reporte.cedula);
+      
+      this.clientes = this.cuentaCobrarSelected.clientes.filter((c: any) => c.numeroDocumento == this.reporte.cedula)    
 
-    for (const c of this.clientes[0].telefonos) {
-      this.telefonos.push(c.numero)
+      for (const c of this.clientes[0].telefonos) {
+        this.telefonos.push(c.numero)
+      }
     }
   }
 
