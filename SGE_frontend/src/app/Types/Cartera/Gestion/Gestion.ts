@@ -6,6 +6,7 @@ export type Gestion = {
     tarea: {
       detalleTarea: string,
       fechaFinTarea: Date,
+      isPartOfRecaudo: boolean
     } | null,
     nota: {
       detalle: string
