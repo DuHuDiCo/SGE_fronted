@@ -65,6 +65,8 @@ export class HomeCarteraComponent implements OnInit {
   totalCapital: number = 0
   coutasRequest: CuotasRequest[] = []
   cuotasList: CuotaList[] = []
+  clientes:any[] = []
+  telefonos:string[] = []
   activarGuardarPago: boolean = false
   pagoCuota: number = 0
   positionGestionSelected!: number;
@@ -181,7 +183,8 @@ export class HomeCarteraComponent implements OnInit {
       tipoClasificacion: '',
       tarea: {
         detalleTarea: '',
-        fechaFinTarea: new Date(),
+        fechaFinTarea: '',
+        isPartOfRecaudo: false
       },
       nota: {
         detalle: ''
@@ -212,6 +215,7 @@ export class HomeCarteraComponent implements OnInit {
   tarea: any = {
     detalleTarea: '',
     fechaFinTarea: '',
+    isPartOfRecaudo: false
   }
 
   // ACUERDO DE PAGO
@@ -359,7 +363,6 @@ export class HomeCarteraComponent implements OnInit {
   botonPdf: boolean = false
   pageGestion: number = 1;
   calculating:boolean = false
-  ingresarTel:boolean = true
   botonGuardarGes:boolean = false
 
   // VARIABLE PARA FILTRAR OBLIGACION
@@ -430,7 +433,7 @@ export class HomeCarteraComponent implements OnInit {
         (data: any) => {
           this.paginas = new Array(data.totalPages)
           this.cuentasCobrarArray = data.content
-          console.log(this.cuentasCobrarArray)
+          console.log(data)
           this.last = data.last
           this.first = data.first
           this.numeroPages = data.totalPages
@@ -663,7 +666,7 @@ export class HomeCarteraComponent implements OnInit {
             this.moraObligatoriaFirst = data.moraObligatoria
             this.calcularFirst()
             this.codeudores = data.clientes
-            this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
+            this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')  
             this.getGestiones(numeroObligacion);
             this.cuentasCalcular.numeroObligacion = numeroObligacion
             this.newGestion = {
@@ -696,7 +699,6 @@ export class HomeCarteraComponent implements OnInit {
   findCodeudores(event: any) {
     this.codeudoresSelected = this.codeudores.filter((c: any) => c.numeroDocumento == event.target.value)
     console.log(this.codeudoresSelected);
-    
   }
 
   // GESTIONES
@@ -990,15 +992,6 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
-  ingresarTelefono(){
-    if(this.ingresarTel == false){
-      this.ingresarTel = true
-      this.reporte.numeroAlterno = null
-    } else {
-      this.ingresarTel = false
-    }
-  }
-
   saveGestionWithDetalle() {
 
     var user = this.authService.getUsername()
@@ -1211,7 +1204,8 @@ export class HomeCarteraComponent implements OnInit {
         tipoClasificacion: '',
         tarea: {
           detalleTarea: '',
-          fechaFinTarea: new Date(),
+          fechaFinTarea: '',
+          isPartOfRecaudo: false
         },
         nota: {
           detalle: ''
@@ -1422,6 +1416,14 @@ export class HomeCarteraComponent implements OnInit {
 
   cambiarCedula(event: any) {
     this.reporte.cedula = this.reporte.cedula
+
+    this.telefonos = []
+
+    this.clientes = this.cuentaCobrarSelected.clientes.filter((c: any) => c.numeroDocumento == this.reporte.cedula)    
+
+    for (const c of this.clientes[0].telefonos) {
+      this.telefonos.push(c.numero)
+    }
   }
 
   mostrarBase64() {
@@ -2390,6 +2392,7 @@ export class HomeCarteraComponent implements OnInit {
         this.tarea = {
           detalleTarea: '',
           fechaFinTarea: '',
+          isPartOfRecaudo: false
         }
 
         this.cuotas = []
@@ -2784,7 +2787,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   ordenarGestiones(gestiones: any[]) {
-    var gesTrue = gestiones.filter((ges: any) => ges.clasificacion.isActive)
+    var gesTrue = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'ACUERDO DE PAGO' && ges.clasificacion.isActive)
     gesTrue.forEach((ges: any) => {
       this.gestiones.push(ges)
     });

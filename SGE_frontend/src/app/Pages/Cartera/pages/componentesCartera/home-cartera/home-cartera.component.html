@@ -978,7 +978,7 @@
                                 <label class="form-check-label">Existió contacto
                                     Telefónico/Whatsapp con el Cliente y/o Tercero (?)</label>
                             </div>
-                            <label for="">Seleccinar Una Clasificacion</label>
+                            <label for="">Seleccionar Una Clasificacion</label>
                             <select class="form-select mb-3" style="border: 1px black solid;"
                                 [(ngModel)]="newGestion.clasificacion.nombreClasificacion" name="nombreClasificacion"
                                 (change)="tipoClasificacion($event)">
@@ -1066,6 +1066,14 @@
                                     <textarea class="form-control" style="height: 100px;"
                                         [(ngModel)]="tarea.detalleTarea"></textarea>
                                     <label for="floatingTextarea">Detalle Tarea</label>
+                                </div>
+                                <div *ngIf="newGestion.clasificacion.nombreClasificacion == 'Abonando/Fecha'"
+                                    class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" [(ngModel)]="tarea.isPartOfRecaudo"
+                                        [checked]="false" id="defaultCheck1">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        Considerar Parte Del Recaudo
+                                    </label>
                                 </div>
                             </span>
 
@@ -1266,21 +1274,13 @@
                         <option *ngFor="let c of cuentaCobrarSelected.clientes" [value]="c.numeroDocumento">{{
                             c.numeroDocumento }} - {{ c.nombreTitular }} - {{ c.tipoGarante.tipoGarante }}</option>
                     </select>
-                    <div class="row justify-content-center">
-                        <div class="col-md-8">
-                            <div class="input-group mb-3">
-                                <input [(ngModel)]="reporte.numeroAlterno" type="text" class="form-control"
-                                    [disabled]="ingresarTel">
-                            </div>
-                        </div>
-                        <div *ngIf="ingresarTel" class="col-md-4">
-                            <button class="btn b" (click)="ingresarTelefono()">Ingresar Teléfono</button>
-                        </div>
 
-                        <div *ngIf="!ingresarTel" class="col-md-4">
-                            <button class="btn b" (click)="ingresarTelefono()">Cancelar</button>
-                        </div>
-                    </div>
+                    <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.numeroAlterno"
+                        style="border: 1px black solid;" [disabled]="deshabilitarTel">
+                        <option [value]="null">Seleccione Un Telefono</option>
+                        <option *ngFor="let t of telefonos">{{ t }}
+                        </option>
+                    </select>
                 </div>
                 <div class="modal-footer">
                     <button *ngIf="!botonGuardarGes" class="btn b" (click)="saveGestionWithDetalle()">Guardar
