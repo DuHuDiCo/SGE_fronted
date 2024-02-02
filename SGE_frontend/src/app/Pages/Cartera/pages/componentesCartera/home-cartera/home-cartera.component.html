@@ -1354,11 +1354,39 @@
                                         {{gestionSelected.clasificacion.fechaAcuerdo |
                                         date:'dd/MM/yyyy'}}</h6>
                                     <h6><strong>Saldo Actual Acuerdo: </strong> {{saldoAcuerdoPago | number}}</h6>
-                                    <h6><strong>Agregar Pago: </strong> <a role="button" class="btn btn-danger btn-sm"
-                                            (click)="ocultarAgregarPago=true"
-                                            style="background-color: #960010;border-color: #960010;"><i
-                                                class="fas fa-plus"></i></a>
-                                    </h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6><strong>Agregar Pago: </strong> <a role="button"
+                                                    *ngIf="!ocultarAgregarPago" class="btn btn-danger btn-sm"
+                                                    (click)="ocultarAgregarPago=true;ocultarCrearRevision=false"
+                                                    style="background-color: #960010;border-color: #960010;"><i
+                                                        class="fas fa-plus"></i></a>
+                                                <a role="button" class="btn btn-danger btn-sm"
+                                                    (click)="ocultarCrearRevision=false;ocultarAgregarPago=true"
+                                                    *ngIf="ocultarAgregarPago"
+                                                    style="background-color: #960010;border-color: #960010;"><i
+                                                        class="fas fa-plus"></i></a>
+                                            </h6>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <h6><strong>Revision: </strong> <a role="button"
+                                                    class="btn btn-danger btn-sm"
+                                                    (click)="ocultarCrearRevision=true;ocultarAgregarPago=false"
+                                                    *ngIf="!ocultarCrearRevision"
+                                                    style="background-color: #960010;border-color: #960010;"><i
+                                                        class="fas fa-plus"></i></a>
+
+                                                <a role="button" class="btn btn-danger btn-sm"
+                                                    (click)="ocultarCrearRevision=false;ocultarAgregarPago=true"
+                                                    *ngIf="ocultarCrearRevision"
+                                                    style="background-color: #960010;border-color: #960010;"><i
+                                                        class="fas fa-plus"></i></a>
+                                            </h6>
+                                        </div>
+
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="col-md-12 " *ngIf="ocultarAgregarPago">
@@ -1366,23 +1394,42 @@
 
                                 <form action="">
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <label for="">Valor del Pago</label>
                                             <input type="text" [(ngModel)]="pago.valor" class="form-control"
                                                 name="valor">
 
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <label for="">Numero Recibo</label>
                                             <input type="text" [(ngModel)]="pago.numeroRecibo" class="form-control"
                                                 name="numeroRecibo">
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <label for="">Detalle</label>
                                             <textarea name="detalle" [(ngModel)]="pago.detalle" class="form-control"
                                                 id="" cols="30" rows="1"></textarea>
                                         </div>
-                                        <div class="row mt-2">
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                    id="flexRadioDefault1" [(ngModel)]="pago.medioPago" name="medioPago"
+                                                    value="CONSIGNACION">
+                                                <label class="form-check-label" for="flexRadioDefault1">
+                                                    CONSIGNACION
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                    id="flexRadioDefault2" [(ngModel)]="pago.medioPago" name="medioPago"
+                                                    value="EFECTIVO">
+                                                <label class="form-check-label" for="flexRadioDefault2">
+                                                    EFECTIVO
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-2 text-center">
                                             <div class="col-md-4 offset-md-4">
                                                 <button class="btn btn-primary" (click)="agregarPagoACuotas()"
                                                     style="background-color: #960010;border-color: #960010;">Agregar
@@ -1392,6 +1439,33 @@
                                     </div>
                                 </form>
 
+                            </div>
+
+                            <div class="col-md-12" *ngIf="ocultarCrearRevision">
+                                <form action="">
+                                    <div class="row mt-2 text-center">
+                                        <div class="col-md-12">
+                                            <label for="" class="form-label">Nota de la Revision</label>
+                                            <textarea name="" id="detalleRevison" cols="10" rows="3"
+                                                [(ngModel)]="detalleRevision" name="detalleRevision"
+                                                class="form-control"></textarea>
+                                        </div>
+
+                                    </div>
+                                    <div class="row mt-2 text-center">
+                                        <div class="col-md-4 offset-md-4">
+                                            <button class="btn btn-primary" (click)="crearNotaRevision()"  *ngIf="!spinnerCrearNota"
+                                                style="background-color: #960010;border-color: #960010;">Crear
+                                                Nota</button>
+                                            <button *ngIf="spinnerCrearNota" class="btn btn-danger b" style="background-color: #960010;border-color: #960010;">
+                                                Guardando...
+                                                <span class="spinner-border spinner-border-sm float-right" role="status"
+                                                    aria-hidden="true"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </form>
                             </div>
 
                         </div>

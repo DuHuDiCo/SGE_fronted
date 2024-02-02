@@ -47,10 +47,13 @@ export class HomeCarteraComponent implements OnInit {
   disableds!: Array<boolean>
   mostrarAgregarPago: boolean = false
   ocultarAgregarPago: boolean = false
+  detalleRevision:string = ""
+  mostrarCrearRevision: boolean = false
+  ocultarCrearRevision: boolean = false
   pago: any = {
     valor: 0,
     detalle: '',
-    medioPago: "CONSIGNACION",
+    medioPago: "",
     numeroRecibo: '',
     cumpliendo: false
   }
@@ -94,7 +97,7 @@ export class HomeCarteraComponent implements OnInit {
   notiArray: Notificacion[] = []
   notiArrayVencidas: Notificacion[] = []
   notiArrayRealizadas: Notificacion[] = []
-
+  spinnerCrearNota:boolean = false
   // OBJETOS
 
   cuentaCobrarSelected: any = {
@@ -358,9 +361,9 @@ export class HomeCarteraComponent implements OnInit {
 
   botonPdf: boolean = false
   pageGestion: number = 1;
-  calculating:boolean = false
-  ingresarTel:boolean = true
-  botonGuardarGes:boolean = false
+  calculating: boolean = false
+  ingresarTel: boolean = true
+  botonGuardarGes: boolean = false
 
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
@@ -696,7 +699,7 @@ export class HomeCarteraComponent implements OnInit {
   findCodeudores(event: any) {
     this.codeudoresSelected = this.codeudores.filter((c: any) => c.numeroDocumento == event.target.value)
     console.log(this.codeudoresSelected);
-    
+
   }
 
   // GESTIONES
@@ -709,6 +712,10 @@ export class HomeCarteraComponent implements OnInit {
         this.getLastDato(numeroObligacion)
         this.ordenarGestiones(data)
         var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
+
+        
+       
+
         if (gestion != null || gestion != undefined) {
           this.idGestion = gestion.idGestion
         }
@@ -791,7 +798,7 @@ export class HomeCarteraComponent implements OnInit {
         this.newGestion.userNotifying = user
 
         console.log(this.newGestion);
-        
+
 
         Swal.fire({
           title: 'Guardar Gestión',
@@ -864,9 +871,9 @@ export class HomeCarteraComponent implements OnInit {
 
         this.newGestion.userNotifying = user
         this.newGestion.usernameToSetNotificacion = user
-        
+
         console.log(this.newGestion);
-        
+
 
         Swal.fire({
           title: 'Guardar Gestión',
@@ -990,8 +997,8 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
-  ingresarTelefono(){
-    if(this.ingresarTel == false){
+  ingresarTelefono() {
+    if (this.ingresarTel == false) {
       this.ingresarTel = true
       this.reporte.numeroAlterno = null
     } else {
@@ -1040,68 +1047,68 @@ export class HomeCarteraComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.botonGuardarGes = true
-          this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
-            (data: any) => {
-              this.getGestiones(this.newGestion.numeroObligacion)
-              this.getNotificaciones()
-              this.mostrarReporte()
-              Swal.fire({
-                icon: 'success',
-                title: 'Datos Guardados',
-                showConfirmButton: false,
-                text: 'Gestión Guardada Exitosamente',
-                timer: 3000
-              })
-              console.log(this.newGestion);
-              
-              this.botonGuardarGes = false
-              this.newGestion = {
-                numeroObligacion: this.newGestion.numeroObligacion,
-                clasificacion: {
-                  tipoClasificacion: null,
-                  tarea: null,
-                  nota: null,
-                  acuerdoPago: null,
-                  nombreClasificacion: ''
-                },
-                contact: false,
-                detallesAdicionales: this.newGestion.detallesAdicionales,
-                usernameToSetNotificacion: '',
-                userNotifying: ''
-              }
-              this.cuotas = []
-              this.disabledFecha = false
-              this.acuerdo = {
-                detalle: '',
-                valorCuotaMensual: 0,
-                tipoAcuerdo: '',
-                valorTotalAcuerdo: 0,
-                valorInteresesMora: 0,
-                honoriarioAcuerdo: 0,
-                fechaCompromiso: '',
-                cuotasList: [],
-                username: ''
-              }
-              this.cuentasCalcular = {
-                numeroObligacion: '',
-                valorTotal: 0,
-                moraObligatoria: 0,
-                fechaVencimiento: new Date,
-                username: ''
-              }
-              this.col = true
-              $('#modalDetalle').modal('hide');
-              $('#modalReporte').modal('show');
-            }, (error: any) => {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error Al Guardar La Gestión',
-                timer: 3000
-              })
-              this.botonGuardarGes = false
+        this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
+          (data: any) => {
+            this.getGestiones(this.newGestion.numeroObligacion)
+            this.getNotificaciones()
+            this.mostrarReporte()
+            Swal.fire({
+              icon: 'success',
+              title: 'Datos Guardados',
+              showConfirmButton: false,
+              text: 'Gestión Guardada Exitosamente',
+              timer: 3000
+            })
+            console.log(this.newGestion);
+
+            this.botonGuardarGes = false
+            this.newGestion = {
+              numeroObligacion: this.newGestion.numeroObligacion,
+              clasificacion: {
+                tipoClasificacion: null,
+                tarea: null,
+                nota: null,
+                acuerdoPago: null,
+                nombreClasificacion: ''
+              },
+              contact: false,
+              detallesAdicionales: this.newGestion.detallesAdicionales,
+              usernameToSetNotificacion: '',
+              userNotifying: ''
             }
-          )
+            this.cuotas = []
+            this.disabledFecha = false
+            this.acuerdo = {
+              detalle: '',
+              valorCuotaMensual: 0,
+              tipoAcuerdo: '',
+              valorTotalAcuerdo: 0,
+              valorInteresesMora: 0,
+              honoriarioAcuerdo: 0,
+              fechaCompromiso: '',
+              cuotasList: [],
+              username: ''
+            }
+            this.cuentasCalcular = {
+              numeroObligacion: '',
+              valorTotal: 0,
+              moraObligatoria: 0,
+              fechaVencimiento: new Date,
+              username: ''
+            }
+            this.col = true
+            $('#modalDetalle').modal('hide');
+            $('#modalReporte').modal('show');
+          }, (error: any) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error Al Guardar La Gestión',
+              timer: 3000
+            })
+            this.botonGuardarGes = false
+          }
+        )
       }
     })
   }
@@ -1358,7 +1365,7 @@ export class HomeCarteraComponent implements OnInit {
 
     this.reporte.username = user
     console.log(this.reporte);
-    
+
     setTimeout(() => {
       this.cuentasCobrar.reporte(this.reporte).subscribe(
         (data: any) => {
@@ -1447,14 +1454,14 @@ export class HomeCarteraComponent implements OnInit {
 
   mostrarOffcanvas() {
     console.log(this.calculating);
-    
-    if(this.calculating == false){
+
+    if (this.calculating == false) {
       this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
       this.cuentasCalcular.valorTotal = this.cuentaCobrarSelected.totalObligatoria
       this.cuentasCalcular.moraObligatoria = this.cuentaCobrarSelected.moraObligatoria
     }
 
-    if(this.calculating == true){
+    if (this.calculating == true) {
       this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
       this.cuentasCalcular.valorTotal = this.acuerdoCal.saldoAcuerdo
       this.cuentasCalcular.moraObligatoria = this.acuerdoCal.valorTotalMora
@@ -1509,7 +1516,7 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-    if(this.calculating == false){
+    if (this.calculating == false) {
       this.calcularIntMora()
     }
 
@@ -1609,7 +1616,7 @@ export class HomeCarteraComponent implements OnInit {
     var cal = this.cuentasCalcular.moraObligatoria * (this.constanteHonorarios / 366) * this.cuentaCobrarSelected.diasVencidos
     var res = cal.toFixed(0)
     this.acuerdoCal.valorInteresesMora = res
-    this.acuerdo.valorInteresesMora = this.acuerdoCal.valorInteresesMora 
+    this.acuerdo.valorInteresesMora = this.acuerdoCal.valorInteresesMora
   }
 
 
@@ -1625,13 +1632,13 @@ export class HomeCarteraComponent implements OnInit {
     if (this.acuerdo.tipoAcuerdo == 'MORA') {
       this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
       if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-        if(this.calculating == true){
+        if (this.calculating == true) {
           this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.honoriarioAcuerdo)
         } else {
           this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
         }
       } else {
-        if(this.calculating == true){
+        if (this.calculating == true) {
           this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria
         } else {
           this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)
@@ -1642,13 +1649,13 @@ export class HomeCarteraComponent implements OnInit {
     if (this.acuerdo.tipoAcuerdo == 'TOTAL') {
       this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
       if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-        if(this.calculating == true){
+        if (this.calculating == true) {
           this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal
         } else {
           this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
         }
       } else {
-        if(this.calculating == true){
+        if (this.calculating == true) {
           this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal
         } else {
           this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora)
@@ -1731,7 +1738,7 @@ export class HomeCarteraComponent implements OnInit {
 
   calculadora(event: any) {
     console.log(this.cuentaCobrarSelected.clientes[0].saldoActual);
-    
+
     if (this.cuentaCobrarSelected.clientes[0].saldoActual <= 0 || this.cuentaCobrarSelected.clientes[0].saldoActual == null) {
       Swal.fire({
         icon: 'error',
@@ -1939,7 +1946,7 @@ export class HomeCarteraComponent implements OnInit {
         this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
       }
       console.log(this.acuerdoCal);
-      
+
       this.isCalculate = true
       this.calculating = true
     }
@@ -1951,6 +1958,8 @@ export class HomeCarteraComponent implements OnInit {
   // CALCULAR LAS FECHAS DE LAS CUOTAS
   generarFechas() {
     var fechaString = this.fechaInicial.toISOString()
+
+
     var fechaSplit = fechaString.split("T")
     var fechaOk = fechaSplit[0].split("-")
     var dia = parseInt(fechaOk[2])
@@ -1959,12 +1968,14 @@ export class HomeCarteraComponent implements OnInit {
     var meses31 = [1, 3, 5, 7, 8, 10, 12]
     var meses30 = [4, 6, 9, 11]
 
+    console.log(this.cantidadFechas);
+
     for (let i = 0; i < this.cantidadFechas; i++) {
       var fechaString = `${year}-${mes}-${dia}`
 
       var fechaDate = new Date(fechaString)
 
-      
+
 
       if (mes === 2) {
         if (parseInt(fechaOk[2]) == 30 || parseInt(fechaOk[2]) == 31) {
@@ -1987,7 +1998,7 @@ export class HomeCarteraComponent implements OnInit {
       }
 
       var fechaok = `${dia}/${mes}/${year}`
-      
+
 
 
       this.fechasIncrementadas.push(fechaok)
@@ -2030,6 +2041,13 @@ export class HomeCarteraComponent implements OnInit {
       }
       this.cuotas.push(cuotaList1)
       this.metodosCalculos()
+
+      var totalCuotas = this.acuerdoCal.valorTotalAcuerdo / this.acuerdoCal.valorCuotaMensual
+      var res = Math.ceil(totalCuotas);
+      this.totalCuotas = res
+      this.cantidadFechas = this.totalCuotas;
+
+      this.generarFechas()
       return
     }
 
@@ -2038,7 +2056,11 @@ export class HomeCarteraComponent implements OnInit {
     this.totalCuotas = res
     this.cantidadFechas = this.totalCuotas;
 
+
+
     this.generarFechas()
+
+
 
     var porAcu = 0
 
@@ -2324,6 +2346,7 @@ export class HomeCarteraComponent implements OnInit {
     this.disableds[0] = true
     this.disableds[this.cuotas.length - 1] = true
     this.metodosCalculos()
+    this.validarCuotasVacias()
   }
 
   // CLASIFICACION
@@ -2335,6 +2358,18 @@ export class HomeCarteraComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  validarCuotasVacias() {
+    for (let i = 0; i < this.cuotas.length; i++) {
+      if (this.cuotas[i].valorCuota <= 0) {
+        this.cuotas.splice(i, 1)
+        this.disableds[this.cuotas.length - 1] = true
+      }
+
+    }
+
+
   }
 
   cancelarGestion() {
@@ -2881,18 +2916,7 @@ export class HomeCarteraComponent implements OnInit {
     if (valorTotal > 0) {
       this.cuotasList.forEach((c: CuotaList, i: number) => {
 
-        if (this.pago.valor < c.valorCuota) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Valor ingresado menor al valor de la cuota pactada',
-            timer: 3000
-          })
-          this.valorTotalIngresado = 0
-          valorTotal = 0
-          throw new Error('Valor ingresado menor al valor de la cuota pactada')
 
-        }
 
         if (c.pagos != null || c.pagos != undefined) {
           if (c.pagos.saldoCuota > 0) {
@@ -3116,9 +3140,56 @@ export class HomeCarteraComponent implements OnInit {
       }
       this.pago.valor = 0
       this.activarGuardarPago = true
-
+      this.ocultarCrearRevision = false
 
     }
+  }
+
+  crearNotaRevision() {
+    this.ocultarCrearRevision = true
+    this.mostrarCrearRevision = false
+    this.spinnerCrearNota = true
+    this.ocultarAgregarPago = false
+    var detalle = this.detalleRevision
+    
+    
+    var nota = {
+      detalle : `ACUERDO DE PAGO N° ${this.gestionSelected.clasificacion.idClasificacionGestion} ${detalle}`
+    }
+
+    this.newGestion.clasificacion.nota = nota
+    this.newGestion.clasificacion.nombreClasificacion = "Acuerdo de pago/Revision"
+    this.newGestion.clasificacion.tipoClasificacion = "NOTA"
+    this.newGestion.contact = false
+    
+    var usuario = this.authService.getUsername();
+    if(usuario != null || usuario != undefined){
+      this.newGestion.userNotifying = usuario
+      this.newGestion.usernameToSetNotificacion = usuario
+    }
+
+    this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
+      (data:any)=>{
+        Swal.fire({
+          icon: 'success',
+          title: 'Datos Guardados',
+          text: 'Nota Guardada Con Éxito',
+          timer: 3000
+        })
+        this.spinnerCrearNota = false
+      },(error:any)=>{
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error Al Guardar  La Nota',
+          timer: 3000
+        })
+        this.spinnerCrearNota = false
+      }
+    )
+
+    
+
   }
 
   generarRecibo() {
@@ -3143,32 +3214,34 @@ export class HomeCarteraComponent implements OnInit {
       detalle: this.pago.detalle,
       metodoPago: this.pago.medioPago,
       cumpliendo: this.pago.cumpliendo,
-      username: ''
+      username: '',
+      nombreClasificacion: "Acuerdo de pago/Recaudo"
     }
 
 
+    console.log(recibo);
 
 
     var user = this.authService.getUsername();
     if (user != null || user != undefined) {
       recibo.username = user;
 
-      this.cuentasCobrar.crearRecibo(recibo).subscribe(
-        (data: any) => {
+      // this.cuentasCobrar.crearRecibo(recibo).subscribe(
+      //   (data: any) => {
 
-          this.mostrarReciboPago(data.base64)
-          this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
+      //     this.mostrarReciboPago(data.base64)
+      //     this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
 
-          this.activarGuardarPago = false
-          this.savePago = false
-          this.coutasRequest = []
-        }, (error: any) => {
-          this.activarGuardarPago = false
-          this.savePago = false
-          console.log(error);
+      //     this.activarGuardarPago = false
+      //     this.savePago = false
+      //     this.coutasRequest = []
+      //   }, (error: any) => {
+      //     this.activarGuardarPago = false
+      //     this.savePago = false
+      //     console.log(error);
 
-        }
-      )
+      //   }
+      // )
     }
 
     $('#modalGestionCom').modal('hide');
