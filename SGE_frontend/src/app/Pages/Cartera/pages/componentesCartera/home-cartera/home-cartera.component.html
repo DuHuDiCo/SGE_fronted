@@ -375,7 +375,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <!-- MORA -->
-                                        <div class="card text-center">
+                                        <div class="card text-center" style="height: 380px;">
                                             <div class="card-header text-center tituloCal">
                                                 Información De La Mora
                                             </div>
@@ -594,74 +594,18 @@
                                         </div>
                                         <div class="row justify-content-start mt-2">
                                             <div class="col-md-12">
-                                                <!-- CODEUDORES -->
-                                                <div class="card text-center">
+                                                <!-- REFERENCIAS -->
+                                                <div class="card text-center mb-2">
                                                     <div class="card-header text-center tituloCard">
-                                                        Codeudores
+                                                        Referencias
                                                     </div>
                                                     <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col-md-8">
-                                                                <div class="input-group input-group-sm mb-3">
-                                                                    <span
-                                                                        class="input-group-text fw-bold">Codeudores</span>
-                                                                    <select class="form-select"
-                                                                        style="border: 1px black solid;"
-                                                                        (change)="findCodeudores($event)">
-                                                                        <option>Seleccione Un Codeudor</option>
-                                                                        <option *ngFor="let co of codeudores"
-                                                                            value="{{ co.numeroDocumento }}">{{
-                                                                            co.nombreTitular}}</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="input-group input-group-sm mb-3">
-                                                                    <span class="input-group-text fw-bold">Nro.
-                                                                        Codeudores</span>
-                                                                    <input type="text" class="form-control"
-                                                                        [(ngModel)]="codeudores.length" disabled>
-                                                                </div>
-                                                            </div>
+                                                        <div class="form-floating">
+                                                            <textarea class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].descripcionDetallada"
+                                                                style="height: 80px" disabled></textarea>
+                                                            <label class="fw-bold">Referencia</label>
                                                         </div>
-                                                        <span *ngFor="let cs of codeudoresSelected">
-                                                            <div class="row justify-content-center">
-                                                                <div class="col-md-12">
-                                                                    <div class="input-group input-group-sm mb-3">
-                                                                        <span
-                                                                            class="input-group-text fw-bold">Dirección</span>
-                                                                        <input type="text" class="form-control"
-                                                                            value="{{ cs.direcciones[0].direccion }}"
-                                                                            disabled>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row justify-content-center">
-                                                                <div class="col-md-6">
-                                                                    <div class="input-group input-group-sm mb-3">
-                                                                        <span
-                                                                            class="input-group-text fw-bold">Celular</span>
-                                                                        <input type="text" class="form-control"
-                                                                            value="{{ cs.telefonos[0].indicativo }} {{ cs.telefonos[0].numero }}"
-                                                                            disabled>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="input-group input-group-sm mb-3">
-                                                                        <span
-                                                                            class="input-group-text fw-bold">Cédula</span>
-                                                                        <input type="text" class="form-control"
-                                                                            value="{{ cs.numeroDocumento }}" disabled>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-floating">
-                                                                <textarea class="form-control" style="height: 77px"
-                                                                    value="{{ cs.descripcionDetallada }}"
-                                                                    disabled></textarea>
-                                                                <label class="fw-bold">Referencia</label>
-                                                            </div>
-                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -676,7 +620,7 @@
                                             <div class="card-header text-center tituloCard">
                                                 Información Del Credito
                                             </div>
-                                            <div class="card-body" style="height: 170px;">
+                                            <div class="card-body" style="height: 120px;">
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
@@ -716,18 +660,67 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <!-- REFERENCIAS -->
-                                        <div class="card text-center mb-2">
+                                        <!-- CODEUDORES -->
+                                        <div class="card text-center">
                                             <div class="card-header text-center tituloCard">
-                                                Referencias
+                                                Codeudores
                                             </div>
                                             <div class="card-body">
-                                                <div class="form-floating">
-                                                    <textarea class="form-control"
-                                                        [(ngModel)]="cuentaCobrarSelected.clientes[0].descripcionDetallada"
-                                                        style="height: 140px" disabled></textarea>
-                                                    <label class="fw-bold">Referencia</label>
+                                                <div class="row mt-4 mb-3">
+                                                    <div class="col-md-8">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Codeudores</span>
+                                                            <select class="form-select" style="border: 1px black solid;"
+                                                                (change)="findCodeudores($event)">
+                                                                <option>Seleccione Un Codeudor</option>
+                                                                <option *ngFor="let co of codeudores"
+                                                                    value="{{ co.numeroDocumento }}">{{
+                                                                    co.nombreTitular}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Nro.
+                                                                Codeudores</span>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="codeudores.length" disabled>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                <span *ngFor="let cs of codeudoresSelected">
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-md-12">
+                                                            <div class="input-group input-group-sm mb-3">
+                                                                <span class="input-group-text fw-bold">Dirección</span>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ cs.direcciones[0].direccion }}" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-md-6">
+                                                            <div class="input-group input-group-sm mb-3">
+                                                                <span class="input-group-text fw-bold">Celular</span>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ cs.telefonos[0].indicativo }} {{ cs.telefonos[0].numero }}"
+                                                                    disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="input-group input-group-sm mb-3">
+                                                                <span class="input-group-text fw-bold">Cédula</span>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ cs.numeroDocumento }}" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-floating">
+                                                        <textarea class="form-control" style="height: 77px"
+                                                            value="{{ cs.descripcionDetallada }}" disabled></textarea>
+                                                        <label class="fw-bold">Referencia</label>
+                                                    </div>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
