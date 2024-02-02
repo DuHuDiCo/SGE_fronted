@@ -1276,7 +1276,7 @@
                     </select>
 
                     <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.numeroAlterno"
-                        style="border: 1px black solid;" [disabled]="deshabilitarTel">
+                        style="border: 1px black solid;">
                         <option [value]="null">Seleccione Un Telefono</option>
                         <option *ngFor="let t of telefonos">{{ t }}
                         </option>
