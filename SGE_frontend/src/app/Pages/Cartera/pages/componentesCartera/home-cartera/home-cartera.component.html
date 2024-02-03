@@ -1270,13 +1270,13 @@
                     <h6>Seleccione El Cliente Al Que Desea Agregar El Acuerdo</h6>
                     <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.cedula" (change)="cambiarCedula($event)"
                         style="border: 1px black solid;">
-                        <option [value]="null">Seleccione Una Cedula</option>
+                        <option value="">Seleccione Una Cedula</option>
                         <option *ngFor="let c of cuentaCobrarSelected.clientes" [value]="c.numeroDocumento">{{
                             c.numeroDocumento }} - {{ c.nombreTitular }} - {{ c.tipoGarante.tipoGarante }}</option>
                     </select>
 
-                    <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.numeroAlterno"
-                        style="border: 1px black solid;">
+                    <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.numeroAlterno" #telefono
+                        style="border: 1px black solid;" disabled>
                         <option [value]="null">Seleccione Un Telefono</option>
                         <option *ngFor="let t of telefonos">{{ t }}
                         </option>
