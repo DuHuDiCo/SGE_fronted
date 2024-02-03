@@ -89,6 +89,10 @@ export class CuentasCobrarService {
     return this.http.put(`${baseUrl}/gestiones/linkAndReporteAcuerdoToClient`, data)
   }
 
+  alertasGestiones(username:string){
+    return this.http.get(`${baseUrl}/gestiones/alerts?username=${username}`, )
+  }
+
   // TIPO VENCIMIENTO
   saveTipoVencimiento(tipoVencimiento:TipoVencimiento){
     return this.http.post(`${baseUrl}/tiposVencimiento/guardarTipoVencimiento`, tipoVencimiento)

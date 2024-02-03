@@ -105,6 +105,15 @@ export class HomeCarteraComponent implements OnInit {
   spinnerCrearNota:boolean = false
   // OBJETOS
 
+
+  alertasGestionesObject:any = {
+    gestionesRealizadas: 0,
+    acuerdosDePagosRealizados: 0,
+    acuerdosDePagosActivos: 0,
+    acuerdoPagoDia: 0,
+    gestionesDia: 0
+  }
+
   cuentaCobrarSelected: any = {
 
     idCuentasPorCobrar: 0,
@@ -301,7 +310,7 @@ export class HomeCarteraComponent implements OnInit {
     fechaGestionInicio: null,
     fechaGestionFin: null,
     fechaCompromisoInicio: null,
-    fechaCompromisoFin: null,
+    fechaCompromisoFin: "N/A",
     isActive: false
   }
 
@@ -388,6 +397,7 @@ export class HomeCarteraComponent implements OnInit {
     this.getNotificaciones()
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
+    this.alertasGestiones()
   }
 
   getTipoVen() {
@@ -428,6 +438,7 @@ export class HomeCarteraComponent implements OnInit {
 
   // TRAER CUENTAS POR COBRAR
   getCuentasCobrar() {
+    this.alertasGestiones()
     this.filtrando = false
     var admin = this.authService.getRolesByName(ROLES.Administration);
 
@@ -711,6 +722,7 @@ export class HomeCarteraComponent implements OnInit {
 
   // GESTIONES
   getGestiones(numeroObligacion: string) {
+    this.alertasGestiones()
     this.gestiones = []
     this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
       (data: any) => {
@@ -720,6 +732,7 @@ export class HomeCarteraComponent implements OnInit {
         this.ordenarGestiones(data)
         var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
 
+        console.log(gestion);
         
        
 
@@ -3437,6 +3450,22 @@ export class HomeCarteraComponent implements OnInit {
 
     this.miInput.nativeElement.focus();
 
+  }
+
+
+  alertasGestiones(){
+    var usuario = this.authService.getUsername();
+    if(usuario != null || usuario != undefined){
+      this.cuentasCobrar.alertasGestiones(usuario).subscribe(
+        (data:any)=>{
+          this.alertasGestionesObject = data;
+          
+          
+        },(error:any)=>{
+          console.log(error)
+        }
+      )
+    }
   }
 
 }

@@ -153,6 +153,8 @@
         </ul>
     </div>
     <div class="card-c">
+
+
         <div class="row">
             <div *ngIf="(buscarObligacion != '' && variableLimpiar)  || (this.filtros.banco.length != 0) ||
             (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
@@ -171,17 +173,44 @@
                 <button (click)="reiniciarFiltros('LIMPIAR')" class="btn btn-primary justify-content-start mb-3">Limpiar
                     Filtros</button>
             </div>
+            
 
             <div class="col" [ngClass]="{'col-md-12': !variableLimpiar, 'col-md-10': variableLimpiar}">
-                <div *ngIf="newGestion.clasificacion.tipoClasificacion != null" class="row justify-content-end"
+                <div  class="row justify-content-center"
                     data-bs-target="#offcanvasRight">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Gestiones  Hoy: </strong> {{alertasGestionesObject.gestionesDia}}
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Gestiones  Mes: </strong> {{alertasGestionesObject.gestionesDia}}
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Acuerdos  Mes: </strong> {{alertasGestionesObject.acuerdosDePagosRealizados}}
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Acuerdos  Dia: </strong> {{alertasGestionesObject.acuerdoPagoDia}}
+                        </div>
+                    </div>
+                    <div class="col-md-3"  *ngIf="newGestion.clasificacion.tipoClasificacion == null">
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Acuerdos  Activos: </strong> {{alertasGestionesObject.acuerdosDePagosActivos}}
+                        </div>
+                    </div>
+                    <div class="col-md-4" *ngIf="newGestion.clasificacion.tipoClasificacion != null">
                         <div class="alert alert-danger text-end" role="alert" data-bs-toggle="offcanvas"
                             data-bs-target="#offcanvasRight" style="cursor: pointer;"
                             (click)="findCuentaCobrar(newGestion.numeroObligacion)">
                             <h6>Editando Gestion De {{ newGestion.numeroObligacion }}</h6>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -1454,10 +1483,12 @@
                                     </div>
                                     <div class="row mt-2 text-center">
                                         <div class="col-md-4 offset-md-4">
-                                            <button class="btn btn-primary" (click)="crearNotaRevision()"  *ngIf="!spinnerCrearNota"
+                                            <button class="btn btn-primary" (click)="crearNotaRevision()"
+                                                *ngIf="!spinnerCrearNota"
                                                 style="background-color: #960010;border-color: #960010;">Crear
                                                 Nota</button>
-                                            <button *ngIf="spinnerCrearNota" class="btn btn-danger b" style="background-color: #960010;border-color: #960010;">
+                                            <button *ngIf="spinnerCrearNota" class="btn btn-danger b"
+                                                style="background-color: #960010;border-color: #960010;">
                                                 Guardando...
                                                 <span class="spinner-border spinner-border-sm float-right" role="status"
                                                     aria-hidden="true"></span>
@@ -1768,8 +1799,14 @@
                                     <h6 class="fw-bold">Fecha Gestión</h6>
                                 </blockquote>
                                 <div class="input-group input-group-sm">
-                                    <span class="input-group-text fw-bold">Desde/Hasta</span>
+                                    <span class="input-group-text fw-bold">Deste</span>
                                     <input type="date" [(ngModel)]="filtros.fechaGestionInicio" class="form-control">
+
+                                </div>
+                                <br>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text fw-bold">Hasta</span>
+
                                     <input type="date" [(ngModel)]="filtros.fechaGestionFin" class="form-control">
                                 </div>
                             </figure>
@@ -1781,11 +1818,10 @@
                                         <h6 class="fw-bold">Fecha Compromiso</h6>
                                     </blockquote>
                                     <div class="input-group input-group-sm">
-                                        <span class="input-group-text fw-bold">Desde/Hasta</span>
+                                        <span class="input-group-text fw-bold">Menor a: </span>
                                         <input type="date" [(ngModel)]="filtros.fechaCompromisoInicio"
                                             class="form-control">
-                                        <input type="date" [(ngModel)]="filtros.fechaCompromisoFin"
-                                            class="form-control">
+
                                     </div>
                                 </figure>
                             </div>

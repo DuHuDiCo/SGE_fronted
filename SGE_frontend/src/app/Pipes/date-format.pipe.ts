@@ -13,9 +13,11 @@ export class DateFormatPipe implements PipeTransform {
     var dia = dateString[2].split("T")[0]
     var mes = dateString[1]
     var year = dateString[0]
-    var hora = (date.getUTCHours()).toString()
-    var minute = date.getUTCMinutes().toString()
-    var segundo = date.getUTCSeconds().toString()
+    var hora = (date.getHours()).toString()
+    var minute = date.getMinutes().toString()
+    var segundo = date.getSeconds().toString()
+    
+    
     
     dia = (dia.length == 1 ? `0${dia}` : dia)
    
