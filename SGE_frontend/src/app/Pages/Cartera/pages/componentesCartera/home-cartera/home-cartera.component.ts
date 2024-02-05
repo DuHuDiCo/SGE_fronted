@@ -587,6 +587,7 @@ export class HomeCarteraComponent implements OnInit {
       return
     } else {
       this.spinnerSidebar = true
+      
       this.cuentaCobrarSelected = {
         idCuentasPorCobrar: 0,
         numeroObligacion: '',
@@ -673,6 +674,28 @@ export class HomeCarteraComponent implements OnInit {
         detallesAdicionales: '',
         usernameToSetNotificacion: '',
         userNotifying: ''
+      }
+
+      this.acuerdo = {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: '',
+        cuotasList: [],
+        username: ''
+      }
+
+      this.nota = {
+        detalle: ''
+      }
+
+      this.tarea = {
+        detalleTarea: '',
+        fechaFinTarea: '',
+        isPartOfRecaudo: false
       }
 
       this.codeudoresSelected = []
@@ -842,6 +865,11 @@ export class HomeCarteraComponent implements OnInit {
               (data: any) => {
                 this.getGestiones(this.newGestion.numeroObligacion)
                 this.getNotificaciones()
+                if(!this.filtrando){
+                  this.getCuentasCobrar()
+                } else {
+                  this.filtro()
+                }
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
@@ -924,6 +952,11 @@ export class HomeCarteraComponent implements OnInit {
                   timer: 3000
                 })
                 this.getNotificaciones()
+                if(!this.filtrando){
+                  this.getCuentasCobrar()
+                } else {
+                  this.filtro()
+                }
                 this.gestionButton = false
                 this.newGestion = {
                   numeroObligacion: this.newGestion.numeroObligacion,
@@ -1089,6 +1122,11 @@ export class HomeCarteraComponent implements OnInit {
             this.getGestiones(this.newGestion.numeroObligacion)
             this.getNotificaciones()
             this.mostrarReporte()
+            if(!this.filtrando){
+              this.getCuentasCobrar()
+            } else {
+              this.filtro()
+            }
             Swal.fire({
               icon: 'success',
               title: 'Datos Guardados',
