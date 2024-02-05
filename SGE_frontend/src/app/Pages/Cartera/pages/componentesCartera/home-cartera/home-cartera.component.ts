@@ -48,6 +48,7 @@ export class HomeCarteraComponent implements OnInit {
   clasificacionesT: Tarea[] = []
   tiposVen: TipoVencimiento[] = []
   disableds!: Array<boolean>
+  sizes!: Array<number>
   mostrarAgregarPago: boolean = false
   ocultarAgregarPago: boolean = false
   detalleRevision: string = ""
@@ -438,6 +439,10 @@ export class HomeCarteraComponent implements OnInit {
 
   // TRAER CUENTAS POR COBRAR
   getCuentasCobrar() {
+    this.sizes = []
+
+    var td
+
     this.alertasGestiones()
     this.filtrando = false
     var admin = this.authService.getRolesByName(ROLES.Administration);
@@ -451,6 +456,8 @@ export class HomeCarteraComponent implements OnInit {
         (data: any) => {
           this.paginas = new Array(data.totalPages)
           this.cuentasCobrarArray = data.content
+          
+          
           console.log(data)
           this.last = data.last
           this.first = data.first
@@ -478,6 +485,8 @@ export class HomeCarteraComponent implements OnInit {
         (data: any) => {
           this.paginas = new Array(data.totalPages)
           this.cuentasCobrarArray = data.content
+          
+          
           this.last = data.last
           this.first = data.first
           this.numeroPages = data.totalPages
@@ -487,6 +496,13 @@ export class HomeCarteraComponent implements OnInit {
           } else {
             this.spinner = false
           }
+
+          for (let i = 0; i < this.size; i++) {
+            this.sizes.push(i)
+            var td = document.getElementById(`td0`)
+            console.log(td);
+          }
+          console.log(this.sizes);
         }, (error: any) => {
           console.log(error);
         }
@@ -891,7 +907,8 @@ export class HomeCarteraComponent implements OnInit {
                   usernameToSetNotificacion: '',
                   userNotifying: ''
                 }
-                $('#modalDetalle').modal('hide');
+                $('#modalGestion').modal('hide');
+                $('#offcanvasRight').offcanvas('hide');
               }, (error: any) => {
                 Swal.fire({
                   icon: 'error',
@@ -972,7 +989,8 @@ export class HomeCarteraComponent implements OnInit {
                   usernameToSetNotificacion: '',
                   userNotifying: ''
                 }
-                $('#modalDetalle').modal('hide');
+                $('#modalGestion').modal('hide');
+                $('#offcanvasRight').offcanvas('hide');
               }, (error: any) => {
                 Swal.fire({
                   icon: 'error',
@@ -1530,6 +1548,11 @@ export class HomeCarteraComponent implements OnInit {
       var ele = document.getElementById('base64')
       ele?.click()
     }, 2000);
+    $('#offcanvasRight').offcanvas('hide');
+  }
+
+  cerrarCuenta(){
+    $('#offcanvasRight').offcanvas('hide');
   }
 
 
