@@ -2876,14 +2876,14 @@ export class HomeCarteraComponent implements OnInit {
       this.gestiones.push(ges)
     });
 
-    var tareas = this.gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && ges.clasificacion.isActive)
+    var tareas = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && ges.clasificacion.isActive)
     if (tareas != null || tareas != undefined) {
       tareas.forEach((ges: any) => {
         this.gestiones.push(ges)
       });
     }
 
-    var notas = this.gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'NOTA')
+    var notas = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'NOTA')
     if (notas != null || notas != undefined) {
       notas.forEach((ges: any) => {
         this.gestiones.push(ges)

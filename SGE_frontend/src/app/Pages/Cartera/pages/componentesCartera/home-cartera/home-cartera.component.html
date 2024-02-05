@@ -173,34 +173,35 @@
                 <button (click)="reiniciarFiltros('LIMPIAR')" class="btn btn-primary justify-content-start mb-3">Limpiar
                     Filtros</button>
             </div>
-            
+
 
             <div class="col" [ngClass]="{'col-md-12': !variableLimpiar, 'col-md-10': variableLimpiar}">
-                <div  class="row justify-content-center"
-                    data-bs-target="#offcanvasRight">
+                <div class="row justify-content-center" data-bs-target="#offcanvasRight">
                     <div class="col-md-2">
                         <div class="alert alert-danger" role="alert">
-                            <strong>Gestiones  Hoy: </strong> {{alertasGestionesObject.gestionesDia}}
+                            <strong>Gestiones Hoy: </strong> {{alertasGestionesObject.gestionesDia}}
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="alert alert-danger" role="alert">
+
                             <strong>Gestiones  Mes: </strong> {{alertasGestionesObject.gestionesRealizadas}}
+
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="alert alert-danger" role="alert">
-                            <strong>Acuerdos  Mes: </strong> {{alertasGestionesObject.acuerdosDePagosRealizados}}
+                            <strong>Acuerdos Mes: </strong> {{alertasGestionesObject.acuerdosDePagosRealizados}}
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="alert alert-danger" role="alert">
-                            <strong>Acuerdos  Dia: </strong> {{alertasGestionesObject.acuerdoPagoDia}}
+                            <strong>Acuerdos Dia: </strong> {{alertasGestionesObject.acuerdoPagoDia}}
                         </div>
                     </div>
-                    <div class="col-md-3"  *ngIf="newGestion.clasificacion.tipoClasificacion == null">
+                    <div class="col-md-3" *ngIf="newGestion.clasificacion.tipoClasificacion == null">
                         <div class="alert alert-danger" role="alert">
-                            <strong>Acuerdos  Activos: </strong> {{alertasGestionesObject.acuerdosDePagosActivos}}
+                            <strong>Acuerdos Activos: </strong> {{alertasGestionesObject.acuerdosDePagosActivos}}
                         </div>
                     </div>
                     <div class="col-md-4" *ngIf="newGestion.clasificacion.tipoClasificacion != null">
@@ -210,7 +211,7 @@
                             <h6>Editando Gestion De {{ newGestion.numeroObligacion }}</h6>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -404,7 +405,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <!-- MORA -->
-                                        <div class="card text-center" style="height: 380px;">
+                                        <div class="card text-center">
                                             <div class="card-header text-center tituloCal">
                                                 Información De La Mora
                                             </div>
