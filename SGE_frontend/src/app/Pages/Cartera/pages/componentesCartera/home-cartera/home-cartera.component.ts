@@ -50,7 +50,7 @@ export class HomeCarteraComponent implements OnInit {
   disableds!: Array<boolean>
   mostrarAgregarPago: boolean = false
   ocultarAgregarPago: boolean = false
-  detalleRevision:string = ""
+  detalleRevision: string = ""
   mostrarCrearRevision: boolean = false
   ocultarCrearRevision: boolean = false
   pago: any = {
@@ -71,8 +71,8 @@ export class HomeCarteraComponent implements OnInit {
   totalCapital: number = 0
   coutasRequest: CuotasRequest[] = []
   cuotasList: CuotaList[] = []
-  clientes:any[] = []
-  telefonos:string[] = []
+  clientes: any[] = []
+  telefonos: string[] = []
   activarGuardarPago: boolean = false
   pagoCuota: number = 0
   positionGestionSelected!: number;
@@ -102,11 +102,11 @@ export class HomeCarteraComponent implements OnInit {
   notiArray: Notificacion[] = []
   notiArrayVencidas: Notificacion[] = []
   notiArrayRealizadas: Notificacion[] = []
-  spinnerCrearNota:boolean = false
+  spinnerCrearNota: boolean = false
   // OBJETOS
 
 
-  alertasGestionesObject:any = {
+  alertasGestionesObject: any = {
     gestionesRealizadas: 0,
     acuerdosDePagosRealizados: 0,
     acuerdosDePagosActivos: 0,
@@ -686,7 +686,7 @@ export class HomeCarteraComponent implements OnInit {
             this.moraObligatoriaFirst = data.moraObligatoria
             this.calcularFirst()
             this.codeudores = data.clientes
-            this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')  
+            this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
             this.getGestiones(numeroObligacion);
             this.cuentasCalcular.numeroObligacion = numeroObligacion
             this.newGestion = {
@@ -1468,7 +1468,7 @@ export class HomeCarteraComponent implements OnInit {
   cambiarCedula(event: any) {
     this.reporte.cedula = this.reporte.cedula
 
-    if(this.reporte.cedula == null || this.reporte.cedula == ''){
+    if (this.reporte.cedula == null || this.reporte.cedula == '') {
       this.renderer.setAttribute(this.mySelect.nativeElement, 'disabled', 'true')
     } else {
       this.renderer.removeAttribute(this.mySelect.nativeElement, 'disabled');
@@ -1476,10 +1476,10 @@ export class HomeCarteraComponent implements OnInit {
 
     this.telefonos = []
 
-    if(this.reporte.cedula != '' || this.reporte.cedula != null || this.reporte.cedula != 'null'){
+    if (this.reporte.cedula != '' || this.reporte.cedula != null || this.reporte.cedula != 'null') {
       console.log(this.reporte.cedula);
-      
-      this.clientes = this.cuentaCobrarSelected.clientes.filter((c: any) => c.numeroDocumento == this.reporte.cedula)    
+
+      this.clientes = this.cuentaCobrarSelected.clientes.filter((c: any) => c.numeroDocumento == this.reporte.cedula)
 
       for (const c of this.clientes[0].telefonos) {
         this.telefonos.push(c.numero)
@@ -3201,25 +3201,25 @@ export class HomeCarteraComponent implements OnInit {
     this.spinnerCrearNota = true
     this.ocultarAgregarPago = false
     var detalle = this.detalleRevision
-    
-    
+
+
     var nota = {
-      detalle : `ACUERDO DE PAGO N° ${this.gestionSelected.clasificacion.idClasificacionGestion} ${detalle}`
+      detalle: `ACUERDO DE PAGO N° ${this.gestionSelected.clasificacion.idClasificacionGestion} ${detalle}`
     }
 
     this.newGestion.clasificacion.nota = nota
     this.newGestion.clasificacion.nombreClasificacion = "Acuerdo de pago/Revision"
     this.newGestion.clasificacion.tipoClasificacion = "NOTA"
     this.newGestion.contact = false
-    
+
     var usuario = this.authService.getUsername();
-    if(usuario != null || usuario != undefined){
+    if (usuario != null || usuario != undefined) {
       this.newGestion.userNotifying = usuario
       this.newGestion.usernameToSetNotificacion = usuario
     }
 
     this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
-      (data:any)=>{
+      (data: any) => {
         Swal.fire({
           icon: 'success',
           title: 'Datos Guardados',
@@ -3227,7 +3227,7 @@ export class HomeCarteraComponent implements OnInit {
           timer: 3000
         })
         this.spinnerCrearNota = false
-      },(error:any)=>{
+      }, (error: any) => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -3238,7 +3238,7 @@ export class HomeCarteraComponent implements OnInit {
       }
     )
 
-    
+
 
   }
 
@@ -3453,15 +3453,22 @@ export class HomeCarteraComponent implements OnInit {
   }
 
 
-  alertasGestiones(){
+  alertasGestiones() {
     var usuario = this.authService.getUsername();
-    if(usuario != null || usuario != undefined){
-      this.cuentasCobrar.alertasGestiones(usuario).subscribe(
-        (data:any)=>{
+    var fecha = new Date();
+
+    console.log(fecha.toISOString());
+
+
+
+    if (usuario != null || usuario != undefined) {
+      this.cuentasCobrar.alertasGestiones(usuario, fecha.toISOString()).subscribe(
+        (data: any) => {
           this.alertasGestionesObject = data;
           
           
-        },(error:any)=>{
+
+        }, (error: any) => {
           console.log(error)
         }
       )
