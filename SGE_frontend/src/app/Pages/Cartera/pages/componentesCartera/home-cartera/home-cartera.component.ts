@@ -34,6 +34,8 @@ export class HomeCarteraComponent implements OnInit {
 
   constructor(private cuentasCobrar: CuentasCobrarService, private authService: AuthenticationService, private router: Router, private renderer: Renderer2, private elementRef: ElementRef) {
     this.listaDeAnios = this.obtenerListaDeAnios()
+    console.log(this.filtros);
+    
   }
 
   // ARRAY CUENTAS POR COBRAR
@@ -310,7 +312,7 @@ export class HomeCarteraComponent implements OnInit {
     fechaGestionInicio: null,
     fechaGestionFin: null,
     fechaCompromisoInicio: null,
-    fechaCompromisoFin: "N/A",
+    fechaCompromisoFin: null,
     isActive: false
   }
 
