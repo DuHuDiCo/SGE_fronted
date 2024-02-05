@@ -89,8 +89,8 @@ export class CuentasCobrarService {
     return this.http.put(`${baseUrl}/gestiones/linkAndReporteAcuerdoToClient`, data)
   }
 
-  alertasGestiones(username:string){
-    return this.http.get(`${baseUrl}/gestiones/alerts?username=${username}`, )
+  alertasGestiones(username:string, fecha:string){
+    return this.http.get(`${baseUrl}/gestiones/alerts?username=${username}&fecha=${fecha}`, )
   }
 
   // TIPO VENCIMIENTO
