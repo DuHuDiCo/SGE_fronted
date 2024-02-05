@@ -595,7 +595,8 @@
                                                                 class="form-control" disabled>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-6"
+                                                        *ngIf="cuentaCobrarSelected.clientes[0].telefonos.length">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Telefonos</span>
                                                             <select class="form-select" style="border: 1px black solid;"
@@ -610,7 +611,8 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="row">
+                                                <div class="row"
+                                                    *ngIf="cuentaCobrarSelected.clientes[0].direcciones.length">
                                                     <div class="col-md-8">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Dirección</span>

@@ -33,9 +33,7 @@ export class HomeCarteraComponent implements OnInit {
   private proSubscriptionBack!: Subscription;
 
   constructor(private cuentasCobrar: CuentasCobrarService, private authService: AuthenticationService, private router: Router, private renderer: Renderer2, private elementRef: ElementRef) {
-    this.listaDeAnios = this.obtenerListaDeAnios()
-    console.log(this.filtros);
-
+    this.listaDeAnios = this.obtenerListaDeAnios()    
   }
 
   // ARRAY CUENTAS POR COBRAR
@@ -589,6 +587,7 @@ export class HomeCarteraComponent implements OnInit {
       return
     } else {
       this.spinnerSidebar = true
+      
       this.cuentaCobrarSelected = {
         idCuentasPorCobrar: 0,
         numeroObligacion: '',
@@ -677,11 +676,35 @@ export class HomeCarteraComponent implements OnInit {
         userNotifying: ''
       }
 
+      this.acuerdo = {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: '',
+        cuotasList: [],
+        username: ''
+      }
+
+      this.nota = {
+        detalle: ''
+      }
+
+      this.tarea = {
+        detalleTarea: '',
+        fechaFinTarea: '',
+        isPartOfRecaudo: false
+      }
+
       this.codeudoresSelected = []
       setTimeout(() => {
         this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
           (data: any) => {
             this.cuentaCobrarSelected = data
+            console.log(this.cuentaCobrarSelected);
+            
             this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
             this.moraObligatoriaFirst = data.moraObligatoria
             this.calcularFirst()
@@ -708,6 +731,14 @@ export class HomeCarteraComponent implements OnInit {
               this.spinnerSidebar = false
             }
           }, (error: any) => {
+            if(this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0){
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Cliente Sin Saldo En El Sistema',
+                timer: 3000
+              })
+            }
             console.log(error);
           }
         )
@@ -733,11 +764,7 @@ export class HomeCarteraComponent implements OnInit {
         this.getLastDato(numeroObligacion)
         this.ordenarGestiones(data)
         var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
-
         console.log(gestion);
-
-
-
         if (gestion != null || gestion != undefined) {
           this.idGestion = gestion.idGestion
         }
@@ -837,6 +864,12 @@ export class HomeCarteraComponent implements OnInit {
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
                 this.getGestiones(this.newGestion.numeroObligacion)
+                this.getNotificaciones()
+                if(!this.filtrando){
+                  this.getCuentasCobrar()
+                } else {
+                  this.filtro()
+                }
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
@@ -919,6 +952,11 @@ export class HomeCarteraComponent implements OnInit {
                   timer: 3000
                 })
                 this.getNotificaciones()
+                if(!this.filtrando){
+                  this.getCuentasCobrar()
+                } else {
+                  this.filtro()
+                }
                 this.gestionButton = false
                 this.newGestion = {
                   numeroObligacion: this.newGestion.numeroObligacion,
@@ -1084,6 +1122,11 @@ export class HomeCarteraComponent implements OnInit {
             this.getGestiones(this.newGestion.numeroObligacion)
             this.getNotificaciones()
             this.mostrarReporte()
+            if(!this.filtrando){
+              this.getCuentasCobrar()
+            } else {
+              this.filtro()
+            }
             Swal.fire({
               icon: 'success',
               title: 'Datos Guardados',
@@ -2203,15 +2246,6 @@ export class HomeCarteraComponent implements OnInit {
         this.cuotas.push(cuotaListUltima)
       } else {
         this.cuotas.push(cuotaList)
-        // cuotaList = {
-        //   numeroCuota: 0,
-        //   fechaVencimiento: '',
-        //   valorCuota: 0,
-        //   capitalCuota: 0,
-        //   interesCuota: 0,
-        //   honorarios: 0,
-        //   cumplio: false
-        // }
       }
 
 
@@ -2651,6 +2685,8 @@ export class HomeCarteraComponent implements OnInit {
         this.buscarObligacion = ''
         this.paginas = new Array(data.totalPages)
         this.cuentasCobrarArray = data.content
+        console.log(this.cuentasCobrarArray);
+        
         this.last = data.last
         this.first = data.first
         this.numeroPages = data.totalPages
