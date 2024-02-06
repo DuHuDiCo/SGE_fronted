@@ -85,10 +85,13 @@
                             style="background-color: rgb(201, 201, 201);">
                             <div class="row justify-content-center mb-2">
                                 <div class="col-md-4">
-                                    <button class="btn btn-sm b"><i class="fa-solid fa-check"></i></button>
+                                    <button (click)="desactivarNoti(n.idNotificaciones)" class="btn btn-sm b"><i
+                                            class="fa-solid fa-check"></i></button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
+                                    <button (click)="findCuentaCobrar(n.numeroObligacion)" data-bs-toggle="offcanvas"
+                                        data-bs-target="#offcanvasRight" class="btn btn-sm btn-primary"><i
+                                            class="fa-solid fa-file-pen"></i></button>
                                 </div>
                             </div>
 
@@ -915,10 +918,14 @@
                                 <td *ngIf="!Columnas.includes('CLAS JURI')">{{ cc.clasificacionJuridica }}</td>
                                 <td *ngIf="!Columnas.includes('SALDO CAP')">{{ cc.totalObligatoria | number }}</td>
                                 <td *ngIf="!Columnas.includes('ANIO')">{{ cc.fechaCuentaCobrar | date:'yyyy' }}</td>
-                                <td class="gestionado" *ngIf="!Columnas.includes('F GESTION')" id="td_{{i}}">{{
-                                    cc.gestion.length == 0
-                                    ? 'SIN GESTIÓN' :
-                                    cc.gestion[cc.gestion.length-1].fechaGestion | date:"d/M/yyyy" }}</td>
+                                <td *ngIf="!Columnas.includes('F GESTION')">
+                                    <p id="td_{{i}}">
+                                        {{
+                                        cc.gestion.length == 0
+                                        ? 'SIN GESTIÓN' :
+                                        cc.gestion[cc.gestion.length-1].fechaGestion | date:"d/M/yyyy" }}
+                                    </p>
+                                </td>
                                 <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
                                     'TAREA' ?
