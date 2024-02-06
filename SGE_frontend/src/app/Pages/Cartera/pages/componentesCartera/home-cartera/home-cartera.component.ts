@@ -48,7 +48,6 @@ export class HomeCarteraComponent implements OnInit {
   clasificacionesT: Tarea[] = []
   tiposVen: TipoVencimiento[] = []
   disableds!: Array<boolean>
-  sizes!: Array<number>
   mostrarAgregarPago: boolean = false
   ocultarAgregarPago: boolean = false
   detalleRevision: string = ""
@@ -439,9 +438,14 @@ export class HomeCarteraComponent implements OnInit {
 
   // TRAER CUENTAS POR COBRAR
   getCuentasCobrar() {
-    this.sizes = []
-
     var td
+    var contenido:any
+    var partesMes
+    var mesTd
+    var anioTd
+
+    const mesActual = new Date().getMonth() + 1
+    const anioActual = new Date().getFullYear()
 
     this.alertasGestiones()
     this.filtrando = false
@@ -456,8 +460,6 @@ export class HomeCarteraComponent implements OnInit {
         (data: any) => {
           this.paginas = new Array(data.totalPages)
           this.cuentasCobrarArray = data.content
-          
-          
           console.log(data)
           this.last = data.last
           this.first = data.first
@@ -467,6 +469,24 @@ export class HomeCarteraComponent implements OnInit {
             this.spinner = true
           } else {
             this.spinner = false
+            setTimeout(() => {
+              for (let i = 0; i < this.size; i++) {
+                td = document.getElementById(`td_${i}`)
+
+                if(td != null && td != undefined){
+                  contenido = td.textContent;
+
+                  partesMes = contenido.split('/')
+
+                  mesTd = parseInt(partesMes[1], 10)
+                  anioTd = parseInt(partesMes[2], 10)
+                  
+                  if(mesTd == mesActual && anioTd == anioActual){
+                    td.classList.add("gestionado")
+                  }
+                }
+              }
+            }, 100);
           }
         }, (error: any) => {
           console.log(error);
@@ -485,8 +505,6 @@ export class HomeCarteraComponent implements OnInit {
         (data: any) => {
           this.paginas = new Array(data.totalPages)
           this.cuentasCobrarArray = data.content
-          
-          
           this.last = data.last
           this.first = data.first
           this.numeroPages = data.totalPages
@@ -495,14 +513,25 @@ export class HomeCarteraComponent implements OnInit {
             this.spinner = true
           } else {
             this.spinner = false
-          }
+            setTimeout(() => {
+              for (let i = 0; i < this.size; i++) {
+                td = document.getElementById(`td_${i}`)
 
-          for (let i = 0; i < this.size; i++) {
-            this.sizes.push(i)
-            var td = document.getElementById(`td0`)
-            console.log(td);
+                if(td != null && td != undefined){
+                  contenido = td.textContent;
+
+                  partesMes = contenido.split('/')
+
+                  mesTd = parseInt(partesMes[1], 10)
+                  anioTd = parseInt(partesMes[2], 10)
+                  
+                  if(mesTd == mesActual && anioTd == anioActual){
+                    td.classList.add("gestionado")
+                  }
+                }
+              }
+            }, 100);
           }
-          console.log(this.sizes);
         }, (error: any) => {
           console.log(error);
         }
@@ -766,7 +795,6 @@ export class HomeCarteraComponent implements OnInit {
   findCodeudores(event: any) {
     this.codeudoresSelected = this.codeudores.filter((c: any) => c.numeroDocumento == event.target.value)
     console.log(this.codeudoresSelected);
-
   }
 
   // GESTIONES
@@ -2652,6 +2680,15 @@ export class HomeCarteraComponent implements OnInit {
 
   //FILTROS
   filtro() {
+    var td
+    var contenido:any
+    var partesMes
+    var mesTd
+    var anioTd
+
+    const mesActual = new Date().getMonth() + 1
+    const anioActual = new Date().getFullYear()
+
     var user = this.authService.getUsername();
 
     if (user != null || user != undefined) {
@@ -2729,6 +2766,24 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
           (this.filtros.fechaCompromisoFin != null)) {
+            setTimeout(() => {
+              for (let i = 0; i < this.size; i++) {
+                td = document.getElementById(`td_${i}`)
+  
+                if(td != null && td != undefined){
+                  contenido = td.textContent;
+  
+                  partesMes = contenido.split('/')
+  
+                  mesTd = parseInt(partesMes[1], 10)
+                  anioTd = parseInt(partesMes[2], 10)
+                  
+                  if(mesTd == mesActual && anioTd == anioActual){
+                    td.classList.add("gestionado")
+                  }
+                }
+              }
+            }, 100);
           this.variableLimpiar = true
         } else {
           this.variableLimpiar = false
@@ -2846,6 +2901,15 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   getByDato() {
+    var td
+    var contenido:any
+    var partesMes
+    var mesTd
+    var anioTd
+
+    const mesActual = new Date().getMonth() + 1
+    const anioActual = new Date().getFullYear()
+
     if (this.buscarObligacion.trim() == '' || this.buscarObligacion.trim() == null) {
       Swal.fire({
         icon: 'error',
@@ -2905,6 +2969,24 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
           (this.filtros.fechaCompromisoFin != null)) {
+            setTimeout(() => {
+              for (let i = 0; i < this.size; i++) {
+                td = document.getElementById(`td_${i}`)
+  
+                if(td != null && td != undefined){
+                  contenido = td.textContent;
+  
+                  partesMes = contenido.split('/')
+  
+                  mesTd = parseInt(partesMes[1], 10)
+                  anioTd = parseInt(partesMes[2], 10)
+                  
+                  if(mesTd == mesActual && anioTd == anioActual){
+                    td.classList.add("gestionado")
+                  }
+                }
+              }
+            }, 100);
           this.variableLimpiar = true
         } else {
           this.variableLimpiar = false
