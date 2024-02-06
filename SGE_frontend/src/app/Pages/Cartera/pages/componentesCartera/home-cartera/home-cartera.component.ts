@@ -92,6 +92,7 @@ export class HomeCarteraComponent implements OnInit {
     'ANIO',
     'F GESTION',
     'F COMPRO',
+    'ULTIMA CLAS'
   ]
   cuotas: any[] = []
   paginas!: Array<number>
@@ -320,6 +321,7 @@ export class HomeCarteraComponent implements OnInit {
   edadVenArray: string[] = []
   sedesArray: string[] = []
   clasJurArray: string[] = []
+  clasGesArray: string[] = []
   asesores: any[] = []
 
   //VARIABLES
@@ -1569,6 +1571,9 @@ export class HomeCarteraComponent implements OnInit {
         this.telefonos.push(c.numero)
       }
     }
+
+    console.log(this.reporte);
+    
   }
 
   mostrarBase64() {
@@ -2900,6 +2905,15 @@ export class HomeCarteraComponent implements OnInit {
     }
   }
 
+  metodoClasGestion(clas: string) {
+    if (this.clasGesArray.includes(clas)) {
+      var position = this.clasGesArray.indexOf(clas)
+      this.clasGesArray.splice(position, 1)
+    } else {
+      this.clasGesArray.push(clas)
+    }
+  }
+
   getByDato() {
     var td
     var contenido:any
@@ -3607,9 +3621,7 @@ export class HomeCarteraComponent implements OnInit {
     if (usuario != null || usuario != undefined) {
       this.cuentasCobrar.alertasGestiones(usuario, fecha.toISOString()).subscribe(
         (data: any) => {
-          this.alertasGestionesObject = data;
-          
-          
+          this.alertasGestionesObject = data; 
 
         }, (error: any) => {
           console.log(error)

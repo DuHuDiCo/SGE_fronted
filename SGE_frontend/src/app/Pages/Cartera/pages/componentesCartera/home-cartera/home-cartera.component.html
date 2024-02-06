@@ -237,7 +237,7 @@
                                         <div class="row justify-content-center mb-2">
                                             <div class="col-md-2">
                                                 <div class="form-check">
-                                                    <input *ngIf="Columnas.length <= 10 || !Columnas.includes('BANCO')"
+                                                    <input *ngIf="Columnas.length <= 11 || !Columnas.includes('BANCO')"
                                                         class="form-check-input" type="checkbox"
                                                         (click)="ocultarColumnas(constantes[1])">
                                                     <label class="form-check-label">
@@ -248,7 +248,7 @@
                                             <div class="col-md-2">
                                                 <div class="form-check">
                                                     <input
-                                                        *ngIf="Columnas.length <= 10 || !Columnas.includes('DIAS VENC')"
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('DIAS VENC')"
                                                         class="form-check-input" type="checkbox"
                                                         (click)="ocultarColumnas(constantes[2])">
                                                     <label class="form-check-label">
@@ -259,7 +259,7 @@
                                             <div class="col-md-2">
                                                 <div class="form-check">
                                                     <input
-                                                        *ngIf="Columnas.length <= 10 || !Columnas.includes('EDAD VENC')"
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('EDAD VENC')"
                                                         class="form-check-input" type="checkbox"
                                                         (click)="ocultarColumnas(constantes[3])">
                                                     <label class="form-check-label" for="flexCheckDefault">
@@ -270,7 +270,7 @@
                                             <div class="col-md-2">
                                                 <div class="form-check">
                                                     <input
-                                                        *ngIf="Columnas.length <= 10 || !Columnas.includes('SUCURSAL')"
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('SUCURSAL')"
                                                         class="form-check-input" type="checkbox"
                                                         (click)="ocultarColumnas(constantes[4])">
                                                     <label class="form-check-label">
@@ -280,7 +280,7 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="form-check">
-                                                    <input *ngIf="Columnas.length <= 10 || !Columnas.includes('ASESOR')"
+                                                    <input *ngIf="Columnas.length <= 11 || !Columnas.includes('ASESOR')"
                                                         class="form-check-input" type="checkbox"
                                                         (click)="ocultarColumnas(constantes[5])">
                                                     <label class="form-check-label" for="flexCheckDefault">
@@ -293,7 +293,7 @@
                                             <div class="col-md-2">
                                                 <div class="form-check">
                                                     <input
-                                                        *ngIf="Columnas.length <= 10 || !Columnas.includes('CLAS JURI')"
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('CLAS JURI')"
                                                         class="form-check-input" type="checkbox"
                                                         (click)="ocultarColumnas(constantes[6])">
                                                     <label class="form-check-label">
@@ -304,7 +304,7 @@
                                             <div class="col-md-2">
                                                 <div class="form-check">
                                                     <input
-                                                        *ngIf="Columnas.length <= 10 || !Columnas.includes('SALDO CAP')"
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('SALDO CAP')"
                                                         class="form-check-input" type="checkbox"
                                                         (click)="ocultarColumnas(constantes[7])">
                                                     <label class="form-check-label">
@@ -314,7 +314,7 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="form-check">
-                                                    <input *ngIf="Columnas.length <= 10 || !Columnas.includes('ANIO')"
+                                                    <input *ngIf="Columnas.length <= 11 || !Columnas.includes('ANIO')"
                                                         class="form-check-input" type="checkbox"
                                                         (click)="ocultarColumnas(constantes[8])">
                                                     <label class="form-check-label">
@@ -325,7 +325,7 @@
                                             <div class="col-md-2">
                                                 <div class="form-check">
                                                     <input
-                                                        *ngIf="Columnas.length <= 10 || !Columnas.includes('F GESTION')"
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('F GESTION')"
                                                         class="form-check-input" type="checkbox"
                                                         (click)="ocultarColumnas(constantes[9])">
                                                     <label class="form-check-label">
@@ -336,11 +336,22 @@
                                             <div class="col-md-2">
                                                 <div class="form-check">
                                                     <input
-                                                        *ngIf="Columnas.length <= 10 || !Columnas.includes('F COMPRO')"
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('F COMPRO')"
                                                         class="form-check-input" type="checkbox"
                                                         (click)="ocultarColumnas(constantes[10])">
                                                     <label class="form-check-label">
                                                         F. Compro.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('ULTIMA CLAS')"
+                                                        class="form-check-input" type="checkbox"
+                                                        (click)="ocultarColumnas(constantes[11])">
+                                                    <label class="form-check-label">
+                                                        Ultima Clas.
                                                     </label>
                                                 </div>
                                             </div>
@@ -837,6 +848,7 @@
                                         </div>
                                     </div>
                                 </th>
+                                <th *ngIf="!Columnas.includes('ULTIMA CLAS')">U. Clasi.</th>
                             </tr>
 
                             <tr *ngIf="isSticky" [ngClass]="{'sticky': isSticky}"
@@ -900,6 +912,7 @@
                                         </div>
                                     </div>
                                 </th>
+                                <th *ngIf="!Columnas.includes('ULTIMA CLAS')">U. Clasi.</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -936,6 +949,10 @@
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso |
                                     date:"d/M/yyyy")))}}
                                 </td>
+                                <td *ngIf="!Columnas.includes('ULTIMA CLAS')">
+                                    {{ cc.gestion.length == 0 ? 'SIN CLASIFICACIÓN' :
+                                    cc.gestion[cc.gestion.length-1].clasificacionGestion.nombresClasificacion.nombre
+                                    }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1312,7 +1329,8 @@
                     <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.cedula" (change)="cambiarCedula($event)"
                         style="border: 1px black solid;">
                         <option value="">Seleccione Una Cedula</option>
-                        <option *ngFor="let c of cuentaCobrarSelected.clientes" [value]="c.numeroDocumento">{{
+                        <option *ngFor="let c of cuentaCobrarSelected.clientes"
+                            [value]="cuentaCobrarSelected.clientes[0].numeroDocumento">{{
                             c.numeroDocumento }} - {{ c.nombreTitular }} - {{ c.tipoGarante.tipoGarante }}</option>
                     </select>
 
@@ -1696,21 +1714,25 @@
                         <div class="col-md-12 mb-3">
                             <figure>
                                 <blockquote class="blockquote">
-                                    <h6 class="fw-bold">Bancos</h6>
+                                    <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseBanco"
+                                        style="cursor: pointer;">Bancos &nbsp;<i class="fa-solid fa-caret-down"></i>
+                                    </h6>
                                 </blockquote>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="COL"
-                                        (click)="metodoBancos('COL')" #variableCol>
-                                    <label class="form-check-label">
-                                        <cite title="Source Title">COL</cite>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="POP"
-                                        (click)="metodoBancos('POP')" #variableCol>
-                                    <label class="form-check-label">
-                                        <cite title="Source Title">POP</cite>
-                                    </label>
+                                <div class="collapse" id="collapseBanco">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="COL"
+                                            (click)="metodoBancos('COL')" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">COL</cite>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="POP"
+                                            (click)="metodoBancos('POP')" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">POP</cite>
+                                        </label>
+                                    </div>
                                 </div>
                             </figure>
                         </div>
@@ -1729,59 +1751,95 @@
                         <div class="col-md-12 mb-3">
                             <figure>
                                 <blockquote class="blockquote">
-                                    <h6 class="fw-bold">Edad Vencimiento</h6>
+                                    <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseVen"
+                                        style="cursor: pointer;">Edad Vencimiento &nbsp;<i
+                                            class="fa-solid fa-caret-down"></i>
+                                    </h6>
                                 </blockquote>
-                                <div class="form-check" *ngFor="let t of tiposVen; let i = index">
-                                    <input value="{{ t.tipoVencimiento }}" class="form-check-input" type="checkbox"
-                                        (click)="metodoEdadVen(t.tipoVencimiento)" #variableCol>
-                                    <label class="form-check-label">
-                                        <cite title="Source Title">{{ t.tipoVencimiento}}</cite>
-                                    </label>
+
+                                <div class="collapse" id="collapseVen">
+                                    <div class="form-check" *ngFor="let t of tiposVen; let i = index">
+                                        <input value="{{ t.tipoVencimiento }}" class="form-check-input" type="checkbox"
+                                            (click)="metodoEdadVen(t.tipoVencimiento)" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">{{ t.tipoVencimiento}}</cite>
+                                        </label>
+                                    </div>
                                 </div>
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
                             <figure>
                                 <blockquote class="blockquote">
-                                    <h6 class="fw-bold">Sedes</h6>
+                                    <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseSede"
+                                        style="cursor: pointer;">Sedes &nbsp;<i class="fa-solid fa-caret-down"></i>
+                                    </h6>
                                 </blockquote>
-                                <div class="form-check" *ngFor="let s of sedes; let i = index">
-                                    <input value="{{ s.sede }}" class="form-check-input" type="checkbox"
-                                        (click)="metodoSede(s.sede)" #variableCol>
-                                    <label class="form-check-label">
-                                        <cite title="Source Title">{{ s.sede }}</cite>
-                                    </label>
+                                <div class="collapse" id="collapseSede">
+                                    <div class="form-check" *ngFor="let s of sedes; let i = index">
+                                        <input value="{{ s.sede }}" class="form-check-input" type="checkbox"
+                                            (click)="metodoSede(s.sede)" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">{{ s.sede }}</cite>
+                                        </label>
+                                    </div>
                                 </div>
                             </figure>
                         </div>
                         <div class="col-md-12 mb-3">
                             <figure>
                                 <blockquote class="blockquote">
-                                    <h6 class="fw-bold">Clasificación Jurídica</h6>
+                                    <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseJur"
+                                        style="cursor: pointer;">Clasificación Jurídica &nbsp;<i
+                                            class="fa-solid fa-caret-down"></i>
+                                    </h6>
                                 </blockquote>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="Normal"
-                                        (click)="metodoClas('NORMAL')" #variableCol>
-                                    <label class="form-check-label">
-                                        <cite title="Source Title">Normal</cite>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="Prejuridico"
-                                        (click)="metodoClas('PREJURIDICO')" #variableCol>
-                                    <label class="form-check-label">
-                                        <cite title="Source Title">Prejuridico</cite>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="Juridico"
-                                        (click)="metodoClas('ADMINISTRATIVO')" #variableCol>
-                                    <label class="form-check-label">
-                                        <cite title="Source Title">Administrativo</cite>
-                                    </label>
+                                <div class="collapse" id="collapseJur">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Normal"
+                                            (click)="metodoClas('NORMAL')" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">Normal</cite>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Prejuridico"
+                                            (click)="metodoClas('PREJURIDICO')" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">Prejuridico</cite>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Juridico"
+                                            (click)="metodoClas('ADMINISTRATIVO')" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">Administrativo</cite>
+                                        </label>
+                                    </div>
                                 </div>
                             </figure>
                         </div>
+
+                        <div class="col-md-12 mb-3">
+                            <figure>
+                                <blockquote class="blockquote">
+                                    <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseClas"
+                                        style="cursor: pointer;">Clasificación Gestión &nbsp;<i
+                                            class="fa-solid fa-caret-down"></i>
+                                    </h6>
+                                </blockquote>
+                                <div class="collapse" id="collapseClas">
+                                    <div class="form-check" *ngFor="let c of ClasificacionArray">
+                                        <input value="{{ c.nombre }}" class="form-check-input" type="checkbox"
+                                            (click)="metodoClasGestion(c.nombre)" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">{{ c.nombre }}</cite>
+                                        </label>
+                                    </div>
+                                </div>
+                            </figure>
+                        </div>
+
                         <figure>
                             <blockquote class="blockquote">
                                 <h6 class="fw-bold">Saldo</h6>
