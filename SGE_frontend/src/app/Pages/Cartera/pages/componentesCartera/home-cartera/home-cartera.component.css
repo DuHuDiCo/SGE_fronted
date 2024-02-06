@@ -2,8 +2,9 @@
   margin-top: -50px;
 }
 
-
-
+.gestionado {
+  color: #960010;
+}
 
 .card-c {
   color: #000;
@@ -380,7 +381,8 @@ label.btn.btn-outline-dark {
 }
 
 .scrollable-menu {
-  max-height: 500px; /* Ajusta la altura máxima según tus necesidades */
+  max-height: 500px;
+  /* Ajusta la altura máxima según tus necesidades */
   overflow-y: auto;
 }
 

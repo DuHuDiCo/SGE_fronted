@@ -185,7 +185,7 @@
                     <div class="col-md-2">
                         <div class="alert alert-danger" role="alert">
 
-                            <strong>Gestiones  Mes: </strong> {{alertasGestionesObject.gestionesRealizadas}}
+                            <strong>Gestiones Mes: </strong> {{alertasGestionesObject.gestionesRealizadas}}
 
                         </div>
                     </div>
@@ -722,7 +722,7 @@
                                                 </div>
                                                 <span *ngFor="let cs of codeudoresSelected">
                                                     <div class="row justify-content-center">
-                                                        <div class="col-md-12">
+                                                        <div class="col-md-12" *ngIf="cs.direcciones.length != 0">
                                                             <div class="input-group input-group-sm mb-3">
                                                                 <span class="input-group-text fw-bold">Dirección</span>
                                                                 <input type="text" class="form-control"
@@ -730,8 +730,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row justify-content-center">
-                                                        <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-6" *ngIf="cs.telefonos.length != 0">
                                                             <div class="input-group input-group-sm mb-3">
                                                                 <span class="input-group-text fw-bold">Celular</span>
                                                                 <input type="text" class="form-control"
@@ -900,8 +900,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let cc of cuentasCobrarArray" class="align-middle" data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasRight" style="cursor: pointer;"
+                            <tr *ngFor="let cc of cuentasCobrarArray; let i = index" class="align-middle" id="td0"
+                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style="cursor: pointer;"
                                 (click)="findCuentaCobrar(cc.numeroObligacion)">
                                 <td *ngIf="!Columnas.includes('CLIENTE')">{{ cc.cliente }}</td>
                                 <td *ngIf="!Columnas.includes('BANCO')">{{ cc.banco.banco }}</td>
@@ -915,7 +915,9 @@
                                 <td *ngIf="!Columnas.includes('CLAS JURI')">{{ cc.clasificacionJuridica }}</td>
                                 <td *ngIf="!Columnas.includes('SALDO CAP')">{{ cc.totalObligatoria | number }}</td>
                                 <td *ngIf="!Columnas.includes('ANIO')">{{ cc.fechaCuentaCobrar | date:'yyyy' }}</td>
-                                <td *ngIf="!Columnas.includes('F GESTION')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
+                                <td class="gestionado" *ngIf="!Columnas.includes('F GESTION')" id="td_{{i}}">{{
+                                    cc.gestion.length == 0
+                                    ? 'SIN GESTIÓN' :
                                     cc.gestion[cc.gestion.length-1].fechaGestion | date:"d/M/yyyy" }}</td>
                                 <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
@@ -1340,7 +1342,7 @@
                     <h4>¿Desea Enviar El Reporte Al Cliente?</h4>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-danger" data-bs-dismiss="modal" (click)="cerrarCuenta()">Cancelar</button>
                     <a [href]="mensaje" target="_blank"><button class="btn btn-primary" (click)="mostrarBase64()"
                             data-bs-dismiss="modal">Enviar</button></a>
                     <a [href]="'data:application/pdf;base64,' + base64" id="base64" style="display: none;"
