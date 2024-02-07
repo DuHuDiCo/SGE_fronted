@@ -3442,6 +3442,15 @@ export class HomeCarteraComponent implements OnInit {
           this.activarGuardarPago = false
           this.savePago = false
           this.coutasRequest = []
+          this.pago = {
+            valor: 0,
+            detalle: '',
+            medioPago: "",
+            numeroRecibo: '',
+            cumpliendo: false
+          }
+
+          this.valorTotalIngresado = 0
         }, (error: any) => {
           this.activarGuardarPago = false
           this.savePago = false
