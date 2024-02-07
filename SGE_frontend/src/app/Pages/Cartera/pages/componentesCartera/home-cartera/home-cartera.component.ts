@@ -92,6 +92,7 @@ export class HomeCarteraComponent implements OnInit {
     'ANIO',
     'F GESTION',
     'F COMPRO',
+    'ULTIMA CLAS'
   ]
   cuotas: any[] = []
   paginas!: Array<number>
@@ -108,6 +109,8 @@ export class HomeCarteraComponent implements OnInit {
 
   alertasGestionesObject: any = {
     gestionesRealizadas: 0,
+    cuentasSinGestion: 0,
+    cuentasAsignadas: 0,
     acuerdosDePagosRealizados: 0,
     acuerdosDePagosActivos: 0,
     acuerdoPagoDia: 0,
@@ -311,7 +314,8 @@ export class HomeCarteraComponent implements OnInit {
     fechaGestionFin: null,
     fechaCompromisoInicio: null,
     fechaCompromisoFin: null,
-    isActive: false
+    isActive: false,
+    clasificacionGestion: []
   }
 
   limpiarFiltro: boolean = false
@@ -320,6 +324,7 @@ export class HomeCarteraComponent implements OnInit {
   edadVenArray: string[] = []
   sedesArray: string[] = []
   clasJurArray: string[] = []
+  clasGesArray: string[] = []
   asesores: any[] = []
 
   //VARIABLES
@@ -1148,8 +1153,9 @@ export class HomeCarteraComponent implements OnInit {
     var sumaComprobacion = 0
     for (let i = 0; i < this.cuotas.length; i++) {
       sumaComprobacion = sumaComprobacion + this.cuotas[i].valorCuota
-
     }
+    console.log(this.newGestion);
+    
 
     Swal.fire({
       title: 'Guardar Gestión',
@@ -1569,6 +1575,9 @@ export class HomeCarteraComponent implements OnInit {
         this.telefonos.push(c.numero)
       }
     }
+
+    console.log(this.reporte);
+    
   }
 
   mostrarBase64() {
@@ -2144,8 +2153,6 @@ export class HomeCarteraComponent implements OnInit {
 
       var fechaok = `${dia}/${mes}/${year}`
 
-
-
       this.fechasIncrementadas.push(fechaok)
 
       if (mes == 12) {
@@ -2177,7 +2184,7 @@ export class HomeCarteraComponent implements OnInit {
 
       var cuotaList1 = {
         numeroCuota: 1,
-        fechaVencimiento: this.acuerdoCal.fechaCompromiso,
+        fechaVencimiento: this.acuerdo.fechaCompromiso,
         valorCuota: this.acuerdoCal.valorTotalAcuerdo,
         capitalCuota: 0,
         interesCuota: 0,
@@ -2298,9 +2305,11 @@ export class HomeCarteraComponent implements OnInit {
       } else {
         this.cuotas.push(cuotaList)
       }
-
+      
 
     }
+    console.log(this.cuotas);
+    
 
   }
 
@@ -2700,8 +2709,6 @@ export class HomeCarteraComponent implements OnInit {
     this.filtros.sede = this.sedesArray
     this.filtros.edadVencimiento = this.edadVenArray
 
-    console.log(this.filtros);
-
     if (
       (this.filtros.banco.length == 0) &&
       (this.filtros.diasVencidosInicio == 0 || this.filtros.diasVencidosInicio == null) &&
@@ -2738,6 +2745,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     this.botonFiltro = true
+    console.log(this.filtros);
     this.cuentasCobrar.filtro(this.page, this.size, this.fechaCreacion, this.filtros).subscribe(
       (data: any) => {
         this.botonFiltro = false
@@ -2746,7 +2754,6 @@ export class HomeCarteraComponent implements OnInit {
         this.paginas = new Array(data.totalPages)
         this.cuentasCobrarArray = data.content
         console.log(this.cuentasCobrarArray);
-        
         this.last = data.last
         this.first = data.first
         this.numeroPages = data.totalPages
@@ -2788,7 +2795,8 @@ export class HomeCarteraComponent implements OnInit {
         } else {
           this.variableLimpiar = false
         }
-
+        console.log(this.cuentasCobrarArray);
+        
         if (this.cuentasCobrarArray.length == 0) {
           Swal.fire({
             icon: 'error',
@@ -2824,7 +2832,8 @@ export class HomeCarteraComponent implements OnInit {
       fechaGestionFin: null,
       fechaCompromisoInicio: null,
       fechaCompromisoFin: null,
-      isActive: false
+      isActive: false,
+      clasificacionGestion: []
     }
 
     this.bancosArray = []
@@ -2900,6 +2909,26 @@ export class HomeCarteraComponent implements OnInit {
     }
   }
 
+  metodoClasGestion(tipo:string, clas: string) {
+
+    var objeto:any = {
+      tipoClasificacion: tipo,
+      nombreClasificacion: clas
+    }
+    
+    const index = this.clasGesArray.findIndex((element: any) => {
+      return element.tipoClasificacion === tipo && element.nombreClasificacion === clas;
+    });
+
+    if (index !== -1) {
+        this.clasGesArray.splice(index, 1);
+    } else {
+        this.clasGesArray.push(objeto);
+    }
+
+    console.log(this.clasGesArray);
+  }
+
   getByDato() {
     var td
     var contenido:any
@@ -2943,7 +2972,8 @@ export class HomeCarteraComponent implements OnInit {
           fechaGestionFin: null,
           fechaCompromisoInicio: null,
           fechaCompromisoFin: null,
-          isActive: false
+          isActive: false,
+          clasificacionGestion: []
         }
 
         this.bancosArray = []
@@ -3428,6 +3458,15 @@ export class HomeCarteraComponent implements OnInit {
           this.activarGuardarPago = false
           this.savePago = false
           this.coutasRequest = []
+          this.pago = {
+            valor: 0,
+            detalle: '',
+            medioPago: "",
+            numeroRecibo: '',
+            cumpliendo: false
+          }
+
+          this.valorTotalIngresado = 0
         }, (error: any) => {
           this.activarGuardarPago = false
           this.savePago = false
@@ -3607,10 +3646,9 @@ export class HomeCarteraComponent implements OnInit {
     if (usuario != null || usuario != undefined) {
       this.cuentasCobrar.alertasGestiones(usuario, fecha.toISOString()).subscribe(
         (data: any) => {
-          this.alertasGestionesObject = data;
+          this.alertasGestionesObject = data; 
+          console.log(data);
           
-          
-
         }, (error: any) => {
           console.log(error)
         }
