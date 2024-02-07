@@ -156,8 +156,6 @@
         </ul>
     </div>
     <div class="card-c">
-
-
         <div class="row">
             <div *ngIf="(buscarObligacion != '' && variableLimpiar)  || (this.filtros.banco.length != 0) ||
             (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
@@ -177,47 +175,73 @@
                     Filtros</button>
             </div>
 
-
             <div class="col" [ngClass]="{'col-md-12': !variableLimpiar, 'col-md-10': variableLimpiar}">
-                <div class="row justify-content-center" data-bs-target="#offcanvasRight">
-                    <div class="col-md-2">
-                        <div class="alert alert-danger" role="alert">
-                            <strong>Gestiones Hoy: </strong> {{alertasGestionesObject.gestionesDia}}
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="alert alert-danger" role="alert">
-
-                            <strong>Gestiones Mes: </strong> {{alertasGestionesObject.gestionesRealizadas}}
-
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="alert alert-danger" role="alert">
-                            <strong>Acuerdos Mes: </strong> {{alertasGestionesObject.acuerdosDePagosRealizados}}
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="alert alert-danger" role="alert">
-                            <strong>Acuerdos Dia: </strong> {{alertasGestionesObject.acuerdoPagoDia}}
-                        </div>
-                    </div>
-                    <div class="col-md-3" *ngIf="newGestion.clasificacion.tipoClasificacion == null">
-                        <div class="alert alert-danger" role="alert">
-                            <strong>Acuerdos Activos: </strong> {{alertasGestionesObject.acuerdosDePagosActivos}}
-                        </div>
-                    </div>
-                    <div class="col-md-4" *ngIf="newGestion.clasificacion.tipoClasificacion != null">
+                <div *ngIf="newGestion.clasificacion.tipoClasificacion != null" class="row justify-content-end"
+                    data-bs-target="#offcanvasRight">
+                    <div class="col-md-4">
                         <div class="alert alert-danger text-end" role="alert" data-bs-toggle="offcanvas"
                             data-bs-target="#offcanvasRight" style="cursor: pointer;"
                             (click)="findCuentaCobrar(newGestion.numeroObligacion)">
                             <h6>Editando Gestion De {{ newGestion.numeroObligacion }}</h6>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="row justify-content-start">
+                            <div class="col-md-3">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>Hoy: </strong> {{alertasGestionesObject.gestionesDia}}
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>Mes: </strong> {{alertasGestionesObject.gestionesRealizadas}}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>Asig: </strong>
+                                    {{alertasGestionesObject.cuentasAsignadas}}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>Sin Ges: </strong>
+                                    {{alertasGestionesObject.cuentasSinGestion}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row justify-content-end">
+                            <div class="col-md-3">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>A. Mes: </strong> {{alertasGestionesObject.acuerdosDePagosRealizados}}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>A. Dia: </strong> {{alertasGestionesObject.acuerdoPagoDia}}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>A. Activos: </strong> {{alertasGestionesObject.acuerdosDePagosActivos}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- OCULTAR COLUMNAS -->
         <div class="accordion" id="accordionExample" *ngIf="!spinner">
@@ -1116,7 +1140,8 @@
 
                                             <option [value]="null">Seleccione Un Asesor</option>
                                             <option *ngFor="let a of asesores" [value]="a.usuario.username">{{
-                                                a.usuario.nombres }} {{ a.usuario.apellidos }}</option>
+                                                a.usuario.nombres | titlecase }} {{ a.usuario.apellidos | titlecase }}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -1820,7 +1845,8 @@
                             </figure>
                         </div>
 
-                        <div class="col-md-12 mb-3">
+                        <!-- FILTRO CLASIFICACION GESTION -->
+                        <!-- <div class="col-md-12 mb-3">
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseClas"
@@ -1831,14 +1857,14 @@
                                 <div class="collapse" id="collapseClas">
                                     <div class="form-check" *ngFor="let c of ClasificacionArray">
                                         <input value="{{ c.nombre }}" class="form-check-input" type="checkbox"
-                                            (click)="metodoClasGestion(c.nombre)" #variableCol>
+                                            (click)="metodoClasGestion(c.tipo, c.nombre)" #variableCol>
                                         <label class="form-check-label">
                                             <cite title="Source Title">{{ c.nombre }}</cite>
                                         </label>
                                     </div>
                                 </div>
                             </figure>
-                        </div>
+                        </div> -->
 
                         <figure>
                             <blockquote class="blockquote">
