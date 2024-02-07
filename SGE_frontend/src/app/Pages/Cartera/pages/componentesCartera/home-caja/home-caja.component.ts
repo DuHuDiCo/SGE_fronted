@@ -286,7 +286,7 @@ export class HomeCajaComponent implements OnInit {
 
 
     if (this.pago.valor >= this.totalCuotasAcuerdo) {
-      alert()
+      
       valorTotal = this.totalCuotasAcuerdo;
       this.saldoAcuerdoPago = this.totalCuotasAcuerdo
       this.valorTotalIngresado = this.valorTotalIngresado + parseInt(valorTotal)
@@ -296,18 +296,18 @@ export class HomeCajaComponent implements OnInit {
 
     if (valorTotal > 0) {
       this.coutasList.forEach((c: CuotaList, i: number) => {
-        if (this.pago.valor < c.valorCuota) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Valor ingresado menor al valor de la cuota pactada',
-            timer: 3000
-          })
-          this.valorTotalIngresado = 0
-          valorTotal = 0
-          throw new Error('Valor ingresado menor al valor de la cuota pactada')
+        // if (this.pago.valor < c.valorCuota) {
+        //   Swal.fire({
+        //     icon: 'error',
+        //     title: 'Error',
+        //     text: 'Valor ingresado menor al valor de la cuota pactada',
+        //     timer: 3000
+        //   })
+        //   this.valorTotalIngresado = 0
+        //   valorTotal = 0
+        //   throw new Error('Valor ingresado menor al valor de la cuota pactada')
 
-        }
+        // }
 
         if (c.pagos != null || c.pagos != undefined) {
           if (c.pagos.saldoCuota > 0) {
@@ -570,7 +570,8 @@ export class HomeCajaComponent implements OnInit {
       detalle: this.pago.detalle,
       metodoPago: this.pago.medioPago,
       cumpliendo: this.pago.cumpliendo,
-      username: ''
+      username: '',
+      nombreClasificacion: null
     }
 
     var user = this.auth.getUsername();
