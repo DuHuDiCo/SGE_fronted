@@ -788,6 +788,7 @@ export class HomeCarteraComponent implements OnInit {
                 text: 'Cliente Sin Saldo En El Sistema',
                 timer: 3000
               })
+              $('#offcanvasRight').offcanvas('hide');
             }
             console.log(error);
           }
@@ -2708,6 +2709,10 @@ export class HomeCarteraComponent implements OnInit {
     this.filtros.clasiJuridica = this.clasJurArray
     this.filtros.sede = this.sedesArray
     this.filtros.edadVencimiento = this.edadVenArray
+    this.filtros.clasificacionGestion = this.clasGesArray
+
+    console.log(this.filtros);
+    
 
     if (
       (this.filtros.banco.length == 0) &&
@@ -2716,6 +2721,7 @@ export class HomeCarteraComponent implements OnInit {
       (this.filtros.edadVencimiento.length == 0) &&
       (this.filtros.sede.length == 0) &&
       (this.filtros.clasiJuridica.length == 0) &&
+      (this.filtros.clasificacionGestion.length == 0) &&
       (this.filtros.saldoCapitalInicio == 0 || this.filtros.saldoCapitalInicio == null) &&
       (this.filtros.saldoCapitalFin == 0 || this.filtros.saldoCapitalFin == null) &&
       (this.filtros.fechaCpcInicio == null) &&
@@ -2840,6 +2846,7 @@ export class HomeCarteraComponent implements OnInit {
     this.edadVenArray = []
     this.sedesArray = []
     this.clasJurArray = []
+    this.clasGesArray = []
 
     if (accion == 'LIMPIAR') {
       this.buscarObligacion = ''

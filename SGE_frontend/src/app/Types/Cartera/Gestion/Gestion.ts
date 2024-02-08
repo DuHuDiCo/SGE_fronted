@@ -178,7 +178,7 @@ export type Filtros = {
   fechaCompromisoInicio: string | null,
   fechaCompromisoFin: string | null,
   isActive: boolean,
-  clasificacionGestion: []
+  clasificacionGestion: string[]
 
 }
 

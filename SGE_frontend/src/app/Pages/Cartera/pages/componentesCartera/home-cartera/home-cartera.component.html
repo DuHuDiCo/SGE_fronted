@@ -1558,6 +1558,16 @@
 
                         </div>
 
+                        <div class="row" *ngIf="!ocultarCrearRevision && !ocultarAgregarPago">
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" style="height: 100px"
+                                        [(ngModel)]="gestionSelected.clasificacion.detalle" readonly></textarea>
+                                    <label class="fw-bold">Detalle Acuerdo</label>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="table-responsive align-middle">
                             <table class="table table-bordered text-center table-hover table-sm align-middle">
                                 <thead>
