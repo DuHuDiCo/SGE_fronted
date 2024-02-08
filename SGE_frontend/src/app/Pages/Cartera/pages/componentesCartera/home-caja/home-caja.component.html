@@ -177,8 +177,11 @@
                         <button class="btn btn-danger" *ngIf="activarGuardarPago" (click)="generarRecibo()"
                             style="background-color: #960010;border-color: #960010;"> <i class="fas fa-check"></i>
                             Guardar Pagos</button>&nbsp;
-                        <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i
-                                class="fas fa-plus"></i> Agregar pago</button>
+                        <button class="btn btn-danger" *ngIf="activarGuardarPago" (click)="limpiarPagos()"> <i class="fas fa-times"></i>
+                            Cancelar</button>&nbsp;
+                        <button class="btn btn-light" *ngIf="!activarGuardarPago" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"> <i class="fas fa-plus"></i> Agregar pago</button>
+
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
@@ -246,7 +249,8 @@
                                     </div>
                                     <div class="modal-footer">
 
-                                        <button type="button" style="background-color: #960010;border-color: #960010;" class="btn btn-primary" (click)="agregarPagoACuotas()"
+                                        <button type="button" style="background-color: #960010;border-color: #960010;"
+                                            class="btn btn-primary" (click)="agregarPagoACuotas()"
                                             data-bs-dismiss="modal">Guardar Pago</button>
                                     </div>
                                 </div>
@@ -297,7 +301,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalToggleLabel2">Recibo de Pago</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <embed id="mostrarReciboPago" src="" height="500px" width="465px" type="application/pdf">
