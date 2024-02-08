@@ -1965,7 +1965,7 @@
     <!-- MODAL BUSCAR OBLIGACION -->
     <div class="modal fade" id="modalObligacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered" [ngClass]="{'': !filtradoBuscar, 'modal-xl': filtradoBuscar}">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Buscar Obligación</h1>
@@ -1976,6 +1976,70 @@
                         <span class="input-group-text fw-bold">Dato</span>
                         <input [(ngModel)]="buscarObligacion" #datoBuscar type="text" class="form-control">
                     </div>
+
+                    <table class="table table-responsive table-bordered text-center table-hover" *ngIf="filtradoBuscar">
+                        <thead>
+                            <tr>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Cliente
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Banco
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            E. Vencimiento
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Sucursal
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Clas. Juridica
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Asesor
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let cc of cuentasCobrarBuscar; let i = index" class="align-middle"
+                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style="cursor: pointer;"
+                                (click)="findCuentaCobrar(cc.numeroObligacion)">
+                                <td>{{ cc.cliente }}</td>
+                                <td>{{ cc.banco.banco }}</td>
+                                <td>{{ cc.tiposVencimiento.tipoVencimiento }}
+                                </td>
+                                <td>{{ cc.sede.sede }}</td>
+                                <td>{{ cc.clasificacionJuridica }}</td>
+                                <td>{{ cc.asesorCarteraResponse.usuario.nombres }}
+                                    {{
+                                    cc.asesorCarteraResponse.usuario.apellidos }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
