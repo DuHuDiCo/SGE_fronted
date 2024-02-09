@@ -54,8 +54,8 @@
                                             class="fa-solid fa-check"></i></button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button (click)="findCuentaCobrar(n.numeroObligacion)" data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasRight" style="cursor: pointer;"
+                                    <button (click)="getGestiones(n.numeroObligacion)" data-bs-toggle="modal"
+                                        data-bs-target="#modalGestionCom" style="cursor: pointer;"
                                         class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
                                 </div>
                             </div>
@@ -658,6 +658,17 @@
                                                             <span class="input-group-text fw-bold">Dirección</span>
                                                             <input type="text" class="form-control"
                                                                 [(ngModel)]="cuentaCobrarSelected.clientes[0].direcciones[0].direccion"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row"
+                                                    *ngIf="cuentaCobrarSelected.clientes[0].correos.length">
+                                                    <div class="col-md-8">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Correo</span>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].correos[0].direccion"
                                                                 disabled>
                                                         </div>
                                                     </div>
@@ -1858,7 +1869,7 @@
                         </div>
 
                         <!-- FILTRO CLASIFICACION GESTION -->
-                        <!-- <div class="col-md-12 mb-3">
+                        <div class="col-md-12 mb-3">
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseClas"
@@ -1876,7 +1887,7 @@
                                     </div>
                                 </div>
                             </figure>
-                        </div> -->
+                        </div>
 
                         <figure>
                             <blockquote class="blockquote">

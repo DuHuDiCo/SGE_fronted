@@ -828,6 +828,11 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
+  getGestionesNoti(numeroObligacion:string, idGestion:number){
+    this.getGestiones(numeroObligacion)
+    this.getOneGestion(idGestion)
+  }
+
   getLastDato(numeroDocumento: string) {
     this.cuentasCobrar.getLastDatoAdicional(numeroDocumento).subscribe(
       (data: any) => {
