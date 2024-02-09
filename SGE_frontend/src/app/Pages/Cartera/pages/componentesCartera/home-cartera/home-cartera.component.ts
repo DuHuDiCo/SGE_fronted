@@ -38,6 +38,7 @@ export class HomeCarteraComponent implements OnInit {
 
   // ARRAY CUENTAS POR COBRAR
   cuentasCobrarArray: CuentasCobrarResponse[] = []
+  cuentasCobrarBuscar: CuentasCobrarResponse[] = []
   mostrarRecibo: boolean = false
   // ARRAYS
   codeudores: any[] = []
@@ -379,6 +380,7 @@ export class HomeCarteraComponent implements OnInit {
   desactivarAcu: boolean = false
   botonFiltro: boolean = false
   filtrando: boolean = false
+  filtroAgain:boolean = false
 
   botonPdf: boolean = false
   pageGestion: number = 1;
@@ -389,6 +391,7 @@ export class HomeCarteraComponent implements OnInit {
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
   botonFiltrarObligacion: boolean = false
+  filtradoBuscar:boolean = false
   variableLimpiar: boolean = false
 
   @ViewChildren('variableCol') colcheck!: QueryList<ElementRef>;
@@ -634,6 +637,7 @@ export class HomeCarteraComponent implements OnInit {
   findCuentaCobrar(numeroObligacion: string) {
     this.col = true
     if (this.newGestion.numeroObligacion == numeroObligacion) {
+      $('#modalObligacion').modal('hide');
       return
     } else {
       this.spinnerSidebar = true
@@ -749,12 +753,12 @@ export class HomeCarteraComponent implements OnInit {
       }
 
       this.codeudoresSelected = []
+      $('#modalObligacion').modal('hide');
       setTimeout(() => {
         this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
           (data: any) => {
             this.cuentaCobrarSelected = data
             console.log(this.cuentaCobrarSelected);
-            
             this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
             this.moraObligatoriaFirst = data.moraObligatoria
             this.calcularFirst()
@@ -915,7 +919,7 @@ export class HomeCarteraComponent implements OnInit {
               (data: any) => {
                 this.getGestiones(this.newGestion.numeroObligacion)
                 this.getNotificaciones()
-                if(!this.filtrando){
+                if(!this.filtroAgain){
                   this.getCuentasCobrar()
                 } else {
                   this.filtro()
@@ -1003,7 +1007,7 @@ export class HomeCarteraComponent implements OnInit {
                   timer: 3000
                 })
                 this.getNotificaciones()
-                if(!this.filtrando){
+                if(!this.filtroAgain){
                   this.getCuentasCobrar()
                 } else {
                   this.filtro()
@@ -1175,7 +1179,7 @@ export class HomeCarteraComponent implements OnInit {
             this.getGestiones(this.newGestion.numeroObligacion)
             this.getNotificaciones()
             this.mostrarReporte()
-            if(!this.filtrando){
+            if(!this.filtroAgain){
               this.getCuentasCobrar()
             } else {
               this.filtro()
@@ -2183,9 +2187,16 @@ export class HomeCarteraComponent implements OnInit {
 
     if (this.acuerdoCal.valorCuotaMensual === this.acuerdoCal.valorTotalAcuerdo) {
 
+      var fechaForm = this.acuerdo.fechaCompromiso.split('-')
+      var dia = parseInt(fechaForm[2])
+      var mes = parseInt(fechaForm[1])
+      var anio = parseInt(fechaForm[0])
+
+      var fechaS = `${dia}/${mes}/${anio}`
+
       var cuotaList1 = {
         numeroCuota: 1,
-        fechaVencimiento: this.acuerdo.fechaCompromiso,
+        fechaVencimiento: fechaS,
         valorCuota: this.acuerdoCal.valorTotalAcuerdo,
         capitalCuota: 0,
         interesCuota: 0,
@@ -2756,7 +2767,7 @@ export class HomeCarteraComponent implements OnInit {
       (data: any) => {
         this.botonFiltro = false
         this.filtrando = true
-        this.buscarObligacion = ''
+        this.filtroAgain = true
         this.paginas = new Array(data.totalPages)
         this.cuentasCobrarArray = data.content
         console.log(this.cuentasCobrarArray);
@@ -2850,6 +2861,8 @@ export class HomeCarteraComponent implements OnInit {
 
     if (accion == 'LIMPIAR') {
       this.buscarObligacion = ''
+      this.cuentasCobrarBuscar = []
+      this.filtradoBuscar = false
     }
 
     for (const i of this.colcheck.toArray()) {
@@ -2874,7 +2887,8 @@ export class HomeCarteraComponent implements OnInit {
     } else {
       this.variableLimpiar = false
     }
-
+    this.filtrando = false
+    this.filtroAgain = false
     this.getCuentasCobrar()
     this.spinner = true
     $('#offcanvasFilter').offcanvas('hide');
@@ -2959,35 +2973,10 @@ export class HomeCarteraComponent implements OnInit {
     this.cuentasCobrar.getCuentaByDato(this.buscarObligacion).subscribe(
       (data: any) => {
         this.botonFiltrarObligacion = false
-        this.cuentasCobrarArray = data
+        this.cuentasCobrarBuscar = data
+        this.filtradoBuscar = true
         this.numeroPages = 1
         this.cuentasCobrar.proSubject.next(true);
-
-        this.filtros = {
-          banco: [],
-          diasVencidosInicio: null,
-          diasVencidosFin: null,
-          edadVencimiento: [],
-          sede: [],
-          username: '',
-          clasiJuridica: [],
-          saldoCapitalInicio: null,
-          saldoCapitalFin: null,
-          fechaCpcInicio: null,
-          fechaCpcFin: null,
-          fechaGestionInicio: null,
-          fechaGestionFin: null,
-          fechaCompromisoInicio: null,
-          fechaCompromisoFin: null,
-          isActive: false,
-          clasificacionGestion: []
-        }
-
-        this.bancosArray = []
-        this.edadVenArray = []
-        this.sedesArray = []
-        this.clasJurArray = []
-
         for (const i of this.colcheck.toArray()) {
           i.nativeElement.checked = false
         }
@@ -3029,8 +3018,6 @@ export class HomeCarteraComponent implements OnInit {
           this.variableLimpiar = false
         }
 
-        $('#modalObligacion').modal('hide');
-
         if (this.cuentasCobrarArray == null || this.cuentasCobrarArray.length == 0) {
           this.spinner = true
           Swal.fire({
@@ -3039,7 +3026,7 @@ export class HomeCarteraComponent implements OnInit {
             text: 'No Hay Obligaciones Con Este Filtro',
             timer: 3000
           })
-          // this.getCuentasCobrar()
+          this.getCuentasCobrar()
         }
       }, (error: any) => {
         this.botonFiltrarObligacion = false
