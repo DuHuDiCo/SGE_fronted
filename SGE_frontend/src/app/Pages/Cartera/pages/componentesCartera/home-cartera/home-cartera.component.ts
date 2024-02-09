@@ -2402,6 +2402,8 @@ export class HomeCarteraComponent implements OnInit {
         if (saldoTotalMoraLocal > 0 && saldoTotalMoraLocal < this.acuerdoCal.valorCuotaMensual) {
           alert(`crear cuota ${i + 1} con con saldo de cuota con saldo de cuota  ${this.cuentaCobrarSelected.valorCuota}`)
           alert("entro aqui")
+          //vamos aqui
+          
           var participacionCuotaMora = this.cuentaCobrarSelected.valorCuota / this.acuerdoCal.valorTotalMora
           var capitalCuotaMora = this.cuentaCobrarSelected.moraObligatoria * participacionCuotaMora
           var interesCuotaMora = this.cuentaCobrarSelected.valorCuota - capitalCuotaMora
