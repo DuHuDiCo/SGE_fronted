@@ -33,7 +33,7 @@ export class HomeCarteraComponent implements OnInit {
   private proSubscriptionBack!: Subscription;
 
   constructor(private cuentasCobrar: CuentasCobrarService, private authService: AuthenticationService, private router: Router, private renderer: Renderer2, private elementRef: ElementRef) {
-    this.listaDeAnios = this.obtenerListaDeAnios()    
+    this.listaDeAnios = this.obtenerListaDeAnios()
   }
 
   // ARRAY CUENTAS POR COBRAR
@@ -380,7 +380,7 @@ export class HomeCarteraComponent implements OnInit {
   desactivarAcu: boolean = false
   botonFiltro: boolean = false
   filtrando: boolean = false
-  filtroAgain:boolean = false
+  filtroAgain: boolean = false
 
   botonPdf: boolean = false
   pageGestion: number = 1;
@@ -391,7 +391,7 @@ export class HomeCarteraComponent implements OnInit {
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
   botonFiltrarObligacion: boolean = false
-  filtradoBuscar:boolean = false
+  filtradoBuscar: boolean = false
   variableLimpiar: boolean = false
 
   @ViewChildren('variableCol') colcheck!: QueryList<ElementRef>;
@@ -447,7 +447,7 @@ export class HomeCarteraComponent implements OnInit {
   // TRAER CUENTAS POR COBRAR
   getCuentasCobrar() {
     var td
-    var contenido:any
+    var contenido: any
     var partesMes
     var mesTd
     var anioTd
@@ -481,15 +481,15 @@ export class HomeCarteraComponent implements OnInit {
               for (let i = 0; i < this.size; i++) {
                 td = document.getElementById(`td_${i}`)
 
-                if(td != null && td != undefined){
+                if (td != null && td != undefined) {
                   contenido = td.textContent;
 
                   partesMes = contenido.split('/')
 
                   mesTd = parseInt(partesMes[1], 10)
                   anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
+
+                  if (mesTd == mesActual && anioTd == anioActual) {
                     td.classList.add("gestionado")
                   }
                 }
@@ -525,15 +525,15 @@ export class HomeCarteraComponent implements OnInit {
               for (let i = 0; i < this.size; i++) {
                 td = document.getElementById(`td_${i}`)
 
-                if(td != null && td != undefined){
+                if (td != null && td != undefined) {
                   contenido = td.textContent;
 
                   partesMes = contenido.split('/')
 
                   mesTd = parseInt(partesMes[1], 10)
                   anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
+
+                  if (mesTd == mesActual && anioTd == anioActual) {
                     td.classList.add("gestionado")
                   }
                 }
@@ -641,7 +641,7 @@ export class HomeCarteraComponent implements OnInit {
       return
     } else {
       this.spinnerSidebar = true
-      
+
       this.cuentaCobrarSelected = {
         idCuentasPorCobrar: 0,
         numeroObligacion: '',
@@ -785,7 +785,7 @@ export class HomeCarteraComponent implements OnInit {
               this.spinnerSidebar = false
             }
           }, (error: any) => {
-            if(this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0){
+            if (this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0) {
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -919,7 +919,7 @@ export class HomeCarteraComponent implements OnInit {
               (data: any) => {
                 this.getGestiones(this.newGestion.numeroObligacion)
                 this.getNotificaciones()
-                if(!this.filtroAgain){
+                if (!this.filtroAgain) {
                   this.getCuentasCobrar()
                 } else {
                   this.filtro()
@@ -1007,7 +1007,7 @@ export class HomeCarteraComponent implements OnInit {
                   timer: 3000
                 })
                 this.getNotificaciones()
-                if(!this.filtroAgain){
+                if (!this.filtroAgain) {
                   this.getCuentasCobrar()
                 } else {
                   this.filtro()
@@ -1160,7 +1160,7 @@ export class HomeCarteraComponent implements OnInit {
       sumaComprobacion = sumaComprobacion + this.cuotas[i].valorCuota
     }
     console.log(this.newGestion);
-    
+
 
     Swal.fire({
       title: 'Guardar Gestión',
@@ -1179,7 +1179,7 @@ export class HomeCarteraComponent implements OnInit {
             this.getGestiones(this.newGestion.numeroObligacion)
             this.getNotificaciones()
             this.mostrarReporte()
-            if(!this.filtroAgain){
+            if (!this.filtroAgain) {
               this.getCuentasCobrar()
             } else {
               this.filtro()
@@ -1582,7 +1582,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     console.log(this.reporte);
-    
+
   }
 
   mostrarBase64() {
@@ -1593,7 +1593,7 @@ export class HomeCarteraComponent implements OnInit {
     $('#offcanvasRight').offcanvas('hide');
   }
 
-  cerrarCuenta(){
+  cerrarCuenta() {
     $('#offcanvasRight').offcanvas('hide');
   }
 
@@ -2215,6 +2215,12 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
+
+    //llamar metodo cuotasIncluidoMora
+    this.calcularCuotasConValorMoraIncluido()
+
+
+
     var totalCuotas = this.acuerdoCal.valorTotalAcuerdo / this.acuerdoCal.valorCuotaMensual
     var res = Math.ceil(totalCuotas);
     this.totalCuotas = res
@@ -2317,12 +2323,119 @@ export class HomeCarteraComponent implements OnInit {
       } else {
         this.cuotas.push(cuotaList)
       }
-      
+
 
     }
     console.log(this.cuotas);
-    
 
+
+  }
+
+
+
+  //CALCULAR CUOTAS CON LAS CUOTAS EN MORA
+  calcularCuotasConValorMoraIncluido() {
+
+    var valorCuotaAnterior = this.cuentaCobrarSelected.valorCuota
+    var valorDiferenciaCoutas = this.acuerdo.valorCuotaMensual - valorCuotaAnterior
+    var totalCoutasMora = this.acuerdoCal.valorTotalMora / this.acuerdo.valorCuotaMensual
+    var totalCuotasCredito = totalCoutasMora + ((this.acuerdoCal.saldoAcuerdo - (totalCoutasMora * this.acuerdo.valorCuotaMensual)) / valorCuotaAnterior)
+
+
+    console.log("valor de la cuota anterior" + valorCuotaAnterior);
+    console.log("valor diferencia de cuotas" + valorDiferenciaCoutas);
+    console.log("total cuotas del credito " + totalCuotasCredito);
+    console.log("total cuotas mora " + totalCoutasMora);
+    console.log("saldo total Mora" + this.acuerdoCal.valorTotalMora);
+    console.log("saldo total credito" + this.cuentaCobrarSelected.totalObligatoria);
+
+
+
+
+    totalCuotasCredito = totalCuotasCredito < 0 ? 1 : totalCuotasCredito;
+
+
+    if (valorDiferenciaCoutas > 0 && (totalCoutasMora * 2) < totalCuotasCredito) {
+      var restanteCuotas = totalCuotasCredito - totalCoutasMora
+      console.log("restante cuotas" + restanteCuotas);
+
+
+      this.calcularCuotasConValorMora(totalCoutasMora, restanteCuotas, this.acuerdoCal.valorTotalMora, this.acuerdoCal.saldoAcuerdo)
+
+
+    } else {
+      alert("calcular cuotas x el total")
+    }
+  }
+
+
+  calcularCuotasConValorMora(totalCuotasMora: number, totalRestanteCuotas: number, saldoTotalMora: number, saldoTotalCredito: number) {
+    var totalCuotas = Math.ceil(totalCuotasMora + totalRestanteCuotas);
+
+
+    totalCuotasMora = Math.ceil(totalCuotasMora)
+    totalRestanteCuotas = Math.ceil(totalRestanteCuotas)
+
+    var saldoTotal = saldoTotalCredito
+    var saldoTotalMoraLocal = saldoTotalMora
+
+    var valorCapitalMora = this.cuentaCobrarSelected.moraObligatoria
+
+    alert("total cuota mora " + totalCuotas)
+    for (let i = 0; i < totalCuotas; i++) {
+
+      if (i < totalCuotasMora && saldoTotalMoraLocal > this.acuerdoCal.valorCuotaMensual) {
+        alert(`crear  cuota ${i + 1} valor saldoTota con saldo de cuota ${this.acuerdoCal.valorCuotaMensual}`)
+        var participacionCuotaMora = this.acuerdoCal.valorCuotaMensual / this.acuerdoCal.valorTotalMora
+        var capitalCuotaMora = this.cuentaCobrarSelected.moraObligatoria * participacionCuotaMora
+        var interesCuotaMora = this.acuerdoCal.valorCuotaMensual - capitalCuotaMora
+        valorCapitalMora = valorCapitalMora - capitalCuotaMora
+        alert(`capital couta mora ${capitalCuotaMora}`)
+        alert(`interes couta mora ${interesCuotaMora}`)
+        saldoTotal = saldoTotal - this.acuerdoCal.valorCuotaMensual
+        saldoTotalMoraLocal = saldoTotalMoraLocal - this.acuerdoCal.valorCuotaMensual
+        console.log("sadlo total " + saldoTotal);
+        console.log("sadlo total mora local " + saldoTotalMoraLocal);
+
+
+      } else {
+        if (saldoTotalMoraLocal > 0 && saldoTotalMoraLocal < this.acuerdoCal.valorCuotaMensual) {
+          alert(`crear cuota ${i + 1} con con saldo de cuota con saldo de cuota  ${this.cuentaCobrarSelected.valorCuota}`)
+          alert("entro aqui")
+          var participacionCuotaMora = this.cuentaCobrarSelected.valorCuota / this.acuerdoCal.valorTotalMora
+          var capitalCuotaMora = this.cuentaCobrarSelected.moraObligatoria * participacionCuotaMora
+          var interesCuotaMora = this.cuentaCobrarSelected.valorCuota - capitalCuotaMora
+          valorCapitalMora = valorCapitalMora - capitalCuotaMora
+          alert(`capital couta mora ${capitalCuotaMora}`)
+          alert(`interes couta mora ${interesCuotaMora}`)
+          saldoTotal = saldoTotal - this.cuentaCobrarSelected.valorCuota
+          saldoTotalMoraLocal = 0
+          console.log("sadlo total " + saldoTotal);
+          console.log("sadlo total mora local " + saldoTotalMoraLocal);
+          continue;
+        }
+
+      }
+
+      if (saldoTotalMoraLocal == 0 && saldoTotal > this.cuentaCobrarSelected.valorCuota) {
+        saldoTotal = saldoTotal - this.cuentaCobrarSelected.valorCuota
+        alert(`crear cuota sin mora ${i + 1} ${this.cuentaCobrarSelected.valorCuota}`)
+        console.log("sadlo total " + saldoTotal);
+
+
+      } else {
+        if (saldoTotalMoraLocal == 0) {
+          alert(`crear ultima cuota sin mora ${i + 1} con saldo de cuota ${saldoTotal}`)
+          saldoTotal = saldoTotal - saldoTotalMoraLocal
+          saldoTotalMoraLocal = 0
+          console.log("sadlo total " + saldoTotal);
+          console.log("sadlo total mora local " + saldoTotalMoraLocal);
+        }
+      }
+      console.log(totalCuotas);
+
+
+    }
   }
 
   // RECALCULAR
@@ -2702,7 +2815,7 @@ export class HomeCarteraComponent implements OnInit {
   //FILTROS
   filtro() {
     var td
-    var contenido:any
+    var contenido: any
     var partesMes
     var mesTd
     var anioTd
@@ -2723,7 +2836,7 @@ export class HomeCarteraComponent implements OnInit {
     this.filtros.clasificacionGestion = this.clasGesArray
 
     console.log(this.filtros);
-    
+
 
     if (
       (this.filtros.banco.length == 0) &&
@@ -2790,30 +2903,30 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
           (this.filtros.fechaCompromisoFin != null)) {
-            setTimeout(() => {
-              for (let i = 0; i < this.size; i++) {
-                td = document.getElementById(`td_${i}`)
-  
-                if(td != null && td != undefined){
-                  contenido = td.textContent;
-  
-                  partesMes = contenido.split('/')
-  
-                  mesTd = parseInt(partesMes[1], 10)
-                  anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
-                    td.classList.add("gestionado")
-                  }
+          setTimeout(() => {
+            for (let i = 0; i < this.size; i++) {
+              td = document.getElementById(`td_${i}`)
+
+              if (td != null && td != undefined) {
+                contenido = td.textContent;
+
+                partesMes = contenido.split('/')
+
+                mesTd = parseInt(partesMes[1], 10)
+                anioTd = parseInt(partesMes[2], 10)
+
+                if (mesTd == mesActual && anioTd == anioActual) {
+                  td.classList.add("gestionado")
                 }
               }
-            }, 100);
+            }
+          }, 100);
           this.variableLimpiar = true
         } else {
           this.variableLimpiar = false
         }
         console.log(this.cuentasCobrarArray);
-        
+
         if (this.cuentasCobrarArray.length == 0) {
           Swal.fire({
             icon: 'error',
@@ -2930,21 +3043,21 @@ export class HomeCarteraComponent implements OnInit {
     }
   }
 
-  metodoClasGestion(tipo:string, clas: string) {
+  metodoClasGestion(tipo: string, clas: string) {
 
-    var objeto:any = {
+    var objeto: any = {
       tipoClasificacion: tipo,
       nombreClasificacion: clas
     }
-    
+
     const index = this.clasGesArray.findIndex((element: any) => {
       return element.tipoClasificacion === tipo && element.nombreClasificacion === clas;
     });
 
     if (index !== -1) {
-        this.clasGesArray.splice(index, 1);
+      this.clasGesArray.splice(index, 1);
     } else {
-        this.clasGesArray.push(objeto);
+      this.clasGesArray.push(objeto);
     }
 
     console.log(this.clasGesArray);
@@ -2952,7 +3065,7 @@ export class HomeCarteraComponent implements OnInit {
 
   getByDato() {
     var td
-    var contenido:any
+    var contenido: any
     var partesMes
     var mesTd
     var anioTd
@@ -2995,24 +3108,24 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
           (this.filtros.fechaCompromisoFin != null)) {
-            setTimeout(() => {
-              for (let i = 0; i < this.size; i++) {
-                td = document.getElementById(`td_${i}`)
-  
-                if(td != null && td != undefined){
-                  contenido = td.textContent;
-  
-                  partesMes = contenido.split('/')
-  
-                  mesTd = parseInt(partesMes[1], 10)
-                  anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
-                    td.classList.add("gestionado")
-                  }
+          setTimeout(() => {
+            for (let i = 0; i < this.size; i++) {
+              td = document.getElementById(`td_${i}`)
+
+              if (td != null && td != undefined) {
+                contenido = td.textContent;
+
+                partesMes = contenido.split('/')
+
+                mesTd = parseInt(partesMes[1], 10)
+                anioTd = parseInt(partesMes[2], 10)
+
+                if (mesTd == mesActual && anioTd == anioActual) {
+                  td.classList.add("gestionado")
                 }
               }
-            }, 100);
+            }
+          }, 100);
           this.variableLimpiar = true
         } else {
           this.variableLimpiar = false
@@ -3640,9 +3753,9 @@ export class HomeCarteraComponent implements OnInit {
     if (usuario != null || usuario != undefined) {
       this.cuentasCobrar.alertasGestiones(usuario, fecha.toISOString()).subscribe(
         (data: any) => {
-          this.alertasGestionesObject = data; 
+          this.alertasGestionesObject = data;
           console.log(data);
-          
+
         }, (error: any) => {
           console.log(error)
         }
@@ -3651,3 +3764,6 @@ export class HomeCarteraComponent implements OnInit {
   }
 
 }
+
+
+
