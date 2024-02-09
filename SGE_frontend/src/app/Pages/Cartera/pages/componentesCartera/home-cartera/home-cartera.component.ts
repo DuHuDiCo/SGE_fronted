@@ -2187,9 +2187,16 @@ export class HomeCarteraComponent implements OnInit {
 
     if (this.acuerdoCal.valorCuotaMensual === this.acuerdoCal.valorTotalAcuerdo) {
 
+      var fechaForm = this.acuerdo.fechaCompromiso.split('-')
+      var dia = parseInt(fechaForm[2])
+      var mes = parseInt(fechaForm[1])
+      var anio = parseInt(fechaForm[0])
+
+      var fechaS = `${dia}/${mes}/${anio}`
+
       var cuotaList1 = {
         numeroCuota: 1,
-        fechaVencimiento: this.acuerdo.fechaCompromiso,
+        fechaVencimiento: fechaS,
         valorCuota: this.acuerdoCal.valorTotalAcuerdo,
         capitalCuota: 0,
         interesCuota: 0,
