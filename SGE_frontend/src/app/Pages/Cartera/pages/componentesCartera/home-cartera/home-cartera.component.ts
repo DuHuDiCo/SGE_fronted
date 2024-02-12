@@ -1755,7 +1755,15 @@ export class HomeCarteraComponent implements OnInit {
     this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
     this.cuentasCalcular.username = user
 
-    this.calcularCuotas()
+
+    if (this.acuerdo.tipoAcuerdo == "MORA") {
+      alert(this.acuerdo.tipoAcuerdo)
+      this.calcularCuotasConValorMoraIncluido()
+    } else {
+      this.calcularCuotas()
+    }
+
+
 
     this.disableds = new Array(this.cuotas.length)
     this.disableds.forEach(element => {
@@ -2348,6 +2356,7 @@ export class HomeCarteraComponent implements OnInit {
     console.log("total cuotas mora " + totalCoutasMora);
     console.log("saldo total Mora" + this.acuerdoCal.valorTotalMora);
     console.log("saldo total credito" + this.cuentaCobrarSelected.totalObligatoria);
+    console.log("total mora obligatoria" + this.cuentaCobrarSelected.moraObligatoria);
 
 
 
@@ -2386,9 +2395,27 @@ export class HomeCarteraComponent implements OnInit {
 
       if (i < totalCuotasMora && saldoTotalMoraLocal > this.acuerdoCal.valorCuotaMensual) {
         alert(`crear  cuota ${i + 1} valor saldoTota con saldo de cuota ${this.acuerdoCal.valorCuotaMensual}`)
+
+        var cuotaList = {
+          numeroCuota: 0,
+          fechaVencimiento: '',
+          valorCuota: 0,
+          capitalCuota: 0,
+          interesCuota: 0,
+          honorarios: 0,
+          cumplio: false
+        }
+
+
         var participacionCuotaMora = this.acuerdoCal.valorCuotaMensual / this.acuerdoCal.valorTotalMora
         var capitalCuotaMora = this.cuentaCobrarSelected.moraObligatoria * participacionCuotaMora
         var interesCuotaMora = this.acuerdoCal.valorCuotaMensual - capitalCuotaMora
+
+        cuotaList.numeroCuota = i + 1
+        cuotaList.valorCuota = this.acuerdoCal.valorCuotaMensual
+        cuotaList.capitalCuota = capitalCuotaMora
+        cuotaList.interesCuota = interesCuotaMora
+
         valorCapitalMora = valorCapitalMora - capitalCuotaMora
         alert(`capital couta mora ${capitalCuotaMora}`)
         alert(`interes couta mora ${interesCuotaMora}`)
@@ -2396,42 +2423,117 @@ export class HomeCarteraComponent implements OnInit {
         saldoTotalMoraLocal = saldoTotalMoraLocal - this.acuerdoCal.valorCuotaMensual
         console.log("sadlo total " + saldoTotal);
         console.log("sadlo total mora local " + saldoTotalMoraLocal);
-
+        this.cuotas.push(cuotaList)
 
       } else {
-        if (saldoTotalMoraLocal > 0 && saldoTotalMoraLocal < this.acuerdoCal.valorCuotaMensual) {
+        if (saldoTotalMoraLocal > 0 && saldoTotalMoraLocal < this.acuerdoCal.valorCuotaMensual && saldoTotalMoraLocal > this.cuentaCobrarSelected.valorCuota) {
           alert(`crear cuota ${i + 1} con con saldo de cuota con saldo de cuota  ${this.cuentaCobrarSelected.valorCuota}`)
           alert("entro aqui")
           //vamos aqui
-          
-          var participacionCuotaMora = this.cuentaCobrarSelected.valorCuota / this.acuerdoCal.valorTotalMora
+          console.log(valorCapitalMora);
+          var cuotaList = {
+            numeroCuota: 0,
+            fechaVencimiento: '',
+            valorCuota: 0,
+            capitalCuota: 0,
+            interesCuota: 0,
+            honorarios: 0,
+            cumplio: false
+          }
+
+          var participacionCuotaMora = saldoTotalMoraLocal / this.acuerdoCal.valorTotalMora
           var capitalCuotaMora = this.cuentaCobrarSelected.moraObligatoria * participacionCuotaMora
-          var interesCuotaMora = this.cuentaCobrarSelected.valorCuota - capitalCuotaMora
+          var interesCuotaMora = saldoTotalMoraLocal - capitalCuotaMora
+
+          cuotaList.numeroCuota = i + 1
+          cuotaList.valorCuota = capitalCuotaMora + interesCuotaMora
+          cuotaList.capitalCuota = capitalCuotaMora
+          cuotaList.interesCuota = interesCuotaMora
           valorCapitalMora = valorCapitalMora - capitalCuotaMora
           alert(`capital couta mora ${capitalCuotaMora}`)
           alert(`interes couta mora ${interesCuotaMora}`)
+          alert(`valorCapitalMora ${valorCapitalMora}`)
           saldoTotal = saldoTotal - this.cuentaCobrarSelected.valorCuota
           saldoTotalMoraLocal = 0
           console.log("sadlo total " + saldoTotal);
           console.log("sadlo total mora local " + saldoTotalMoraLocal);
+          this.cuotas.push(cuotaList)
           continue;
+        } else {
+          if (saldoTotalMoraLocal <= this.cuentaCobrarSelected.valorCuota && saldoTotalMoraLocal > 0) {
+            alert(`crear cuota ${i + 1} con con saldo de cuota con saldo de cuota  ${this.cuentaCobrarSelected.valorCuota}`)
+            alert("entro aqui")
+            //vamos aqui
+            console.log(valorCapitalMora);
+
+            var cuotaList = {
+              numeroCuota: 0,
+              fechaVencimiento: '',
+              valorCuota: 0,
+              capitalCuota: 0,
+              interesCuota: 0,
+              honorarios: 0,
+              cumplio: false
+            }
+            var saldoCuota = this.cuentaCobrarSelected.valorCuota - saldoTotalMoraLocal
+            var participacionCuotaMora = saldoTotalMoraLocal / this.acuerdoCal.valorTotalMora
+            var capitalCuotaMora = (this.cuentaCobrarSelected.moraObligatoria * participacionCuotaMora) + saldoCuota
+            var interesCuotaMora = saldoTotalMoraLocal - capitalCuotaMora
+
+            cuotaList.numeroCuota = i + 1
+            cuotaList.valorCuota = capitalCuotaMora + interesCuotaMora
+            cuotaList.capitalCuota = capitalCuotaMora
+            cuotaList.interesCuota = interesCuotaMora
+
+            valorCapitalMora = valorCapitalMora - capitalCuotaMora
+            alert(`capital couta mora ${capitalCuotaMora}`)
+            alert(`interes couta mora ${interesCuotaMora}`)
+            alert(`valorCapitalMora ${valorCapitalMora}`)
+            saldoTotal = saldoTotal - this.cuentaCobrarSelected.valorCuota
+            saldoTotalMoraLocal = 0
+            console.log("sadlo total " + saldoTotal);
+            console.log("sadlo total mora local " + saldoTotalMoraLocal);
+            this.cuotas.push(cuotaList)
+            continue;
+          }
         }
 
       }
 
       if (saldoTotalMoraLocal == 0 && saldoTotal > this.cuentaCobrarSelected.valorCuota) {
+        var cuotaList = {
+          numeroCuota: 0,
+          fechaVencimiento: '',
+          valorCuota: 0,
+          capitalCuota: 0,
+          interesCuota: 0,
+          honorarios: 0,
+          cumplio: false
+        }
+        cuotaList.valorCuota = this.cuentaCobrarSelected.valorCuota
         saldoTotal = saldoTotal - this.cuentaCobrarSelected.valorCuota
         alert(`crear cuota sin mora ${i + 1} ${this.cuentaCobrarSelected.valorCuota}`)
         console.log("sadlo total " + saldoTotal);
-
+        this.cuotas.push(cuotaList)
 
       } else {
         if (saldoTotalMoraLocal == 0) {
           alert(`crear ultima cuota sin mora ${i + 1} con saldo de cuota ${saldoTotal}`)
+          var cuotaList = {
+            numeroCuota: 0,
+            fechaVencimiento: '',
+            valorCuota: 0,
+            capitalCuota: 0,
+            interesCuota: 0,
+            honorarios: 0,
+            cumplio: false
+          }
+          cuotaList.valorCuota = this.cuentaCobrarSelected.valorCuota
           saldoTotal = saldoTotal - saldoTotalMoraLocal
           saldoTotalMoraLocal = 0
           console.log("sadlo total " + saldoTotal);
           console.log("sadlo total mora local " + saldoTotalMoraLocal);
+          this.cuotas.push(cuotaList)
         }
       }
       console.log(totalCuotas);
