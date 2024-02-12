@@ -46,6 +46,20 @@
                 <div class="tab-pane fade show active" id="todas" role="tabpanel" aria-labelledby="home-tab">
                     <div class="list-group" style="width: 300px;">
 
+                        <div class="row justify-content-center mt-3 mb-3">
+                            <div class="col-md-8">
+                                <select [(ngModel)]="filtroAll" class="form-select" style="border: 1px black solid;">
+                                    <option>Seleccione Una Sede</option>
+                                    <option *ngFor="let s of sedes; let i = index" value="{{ s.sede }}">{{ s.sede }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn b" (click)="getNotiAllBySede()"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+
                         <a *ngFor="let n of notiArray" class="list-group-item" aria-current="true"
                             style="background-color: rgb(201, 201, 201);">
                             <div class="row justify-content-center mb-2">
@@ -54,9 +68,11 @@
                                             class="fa-solid fa-check"></i></button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button (click)="getGestiones(n.numeroObligacion)" data-bs-toggle="modal"
-                                        data-bs-target="#modalGestionCom" style="cursor: pointer;"
-                                        class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
+                                    <button
+                                        (click)="getGestionesNoti(n.numeroObligacion, n.gestionId, n.fechaCreacion, n.tipoGestion, n.idNotificaciones)"
+                                        data-bs-toggle="modal" data-bs-target="#modalGestionCom"
+                                        style="cursor: pointer;" class="btn btn-sm btn-primary"><i
+                                            class="fa-solid fa-file-pen"></i></button>
                                 </div>
                             </div>
 
@@ -81,6 +97,22 @@
                 <div class="tab-pane fade" id="vencidas" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="list-group" style="width: 300px;">
 
+                        <div class="row justify-content-center mt-3 mb-3">
+                            <div class="col-md-8">
+                                <select [(ngModel)]="filtroVen" class="form-select" style="border: 1px black solid;">
+                                    <option>Seleccione Una Sede</option>
+                                    <option *ngFor="let s of sedes; let i = index" value="{{ s.sede }}">{{ s.sede }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn b" (click)="getNotiVenBySede()"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+
+
+
                         <a *ngFor="let n of notiArrayVencidas" class="list-group-item" aria-current="true"
                             style="background-color: rgb(201, 201, 201);">
                             <div class="row justify-content-center mb-2">
@@ -89,8 +121,10 @@
                                             class="fa-solid fa-check"></i></button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button (click)="findCuentaCobrar(n.numeroObligacion)" data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasRight" class="btn btn-sm btn-primary"><i
+                                    <button
+                                        (click)="getGestionesNoti(n.numeroObligacion, n.gestionId, n.fechaCreacion, n.tipoGestion, n.idNotificaciones)"
+                                        data-bs-toggle="modal" data-bs-target="#modalGestionCom"
+                                        style="cursor: pointer;" class="btn btn-sm btn-primary"><i
                                             class="fa-solid fa-file-pen"></i></button>
                                 </div>
                             </div>
@@ -116,6 +150,22 @@
 
                 <div class="tab-pane fade" id="realizadas" role="tabpanel" aria-labelledby="home-tab">
                     <div class="list-group" style="width: 300px;">
+
+                        <div class="row justify-content-center mt-3 mb-3">
+                            <div class="col-md-8">
+                                <select [(ngModel)]="filtroRealizada" class="form-select"
+                                    style="border: 1px black solid;">
+                                    <option>Seleccione Una Sede</option>
+                                    <option *ngFor="let s of sedes; let i = index" value="{{ s.sede }}">{{ s.sede }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn b" (click)="getNotiRealizadasBySede()"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+
                         <a *ngFor="let n of notiArrayRealizadas" class="list-group-item" aria-current="true"
                             style="background-color: rgb(201, 201, 201);">
                             <div class="row justify-content-center mb-2">
@@ -124,9 +174,11 @@
                                             class="fa-solid fa-circle-minus"></i></button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button (click)="findCuentaCobrar(n.numeroObligacion)" data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasRight" style="cursor: pointer;"
-                                        class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
+                                    <button
+                                        (click)="getGestionesNoti(n.numeroObligacion, n.gestionId, n.fechaCreacion, n.tipoGestion, n.idNotificaciones)"
+                                        data-bs-toggle="modal" data-bs-target="#modalGestionCom"
+                                        style="cursor: pointer;" class="btn btn-sm btn-primary"><i
+                                            class="fa-solid fa-file-pen"></i></button>
                                 </div>
                             </div>
                             <div class="d-flex w-100 justify-content-between">
@@ -1656,15 +1708,6 @@
                     <!-- NOTA -->
                     <div class="card" *ngIf="gestionSelected.clasificacion.clasificacion == 'NOTA'">
                         <div class="card-body">
-                            <!-- <div class="row justify-content-center">
-                                <div class="col-md-12 mb-3">
-                                    <div class="form-floating">
-                                        <textarea [(ngModel)]="gestionSelected.detallesGestion" class="form-control"
-                                            readonly></textarea>
-                                        <label for="floatingTextarea">Descripción</label>
-                                    </div>
-                                </div>
-                            </div> -->
                             <div class="row justify-content-center">
                                 <div class="col-md-12 mb-3">
                                     <div class="form-floating">
@@ -1731,6 +1774,13 @@
                     </span>
 
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+                        <button
+                            *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA' && gestionSelected.clasificacion.isActive == true && notiId != 0"
+                            type="button" class="btn btn-danger b" (click)="completarGestion()">Completar
+                            Gestion</button>
+                    </span>
+
+                    <span *ngIf="gestionSelected != null || gestionSelected != undefined">
 
                         <button
                             *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true && mostrarAgregarPago"
@@ -1739,10 +1789,10 @@
                     </span>
 
                     <!-- BOTONES TAREA -->
-                    <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+                    <!-- <span *ngIf="gestionSelected != null || gestionSelected != undefined">
                         <button *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA'" type="button"
                             class="btn btn-danger b">Desactivar</button>
-                    </span>
+                    </span> -->
 
                 </div>
             </div>

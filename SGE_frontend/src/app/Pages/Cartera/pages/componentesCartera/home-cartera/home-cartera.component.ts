@@ -192,8 +192,13 @@ export class HomeCarteraComponent implements OnInit {
     contact: false,
     detallesAdicionales: '',
     usernameToSetNotificacion: '',
-    userNotifying: ''
+    userNotifying: '',
+    notificacionId: null,
+    clasificacionId: null
   }
+
+  notiId:number | null = null
+  clasifiNotiId:number | null = null
 
   gestionSelected: any = {
     numeroObligacion: '',
@@ -393,6 +398,11 @@ export class HomeCarteraComponent implements OnInit {
   botonFiltrarObligacion: boolean = false
   filtradoBuscar:boolean = false
   variableLimpiar: boolean = false
+  
+  //FILTRO NOTIFICACIONES
+  filtroVen:string = ''
+  filtroAll:string = ''
+  filtroRealizada:string = ''
 
   @ViewChildren('variableCol') colcheck!: QueryList<ElementRef>;
 
@@ -727,7 +737,9 @@ export class HomeCarteraComponent implements OnInit {
         contact: false,
         detallesAdicionales: '',
         usernameToSetNotificacion: '',
-        userNotifying: ''
+        userNotifying: '',
+        notificacionId: null,
+        clasificacionId: null
       }
 
       this.acuerdo = {
@@ -778,7 +790,9 @@ export class HomeCarteraComponent implements OnInit {
               contact: false,
               detallesAdicionales: this.newGestion.detallesAdicionales,
               usernameToSetNotificacion: '',
-              userNotifying: ''
+              userNotifying: '',
+              notificacionId: null,
+              clasificacionId: null
             }
 
             if (this.cuentaCobrarSelected.documentoCliente != '') {
@@ -811,6 +825,7 @@ export class HomeCarteraComponent implements OnInit {
   getGestiones(numeroObligacion: string) {
     this.alertasGestiones()
     this.gestiones = []
+    this.notiId = 0
     this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
       (data: any) => {
         console.log(data);
@@ -828,9 +843,70 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  getGestionesNoti(numeroObligacion:string, idGestion:number){
+  getGestionesNoti(numeroObligacion:string, idGestion:number, fechaCreacion:Date, tipoGestion:string, idNotifi:number){
     this.getGestiones(numeroObligacion)
-    this.getOneGestion(idGestion)
+    this.notiId = idNotifi
+    setTimeout(() => {
+      this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
+    }, 1000);
+  }
+
+  getOneGestionNoti(id: number, fechaCreacion:Date, tipoGestion:string) {
+    this.gestionSelected = {
+      numeroObligacion: '',
+      clasificacion: {
+        nombreClasificacion: '',
+        tipoClasificacion: '',
+        tarea: {
+          detalleTarea: '',
+          fechaFinTarea: '',
+          isPartOfRecaudo: false
+        },
+        nota: {
+          detalle: ''
+        },
+        acuerdoPago: {
+          detalle: '',
+          valorCuotaMensual: 0,
+          tipoAcuerdo: '',
+          valorTotalAcuerdo: 0,
+          valorInteresesMora: 0,
+          honoriarioAcuerdo: 0,
+          fechaCompromiso: new Date(),
+          cuotasList: [],
+          username: ''
+        }
+      },
+      gestion: '',
+      contact: false,
+      detallesAdicionales: ''
+    }
+
+    this.coutasRequest = []
+    this.recibosPago = []
+
+    if(tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA'){
+      this.notiId = null
+      this.clasifiNotiId = null
+    }
+
+    if(id != null){
+      this.getOneGestion(id)
+    } else {
+      var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == tipoGestion && g.fechaGestion == fechaCreacion)
+      console.log(gestion);
+      
+      this.positionGestionSelected = this.gestiones.indexOf(gestion)
+  
+      this.obtenerGestionSelected()
+    }
+  }
+
+  completarGestion(){
+    $('#modalGestion').modal('show');
+    $('#modalGestionCom').modal('hide');
+    this.newGestion.notificacionId = this.notiId
+    this.newGestion.clasificacionId = this.clasifiNotiId
   }
 
   getLastDato(numeroDocumento: string) {
@@ -943,12 +1019,14 @@ export class HomeCarteraComponent implements OnInit {
                     tarea: null,
                     nota: null,
                     acuerdoPago: null,
-                    nombreClasificacion: ''
+                    nombreClasificacion: '',
                   },
                   contact: false,
                   detallesAdicionales: this.newGestion.detallesAdicionales,
                   usernameToSetNotificacion: '',
-                  userNotifying: ''
+                  userNotifying: '',
+                  notificacionId: null,
+                  clasificacionId: null
                 }
                 $('#modalGestion').modal('hide');
                 $('#offcanvasRight').offcanvas('hide');
@@ -1030,7 +1108,9 @@ export class HomeCarteraComponent implements OnInit {
                   contact: false,
                   detallesAdicionales: this.newGestion.detallesAdicionales,
                   usernameToSetNotificacion: '',
-                  userNotifying: ''
+                  userNotifying: '',
+                  notificacionId: null,
+                  clasificacionId: null
                 }
                 $('#modalGestion').modal('hide');
                 $('#offcanvasRight').offcanvas('hide');
@@ -1211,7 +1291,9 @@ export class HomeCarteraComponent implements OnInit {
               contact: false,
               detallesAdicionales: this.newGestion.detallesAdicionales,
               usernameToSetNotificacion: '',
-              userNotifying: ''
+              userNotifying: '',
+              notificacionId: null,
+              clasificacionId: null
             }
             this.cuotas = []
             this.disabledFecha = false
@@ -1382,18 +1464,18 @@ export class HomeCarteraComponent implements OnInit {
     this.recibosPago = []
 
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
-
+    
     this.positionGestionSelected = this.gestiones.indexOf(gestion)
 
-
     this.obtenerGestionSelected()
-
-
   }
 
   obtenerGestionSelected() {
 
     this.gestionSelected = this.gestiones[this.positionGestionSelected]
+
+    this.clasifiNotiId = this.gestionSelected.clasificacion.idClasificacionGestion
+
     console.log(this.gestionSelected);
     if (this.gestionSelected.clasificacion.nombresClasificacion.tipo == 'ACUERDO DE PAGO') {
       this.obtenerCuotas()
@@ -2565,7 +2647,9 @@ export class HomeCarteraComponent implements OnInit {
           contact: false,
           detallesAdicionales: this.newGestion.detallesAdicionales,
           usernameToSetNotificacion: '',
-          userNotifying: ''
+          userNotifying: '',
+          notificacionId: null,
+          clasificacionId: null
         }
 
         this.acuerdo = {
@@ -3512,13 +3596,16 @@ export class HomeCarteraComponent implements OnInit {
     this.cuentasCobrar.getNotificacionesVencidas(user).subscribe(
       (data: any) => {
         this.notiArrayVencidas = data
+        console.log(this.notiArrayVencidas);
+        
         if (user == null || user == undefined) {
           return
         }
         this.cuentasCobrar.getAllNotificaciones(user).subscribe(
           (data: any) => {
             this.notiArray = data
-
+            console.log(this.notiArray);
+            
             if (user == null || user == undefined) {
               return
             }
@@ -3526,6 +3613,8 @@ export class HomeCarteraComponent implements OnInit {
             this.cuentasCobrar.getNotificacionesRealizadas(user).subscribe(
               (data: any) => {
                 this.notiArrayRealizadas = data
+                console.log(this.notiArrayRealizadas);
+                
               }
             )
 
@@ -3534,6 +3623,120 @@ export class HomeCarteraComponent implements OnInit {
           }
         )
       }, (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  getNotiVenBySede(){
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+
+    if(this.filtroVen == '' || this.filtroVen == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Seleccione Una Sede',
+        timer: 3000
+      })
+      return
+    }
+
+    this.cuentasCobrar.getVencidasBySede(this.filtroVen, user).subscribe(
+      (data:any) => {
+        this.notiArrayVencidas = data
+        console.log(this.notiArrayVencidas);
+        if(this.notiArrayVencidas.length == 0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No Hay Notificaciones Con Este Filtro',
+            timer: 3000
+          })
+          setTimeout(() => {
+            this.getNotificaciones()
+          }, 3000);
+        }
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  getNotiAllBySede(){
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+
+    if(this.filtroAll == '' || this.filtroAll == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Seleccione Una Sede',
+        timer: 3000
+      })
+      return
+    }
+
+    this.cuentasCobrar.getAllBySede(this.filtroAll, user).subscribe(
+      (data:any) => {
+        this.notiArray = data
+        console.log(this.notiArray);
+        if(this.notiArray.length == 0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No Hay Notificaciones Con Este Filtro',
+            timer: 3000
+          })
+          setTimeout(() => {
+            this.getNotificaciones()
+          }, 3000);
+        }
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  getNotiRealizadasBySede(){
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+
+    if(this.filtroRealizada == '' || this.filtroRealizada == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Seleccione Una Sede',
+        timer: 3000
+      })
+      return
+    }
+
+    this.cuentasCobrar.getRealizadasBySede(this.filtroRealizada, user).subscribe(
+      (data:any) => {
+        this.notiArrayRealizadas = data
+        console.log(this.notiArrayRealizadas);
+        if(this.notiArrayRealizadas.length == 0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No Hay Notificaciones Con Este Filtro',
+            timer: 3000
+          })
+          setTimeout(() => {
+            this.getNotificaciones()
+          }, 3000);
+        }
+      }, (error:any) => {
         console.log(error);
       }
     )
@@ -3638,16 +3841,11 @@ export class HomeCarteraComponent implements OnInit {
     var usuario = this.authService.getUsername();
     var fecha = new Date();
 
-    console.log(fecha.toISOString());
-
-
 
     if (usuario != null || usuario != undefined) {
       this.cuentasCobrar.alertasGestiones(usuario, fecha.toISOString()).subscribe(
         (data: any) => {
           this.alertasGestionesObject = data; 
-          console.log(data);
-          
         }, (error: any) => {
           console.log(error)
         }
