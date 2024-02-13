@@ -2116,6 +2116,7 @@ export class HomeCarteraComponent implements OnInit {
 
   // CALCULAR LAS FECHAS DE LAS CUOTAS
   generarFechas() {
+    this.fechasIncrementadas = []
     var fechaString = this.fechaInicial.toISOString()
 
 
@@ -2397,6 +2398,7 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUl)
+                this.cantidadFechas++;
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
                 break;
@@ -2431,6 +2433,7 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUl)
+                this.cantidadFechas++;
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
                 break;
@@ -2457,6 +2460,7 @@ export class HomeCarteraComponent implements OnInit {
                 cumplio: false
               }
               this.cuotas.push(cuoUl)
+              this.cantidadFechas++;
               this.cuotas[position].valorCuota = parseInt(event.target.value)
               break;
             } else {
@@ -2474,6 +2478,7 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUll)
+                this.cantidadFechas++;
                 nuevoValorSumarCuotas = nuevoValorSumarCuotas - excedenteParaCuouta
               } else {
                 var cuoUll = {
@@ -2487,6 +2492,7 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUll)
+                this.cantidadFechas++;
                 nuevoValorSumarCuotas = excedentePrinciapl
               }
             }
@@ -2504,6 +2510,7 @@ export class HomeCarteraComponent implements OnInit {
     this.disableds[this.cuotas.length - 1] = true
     this.metodosCalculos()
     this.validarCuotasVacias()
+    this.generarFechas()
   }
 
   // CLASIFICACION
