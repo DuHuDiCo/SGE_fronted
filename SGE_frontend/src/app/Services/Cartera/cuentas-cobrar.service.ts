@@ -89,10 +89,6 @@ export class CuentasCobrarService {
     return this.http.put(`${baseUrl}/gestiones/linkAndReporteAcuerdoToClient`, data)
   }
 
-  alertasGestiones(username:string, fecha:string){
-    return this.http.get(`${baseUrl}/gestiones/alerts?username=${username}&fecha=${fecha}`, )
-  }
-
   // TIPO VENCIMIENTO
   saveTipoVencimiento(tipoVencimiento:TipoVencimiento){
     return this.http.post(`${baseUrl}/tiposVencimiento/guardarTipoVencimiento`, tipoVencimiento)
@@ -215,6 +211,22 @@ export class CuentasCobrarService {
 
   hideNotificacion(idNotificion:number){
     return this.http.put(`${baseUrl}/notificaciones/hideNotification?idNotificion=${idNotificion}`, null)
+  }
+
+  alertasGestiones(username:string, fecha:string){
+    return this.http.get(`${baseUrl}/gestiones/alerts?username=${username}&fecha=${fecha}`, )
+  }
+
+  getVencidasBySede(sede:string, username:string){
+    return this.http.get(`${baseUrl}/notificaciones/bySedeVencidas?sede=${sede}&username=${username}`)
+  }
+
+  getAllBySede(sede:string, username:string){
+    return this.http.get(`${baseUrl}/notificaciones/bySedeAll?sede=${sede}&username=${username}`)
+  }
+
+  getRealizadasBySede(sede:string, username:string){
+    return this.http.get(`${baseUrl}/notificaciones/bySedeRealizadas?sede=${sede}&username=${username}`)
   }
 
 
