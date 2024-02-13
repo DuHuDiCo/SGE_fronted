@@ -848,7 +848,7 @@ export class HomeCarteraComponent implements OnInit {
     this.notiId = idNotifi
     setTimeout(() => {
       this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
-    }, 1000);
+    }, 1500);
   }
 
   getOneGestionNoti(id: number, fechaCreacion:Date, tipoGestion:string) {

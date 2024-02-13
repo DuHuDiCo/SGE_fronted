@@ -63,7 +63,7 @@
                         <a *ngFor="let n of notiArray" class="list-group-item" aria-current="true"
                             style="background-color: rgb(201, 201, 201);">
                             <div class="row justify-content-center mb-2">
-                                <div class="col-md-4">
+                                <div *ngIf="n.tipoGestion == 'TAREA'" class="col-md-4">
                                     <button (click)="desactivarNoti(n.idNotificaciones)" class="btn btn-sm b"><i
                                             class="fa-solid fa-check"></i></button>
                                 </div>
@@ -117,7 +117,8 @@
                             style="background-color: rgb(201, 201, 201);">
                             <div class="row justify-content-center mb-2">
                                 <div class="col-md-4">
-                                    <button (click)="desactivarNoti(n.idNotificaciones)" class="btn btn-sm b"><i
+                                    <button *ngIf="n.tipoGestion == 'TAREA'"
+                                        (click)="desactivarNoti(n.idNotificaciones)" class="btn btn-sm b"><i
                                             class="fa-solid fa-check"></i></button>
                                 </div>
                                 <div class="col-md-4">
@@ -569,6 +570,16 @@
 
                                                         </div>
 
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Valor Cuota</span>
+                                                            <input type="number"
+                                                                [(ngModel)]="cuentaCobrarSelected.valorCuota"
+                                                                class="form-control" disabled>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="row justify-content-center">
