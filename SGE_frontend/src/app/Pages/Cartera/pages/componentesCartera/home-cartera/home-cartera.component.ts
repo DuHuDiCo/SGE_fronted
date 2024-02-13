@@ -1838,7 +1838,7 @@ export class HomeCarteraComponent implements OnInit {
       //CAPITAL CUOTA
 
       var porcentaje = this.cuotas[i].valorCuota / this.acuerdoCal.valorTotalAcuerdo
-      
+
       var cap = 0
       if (this.acuerdoCal.tipoAcuerdo == "MORA") {
         cap = porcentaje * this.cuentaCobrarSelected.moraObligatoria
@@ -2269,7 +2269,7 @@ export class HomeCarteraComponent implements OnInit {
         cap = porcentaje * this.cuentaCobrarSelected.moraObligatoria
       }
       if (this.acuerdoCal.tipoAcuerdo == "TOTAL") {
-        
+
         cap = porcentaje * saldoCapitalTotal
         alert(this.acuerdoCal.valorTotalAcuerdo)
       }
@@ -2452,8 +2452,8 @@ export class HomeCarteraComponent implements OnInit {
 
         cuotaList.numeroCuota = i + 1
         cuotaList.valorCuota = this.acuerdoCal.valorCuotaMensual
-        cuotaList.capitalCuota = capitalCuotaMora
-        cuotaList.interesCuota = interesCuotaMora
+        cuotaList.capitalCuota = parseInt(capitalCuotaMora.toFixed(0))
+        cuotaList.interesCuota = parseInt(interesCuotaMora.toFixed(0))
 
         valorCapitalMora = valorCapitalMora - capitalCuotaMora
         alert(`capital couta mora ${capitalCuotaMora}`)
@@ -2463,6 +2463,7 @@ export class HomeCarteraComponent implements OnInit {
         console.log("sadlo total " + saldoTotal);
         console.log("sadlo total mora local " + saldoTotalMoraLocal);
         this.cuotas.push(cuotaList)
+        this.cantidadFechas++
 
       } else {
         if (saldoTotalMoraLocal > 0 && saldoTotalMoraLocal < this.acuerdoCal.valorCuotaMensual && saldoTotalMoraLocal > this.cuentaCobrarSelected.valorCuota) {
@@ -2486,8 +2487,8 @@ export class HomeCarteraComponent implements OnInit {
 
           cuotaList.numeroCuota = i + 1
           cuotaList.valorCuota = capitalCuotaMora + interesCuotaMora
-          cuotaList.capitalCuota = capitalCuotaMora
-          cuotaList.interesCuota = interesCuotaMora
+          cuotaList.capitalCuota = parseInt(capitalCuotaMora.toFixed(0))
+          cuotaList.interesCuota = parseInt(interesCuotaMora.toFixed(0))
           valorCapitalMora = valorCapitalMora - capitalCuotaMora
           alert(`capital couta mora ${capitalCuotaMora}`)
           alert(`interes couta mora ${interesCuotaMora}`)
@@ -2497,6 +2498,7 @@ export class HomeCarteraComponent implements OnInit {
           console.log("sadlo total " + saldoTotal);
           console.log("sadlo total mora local " + saldoTotalMoraLocal);
           this.cuotas.push(cuotaList)
+          this.cantidadFechas++
           continue;
         } else {
           if (saldoTotalMoraLocal <= this.cuentaCobrarSelected.valorCuota && saldoTotalMoraLocal > 0) {
@@ -2521,8 +2523,8 @@ export class HomeCarteraComponent implements OnInit {
 
             cuotaList.numeroCuota = i + 1
             cuotaList.valorCuota = capitalCuotaMora + interesCuotaMora
-            cuotaList.capitalCuota = capitalCuotaMora
-            cuotaList.interesCuota = interesCuotaMora
+            cuotaList.capitalCuota = parseInt(capitalCuotaMora.toFixed(0))
+            cuotaList.interesCuota = parseInt(interesCuotaMora.toFixed(0))
 
             valorCapitalMora = valorCapitalMora - capitalCuotaMora
             alert(`capital couta mora ${capitalCuotaMora}`)
@@ -2533,6 +2535,7 @@ export class HomeCarteraComponent implements OnInit {
             console.log("sadlo total " + saldoTotal);
             console.log("sadlo total mora local " + saldoTotalMoraLocal);
             this.cuotas.push(cuotaList)
+            this.cantidadFechas++
             continue;
           }
         }
@@ -2554,7 +2557,7 @@ export class HomeCarteraComponent implements OnInit {
         alert(`crear cuota sin mora ${i + 1} ${this.cuentaCobrarSelected.valorCuota}`)
         console.log("sadlo total " + saldoTotal);
         this.cuotas.push(cuotaList)
-
+        this.cantidadFechas++
       } else {
         if (saldoTotalMoraLocal == 0) {
           alert(`crear ultima cuota sin mora ${i + 1} con saldo de cuota ${saldoTotal}`)
@@ -2573,12 +2576,20 @@ export class HomeCarteraComponent implements OnInit {
           console.log("sadlo total " + saldoTotal);
           console.log("sadlo total mora local " + saldoTotalMoraLocal);
           this.cuotas.push(cuotaList)
+          this.cantidadFechas++
         }
       }
       console.log(totalCuotas);
 
 
     }
+    this.generarFechas()
+    this.cuotas.forEach((c: any, i: number) => {
+      if (c.fechaVencimiento == "") {
+        c.fechaVencimiento = this.fechasIncrementadas[i]
+      }
+      c.numeroCuota = i + 1
+    })
   }
 
   // RECALCULAR
@@ -2623,12 +2634,12 @@ export class HomeCarteraComponent implements OnInit {
             this.cuotas[i].valorCuota = (nuevoValor) * -1
             this.cuotas[position].valorCuota = parseInt(event.target.value)
             this.totalCuotas = this.cuotas.length
-            
+
             break
           }
         }
       }
-      
+
     }
     //RECALCULAR PARA SUMAR CUOTAS
     var nuevoValorSumarCuotas = this.cuotas[position].valorCuota - event.target.value
@@ -2658,7 +2669,7 @@ export class HomeCarteraComponent implements OnInit {
                 this.cantidadFechas++;
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
-                
+
                 break;
               }
             } else {
@@ -2768,10 +2779,15 @@ export class HomeCarteraComponent implements OnInit {
     this.disableds[this.cuotas.length - 1] = true
     this.metodosCalculos()
     this.validarCuotasVacias()
-    
+
     this.generarFechas()
-    
-    
+    this.cuotas.forEach((c: any, i: number) => {
+      if (c.fechaVencimiento == "") {
+        c.fechaVencimiento = this.fechasIncrementadas[i]
+      }
+      c.numeroCuota = i + 1
+    })
+
   }
 
   // CLASIFICACION
