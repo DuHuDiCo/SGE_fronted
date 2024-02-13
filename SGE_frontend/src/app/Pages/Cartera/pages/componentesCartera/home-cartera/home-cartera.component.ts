@@ -891,7 +891,14 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     if(id != null){
-      this.getOneGestion(id)
+      console.log(id);
+      
+      var gestion = this.gestiones.find((g: any) => g.clasificacion.idClasificacionGestion == id)
+
+      this.positionGestionSelected = this.gestiones.indexOf(gestion)
+  
+      this.obtenerGestionSelected()
+
     } else {
       var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == tipoGestion && g.fechaGestion == fechaCreacion)
       console.log(gestion);

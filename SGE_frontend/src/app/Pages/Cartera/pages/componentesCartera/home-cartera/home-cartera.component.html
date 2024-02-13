@@ -1371,8 +1371,9 @@
                                     <td>{{ g.fechaGestion | dateFormat }}
                                     </td>
                                     <td>{{ g.clasificacion.nombresClasificacion.nombre }}</td>
-                                    <td>{{ g.clasificacion.isActive ? 'Activo':g.clasificacion.nombresClasificacion.tipo
-                                        != "ACUERDO DE PAGO"?'Sin Estado':'No Activo' }}</td>
+                                    <td>{{ g.clasificacion.isActive ? 'Activo':
+                                        g.clasificacion.nombresClasificacion.tipo == "NOTA" ?'Sin Estado':'No Activo' }}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1775,7 +1776,7 @@
 
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
                         <button
-                            *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA' && gestionSelected.clasificacion.isActive == true && notiId != 0"
+                            *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA' && gestionSelected.clasificacion.isActive == true && notiId != null"
                             type="button" class="btn btn-danger b" (click)="completarGestion()">Completar
                             Gestion</button>
                     </span>
