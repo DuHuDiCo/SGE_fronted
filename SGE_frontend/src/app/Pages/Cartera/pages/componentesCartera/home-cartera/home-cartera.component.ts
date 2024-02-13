@@ -1838,12 +1838,14 @@ export class HomeCarteraComponent implements OnInit {
       //CAPITAL CUOTA
 
       var porcentaje = this.cuotas[i].valorCuota / this.acuerdoCal.valorTotalAcuerdo
+      
       var cap = 0
       if (this.acuerdoCal.tipoAcuerdo == "MORA") {
         cap = porcentaje * this.cuentaCobrarSelected.moraObligatoria
       }
       if (this.acuerdoCal.tipoAcuerdo == "TOTAL") {
-        cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
+        cap = porcentaje * this.acuerdoCal.saldoAcuerdo
+        alert(this.acuerdoCal.saldoAcuerdo)
       }
       this.cuotas[i].capitalCuota = parseInt(cap.toFixed(0))
 
@@ -2124,6 +2126,7 @@ export class HomeCarteraComponent implements OnInit {
 
   // CALCULAR LAS FECHAS DE LAS CUOTAS
   generarFechas() {
+    this.fechasIncrementadas = []
     var fechaString = this.fechaInicial.toISOString()
 
 
@@ -2182,6 +2185,8 @@ export class HomeCarteraComponent implements OnInit {
 
   // CACULAR COUTAS
   calcularCuotas() {
+
+    var saldoCapitalTotal = this.cuentaCobrarSelected.clientes[0].saldoActual
     if (this.acuerdoCal.valorCuotaMensual < 0) {
       Swal.fire({
         icon: 'error',
@@ -2224,8 +2229,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
 
-    //llamar metodo cuotasIncluidoMora
-    this.calcularCuotasConValorMoraIncluido()
+
 
 
 
@@ -2265,7 +2269,9 @@ export class HomeCarteraComponent implements OnInit {
         cap = porcentaje * this.cuentaCobrarSelected.moraObligatoria
       }
       if (this.acuerdoCal.tipoAcuerdo == "TOTAL") {
-        cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
+        
+        cap = porcentaje * saldoCapitalTotal
+        alert(this.acuerdoCal.valorTotalAcuerdo)
       }
 
       cuotaList.capitalCuota = parseInt(cap.toFixed(0))
@@ -2311,7 +2317,7 @@ export class HomeCarteraComponent implements OnInit {
           cap = porcentaje * this.cuentaCobrarSelected.moraObligatoria
         }
         if (this.acuerdoCal.tipoAcuerdo == "TOTAL") {
-          cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
+          cap = porcentaje * saldoCapitalTotal
         }
         cuotaListUltima.capitalCuota = parseInt(cap.toFixed(0))
 
@@ -2344,11 +2350,13 @@ export class HomeCarteraComponent implements OnInit {
   //CALCULAR CUOTAS CON LAS CUOTAS EN MORA
   calcularCuotasConValorMoraIncluido() {
 
+    var totalObligatoria = this.cuentaCobrarSelected.clientes[0].saldoActual
+
     var valorCuotaAnterior = this.cuentaCobrarSelected.valorCuota
     var valorDiferenciaCoutas = this.acuerdo.valorCuotaMensual - valorCuotaAnterior
     var totalCoutasMora = this.acuerdoCal.valorTotalMora / this.acuerdo.valorCuotaMensual
     var totalCuotasCredito = totalCoutasMora + ((this.acuerdoCal.saldoAcuerdo - (totalCoutasMora * this.acuerdo.valorCuotaMensual)) / valorCuotaAnterior)
-
+    var saldoRestante = totalObligatoria - this.cuentaCobrarSelected.moraObligatoria
 
     console.log("valor de la cuota anterior" + valorCuotaAnterior);
     console.log("valor diferencia de cuotas" + valorDiferenciaCoutas);
@@ -2357,14 +2365,15 @@ export class HomeCarteraComponent implements OnInit {
     console.log("saldo total Mora" + this.acuerdoCal.valorTotalMora);
     console.log("saldo total credito" + this.cuentaCobrarSelected.totalObligatoria);
     console.log("total mora obligatoria" + this.cuentaCobrarSelected.moraObligatoria);
-
+    console.log("saldo restante" + saldoRestante);
 
 
 
     totalCuotasCredito = totalCuotasCredito < 0 ? 1 : totalCuotasCredito;
 
 
-    if (valorDiferenciaCoutas > 0 && (totalCoutasMora * 2) < totalCuotasCredito) {
+    if (this.acuerdo.valorCuotaMensual > valorCuotaAnterior && (totalCoutasMora * 2) < totalCuotasCredito) {
+      alert("this.acuerdo.valorCuotaMensual > valorCuotaAnterior")
       var restanteCuotas = totalCuotasCredito - totalCoutasMora
       console.log("restante cuotas" + restanteCuotas);
 
@@ -2373,7 +2382,37 @@ export class HomeCarteraComponent implements OnInit {
 
 
     } else {
-      alert("calcular cuotas x el total")
+      if (this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante > this.cuentaCobrarSelected.moraObligatoria) {
+        alert("this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante > this.cuentaCobrarSelected.moraObligatoria")
+        this.calcularCuotas()
+      } else {
+        if (this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante <= this.cuentaCobrarSelected.moraObligatoria) {
+          alert("this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante <= this.cuentaCobrarSelected.moraObligatoria")
+          Swal.fire({
+            title: 'Refinanciacion de Pagare',
+            text: 'La cuota ingresada es menor a la cuota actual de credito, ¿Está Seguro de Continuar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.acuerdo.tipoAcuerdo = "TOTAL"
+              this.mostrarOffcanvas()
+            }
+          })
+
+          //alerta con mensaje informativo que la cuota es menor a la cuota inicial del credito por lo tanto esta intentando
+          //acceder a una refinaciacion nueva del paguere, ¿esta seguro de continuar?
+          // si esta seguro calcular con el metodo total
+        } else {
+          alert("Revisar Caso")
+          // alert "revisar este caso"
+        }
+
+      }
     }
   }
 
@@ -2584,10 +2623,12 @@ export class HomeCarteraComponent implements OnInit {
             this.cuotas[i].valorCuota = (nuevoValor) * -1
             this.cuotas[position].valorCuota = parseInt(event.target.value)
             this.totalCuotas = this.cuotas.length
+            
             break
           }
         }
       }
+      
     }
     //RECALCULAR PARA SUMAR CUOTAS
     var nuevoValorSumarCuotas = this.cuotas[position].valorCuota - event.target.value
@@ -2614,8 +2655,10 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUl)
+                this.cantidadFechas++;
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
+                
                 break;
               }
             } else {
@@ -2648,6 +2691,7 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUl)
+                this.cantidadFechas++;
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
                 break;
@@ -2674,6 +2718,7 @@ export class HomeCarteraComponent implements OnInit {
                 cumplio: false
               }
               this.cuotas.push(cuoUl)
+              this.cantidadFechas++;
               this.cuotas[position].valorCuota = parseInt(event.target.value)
               break;
             } else {
@@ -2691,6 +2736,7 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUll)
+                this.cantidadFechas++;
                 nuevoValorSumarCuotas = nuevoValorSumarCuotas - excedenteParaCuouta
               } else {
                 var cuoUll = {
@@ -2704,6 +2750,7 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUll)
+                this.cantidadFechas++;
                 nuevoValorSumarCuotas = excedentePrinciapl
               }
             }
@@ -2721,6 +2768,10 @@ export class HomeCarteraComponent implements OnInit {
     this.disableds[this.cuotas.length - 1] = true
     this.metodosCalculos()
     this.validarCuotasVacias()
+    
+    this.generarFechas()
+    
+    
   }
 
   // CLASIFICACION
