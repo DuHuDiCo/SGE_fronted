@@ -200,3 +200,16 @@ export enum ClasificacionGestion{
   Nota = "NOTA",
   Tarea = "TAREA"
 }
+
+
+export enum Permisos{
+  REFINANCIACION = "REFINANCIACION",
+  
+}
+
+export enum Roles{
+  CARTERA = "CARTERA",
+  ADMINISTRATION = "ADMINISTRATION"
+  
+}
+
