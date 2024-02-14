@@ -46,7 +46,17 @@
                 <div class="tab-pane fade show active" id="todas" role="tabpanel" aria-labelledby="home-tab">
                     <div class="list-group" style="width: 300px;">
 
-                        <div class="row justify-content-center mt-3 mb-3">
+                        <div *ngIf="notiArray.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
+                            <div class="col-md-8">
+                                <select [(ngModel)]="tipoAll" class="form-select" style="border: 1px black solid;">
+                                    <option>Seleccione Un Filtro</option>
+                                    <option value="SEDE">Filtrar Por Sede</option>
+                                    <option value="CEDULA">Filtrar Por Cédula</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div *ngIf="tipoAll == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
                             <div class="col-md-8">
                                 <select [(ngModel)]="filtroAll" class="form-select" style="border: 1px black solid;">
                                     <option>Seleccione Una Sede</option>
@@ -60,12 +70,23 @@
                             </div>
                         </div>
 
+                        <div *ngIf="tipoAll == 'CEDULA'" class="row justify-content-center mt-3 mb-3 ms-2">
+                            <div class="col-md-8">
+                                <input [(ngModel)]="filtroAll" type="text" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn b" (click)="getNotiAllBySede()"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+
                         <a *ngFor="let n of notiArray" class="list-group-item" aria-current="true"
                             style="background-color: rgb(201, 201, 201);">
                             <div class="row justify-content-center mb-2">
                                 <div *ngIf="n.tipoGestion == 'TAREA'" class="col-md-4">
-                                    <button (click)="desactivarNoti(n.idNotificaciones)" class="btn btn-sm b"><i
-                                            class="fa-solid fa-check"></i></button>
+                                    <button
+                                        (click)="desactivarNoti(n.idNotificaciones, n.fechaCreacion, n.gestionId, n.numeroObligacion)"
+                                        class="btn btn-sm b"><i class="fa-solid fa-check"></i></button>
                                 </div>
                                 <div class="col-md-4">
                                     <button
@@ -97,7 +118,17 @@
                 <div class="tab-pane fade" id="vencidas" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="list-group" style="width: 300px;">
 
-                        <div class="row justify-content-center mt-3 mb-3">
+                        <div *ngIf="notiArrayVencidas.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
+                            <div class="col-md-8">
+                                <select [(ngModel)]="tipoVen" class="form-select" style="border: 1px black solid;">
+                                    <option>Seleccione Un Filtro</option>
+                                    <option value="SEDE">Filtrar Por Sede</option>
+                                    <option value="CEDULA">Filtrar Por Cédula</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div *ngIf="tipoVen == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
                             <div class="col-md-8">
                                 <select [(ngModel)]="filtroVen" class="form-select" style="border: 1px black solid;">
                                     <option>Seleccione Una Sede</option>
@@ -111,15 +142,23 @@
                             </div>
                         </div>
 
-
+                        <div *ngIf="tipoVen == 'CEDULA'" class="row justify-content-center mt-3 mb-3 ms-2">
+                            <div class="col-md-8">
+                                <input [(ngModel)]="filtroVen" type="text" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn b" (click)="getNotiVenBySede()"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
 
                         <a *ngFor="let n of notiArrayVencidas" class="list-group-item" aria-current="true"
                             style="background-color: rgb(201, 201, 201);">
                             <div class="row justify-content-center mb-2">
                                 <div class="col-md-4">
                                     <button *ngIf="n.tipoGestion == 'TAREA'"
-                                        (click)="desactivarNoti(n.idNotificaciones)" class="btn btn-sm b"><i
-                                            class="fa-solid fa-check"></i></button>
+                                        (click)="desactivarNoti(n.idNotificaciones, n.fechaCreacion, n.gestionId, n.numeroObligacion)"
+                                        class="btn btn-sm b"><i class="fa-solid fa-check"></i></button>
                                 </div>
                                 <div class="col-md-4">
                                     <button
@@ -152,7 +191,17 @@
                 <div class="tab-pane fade" id="realizadas" role="tabpanel" aria-labelledby="home-tab">
                     <div class="list-group" style="width: 300px;">
 
-                        <div class="row justify-content-center mt-3 mb-3">
+                        <div *ngIf="notiArrayRealizadas.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
+                            <div class="col-md-8">
+                                <select [(ngModel)]="tipoReal" class="form-select" style="border: 1px black solid;">
+                                    <option>Seleccione Un Filtro</option>
+                                    <option value="SEDE">Filtrar Por Sede</option>
+                                    <option value="CEDULA">Filtrar Por Cédula</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div *ngIf="tipoReal == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
                             <div class="col-md-8">
                                 <select [(ngModel)]="filtroRealizada" class="form-select"
                                     style="border: 1px black solid;">
@@ -160,6 +209,16 @@
                                     <option *ngFor="let s of sedes; let i = index" value="{{ s.sede }}">{{ s.sede }}
                                     </option>
                                 </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn b" (click)="getNotiRealizadasBySede()"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+
+                        <div *ngIf="tipoReal == 'CEDULA'" class="row justify-content-center mt-3 mb-3 ms-2">
+                            <div class="col-md-8">
+                                <input [(ngModel)]="filtroRealizada" type="text" class="form-control">
                             </div>
                             <div class="col-md-4">
                                 <button class="btn b" (click)="getNotiRealizadasBySede()"><i

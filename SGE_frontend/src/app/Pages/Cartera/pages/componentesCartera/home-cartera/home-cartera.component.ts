@@ -302,6 +302,13 @@ export class HomeCarteraComponent implements OnInit {
     nombreTitular: ''
   }
 
+  notiObj:any = {
+    idNotificacion: 0,
+    fechaCreacion: new Date(),
+    idClasificacion: 0,
+    numeroObligacion: ''
+  }
+
   //FILTROS
   filtros: Filtros = {
     banco: [],
@@ -401,8 +408,13 @@ export class HomeCarteraComponent implements OnInit {
   
   //FILTRO NOTIFICACIONES
   filtroVen:string = ''
+  tipoVen:string = ''
+
   filtroAll:string = ''
+  tipoAll:string = ''
+
   filtroRealizada:string = ''
+  tipoReal:string = ''
 
   @ViewChildren('variableCol') colcheck!: QueryList<ElementRef>;
 
@@ -523,6 +535,7 @@ export class HomeCarteraComponent implements OnInit {
         (data: any) => {
           this.paginas = new Array(data.totalPages)
           this.cuentasCobrarArray = data.content
+          console.log(this.cuentasCobrarArray);
           this.last = data.last
           this.first = data.first
           this.numeroPages = data.totalPages
@@ -847,7 +860,11 @@ export class HomeCarteraComponent implements OnInit {
     this.getGestiones(numeroObligacion)
     this.notiId = idNotifi
     setTimeout(() => {
-      this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
+      if(this.gestiones.length > 0){
+        this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
+      } else {
+        console.log('GESTIONES VACIO');
+      }
     }, 1500);
   }
 
@@ -3152,8 +3169,13 @@ export class HomeCarteraComponent implements OnInit {
 
     }
 
-    var gesFalse = gestiones.filter((ges: any) => !ges.clasificacion.isActive)
-    gesFalse.forEach((ges: any) => {
+    var acuerdosFalse = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'ACUERDO DE PAGO' && !ges.clasificacion.isActive)
+    acuerdosFalse.forEach((ges: any) => {
+      this.gestiones.push(ges)
+    });
+
+    var tareaFalse = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && !ges.clasificacion.isActive)
+    tareaFalse.forEach((ges: any) => {
       this.gestiones.push(ges)
     });
   }
@@ -3646,13 +3668,13 @@ export class HomeCarteraComponent implements OnInit {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Seleccione Una Sede',
+        text: 'Seleccione Un Filtro',
         timer: 3000
       })
       return
     }
 
-    this.cuentasCobrar.getVencidasBySede(this.filtroVen, user).subscribe(
+    this.cuentasCobrar.getVencidasBySede(this.filtroVen, user, this.tipoVen).subscribe(
       (data:any) => {
         this.notiArrayVencidas = data
         console.log(this.notiArrayVencidas);
@@ -3684,13 +3706,13 @@ export class HomeCarteraComponent implements OnInit {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Seleccione Una Sede',
+        text: 'Seleccione Un Filtro',
         timer: 3000
       })
       return
     }
 
-    this.cuentasCobrar.getAllBySede(this.filtroAll, user).subscribe(
+    this.cuentasCobrar.getAllBySede(this.filtroAll, user, this.tipoAll).subscribe(
       (data:any) => {
         this.notiArray = data
         console.log(this.notiArray);
@@ -3722,13 +3744,13 @@ export class HomeCarteraComponent implements OnInit {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Seleccione Una Sede',
+        text: 'Seleccione Un Filtro',
         timer: 3000
       })
       return
     }
 
-    this.cuentasCobrar.getRealizadasBySede(this.filtroRealizada, user).subscribe(
+    this.cuentasCobrar.getRealizadasBySede(this.filtroRealizada, user, this.tipoReal).subscribe(
       (data:any) => {
         this.notiArrayRealizadas = data
         console.log(this.notiArrayRealizadas);
@@ -3749,7 +3771,12 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  desactivarNoti(id: number) {
+  desactivarNoti(id: number, fecha:Date, idClas:number, obligacion:string) {
+    this.notiObj.idNotificacion = id
+    this.notiObj.fechaCreacion = fecha
+    this.notiObj.idClasificacion = idClas
+    this.notiObj.numeroObligacion = obligacion
+    
     Swal.fire({
       title: 'Confirmar Notificación',
       text: '¿Desea Confirmar La Notificación?',
@@ -3761,7 +3788,7 @@ export class HomeCarteraComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.cuentasCobrar.desactivateNotificacion(id).subscribe(
+        this.cuentasCobrar.desactivateNotificacion(this.notiObj).subscribe(
           (data: any) => {
             Swal.fire({
               icon: 'success',
@@ -3770,6 +3797,11 @@ export class HomeCarteraComponent implements OnInit {
               timer: 3000
             })
             this.getNotificaciones()
+            if(!this.filtroAgain){
+              this.getCuentasCobrar()
+            } else {
+              this.filtro()
+            }
           }, (error: any) => {
             Swal.fire({
               icon: 'error',
