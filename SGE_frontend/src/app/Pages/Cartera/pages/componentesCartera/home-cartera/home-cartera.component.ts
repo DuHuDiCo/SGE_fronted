@@ -1303,13 +1303,6 @@ export class HomeCarteraComponent implements OnInit {
             } else {
               this.filtro()
             }
-            Swal.fire({
-              icon: 'success',
-              title: 'Datos Guardados',
-              showConfirmButton: false,
-              text: 'Gestión Guardada Exitosamente',
-              timer: 3000
-            })
             console.log(this.newGestion);
 
             this.botonGuardarGes = false
@@ -1722,10 +1715,24 @@ export class HomeCarteraComponent implements OnInit {
       ele?.click()
     }, 2000);
     $('#offcanvasRight').offcanvas('hide');
+    Swal.fire({
+      icon: 'success',
+      title: 'Datos Guardados',
+      showConfirmButton: false,
+      text: 'Gestión Guardada Exitosamente',
+      timer: 1000
+    })
   }
 
   cerrarCuenta(){
     $('#offcanvasRight').offcanvas('hide');
+    Swal.fire({
+      icon: 'success',
+      title: 'Datos Guardados',
+      showConfirmButton: false,
+      text: 'Gestión Guardada Exitosamente',
+      timer: 1000
+    })
   }
 
 
