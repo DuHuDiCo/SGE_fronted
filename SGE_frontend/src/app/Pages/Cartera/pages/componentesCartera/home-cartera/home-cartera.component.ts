@@ -1757,7 +1757,7 @@ export class HomeCarteraComponent implements OnInit {
 
 
     if (this.acuerdo.tipoAcuerdo == "MORA") {
-      
+
       this.calcularCuotasConValorMoraIncluido()
     } else {
       this.calcularCuotas()
@@ -1769,6 +1769,16 @@ export class HomeCarteraComponent implements OnInit {
     this.disableds.forEach(element => {
       this.disableds.push(false)
     });
+
+
+    this.cuotas.forEach((c: any, i: number) => {
+
+      
+      if (c.interesCuota > 0 && this.acuerdo.tipoAcuerdo == "MORA") {
+        
+        this.disableds[i] = true
+      }
+    })
 
     this.disableds[0] = true
     this.disableds[this.cuotas.length - 1] = true
@@ -1839,7 +1849,7 @@ export class HomeCarteraComponent implements OnInit {
     for (let i = 0; i < this.cuotas.length; i++) {
 
 
-      
+
       //CAPITAL CUOTA
 
       var porcentaje = this.cuotas[i].valorCuota / this.acuerdoCal.valorTotalAcuerdo
@@ -1850,11 +1860,11 @@ export class HomeCarteraComponent implements OnInit {
       }
       if (this.acuerdoCal.tipoAcuerdo == "TOTAL") {
         cap = porcentaje * saldoCapitalTotal
-        
+
       }
-      if(this.cuotas[i].capitalCuota == 0){
+      if (this.cuotas[i].capitalCuota == 0) {
         this.cuotas[i].capitalCuota = 0
-      }else{
+      } else {
         this.cuotas[i].capitalCuota = parseInt(cap.toFixed(0))
       }
 
@@ -1869,12 +1879,12 @@ export class HomeCarteraComponent implements OnInit {
       // INTERESES CUOTA
       var int = porcentaje * this.acuerdoCal.valorInteresesMora
 
-      if(this.cuotas[i].interesCuota == 0){
+      if (this.cuotas[i].interesCuota == 0) {
         this.cuotas[i].interesCuota = 0
-      }else{
+      } else {
         this.cuotas[i].interesCuota = parseInt(int.toFixed(0))
       }
-      
+
 
     }
 
@@ -2286,7 +2296,7 @@ export class HomeCarteraComponent implements OnInit {
       if (this.acuerdoCal.tipoAcuerdo == "TOTAL") {
 
         cap = porcentaje * saldoCapitalTotal
-        
+
       }
 
       cuotaList.capitalCuota = parseInt(cap.toFixed(0))
@@ -2364,7 +2374,7 @@ export class HomeCarteraComponent implements OnInit {
 
   //CALCULAR CUOTAS CON LAS CUOTAS EN MORA
   calcularCuotasConValorMoraIncluido() {
-
+    this.cuotas = []
     var totalObligatoria = this.cuentaCobrarSelected.clientes[0].saldoActual
 
     var valorCuotaAnterior = this.cuentaCobrarSelected.valorCuota
@@ -2388,9 +2398,9 @@ export class HomeCarteraComponent implements OnInit {
 
 
     if (this.acuerdo.valorCuotaMensual > valorCuotaAnterior && (totalCoutasMora * 2) < totalCuotasCredito) {
-      
+
       var restanteCuotas = totalCuotasCredito - totalCoutasMora
-      
+
 
 
       this.calcularCuotasConValorMora(totalCoutasMora, restanteCuotas, this.acuerdoCal.valorTotalMora, this.acuerdoCal.saldoAcuerdo)
@@ -2399,7 +2409,7 @@ export class HomeCarteraComponent implements OnInit {
     } else {
       if (this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante > this.cuentaCobrarSelected.moraObligatoria) {
         if (this.validarPermisoDado(Permisos.REFINANCIACION, Roles.CARTERA) || this.validarPermisoDado("", Roles.ADMINISTRATION)) {
-          
+
           Swal.fire({
             title: 'Refinanciacion de Pagare',
             text: 'La cuota ingresada es menor a la cuota actual de credito, ¿Está Seguro de Continuar?',
@@ -2429,7 +2439,7 @@ export class HomeCarteraComponent implements OnInit {
         if (this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante <= this.cuentaCobrarSelected.moraObligatoria) {
 
 
-          
+
           Swal.fire({
             title: 'Refinanciacion de Pagare',
             text: 'La cuota ingresada es menor a la cuota actual de credito, ¿Está Seguro de Continuar?',
@@ -2475,11 +2485,12 @@ export class HomeCarteraComponent implements OnInit {
 
     var valorCapitalMora = this.cuentaCobrarSelected.moraObligatoria
 
-    
+
     for (let i = 0; i < totalCuotas; i++) {
 
       if (i < totalCuotasMora && saldoTotalMoraLocal > this.acuerdoCal.valorCuotaMensual) {
-        
+       
+
 
         var cuotaList = {
           numeroCuota: 0,
@@ -2494,18 +2505,24 @@ export class HomeCarteraComponent implements OnInit {
 
         var participacionCuotaMora = this.acuerdoCal.valorCuotaMensual / this.acuerdoCal.valorTotalMora
         var capitalCuotaMora = this.cuentaCobrarSelected.moraObligatoria * participacionCuotaMora
-        var interesCuotaMora = this.acuerdoCal.valorCuotaMensual - capitalCuotaMora
+        var interesCuotaMora = this.acuerdoCal.valorInteresesMora * participacionCuotaMora
+        var honorariosCuota = 0
+        if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+          honorariosCuota = this.acuerdoCal.honoriarioAcuerdo * participacionCuotaMora
+        }
 
         cuotaList.numeroCuota = i + 1
         cuotaList.valorCuota = this.acuerdoCal.valorCuotaMensual
         cuotaList.capitalCuota = parseInt(capitalCuotaMora.toFixed(0))
         cuotaList.interesCuota = parseInt(interesCuotaMora.toFixed(0))
+        cuotaList.honorarios = honorariosCuota
 
         valorCapitalMora = valorCapitalMora - capitalCuotaMora
-        
+
         saldoTotal = saldoTotal - this.acuerdoCal.valorCuotaMensual
         saldoTotalMoraLocal = saldoTotalMoraLocal - this.acuerdoCal.valorCuotaMensual
-        
+
+
         this.cuotas.push(cuotaList)
         this.cantidadFechas++
 
@@ -2526,17 +2543,23 @@ export class HomeCarteraComponent implements OnInit {
 
           var participacionCuotaMora = saldoTotalMoraLocal / this.acuerdoCal.valorTotalMora
           var capitalCuotaMora = this.cuentaCobrarSelected.moraObligatoria * participacionCuotaMora
-          var interesCuotaMora = saldoTotalMoraLocal - capitalCuotaMora
+          var interesCuotaMora = this.acuerdoCal.valorInteresesMora * participacionCuotaMora
+          var honorariosCuota = 0
+          if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+            honorariosCuota = this.acuerdoCal.honoriarioAcuerdo * participacionCuotaMora
+          }
+
 
           cuotaList.numeroCuota = i + 1
           cuotaList.valorCuota = capitalCuotaMora + interesCuotaMora
           cuotaList.capitalCuota = parseInt(capitalCuotaMora.toFixed(0))
           cuotaList.interesCuota = parseInt(interesCuotaMora.toFixed(0))
+          cuotaList.honorarios = honorariosCuota
           valorCapitalMora = valorCapitalMora - capitalCuotaMora
-         
+
           saldoTotal = saldoTotal - this.cuentaCobrarSelected.valorCuota
           saldoTotalMoraLocal = 0
-          
+         
           this.cuotas.push(cuotaList)
           this.cantidadFechas++
           continue;
@@ -2555,18 +2578,24 @@ export class HomeCarteraComponent implements OnInit {
               honorarios: 0,
               cumplio: false
             }
-            var saldoCuota = this.cuentaCobrarSelected.valorCuota - saldoTotalMoraLocal
-            var participacionCuotaMora = saldoTotalMoraLocal / this.acuerdoCal.valorTotalMora
-            var capitalCuotaMora = (this.cuentaCobrarSelected.moraObligatoria * participacionCuotaMora) + saldoCuota
-            var interesCuotaMora = saldoTotalMoraLocal - capitalCuotaMora
 
+
+
+            var saldoCuota = this.cuentaCobrarSelected.valorCuota - saldoTotalMoraLocal//127.591
+            var participacionCuotaMora = saldoTotalMoraLocal / this.acuerdoCal.valorTotalMora// 209/750.209
+            var capitalCuotaMora = (this.cuentaCobrarSelected.moraObligatoria * participacionCuotaMora) + saldoCuota
+            var interesCuotaMora = this.acuerdoCal.valorInteresesMora * participacionCuotaMora
+            var honorariosCuota = 0
+            if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+              honorariosCuota = this.acuerdoCal.honoriarioAcuerdo * participacionCuotaMora
+            }
             cuotaList.numeroCuota = i + 1
             cuotaList.valorCuota = capitalCuotaMora + interesCuotaMora
             cuotaList.capitalCuota = parseInt(capitalCuotaMora.toFixed(0))
             cuotaList.interesCuota = parseInt(interesCuotaMora.toFixed(0))
-
+            cuotaList.honorarios = honorariosCuota
             valorCapitalMora = valorCapitalMora - capitalCuotaMora
-            
+
             saldoTotal = saldoTotal - this.cuentaCobrarSelected.valorCuota
             saldoTotalMoraLocal = 0
             
@@ -2579,6 +2608,7 @@ export class HomeCarteraComponent implements OnInit {
       }
 
       if (saldoTotalMoraLocal == 0 && saldoTotal > this.cuentaCobrarSelected.valorCuota) {
+        
         var cuotaList = {
           numeroCuota: 0,
           fechaVencimiento: '',
@@ -2590,13 +2620,13 @@ export class HomeCarteraComponent implements OnInit {
         }
         cuotaList.valorCuota = this.cuentaCobrarSelected.valorCuota
         saldoTotal = saldoTotal - this.cuentaCobrarSelected.valorCuota
+
         
-        console.log("sadlo total " + saldoTotal);
         this.cuotas.push(cuotaList)
         this.cantidadFechas++
       } else {
         if (saldoTotalMoraLocal == 0) {
-          
+         
           var cuotaList = {
             numeroCuota: 0,
             fechaVencimiento: '',
@@ -2623,6 +2653,7 @@ export class HomeCarteraComponent implements OnInit {
       if (c.fechaVencimiento == "") {
         c.fechaVencimiento = this.fechasIncrementadas[i]
       }
+
       c.numeroCuota = i + 1
     })
   }
@@ -2640,20 +2671,39 @@ export class HomeCarteraComponent implements OnInit {
       return
 
     }
+
+    if (this.cuotas.length >= 20) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Has superado el limite maximo de cuotas para este credito',
+        timer: 3000,
+      });
+      event.target.value = this.cuotas[position].valorCuota
+      return;
+    }
+
     var nuevoValor = event.target.value - this.cuotas[position].valorCuota
-    alert(nuevoValor)
+
     if (event.target.value > this.cuotas[position].valorCuota) {
+
+
       var sumaCoutasAnteriores = 0
       for (let i = this.cuotas.length - 1; i > position; i--) {
 
 
         if (nuevoValor > this.cuotas[i].valorCuota) {
+
           for (let j = 0; j < position; j++) {
             sumaCoutasAnteriores = sumaCoutasAnteriores + parseInt(this.cuotas[j].valorCuota)
           }
+
           var totalCuotaSumadas = sumaCoutasAnteriores + parseInt(event.target.value)
+
           if (totalCuotaSumadas > this.acuerdoCal.valorTotalAcuerdo) {
+
             var ultimaCuota = this.acuerdoCal.valorTotalAcuerdo - sumaCoutasAnteriores
+
             for (let k = position; k < this.cuotas.length - 1; k++) {
               this.cuotas.splice(k + 1)
               i = this.cuotas.length - 1
@@ -2674,6 +2724,7 @@ export class HomeCarteraComponent implements OnInit {
             break
           }
         }
+        sumaCoutasAnteriores = 0;
       }
 
     }
@@ -2719,7 +2770,7 @@ export class HomeCarteraComponent implements OnInit {
           }
         }
         //nuevo valor mayor ultima cuota
-      
+
         if (nuevoValorSumarCuotas > this.cuotas[this.cuotas.length - 1].valorCuota) {
           if (nuevoValorSumarCuotas <= this.acuerdoCal.valorCuotaMensual) {
             var couta = this.cuotas[this.cuotas.length - 1].valorCuota + nuevoValorSumarCuotas
@@ -2811,6 +2862,16 @@ export class HomeCarteraComponent implements OnInit {
     this.disableds.forEach(element => {
       this.disableds.push(false)
     });
+
+
+    this.cuotas.forEach((c: any, i: number) => {
+
+      
+      if (c.interesCuota > 0 && this.acuerdo.tipoAcuerdo == "MORA") {
+        
+        this.disableds[i] = true
+      }
+    })
 
     this.disableds[0] = true
     this.disableds[this.cuotas.length - 1] = true
