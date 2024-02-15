@@ -234,11 +234,9 @@
                                             class="fa-solid fa-circle-minus"></i></button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button
-                                        (click)="getGestionesNoti(n.numeroObligacion, n.gestionId, n.fechaCreacion, n.tipoGestion, n.idNotificaciones)"
-                                        data-bs-toggle="modal" data-bs-target="#modalGestionCom"
-                                        style="cursor: pointer;" class="btn btn-sm btn-primary"><i
-                                            class="fa-solid fa-file-pen"></i></button>
+                                    <button (click)="findCuentaCobrar(n.numeroObligacion)" data-bs-toggle="offcanvas"
+                                        data-bs-target="#offcanvasRight" style="cursor: pointer;"
+                                        class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
                                 </div>
                             </div>
                             <div class="d-flex w-100 justify-content-between">
@@ -1490,8 +1488,7 @@
                     <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.cedula" (change)="cambiarCedula($event)"
                         style="border: 1px black solid;">
                         <option value="">Seleccione Una Cedula</option>
-                        <option *ngFor="let c of cuentaCobrarSelected.clientes"
-                            [value]="cuentaCobrarSelected.clientes[0].numeroDocumento">{{
+                        <option *ngFor="let c of cuentaCobrarSelected.clientes" [value]="c.numeroDocumento">{{
                             c.numeroDocumento }} - {{ c.nombreTitular }} - {{ c.tipoGarante.tipoGarante }}</option>
                     </select>
 
@@ -1545,8 +1542,10 @@
                 <div class="modal-header">
                     <h1 *ngIf="gestionSelected.clasificacion.nombresClasificacion != undefined" class="modal-title fs-5"
                         id="exampleModalLabel">{{ gestionSelected.clasificacion.nombresClasificacion.nombre }}</h1>
-                    <button (click)="modalGestionSelected()" type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button *ngIf="!mostrarCuentaCobrar" (click)="modalGestionSelected()" type="button"
+                        class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button *ngIf="mostrarCuentaCobrar" (click)="mostrarCpc()" type="button" class="btn-close"
+                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"></button>
                 </div>
                 <div class="modal-body"
                     *ngIf="gestionSelected.clasificacion.clasificacion != null && gestionSelected.clasificacion.clasificacion != undefined">
@@ -1835,7 +1834,10 @@
 
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-secondary" (click)="modalGestionSelected()">Cerrar</button>
+                    <button *ngIf="!mostrarCuentaCobrar" type="button" class="btn btn-secondary"
+                        (click)="modalGestionSelected()">Cerrar</button>
+                    <button *ngIf="mostrarCuentaCobrar" (click)="mostrarCpc()" type="button" class="btn btn-secondary"
+                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">Cerrar</button>
 
                     <!-- BOTONES ACUERDO DE PAGO -->
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
@@ -1990,7 +1992,7 @@
                         </div>
 
                         <!-- FILTRO CLASIFICACION GESTION -->
-                        <div class="col-md-12 mb-3">
+                        <!-- <div class="col-md-12 mb-3">
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseClas"
@@ -2008,7 +2010,7 @@
                                     </div>
                                 </div>
                             </figure>
-                        </div>
+                        </div> -->
 
                         <figure>
                             <blockquote class="blockquote">

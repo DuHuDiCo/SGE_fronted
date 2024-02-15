@@ -289,6 +289,7 @@ export class HomeCarteraComponent implements OnInit {
     numeroObligacion: "",
     numeroAlterno: "",
     cedula: "",
+    cedulaArchivo: "",
     username: ""
   }
 
@@ -399,6 +400,8 @@ export class HomeCarteraComponent implements OnInit {
   calculating: boolean = false
   ingresarTel: boolean = true
   botonGuardarGes: boolean = false
+
+  mostrarCuentaCobrar:boolean = false
 
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
@@ -857,7 +860,9 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   getGestionesNoti(numeroObligacion:string, idGestion:number, fechaCreacion:Date, tipoGestion:string, idNotifi:number){
+    this.mostrarCuentaCobrar = true
     this.getGestiones(numeroObligacion)
+    this.findCuentaCobrar(numeroObligacion)
     this.notiId = idNotifi
     setTimeout(() => {
       if(this.gestiones.length > 0){
@@ -866,6 +871,11 @@ export class HomeCarteraComponent implements OnInit {
         console.log('GESTIONES VACIO');
       }
     }, 1500);
+  }
+
+  mostrarCpc(){
+    this.mostrarCuentaCobrar = false
+    $('#modalGestionCom').modal('hide');
   }
 
   getOneGestionNoti(id: number, fechaCreacion:Date, tipoGestion:string) {
@@ -1340,8 +1350,6 @@ export class HomeCarteraComponent implements OnInit {
               username: ''
             }
             this.col = true
-            $('#modalDetalle').modal('hide');
-            $('#modalReporte').modal('show');
           }, (error: any) => {
             Swal.fire({
               icon: 'error',
@@ -1616,8 +1624,17 @@ export class HomeCarteraComponent implements OnInit {
           this.mostrarRep = data
           this.mensaje = this.mostrarRep.messageToWpp
           this.base64 = this.mostrarRep.base64
+          $('#modalDetalle').modal('hide');
+          $('#modalReporte').modal('show');
         }, (error: any) => {
           console.log(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'El Acuerdo Fue Guardado, Pero hubo Error al Generar El Reporte',
+            timer: 3000
+          })
+          $('#modalDetalle').modal('hide');
         }
       )
     }, 2000);
@@ -1672,7 +1689,10 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   cambiarCedula(event: any) {
-    this.reporte.cedula = this.reporte.cedula
+    this.reporte.cedula = this.cuentaCobrarSelected.clientes[0].numeroDocumento
+    this.reporte.cedulaArchivo = event.target.value
+    console.log(this.reporte);
+    
 
     if (this.reporte.cedula == null || this.reporte.cedula == '') {
       this.renderer.setAttribute(this.mySelect.nativeElement, 'disabled', 'true')
