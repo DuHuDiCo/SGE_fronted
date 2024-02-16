@@ -1685,15 +1685,15 @@ export class HomeCarteraComponent implements OnInit {
 
     this.calcularByTipoAcuerdo()
 
-    if (this.acuerdo.valorCuotaMensual > this.acuerdoCal.valorTotalAcuerdo) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No Puede Ingresar Un Valor Mayor al Valor del Acuerdo',
-        timer: 3000
-      })
-      return
-    }
+    // if (this.acuerdo.valorCuotaMensual > this.acuerdoCal.valorTotalAcuerdo) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Error',
+    //     text: 'No Puede Ingresar Un Valor Mayor al Valor del Acuerdo',
+    //     timer: 3000
+    //   })
+    //   return
+    // }
 
     var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
 
@@ -1773,9 +1773,9 @@ export class HomeCarteraComponent implements OnInit {
 
     this.cuotas.forEach((c: any, i: number) => {
 
-      
+
       if (c.interesCuota > 0 && this.acuerdo.tipoAcuerdo == "MORA") {
-        
+
         this.disableds[i] = true
       }
     })
@@ -2397,77 +2397,85 @@ export class HomeCarteraComponent implements OnInit {
     totalCuotasCredito = totalCuotasCredito < 0 ? 1 : totalCuotasCredito;
 
 
-    if (this.acuerdo.valorCuotaMensual > valorCuotaAnterior && (totalCoutasMora * 2) < totalCuotasCredito) {
-
-      var restanteCuotas = totalCuotasCredito - totalCoutasMora
-
-
-
-      this.calcularCuotasConValorMora(totalCoutasMora, restanteCuotas, this.acuerdoCal.valorTotalMora, this.acuerdoCal.saldoAcuerdo)
-
-
+    if (saldoRestante < this.acuerdo.valorCuotaMensual) {
+      //utilizar metodo mora anterior
     } else {
-      if (this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante > this.cuentaCobrarSelected.moraObligatoria) {
-        if (this.validarPermisoDado(Permisos.REFINANCIACION, Roles.CARTERA) || this.validarPermisoDado("", Roles.ADMINISTRATION)) {
 
-          Swal.fire({
-            title: 'Refinanciacion de Pagare',
-            text: 'La cuota ingresada es menor a la cuota actual de credito, ¿Está Seguro de Continuar?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Confirmar',
-            cancelButtonText: 'Cancelar'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.acuerdo.tipoAcuerdo = "TOTAL"
-              this.mostrarOffcanvas()
-            }
-          })
 
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Accion Denegada',
-            text: 'No tienes permisos para realizar esta accion, contacta al coordinador de cartera',
-            timer: 5000,
-          });
-        }
+      if (this.acuerdo.valorCuotaMensual > valorCuotaAnterior && (totalCoutasMora * 2) < totalCuotasCredito) {
+
+        var restanteCuotas = totalCuotasCredito - totalCoutasMora
+
+
+
+        this.calcularCuotasConValorMora(totalCoutasMora, restanteCuotas, this.acuerdoCal.valorTotalMora, this.acuerdoCal.saldoAcuerdo)
+
 
       } else {
-        if (this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante <= this.cuentaCobrarSelected.moraObligatoria) {
+        if (this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante > this.cuentaCobrarSelected.moraObligatoria) {
+          if (this.validarPermisoDado(Permisos.REFINANCIACION, Roles.CARTERA) || this.validarPermisoDado("", Roles.ADMINISTRATION)) {
 
+            Swal.fire({
+              title: 'Refinanciacion de Pagare',
+              text: 'La cuota ingresada es menor a la cuota actual de credito, ¿Está Seguro de Continuar?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Confirmar',
+              cancelButtonText: 'Cancelar'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.acuerdo.tipoAcuerdo = "TOTAL"
+                this.mostrarOffcanvas()
+              }
+            })
 
-
-          Swal.fire({
-            title: 'Refinanciacion de Pagare',
-            text: 'La cuota ingresada es menor a la cuota actual de credito, ¿Está Seguro de Continuar?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Confirmar',
-            cancelButtonText: 'Cancelar'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.acuerdo.tipoAcuerdo = "TOTAL"
-              this.mostrarOffcanvas()
-            }
-          })
-
-          //alerta con mensaje informativo que la cuota es menor a la cuota inicial del credito por lo tanto esta intentando
-          //acceder a una refinaciacion nueva del paguere, ¿esta seguro de continuar?
-          // si esta seguro calcular con el metodo total
-
-
-
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Accion Denegada',
+              text: 'No tienes permisos para realizar esta accion, contacta al coordinador de cartera',
+              timer: 5000,
+            });
+          }
 
         } else {
-          alert("Revisar Caso")
-          // alert "revisar este caso"
-        }
+          if (this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante <= this.cuentaCobrarSelected.moraObligatoria) {
 
+
+
+            Swal.fire({
+              title: 'Refinanciacion de Pagare',
+              text: 'La cuota ingresada es menor a la cuota actual de credito, ¿Está Seguro de Continuar?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Confirmar',
+              cancelButtonText: 'Cancelar'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.acuerdo.tipoAcuerdo = "TOTAL"
+                this.mostrarOffcanvas()
+              }
+            })
+
+            //alerta con mensaje informativo que la cuota es menor a la cuota inicial del credito por lo tanto esta intentando
+            //acceder a una refinaciacion nueva del paguere, ¿esta seguro de continuar?
+            // si esta seguro calcular con el metodo total
+
+
+
+
+          } else {
+            alert("Revisar Caso")
+            // alert "revisar este caso"
+            this.acuerdo.tipoAcuerdo = "TOTAL"
+            this.mostrarOffcanvas()
+          }
+
+        }
       }
     }
   }
@@ -2489,7 +2497,7 @@ export class HomeCarteraComponent implements OnInit {
     for (let i = 0; i < totalCuotas; i++) {
 
       if (i < totalCuotasMora && saldoTotalMoraLocal > this.acuerdoCal.valorCuotaMensual) {
-       
+        alert(1)
 
 
         var cuotaList = {
@@ -2528,7 +2536,7 @@ export class HomeCarteraComponent implements OnInit {
 
       } else {
         if (saldoTotalMoraLocal > 0 && saldoTotalMoraLocal < this.acuerdoCal.valorCuotaMensual && saldoTotalMoraLocal > this.cuentaCobrarSelected.valorCuota) {
-          
+          alert(2)
           //vamos aqui
           console.log(valorCapitalMora);
           var cuotaList = {
@@ -2559,13 +2567,13 @@ export class HomeCarteraComponent implements OnInit {
 
           saldoTotal = saldoTotal - this.cuentaCobrarSelected.valorCuota
           saldoTotalMoraLocal = 0
-         
+
           this.cuotas.push(cuotaList)
           this.cantidadFechas++
           continue;
         } else {
           if (saldoTotalMoraLocal <= this.cuentaCobrarSelected.valorCuota && saldoTotalMoraLocal > 0) {
-            
+            alert(3)
             //vamos aqui
             console.log(valorCapitalMora);
 
@@ -2585,20 +2593,20 @@ export class HomeCarteraComponent implements OnInit {
             var participacionCuotaMora = saldoTotalMoraLocal / this.acuerdoCal.valorTotalMora// 209/750.209
             var capitalCuotaMora = (this.cuentaCobrarSelected.moraObligatoria * participacionCuotaMora) + saldoCuota
             var interesCuotaMora = this.acuerdoCal.valorInteresesMora * participacionCuotaMora
-            var honorariosCuota = 0
-            if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-              honorariosCuota = this.acuerdoCal.honoriarioAcuerdo * participacionCuotaMora
-            }
+            // var honorariosCuota = 0
+            // if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+            //   honorariosCuota = this.acuerdoCal.honoriarioAcuerdo * participacionCuotaMora
+            // }
             cuotaList.numeroCuota = i + 1
             cuotaList.valorCuota = capitalCuotaMora + interesCuotaMora
             cuotaList.capitalCuota = parseInt(capitalCuotaMora.toFixed(0))
             cuotaList.interesCuota = parseInt(interesCuotaMora.toFixed(0))
-            cuotaList.honorarios = honorariosCuota
+            // cuotaList.honorarios = honorariosCuota
             valorCapitalMora = valorCapitalMora - capitalCuotaMora
 
             saldoTotal = saldoTotal - this.cuentaCobrarSelected.valorCuota
             saldoTotalMoraLocal = 0
-            
+
             this.cuotas.push(cuotaList)
             this.cantidadFechas++
             continue;
@@ -2608,7 +2616,7 @@ export class HomeCarteraComponent implements OnInit {
       }
 
       if (saldoTotalMoraLocal == 0 && saldoTotal > this.cuentaCobrarSelected.valorCuota) {
-        
+        alert(4)
         var cuotaList = {
           numeroCuota: 0,
           fechaVencimiento: '',
@@ -2621,12 +2629,12 @@ export class HomeCarteraComponent implements OnInit {
         cuotaList.valorCuota = this.cuentaCobrarSelected.valorCuota
         saldoTotal = saldoTotal - this.cuentaCobrarSelected.valorCuota
 
-        
+
         this.cuotas.push(cuotaList)
         this.cantidadFechas++
       } else {
-        if (saldoTotalMoraLocal == 0) {
-         
+        if (saldoTotalMoraLocal == 0 && saldoTotal <= this.cuentaCobrarSelected.valorCuota) {
+          alert(5)
           var cuotaList = {
             numeroCuota: 0,
             fechaVencimiento: '',
@@ -2636,12 +2644,14 @@ export class HomeCarteraComponent implements OnInit {
             honorarios: 0,
             cumplio: false
           }
-          cuotaList.valorCuota = this.cuentaCobrarSelected.valorCuota
-          saldoTotal = saldoTotal - saldoTotalMoraLocal
+          cuotaList.valorCuota = saldoTotal
+          saldoTotal = 0
           saldoTotalMoraLocal = 0
-          
+
           this.cuotas.push(cuotaList)
           this.cantidadFechas++
+        } else {
+          alert("revisar nuevo caso")
         }
       }
       console.log(totalCuotas);
@@ -2866,9 +2876,9 @@ export class HomeCarteraComponent implements OnInit {
 
     this.cuotas.forEach((c: any, i: number) => {
 
-      
+
       if (c.interesCuota > 0 && this.acuerdo.tipoAcuerdo == "MORA") {
-        
+
         this.disableds[i] = true
       }
     })
