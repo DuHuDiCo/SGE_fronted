@@ -2254,6 +2254,7 @@ export class HomeCarteraComponent implements OnInit {
 
   // CALCULAR LAS FECHAS DE LAS CUOTAS
   generarFechas() {
+    this.fechasIncrementadas = []
     var fechaString = this.fechaInicial.toISOString()
 
 
@@ -2525,7 +2526,7 @@ export class HomeCarteraComponent implements OnInit {
               this.cuotas[this.cuotas.length - 1].valorCuota = this.cuotas[this.cuotas.length - 1].valorCuota + excedenteParaCuouta
               if (excedentePrinciapl > 0) {
                 var cuoUl = {
-                  idCuota: 0,
+                  
                   numeroCuota: 0,
                   fechaVencimiento: '',
                   valorCuota: excedentePrinciapl,
@@ -2535,6 +2536,7 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUl)
+                this.cantidadFechas++;
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
                 break;
@@ -2559,7 +2561,7 @@ export class HomeCarteraComponent implements OnInit {
               this.cuotas[this.cuotas.length - 1].valorCuota = this.cuotas[this.cuotas.length - 1].valorCuota + excedenteParaCuouta
               if (excedentePrinciapl > 0) {
                 var cuoUl = {
-                  idCuota: 0,
+                  
                   numeroCuota: 0,
                   fechaVencimiento: '',
                   valorCuota: excedentePrinciapl,
@@ -2569,6 +2571,8 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUl)
+                this.cantidadFechas++;
+                
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
                 break;
@@ -2585,7 +2589,7 @@ export class HomeCarteraComponent implements OnInit {
             nuevoValorSumarCuotas = nuevoValorSumarCuotas - coutaCambio
             if (nuevoValorSumarCuotas > 0 && nuevoValorSumarCuotas < this.acuerdoCal.valorCuotaMensual) {
               var cuoUl = {
-                idCuota: 0,
+                
                 numeroCuota: 0,
                 fechaVencimiento: '',
                 valorCuota: nuevoValorSumarCuotas,
@@ -2595,6 +2599,8 @@ export class HomeCarteraComponent implements OnInit {
                 cumplio: false
               }
               this.cuotas.push(cuoUl)
+              this.cantidadFechas++;
+              
               this.cuotas[position].valorCuota = parseInt(event.target.value)
               break;
             } else {
@@ -2602,7 +2608,7 @@ export class HomeCarteraComponent implements OnInit {
               var excedenteParaCuouta = nuevoValorSumarCuotas - excedentePrinciapl
               if (excedenteParaCuouta > 0 && excedenteParaCuouta >= this.acuerdoCal.valorCuotaMensual) {
                 var cuoUll = {
-                  idCuota: 0,
+                  
                   numeroCuota: 0,
                   fechaVencimiento: '',
                   valorCuota: excedenteParaCuouta,
@@ -2612,10 +2618,11 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUll)
+                this.cantidadFechas++;
                 nuevoValorSumarCuotas = nuevoValorSumarCuotas - excedenteParaCuouta
               } else {
                 var cuoUll = {
-                  idCuota: 0,
+                 
                   numeroCuota: 0,
                   fechaVencimiento: '',
                   valorCuota: excedentePrinciapl,
@@ -2625,6 +2632,7 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUll)
+                this.cantidadFechas++;
                 nuevoValorSumarCuotas = excedentePrinciapl
               }
             }
@@ -2642,6 +2650,15 @@ export class HomeCarteraComponent implements OnInit {
     this.disableds[this.cuotas.length - 1] = true
     this.metodosCalculos()
     this.validarCuotasVacias()
+    this.generarFechas()
+
+
+    this.cuotas.forEach((c:any, i:number)=>{
+      if(c.fechaVencimiento == ""){
+        c.fechaVencimiento = this.fechasIncrementadas[i]
+        c.numeroCuota = i+1
+      }
+    })
   }
 
   // CLASIFICACION

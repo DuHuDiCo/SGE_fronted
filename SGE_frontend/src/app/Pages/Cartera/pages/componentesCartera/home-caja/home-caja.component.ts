@@ -286,7 +286,7 @@ export class HomeCajaComponent implements OnInit {
 
 
     if (this.pago.valor >= this.totalCuotasAcuerdo) {
-      alert()
+
       valorTotal = this.totalCuotasAcuerdo;
       this.saldoAcuerdoPago = this.totalCuotasAcuerdo
       this.valorTotalIngresado = this.valorTotalIngresado + parseInt(valorTotal)
@@ -296,18 +296,18 @@ export class HomeCajaComponent implements OnInit {
 
     if (valorTotal > 0) {
       this.coutasList.forEach((c: CuotaList, i: number) => {
-        if (this.pago.valor < c.valorCuota) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Valor ingresado menor al valor de la cuota pactada',
-            timer: 3000
-          })
-          this.valorTotalIngresado = 0
-          valorTotal = 0
-          throw new Error('Valor ingresado menor al valor de la cuota pactada')
+        // if (this.pago.valor < c.valorCuota) {
+        //   Swal.fire({
+        //     icon: 'error',
+        //     title: 'Error',
+        //     text: 'Valor ingresado menor al valor de la cuota pactada',
+        //     timer: 3000
+        //   })
+        //   this.valorTotalIngresado = 0
+        //   valorTotal = 0
+        //   throw new Error('Valor ingresado menor al valor de la cuota pactada')
 
-        }
+        // }
 
         if (c.pagos != null || c.pagos != undefined) {
           if (c.pagos.saldoCuota > 0) {
@@ -498,7 +498,7 @@ export class HomeCajaComponent implements OnInit {
 
         }
 
-        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) < new Date()) {
+        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) <= new Date()) {
 
           this.coutasRequest[i].cumplio = false
           this.coutasList[i].cumplio = false
@@ -506,11 +506,11 @@ export class HomeCajaComponent implements OnInit {
         }
 
 
-        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) >= new Date()) {
+        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) > new Date()) {
 
-          this.coutasRequest[i].cumplio = true
-          this.coutasList[i].cumplio = true
-          this.pago.cumpliendo = true
+          this.coutasRequest[i].cumplio = false
+          this.coutasList[i].cumplio = false
+          this.pago.cumpliendo = false
 
         }
 
@@ -570,12 +570,15 @@ export class HomeCajaComponent implements OnInit {
       detalle: this.pago.detalle,
       metodoPago: this.pago.medioPago,
       cumpliendo: this.pago.cumpliendo,
-      username: ''
+      username: '',
+      nombreClasificacion: null
     }
+
 
     var user = this.auth.getUsername();
     if (user != null || user != undefined) {
       recibo.username = user;
+      console.log(recibo);
 
       this.cuentaCobrarService.crearRecibo(recibo).subscribe(
         (data: any) => {
@@ -585,6 +588,7 @@ export class HomeCajaComponent implements OnInit {
 
           this.activarGuardarPago = false
           this.savePago = false
+          this.limpiarPagos()
         }, (error: any) => {
           this.activarGuardarPago = false
           this.savePago = false
@@ -592,12 +596,44 @@ export class HomeCajaComponent implements OnInit {
 
         }
       )
-      
+
 
     }
 
 
 
+
+  }
+
+  limpiarPagos() {
+
+    this.gestionesCuenta = []
+    this.coutasList = []
+    this.coutasRequest = []
+    this.valorTotalIngresado = 0
+    this.saldoAcuerdoPago= 0
+    this.saldoCapitalAcuerdo= 0
+    this.saldoHonoriariosAcuerdo= 0
+    this.cuentasCobrarGestiones= []
+    this.gestionesCuenta = []
+    this.coutasSelected = []
+    this.totalCapital = 0
+    this.totalHonorarios = 0
+    this.totalIntereses = 0
+
+
+
+    this.saldoInteresesAcuerdo= 0
+
+    this.pago = {
+      valor: 0,
+      detalle: '',
+      medioPago: '',
+      numeroRecibo: '',
+      cumpliendo: false
+    }
+    this.obtenerDatosCuentaCobrar(this.cedula)
+    this.activarGuardarPago = false
 
   }
 

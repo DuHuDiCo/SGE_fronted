@@ -46,6 +46,7 @@
                 <div class="tab-pane fade show active" id="todas" role="tabpanel" aria-labelledby="home-tab">
                     <div class="list-group" style="width: 300px;">
 
+
                         <div *ngIf="notiArray.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
                             <div class="col-md-8">
                                 <select [(ngModel)]="tipoAll" class="form-select" style="border: 1px black solid;">
@@ -57,6 +58,7 @@
                         </div>
 
                         <div *ngIf="tipoAll == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
+
                             <div class="col-md-8">
                                 <select [(ngModel)]="filtroAll" class="form-select" style="border: 1px black solid;">
                                     <option>Seleccione Una Sede</option>
@@ -118,6 +120,7 @@
                 <div class="tab-pane fade" id="vencidas" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="list-group" style="width: 300px;">
 
+
                         <div *ngIf="notiArrayVencidas.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
                             <div class="col-md-8">
                                 <select [(ngModel)]="tipoVen" class="form-select" style="border: 1px black solid;">
@@ -129,6 +132,7 @@
                         </div>
 
                         <div *ngIf="tipoVen == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
+
                             <div class="col-md-8">
                                 <select [(ngModel)]="filtroVen" class="form-select" style="border: 1px black solid;">
                                     <option>Seleccione Una Sede</option>
@@ -190,6 +194,7 @@
 
                 <div class="tab-pane fade" id="realizadas" role="tabpanel" aria-labelledby="home-tab">
                     <div class="list-group" style="width: 300px;">
+
 
                         <div *ngIf="notiArrayRealizadas.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
                             <div class="col-md-8">
