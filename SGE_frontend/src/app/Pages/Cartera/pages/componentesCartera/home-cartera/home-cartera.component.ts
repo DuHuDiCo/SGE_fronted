@@ -2254,7 +2254,6 @@ export class HomeCarteraComponent implements OnInit {
 
   // CALCULAR LAS FECHAS DE LAS CUOTAS
   generarFechas() {
-    this.fechasIncrementadas = []
     var fechaString = this.fechaInicial.toISOString()
 
 
@@ -2526,7 +2525,7 @@ export class HomeCarteraComponent implements OnInit {
               this.cuotas[this.cuotas.length - 1].valorCuota = this.cuotas[this.cuotas.length - 1].valorCuota + excedenteParaCuouta
               if (excedentePrinciapl > 0) {
                 var cuoUl = {
-                  
+                  idCuota: 0,
                   numeroCuota: 0,
                   fechaVencimiento: '',
                   valorCuota: excedentePrinciapl,
@@ -2536,7 +2535,6 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUl)
-                this.cantidadFechas++;
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
                 break;
@@ -2561,7 +2559,7 @@ export class HomeCarteraComponent implements OnInit {
               this.cuotas[this.cuotas.length - 1].valorCuota = this.cuotas[this.cuotas.length - 1].valorCuota + excedenteParaCuouta
               if (excedentePrinciapl > 0) {
                 var cuoUl = {
-                  
+                  idCuota: 0,
                   numeroCuota: 0,
                   fechaVencimiento: '',
                   valorCuota: excedentePrinciapl,
@@ -2571,8 +2569,6 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUl)
-                this.cantidadFechas++;
-                
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
                 break;
@@ -2589,7 +2585,7 @@ export class HomeCarteraComponent implements OnInit {
             nuevoValorSumarCuotas = nuevoValorSumarCuotas - coutaCambio
             if (nuevoValorSumarCuotas > 0 && nuevoValorSumarCuotas < this.acuerdoCal.valorCuotaMensual) {
               var cuoUl = {
-                
+                idCuota: 0,
                 numeroCuota: 0,
                 fechaVencimiento: '',
                 valorCuota: nuevoValorSumarCuotas,
@@ -2599,8 +2595,6 @@ export class HomeCarteraComponent implements OnInit {
                 cumplio: false
               }
               this.cuotas.push(cuoUl)
-              this.cantidadFechas++;
-              
               this.cuotas[position].valorCuota = parseInt(event.target.value)
               break;
             } else {
@@ -2608,7 +2602,7 @@ export class HomeCarteraComponent implements OnInit {
               var excedenteParaCuouta = nuevoValorSumarCuotas - excedentePrinciapl
               if (excedenteParaCuouta > 0 && excedenteParaCuouta >= this.acuerdoCal.valorCuotaMensual) {
                 var cuoUll = {
-                  
+                  idCuota: 0,
                   numeroCuota: 0,
                   fechaVencimiento: '',
                   valorCuota: excedenteParaCuouta,
@@ -2618,11 +2612,10 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUll)
-                this.cantidadFechas++;
                 nuevoValorSumarCuotas = nuevoValorSumarCuotas - excedenteParaCuouta
               } else {
                 var cuoUll = {
-                 
+                  idCuota: 0,
                   numeroCuota: 0,
                   fechaVencimiento: '',
                   valorCuota: excedentePrinciapl,
@@ -2632,7 +2625,6 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUll)
-                this.cantidadFechas++;
                 nuevoValorSumarCuotas = excedentePrinciapl
               }
             }
@@ -2650,15 +2642,6 @@ export class HomeCarteraComponent implements OnInit {
     this.disableds[this.cuotas.length - 1] = true
     this.metodosCalculos()
     this.validarCuotasVacias()
-    this.generarFechas()
-
-
-    this.cuotas.forEach((c:any, i:number)=>{
-      if(c.fechaVencimiento == ""){
-        c.fechaVencimiento = this.fechasIncrementadas[i]
-        c.numeroCuota = i+1
-      }
-    })
   }
 
   // CLASIFICACION
@@ -2794,17 +2777,17 @@ export class HomeCarteraComponent implements OnInit {
         case 20:
           this.size = 20
           this.spinner = true
-          this.filtro()
+          this.filtroFirst()
           break;
         case 50:
           this.spinner = true
           this.size = 50
-          this.filtro()
+          this.filtroFirst()
           break;
         case 100:
           this.spinner = true
           this.size = 100
-          this.filtro()
+          this.filtroFirst()
           break;
       }
     } else {
@@ -2857,6 +2840,139 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   //FILTROS
+  filtroFirst() {
+    var td
+    var contenido:any
+    var partesMes
+    var mesTd
+    var anioTd
+
+    const mesActual = new Date().getMonth() + 1
+    const anioActual = new Date().getFullYear()
+
+    var user = this.authService.getUsername();
+
+    if (user != null || user != undefined) {
+      this.filtros.username = user
+    }
+
+    this.filtros.banco = this.bancosArray
+    this.filtros.clasiJuridica = this.clasJurArray
+    this.filtros.sede = this.sedesArray
+    this.filtros.edadVencimiento = this.edadVenArray
+    this.filtros.clasificacionGestion = this.clasGesArray
+
+    console.log(this.filtros);
+    
+
+    if (
+      (this.filtros.banco.length == 0) &&
+      (this.filtros.diasVencidosInicio == 0 || this.filtros.diasVencidosInicio == null) &&
+      (this.filtros.diasVencidosFin == 0 || this.filtros.diasVencidosFin == null) &&
+      (this.filtros.edadVencimiento.length == 0) &&
+      (this.filtros.sede.length == 0) &&
+      (this.filtros.clasiJuridica.length == 0) &&
+      (this.filtros.clasificacionGestion.length == 0) &&
+      (this.filtros.saldoCapitalInicio == 0 || this.filtros.saldoCapitalInicio == null) &&
+      (this.filtros.saldoCapitalFin == 0 || this.filtros.saldoCapitalFin == null) &&
+      (this.filtros.fechaCpcInicio == null) &&
+      (this.filtros.fechaCpcFin == null) &&
+      (this.filtros.fechaGestionInicio == null) &&
+      (this.filtros.fechaGestionFin == null) &&
+      (this.filtros.fechaCompromisoInicio == null) &&
+      (this.filtros.fechaCompromisoFin == null)
+    ) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe de llenar al menos Un Filtro',
+        timer: 3000,
+      });
+      return;
+    }
+
+    var admin = this.authService.getRolesByName(ROLES.Administration);
+
+    var cartera = this.authService.getRolesByName(ROLES.Cartera);
+
+    var permiso = this.validarPermisoEnRolCartera("VER TODOS", cartera);
+
+    if (admin.length != 0 || permiso != undefined && permiso.length != 0) {
+      this.filtros.username = ''
+    }
+
+    this.botonFiltro = true
+    this.page = 0
+    console.log(this.filtros);
+    this.cuentasCobrar.filtro(this.page, this.size, this.fechaCreacion, this.filtros).subscribe(
+      (data: any) => {
+        this.botonFiltro = false
+        this.filtrando = true
+        this.filtroAgain = true
+        this.paginas = new Array(data.totalPages)
+        this.cuentasCobrarArray = data.content
+        console.log(this.cuentasCobrarArray);
+        this.last = data.last
+        this.first = data.first
+        this.numeroPages = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+
+        if (this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
+          (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
+          (this.filtros.diasVencidosFin != 0 && this.filtros.diasVencidosFin != null) ||
+          (this.filtros.edadVencimiento.length != 0) ||
+          (this.filtros.sede.length != 0) ||
+          (this.filtros.clasiJuridica.length != 0) ||
+          (this.filtros.saldoCapitalInicio != 0 && this.filtros.saldoCapitalInicio != null) ||
+          (this.filtros.saldoCapitalFin != 0 && this.filtros.saldoCapitalFin != null) ||
+          (this.filtros.fechaCpcInicio != null) ||
+          (this.filtros.fechaCpcFin != null) ||
+          (this.filtros.fechaGestionInicio != null) ||
+          (this.filtros.fechaGestionFin != null) ||
+          (this.filtros.fechaCompromisoInicio != null) ||
+          (this.filtros.fechaCompromisoFin != null)) {
+            setTimeout(() => {
+              for (let i = 0; i < this.size; i++) {
+                td = document.getElementById(`td_${i}`)
+  
+                if(td != null && td != undefined){
+                  contenido = td.textContent;
+  
+                  partesMes = contenido.split('/')
+  
+                  mesTd = parseInt(partesMes[1], 10)
+                  anioTd = parseInt(partesMes[2], 10)
+                  
+                  if(mesTd == mesActual && anioTd == anioActual){
+                    td.classList.add("gestionado")
+                  }
+                }
+              }
+            }, 100);
+          this.variableLimpiar = true
+        } else {
+          this.variableLimpiar = false
+        }
+        console.log(this.cuentasCobrarArray);
+        
+        if (this.cuentasCobrarArray.length == 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No hay Cuentas Con Estos Filtros',
+            timer: 3000,
+          });
+          this.getCuentasCobrar()
+          return;
+        }
+        $('#offcanvasFilter').offcanvas('hide');
+      }, (error: any) => {
+        this.botonFiltro = false
+        console.log(error);
+      }
+    )
+  }
+
   filtro() {
     var td
     var contenido:any
