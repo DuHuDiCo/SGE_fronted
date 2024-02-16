@@ -2397,8 +2397,44 @@ export class HomeCarteraComponent implements OnInit {
     totalCuotasCredito = totalCuotasCredito < 0 ? 1 : totalCuotasCredito;
 
 
-    if (saldoRestante < this.acuerdo.valorCuotaMensual) {
-      //utilizar metodo mora anterior
+    if (this.cuentaCobrarSelected.moraObligatoria < this.acuerdo.valorCuotaMensual) {
+
+      var cuotaList = {
+        numeroCuota: 0,
+        fechaVencimiento: '',
+        valorCuota: 0,
+        capitalCuota: 0,
+        interesCuota: 0,
+        honorarios: 0,
+        cumplio: false
+      }
+
+
+      var participacionCuotaMora = this.acuerdoCal.valorCuotaMensual / this.acuerdoCal.valorTotalMora
+      var capitalCuotaMora = this.cuentaCobrarSelected.moraObligatoria * participacionCuotaMora
+      var interesCuotaMora = this.acuerdoCal.valorInteresesMora * participacionCuotaMora
+      var honorariosCuota = 0
+      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+        honorariosCuota = this.acuerdoCal.honoriarioAcuerdo * participacionCuotaMora
+      }
+
+      cuotaList.numeroCuota =  1
+      cuotaList.valorCuota = this.acuerdoCal.valorCuotaMensual
+      cuotaList.capitalCuota = parseInt(capitalCuotaMora.toFixed(0))
+      cuotaList.interesCuota = parseInt(interesCuotaMora.toFixed(0))
+      cuotaList.honorarios = honorariosCuota
+
+      this.cuotas.push(cuotaList)
+      this.cantidadFechas++
+      this.generarFechas()
+      this.cuotas.forEach((c: any, i: number) => {
+        if (c.fechaVencimiento == "") {
+          c.fechaVencimiento = this.fechasIncrementadas[i]
+        }
+  
+        c.numeroCuota = i + 1
+      })
+
     } else {
 
 
@@ -2469,7 +2505,7 @@ export class HomeCarteraComponent implements OnInit {
 
 
           } else {
-            alert("Revisar Caso")
+           
             // alert "revisar este caso"
             this.acuerdo.tipoAcuerdo = "TOTAL"
             this.mostrarOffcanvas()
@@ -2482,7 +2518,7 @@ export class HomeCarteraComponent implements OnInit {
 
 
   calcularCuotasConValorMora(totalCuotasMora: number, totalRestanteCuotas: number, saldoTotalMora: number, saldoTotalCredito: number) {
-    var totalCuotas = Math.ceil(totalCuotasMora + totalRestanteCuotas);
+    var totalCuotas = Math.ceil(totalCuotasMora);
 
 
     totalCuotasMora = Math.ceil(totalCuotasMora)
@@ -2497,7 +2533,7 @@ export class HomeCarteraComponent implements OnInit {
     for (let i = 0; i < totalCuotas; i++) {
 
       if (i < totalCuotasMora && saldoTotalMoraLocal > this.acuerdoCal.valorCuotaMensual) {
-        alert(1)
+        
 
 
         var cuotaList = {
@@ -2536,7 +2572,7 @@ export class HomeCarteraComponent implements OnInit {
 
       } else {
         if (saldoTotalMoraLocal > 0 && saldoTotalMoraLocal < this.acuerdoCal.valorCuotaMensual && saldoTotalMoraLocal > this.cuentaCobrarSelected.valorCuota) {
-          alert(2)
+          
           //vamos aqui
           console.log(valorCapitalMora);
           var cuotaList = {
@@ -2573,7 +2609,7 @@ export class HomeCarteraComponent implements OnInit {
           continue;
         } else {
           if (saldoTotalMoraLocal <= this.cuentaCobrarSelected.valorCuota && saldoTotalMoraLocal > 0) {
-            alert(3)
+            
             //vamos aqui
             console.log(valorCapitalMora);
 
@@ -2616,7 +2652,7 @@ export class HomeCarteraComponent implements OnInit {
       }
 
       if (saldoTotalMoraLocal == 0 && saldoTotal > this.cuentaCobrarSelected.valorCuota) {
-        alert(4)
+        
         var cuotaList = {
           numeroCuota: 0,
           fechaVencimiento: '',
@@ -2634,7 +2670,7 @@ export class HomeCarteraComponent implements OnInit {
         this.cantidadFechas++
       } else {
         if (saldoTotalMoraLocal == 0 && saldoTotal <= this.cuentaCobrarSelected.valorCuota) {
-          alert(5)
+          
           var cuotaList = {
             numeroCuota: 0,
             fechaVencimiento: '',
