@@ -1032,13 +1032,7 @@ export class HomeCarteraComponent implements OnInit {
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
-                this.getGestiones(this.newGestion.numeroObligacion)
-                this.getNotificaciones()
-                if(!this.filtroAgain){
-                  this.getCuentasCobrar()
-                } else {
-                  this.filtro()
-                }
+                this.afterSave()
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
@@ -1116,19 +1110,13 @@ export class HomeCarteraComponent implements OnInit {
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
-                this.getGestiones(this.newGestion.numeroObligacion)
+                this.afterSave()
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
                   text: 'Gestión Guardada Exitosamente',
                   timer: 3000
                 })
-                this.getNotificaciones()
-                if(!this.filtroAgain){
-                  this.getCuentasCobrar()
-                } else {
-                  this.filtro()
-                }
                 this.gestionButton = false
                 this.newGestion = {
                   numeroObligacion: this.newGestion.numeroObligacion,
@@ -1295,16 +1283,7 @@ export class HomeCarteraComponent implements OnInit {
         this.botonGuardarGes = true
         this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
           (data: any) => {
-            this.getGestiones(this.newGestion.numeroObligacion)
-            this.getNotificaciones()
-            this.mostrarReporte()
-            if(!this.filtroAgain){
-              this.getCuentasCobrar()
-            } else {
-              this.filtro()
-            }
-            console.log(this.newGestion);
-
+            this.afterSave()
             this.botonGuardarGes = false
             this.newGestion = {
               numeroObligacion: this.newGestion.numeroObligacion,
@@ -1355,6 +1334,17 @@ export class HomeCarteraComponent implements OnInit {
         )
       }
     })
+  }
+
+  afterSave(){
+    this.getGestiones(this.newGestion.numeroObligacion)
+    this.getNotificaciones()
+    this.mostrarReporte()
+    if(!this.filtroAgain){
+      this.getCuentasCobrar()
+    } else {
+      this.filtro()
+    }
   }
 
   desactivarAcuerdo() {
