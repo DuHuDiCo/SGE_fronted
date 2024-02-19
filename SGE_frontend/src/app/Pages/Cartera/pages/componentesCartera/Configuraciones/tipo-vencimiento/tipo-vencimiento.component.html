@@ -1,0 +1,76 @@
+<div class="container mt-4">
+    <div class="card-c">
+        <h2 class="text-center titulo">Tipo de Vencimiento</h2>
+
+        <div class="row justify-content-center text-center">
+          <h4>Crear Tipo de Vencimiento</h4>
+            <div class="col-md-8">
+                <input [(ngModel)]="tipoVencimiento.tipoVencimiento" name="tipoVencimiento" type="text" class="form-control text-center" placeholder="Ingrese Un Tipo de Vencimiento">
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <button *ngIf="!crearVen" class="btn btn-guardar" (click)="save()">Crear Tipo Vencimiento</button>
+                <button *ngIf="crearVen" class="btn-guardar">
+                    Creando...
+                    <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+        </div>
+        
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle text-center">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Acciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let t of tiposVen; let i = index">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ t.tipoVencimiento }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar" (click)="getTipoVenById(t.idTipoVencimiento)"><i class="fa-solid fa-pen-to-square"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+  <!-- Modal Editar -->
+  <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Clasificación</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row justify-content-center text-center">
+                <div class="col-md-6">
+                    <h5>Cambie Los Datos del Tipo De Vencimiento</h5>
+                    <input [(ngModel)]="newTipoVen.tipoVencimiento" name="tipoVencimiento" type="text" class="form-control text-center" placeholder="Ingrese Un Tipo De Vencimiento">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button *ngIf="!updateVen" type="button" class="btn btn-danger b" (click)="updateTipoVen()">Actualizar</button>
+          <button *ngIf="updateVen" class="btn btn-danger b">
+            Actualizando...
+            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+        </button>
+        </div>
+      </div>
+    </div>
+  </div>

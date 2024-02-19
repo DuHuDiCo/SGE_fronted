@@ -1,0 +1,61 @@
+<div class="container mt-4">
+    <div class="card-c">
+        <h2 class="text-center titulo">Firmas</h2>
+
+        <div class="row justify-content-center text-center">
+          <h4>Guardar Una Firma</h4>
+            <div class="col-md-6 mt-3">
+                <div class="input-group mb-3">
+                    <input (change)="obtenerArchivo($event)" type="file" class="form-control" accept="image/png"
+                        style="border: 1px solid black;">  
+                </div>
+            </div>
+            <div class="col-md-6">
+                <select class="form-select" [(ngModel)]="firma.username">
+                    <option selected>Seleccionar Tipo</option>
+                    <option *ngFor="let a of asesores" value="{{ a.usuario.username }}">{{ a.usuario.nombres }} {{ a.usuario.apellidos }}</option>
+                </select>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <button *ngIf="!crearFirma" class="btn btn-guardar" (click)="save()">Crear Firma</button>
+                <button *ngIf="crearFirma" class="btn-guardar">
+                    Creando...
+                    <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+        </div>
+        
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle text-center">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Archivo</th>
+                            <th>Acciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let f of firmasArray; let i = index">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ f.ruta }}</td>
+                                <td>
+                                    <button *ngIf="!eliminarFirma" class="btn btn-sm b" (click)="delete(f.idFirma)"><i class="fa-solid fa-trash"></i></button>
+                                    <button *ngIf="eliminarFirma" class="btn b">
+                                        <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

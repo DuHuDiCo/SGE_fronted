@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './componentesGenerales/login/login.component';
 import { OpcionesComponent } from './componentesGenerales/opciones/opciones.component';
@@ -13,8 +13,8 @@ import { CrearCreditoComponent } from './Pages/Creditos/Componentes_creditos/cre
 import { VerCreditosComponent } from './Pages/Creditos/Componentes_creditos/ver-creditos/ver-creditos.component';
 
 import { DashboardAdminComponent } from './Pages/Administracion/pages/dashboard-admin/dashboard-admin.component';
-import { EstadisticasDashboardComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas-dashboard/estadisticas-dashboard.component';
-import { GestionComponent } from './Pages/Cartera/pages/componentesCartera/gestion/gestion.component';
+import { EstadisticasDashboardComponent } from './componentesGenerales/sources/cartera/estadisticas-dashboard/estadisticas-dashboard.component';
+import { GestionComponent } from './componentesGenerales/sources/cartera/gestion/gestion.component';
 import { DashboardComponent } from './Pages/Cartera/pages/dashboard/dashboard.component';
 import { ConsultasComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/consultas/consultas.component';
 import { IngresarComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ingresar/ingresar.component';
@@ -39,7 +39,7 @@ import { ProcesoVentasComponent } from './Pages/Ventas/componentesVentas/proceso
 import { ListaChequeoComponent } from './Pages/SST/pages/componentes_SST/inspeccion/lista-chequeo/lista-chequeo.component';
 import { ReportesSstComponent } from './Pages/SST/pages/componentes_SST/inspeccion/reportes-sst/reportes-sst.component';
 import { ResultadosSstComponent } from './Pages/SST/pages/componentes_SST/inspeccion/resultados-sst/resultados-sst.component';
-import { EstadisticasComponent } from './Pages/Cartera/pages/componentesCartera/estadisticas/estadisticas.component';
+import { EstadisticasComponent } from './componentesGenerales/sources/cartera/estadisticas/estadisticas.component';
 import { DashboardSuperAdminComponent } from './Pages/AdminGeneral/dashboard-super-admin/dashboard-super-admin.component';
 import { SystemRolesComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-roles/system-roles.component';
 import { SystemPermisosComponent } from './Pages/AdminGeneral/componentes/RoleyPermisos/system-permisos/system-permisos.component';
@@ -73,6 +73,20 @@ import { EstadosObligacionComponent } from './Pages/Consignaciones/pages/compone
 import { TipoObligacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/tipo-obligacion/tipo-obligacion.component';
 import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/Configuraciones/asesores/asesores.component';
 import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/rankings/rankings/rankings.component';
+import { HomeCarteraComponent } from './Pages/Cartera/pages/componentesCartera/home-cartera/home-cartera.component';
+import { ClasificacionComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion/clasificacion.component';
+import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/uploads-files/uploads-files.component';
+
+import { TipoVencimientoComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/tipo-vencimiento/tipo-vencimiento.component';
+
+import { HomeCajaComponent } from './Pages/Cartera/pages/componentesCartera/home-caja/home-caja.component';
+import { GuardAsesoraGuard } from './Guards/Cartera/guard-asesora.guard';
+import { GuardCajaGuard } from './Guards/Cartera/guard-caja.guard';
+import { ClasificacionJuridicaComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion-juridica/clasificacion-juridica.component';
+import { CondicionEspecialComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/condicion-especial/condicion-especial.component';
+import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/firmas/firmas.component';
+
+
 
 
 
@@ -109,17 +123,40 @@ const routes: Routes = [
     canActivate:[AuthenticationGuard],
     children:[
       {
-        path:"gestion",
-        component:GestionComponent,
-      },
-      {
         path:"inicio",
-        component:EstadisticasDashboardComponent
+        component:HomeCarteraComponent,
+        canActivate: [GuardAsesoraGuard]
       },
       {
-        path:"estadisticas",
-        component:EstadisticasComponent
+        path:"clasificacion",
+        component:ClasificacionComponent
+      },
+      {
+        path: "upload-data",
+        component: UploadsFilesComponent
+      },
+      {
+        path: "tipo-vencimiento",
+        component: TipoVencimientoComponent
+      },
+      {
+        path: "clasificacion-juridica",
+        component: ClasificacionJuridicaComponent
+      },
+      {
+        path: "condicion-especial",
+        component: CondicionEspecialComponent
+      },
+      {
+        path: "crear-firmas",
+        component: FirmasComponent
+      },
+      {
+         path: "inicio-caja",
+         component: HomeCajaComponent,
+         canActivate: [GuardCajaGuard]
       }
+
     ]
   },
   {

@@ -89,7 +89,6 @@ export class BuscarArchivosComponent implements OnInit {
               text: 'Elija Una Obligación',
               timer: 2500
             })
-          console.log(this.datos);
         }, (error:any) => {
           Swal.fire({
             icon: 'error',
@@ -115,7 +114,7 @@ export class BuscarArchivosComponent implements OnInit {
         } else {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'Estos Son Los Archivos Encontrados',
             timer: 2500
           })
@@ -133,7 +132,6 @@ export class BuscarArchivosComponent implements OnInit {
       (data:any) => {
         this.tiposArchivos = data
         this.tipoArc = data.length
-        console.log(data);
       }, (error:any) => {
         console.log(error);
       }
@@ -141,11 +139,10 @@ export class BuscarArchivosComponent implements OnInit {
   }
 
   saveOne(){
-    console.log(this.subirArchivo);
     
     this.buscarService.saveOne(this.subirArchivo).subscribe(
       (data:any) => {
-        Swal.fire('Felicidades', 'Archivo Guardado Con éxito', 'success')
+        Swal.fire('Datos Guardados', 'Archivo Guardado Con éxito', 'success')
         setTimeout(() => {
           window.location.reload()
         }, 2000);
@@ -193,7 +190,6 @@ export class BuscarArchivosComponent implements OnInit {
       this.modal.idArchivo = archivo.idArchivo
       this.modal.nombreOriginal = archivo.nombreOriginal
       this.modal.tipoArchivo = archivo.tipoArchivo.tipoArchivo
-      console.log(this.modal);
     }
   }
 
@@ -208,11 +204,10 @@ export class BuscarArchivosComponent implements OnInit {
     
     this.buscarService.update(this.modal).subscribe(
         (data:any) => {
-          Swal.fire('Felicidades', 'Archivo Actualizado Con éxito', 'success')
+          Swal.fire('Datos Guardados', 'Archivo Actualizado Con éxito', 'success')
           setTimeout(() => {
             window.location.reload()
           }, 2000);
-        console.log(this.modal);
         }, (error:any) => {
           Swal.fire('Error', 'Erro al Actualizar El Archivo', 'error')
           console.log(error);

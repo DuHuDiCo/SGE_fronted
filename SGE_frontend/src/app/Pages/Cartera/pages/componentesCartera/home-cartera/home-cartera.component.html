@@ -1,0 +1,2284 @@
+<div class="container">
+    <div class="floating-button-container">
+        <button class="floating-button fadeInFromBottom" (click)="abrirModalBuscar()">
+            <div class="icon-container">
+                <i class="fa-solid fa-magnifying-glass fa-2x"></i>
+            </div><br>
+            <div class="text-container">
+                <span class="text">Buscar</span>
+            </div>
+        </button>
+    </div>
+    <button class="btn btn-danger b filter" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilter">
+        <h6 class="text-center mt-1" style="font-size: 13px;">Filtros</h6>
+    </button>
+
+    <!-- tarjetas notificaciones -->
+    <div class="dropstart noti">
+        <button class="btn b dropdown-toggle position-relative" type="button" id="dropdownMenuClickableInside"
+            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa-solid fa-envelopes-bulk"></i>
+            <span class="position-absolute start-100 translate-middle badge rounded-pill bg-secondary">
+                {{ notiArray.length }}
+            </span>
+        </button>
+
+        <ul class="dropdown-menu scrollable-menu" style="background-color: rgb(201, 201, 201);">
+
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#todas"
+                        type="button" role="tab" aria-controls="home" aria-selected="true">Todas</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#vencidas"
+                        type="button" role="tab" aria-controls="profile" aria-selected="false">Vencidas</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#realizadas"
+                        type="button" role="tab" aria-controls="profile" aria-selected="false">Realizadas</button>
+                </li>
+
+            </ul>
+
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="todas" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="list-group" style="width: 300px;">
+
+
+                        <div *ngIf="notiArray.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
+                            <div class="col-md-8">
+                                <select [(ngModel)]="tipoAll" class="form-select" style="border: 1px black solid;">
+                                    <option>Seleccione Un Filtro</option>
+                                    <option value="SEDE">Filtrar Por Sede</option>
+                                    <option value="CEDULA">Filtrar Por Cédula</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div *ngIf="tipoAll == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
+
+                            <div class="col-md-8">
+                                <select [(ngModel)]="filtroAll" class="form-select" style="border: 1px black solid;">
+                                    <option>Seleccione Una Sede</option>
+                                    <option *ngFor="let s of sedes; let i = index" value="{{ s.sede }}">{{ s.sede }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn b" (click)="getNotiAllBySede()"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+
+                        <div *ngIf="tipoAll == 'CEDULA'" class="row justify-content-center mt-3 mb-3 ms-2">
+                            <div class="col-md-8">
+                                <input [(ngModel)]="filtroAll" type="text" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn b" (click)="getNotiAllBySede()"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+
+                        <a *ngFor="let n of notiArray" class="list-group-item" aria-current="true"
+                            style="background-color: rgb(201, 201, 201);">
+                            <div class="row justify-content-center mb-2">
+                                <div *ngIf="n.tipoGestion == 'TAREA'" class="col-md-4">
+                                    <button
+                                        (click)="desactivarNoti(n.idNotificaciones, n.fechaCreacion, n.gestionId, n.numeroObligacion)"
+                                        class="btn btn-sm b"><i class="fa-solid fa-check"></i></button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button
+                                        (click)="getGestionesNoti(n.numeroObligacion, n.gestionId, n.fechaCreacion, n.tipoGestion, n.idNotificaciones)"
+                                        data-bs-toggle="modal" data-bs-target="#modalGestionCom"
+                                        style="cursor: pointer;" class="btn btn-sm btn-primary"><i
+                                            class="fa-solid fa-file-pen"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h6>
+                                <small>{{ n.fechaCreacion | dateFormat}}</small>
+                            </div>
+                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | dateFormat}}</p>
+                            <small><b>Cliente:</b> {{ n.cliente }}</small><br>
+                            <small *ngIf="n.tipoGestion == 'TAREA'"><b>Creado Por:</b> {{ n.designatedBy }}</small>
+                        </a>
+                    </div>
+                    <div *ngIf="notiArray.length == 0" class="list-group">
+                        <a class="list-group-item list-group-item-action" aria-current="true">
+                            <p class="mb-1">No Tiene Notificaciones Pendientes En El Momento.</p>
+                            <small>Vuelva Más Tarde.</small>
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="tab-pane fade" id="vencidas" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="list-group" style="width: 300px;">
+
+
+                        <div *ngIf="notiArrayVencidas.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
+                            <div class="col-md-8">
+                                <select [(ngModel)]="tipoVen" class="form-select" style="border: 1px black solid;">
+                                    <option>Seleccione Un Filtro</option>
+                                    <option value="SEDE">Filtrar Por Sede</option>
+                                    <option value="CEDULA">Filtrar Por Cédula</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div *ngIf="tipoVen == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
+
+                            <div class="col-md-8">
+                                <select [(ngModel)]="filtroVen" class="form-select" style="border: 1px black solid;">
+                                    <option>Seleccione Una Sede</option>
+                                    <option *ngFor="let s of sedes; let i = index" value="{{ s.sede }}">{{ s.sede }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn b" (click)="getNotiVenBySede()"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+
+                        <div *ngIf="tipoVen == 'CEDULA'" class="row justify-content-center mt-3 mb-3 ms-2">
+                            <div class="col-md-8">
+                                <input [(ngModel)]="filtroVen" type="text" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn b" (click)="getNotiVenBySede()"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+
+                        <a *ngFor="let n of notiArrayVencidas" class="list-group-item" aria-current="true"
+                            style="background-color: rgb(201, 201, 201);">
+                            <div class="row justify-content-center mb-2">
+                                <div class="col-md-4">
+                                    <button *ngIf="n.tipoGestion == 'TAREA'"
+                                        (click)="desactivarNoti(n.idNotificaciones, n.fechaCreacion, n.gestionId, n.numeroObligacion)"
+                                        class="btn btn-sm b"><i class="fa-solid fa-check"></i></button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button
+                                        (click)="getGestionesNoti(n.numeroObligacion, n.gestionId, n.fechaCreacion, n.tipoGestion, n.idNotificaciones)"
+                                        data-bs-toggle="modal" data-bs-target="#modalGestionCom"
+                                        style="cursor: pointer;" class="btn btn-sm btn-primary"><i
+                                            class="fa-solid fa-file-pen"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h6>
+                                <small>{{ n.fechaCreacion | dateFormat}}</small>
+                            </div>
+                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | dateFormat }}</p>
+                            <small><b>Cliente:</b> {{ n.cliente }}</small><br>
+                            <small *ngIf="n.tipoGestion == 'TAREA'"><b>Creado Por:</b> {{ n.designatedBy }}</small>
+                        </a>
+                    </div>
+                    <div *ngIf="notiArrayVencidas.length == 0" class="list-group">
+                        <a class="list-group-item list-group-item-action" aria-current="true">
+                            <p class="mb-1">No Tiene Notificaciones Vencidas En El Momento.</p>
+                            <small>Vuelva Más Tarde.</small>
+                        </a>
+                    </div>
+                </div>
+
+
+
+                <div class="tab-pane fade" id="realizadas" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="list-group" style="width: 300px;">
+
+
+                        <div *ngIf="notiArrayRealizadas.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
+                            <div class="col-md-8">
+                                <select [(ngModel)]="tipoReal" class="form-select" style="border: 1px black solid;">
+                                    <option>Seleccione Un Filtro</option>
+                                    <option value="SEDE">Filtrar Por Sede</option>
+                                    <option value="CEDULA">Filtrar Por Cédula</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div *ngIf="tipoReal == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
+                            <div class="col-md-8">
+                                <select [(ngModel)]="filtroRealizada" class="form-select"
+                                    style="border: 1px black solid;">
+                                    <option>Seleccione Una Sede</option>
+                                    <option *ngFor="let s of sedes; let i = index" value="{{ s.sede }}">{{ s.sede }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn b" (click)="getNotiRealizadasBySede()"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+
+                        <div *ngIf="tipoReal == 'CEDULA'" class="row justify-content-center mt-3 mb-3 ms-2">
+                            <div class="col-md-8">
+                                <input [(ngModel)]="filtroRealizada" type="text" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn b" (click)="getNotiRealizadasBySede()"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+
+                        <a *ngFor="let n of notiArrayRealizadas" class="list-group-item" aria-current="true"
+                            style="background-color: rgb(201, 201, 201);">
+                            <div class="row justify-content-center mb-2">
+                                <div class="col-md-4">
+                                    <button (click)="hideNotiRealizada(n.idNotificaciones)" class="btn btn-sm b"><i
+                                            class="fa-solid fa-circle-minus"></i></button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button (click)="findCuentaCobrar(n.numeroObligacion)" data-bs-toggle="offcanvas"
+                                        data-bs-target="#offcanvasRight" style="cursor: pointer;"
+                                        class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h6>
+                                <small>{{ n.fechaCreacion | dateFormat}}</small>
+                            </div>
+                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | dateFormat}}</p>
+                            <small><b>Cliente:</b> {{ n.cliente }}</small><br>
+                            <small *ngIf="n.tipoGestion == 'TAREA'"><b>Creado Por:</b> {{ n.designatedBy }}</small>
+                        </a>
+                    </div>
+                    <div *ngIf="notiArrayRealizadas.length == 0" class="list-group">
+                        <a class="list-group-item list-group-item-action" aria-current="true">
+                            <p class="mb-1">No Tiene Notificaciones Realizadas En El Momento.</p>
+                            <small>Vuelva Más Tarde.</small>
+                        </a>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+
+        </ul>
+    </div>
+    <div class="card-c">
+        <div class="row">
+            <div *ngIf="(buscarObligacion != '' && variableLimpiar)  || (this.filtros.banco.length != 0) ||
+            (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
+            (this.filtros.diasVencidosFin != 0 && this.filtros.diasVencidosFin != null) ||
+            (this.filtros.edadVencimiento.length != 0) ||
+            (this.filtros.sede.length != 0) ||
+            (this.filtros.clasiJuridica.length != 0) ||
+            (this.filtros.saldoCapitalInicio != 0 && this.filtros.saldoCapitalInicio != null) ||
+            (this.filtros.saldoCapitalFin != 0 && this.filtros.saldoCapitalFin != null) ||
+            (this.filtros.fechaCpcInicio != null) ||
+            (this.filtros.fechaCpcFin != null) ||
+            (this.filtros.fechaGestionInicio != null) ||
+            (this.filtros.fechaGestionFin != null) ||
+            (this.filtros.fechaCompromisoInicio != null) ||
+            (this.filtros.fechaCompromisoFin != null)" class="col-md-2">
+                <button (click)="reiniciarFiltros('LIMPIAR')" class="btn btn-primary justify-content-start mb-3">Limpiar
+                    Filtros</button>
+            </div>
+
+            <div class="col" [ngClass]="{'col-md-12': !variableLimpiar, 'col-md-10': variableLimpiar}">
+                <div *ngIf="newGestion.clasificacion.tipoClasificacion != null" class="row justify-content-end"
+                    data-bs-target="#offcanvasRight">
+                    <div class="col-md-4">
+                        <div class="alert alert-danger text-end" role="alert" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasRight" style="cursor: pointer;"
+                            (click)="findCuentaCobrar(newGestion.numeroObligacion)">
+                            <h6>Editando Gestion De {{ newGestion.numeroObligacion }}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center" *ngIf="!spinner">
+            <div class="col-md-12">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="row justify-content-start">
+                            <div class="col-md-3">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>Hoy: </strong> {{alertasGestionesObject.gestionesDia}}
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>Mes: </strong> {{alertasGestionesObject.gestionesRealizadas}}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>Asig: </strong>
+                                    {{alertasGestionesObject.cuentasAsignadas}}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>Sin Ges: </strong>
+                                    {{alertasGestionesObject.cuentasSinGestion}}
+                                </div>
+                            </div>
+                            <small class="text-center fw-bold mb-2">Gestiones</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row justify-content-end">
+                            <div class="col-md-3">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>A. Mes: </strong> {{alertasGestionesObject.acuerdosDePagosRealizados}}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>A. Dia: </strong> {{alertasGestionesObject.acuerdoPagoDia}}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>A. Activos: </strong> {{alertasGestionesObject.acuerdosDePagosActivos}}
+                                </div>
+                            </div>
+                            <small class="text-center fw-bold mb-2">Acuerdos</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- OCULTAR COLUMNAS -->
+        <div class="accordion" id="accordionExample" *ngIf="!spinner">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Ocultar Columnas
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="row justify-content-center mb-3">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row justify-content-center mb-2">
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input *ngIf="Columnas.length <= 11 || !Columnas.includes('BANCO')"
+                                                        class="form-check-input" type="checkbox"
+                                                        (click)="ocultarColumnas(constantes[1])">
+                                                    <label class="form-check-label">
+                                                        Banco
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('DIAS VENC')"
+                                                        class="form-check-input" type="checkbox"
+                                                        (click)="ocultarColumnas(constantes[2])">
+                                                    <label class="form-check-label">
+                                                        Dias Ven.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('EDAD VENC')"
+                                                        class="form-check-input" type="checkbox"
+                                                        (click)="ocultarColumnas(constantes[3])">
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                        Edad Ven.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('SUCURSAL')"
+                                                        class="form-check-input" type="checkbox"
+                                                        (click)="ocultarColumnas(constantes[4])">
+                                                    <label class="form-check-label">
+                                                        Sucursal
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input *ngIf="Columnas.length <= 11 || !Columnas.includes('ASESOR')"
+                                                        class="form-check-input" type="checkbox"
+                                                        (click)="ocultarColumnas(constantes[5])">
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                        Asesor
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('CLAS JURI')"
+                                                        class="form-check-input" type="checkbox"
+                                                        (click)="ocultarColumnas(constantes[6])">
+                                                    <label class="form-check-label">
+                                                        Clas. Juri
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('SALDO CAP')"
+                                                        class="form-check-input" type="checkbox"
+                                                        (click)="ocultarColumnas(constantes[7])">
+                                                    <label class="form-check-label">
+                                                        Saldo Cap.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input *ngIf="Columnas.length <= 11 || !Columnas.includes('ANIO')"
+                                                        class="form-check-input" type="checkbox"
+                                                        (click)="ocultarColumnas(constantes[8])">
+                                                    <label class="form-check-label">
+                                                        Año
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('F GESTION')"
+                                                        class="form-check-input" type="checkbox"
+                                                        (click)="ocultarColumnas(constantes[9])">
+                                                    <label class="form-check-label">
+                                                        F. Gestión
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('F COMPRO')"
+                                                        class="form-check-input" type="checkbox"
+                                                        (click)="ocultarColumnas(constantes[10])">
+                                                    <label class="form-check-label">
+                                                        F. Compro.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    <input
+                                                        *ngIf="Columnas.length <= 11 || !Columnas.includes('ULTIMA CLAS')"
+                                                        class="form-check-input" type="checkbox"
+                                                        (click)="ocultarColumnas(constantes[11])">
+                                                    <label class="form-check-label">
+                                                        Ultima Clas.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <!-- SIDEBAR -->
+                <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasRight"
+                    aria-labelledby="offcanvasRightLabel" style="height: 95%;">
+                    <div *ngIf="!spinnerSidebar" class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasRightLabel">Datos Cliente</h5>
+                        <button *ngIf="deshabilitarInputs" class="btn btn-danger b" data-bs-toggle="modal"
+                            data-bs-target="#modalGestion">Nueva
+                            Gestion</button>
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalHistoricoG"
+                            (click)="cerrarGestiones()">Historico Gestiones</button>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <div *ngIf="spinnerSidebar" class="d-flex align-items-center justify-content-center"
+                            style="height: 70vh;">
+                            <div class="text-center">
+                                <div class="spinner-border" role="status"
+                                    style="width: 5rem; height: 5rem; color: #960010;">
+                                    <span class="visually-hidden"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!spinnerSidebar" class="card">
+                            <div class="card-header">
+                                <h6 class="text-center">Gestor Encargado: {{
+                                    cuentaCobrarSelected.asesorCarteraResponse.usuario.nombres }} {{
+                                    cuentaCobrarSelected.asesorCarteraResponse.usuario.apellidos }}</h6>
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="card mb-3">
+                                    <div class="card-body text-center">
+                                        <div class="row text-center">
+                                            <div class="col-md-4">
+                                                <strong>Nro. Obligación:</strong> {{
+                                                cuentaCobrarSelected.numeroObligacion }}
+                                            </div>
+                                            <div class="col-md-4">
+                                                <strong>Nro. Creditos:</strong> {{ cuentaCobrarSelected.numeroCreditos
+                                                }}
+                                            </div>
+                                            <div class="col-md-4">
+                                                <strong>Condición Cliente:</strong> {{
+                                                cuentaCobrarSelected.condicionEspecial }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <!-- MORA -->
+                                        <div class="card text-center">
+                                            <div class="card-header text-center tituloCal">
+                                                Información De La Mora
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Saldo Capital
+                                                                En Mora</span>
+                                                            <input (change)="calculadora($event)"
+                                                                id="boton_saldo_capital" type="text"
+                                                                [(ngModel)]="cuentaCobrarSelected.moraObligatoria"
+                                                                class="form-control" [disabled]="deshabilitarInputs">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Saldo Capital
+                                                                Total</span>
+                                                            <input (change)="calculadora($event)" id="boton_saldo_total"
+                                                                type="number"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].saldoActual"
+                                                                class="form-control" [disabled]="deshabilitarInputs">
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Interes Mora</span>
+                                                            <input [(ngModel)]="acuerdoCal.valorInteresesMora"
+                                                                type="text" class="form-control"
+                                                                (change)="cambiarIntereses($event)"
+                                                                [disabled]="deshabilitarInputs">
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'"
+                                                        class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Honorarios</span>
+                                                            <input [(ngModel)]="acuerdoCal.honoriarioAcuerdo"
+                                                                type="number" class="form-control"
+                                                                [disabled]="deshabilitarInputs">
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Saldo Mora
+                                                                Total</span>
+
+                                                            <span
+                                                                class="input-group-text ps-5 pe-5">{{acuerdoCal.valorTotalMora
+                                                                | number}}</span>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Saldo Total</span>
+
+                                                            <span
+                                                                class="input-group-text ps-5 pe-5">{{acuerdoCal.saldoAcuerdo
+                                                                | number}}</span>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Valor Cuota</span>
+                                                            <input type="number"
+                                                                [(ngModel)]="cuentaCobrarSelected.valorCuota"
+                                                                class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text fw-bold">Mora/Venc</span>
+                                                            <input type="text"
+                                                                [(ngModel)]="cuentaCobrarSelected.tiposVencimiento.tipoVencimiento"
+                                                                class="form-control" disabled>
+                                                            <input type="text"
+                                                                [(ngModel)]="cuentaCobrarSelected.diasVencidos"
+                                                                class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text fw-bold">Cuotas</span>
+                                                            <input type="text" [(ngModel)]="cuentaCobrarSelected.cuotas"
+                                                                class="form-control" disabled>
+                                                            <input type="text"
+                                                                [(ngModel)]="cuentaCobrarSelected.cuotas - cuentaCobrarSelected.cuotasMora"
+                                                                class="form-control" disabled>
+                                                            <input type="text"
+                                                                [(ngModel)]="cuentaCobrarSelected.cuotasMora"
+                                                                class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row justify-content-center mt-3">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Fecha Venc</span>
+                                                            <input type="date" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.fechaVencimiento"
+                                                                (change)="calcularDiasVencidos($event)"
+                                                                [disabled]="deshabilitarInputs">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text fw-bold">Sede</span>
+                                                            <input type="text"
+                                                                [(ngModel)]="cuentaCobrarSelected.sede.sede"
+                                                                class="form-control" disabled>
+                                                            <input type="text"
+                                                                [(ngModel)]="cuentaCobrarSelected.banco.banco"
+                                                                class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="cuentaCobrarSelected.clientes[0].saldoActual <= cuentaCobrarSelected.moraObligatoria"
+                                                        class="col-md-8">
+                                                        <p class="alert alert-danger mt-3 text-center">CREDITO VENCIDO
+                                                            EN SU TOTALIDAD</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                    <div *ngIf="!deshabilitarInputs" class="col-md-2">
+                                                        <button *ngIf="!resetButton" class="btn btn-danger b"
+                                                            (click)="reiniciarCalculadora()"><i
+                                                                class="fa-solid fa-xmark"></i></button>
+                                                        <button *ngIf="resetButton" type="button"
+                                                            class="btn btn-danger b">
+                                                            <span class="spinner-border spinner-border-sm float-right"
+                                                                role="status" aria-hidden="true"></span>
+                                                        </button>
+                                                    </div>
+                                                    <div *ngIf="!deshabilitarInputs" class="col-md-2">
+                                                        <button class="btn btn-success" (click)="confirmarDatos()"><i
+                                                                class="fa-solid fa-check"></i></button>
+                                                    </div>
+                                                    <div *ngIf="deshabilitarInputs" class="col-md-2">
+                                                        <button class="btn btn-success" (click)="habilitar()"><i
+                                                                class="fa-solid fa-check"></i></button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- INFO PERSONAL -->
+                                        <div class="card text-center">
+                                            <div class="card-header text-center tituloCard">
+                                                Información Personal
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Cédula</span>
+                                                            <input [(ngModel)]="cuentaCobrarSelected.documentoCliente"
+                                                                type="text" class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Nombre</span>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].nombreTitular"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text fw-bold">Lugar/Res</span>
+                                                            <input type="text"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].municipio"
+                                                                class="form-control" disabled>
+                                                            <input type="text"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].departamento"
+                                                                class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6"
+                                                        *ngIf="cuentaCobrarSelected.clientes[0].telefonos.length">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Telefonos</span>
+                                                            <select class="form-select" style="border: 1px black solid;"
+                                                                (change)="copyToClipboard($event)" id="element"
+                                                                [ngModel]="cuentaCobrarSelected.clientes[0].telefonos[0].numero">
+                                                                <option value="">Seleccione Un Teléfono</option>
+                                                                <option
+                                                                    *ngFor="let t of cuentaCobrarSelected.clientes[0].telefonos">
+                                                                    {{ t.numero }}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row"
+                                                    *ngIf="cuentaCobrarSelected.clientes[0].direcciones.length">
+                                                    <div class="col-md-8">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Dirección</span>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].direcciones[0].direccion"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row"
+                                                    *ngIf="cuentaCobrarSelected.clientes[0].correos.length">
+                                                    <div class="col-md-8">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Correo</span>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].correos[0].direccion"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-start mt-2">
+                                            <div class="col-md-12">
+                                                <!-- REFERENCIAS -->
+                                                <div class="card text-center mb-2">
+                                                    <div class="card-header text-center tituloCard">
+                                                        Referencias
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="form-floating">
+                                                            <textarea class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].descripcionDetallada"
+                                                                style="height: 80px" disabled></textarea>
+                                                            <label class="fw-bold">Referencia</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <!-- CREDITO -->
+                                        <div class="card text-center">
+                                            <div class="card-header text-center tituloCard">
+                                                Información Del Credito
+                                            </div>
+                                            <div class="card-body" style="height: 120px;">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Vendedor</span>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.vendedor" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Clasificación</span>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.clasificacion"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text fw-bold">Fec/Credito</span>
+                                                            <input type="date"
+                                                                [(ngModel)]="cuentaCobrarSelected.fechaCuentaCobrar"
+                                                                class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Fec/Venc</span>
+                                                            <input type="date" class="form-control"
+                                                                [(ngModel)]="cuentaCobrarSelected.fechaVencimiento"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- CODEUDORES -->
+                                        <div class="card text-center">
+                                            <div class="card-header text-center tituloCard">
+                                                Codeudores
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row mt-4 mb-3">
+                                                    <div class="col-md-8">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Codeudores</span>
+                                                            <select class="form-select" style="border: 1px black solid;"
+                                                                (change)="findCodeudores($event)">
+                                                                <option>Seleccione Un Codeudor</option>
+                                                                <option *ngFor="let co of codeudores"
+                                                                    value="{{ co.numeroDocumento }}">{{
+                                                                    co.nombreTitular}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text fw-bold">Nro.
+                                                                Codeudores</span>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="codeudores.length" disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <span *ngFor="let cs of codeudoresSelected">
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-md-12" *ngIf="cs.direcciones.length != 0">
+                                                            <div class="input-group input-group-sm mb-3">
+                                                                <span class="input-group-text fw-bold">Dirección</span>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ cs.direcciones[0].direccion }}" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6" *ngIf="cs.telefonos.length != 0">
+                                                            <div class="input-group input-group-sm mb-3">
+                                                                <span class="input-group-text fw-bold">Celular</span>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ cs.telefonos[0].indicativo }} {{ cs.telefonos[0].numero }}"
+                                                                    disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="input-group input-group-sm mb-3">
+                                                                <span class="input-group-text fw-bold">Cédula</span>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ cs.numeroDocumento }}" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-floating">
+                                                        <textarea class="form-control" style="height: 77px"
+                                                            value="{{ cs.descripcionDetallada }}" disabled></textarea>
+                                                        <label class="fw-bold">Referencia</label>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="spinner" class="text-center">
+                    <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
+                        <span class="visually-hidden"></span>
+                    </div>
+                </div>
+
+                <!-- TABLA -->
+
+                <div *ngIf="!spinner" class="table-responsive align-middle">
+
+                    <table class="table table-responsive table-bordered text-center table-hover">
+                        <thead>
+                            <tr>
+                                <th class="h" *ngIf="!Columnas.includes('CLIENTE')">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Cliente
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h" *ngIf="!Columnas.includes('BANCO')">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Banco
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('DIAS VENC')">Dias Vencidos</th>
+                                <th *ngIf="!Columnas.includes('EDAD VENC')" class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            E. Vencimiento
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('SUCURSAL')" class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Sucursal
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('ASESOR')" class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Asesor
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('CLAS JURI')" class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Clas. Juridica
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('SALDO CAP')">Saldo Capital</th>
+                                <th *ngIf="!Columnas.includes('ANIO')" class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Año
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('F GESTION')">F. Gestión</th>
+                                <th *ngIf="!Columnas.includes('F COMPRO')" class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            F. Compromiso
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('ULTIMA CLAS')">U. Clasi.</th>
+                            </tr>
+
+                            <tr *ngIf="isSticky" [ngClass]="{'sticky': isSticky}"
+                                class="justify-content-center text-center">
+                                <th class="h" *ngIf="!Columnas.includes('CLIENTE')">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Cliente
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h" *ngIf="!Columnas.includes('BANCO')">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Banco
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('DIAS VENC')">Dias Vencidos</th>
+                                <th *ngIf="!Columnas.includes('EDAD VENC')" class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            E. Vencimiento
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('SUCURSAL')" class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Sucursal
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('ASESOR')" class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Asesor
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('CLAS JURI')" class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Clas. Juridica
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('SALDO CAP')">Saldo Capital</th>
+                                <th *ngIf="!Columnas.includes('ANIO')" class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Año
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('F GESTION')">F. Gestión</th>
+                                <th *ngIf="!Columnas.includes('F COMPRO')" class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            F. Compromiso
+                                        </div>
+                                    </div>
+                                </th>
+                                <th *ngIf="!Columnas.includes('ULTIMA CLAS')">U. Clasi.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let cc of cuentasCobrarArray; let i = index" class="align-middle" id="td0"
+                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style="cursor: pointer;"
+                                (click)="findCuentaCobrar(cc.numeroObligacion)">
+                                <td *ngIf="!Columnas.includes('CLIENTE')">{{ cc.cliente }}</td>
+                                <td *ngIf="!Columnas.includes('BANCO')">{{ cc.banco.banco }}</td>
+                                <td *ngIf="!Columnas.includes('DIAS VENC')">{{ cc.diasVencidos }}</td>
+                                <td *ngIf="!Columnas.includes('EDAD VENC')">{{ cc.tiposVencimiento.tipoVencimiento }}
+                                </td>
+                                <td *ngIf="!Columnas.includes('SUCURSAL')">{{ cc.sede.sede }}</td>
+                                <td *ngIf="!Columnas.includes('ASESOR')">{{ cc.asesorCarteraResponse.usuario.nombres }}
+                                    {{
+                                    cc.asesorCarteraResponse.usuario.apellidos }}</td>
+                                <td *ngIf="!Columnas.includes('CLAS JURI')">{{ cc.clasificacionJuridica }}</td>
+                                <td *ngIf="!Columnas.includes('SALDO CAP')">{{ cc.totalObligatoria | number }}</td>
+                                <td *ngIf="!Columnas.includes('ANIO')">{{ cc.fechaCuentaCobrar | date:'yyyy' }}</td>
+                                <td *ngIf="!Columnas.includes('F GESTION')">
+                                    <p id="td_{{i}}">
+                                        {{
+                                        cc.gestion.length == 0
+                                        ? 'SIN GESTIÓN' :
+                                        cc.gestion[cc.gestion.length-1].fechaGestion | date:"d/M/yyyy" }}
+                                    </p>
+                                </td>
+                                <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
+                                    'TAREA' ?
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaTarea | date:"d/M/yyyy")
+                                    :
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
+                                    'NOTA' ? 'NOTA' :
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso |
+                                    date:"d/M/yyyy")))}}
+                                </td>
+                                <td *ngIf="!Columnas.includes('ULTIMA CLAS')">
+                                    {{ cc.gestion.length == 0 ? 'SIN CLASIFICACIÓN' :
+                                    cc.gestion[cc.gestion.length-1].clasificacionGestion.nombresClasificacion.nombre
+                                    }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <nav *ngIf="numeroPages > 1" class="row justify-content-center mt-2">
+                    <div *ngIf="!spinner" class="pag">
+                        <nav>
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link b" (click)="back()" style="cursor: pointer;">Anterior</a>
+                                </li>
+
+                                <li class="page-item">
+                                    <div class="btn-group dropup">
+                                        <button type="button" class="page-link dropdown-toggle"
+                                            style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
+                                            data-bs-toggle="dropdown">{{page+1}}/{{numeroPages}}</button>
+                                        <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
+                                            <li *ngFor="let p of paginas;let i = index"><button class="dropdown-item"
+                                                    (click)="goToPage(i)">{{i
+                                                    + 1}}</button></li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link b" (click)="next()" style="cursor: pointer;">Siguiente</a>
+                                </li>
+                            </ul>
+                            <div class="row text-center justify-content-center">
+                                <div class="col-md-6">
+                                    <nav class="text-center justify-content-center" style="margin-top: -15px;">
+                                        <ul class="pagination pagination-sm">
+                                            <li class="page-item">
+                                                <a class="page-link b">#Registros: </a>
+                                            </li>
+                                            <li class="page-item">
+                                                <div class="btn-group dropup">
+                                                    <button type="button" class="page-link dropdown-toggle"
+                                                        style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
+                                                        data-bs-toggle="dropdown"></button>
+                                                    <ul class="dropdown-menu" style="overflow-y: auto; height: 120px;">
+                                                        <li><button class="dropdown-item"
+                                                                (click)="seleccionarSize(20)">20</button></li>
+                                                        <li><button class="dropdown-item"
+                                                                (click)="seleccionarSize(50)">50</button></li>
+                                                        <li><button class="dropdown-item"
+                                                                (click)="seleccionarSize(100)">100</button></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+
+                                    </nav>
+                                </div>
+                            </div>
+
+                        </nav>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nueva Gestión -->
+    <div class="modal fade" id="modalGestion" tabindex="-1" aria-labelledby="modalGestion" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalGestion">Nueva Gestión</h1>
+                    <button type="button" data-bs-dismiss="modal" aria-label="Close" style="border: none"><i
+                            class="fa-solid fa-arrow-left"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col" [ngClass]="{'col-md-12': col, 'col-md-4': !col}">
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" [(ngModel)]="newGestion.contact" [checked]="true"
+                                    type="checkbox" role="switch" checked>
+                                <label class="form-check-label">Existió contacto
+                                    Telefónico/Whatsapp con el Cliente y/o Tercero (?)</label>
+                            </div>
+                            <label for="">Seleccionar Una Clasificacion</label>
+                            <select class="form-select mb-3" style="border: 1px black solid;"
+                                [(ngModel)]="newGestion.clasificacion.nombreClasificacion" name="nombreClasificacion"
+                                (change)="tipoClasificacion($event)">
+
+                                <option *ngFor="let c of ClasificacionArray" [value]="c.nombre">{{
+                                    c.nombre }}</option>
+                            </select>
+
+                            <!-- ACUERDO PAGO -->
+                            <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" style="height: 100px;"
+                                        [(ngModel)]="acuerdo.detalle"></textarea>
+                                    <label class="fw-bold">Detalle Acuerdo</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col" [ngClass]="{'col-md-12': !col, 'col-md-6': col}">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <span class="input-group-text fw-bold">Fecha Comp</span>
+                                            <input type="date" class="form-control"
+                                                [(ngModel)]="acuerdo.fechaCompromiso" [max]="maxFecha()"
+                                                [min]="minFecha()" [disabled]="disabledFecha">
+                                        </div>
+                                    </div>
+                                    <div class="col" [ngClass]="{'col-md-12': !col, 'col-md-6': col}">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <span class="input-group-text fw-bold">Valor Cuota</span>
+                                            <input type="number" class="form-control"
+                                                [(ngModel)]="acuerdo.valorCuotaMensual">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mt-3 mb-3">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio"
+                                                    [(ngModel)]="acuerdo.tipoAcuerdo" value="MORA">
+                                                <label class="form-check-label">
+                                                    Mora
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio"
+                                                    [(ngModel)]="acuerdo.tipoAcuerdo" value="TOTAL">
+                                                <label class="form-check-label">
+                                                    Total
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3 mb-3 justify-content-center">
+                                    <div class="col-md-2">
+                                        <button class="btn btn-danger b" (click)="mostrarOffcanvas()">Calcular</button>
+                                    </div>
+                                </div>
+                            </span>
+
+                            <!-- TAREA -->
+                            <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'TAREA'">
+                                <div class="row">
+                                    <div class="col-md-6 mt-3">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <span class="input-group-text fw-bold">Fecha Fin</span>
+                                            <input type="date" class="form-control" [(ngModel)]="tarea.fechaFinTarea"
+                                                [min]="minFecha()">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <select class="form-select mt-3 mb-3"
+                                            [(ngModel)]="newGestion.usernameToSetNotificacion"
+                                            style="border: 1px black solid;">
+
+                                            <option [value]="null">Seleccione Un Asesor</option>
+                                            <option *ngFor="let a of asesores" [value]="a.usuario.username">{{
+                                                a.usuario.nombres | titlecase }} {{ a.usuario.apellidos | titlecase }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" style="height: 100px;"
+                                        [(ngModel)]="tarea.detalleTarea"></textarea>
+                                    <label for="floatingTextarea">Detalle Tarea</label>
+                                </div>
+                                <div *ngIf="newGestion.clasificacion.nombreClasificacion == 'Abonando/Fecha'"
+                                    class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" [(ngModel)]="tarea.isPartOfRecaudo"
+                                        [checked]="false" id="defaultCheck1">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        Considerar Parte Del Recaudo
+                                    </label>
+                                </div>
+                            </span>
+
+                            <!-- NOTA -->
+                            <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'NOTA'">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" style="height: 100px;"
+                                        [(ngModel)]="nota.detalle"></textarea>
+                                    <label for="floatingTextarea">Detalle Nota</label>
+                                </div>
+                            </span>
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" style="height: 100px;"
+                                    [(ngModel)]="newGestion.detallesAdicionales"></textarea>
+                                <label for="floatingTextarea">Datos Adicionales</label>
+                            </div>
+                        </div>
+                        <div *ngIf="!col" class="col-md-8">
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text fw-bold">Mora/Total</span>
+                                        <span class="input-group-text  ps-5 pe-5">{{acuerdoCal.tipoAcuerdo }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text fw-bold">Valor Acuerdo</span>
+                                        <span class="input-group-text  ps-5 pe-5">{{acuerdoCal.valorTotalAcuerdo |
+                                            number}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text fw-bold">Int Mora</span>
+                                        <span class="input-group-text  ps-5 pe-5">{{acuerdoCal.valorInteresesMora |
+                                            number}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text fw-bold">Valor Cuota Mes</span>
+                                        <span class="input-group-text  ps-5 pe-5">{{acuerdoCal.valorCuotaMensual |
+                                            number}}</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text fw-bold">Fecha Corte</span>
+                                        <input [(ngModel)]="fechaCorte" type="date" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'"
+                                    class="col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text fw-bold">Honorarios/Otros</span>
+                                        <input [(ngModel)]="acuerdoCal.honoriarioAcuerdo" type="number"
+                                            class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive align-middle">
+                                <table class="table table-bordered text-center table-hover table-sm align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#Cuotas</th>
+                                            <th scope="col">Fecha Venc</th>
+                                            <th scope="col">Valor Cuota</th>
+                                            <th scope="col">Capital Cuota</th>
+                                            <th scope="col">Honorarios</th>
+                                            <th scope="col">Interes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr *ngFor="let c of cuotas; let i = index;" style="font-size: 15px;">
+                                            <td>Cuota {{ i + 1 }}</td>
+                                            <td>{{ fechasIncrementadas[i] }}</td>
+                                            <td>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="number" class="form-control text-center"
+                                                        value="{{c.valorCuota}}" (change)="recalcularValores(i, $event)"
+                                                        [disabled]="disableds[i]">
+                                                </div>
+                                            </td>
+                                            <td>{{ c.capitalCuota | number }}</td>
+                                            <td>{{ c.honorarios | number }}</td>
+                                            <td>{{ c.interesCuota | number }}</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="cancelarGestion()">Limpiar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#modalHistoricoG" (click)="abrirGestiones()">Histórico Gestiones</button>
+                    <button *ngIf="!gestionButton" type="button" class="btn btn-danger b"
+                        (click)="saveGestion()">Guardar</button>
+                    <button *ngIf="gestionButton" class="btn btn-danger b">
+                        Guardando...
+                        <span class="spinner-border spinner-border-sm float-right" role="status"
+                            aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Historico Gestiones -->
+    <div class="modal fade" id="modalHistoricoG" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Histórico Gestiones</h1>
+                    <button *ngIf="!modalGestiones" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                    <button *ngIf="modalGestiones" type="button" class="btn-close" data-bs-toggle="modal"
+                        data-bs-target="#modalGestion"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive align-middle">
+                        <table class="table table-bordered text-center table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Gestor</th>
+                                    <th scope="col">Fecha Gestión</th>
+                                    <th scope="col">Clasificación</th>
+                                    <th scope="col">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let g of gestiones | paginate: { itemsPerPage: 10, currentPage: pageGestion}; let i = index"
+                                    (click)="getOneGestion(g.idGestion)" data-bs-toggle="modal"
+                                    data-bs-target="#modalGestionCom" style="cursor: pointer;">
+                                    <th>{{ (pageGestion - 1) * 10 + i + 1 }}</th>
+                                    <td>{{ g.asesorCartera }}</td>
+                                    <td>{{ g.fechaGestion | dateFormat }}
+                                    </td>
+                                    <td>{{ g.clasificacion.nombresClasificacion.nombre }}</td>
+                                    <td>{{ g.clasificacion.isActive ? 'Activo':
+                                        g.clasificacion.nombresClasificacion.tipo == "NOTA" ?'Sin Estado':'No Activo' }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-md-8 offset-4">
+                                <pagination-controls class="pagination" (pageChange)="pageGestion = $event;"
+                                    previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="!botonPdf && validarAcuerdoActivo()" class="btn b" (click)="descargarAcuerdo()"><i
+                            class="fa-solid fa-download"></i>&nbsp;Generar Acuerdo</button>
+                    <a type="hidden" [href]="'data:application/pdf;base64,' + base64" id="basePdf"
+                        style="display: none;"
+                        [download]="clienteSelected.numeroDocumento + ' - ' + clienteSelected.nombreTitular"></a>
+
+                    <button *ngIf="botonPdf && validarAcuerdoActivo()" class="btn btn-danger b">
+                        Descargando...
+                        <span class="spinner-border spinner-border-sm float-right" role="status"
+                            aria-hidden="true"></span>
+                    </button>
+
+                    <button *ngIf="!modalGestiones" type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Cerrar</button>
+                    <button *ngIf="modalGestiones" type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#modalGestion">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detalle Gestión -->
+    <div class="modal fade" id="modalDetalle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true" data-bs-show="show">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Seleccionar Cliente A la Gestión</h1>
+                </div>
+                <div class="modal-body">
+                    <h6>Seleccione El Cliente Al Que Desea Agregar El Acuerdo</h6>
+                    <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.cedula" (change)="cambiarCedula($event)"
+                        style="border: 1px black solid;">
+                        <option value="">Seleccione Una Cedula</option>
+                        <option *ngFor="let c of cuentaCobrarSelected.clientes" [value]="c.numeroDocumento">{{
+                            c.numeroDocumento }} - {{ c.nombreTitular }} - {{ c.tipoGarante.tipoGarante }}</option>
+                    </select>
+
+                    <select class="form-select mt-3 mb-3" [(ngModel)]="reporte.numeroAlterno" #telefono
+                        style="border: 1px black solid;" disabled>
+                        <option [value]="null">Seleccione Un Telefono</option>
+                        <option *ngFor="let t of telefonos">{{ t }}
+                        </option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="!botonGuardarGes" class="btn b" (click)="saveGestionWithDetalle()">Guardar
+                        Gestión</button>
+
+                    <button *ngIf="botonGuardarGes" class="btn btn-danger b">
+                        Guardando...
+                        <span class="spinner-border spinner-border-sm float-right" role="status"
+                            aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ver Reporte -->
+    <div class="modal fade" id="modalReporte" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Ver Reporte de Acuerdo de Pago</h1>
+                </div>
+                <div class="modal-body">
+                    <h4>¿Desea Enviar El Reporte Al Cliente?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" data-bs-dismiss="modal" (click)="cerrarCuenta()">Cancelar</button>
+                    <a [href]="mensaje" target="_blank"><button class="btn btn-primary" (click)="mostrarBase64()"
+                            data-bs-dismiss="modal">Enviar</button></a>
+                    <a [href]="'data:application/pdf;base64,' + base64" id="base64" style="display: none;"
+                        [download]="clienteSelected.numeroDocumento + ' - ' + clienteSelected.nombreTitular"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Gestion Completa -->
+    <div class="modal fade" id="modalGestionCom" tabindex="-1" data-bs-show="true" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 *ngIf="gestionSelected.clasificacion.nombresClasificacion != undefined" class="modal-title fs-5"
+                        id="exampleModalLabel">{{ gestionSelected.clasificacion.nombresClasificacion.nombre }}</h1>
+                    <button *ngIf="!mostrarCuentaCobrar" (click)="modalGestionSelected()" type="button"
+                        class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button *ngIf="mostrarCuentaCobrar" (click)="mostrarCpc()" type="button" class="btn-close"
+                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"></button>
+                </div>
+                <div class="modal-body"
+                    *ngIf="gestionSelected.clasificacion.clasificacion != null && gestionSelected.clasificacion.clasificacion != undefined">
+                    <!-- PARTE ACUERDO DE PAGO-->
+                    <span *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO'">
+                        <div class="row m-3">
+                            <div class="row">
+                                <div class="col-md-6 ">
+
+                                    <h6><strong>Saldo Intreses Acuerdo: </strong> {{saldoInteresesAcuerdo | number}}
+                                    </h6>
+                                    <h6><strong>Saldo Honorario Acuerdo: </strong> {{saldoHonoriariosAcuerdo | number}}
+                                    </h6>
+                                    <h6><strong>Saldo Capital Acuerdo: </strong> {{saldoCapitalAcuerdo | number}}</h6>
+                                    <h6><strong>Pagos Realizados: </strong> <a data-bs-toggle="modal"
+                                            href="#exampleModalToggle" role="button" class="btn btn-danger btn-sm"
+                                            style="background-color: #960010;border-color: #960010;"><i
+                                                class="fas fa-eye"></i></a>
+                                    </h6>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6><strong>Valor Total Acuerdo: </strong>
+                                        {{gestionSelected.clasificacion.valorTotalAcuerdo | number}}</h6>
+                                    <h6><strong>Fecha Acuerdo: </strong>
+                                        {{gestionSelected.clasificacion.fechaAcuerdo |
+                                        date:'dd/MM/yyyy'}}</h6>
+                                    <h6><strong>Saldo Actual Acuerdo: </strong> {{saldoAcuerdoPago | number}}</h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6><strong>Agregar Pago: </strong> <a role="button"
+                                                    *ngIf="!ocultarAgregarPago" class="btn btn-danger btn-sm"
+                                                    (click)="ocultarAgregarPago=true;ocultarCrearRevision=false"
+                                                    style="background-color: #960010;border-color: #960010;"><i
+                                                        class="fas fa-plus"></i></a>
+                                                <a role="button" class="btn btn-danger btn-sm"
+                                                    (click)="ocultarCrearRevision=false;ocultarAgregarPago=true"
+                                                    *ngIf="ocultarAgregarPago"
+                                                    style="background-color: #960010;border-color: #960010;"><i
+                                                        class="fas fa-plus"></i></a>
+                                            </h6>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <h6><strong>Revision: </strong> <a role="button"
+                                                    class="btn btn-danger btn-sm"
+                                                    (click)="ocultarCrearRevision=true;ocultarAgregarPago=false"
+                                                    *ngIf="!ocultarCrearRevision"
+                                                    style="background-color: #960010;border-color: #960010;"><i
+                                                        class="fas fa-plus"></i></a>
+
+                                                <a role="button" class="btn btn-danger btn-sm"
+                                                    (click)="ocultarCrearRevision=false;ocultarAgregarPago=true"
+                                                    *ngIf="ocultarCrearRevision"
+                                                    style="background-color: #960010;border-color: #960010;"><i
+                                                        class="fas fa-plus"></i></a>
+                                            </h6>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12 " *ngIf="ocultarAgregarPago">
+
+
+                                <form action="">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="">Valor del Pago</label>
+                                            <input type="text" [(ngModel)]="pago.valor" class="form-control"
+                                                name="valor">
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="">Numero Recibo</label>
+                                            <input type="text" [(ngModel)]="pago.numeroRecibo" class="form-control"
+                                                name="numeroRecibo">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="">Detalle</label>
+                                            <textarea name="detalle" [(ngModel)]="pago.detalle" class="form-control"
+                                                id="" cols="30" rows="1"></textarea>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                    id="flexRadioDefault1" [(ngModel)]="pago.medioPago" name="medioPago"
+                                                    value="CONSIGNACION">
+                                                <label class="form-check-label" for="flexRadioDefault1">
+                                                    CONSIGNACION
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                    id="flexRadioDefault2" [(ngModel)]="pago.medioPago" name="medioPago"
+                                                    value="EFECTIVO">
+                                                <label class="form-check-label" for="flexRadioDefault2">
+                                                    EFECTIVO
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-2 text-center">
+                                            <div class="col-md-4 offset-md-4">
+                                                <button class="btn btn-primary" (click)="agregarPagoACuotas()"
+                                                    style="background-color: #960010;border-color: #960010;">Agregar
+                                                    Pago</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+
+                            <div class="col-md-12" *ngIf="ocultarCrearRevision">
+                                <form action="">
+                                    <div class="row mt-2 text-center">
+                                        <div class="col-md-12">
+                                            <label for="" class="form-label">Nota de la Revision</label>
+                                            <textarea name="" id="detalleRevison" cols="10" rows="3"
+                                                [(ngModel)]="detalleRevision" name="detalleRevision"
+                                                class="form-control"></textarea>
+                                        </div>
+
+                                    </div>
+                                    <div class="row mt-2 text-center">
+                                        <div class="col-md-4 offset-md-4">
+                                            <button class="btn btn-primary" (click)="crearNotaRevision()"
+                                                *ngIf="!spinnerCrearNota"
+                                                style="background-color: #960010;border-color: #960010;">Crear
+                                                Nota</button>
+                                            <button *ngIf="spinnerCrearNota" class="btn btn-danger b"
+                                                style="background-color: #960010;border-color: #960010;">
+                                                Guardando...
+                                                <span class="spinner-border spinner-border-sm float-right" role="status"
+                                                    aria-hidden="true"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        </div>
+
+                        <div class="row" *ngIf="!ocultarCrearRevision && !ocultarAgregarPago">
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" style="height: 100px"
+                                        [(ngModel)]="gestionSelected.clasificacion.detalle" readonly></textarea>
+                                    <label class="fw-bold">Detalle Acuerdo</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive align-middle">
+                            <table class="table table-bordered text-center table-hover table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Cuota</th>
+                                        <th scope="col">Fecha Venc</th>
+                                        <th scope="col">Valor Cuota</th>
+                                        <th scope="col">Capital Cuota</th>
+                                        <th scope="col">Honorarios</th>
+                                        <th scope="col">Interes</th>
+                                        <th scope="col">Pago</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="gestionSelected != null">
+
+                                    <tr *ngFor="let g of cuotasList">
+                                        <td>{{ g.numeroCuota }}</td>
+                                        <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
+                                        <td>{{ g.valorCuota | number }}</td>
+                                        <td>{{ g.capitalCuota | number }}</td>
+                                        <td>{{ g.honorarios | number }}</td>
+                                        <td>{{ g.interesCuota | number }}</td>
+                                        <td class="justify-content-center">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-6">
+                                                    <div class="form-check text-center">
+                                                        <input cli class="form-check-input" type="checkbox"
+                                                            [checked]="g.cumplio==true" [disabled]="g.cumplio==true">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </span>
+                    <!-- TAREA -->
+                    <div class="card" *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA'">
+                        <div class="card-body">
+                            <div class="row justify-content-center">
+                                <div class="col-md-12">
+                                    <div class="form-floating mb-3">
+                                        <textarea class="form-control" style="height: 100px"
+                                            [(ngModel)]="gestionSelected.clasificacion.detalleTarea"
+                                            readonly></textarea>
+                                        <label class="fw-bold">Detalle Tarea</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text fw-bold">Fecha Tarea</span>
+                                        <input type="text" class="form-control"
+                                            [value]="gestionSelected.clasificacion.fechaFinTarea | date:'dd/MM/yyyy'"
+                                            readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <textarea [(ngModel)]="gestionSelected.detallesAdicionales" class="form-control"
+                                            readonly></textarea>
+                                        <label for="floatingTextarea">Detalles Adicionales</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- NOTA -->
+                    <div class="card" *ngIf="gestionSelected.clasificacion.clasificacion == 'NOTA'">
+                        <div class="card-body">
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <textarea [(ngModel)]="gestionSelected.clasificacion.detalleNota"
+                                            style="height: 180px;" class="form-control" readonly></textarea>
+                                        <label for="floatingTextarea">Detalle Nota</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text fw-bold">Fecha Nota</span>
+                                        <input type="text" class="form-control"
+                                            [value]="gestionSelected.clasificacion.fechaNota | date:'dd/MM/yyyy'"
+                                            readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <textarea [(ngModel)]="gestionSelected.detallesAdicionales" class="form-control"
+                                            style="height: 100px;" readonly></textarea>
+                                        <label for="floatingTextarea">Detalles Adicionales</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border:none;">
+                        <div class="card-body">
+                            <div class="row mt-3  text-center ">
+
+                                <div class="col-md-10 offset-md-1">
+                                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                        <button type="button" class="btn btn-outline-secondary"
+                                            (click)="anteriorGestion()"
+                                            [disabled]="positionGestionSelected == 0">Gestion Anterior</button>
+
+                                        <button type="button" class="btn btn-outline-secondary"
+                                            (click)="siguienteGestion()"
+                                            [disabled]="positionGestionSelected >= gestiones.length -1">Gestion
+                                            Siguiente</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+
+                    <button *ngIf="!mostrarCuentaCobrar" type="button" class="btn btn-secondary"
+                        (click)="modalGestionSelected()">Cerrar</button>
+                    <button *ngIf="mostrarCuentaCobrar" (click)="mostrarCpc()" type="button" class="btn btn-secondary"
+                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">Cerrar</button>
+
+                    <!-- BOTONES ACUERDO DE PAGO -->
+                    <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+                        <button
+                            *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true"
+                            type="button" class="btn btn-danger b" (click)="desactivarAcuerdo()">Desactivar</button>
+                    </span>
+
+                    <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+                        <button
+                            *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA' && gestionSelected.clasificacion.isActive == true && notiId != null"
+                            type="button" class="btn btn-danger b" (click)="completarGestion()">Completar
+                            Gestion</button>
+                    </span>
+
+                    <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+
+                        <button
+                            *ngIf="gestionSelected.clasificacion.clasificacion == 'ACUERDO DE PAGO' && gestionSelected.clasificacion.isActive == true && mostrarAgregarPago"
+                            type="button" class="btn btn-danger b" (click)="generarRecibo()">Aplicar Pagos</button>
+
+                    </span>
+
+                    <!-- BOTONES TAREA -->
+                    <!-- <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+                        <button *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA'" type="button"
+                            class="btn btn-danger b">Desactivar</button>
+                    </span> -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFilter" style="width: 20%; border-radius: 7px;">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Filtros</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <figure>
+                                <blockquote class="blockquote">
+                                    <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseBanco"
+                                        style="cursor: pointer;">Bancos &nbsp;<i class="fa-solid fa-caret-down"></i>
+                                    </h6>
+                                </blockquote>
+                                <div class="collapse" id="collapseBanco">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="COL"
+                                            (click)="metodoBancos('COL')" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">COL</cite>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="POP"
+                                            (click)="metodoBancos('POP')" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">POP</cite>
+                                        </label>
+                                    </div>
+                                </div>
+                            </figure>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <figure>
+                                <blockquote class="blockquote">
+                                    <h6 class="fw-bold">Dias Vencidos</h6>
+                                </blockquote>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text fw-bold">Desde/Hasta</span>
+                                    <input type="number" [(ngModel)]="filtros.diasVencidosInicio" class="form-control">
+                                    <input type="number" [(ngModel)]="filtros.diasVencidosFin" class="form-control">
+                                </div>
+                            </figure>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <figure>
+                                <blockquote class="blockquote">
+                                    <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseVen"
+                                        style="cursor: pointer;">Edad Vencimiento &nbsp;<i
+                                            class="fa-solid fa-caret-down"></i>
+                                    </h6>
+                                </blockquote>
+
+                                <div class="collapse" id="collapseVen">
+                                    <div class="form-check" *ngFor="let t of tiposVen; let i = index">
+                                        <input value="{{ t.tipoVencimiento }}" class="form-check-input" type="checkbox"
+                                            (click)="metodoEdadVen(t.tipoVencimiento)" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">{{ t.tipoVencimiento}}</cite>
+                                        </label>
+                                    </div>
+                                </div>
+                            </figure>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <figure>
+                                <blockquote class="blockquote">
+                                    <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseSede"
+                                        style="cursor: pointer;">Sedes &nbsp;<i class="fa-solid fa-caret-down"></i>
+                                    </h6>
+                                </blockquote>
+                                <div class="collapse" id="collapseSede">
+                                    <div class="form-check" *ngFor="let s of sedes; let i = index">
+                                        <input value="{{ s.sede }}" class="form-check-input" type="checkbox"
+                                            (click)="metodoSede(s.sede)" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">{{ s.sede }}</cite>
+                                        </label>
+                                    </div>
+                                </div>
+                            </figure>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <figure>
+                                <blockquote class="blockquote">
+                                    <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseJur"
+                                        style="cursor: pointer;">Clasificación Jurídica &nbsp;<i
+                                            class="fa-solid fa-caret-down"></i>
+                                    </h6>
+                                </blockquote>
+                                <div class="collapse" id="collapseJur">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Normal"
+                                            (click)="metodoClas('NORMAL')" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">Normal</cite>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Prejuridico"
+                                            (click)="metodoClas('PREJURIDICO')" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">Prejuridico</cite>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Juridico"
+                                            (click)="metodoClas('ADMINISTRATIVO')" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">Administrativo</cite>
+                                        </label>
+                                    </div>
+                                </div>
+                            </figure>
+                        </div>
+
+                        <!-- FILTRO CLASIFICACION GESTION -->
+                        <!-- <div class="col-md-12 mb-3">
+                            <figure>
+                                <blockquote class="blockquote">
+                                    <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseClas"
+                                        style="cursor: pointer;">Clasificación Gestión &nbsp;<i
+                                            class="fa-solid fa-caret-down"></i>
+                                    </h6>
+                                </blockquote>
+                                <div class="collapse" id="collapseClas">
+                                    <div class="form-check" *ngFor="let c of ClasificacionArray">
+                                        <input value="{{ c.nombre }}" class="form-check-input" type="checkbox"
+                                            (click)="metodoClasGestion(c.tipo, c.nombre)" #variableCol>
+                                        <label class="form-check-label">
+                                            <cite title="Source Title">{{ c.nombre }}</cite>
+                                        </label>
+                                    </div>
+                                </div>
+                            </figure>
+                        </div> -->
+
+                        <figure>
+                            <blockquote class="blockquote">
+                                <h6 class="fw-bold">Saldo</h6>
+                            </blockquote>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text fw-bold">Desde/Hasta</span>
+                                <input type="number" [(ngModel)]="filtros.saldoCapitalInicio" class="form-control">
+                                <input type="number" [(ngModel)]="filtros.saldoCapitalFin" class="form-control">
+                            </div>
+                        </figure>
+
+                        <div class="col-md-12 mb-3">
+                            <figure>
+                                <blockquote class="blockquote">
+                                    <h6 class="fw-bold">Año</h6>
+                                </blockquote>
+                                <select (change)="calcularFechasAnio($event)" class="form-select">
+                                    <option [value]="null" selected>Seleccione Un Año</option>
+                                    <option *ngFor="let a of listaDeAnios" [value]="a">{{ a }}</option>
+                                </select>
+                            </figure>
+
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <figure>
+                                <blockquote class="blockquote">
+                                    <h6 class="fw-bold">Fecha Gestión</h6>
+                                </blockquote>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text fw-bold">Deste</span>
+                                    <input type="date" [(ngModel)]="filtros.fechaGestionInicio" class="form-control">
+
+                                </div>
+                                <br>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text fw-bold">Hasta</span>
+
+                                    <input type="date" [(ngModel)]="filtros.fechaGestionFin" class="form-control">
+                                </div>
+                            </figure>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <div class="col-md-12 mb-3">
+                                <figure>
+                                    <blockquote class="blockquote">
+                                        <h6 class="fw-bold">Fecha Compromiso</h6>
+                                    </blockquote>
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text fw-bold">Menor a: </span>
+                                        <input type="date" [(ngModel)]="filtros.fechaCompromisoInicio"
+                                            class="form-control">
+
+                                    </div>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 ms-2 me-5">
+                                <button *ngIf="!limpiarFiltro" class="btn btn-primary"
+                                    (click)="reiniciarFiltros('')">Limpiar</button>
+                                <button *ngIf="limpiarFiltro" class="btn btn-primary">
+                                    Limpiar...
+                                    <span class="spinner-border spinner-border-sm float-right" role="status"
+                                        aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div class="col-md-4">
+                                <button *ngIf="!botonFiltro" class="btn btn-danger b"
+                                    (click)="filtroFirst()">Filtrar</button>
+                                <button *ngIf="botonFiltro" class="btn btn-danger b">
+                                    Filtrar...
+                                    <span class="spinner-border spinner-border-sm float-right" role="status"
+                                        aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- MODAL BUSCAR OBLIGACION -->
+    <div class="modal fade" id="modalObligacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" [ngClass]="{'': !filtradoBuscar, 'modal-xl': filtradoBuscar}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Buscar Obligación</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text fw-bold">Dato</span>
+                        <input [(ngModel)]="buscarObligacion" #datoBuscar type="text" class="form-control">
+                    </div>
+
+                    <table class="table table-responsive table-bordered text-center table-hover" *ngIf="filtradoBuscar">
+                        <thead>
+                            <tr>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Cliente
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Banco
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            E. Vencimiento
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Sucursal
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Clas. Juridica
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Asesor
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let cc of cuentasCobrarBuscar; let i = index" class="align-middle"
+                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style="cursor: pointer;"
+                                (click)="findCuentaCobrar(cc.numeroObligacion)">
+                                <td>{{ cc.cliente }}</td>
+                                <td>{{ cc.banco.banco }}</td>
+                                <td>{{ cc.tiposVencimiento.tipoVencimiento }}
+                                </td>
+                                <td>{{ cc.sede.sede }}</td>
+                                <td>{{ cc.clasificacionJuridica }}</td>
+                                <td>{{ cc.asesorCarteraResponse.usuario.nombres }}
+                                    {{
+                                    cc.asesorCarteraResponse.usuario.apellidos }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button *ngIf="!botonFiltrarObligacion" type="button" class="btn btn-danger b"
+                        (click)="getByDato()">Buscar</button>
+                    <button *ngIf="botonFiltrarObligacion" class="btn btn-danger b">
+                        Filtrando...
+                        <span class="spinner-border spinner-border-sm float-right" role="status"
+                            aria-hidden="true"></span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Pagos</h5>
+                <button type="button" class="btn-close" data-bs-target="#modalGestionCom" data-bs-toggle="modal"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Numero Recibo</th>
+                                <th>Fecha Recibo</th>
+                                <th>Valor</th>
+                                <th>Pdf</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor="let recibo of recibosPago;let i = index;">
+
+                                <td>{{i+1}}</td>
+                                <td>{{recibo.numeroRecibo}}</td>
+                                <td>{{recibo.fechaRecibo | date:'dd/MM/yyyy'}}</td>
+                                <td>{{recibo.valorRecibo | number}}</td>
+                                <td><button class="btn btn-primary" (click)="obtenerReciboPosition(i)"
+                                        class="btn btn-danger btn-sm"
+                                        style="background-color: #960010;border-color: #960010;"
+                                        data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
+                                        data-bs-dismiss="modal"><i class="fas fa-eye"></i></button>
+
+
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Recibo</h5>
+                <button type="button" class="btn-close" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <embed id="mostrarRecibo" src="" height="500px" width="465px" type="application/pdf">
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="reciboPago" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Recibo de Pago</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <embed id="mostrarReciboPago" src="" height="500px" width="465px" type="application/pdf">
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

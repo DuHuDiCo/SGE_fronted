@@ -40,7 +40,6 @@ export class TipoArchivoComponent implements OnInit {
     this.tipoArchivoService.getAll().subscribe(
       (data:any) => {
         this.tiposArchivos = data
-        console.log(data);
       }, (error:any) => {
         console.log(error);
       }
@@ -52,7 +51,6 @@ export class TipoArchivoComponent implements OnInit {
       (data:any) => {
         this.modal.idTipoArchivo = id
         this.modal.tipoArchivo = data.tipoArchivo
-        console.log(data);
         
       }, (error:any) => {
         console.log(error);
@@ -72,7 +70,7 @@ export class TipoArchivoComponent implements OnInit {
     setTimeout(() => {
       this.tipoArchivoService.save(this.tipoArchivo.tipoArchivo).subscribe(
         (data:any) => {
-          Swal.fire('Felicidades', 'Tipo De Archivo Guardado Con Éxito', 'success')
+          Swal.fire('Datos Guardados', 'Tipo De Archivo Guardado Con Éxito', 'success')
           this.botonGuardarTipo = false
           setTimeout(() => {
           window.location.reload()
@@ -130,7 +128,7 @@ export class TipoArchivoComponent implements OnInit {
     setTimeout(() => {
       this.tipoArchivoService.update(this.modal).subscribe(
         (data:any) => {
-          Swal.fire('Felicidades', 'El Tipo De Archivo Ha Sido Actualizado', 'success')
+          Swal.fire('Datos Guardados', 'El Tipo De Archivo Ha Sido Actualizado', 'success')
           this.botonEditar = false
           setTimeout(() => {
             window.location.reload()

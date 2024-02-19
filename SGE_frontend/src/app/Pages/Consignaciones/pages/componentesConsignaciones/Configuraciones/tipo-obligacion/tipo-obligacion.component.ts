@@ -45,7 +45,7 @@ export class TipoObligacionComponent implements OnInit {
         (data:any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'El Tipo De Obligación ha sido Guardado con Éxito',
             timer: 3000
           })
@@ -100,7 +100,7 @@ export class TipoObligacionComponent implements OnInit {
         (data:any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'El Tipo De Obligación ha sido Actualizado con Éxito',
             timer: 3000
           })

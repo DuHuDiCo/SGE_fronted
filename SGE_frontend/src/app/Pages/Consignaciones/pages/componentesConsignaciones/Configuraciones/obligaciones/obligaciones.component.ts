@@ -239,7 +239,7 @@ export class ObligacionesComponent implements OnInit {
         (data:any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'La Observación Ha Sido Creada Con Éxito',
             timer: 3000
           })
@@ -265,7 +265,6 @@ export class ObligacionesComponent implements OnInit {
     this.obligacionService.getAllEstado().subscribe(
       (data:any) => {
         this.estados = data
-        console.log(this.estados);
       }, (error:any) => {
         console.log(error);
       }
@@ -276,7 +275,6 @@ export class ObligacionesComponent implements OnInit {
     this.obligacionService.getAllAsesores().subscribe(
       (data: any) => {
         this.asesores = data
-        console.log(this.asesores);
       }, (error: any) => {
         console.log(error);
       }
@@ -297,7 +295,6 @@ export class ObligacionesComponent implements OnInit {
     this.sedeService.getSedes().subscribe(
       (data:any) => {
         this.sedes = data
-        console.log(data);
       }, (error:any) => {
         console.log(error);
         

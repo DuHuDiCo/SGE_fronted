@@ -69,14 +69,13 @@ export class AgregarVariosClientesComponent implements OnInit{
             return
           } 
           this.tabla = true
-          console.log(data);
           return
         }
 
         if(data.Exceptions.length == 0){
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'Estos Son Los Clientes Cargados',
             timer: 3000
           })

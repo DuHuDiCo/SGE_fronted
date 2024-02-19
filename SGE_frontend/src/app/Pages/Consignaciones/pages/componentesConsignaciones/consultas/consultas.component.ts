@@ -333,7 +333,7 @@ export class ConsultasComponent implements OnInit {
 
       this.consultarService.updateConsignacion(this.modal).subscribe(
         (data: any) => {
-          Swal.fire('Felicidades', 'Consignación Actualizada Con éxito', 'success')
+          Swal.fire('Datos Guardados', 'Consignación Actualizada Con éxito', 'success')
           this.editarCon = false
           $('#modalObs').modal('hide');
           setTimeout(() => {
@@ -377,11 +377,10 @@ export class ConsultasComponent implements OnInit {
     this.cambiarEstado.username = user
 
     if (this.validarPermiso('CONSULTAR COMPROBADOS')) {
-      this.consultarService.listarComprobados(user, this.page, this.size, "fecha_pago").subscribe(
+      this.consultarService.listarComprobados(user, this.page, this.size, "ASC").subscribe(
         (data: any) => {
           this.spinner = false
           this.con = data.content
-          console.log(data);
 
           this.con.forEach((e: any, index: number) => {
 
@@ -417,7 +416,6 @@ export class ConsultasComponent implements OnInit {
                 } else {
                   this.cambios = false
                 }
-                console.log(this.cambioArray);
               }, 100);
 
 
@@ -436,7 +434,6 @@ export class ConsultasComponent implements OnInit {
             Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
             return
           }
-          console.log(data);
 
 
           this.botones = new Array<boolean>(this.con.length).fill(false)
@@ -448,11 +445,9 @@ export class ConsultasComponent implements OnInit {
 
     if (this.validarPermiso('CONSULTAR CONCILIADOS')) {
       this.estadoConsignacion = 'DEVUELTA ' + this.estadoConsignacion
-      console.log(this.estadoConsignacion);
 
-      this.consultarService.getAllConsignaciones('DEVUELTA ' + p, this.page, this.size, "fecha_pago").subscribe(
+      this.consultarService.getAllConsignaciones('DEVUELTA ' + p, this.page, this.size, "DESC").subscribe(
         (data: any) => {
-          console.log(data);
 
           this.spinner = false
           this.con = data.content
@@ -490,7 +485,6 @@ export class ConsultasComponent implements OnInit {
                 } else {
                   this.cambios = false
                 }
-                console.log(this.cambioArray);
               }, 100);
 
 
@@ -518,10 +512,9 @@ export class ConsultasComponent implements OnInit {
       )
     }
 
-    if (this.validarPermiso('CONSULTAR PENDIENTES')) {
-      this.consultarService.getAllConsignaciones(p, this.page, this.size, "fecha_creacion").subscribe(
+    if (this.validarPermiso('CONSULTAR PENDIENTES') && this.validarPermiso('COMPROBAR CONSIGNACIONES')) {
+      this.consultarService.getAllConsignaciones(p, this.page, this.size, "ASC").subscribe(
         (data: any) => {
-          console.log(data);
 
           this.spinner = false
           this.con = data.content
@@ -559,7 +552,6 @@ export class ConsultasComponent implements OnInit {
                 } else {
                   this.cambios = false
                 }
-                console.log(this.cambioArray);
               }, 100);
 
 
@@ -587,6 +579,144 @@ export class ConsultasComponent implements OnInit {
       )
     }
 
+    if (this.validarPermiso('CONSULTAR PENDIENTES')) {
+      if (this.validarPermiso('CREAR CONSIGNACIONES') && this.validarPermiso('CONSULTAR PENDIENTES')) {
+        this.consultarService.getAllConsignaciones(p, this.page, this.size, "DESC").subscribe(
+          (data: any) => {
+  
+            this.spinner = false
+            this.con = data.content
+            this.numeroPages = data.totalPages
+            this.con.forEach((e: any, index: number) => {
+  
+              if (e.isSelected) {
+                var user = this.authService.getUsername()
+  
+                if (user == null || user == undefined) {
+                  return
+                }
+                var guardarArray: CambioEstado = {
+                  estado: e.isSelecetedEstado,
+                  idConsignacion: e.idConsignacion,
+                  username: user,
+                  observacion: ''
+                }
+  
+                var consi = this.cambioArray.find((x:any)=> x.idConsignacion == guardarArray.idConsignacion)
+  
+                if(consi == null || consi == undefined){
+                  this.cambioArray.push(guardarArray)  
+                }
+                setTimeout(() => {
+  
+                  if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
+                    this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
+                  } else {
+                    this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
+                  }
+  
+                  if (this.cambioArray.length > 0) {
+                    this.cambios = true
+                  } else {
+                    this.cambios = false
+                  }
+                }, 100);
+  
+  
+              }
+            });
+  
+            this.paginas = new Array(data.totalPages)
+            this.last = data.last
+            this.first = data.first
+            this.consultarService.proSubject.next(true);
+            this.con.forEach((c: any) => {
+              c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
+            })
+            this.botones = new Array<boolean>(this.con.length).fill(false)
+  
+            if (this.con.length <= 0) {
+              Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+              return
+            }
+  
+  
+          }, (error: any) => {
+  
+          }
+        )
+      } else {
+        this.consultarService.getAllConsignaciones(p, this.page, this.size, "ASC").subscribe(
+          (data: any) => {
+  
+            this.spinner = false
+            this.con = data.content
+            this.numeroPages = data.totalPages
+            this.con.forEach((e: any, index: number) => {
+  
+              if (e.isSelected) {
+                var user = this.authService.getUsername()
+  
+                if (user == null || user == undefined) {
+                  return
+                }
+                var guardarArray: CambioEstado = {
+                  estado: e.isSelecetedEstado,
+                  idConsignacion: e.idConsignacion,
+                  username: user,
+                  observacion: ''
+                }
+  
+                var consi = this.cambioArray.find((x:any)=> x.idConsignacion == guardarArray.idConsignacion)
+  
+                if(consi == null || consi == undefined){
+                  this.cambioArray.push(guardarArray)  
+                }
+                setTimeout(() => {
+  
+                  if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
+                    this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
+                  } else {
+                    this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
+                  }
+  
+                  if (this.cambioArray.length > 0) {
+                    this.cambios = true
+                  } else {
+                    this.cambios = false
+                  }
+                }, 100);
+  
+  
+              }
+            });
+  
+            this.paginas = new Array(data.totalPages)
+            this.last = data.last
+            this.first = data.first
+            this.consultarService.proSubject.next(true);
+            this.con.forEach((c: any) => {
+              c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
+            })
+            this.botones = new Array<boolean>(this.con.length).fill(false)
+  
+            if (this.con.length <= 0) {
+              Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+              return
+            }
+  
+  
+          }, (error: any) => {
+  
+          }
+        )
+      }
+
+      
+    }
+
+    
+
   }
 
   img(dataURI: string) {
@@ -613,7 +743,6 @@ export class ConsultasComponent implements OnInit {
         this.detalle = data
         this.observacionDto.idConsignacion = data.idConsignacion
         var actua = this.actu.actualizaciones.find((a: any) => a.isCurrent == true)
-        console.log(actua);
 
         if (actua != null || actua != undefined) {
           if (actua.estado.estado == 'PENDIENTE') {
@@ -843,7 +972,7 @@ export class ConsultasComponent implements OnInit {
 
       this.consultarService.saveObservacion(this.observacionDto).subscribe(
         (data: any) => {
-          Swal.fire('Felicidades', 'Observacion Guardada Con Éxito', 'success')
+          Swal.fire('Datos Guardados', 'Observacion Guardada Con Éxito', 'success')
           this.crearObs = false
           this.detalle.observaciones.push(data)
 
@@ -931,7 +1060,7 @@ export class ConsultasComponent implements OnInit {
         });
         Swal.fire({
           icon: 'success',
-          title: 'Felicidades',
+          title: 'Datos Guardados',
           text: 'Estas Fueron Las Consignaciones Encontradas',
           timer: 3000
         })
@@ -972,13 +1101,11 @@ export class ConsultasComponent implements OnInit {
   //METODO USADO EN EL HTML PARA LLAMAR LAS FUNCIONES DE CAMBIAR LOS BOTONES
   //SOLO DE COMPROBAR Y APLICAR
   cambiarConsignacionTemporal(id: number, position: number, estado: string, tipoReporte: string) {
-    console.log(this.cambiarEstado);
 
 
     this.tipoReporte = tipoReporte
 
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == id)
-    console.log(idC);
 
 
     this.isSelected.idConsignacion = id
@@ -991,7 +1118,6 @@ export class ConsultasComponent implements OnInit {
     }
 
     if (idC != null || idC != undefined) {
-      console.log(this.cambios);
 
 
       this.cambioArray = this.cambioArray.filter((c: any) => c.idConsignacion != id)
@@ -1030,17 +1156,14 @@ export class ConsultasComponent implements OnInit {
       this.cambios = true
     }
 
-    console.log(this.cambioArray);
 
   }
 
   enviarIsSelected(isSelected: IsSelected) {
-    console.log(isSelected);
 
     this.consultarService.isSelected(isSelected).subscribe(
       (data: any) => {
         this.selected = data.isSelected
-        console.log(this.selected);
       }, (error: any) => {
         console.log(error);
       }
@@ -1275,7 +1398,6 @@ export class ConsultasComponent implements OnInit {
       var boton_cancelar = `<button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
       class="btn btn-danger btn-sm ms-2" id="btn_cancelar_${position}" disabled>
       <i class="fa-solid fa-ban"></i></button>`
-      console.log(boton_cancelar);
 
 
 
@@ -1396,7 +1518,6 @@ export class ConsultasComponent implements OnInit {
 
     this.posicionDevolver = position
 
-    console.log(this.cambioArray);
 
   }
 
@@ -1427,7 +1548,6 @@ export class ConsultasComponent implements OnInit {
 
         var idC = this.cambioArray.find((c: any) => c.idConsignacion == this.cambiarEstado.idConsignacion)
 
-        console.log(idC);
 
         this.isSelected.idConsignacion = this.cambiarEstado.idConsignacion
         this.isSelected.estado = this.cambiarEstado.estado
@@ -1467,7 +1587,6 @@ export class ConsultasComponent implements OnInit {
           }
           this.enviarIsSelected(this.isSelected)
 
-          console.log(this.cambioArray);
         }
 
         this.cambios = true
@@ -1539,7 +1658,6 @@ export class ConsultasComponent implements OnInit {
 
     var idC = this.cambioArray.find((c: any) => c.idConsignacion == this.cambiarEstado.idConsignacion)
 
-    console.log(idC);
 
     this.isSelected.idConsignacion = this.cambiarEstado.idConsignacion
     this.isSelected.estado = this.cambiarEstado.estado
@@ -1579,7 +1697,6 @@ export class ConsultasComponent implements OnInit {
       }
       this.enviarIsSelected(this.isSelected)
 
-      console.log(this.cambioArray);
 
       this.cambios = true
 
@@ -1590,12 +1707,23 @@ export class ConsultasComponent implements OnInit {
 
   //METODO PARA CAMBIAR EL ESTADO DE LA CONSIGNACION
   cambiarConsignacion() {
+    if(this.tipoReporte == ''){
+      if(this.validarPermiso('APLICAR')){
+        this.tipoReporte = 'APLICADAS'
+      }
+
+      if(this.validarPermiso('COMPROBAR')){
+        this.tipoReporte = 'COMPROBADAS'
+      }
+    }
+
     this.botonCambiarConsignacion = true
+    
 
     setTimeout(() => {
       this.consultarService.cambiarEstadoConsignacion(this.cambioArray, this.tipoReporte).subscribe(
         (data: any) => {
-          Swal.fire('Felicidades', 'Cambio Realizado Con Éxito', 'success')
+          Swal.fire('Datos Guardados', 'Cambio Realizado Con Éxito', 'success')
           this.botonCambiarConsignacion = false
           setTimeout(() => {
             window.location.reload()
@@ -1638,7 +1766,7 @@ export class ConsultasComponent implements OnInit {
 
     this.cambioArray = []
 
-    Swal.fire('Felicidades', 'Cambios Cancelados Con Éxito', 'success')
+    Swal.fire('Datos Guardados', 'Cambios Cancelados Con Éxito', 'success')
 
     setTimeout(() => {
       window.location.reload()
@@ -1669,7 +1797,7 @@ export class ConsultasComponent implements OnInit {
         (data: any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Felicidades',
+            title: 'Datos Guardados',
             text: 'Reporte Generado Con Éxito',
             timer: 3000
           })
@@ -1693,7 +1821,6 @@ export class ConsultasComponent implements OnInit {
     this.obligacionService.getAllAsesores().subscribe(
       (data: any) => {
         this.asesores = data
-        console.log(this.asesores);
       }, (error: any) => {
         console.log(error);
       }
@@ -1735,7 +1862,6 @@ export class ConsultasComponent implements OnInit {
           this.con.forEach((c: any) => {
             c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
           })
-          console.log(data);
           this.consultarService.proSubject.next(true);
         }
       }, (error: any) => {
@@ -1843,14 +1969,13 @@ export class ConsultasComponent implements OnInit {
 
     this.crearCliente = true
 
-    console.log(this.cliente);
 
 
     this.ingresarService.saveCliente(this.cliente).subscribe(
       (data: any) => {
         Swal.fire({
           icon: 'success',
-          title: 'Felicidades',
+          title: 'Datos Guardados',
           text: 'Cliente Creado Exitosamente',
           timer: 3000
         })
@@ -1954,7 +2079,6 @@ export class ConsultasComponent implements OnInit {
               this.actu.actualizaciones = data.actualizaciones
 
               var actua = this.actu.actualizaciones.find((a: any) => a.isCurrent == true)
-              console.log(actua);
 
               if (actua != null || actua != undefined) {
                 if (actua.estado.estado == 'PENDIENTE') {

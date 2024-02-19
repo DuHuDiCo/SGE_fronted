@@ -72,7 +72,6 @@ export class CrearUsuariosComponent implements OnInit {
     this.sede.getSedes().subscribe(
       (data: any) => {
         this.Sede = data
-        console.log(data);
       }, (error: any) => {
         console.log(error);
         Swal.fire('Error', 'Error al cargar las Sedes', 'error');

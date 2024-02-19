@@ -49,7 +49,7 @@ export class CambioContrasenaComponent implements OnInit {
     setTimeout(() => {
       this.opcionesService.changePassowrd(this.contrasena).subscribe(
         (data:any) => {
-          Swal.fire('Felicidades', 'Su Contraseña ha Sido Actualizada, inicie Sesion de Nuevo', 'success')
+          Swal.fire('Datos Guardados', 'Su Contraseña ha Sido Actualizada, inicie Sesion de Nuevo', 'success')
           this.botonContrasena = false
           setTimeout(() => {
             this.authService.logout()

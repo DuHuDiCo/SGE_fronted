@@ -44,7 +44,7 @@ export class AsesoresComponent implements OnInit {
       (data:any) => {
         Swal.fire({
           icon: 'success',
-          title: 'Felicidades',
+          title: 'Datos Guardados',
           text: 'El Asesor Ha Sido Creado Exitosamente',
           timer: 3000
         })
@@ -70,7 +70,6 @@ export class AsesoresComponent implements OnInit {
     this.obligacionService.getAllAsesores().subscribe(
       (data: any) => {
         this.asesores = data
-        console.log(this.asesores);
       }, (error: any) => {
         console.log(error);
       }
@@ -81,7 +80,6 @@ export class AsesoresComponent implements OnInit {
     this.obligacionService.getUsuarioByRol(23).subscribe(
       (data:any) => {
         this.users = data
-        console.log(this.users);
       }, (error:any) => {
         console.log(error);
       }

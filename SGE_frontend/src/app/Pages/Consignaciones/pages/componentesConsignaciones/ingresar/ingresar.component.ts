@@ -68,8 +68,8 @@ export class IngresarComponent implements OnInit {
   plataforma: any[] = []
 
   guardarConsignacion() {
-    const recibo = this.consignacion.numeroRecibo.trim()
-    if (this.consignacion.numeroRecibo.trim() == '' || isNaN(parseInt(recibo))) {
+    const recibo = this.consignacion.numeroRecibo.replace(/\s+/g, '')
+    if (recibo.trim() == '' || isNaN(parseInt(recibo))) {
       Swal.fire('Error', 'Debe de Ingresar el Número del Recibo', 'error')
       return
     }
@@ -118,7 +118,7 @@ export class IngresarComponent implements OnInit {
           if (this.con.consigRes.length <= 0) {
             this.ingresarService.saveConsignacion(this.consignacion).subscribe(
               (data: any) => {
-                Swal.fire('Felicidades', 'Su Consignación se ha Guardado con Éxito', 'success')
+                Swal.fire('Datos Guardados', 'Su Consignación se ha Guardado con Éxito', 'success')
                 this.consignacion = {
                   idConsignacion: 0,
                   numeroRecibo: '',
@@ -165,11 +165,11 @@ export class IngresarComponent implements OnInit {
       this.ingresarService.confirmarConsignacion(this.consignacion.numeroRecibo, this.consignacion.fechaPago, this.consignacion.valor, this.consignacion.username).subscribe(
         (data: any) => {
           this.con = data
-          console.log(data);
           if (this.con.consigRes.length <= 0) {
+            
             this.ingresarService.saveConsignacion(this.consignacion).subscribe(
               (data: any) => {
-                Swal.fire('Felicidades', 'Su Consignación se ha Guardado con Éxito', 'success')
+                Swal.fire('Datos Guardados', 'Su Consignación se ha Guardado con Éxito', 'success')
                 this.consignacion = {
                   idConsignacion: 0,
                   numeroRecibo: '',
@@ -214,9 +214,11 @@ export class IngresarComponent implements OnInit {
   }
 
   confirmarObservacion(){
+    this.crearConsignacion = true
     this.ingresarService.saveConsignacion(this.consignacion).subscribe(
       (data: any) => {
-        Swal.fire('Felicidades', 'Su Consignación se ha Guardado con Éxito', 'success')
+        this.crearConsignacion = false
+        Swal.fire('Datos Guardados', 'Su Consignación se ha Guardado con Éxito', 'success')
         this.consignacion = {
           idConsignacion: 0,
           numeroRecibo: '',
@@ -234,6 +236,7 @@ export class IngresarComponent implements OnInit {
 
       }, (error: any) => {
         Swal.fire('Error', 'Error al Guardar La Consignación', 'error')
+        this.crearConsignacion = false
       }
     )
   }
@@ -318,17 +321,17 @@ export class IngresarComponent implements OnInit {
     
     this.crearCliente = true
 
-    console.log(this.cliente);
     
 
     this.ingresarService.saveCliente(this.cliente).subscribe(
       (data:any) => {
         Swal.fire({
           icon: 'success',
-          title: 'Felicidades',
+          title: 'Datos Guardados',
           text: 'Cliente Creado Exitosamente',
           timer: 3000
         })
+        $('#modalCliente').modal('hide');
         this.crearCliente = false
 
         this.cedula = this.cliente.numeroDocumento
@@ -373,7 +376,6 @@ export class IngresarComponent implements OnInit {
     this.sedeService.getSedes().subscribe(
       (data:any) => {
         this.sedes = data
-        console.log(data);
       }, (error:any) => {
         console.log(error);
         
@@ -385,7 +387,6 @@ export class IngresarComponent implements OnInit {
     this.obligacionService.getAllAsesores().subscribe(
       (data: any) => {
         this.asesores = data
-        console.log(this.asesores);
       }, (error: any) => {
         console.log(error);
       }
@@ -415,7 +416,6 @@ export class IngresarComponent implements OnInit {
     this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
       (data: any) => {
         this.obligacion = data
-        console.log(data);
         if (this.obligacion.length > 0) {
           this.tabla = true
           return

@@ -67,7 +67,7 @@ export class BancosComponent implements OnInit {
   saveTipoPago(){
     this.bancoService.save(this.datosT).subscribe(
       (data:any) => {
-        Swal.fire('Felicidades', 'Tipo de Pago Guardado Exitosamente', 'success'),
+        Swal.fire('Datos Guardados', 'Tipo de Pago Guardado Exitosamente', 'success'),
         this.crearTipoPago = false
         this.datosT = {
           tipoPago: '',
@@ -114,7 +114,7 @@ export class BancosComponent implements OnInit {
   saveBanco(){
     this.bancoService.saveBanco(this.datosP).subscribe(
       (data:any) => {
-        Swal.fire('Felicidades', 'El Banco ha sido Creado Exitosamente', 'success')
+        Swal.fire('Datos Guardados', 'El Banco ha sido Creado Exitosamente', 'success')
         this.crearBanco = false
         this.datosP = {
           idPlataforma: 0,
@@ -185,7 +185,7 @@ export class BancosComponent implements OnInit {
   validateBancoUpdate(){    
     this.bancoService.updateBancos(this.modal).subscribe(
       (data:any) => {
-        Swal.fire('Felicidades', 'El Banco ha sido Actualizado Exitosamente', 'success')
+        Swal.fire('Datos Guardados', 'El Banco ha sido Actualizado Exitosamente', 'success')
         setTimeout(() => {
           window.location.reload()
           }, 2000);

@@ -20,7 +20,6 @@ export class RolesPerfilesDirective implements OnInit {
   ngOnInit(): void {
     this.rolesUser = this.authService.getRoles();
     this.convertirString();
-    console.log(this.rolesString);
     
     if (this.rolesString.includes(ROLES.SuperAdministration.toUpperCase()) || this.rolesString.includes(ROLES.Administration)) {
 
@@ -39,13 +38,8 @@ export class RolesPerfilesDirective implements OnInit {
 
   private convertirString():void {
     this.rolesUser.forEach((x: Roles) => {
-      
       this.rolesString.push(x.rol)
-
     });
-
-
-
   }
 
 

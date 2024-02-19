@@ -10,13 +10,12 @@ export class BotonGeneralComponent implements OnInit {
 
   constructor(private router:Router) { }
 
-  showButton: boolean = false; // Variable para controlar la visibilidad del botón
+  showButton: boolean = false;
 
   ngOnInit(): void {
   }
 
   redireccionar() {
-    // Reemplaza 'opciones' con el nombre de la ruta a la que deseas redirigir
     this.router.navigate(['/opciones']);
   }
 
