@@ -1,6 +1,6 @@
 <div class="container">
     <div class="floating-button-container">
-        <button [@fadeInFromBottom]="true" class="floating-button" (click)="abrirModalBuscar()">
+        <button class="floating-button fadeInFromBottom" (click)="abrirModalBuscar()">
             <div class="icon-container">
                 <i class="fa-solid fa-magnifying-glass fa-2x"></i>
             </div><br>
@@ -2085,7 +2085,7 @@
                             </div>
                             <div class="col-md-4">
                                 <button *ngIf="!botonFiltro" class="btn btn-danger b"
-                                    (click)="filtro()">Filtrar</button>
+                                    (click)="filtroFirst()">Filtrar</button>
                                 <button *ngIf="botonFiltro" class="btn btn-danger b">
                                     Filtrar...
                                     <span class="spinner-border spinner-border-sm float-right" role="status"
