@@ -427,7 +427,7 @@ export class HomeCarteraComponent implements OnInit {
     this.getTipoVen()
     this.getSedes()
     this.getAsesores()
-    this.getNotificaciones()
+    // this.getNotificaciones()
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
     this.alertasGestiones()
@@ -1017,7 +1017,26 @@ export class HomeCarteraComponent implements OnInit {
 
         console.log(this.newGestion);
 
-
+        var gestPush = {
+          asesorCartera: user,
+          clasificacion: {
+            clasificacion: this.newGestion.clasificacion.tipoClasificacion,
+            detalleTarea: this.newGestion.clasificacion.tarea?.detalleTarea,
+            fechaFinTarea: this.newGestion.clasificacion.tarea?.fechaFinTarea,
+            fechaTarea: new Date(),
+            isActive: true,
+            isParteOfRecaudo: this.newGestion.clasificacion.tarea?.isPartOfRecaudo,
+            nombresClasificacion: {
+              nombre: this.newGestion.clasificacion.nombreClasificacion,
+              tipo: this.newGestion.clasificacion.tipoClasificacion
+            }
+          },
+          detallesAdicionales: this.newGestion.detallesAdicionales,
+          fechaGestion: new Date(),
+          idGestion: this.newGestion.numeroObligacion,
+          numeroObligacion: this.newGestion.numeroObligacion
+        }
+        
         Swal.fire({
           title: 'Guardar Gestión',
           text: '¿Está Seguro De Crear Esta Gestión?',
@@ -1032,13 +1051,20 @@ export class HomeCarteraComponent implements OnInit {
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
-                this.getGestiones(this.newGestion.numeroObligacion)
-                this.getNotificaciones()
-                if(!this.filtroAgain){
-                  this.getCuentasCobrar()
-                } else {
-                  this.filtro()
-                }
+                // this.getGestiones(this.newGestion.numeroObligacion)
+                // this.getNotificaciones()
+                // if(!this.filtroAgain){
+                //   this.getCuentasCobrar()
+                // } else {
+                //   this.filtro()
+                // }
+                this.gestiones.push(gestPush)
+
+                var ges = this.gestiones
+                this.gestiones = []
+                this.ordenarGestiones(ges)
+                console.log(this.gestiones);
+                
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
@@ -1101,6 +1127,22 @@ export class HomeCarteraComponent implements OnInit {
 
         console.log(this.newGestion);
 
+        var notaPush = {
+          asesorCartera: user,
+          clasificacion: {
+            clasificacion: this.newGestion.clasificacion.tipoClasificacion,
+            detalleNota: this.newGestion.clasificacion.nota?.detalle,
+            fechaNota: new Date(),
+            nombresClasificacion: {
+              nombre: this.newGestion.clasificacion.nombreClasificacion,
+              tipo: this.newGestion.clasificacion.tipoClasificacion
+            }
+          },
+          detallesAdicionales: this.newGestion.detallesAdicionales,
+          fechaGestion: new Date(),
+          idGestion: this.newGestion.numeroObligacion,
+          numeroObligacion: this.newGestion.numeroObligacion
+        }
 
         Swal.fire({
           title: 'Guardar Gestión',
@@ -1116,19 +1158,28 @@ export class HomeCarteraComponent implements OnInit {
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
-                this.getGestiones(this.newGestion.numeroObligacion)
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
                   text: 'Gestión Guardada Exitosamente',
                   timer: 3000
                 })
-                this.getNotificaciones()
-                if(!this.filtroAgain){
-                  this.getCuentasCobrar()
-                } else {
-                  this.filtro()
-                }
+                // this.getGestiones(this.newGestion.numeroObligacion)
+                // this.getNotificaciones()
+                // if(!this.filtroAgain){
+                //   this.getCuentasCobrar()
+                // } else {
+                //   this.filtro()
+                // }
+                this.gestiones.push(notaPush)
+
+                var gesArray = this.gestiones
+
+                this.gestiones = []
+
+                this.ordenarGestiones(gesArray)
+                console.log(this.gestiones);
+
                 this.gestionButton = false
                 this.newGestion = {
                   numeroObligacion: this.newGestion.numeroObligacion,
@@ -1280,81 +1331,114 @@ export class HomeCarteraComponent implements OnInit {
     }
     console.log(this.newGestion);
     
+    var acuerdoPush = {
+      asesorCartera: user,
+      clasificacion: {
+        clasificacion: this.newGestion.clasificacion.tipoClasificacion,
+        cuotaList: this.newGestion.clasificacion.acuerdoPago?.cuotasList,
+        detalle: this.newGestion.clasificacion.acuerdoPago?.detalle,
+        fechaAcuerdo: new Date(),
+        fechaCompromiso: this.newGestion.clasificacion.acuerdoPago?.fechaCompromiso,
+        honorarioAcuerdo: this.newGestion.clasificacion.acuerdoPago?.honoriarioAcuerdo,
+        isActive: true,
+        isCumpliendo: false,
+        nombresClasificacion: {
+          nombre: this.newGestion.clasificacion.nombreClasificacion,
+          tipo: this.newGestion.clasificacion.tipoClasificacion,
+        },
+        tipoAcuerdo: this.newGestion.clasificacion.acuerdoPago?.tipoAcuerdo,
+        valorCuotaMensual: this.newGestion.clasificacion.acuerdoPago?.valorCuotaMensual,
+        valorInteresesMora: this.newGestion.clasificacion.acuerdoPago?.valorInteresesMora,
+        valorTotalAcuerdo: this.newGestion.clasificacion.acuerdoPago?.valorTotalAcuerdo
+      },
+      fechaGestion: new Date(),
+      idGestion: this.newGestion.numeroObligacion,
+      numeroObligacion: this.newGestion.numeroObligacion
+    }
 
-    Swal.fire({
-      title: 'Guardar Gestión',
-      text: '¿Está Seguro De Crear Esta Gestión?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Crear',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.botonGuardarGes = true
-        this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
-          (data: any) => {
-            this.getGestiones(this.newGestion.numeroObligacion)
-            this.getNotificaciones()
-            this.mostrarReporte()
-            if(!this.filtroAgain){
-              this.getCuentasCobrar()
-            } else {
-              this.filtro()
-            }
-            console.log(this.newGestion);
+    this.gestiones.push(acuerdoPush)
 
-            this.botonGuardarGes = false
-            this.newGestion = {
-              numeroObligacion: this.newGestion.numeroObligacion,
-              clasificacion: {
-                tipoClasificacion: null,
-                tarea: null,
-                nota: null,
-                acuerdoPago: null,
-                nombreClasificacion: ''
-              },
-              contact: false,
-              detallesAdicionales: this.newGestion.detallesAdicionales,
-              usernameToSetNotificacion: '',
-              userNotifying: '',
-              notificacionId: null,
-              clasificacionId: null
-            }
-            this.cuotas = []
-            this.disabledFecha = false
-            this.acuerdo = {
-              detalle: '',
-              valorCuotaMensual: 0,
-              tipoAcuerdo: '',
-              valorTotalAcuerdo: 0,
-              valorInteresesMora: 0,
-              honoriarioAcuerdo: 0,
-              fechaCompromiso: '',
-              cuotasList: [],
-              username: ''
-            }
-            this.cuentasCalcular = {
-              numeroObligacion: '',
-              valorTotal: 0,
-              moraObligatoria: 0,
-              fechaVencimiento: new Date,
-              username: ''
-            }
-            this.col = true
-          }, (error: any) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Error Al Guardar La Gestión',
-              timer: 3000
-            })
-            this.botonGuardarGes = false
-          }
-        )
-      }
-    })
+    var gesAc = this.gestiones
+
+    this.gestiones = []
+
+    this.ordenarGestiones(gesAc)
+    console.log(this.gestiones);
+    
+
+    // Swal.fire({
+    //   title: 'Guardar Gestión',
+    //   text: '¿Está Seguro De Crear Esta Gestión?',
+    //   icon: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Crear',
+    //   cancelButtonText: 'Cancelar'
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     this.botonGuardarGes = true
+    //     this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
+    //       (data: any) => {
+    //         // this.getGestiones(this.newGestion.numeroObligacion)
+    //         // this.getNotificaciones()
+    //         // this.mostrarReporte()
+    //         // if(!this.filtroAgain){
+    //         //   this.getCuentasCobrar()
+    //         // } else {
+    //         //   this.filtro()
+    //         // }
+
+    //         this.botonGuardarGes = false
+    //         this.newGestion = {
+    //           numeroObligacion: this.newGestion.numeroObligacion,
+    //           clasificacion: {
+    //             tipoClasificacion: null,
+    //             tarea: null,
+    //             nota: null,
+    //             acuerdoPago: null,
+    //             nombreClasificacion: ''
+    //           },
+    //           contact: false,
+    //           detallesAdicionales: this.newGestion.detallesAdicionales,
+    //           usernameToSetNotificacion: '',
+    //           userNotifying: '',
+    //           notificacionId: null,
+    //           clasificacionId: null
+    //         }
+    //         this.cuotas = []
+    //         this.disabledFecha = false
+    //         this.acuerdo = {
+    //           detalle: '',
+    //           valorCuotaMensual: 0,
+    //           tipoAcuerdo: '',
+    //           valorTotalAcuerdo: 0,
+    //           valorInteresesMora: 0,
+    //           honoriarioAcuerdo: 0,
+    //           fechaCompromiso: '',
+    //           cuotasList: [],
+    //           username: ''
+    //         }
+    //         this.cuentasCalcular = {
+    //           numeroObligacion: '',
+    //           valorTotal: 0,
+    //           moraObligatoria: 0,
+    //           fechaVencimiento: new Date,
+    //           username: ''
+    //         }
+    //         this.col = true
+    //       }, (error: any) => {
+    //         Swal.fire({
+    //           icon: 'error',
+    //           title: 'Error',
+    //           text: 'Error Al Guardar La Gestión',
+    //           timer: 3000
+    //         })
+    //         this.botonGuardarGes = false
+    //       }
+    //     )
+    //   }
+    // })
   }
 
   desactivarAcuerdo() {
