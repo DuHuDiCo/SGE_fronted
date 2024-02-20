@@ -1032,7 +1032,13 @@ export class HomeCarteraComponent implements OnInit {
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
-                this.afterSave()
+                this.getGestiones(this.newGestion.numeroObligacion)
+                this.getNotificaciones()
+                if(!this.filtroAgain){
+                  this.getCuentasCobrar()
+                } else {
+                  this.filtro()
+                }
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
@@ -1110,13 +1116,19 @@ export class HomeCarteraComponent implements OnInit {
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
-                this.afterSave()
+                this.getGestiones(this.newGestion.numeroObligacion)
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
                   text: 'Gestión Guardada Exitosamente',
                   timer: 3000
                 })
+                this.getNotificaciones()
+                if(!this.filtroAgain){
+                  this.getCuentasCobrar()
+                } else {
+                  this.filtro()
+                }
                 this.gestionButton = false
                 this.newGestion = {
                   numeroObligacion: this.newGestion.numeroObligacion,
@@ -1283,7 +1295,16 @@ export class HomeCarteraComponent implements OnInit {
         this.botonGuardarGes = true
         this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
           (data: any) => {
-            this.afterSave()
+            this.getGestiones(this.newGestion.numeroObligacion)
+            this.getNotificaciones()
+            this.mostrarReporte()
+            if(!this.filtroAgain){
+              this.getCuentasCobrar()
+            } else {
+              this.filtro()
+            }
+            console.log(this.newGestion);
+
             this.botonGuardarGes = false
             this.newGestion = {
               numeroObligacion: this.newGestion.numeroObligacion,
@@ -1334,17 +1355,6 @@ export class HomeCarteraComponent implements OnInit {
         )
       }
     })
-  }
-
-  afterSave(){
-    this.getGestiones(this.newGestion.numeroObligacion)
-    this.getNotificaciones()
-    this.mostrarReporte()
-    if(!this.filtroAgain){
-      this.getCuentasCobrar()
-    } else {
-      this.filtro()
-    }
   }
 
   desactivarAcuerdo() {
@@ -3780,10 +3790,10 @@ export class HomeCarteraComponent implements OnInit {
         if (user == null || user == undefined) {
           return
         }
-        this.cuentasCobrar.getAllNotificaciones(user).subscribe(
-          (data: any) => {
-            this.notiArray = data
-            console.log(this.notiArray);
+        // this.cuentasCobrar.getAllNotificaciones(user).subscribe(
+        //   (data: any) => {
+        //     this.notiArray = data
+        //     console.log(this.notiArray);
             
             if (user == null || user == undefined) {
               return
@@ -3797,10 +3807,10 @@ export class HomeCarteraComponent implements OnInit {
               }
             )
 
-          }, (error: any) => {
-            console.log(error);
-          }
-        )
+        //   }, (error: any) => {
+        //     console.log(error);
+        //   }
+        // )
       }, (error: any) => {
         console.log(error);
       }
