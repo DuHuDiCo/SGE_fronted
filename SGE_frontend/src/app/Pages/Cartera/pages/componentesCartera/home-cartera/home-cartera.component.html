@@ -257,7 +257,7 @@
                     <div class="list-group" style="width: 300px;">
 
 
-                        <div *ngIf="notiArrayRealizadas.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
+                        <div *ngIf="notiArrayRealizadas.length != 0" class="row justify-content-start mt-3 mb-3 ms-5">
                             <div class="col-md-8">
                                 <select [(ngModel)]="tipoReal" class="form-select" style="border: 1px black solid;">
                                     <option>Seleccione Un Filtro</option>
@@ -291,6 +291,36 @@
                                         class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </div>
+
+                        <nav *ngIf="numeroPagesReal > 1" class="row justify-content-center mt-2 ms-5 mb-2">
+                            <div *ngIf="!spinner">
+                                <nav>
+                                    <ul class="pagination">
+                                        <li class="page-item">
+                                            <a class="page-link" (click)="backReal()"
+                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Anterior</a>
+                                        </li>
+
+                                        <li class="page-item">
+                                            <div class="btn-group dropdown">
+                                                <button type="button" class="page-link dropdown-toggle"
+                                                    style="cursor: pointer; text-decoration: none; color: black; background-color: transparent; font-size: 13px;"
+                                                    data-bs-toggle="dropdown">{{pageReal+1}}/{{numeroPagesReal}}</button>
+                                                <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
+                                                    <li *ngFor="let p of paginasReal;let i = index"><button
+                                                            class="dropdown-item" (click)="goToPageReal(i)">{{i
+                                                            + 1}}</button></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" (click)="nextReal()"
+                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Siguiente</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </nav>
 
                         <a *ngFor="let n of notiArrayRealizadas" class="list-group-item" aria-current="true"
                             style="background-color: rgb(201, 201, 201);">

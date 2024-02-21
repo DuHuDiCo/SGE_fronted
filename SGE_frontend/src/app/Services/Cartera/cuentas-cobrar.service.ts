@@ -217,16 +217,16 @@ export class CuentasCobrarService {
     return this.http.get(`${baseUrl}/gestiones/alerts?username=${username}&fecha=${fecha}`, )
   }
 
-  getVencidasBySede(sede:string, username:string, tipo:string){
-    return this.http.get(`${baseUrl}/notificaciones/bySedeVencidas?sede=${sede}&username=${username}&tipo=${tipo}`)
+  getVencidasBySede(sede:string, username:string, tipo:string, page:number, size:number){
+    return this.http.get(`${baseUrl}/notificaciones/bySedeVencidas?sede=${sede}&username=${username}&tipo=${tipo}&page=${page}&size=${size}`)
   }
 
-  getAllBySede(sede:string, username:string, tipo:string){
-    return this.http.get(`${baseUrl}/notificaciones/bySedeAll?sede=${sede}&username=${username}&tipo=${tipo}`)
+  getAllBySede(sede:string, username:string, tipo:string, page:number, size:number){
+    return this.http.get(`${baseUrl}/notificaciones/bySedeAll?sede=${sede}&username=${username}&tipo=${tipo}&page=${page}&size=${size}`)
   }
 
-  getRealizadasBySede(sede:string, username:string, tipo:string){
-  return this.http.get(`${baseUrl}/notificaciones/bySedeRealizadas?sede=${sede}&username=${username}&tipo=${tipo}`)
+  getRealizadasBySede(sede:string, username:string, tipo:string, page:number, size:number){
+  return this.http.get(`${baseUrl}/notificaciones/bySedeRealizadas?sede=${sede}&username=${username}&tipo=${tipo}&page=${page}&size=${size}`)
   }
 
 

@@ -3946,7 +3946,20 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   getNotiReal(){
+    var user = this.authService.getUsername()
 
+    if (user == null || user == undefined) {
+      return
+    }
+
+    this.cuentasCobrar.getNotificacionesRealizadas(user, this.pageReal, this.sizeReal).subscribe(
+      (data: any) => {
+        this.notiArrayRealizadas = data.content
+        console.log(this.notiArrayRealizadas);
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
   }
 
   //PAGINACION NOTIFICACIONES
@@ -4101,6 +4114,81 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
+  //REALIZADAS
+  backReal() {
+    if (!this.firtsReal) {
+      this.pageReal--
+      if (this.filtrandoNoti) {
+        this.getNotiRealizadasBySede()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConReal = con;
+            this.contReal = this.contReal - this.sizeReal
+            this.proSubscriptionBack.unsubscribe()
+          }
+        );
+      } else {
+        this.getNotiReal()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConReal = con;
+            this.contReal = this.contReal - this.sizeReal
+            this.proSubscriptionBack.unsubscribe()
+          }
+        );
+      }
+    }
+  }
+
+  nextReal() {
+    if (!this.lastReal) {
+      this.pageReal++
+      if (this.filtrandoNoti) {
+        this.getNotiRealizadasBySede()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConReal = con;
+            this.contReal = this.contReal + this.sizeReal
+            this.proSubscriptionNext.unsubscribe()
+          }
+        );
+      } else {
+        this.getNotiReal()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConReal = con;
+            this.contReal = this.contReal + this.sizeReal
+            this.proSubscriptionNext.unsubscribe()
+          }
+        );
+      }
+    }
+  }
+
+  goToPageReal(page: number) {
+    this.pageReal = page
+    if (this.filtrandoNoti) {
+      this.getNotiRealizadasBySede()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isConReal = con;
+          this.contReal = this.initialConReal + (this.pageReal * this.sizeReal);
+          this.proSubscriptionNext.unsubscribe()
+        }
+      );
+    } else {
+      this.getNotiReal()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isConReal = con;
+          this.contReal = this.initialConReal + (this.pageReal * this.sizeReal);
+          this.proSubscriptionNext.unsubscribe()
+        }
+      );
+    }
+
+  }
+
   getNotiVenBySede(){
     var user = this.authService.getUsername()
 
@@ -4118,10 +4206,15 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-    this.cuentasCobrar.getVencidasBySede(this.filtroVen, user, this.tipoVen).subscribe(
+    this.cuentasCobrar.getVencidasBySede(this.filtroVen, user, this.tipoVen, this.pageVen, this.sizeVen).subscribe(
       (data:any) => {
-        this.notiArrayVencidas = data
+        this.notiArrayVencidas = data.content
         this.filtrandoNoti = true
+        this.paginasVen = new Array(data.totalPages)
+        this.lastVen = data.last
+        this.firtsVen = data.first
+        this.numeroPagesVen = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
         console.log(this.notiArrayVencidas);
         if(this.notiArrayVencidas.length == 0){
           Swal.fire({
@@ -4131,7 +4224,7 @@ export class HomeCarteraComponent implements OnInit {
             timer: 3000
           })
           setTimeout(() => {
-            this.getNotificaciones()
+            this.getNotiVen()
           }, 3000);
         }
       }, (error:any) => {
@@ -4157,10 +4250,15 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-    this.cuentasCobrar.getAllBySede(this.filtroAll, user, this.tipoAll).subscribe(
+    this.cuentasCobrar.getAllBySede(this.filtroAll, user, this.tipoAll, this.pageAll, this.sizeAll).subscribe(
       (data:any) => {
-        this.notiArray = data
+        this.notiArray = data.content
         this.filtrandoNoti = true
+        this.paginasAll = new Array(data.totalPages)
+        this.lastAll = data.last
+        this.firtsAll = data.first
+        this.numeroPagesAll = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
         console.log(this.notiArray);
         if(this.notiArray.length == 0){
           Swal.fire({
@@ -4170,7 +4268,7 @@ export class HomeCarteraComponent implements OnInit {
             timer: 3000
           })
           setTimeout(() => {
-            this.getNotificaciones()
+            this.getNotiAll()
           }, 3000);
         }
       }, (error:any) => {
@@ -4196,10 +4294,15 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-    this.cuentasCobrar.getRealizadasBySede(this.filtroRealizada, user, this.tipoReal).subscribe(
+    this.cuentasCobrar.getRealizadasBySede(this.filtroRealizada, user, this.tipoReal, this.pageReal, this.sizeReal).subscribe(
       (data:any) => {
-        this.notiArrayRealizadas = data
+        this.notiArrayRealizadas = data.content
         this.filtrandoNoti = true
+        this.paginasReal = new Array(data.totalPages)
+        this.lastReal = data.last
+        this.firtsReal = data.first
+        this.numeroPagesReal = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
         console.log(this.notiArrayRealizadas);
         if(this.notiArrayRealizadas.length == 0){
           Swal.fire({
@@ -4209,7 +4312,7 @@ export class HomeCarteraComponent implements OnInit {
             timer: 3000
           })
           setTimeout(() => {
-            this.getNotificaciones()
+            this.getNotiReal()
           }, 3000);
         }
       }, (error:any) => {
