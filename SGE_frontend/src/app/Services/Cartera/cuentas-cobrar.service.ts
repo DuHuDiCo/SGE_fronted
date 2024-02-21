@@ -193,16 +193,16 @@ export class CuentasCobrarService {
   }
 
   // NOTIFICACIONES
-  getNotificacionesVencidas(username:string){
-    return this.http.get(`${baseUrl}/notificaciones/getAllNotificacionesVencidas?username=${username}`)
+  getNotificacionesVencidas(username:string, page:number, size:number){
+    return this.http.get(`${baseUrl}/notificaciones/getAllNotificacionesVencidas?username=${username}&page=${page}&size=${size}`)
   }
 
-  getAllNotificaciones(username:string |null){
-    return this.http.get(`${baseUrl}/notificaciones/getAllNotificaciones?username=${username}`)
+  getAllNotificaciones(username:string | null, page:number, size:number){
+    return this.http.get(`${baseUrl}/notificaciones/getAllNotificaciones?username=${username}&page=${page}&size=${size}`)
   }
 
-  getNotificacionesRealizadas(username:string){
-    return this.http.get(`${baseUrl}/notificaciones/getAllNotificacionesRealizadas?username=${username}`)
+  getNotificacionesRealizadas(username:string, page:number, size:number){
+    return this.http.get(`${baseUrl}/notificaciones/getAllNotificacionesRealizadas?username=${username}&page=${page}&size=${size}`)
   }
 
   desactivateNotificacion(notificacion:any){
