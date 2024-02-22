@@ -346,6 +346,7 @@ label.btn.btn-outline-dark {
   z-index: 999;
 }
 
+
 .filter {
   position: fixed;
   margin-left: -3px;
@@ -379,6 +380,7 @@ label.btn.btn-outline-dark {
 .pagination ::ng-deep .ngx-pagination .current {
   background: #960010
 }
+
 
 .scrollable-menu {
   max-height: 500px;

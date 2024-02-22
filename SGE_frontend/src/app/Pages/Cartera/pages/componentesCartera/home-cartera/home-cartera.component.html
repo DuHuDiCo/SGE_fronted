@@ -55,6 +55,10 @@
                                     <option value="CEDULA">Filtrar Por Cédula</option>
                                 </select>
                             </div>
+                            <div *ngIf="filtroAll != ''" class="col-md-4">
+                                <button class="btn b" (click)="limpiarNoti('ALL')"><i
+                                        class="fa-solid fa-filter-circle-xmark"></i></button>
+                            </div>
                         </div>
 
                         <div *ngIf="tipoAll == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
@@ -82,6 +86,36 @@
                             </div>
                         </div>
 
+                        <nav *ngIf="numeroPagesAll > 1" class="row justify-content-center mt-2 ms-5 mb-2">
+                            <div *ngIf="!spinner">
+                                <nav>
+                                    <ul class="pagination">
+                                        <li class="page-item">
+                                            <a class="page-link" (click)="backAll()"
+                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Anterior</a>
+                                        </li>
+
+                                        <li class="page-item">
+                                            <div class="btn-group dropdown">
+                                                <button type="button" class="page-link dropdown-toggle"
+                                                    style="cursor: pointer; text-decoration: none; color: black; background-color: transparent; font-size: 13px;"
+                                                    data-bs-toggle="dropdown">{{pageAll+1}}/{{numeroPagesAll}}</button>
+                                                <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
+                                                    <li *ngFor="let p of paginasAll;let i = index"><button
+                                                            class="dropdown-item" (click)="goToPageAll(i)">{{i
+                                                            + 1}}</button></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" (click)="nextAll()"
+                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Siguiente</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </nav>
+
                         <a *ngFor="let n of notiArray" class="list-group-item" aria-current="true"
                             style="background-color: rgb(201, 201, 201);">
                             <div class="row justify-content-center mb-2">
@@ -107,6 +141,7 @@
                             <small><b>Cliente:</b> {{ n.cliente }}</small><br>
                             <small *ngIf="n.tipoGestion == 'TAREA'"><b>Creado Por:</b> {{ n.designatedBy }}</small>
                         </a>
+
                     </div>
                     <div *ngIf="notiArray.length == 0" class="list-group">
                         <a class="list-group-item list-group-item-action" aria-current="true">
@@ -128,6 +163,10 @@
                                     <option value="SEDE">Filtrar Por Sede</option>
                                     <option value="CEDULA">Filtrar Por Cédula</option>
                                 </select>
+                            </div>
+                            <div *ngIf="filtroVen != ''" class="col-md-4">
+                                <button class="btn b" (click)="limpiarNoti('VEN')"><i
+                                        class="fa-solid fa-filter-circle-xmark"></i></button>
                             </div>
                         </div>
 
@@ -155,6 +194,36 @@
                                         class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </div>
+
+                        <nav *ngIf="numeroPagesVen > 1" class="row justify-content-center mt-2 ms-5 mb-2">
+                            <div *ngIf="!spinner">
+                                <nav>
+                                    <ul class="pagination">
+                                        <li class="page-item">
+                                            <a class="page-link" (click)="backVen()"
+                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Anterior</a>
+                                        </li>
+
+                                        <li class="page-item">
+                                            <div class="btn-group dropdown">
+                                                <button type="button" class="page-link dropdown-toggle"
+                                                    style="cursor: pointer; text-decoration: none; color: black; background-color: transparent; font-size: 13px;"
+                                                    data-bs-toggle="dropdown">{{pageVen+1}}/{{numeroPagesVen}}</button>
+                                                <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
+                                                    <li *ngFor="let p of paginasVen;let i = index"><button
+                                                            class="dropdown-item" (click)="goToPageVen(i)">{{i
+                                                            + 1}}</button></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" (click)="nextVen()"
+                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Siguiente</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </nav>
 
                         <a *ngFor="let n of notiArrayVencidas" class="list-group-item" aria-current="true"
                             style="background-color: rgb(201, 201, 201);">
@@ -204,6 +273,11 @@
                                     <option value="CEDULA">Filtrar Por Cédula</option>
                                 </select>
                             </div>
+
+                            <div *ngIf="filtroRealizada != ''" class="col-md-4">
+                                <button class="btn b" (click)="limpiarNoti('REAL')"><i
+                                        class="fa-solid fa-filter-circle-xmark"></i></button>
+                            </div>
                         </div>
 
                         <div *ngIf="tipoReal == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
@@ -230,6 +304,36 @@
                                         class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </div>
+
+                        <nav *ngIf="numeroPagesReal > 1" class="row justify-content-center mt-2 ms-5 mb-2">
+                            <div *ngIf="!spinner">
+                                <nav>
+                                    <ul class="pagination">
+                                        <li class="page-item">
+                                            <a class="page-link" (click)="backReal()"
+                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Anterior</a>
+                                        </li>
+
+                                        <li class="page-item">
+                                            <div class="btn-group dropdown">
+                                                <button type="button" class="page-link dropdown-toggle"
+                                                    style="cursor: pointer; text-decoration: none; color: black; background-color: transparent; font-size: 13px;"
+                                                    data-bs-toggle="dropdown">{{pageReal+1}}/{{numeroPagesReal}}</button>
+                                                <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
+                                                    <li *ngFor="let p of paginasReal;let i = index"><button
+                                                            class="dropdown-item" (click)="goToPageReal(i)">{{i
+                                                            + 1}}</button></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" (click)="nextReal()"
+                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Siguiente</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </nav>
 
                         <a *ngFor="let n of notiArrayRealizadas" class="list-group-item" aria-current="true"
                             style="background-color: rgb(201, 201, 201);">
@@ -582,7 +686,7 @@
                                                                 Total</span>
                                                             <input (change)="calculadora($event)" id="boton_saldo_total"
                                                                 type="number"
-                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].saldoActual"
+                                                                [(ngModel)]="cuentaCobrarSelected.totalObligatoria"
                                                                 class="form-control" [disabled]="deshabilitarInputs">
                                                         </div>
 
