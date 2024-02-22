@@ -430,9 +430,9 @@ export class HomeCarteraComponent implements OnInit {
   pageVen:number = 0
   pageReal:number = 0
 
-  sizeAll:number = 50
-  sizeVen:number = 50
-  sizeReal:number = 50
+  sizeAll:number = 20
+  sizeVen:number = 20
+  sizeReal:number = 20
 
   paginasAll!: Array<number>
   paginasVen!: Array<number>
@@ -900,16 +900,191 @@ export class HomeCarteraComponent implements OnInit {
 
   getGestionesNoti(numeroObligacion:string, idGestion:number, fechaCreacion:Date, tipoGestion:string, idNotifi:number){
     this.mostrarCuentaCobrar = true
-    this.getGestiones(numeroObligacion)
-    this.findCuentaCobrar(numeroObligacion)
+
+    if(this.newGestion.numeroObligacion == numeroObligacion){
+      this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
+      return
+    } else {
+      this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
+        (data: any) => {
+          this.newGestion.numeroObligacion = numeroObligacion
+          this.gestiones = data
+          this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
+          console.log(this.gestiones);
+        }, (error: any) => {
+          console.log(error);
+        }
+      )
+    }
+    
+
     this.notiId = idNotifi
-    setTimeout(() => {
-      if(this.gestiones.length > 0){
-        this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
-      } else {
-        console.log('GESTIONES VACIO');
+    if (this.newGestion.numeroObligacion == numeroObligacion) {
+      $('#modalObligacion').modal('hide');
+      return
+    } else {
+      this.spinnerSidebar = true
+      
+      this.cuentaCobrarSelected = {
+        idCuentasPorCobrar: 0,
+        numeroObligacion: '',
+        cliente: '',
+        documentoCliente: '',
+        fechaCuentaCobrar: '',
+        fechaVencimiento: '',
+        tipo: '',
+        valorNotaDebito: 0,
+        valorCuota: 0,
+        valorPagos: 0,
+        nombre_usuario: '',
+        clasificacion: '',
+        vendedor: '',
+        clasificacionJuridica: '',
+        detalle: '',
+        sede: {
+          idSede: 0,
+          sede: ''
+        },
+        banco: {
+          idBanco: 0,
+          banco: ''
+        },
+        diasVencidos: 0,
+        gestion: [],
+        edadVencimiento: '',
+        condicionEspecial: '',
+        numeroCreditos: 0,
+        pagare: '',
+        moraObligatoria: 0,
+        totalObligatoria: 0,
+        cuotasMora: 0,
+        cuotas: 0,
+        asesorCarteraResponse: {
+          idAsesorCartera: 0,
+          usuario: {
+            idUsuario: 0,
+            username: '',
+            email: '',
+            nombres: '',
+            apellidos: '',
+            sede: '',
+            tipo_documento: '',
+            numero_documento: '',
+            celular: '',
+            fecha_nacimiento: new Date,
+            fecha_creacion: new Date,
+            status: false,
+            roles: [],
+            enabled: false,
+            authorities: [],
+            accountNonLocked: false,
+            accountNonExpired: false,
+            credentialsNonExpired: false,
+            password: ''
+          }
+        },
+        clientes: []
       }
-    }, 1500);
+
+      this.acuerdo = {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: new Date,
+        cuotasList: [],
+        username: ''
+      }
+
+      this.newGestion = {
+        numeroObligacion: '',
+        clasificacion: {
+          tipoClasificacion: null,
+          tarea: null,
+          nota: null,
+          acuerdoPago: null,
+          nombreClasificacion: ''
+        },
+        contact: false,
+        detallesAdicionales: '',
+        usernameToSetNotificacion: '',
+        userNotifying: '',
+        notificacionId: null,
+        clasificacionId: null
+      }
+
+      this.acuerdo = {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: '',
+        cuotasList: [],
+        username: ''
+      }
+
+      this.nota = {
+        detalle: ''
+      }
+
+      this.tarea = {
+        detalleTarea: '',
+        fechaFinTarea: '',
+        isPartOfRecaudo: false
+      }
+
+      this.codeudoresSelected = []
+      $('#modalObligacion').modal('hide');
+      setTimeout(() => {
+        this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
+          (data: any) => {
+            this.cuentaCobrarSelected = data
+            this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
+            this.moraObligatoriaFirst = data.moraObligatoria
+            this.calcularFirst()
+            this.codeudores = data.clientes
+            this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
+            this.cuentasCalcular.numeroObligacion = numeroObligacion
+            this.newGestion = {
+              numeroObligacion: this.newGestion.numeroObligacion,
+              clasificacion: {
+                tipoClasificacion: '',
+                tarea: null,
+                nota: null,
+                acuerdoPago: null,
+                nombreClasificacion: ''
+              },
+              contact: false,
+              detallesAdicionales: this.newGestion.detallesAdicionales,
+              usernameToSetNotificacion: '',
+              userNotifying: '',
+              notificacionId: null,
+              clasificacionId: null
+            }
+
+            if (this.cuentaCobrarSelected.documentoCliente != '') {
+              this.spinnerSidebar = false
+            }
+          }, (error: any) => {
+            if(this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0){
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Cliente Sin Saldo En El Sistema',
+                timer: 3000
+              })
+              $('#offcanvasRight').offcanvas('hide');
+            }
+            console.log(error);
+          }
+        )
+      }, 2000);
+    }
+    
   }
 
   mostrarCpc(){
@@ -918,36 +1093,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   getOneGestionNoti(id: number, fechaCreacion:Date, tipoGestion:string) {
-    this.gestionSelected = {
-      numeroObligacion: '',
-      clasificacion: {
-        nombreClasificacion: '',
-        tipoClasificacion: '',
-        tarea: {
-          detalleTarea: '',
-          fechaFinTarea: '',
-          isPartOfRecaudo: false
-        },
-        nota: {
-          detalle: ''
-        },
-        acuerdoPago: {
-          detalle: '',
-          valorCuotaMensual: 0,
-          tipoAcuerdo: '',
-          valorTotalAcuerdo: 0,
-          valorInteresesMora: 0,
-          honoriarioAcuerdo: 0,
-          fechaCompromiso: new Date(),
-          cuotasList: [],
-          username: ''
-        }
-      },
-      gestion: '',
-      contact: false,
-      detallesAdicionales: ''
-    }
-
+    
     this.coutasRequest = []
     this.recibosPago = []
 
@@ -1592,15 +1738,6 @@ export class HomeCarteraComponent implements OnInit {
     this.saldoAcuerdoPago = 0
 
     this.gestionSelected.clasificacion.cuotasList.forEach((c: any) => {
-      var fechaOk = c.fechaVencimiento.split("/")
-      var dia = parseInt(fechaOk[0])
-      var mes = parseInt(fechaOk[1])
-      var year = parseInt(fechaOk[2])
-
-      c.fechaVencimiento = `${year}-${mes}-${dia}`
-      console.log(c.fechaVencimiento);
-      
-
       this.cuotasList.push(c)
     });
 
@@ -3322,11 +3459,6 @@ export class HomeCarteraComponent implements OnInit {
         this.botonFiltrarObligacion = false
         this.cuentasCobrarBuscar = data
         this.filtradoBuscar = true
-        this.numeroPages = 1
-        this.cuentasCobrar.proSubject.next(true);
-        for (const i of this.colcheck.toArray()) {
-          i.nativeElement.checked = false
-        }
 
         if (this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
           (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
@@ -3365,7 +3497,7 @@ export class HomeCarteraComponent implements OnInit {
           this.variableLimpiar = false
         }
 
-        if (this.cuentasCobrarArray == null || this.cuentasCobrarArray.length == 0) {
+        if (this.cuentasCobrarBuscar == null || this.cuentasCobrarBuscar.length == 0) {
           this.spinner = true
           Swal.fire({
             icon: 'error',
@@ -3745,7 +3877,9 @@ export class HomeCarteraComponent implements OnInit {
           text: 'Nota Guardada Con Éxito',
           timer: 3000
         })
+        this.detalleRevision = ''
         this.spinnerCrearNota = false
+        this.ocultarCrearRevision = false
       }, (error: any) => {
         Swal.fire({
           icon: 'error',
@@ -4319,6 +4453,25 @@ export class HomeCarteraComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  limpiarNoti(tipo:string){
+    switch (tipo) {
+      case 'ALL':
+        this.tipoAll = ''
+        this.filtroAll = ''
+        this.getNotiAll()
+        break;
+      case 'VEN':
+        this.tipoVen = ''
+        this.filtroVen = ''
+        this.getNotiVen()
+        break;
+      case 'REAL':
+        this.tipoReal = ''
+        this.filtroRealizada = ''
+        break;
+    }
   }
 
   desactivarNoti(id: number, fecha:Date, idClas:number, obligacion:string) {

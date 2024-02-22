@@ -47,13 +47,17 @@
                     <div class="list-group" style="width: 300px;">
 
 
-                        <div class="row justify-content-start mt-3 mb-3 ms-5">
+                        <div class="row justify-content-start mt-3 mb-3 ms-2">
                             <div class="col-md-8">
                                 <select [(ngModel)]="tipoAll" class="form-select" style="border: 1px black solid;">
                                     <option>Seleccione Un Filtro</option>
                                     <option value="SEDE">Filtrar Por Sede</option>
                                     <option value="CEDULA">Filtrar Por Cédula</option>
                                 </select>
+                            </div>
+                            <div *ngIf="filtroAll != ''" class="col-md-4">
+                                <button class="btn b" (click)="limpiarNoti('ALL')"><i
+                                        class="fa-solid fa-filter-circle-xmark"></i></button>
                             </div>
                         </div>
 
@@ -152,13 +156,17 @@
                     <div class="list-group" style="width: 300px;">
 
 
-                        <div *ngIf="notiArrayVencidas.length != 0" class="row justify-content-start mt-3 mb-3 ms-5">
+                        <div *ngIf="notiArrayVencidas.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
                             <div class="col-md-8">
                                 <select [(ngModel)]="tipoVen" class="form-select" style="border: 1px black solid;">
                                     <option>Seleccione Un Filtro</option>
                                     <option value="SEDE">Filtrar Por Sede</option>
                                     <option value="CEDULA">Filtrar Por Cédula</option>
                                 </select>
+                            </div>
+                            <div *ngIf="filtroVen != ''" class="col-md-4">
+                                <button class="btn b" (click)="limpiarNoti('VEN')"><i
+                                        class="fa-solid fa-filter-circle-xmark"></i></button>
                             </div>
                         </div>
 
@@ -257,13 +265,18 @@
                     <div class="list-group" style="width: 300px;">
 
 
-                        <div *ngIf="notiArrayRealizadas.length != 0" class="row justify-content-start mt-3 mb-3 ms-5">
+                        <div *ngIf="notiArrayRealizadas.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
                             <div class="col-md-8">
                                 <select [(ngModel)]="tipoReal" class="form-select" style="border: 1px black solid;">
                                     <option>Seleccione Un Filtro</option>
                                     <option value="SEDE">Filtrar Por Sede</option>
                                     <option value="CEDULA">Filtrar Por Cédula</option>
                                 </select>
+                            </div>
+
+                            <div *ngIf="filtroRealizada != ''" class="col-md-4">
+                                <button class="btn b" (click)="limpiarNoti('REAL')"><i
+                                        class="fa-solid fa-filter-circle-xmark"></i></button>
                             </div>
                         </div>
 
