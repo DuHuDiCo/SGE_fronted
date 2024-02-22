@@ -3880,6 +3880,7 @@ export class HomeCarteraComponent implements OnInit {
         this.detalleRevision = ''
         this.spinnerCrearNota = false
         this.ocultarCrearRevision = false
+        this.getGestiones(this.newGestion.numeroObligacion)
       }, (error: any) => {
         Swal.fire({
           icon: 'error',
