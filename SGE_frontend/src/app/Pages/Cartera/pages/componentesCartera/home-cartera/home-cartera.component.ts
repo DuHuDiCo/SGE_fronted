@@ -618,7 +618,7 @@ export class HomeCarteraComponent implements OnInit {
       this.page--
       if (this.filtrando) {
         this.spinner = true
-        this.filtro()
+        this.filtroFirst()
         this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
           (con: boolean) => {
             this.isCon = con;
@@ -648,7 +648,7 @@ export class HomeCarteraComponent implements OnInit {
       this.spinner = true
       this.page++
       if (this.filtrando) {
-        this.filtro()
+        this.filtroFirst()
         this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
           (con: boolean) => {
             this.isCon = con;
@@ -676,7 +676,7 @@ export class HomeCarteraComponent implements OnInit {
     this.page = page
     if (this.filtrando) {
       this.spinner = true
-      this.filtro()
+      this.filtroFirst()
       this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
         (con: boolean) => {
           this.isCon = con;
@@ -1221,7 +1221,7 @@ export class HomeCarteraComponent implements OnInit {
                 if (!this.filtroAgain) {
                   this.getCuentasCobrar()
                 } else {
-                  this.filtro()
+                  this.filtroFirst()
                 }
                 
                 Swal.fire({
@@ -1336,7 +1336,7 @@ export class HomeCarteraComponent implements OnInit {
                 if(!this.filtroAgain){
                   this.getCuentasCobrar()
                 } else {
-                  this.filtro()
+                  this.filtroFirst()
                 }
                 this.gestionButton = false
                 this.newGestion = {
@@ -1509,7 +1509,7 @@ export class HomeCarteraComponent implements OnInit {
             if(!this.filtroAgain){
                 this.getCuentasCobrar()
               } else {
-                  this.filtro()
+                  this.filtroFirst()
                 }
 
             this.botonGuardarGes = false
@@ -2788,6 +2788,7 @@ export class HomeCarteraComponent implements OnInit {
 
 
       if (this.acuerdo.valorCuotaMensual > valorCuotaAnterior && (totalCoutasMora * 2) < totalCuotasCredito) {
+        alert("Si")
 
         var restanteCuotas = totalCuotasCredito - totalCoutasMora
 
@@ -3753,6 +3754,8 @@ export class HomeCarteraComponent implements OnInit {
       (data: any) => {
         this.botonFiltrarObligacion = false
         this.cuentasCobrarBuscar = data
+        console.log(this.cuentasCobrarBuscar);
+        
         this.filtradoBuscar = true
 
         if (this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
@@ -4798,7 +4801,7 @@ export class HomeCarteraComponent implements OnInit {
             if(!this.filtroAgain){
               this.getCuentasCobrar()
             } else {
-              this.filtro()
+              this.filtroFirst()
             }
           }, (error: any) => {
             Swal.fire({
