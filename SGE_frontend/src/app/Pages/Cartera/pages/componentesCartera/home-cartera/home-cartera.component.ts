@@ -2152,6 +2152,7 @@ export class HomeCarteraComponent implements OnInit {
   // CALCULAR LAS FECHAS DE LAS CUOTAS
   generarFechas() {
     this.fechasIncrementadas = []
+    this.fechasIncrementadas = []
     var fechaString = this.fechaInicial.toISOString()
 
 
@@ -2837,6 +2838,7 @@ export class HomeCarteraComponent implements OnInit {
                 }
                 this.cuotas.push(cuoUl)
                 this.cantidadFechas++;
+                this.cantidadFechas++;
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
                 break;
@@ -2864,6 +2866,7 @@ export class HomeCarteraComponent implements OnInit {
               }
               this.cuotas.push(cuoUl)
               this.cantidadFechas++;
+              this.cantidadFechas++;
               this.cuotas[position].valorCuota = parseInt(event.target.value)
               break;
             } else {
@@ -2882,6 +2885,7 @@ export class HomeCarteraComponent implements OnInit {
                 }
                 this.cuotas.push(cuoUll)
                 this.cantidadFechas++;
+                this.cantidadFechas++;
                 nuevoValorSumarCuotas = nuevoValorSumarCuotas - excedenteParaCuouta
               } else {
                 var cuoUll = {
@@ -2895,6 +2899,7 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUll)
+                this.cantidadFechas++;
                 this.cantidadFechas++;
                 nuevoValorSumarCuotas = excedentePrinciapl
               }
