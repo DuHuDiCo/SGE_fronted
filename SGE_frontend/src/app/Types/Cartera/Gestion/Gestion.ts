@@ -26,7 +26,9 @@ export type Gestion = {
   contact: boolean,
   detallesAdicionales: string,
   usernameToSetNotificacion: string,
-  userNotifying: string
+  userNotifying: string,
+  notificacionId: number | null,
+  clasificacionId: number | null
 }
 
 export type GestionArray = {
@@ -192,7 +194,8 @@ export type Notificacion = {
     isActive: boolean,
     designatedBy: string,
     designatedTo: number,
-    verRealizadas: string
+    verRealizadas: string,
+    gestionId: number
 }
 
 export enum ClasificacionGestion{

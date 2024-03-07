@@ -89,10 +89,6 @@ export class CuentasCobrarService {
     return this.http.put(`${baseUrl}/gestiones/linkAndReporteAcuerdoToClient`, data)
   }
 
-  alertasGestiones(username:string, fecha:string){
-    return this.http.get(`${baseUrl}/gestiones/alerts?username=${username}&fecha=${fecha}`, )
-  }
-
   // TIPO VENCIMIENTO
   saveTipoVencimiento(tipoVencimiento:TipoVencimiento){
     return this.http.post(`${baseUrl}/tiposVencimiento/guardarTipoVencimiento`, tipoVencimiento)
@@ -197,24 +193,40 @@ export class CuentasCobrarService {
   }
 
   // NOTIFICACIONES
-  getNotificacionesVencidas(username:string){
-    return this.http.get(`${baseUrl}/notificaciones/getAllNotificacionesVencidas?username=${username}`)
+  getNotificacionesVencidas(username:string, page:number, size:number){
+    return this.http.get(`${baseUrl}/notificaciones/getAllNotificacionesVencidas?username=${username}&page=${page}&size=${size}`)
   }
 
-  getAllNotificaciones(username:string |null){
-    return this.http.get(`${baseUrl}/notificaciones/getAllNotificaciones?username=${username}`)
+  getAllNotificaciones(username:string | null, page:number, size:number){
+    return this.http.get(`${baseUrl}/notificaciones/getAllNotificaciones?username=${username}&page=${page}&size=${size}`)
   }
 
-  getNotificacionesRealizadas(username:string){
-    return this.http.get(`${baseUrl}/notificaciones/getAllNotificacionesRealizadas?username=${username}`)
+  getNotificacionesRealizadas(username:string, page:number, size:number){
+    return this.http.get(`${baseUrl}/notificaciones/getAllNotificacionesRealizadas?username=${username}&page=${page}&size=${size}`)
   }
 
-  desactivateNotificacion(idNotificion:number){
-    return this.http.put(`${baseUrl}/notificaciones/desactivateNotification?idNotificion=${idNotificion}`, null)
+  desactivateNotificacion(notificacion:any){
+    return this.http.put(`${baseUrl}/notificaciones/desactivateNotification`, notificacion)
   }
 
   hideNotificacion(idNotificion:number){
     return this.http.put(`${baseUrl}/notificaciones/hideNotification?idNotificion=${idNotificion}`, null)
+  }
+
+  alertasGestiones(username:string, fecha:string){
+    return this.http.get(`${baseUrl}/gestiones/alerts?username=${username}&fecha=${fecha}`, )
+  }
+
+  getVencidasBySede(sede:string, username:string, tipo:string, page:number, size:number){
+    return this.http.get(`${baseUrl}/notificaciones/bySedeVencidas?sede=${sede}&username=${username}&tipo=${tipo}&page=${page}&size=${size}`)
+  }
+
+  getAllBySede(sede:string, username:string, tipo:string, page:number, size:number){
+    return this.http.get(`${baseUrl}/notificaciones/bySedeAll?sede=${sede}&username=${username}&tipo=${tipo}&page=${page}&size=${size}`)
+  }
+
+  getRealizadasBySede(sede:string, username:string, tipo:string, page:number, size:number){
+  return this.http.get(`${baseUrl}/notificaciones/bySedeRealizadas?sede=${sede}&username=${username}&tipo=${tipo}&page=${page}&size=${size}`)
   }
 
 

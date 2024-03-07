@@ -1,93 +1,66 @@
-/* styles.css o tu hoja de estilos */
 .floating-button {
-    position: fixed;
-    bottom: 30px; /* Ajusta la distancia desde la parte inferior según tus necesidades */
-    right: 40px; /* Ajusta la distancia desde la derecha según tus necesidades */
-    background-color: #960010; /* Color del botón, puedes cambiarlo según tu diseño */
-    color: #fff; /* Color del texto dentro del botón */
-    border: none;
-    border-radius: 50%;
-    width: 80px; /* Ajusta el tamaño del botón según tus necesidades */
-    height: 80px; /* Ajusta el tamaño del botón según tus necesidades */
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 999; /* Valor alto para mantener el botón al frente */
+  position: fixed;
+  bottom: 30px;
+  right: 40px;
+  background-color: #960010;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 999;
 }
 
-.floating-button:hover{
+.floating-button:hover {
   background-color: #c50e0e;
 }
 
-/* styles.css o tu hoja de estilos */
-@keyframes fadeInFromBottom {
-    0% {
-      transform: translateY(50px); /* Desplazamiento hacia abajo */
-      opacity: 0; /* Opacidad inicial */
-    }
-    100% {
-      transform: translateY(0); /* Sin desplazamiento vertical */
-      opacity: 1; /* Opacidad final */
-    }
-  }
-  
-  .floating-button {
-      /* Estilos anteriores del botón */
-      animation: fadeInFromBottom 1s ease forwards; /* Agrega la animación personalizada */
-  }
+.floating-button.fadeInFromBottom {
+  animation: fadeInFromBottom 1s ease forwards;
+}
 
-  /* Estilos anteriores del botón */
-/* ... */
-
-/* Ajustar el tamaño del icono y centrarlo en el contenedor */
 .floating-button .icon-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px; /* Ajusta el tamaño del contenedor del icono según tus necesidades */
+  height: 40px;
 }
 
 .floating-button .icon-container i {
-  font-size: 40px; /* Ajusta el tamaño del icono según tus necesidades */
+  font-size: 40px;
 }
 
-/* Nueva animación para el hover del icono */
 @keyframes iconShrink {
   0% {
     transform: scale(1);
   }
+
   100% {
-    transform: scale(0.7); /* Cambia el valor para ajustar el tamaño del icono en el hover */
+    transform: scale(0.7);
   }
 }
 
-/* Aplicar la animación al icono en el hover */
 .floating-button:hover .icon-container {
   animation: iconShrink 0.3s ease forwards;
   padding-bottom: 30px;
 }
 
-/* Estilos para el texto que aparece en el hover */
-/* Estilos para el texto que aparece en el hover */
 .floating-button .text-container {
-  text-align: center; /* Centrar el texto */
-  opacity: 0; /* El texto estará oculto inicialmente */
-  transition: opacity 0.3s ease; /* Agregamos una transición suave para que aparezca */
-  position: absolute; /* Posicionamos el texto */
-  bottom: 0; /* Lo colocamos en la parte inferior del contenedor del botón */
-  width: 100%; /* Ocupa todo el ancho del botón */
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
-/* Mostramos el texto cuando el botón está en hover */
 .floating-button:hover .text-container {
-  opacity: 1; /* Mostramos el texto */
+  opacity: 1;
   padding-bottom: 15px;
   font-size: 1.1em;
 }
-
-
-
-  
-  
