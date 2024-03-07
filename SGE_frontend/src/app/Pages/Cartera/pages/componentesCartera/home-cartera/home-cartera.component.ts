@@ -192,8 +192,13 @@ export class HomeCarteraComponent implements OnInit {
     contact: false,
     detallesAdicionales: '',
     usernameToSetNotificacion: '',
-    userNotifying: ''
+    userNotifying: '',
+    notificacionId: null,
+    clasificacionId: null
   }
+
+  notiId:number | null = null
+  clasifiNotiId:number | null = null
 
   gestionSelected: any = {
     numeroObligacion: '',
@@ -284,6 +289,7 @@ export class HomeCarteraComponent implements OnInit {
     numeroObligacion: "",
     numeroAlterno: "",
     cedula: "",
+    cedulaArchivo: "",
     username: ""
   }
 
@@ -295,6 +301,13 @@ export class HomeCarteraComponent implements OnInit {
   clienteSelected: any = {
     numeroDocumento: '',
     nombreTitular: ''
+  }
+
+  notiObj:any = {
+    idNotificacion: 0,
+    fechaCreacion: new Date(),
+    idClasificacion: 0,
+    numeroObligacion: ''
   }
 
   //FILTROS
@@ -388,11 +401,62 @@ export class HomeCarteraComponent implements OnInit {
   ingresarTel: boolean = true
   botonGuardarGes: boolean = false
 
+  mostrarCuentaCobrar:boolean = false
+
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
   botonFiltrarObligacion: boolean = false
   filtradoBuscar:boolean = false
   variableLimpiar: boolean = false
+  
+  //FILTRO NOTIFICACIONES
+  filtroVen:string = ''
+  tipoVen:string = ''
+
+  filtroAll:string = ''
+  tipoAll:string = ''
+
+  filtroRealizada:string = ''
+  tipoReal:string = ''
+
+  //PAGINACION NOTIFICACIONES
+  filtrandoNoti: boolean = false
+
+  initialConAll: number = 1;
+  initialConVen: number = 1;
+  initialConReal: number = 1;
+
+  pageAll:number = 0
+  pageVen:number = 0
+  pageReal:number = 0
+
+  sizeAll:number = 20
+  sizeVen:number = 20
+  sizeReal:number = 20
+
+  paginasAll!: Array<number>
+  paginasVen!: Array<number>
+  paginasReal!: Array<number>
+
+  lastAll:boolean = false
+  lastVen:boolean = false
+  lastReal:boolean = false
+
+  firtsAll:boolean = false
+  firtsVen:boolean = false
+  firtsReal:boolean = false
+
+  numeroPagesAll:number = 0
+  numeroPagesVen:number = 0
+  numeroPagesReal:number = 0
+
+  contAll: number = 1
+  contVen: number = 1
+  contReal: number = 1
+
+  isConAll: boolean = false
+  isConVen: boolean = false
+  isConReal: boolean = false
 
   @ViewChildren('variableCol') colcheck!: QueryList<ElementRef>;
 
@@ -513,6 +577,7 @@ export class HomeCarteraComponent implements OnInit {
         (data: any) => {
           this.paginas = new Array(data.totalPages)
           this.cuentasCobrarArray = data.content
+          console.log(this.cuentasCobrarArray);
           this.last = data.last
           this.first = data.first
           this.numeroPages = data.totalPages
@@ -727,7 +792,9 @@ export class HomeCarteraComponent implements OnInit {
         contact: false,
         detallesAdicionales: '',
         usernameToSetNotificacion: '',
-        userNotifying: ''
+        userNotifying: '',
+        notificacionId: null,
+        clasificacionId: null
       }
 
       this.acuerdo = {
@@ -778,7 +845,9 @@ export class HomeCarteraComponent implements OnInit {
               contact: false,
               detallesAdicionales: this.newGestion.detallesAdicionales,
               usernameToSetNotificacion: '',
-              userNotifying: ''
+              userNotifying: '',
+              notificacionId: null,
+              clasificacionId: null
             }
 
             if (this.cuentaCobrarSelected.documentoCliente != '') {
@@ -811,6 +880,7 @@ export class HomeCarteraComponent implements OnInit {
   getGestiones(numeroObligacion: string) {
     this.alertasGestiones()
     this.gestiones = []
+    this.notiId = 0
     this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
       (data: any) => {
         console.log(data);
@@ -826,6 +896,236 @@ export class HomeCarteraComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  getGestionesNoti(numeroObligacion:string, idGestion:number, fechaCreacion:Date, tipoGestion:string, idNotifi:number){
+    this.mostrarCuentaCobrar = true
+
+    if(this.newGestion.numeroObligacion == numeroObligacion){
+      this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
+      return
+    } else {
+      this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
+        (data: any) => {
+          this.newGestion.numeroObligacion = numeroObligacion
+          this.gestiones = data
+          this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
+          console.log(this.gestiones);
+        }, (error: any) => {
+          console.log(error);
+        }
+      )
+    }
+    
+
+    this.notiId = idNotifi
+    if (this.newGestion.numeroObligacion == numeroObligacion) {
+      $('#modalObligacion').modal('hide');
+      return
+    } else {
+      this.spinnerSidebar = true
+      
+      this.cuentaCobrarSelected = {
+        idCuentasPorCobrar: 0,
+        numeroObligacion: '',
+        cliente: '',
+        documentoCliente: '',
+        fechaCuentaCobrar: '',
+        fechaVencimiento: '',
+        tipo: '',
+        valorNotaDebito: 0,
+        valorCuota: 0,
+        valorPagos: 0,
+        nombre_usuario: '',
+        clasificacion: '',
+        vendedor: '',
+        clasificacionJuridica: '',
+        detalle: '',
+        sede: {
+          idSede: 0,
+          sede: ''
+        },
+        banco: {
+          idBanco: 0,
+          banco: ''
+        },
+        diasVencidos: 0,
+        gestion: [],
+        edadVencimiento: '',
+        condicionEspecial: '',
+        numeroCreditos: 0,
+        pagare: '',
+        moraObligatoria: 0,
+        totalObligatoria: 0,
+        cuotasMora: 0,
+        cuotas: 0,
+        asesorCarteraResponse: {
+          idAsesorCartera: 0,
+          usuario: {
+            idUsuario: 0,
+            username: '',
+            email: '',
+            nombres: '',
+            apellidos: '',
+            sede: '',
+            tipo_documento: '',
+            numero_documento: '',
+            celular: '',
+            fecha_nacimiento: new Date,
+            fecha_creacion: new Date,
+            status: false,
+            roles: [],
+            enabled: false,
+            authorities: [],
+            accountNonLocked: false,
+            accountNonExpired: false,
+            credentialsNonExpired: false,
+            password: ''
+          }
+        },
+        clientes: []
+      }
+
+      this.acuerdo = {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: new Date,
+        cuotasList: [],
+        username: ''
+      }
+
+      this.newGestion = {
+        numeroObligacion: '',
+        clasificacion: {
+          tipoClasificacion: null,
+          tarea: null,
+          nota: null,
+          acuerdoPago: null,
+          nombreClasificacion: ''
+        },
+        contact: false,
+        detallesAdicionales: '',
+        usernameToSetNotificacion: '',
+        userNotifying: '',
+        notificacionId: null,
+        clasificacionId: null
+      }
+
+      this.acuerdo = {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: '',
+        cuotasList: [],
+        username: ''
+      }
+
+      this.nota = {
+        detalle: ''
+      }
+
+      this.tarea = {
+        detalleTarea: '',
+        fechaFinTarea: '',
+        isPartOfRecaudo: false
+      }
+
+      this.codeudoresSelected = []
+      $('#modalObligacion').modal('hide');
+      setTimeout(() => {
+        this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
+          (data: any) => {
+            this.cuentaCobrarSelected = data
+            this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
+            this.moraObligatoriaFirst = data.moraObligatoria
+            this.calcularFirst()
+            this.codeudores = data.clientes
+            this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
+            this.cuentasCalcular.numeroObligacion = numeroObligacion
+            this.newGestion = {
+              numeroObligacion: this.newGestion.numeroObligacion,
+              clasificacion: {
+                tipoClasificacion: '',
+                tarea: null,
+                nota: null,
+                acuerdoPago: null,
+                nombreClasificacion: ''
+              },
+              contact: false,
+              detallesAdicionales: this.newGestion.detallesAdicionales,
+              usernameToSetNotificacion: '',
+              userNotifying: '',
+              notificacionId: null,
+              clasificacionId: null
+            }
+
+            if (this.cuentaCobrarSelected.documentoCliente != '') {
+              this.spinnerSidebar = false
+            }
+          }, (error: any) => {
+            if(this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0){
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Cliente Sin Saldo En El Sistema',
+                timer: 3000
+              })
+              $('#offcanvasRight').offcanvas('hide');
+            }
+            console.log(error);
+          }
+        )
+      }, 2000);
+    }
+    
+  }
+
+  mostrarCpc(){
+    this.mostrarCuentaCobrar = false
+    $('#modalGestionCom').modal('hide');
+  }
+
+  getOneGestionNoti(id: number, fechaCreacion:Date, tipoGestion:string) {
+    
+    this.coutasRequest = []
+    this.recibosPago = []
+
+    if(tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA'){
+      this.notiId = null
+      this.clasifiNotiId = null
+    }
+
+    if(id != null){
+      console.log(id);
+      
+      var gestion = this.gestiones.find((g: any) => g.clasificacion.idClasificacionGestion == id)
+
+      this.positionGestionSelected = this.gestiones.indexOf(gestion)
+  
+      this.obtenerGestionSelected()
+
+    } else {
+      var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == tipoGestion && g.fechaGestion == fechaCreacion)
+      console.log(gestion);
+      
+      this.positionGestionSelected = this.gestiones.indexOf(gestion)
+  
+      this.obtenerGestionSelected()
+    }
+  }
+
+  completarGestion(){
+    $('#modalGestion').modal('show');
+    $('#modalGestionCom').modal('hide');
+    this.newGestion.notificacionId = this.notiId
+    this.newGestion.clasificacionId = this.clasifiNotiId
   }
 
   getLastDato(numeroDocumento: string) {
@@ -901,8 +1201,7 @@ export class HomeCarteraComponent implements OnInit {
         this.newGestion.userNotifying = user
 
         console.log(this.newGestion);
-
-
+        
         Swal.fire({
           title: 'Guardar Gestión',
           text: '¿Está Seguro De Crear Esta Gestión?',
@@ -924,6 +1223,7 @@ export class HomeCarteraComponent implements OnInit {
                 } else {
                   this.filtro()
                 }
+                
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
@@ -938,12 +1238,14 @@ export class HomeCarteraComponent implements OnInit {
                     tarea: null,
                     nota: null,
                     acuerdoPago: null,
-                    nombreClasificacion: ''
+                    nombreClasificacion: '',
                   },
                   contact: false,
                   detallesAdicionales: this.newGestion.detallesAdicionales,
                   usernameToSetNotificacion: '',
-                  userNotifying: ''
+                  userNotifying: '',
+                  notificacionId: null,
+                  clasificacionId: null
                 }
                 $('#modalGestion').modal('hide');
                 $('#offcanvasRight').offcanvas('hide');
@@ -984,6 +1286,22 @@ export class HomeCarteraComponent implements OnInit {
 
         console.log(this.newGestion);
 
+        var notaPush = {
+          asesorCartera: user,
+          clasificacion: {
+            clasificacion: this.newGestion.clasificacion.tipoClasificacion,
+            detalleNota: this.newGestion.clasificacion.nota?.detalle,
+            fechaNota: new Date(),
+            nombresClasificacion: {
+              nombre: this.newGestion.clasificacion.nombreClasificacion,
+              tipo: this.newGestion.clasificacion.tipoClasificacion
+            }
+          },
+          detallesAdicionales: this.newGestion.detallesAdicionales,
+          fechaGestion: new Date(),
+          idGestion: this.newGestion.numeroObligacion,
+          numeroObligacion: this.newGestion.numeroObligacion
+        }
 
         Swal.fire({
           title: 'Guardar Gestión',
@@ -999,14 +1317,22 @@ export class HomeCarteraComponent implements OnInit {
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
-                this.getGestiones(this.newGestion.numeroObligacion)
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
                   text: 'Gestión Guardada Exitosamente',
                   timer: 3000
                 })
-                this.getNotificaciones()
+
+                this.gestiones.push(notaPush)
+                
+                var gesArray = this.gestiones
+                
+                this.gestiones = []
+                
+                this.ordenarGestiones(gesArray)
+                console.log(this.gestiones);
+                
                 if(!this.filtroAgain){
                   this.getCuentasCobrar()
                 } else {
@@ -1025,7 +1351,9 @@ export class HomeCarteraComponent implements OnInit {
                   contact: false,
                   detallesAdicionales: this.newGestion.detallesAdicionales,
                   usernameToSetNotificacion: '',
-                  userNotifying: ''
+                  userNotifying: '',
+                  notificacionId: null,
+                  clasificacionId: null
                 }
                 $('#modalGestion').modal('hide');
                 $('#offcanvasRight').offcanvas('hide');
@@ -1160,7 +1488,6 @@ export class HomeCarteraComponent implements OnInit {
       sumaComprobacion = sumaComprobacion + this.cuotas[i].valorCuota
     }
     console.log(this.newGestion);
-    
 
     Swal.fire({
       title: 'Guardar Gestión',
@@ -1180,18 +1507,10 @@ export class HomeCarteraComponent implements OnInit {
             this.getNotificaciones()
             this.mostrarReporte()
             if(!this.filtroAgain){
-              this.getCuentasCobrar()
-            } else {
-              this.filtro()
-            }
-            Swal.fire({
-              icon: 'success',
-              title: 'Datos Guardados',
-              showConfirmButton: false,
-              text: 'Gestión Guardada Exitosamente',
-              timer: 3000
-            })
-            console.log(this.newGestion);
+                this.getCuentasCobrar()
+              } else {
+                  this.filtro()
+                }
 
             this.botonGuardarGes = false
             this.newGestion = {
@@ -1206,7 +1525,9 @@ export class HomeCarteraComponent implements OnInit {
               contact: false,
               detallesAdicionales: this.newGestion.detallesAdicionales,
               usernameToSetNotificacion: '',
-              userNotifying: ''
+              userNotifying: '',
+              notificacionId: null,
+              clasificacionId: null
             }
             this.cuotas = []
             this.disabledFecha = false
@@ -1229,8 +1550,6 @@ export class HomeCarteraComponent implements OnInit {
               username: ''
             }
             this.col = true
-            $('#modalDetalle').modal('hide');
-            $('#modalReporte').modal('show');
           }, (error: any) => {
             Swal.fire({
               icon: 'error',
@@ -1377,18 +1696,18 @@ export class HomeCarteraComponent implements OnInit {
     this.recibosPago = []
 
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
-
+    
     this.positionGestionSelected = this.gestiones.indexOf(gestion)
 
-
     this.obtenerGestionSelected()
-
-
   }
 
   obtenerGestionSelected() {
 
     this.gestionSelected = this.gestiones[this.positionGestionSelected]
+
+    this.clasifiNotiId = this.gestionSelected.clasificacion.idClasificacionGestion
+
     console.log(this.gestionSelected);
     if (this.gestionSelected.clasificacion.nombresClasificacion.tipo == 'ACUERDO DE PAGO') {
       this.obtenerCuotas()
@@ -1422,6 +1741,10 @@ export class HomeCarteraComponent implements OnInit {
       this.cuotasList.push(c)
     });
 
+    console.log(this.gestionSelected.clasificacion.cuotasList);
+    
+    console.log(this.cuotasList);
+    
     this.cuotasList.forEach((c: CuotaList) => {
 
       this.totalCuotasAcuerdo = this.totalCuotasAcuerdo + c.valorCuota
@@ -1505,8 +1828,17 @@ export class HomeCarteraComponent implements OnInit {
           this.mostrarRep = data
           this.mensaje = this.mostrarRep.messageToWpp
           this.base64 = this.mostrarRep.base64
+          $('#modalDetalle').modal('hide');
+          $('#modalReporte').modal('show');
         }, (error: any) => {
           console.log(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'El Acuerdo Fue Guardado, Pero hubo Error al Generar El Reporte',
+            timer: 3000
+          })
+          $('#modalDetalle').modal('hide');
         }
       )
     }, 2000);
@@ -1561,7 +1893,10 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   cambiarCedula(event: any) {
-    this.reporte.cedula = this.reporte.cedula
+    this.reporte.cedula = this.cuentaCobrarSelected.clientes[0].numeroDocumento
+    this.reporte.cedulaArchivo = event.target.value
+    console.log(this.reporte);
+    
 
     if (this.reporte.cedula == null || this.reporte.cedula == '') {
       this.renderer.setAttribute(this.mySelect.nativeElement, 'disabled', 'true')
@@ -1591,10 +1926,24 @@ export class HomeCarteraComponent implements OnInit {
       ele?.click()
     }, 2000);
     $('#offcanvasRight').offcanvas('hide');
+    Swal.fire({
+      icon: 'success',
+      title: 'Datos Guardados',
+      showConfirmButton: false,
+      text: 'Gestión Guardada Exitosamente',
+      timer: 1000
+    })
   }
 
   cerrarCuenta(){
     $('#offcanvasRight').offcanvas('hide');
+    Swal.fire({
+      icon: 'success',
+      title: 'Datos Guardados',
+      showConfirmButton: false,
+      text: 'Gestión Guardada Exitosamente',
+      timer: 1000
+    })
   }
 
 
@@ -1887,18 +2236,18 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-      this.acuerdoCal.saldoAcuerdo = parseInt(this.cuentaCobrarSelected.clientes[0].saldoActual) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      this.acuerdoCal.saldoAcuerdo = parseInt(this.cuentaCobrarSelected.totalObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
     } else {
-      this.acuerdoCal.saldoAcuerdo = parseInt(this.cuentaCobrarSelected.clientes[0].saldoActual) + parseInt(this.acuerdoCal.valorInteresesMora)
+      this.acuerdoCal.saldoAcuerdo = parseInt(this.cuentaCobrarSelected.totalObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
     }
 
 
   }
 
   calculadora(event: any) {
-    console.log(this.cuentaCobrarSelected.clientes[0].saldoActual);
+    console.log(this.cuentaCobrarSelected.totalObligatoria);
 
-    if (this.cuentaCobrarSelected.clientes[0].saldoActual <= 0 || this.cuentaCobrarSelected.clientes[0].saldoActual == null) {
+    if (this.cuentaCobrarSelected.totalObligatoria <= 0 || this.cuentaCobrarSelected.totalObligatoria == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -1907,7 +2256,7 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
-    if (this.cuentaCobrarSelected.clientes[0].saldoActual < this.cuentaCobrarSelected.moraObligatoria) {
+    if (this.cuentaCobrarSelected.totalObligatoria < this.cuentaCobrarSelected.moraObligatoria) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -1925,7 +2274,7 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
-    if (this.cuentaCobrarSelected.clientes[0].saldoActual > this.saldoCapitalTotalFirst) {
+    if (this.cuentaCobrarSelected.totalObligatoria > this.saldoCapitalTotalFirst) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -2116,7 +2465,6 @@ export class HomeCarteraComponent implements OnInit {
 
   // CALCULAR LAS FECHAS DE LAS CUOTAS
   generarFechas() {
-    this.fechasIncrementadas = []
     var fechaString = this.fechaInicial.toISOString()
 
 
@@ -2398,7 +2746,6 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUl)
-                this.cantidadFechas++;
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
                 break;
@@ -2433,7 +2780,6 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUl)
-                this.cantidadFechas++;
                 this.cuotas[position].valorCuota = parseInt(event.target.value)
                 excedentePrinciapl = 0
                 break;
@@ -2460,7 +2806,6 @@ export class HomeCarteraComponent implements OnInit {
                 cumplio: false
               }
               this.cuotas.push(cuoUl)
-              this.cantidadFechas++;
               this.cuotas[position].valorCuota = parseInt(event.target.value)
               break;
             } else {
@@ -2478,7 +2823,6 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUll)
-                this.cantidadFechas++;
                 nuevoValorSumarCuotas = nuevoValorSumarCuotas - excedenteParaCuouta
               } else {
                 var cuoUll = {
@@ -2492,7 +2836,6 @@ export class HomeCarteraComponent implements OnInit {
                   cumplio: false
                 }
                 this.cuotas.push(cuoUll)
-                this.cantidadFechas++;
                 nuevoValorSumarCuotas = excedentePrinciapl
               }
             }
@@ -2510,7 +2853,6 @@ export class HomeCarteraComponent implements OnInit {
     this.disableds[this.cuotas.length - 1] = true
     this.metodosCalculos()
     this.validarCuotasVacias()
-    this.generarFechas()
   }
 
   // CLASIFICACION
@@ -2567,7 +2909,9 @@ export class HomeCarteraComponent implements OnInit {
           contact: false,
           detallesAdicionales: this.newGestion.detallesAdicionales,
           usernameToSetNotificacion: '',
-          userNotifying: ''
+          userNotifying: '',
+          notificacionId: null,
+          clasificacionId: null
         }
 
         this.acuerdo = {
@@ -2644,17 +2988,17 @@ export class HomeCarteraComponent implements OnInit {
         case 20:
           this.size = 20
           this.spinner = true
-          this.filtro()
+          this.filtroFirst()
           break;
         case 50:
           this.spinner = true
           this.size = 50
-          this.filtro()
+          this.filtroFirst()
           break;
         case 100:
           this.spinner = true
           this.size = 100
-          this.filtro()
+          this.filtroFirst()
           break;
       }
     } else {
@@ -2707,6 +3051,139 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   //FILTROS
+  filtroFirst() {
+    var td
+    var contenido:any
+    var partesMes
+    var mesTd
+    var anioTd
+
+    const mesActual = new Date().getMonth() + 1
+    const anioActual = new Date().getFullYear()
+
+    var user = this.authService.getUsername();
+
+    if (user != null || user != undefined) {
+      this.filtros.username = user
+    }
+
+    this.filtros.banco = this.bancosArray
+    this.filtros.clasiJuridica = this.clasJurArray
+    this.filtros.sede = this.sedesArray
+    this.filtros.edadVencimiento = this.edadVenArray
+    this.filtros.clasificacionGestion = this.clasGesArray
+
+    console.log(this.filtros);
+    
+
+    if (
+      (this.filtros.banco.length == 0) &&
+      (this.filtros.diasVencidosInicio == 0 || this.filtros.diasVencidosInicio == null) &&
+      (this.filtros.diasVencidosFin == 0 || this.filtros.diasVencidosFin == null) &&
+      (this.filtros.edadVencimiento.length == 0) &&
+      (this.filtros.sede.length == 0) &&
+      (this.filtros.clasiJuridica.length == 0) &&
+      (this.filtros.clasificacionGestion.length == 0) &&
+      (this.filtros.saldoCapitalInicio == 0 || this.filtros.saldoCapitalInicio == null) &&
+      (this.filtros.saldoCapitalFin == 0 || this.filtros.saldoCapitalFin == null) &&
+      (this.filtros.fechaCpcInicio == null) &&
+      (this.filtros.fechaCpcFin == null) &&
+      (this.filtros.fechaGestionInicio == null) &&
+      (this.filtros.fechaGestionFin == null) &&
+      (this.filtros.fechaCompromisoInicio == null) &&
+      (this.filtros.fechaCompromisoFin == null)
+    ) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe de llenar al menos Un Filtro',
+        timer: 3000,
+      });
+      return;
+    }
+
+    var admin = this.authService.getRolesByName(ROLES.Administration);
+
+    var cartera = this.authService.getRolesByName(ROLES.Cartera);
+
+    var permiso = this.validarPermisoEnRolCartera("VER TODOS", cartera);
+
+    if (admin.length != 0 || permiso != undefined && permiso.length != 0) {
+      this.filtros.username = ''
+    }
+
+    this.botonFiltro = true
+    this.page = 0
+    console.log(this.filtros);
+    this.cuentasCobrar.filtro(this.page, this.size, this.fechaCreacion, this.filtros).subscribe(
+      (data: any) => {
+        this.botonFiltro = false
+        this.filtrando = true
+        this.filtroAgain = true
+        this.paginas = new Array(data.totalPages)
+        this.cuentasCobrarArray = data.content
+        console.log(this.cuentasCobrarArray);
+        this.last = data.last
+        this.first = data.first
+        this.numeroPages = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+
+        if (this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
+          (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
+          (this.filtros.diasVencidosFin != 0 && this.filtros.diasVencidosFin != null) ||
+          (this.filtros.edadVencimiento.length != 0) ||
+          (this.filtros.sede.length != 0) ||
+          (this.filtros.clasiJuridica.length != 0) ||
+          (this.filtros.saldoCapitalInicio != 0 && this.filtros.saldoCapitalInicio != null) ||
+          (this.filtros.saldoCapitalFin != 0 && this.filtros.saldoCapitalFin != null) ||
+          (this.filtros.fechaCpcInicio != null) ||
+          (this.filtros.fechaCpcFin != null) ||
+          (this.filtros.fechaGestionInicio != null) ||
+          (this.filtros.fechaGestionFin != null) ||
+          (this.filtros.fechaCompromisoInicio != null) ||
+          (this.filtros.fechaCompromisoFin != null)) {
+            setTimeout(() => {
+              for (let i = 0; i < this.size; i++) {
+                td = document.getElementById(`td_${i}`)
+  
+                if(td != null && td != undefined){
+                  contenido = td.textContent;
+  
+                  partesMes = contenido.split('/')
+  
+                  mesTd = parseInt(partesMes[1], 10)
+                  anioTd = parseInt(partesMes[2], 10)
+                  
+                  if(mesTd == mesActual && anioTd == anioActual){
+                    td.classList.add("gestionado")
+                  }
+                }
+              }
+            }, 100);
+          this.variableLimpiar = true
+        } else {
+          this.variableLimpiar = false
+        }
+        console.log(this.cuentasCobrarArray);
+        
+        if (this.cuentasCobrarArray.length == 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No hay Cuentas Con Estos Filtros',
+            timer: 3000,
+          });
+          this.getCuentasCobrar()
+          return;
+        }
+        $('#offcanvasFilter').offcanvas('hide');
+      }, (error: any) => {
+        this.botonFiltro = false
+        console.log(error);
+      }
+    )
+  }
+
   filtro() {
     var td
     var contenido:any
@@ -2982,11 +3459,6 @@ export class HomeCarteraComponent implements OnInit {
         this.botonFiltrarObligacion = false
         this.cuentasCobrarBuscar = data
         this.filtradoBuscar = true
-        this.numeroPages = 1
-        this.cuentasCobrar.proSubject.next(true);
-        for (const i of this.colcheck.toArray()) {
-          i.nativeElement.checked = false
-        }
 
         if (this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
           (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
@@ -3025,7 +3497,7 @@ export class HomeCarteraComponent implements OnInit {
           this.variableLimpiar = false
         }
 
-        if (this.cuentasCobrarArray == null || this.cuentasCobrarArray.length == 0) {
+        if (this.cuentasCobrarBuscar == null || this.cuentasCobrarBuscar.length == 0) {
           this.spinner = true
           Swal.fire({
             icon: 'error',
@@ -3063,8 +3535,13 @@ export class HomeCarteraComponent implements OnInit {
 
     }
 
-    var gesFalse = gestiones.filter((ges: any) => !ges.clasificacion.isActive)
-    gesFalse.forEach((ges: any) => {
+    var acuerdosFalse = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'ACUERDO DE PAGO' && !ges.clasificacion.isActive)
+    acuerdosFalse.forEach((ges: any) => {
+      this.gestiones.push(ges)
+    });
+
+    var tareaFalse = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && !ges.clasificacion.isActive)
+    tareaFalse.forEach((ges: any) => {
       this.gestiones.push(ges)
     });
   }
@@ -3400,7 +3877,9 @@ export class HomeCarteraComponent implements OnInit {
           text: 'Nota Guardada Con Éxito',
           timer: 3000
         })
+        this.detalleRevision = ''
         this.spinnerCrearNota = false
+        this.ocultarCrearRevision = false
       }, (error: any) => {
         Swal.fire({
           icon: 'error',
@@ -3511,23 +3990,38 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-    this.cuentasCobrar.getNotificacionesVencidas(user).subscribe(
+    this.cuentasCobrar.getNotificacionesVencidas(user, this.pageVen, this.sizeVen).subscribe(
       (data: any) => {
-        this.notiArrayVencidas = data
+        this.paginasVen = new Array(data.totalPages)
+        this.notiArrayVencidas = data.content 
+        this.lastVen = data.last
+        this.firtsVen = data.first
+        this.numeroPagesVen = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+        console.log(this.notiArrayVencidas);
+        
         if (user == null || user == undefined) {
           return
         }
-        this.cuentasCobrar.getAllNotificaciones(user).subscribe(
+        this.cuentasCobrar.getAllNotificaciones(user, this.pageAll, this.sizeAll).subscribe(
           (data: any) => {
-            this.notiArray = data
-
+            this.paginasAll = new Array(data.totalPages)
+            this.notiArray = data.content
+            this.lastAll = data.last
+            this.firtsAll = data.first
+            this.numeroPagesAll = data.totalPages
+            this.cuentasCobrar.proSubject.next(true);
+            console.log(this.notiArray);
+            
             if (user == null || user == undefined) {
               return
             }
 
-            this.cuentasCobrar.getNotificacionesRealizadas(user).subscribe(
+            this.cuentasCobrar.getNotificacionesRealizadas(user, this.pageReal, this.sizeReal).subscribe(
               (data: any) => {
-                this.notiArrayRealizadas = data
+                this.notiArrayRealizadas = data.content
+                console.log(this.notiArrayRealizadas);
+                
               }
             )
 
@@ -3541,7 +4035,451 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  desactivarNoti(id: number) {
+  getNotiVen(){
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+
+    this.cuentasCobrar.getNotificacionesVencidas(user, this.pageVen, this.sizeVen).subscribe(
+      (data: any) => {
+        this.paginasVen = new Array(data.totalPages)
+        this.notiArrayVencidas = data.content 
+        this.lastVen = data.last
+        this.firtsVen = data.first
+        this.numeroPagesVen = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+        console.log(this.notiArrayVencidas);
+      }, (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  getNotiAll(){
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+
+    this.cuentasCobrar.getAllNotificaciones(user, this.pageAll, this.sizeAll).subscribe(
+      (data: any) => {
+        this.paginasAll = new Array(data.totalPages)
+        this.notiArray = data.content
+        this.lastAll = data.last
+        this.firtsAll = data.first
+        this.numeroPagesAll = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+        console.log(this.notiArray);
+      }, (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  getNotiReal(){
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+
+    this.cuentasCobrar.getNotificacionesRealizadas(user, this.pageReal, this.sizeReal).subscribe(
+      (data: any) => {
+        this.notiArrayRealizadas = data.content
+        console.log(this.notiArrayRealizadas);
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  //PAGINACION NOTIFICACIONES
+
+  //TODAS
+  backAll() {
+    if (!this.firtsAll) {
+      this.pageAll--
+      if (this.filtrandoNoti) {
+        this.getNotiAllBySede()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConAll = con;
+            this.contAll = this.contAll - this.sizeAll
+            this.proSubscriptionBack.unsubscribe()
+          }
+        );
+      } else {
+        this.getNotiAll()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConAll = con;
+            this.contAll = this.contAll - this.sizeAll
+            this.proSubscriptionBack.unsubscribe()
+          }
+        );
+      }
+    }
+  }
+
+  nextAll() {
+    if (!this.lastAll) {
+      this.pageAll++
+      if (this.filtrandoNoti) {
+        this.getNotiAllBySede()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConAll = con;
+            this.contAll = this.contAll + this.sizeAll
+            this.proSubscriptionNext.unsubscribe()
+          }
+        );
+      } else {
+        this.getNotiAll()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConAll = con;
+            this.contAll = this.contAll + this.sizeAll
+            this.proSubscriptionNext.unsubscribe()
+          }
+        );
+      }
+    }
+  }
+
+  goToPageAll(page: number) {
+    this.pageAll = page
+    if (this.filtrandoNoti) {
+      this.getNotiAllBySede()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isConAll = con;
+          this.contAll = this.initialConAll + (this.pageAll * this.sizeAll);
+          this.proSubscriptionNext.unsubscribe()
+        }
+      );
+    } else {
+      this.getNotiAll()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isConAll = con;
+          this.contAll = this.initialConAll + (this.pageAll * this.sizeAll);
+          this.proSubscriptionNext.unsubscribe()
+        }
+      );
+    }
+
+  }
+
+  //VENCIDAS
+  backVen() {
+    if (!this.firtsVen) {
+      this.pageVen--
+      if (this.filtrandoNoti) {
+        this.getNotiVenBySede()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConVen = con;
+            this.contVen = this.contVen - this.sizeVen
+            this.proSubscriptionBack.unsubscribe()
+          }
+        );
+      } else {
+        this.getNotiVen()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConVen = con;
+            this.contVen = this.contVen - this.sizeVen
+            this.proSubscriptionBack.unsubscribe()
+          }
+        );
+      }
+    }
+  }
+
+  nextVen() {
+    if (!this.lastVen) {
+      this.pageVen++
+      if (this.filtrandoNoti) {
+        this.getNotiVenBySede()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConVen = con;
+            this.contVen = this.contVen + this.sizeVen
+            this.proSubscriptionNext.unsubscribe()
+          }
+        );
+      } else {
+        this.getNotiVen()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConVen = con;
+            this.contVen = this.contVen + this.sizeVen
+            this.proSubscriptionNext.unsubscribe()
+          }
+        );
+      }
+    }
+  }
+
+  goToPageVen(page: number) {
+    this.pageVen = page
+    if (this.filtrandoNoti) {
+      this.getNotiVenBySede()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isConVen = con;
+          this.contVen = this.initialConVen + (this.pageVen * this.sizeVen);
+          this.proSubscriptionNext.unsubscribe()
+        }
+      );
+    } else {
+      this.getNotiVen()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isConVen = con;
+          this.contVen = this.initialConVen + (this.pageVen * this.sizeVen);
+          this.proSubscriptionNext.unsubscribe()
+        }
+      );
+    }
+
+  }
+
+  //REALIZADAS
+  backReal() {
+    if (!this.firtsReal) {
+      this.pageReal--
+      if (this.filtrandoNoti) {
+        this.getNotiRealizadasBySede()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConReal = con;
+            this.contReal = this.contReal - this.sizeReal
+            this.proSubscriptionBack.unsubscribe()
+          }
+        );
+      } else {
+        this.getNotiReal()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConReal = con;
+            this.contReal = this.contReal - this.sizeReal
+            this.proSubscriptionBack.unsubscribe()
+          }
+        );
+      }
+    }
+  }
+
+  nextReal() {
+    if (!this.lastReal) {
+      this.pageReal++
+      if (this.filtrandoNoti) {
+        this.getNotiRealizadasBySede()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConReal = con;
+            this.contReal = this.contReal + this.sizeReal
+            this.proSubscriptionNext.unsubscribe()
+          }
+        );
+      } else {
+        this.getNotiReal()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConReal = con;
+            this.contReal = this.contReal + this.sizeReal
+            this.proSubscriptionNext.unsubscribe()
+          }
+        );
+      }
+    }
+  }
+
+  goToPageReal(page: number) {
+    this.pageReal = page
+    if (this.filtrandoNoti) {
+      this.getNotiRealizadasBySede()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isConReal = con;
+          this.contReal = this.initialConReal + (this.pageReal * this.sizeReal);
+          this.proSubscriptionNext.unsubscribe()
+        }
+      );
+    } else {
+      this.getNotiReal()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isConReal = con;
+          this.contReal = this.initialConReal + (this.pageReal * this.sizeReal);
+          this.proSubscriptionNext.unsubscribe()
+        }
+      );
+    }
+
+  }
+
+  getNotiVenBySede(){
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+
+    if(this.filtroVen == '' || this.filtroVen == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Seleccione Un Filtro',
+        timer: 3000
+      })
+      return
+    }
+
+    this.cuentasCobrar.getVencidasBySede(this.filtroVen, user, this.tipoVen, this.pageVen, this.sizeVen).subscribe(
+      (data:any) => {
+        this.notiArrayVencidas = data.content
+        this.filtrandoNoti = true
+        this.paginasVen = new Array(data.totalPages)
+        this.lastVen = data.last
+        this.firtsVen = data.first
+        this.numeroPagesVen = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+        console.log(this.notiArrayVencidas);
+        if(this.notiArrayVencidas.length == 0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No Hay Notificaciones Con Este Filtro',
+            timer: 3000
+          })
+          setTimeout(() => {
+            this.getNotiVen()
+          }, 3000);
+        }
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  getNotiAllBySede(){
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+
+    if(this.filtroAll == '' || this.filtroAll == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Seleccione Un Filtro',
+        timer: 3000
+      })
+      return
+    }
+
+    this.cuentasCobrar.getAllBySede(this.filtroAll, user, this.tipoAll, this.pageAll, this.sizeAll).subscribe(
+      (data:any) => {
+        this.notiArray = data.content
+        this.filtrandoNoti = true
+        this.paginasAll = new Array(data.totalPages)
+        this.lastAll = data.last
+        this.firtsAll = data.first
+        this.numeroPagesAll = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+        console.log(this.notiArray);
+        if(this.notiArray.length == 0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No Hay Notificaciones Con Este Filtro',
+            timer: 3000
+          })
+          setTimeout(() => {
+            this.getNotiAll()
+          }, 3000);
+        }
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  getNotiRealizadasBySede(){
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+
+    if(this.filtroRealizada == '' || this.filtroRealizada == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Seleccione Un Filtro',
+        timer: 3000
+      })
+      return
+    }
+
+    this.cuentasCobrar.getRealizadasBySede(this.filtroRealizada, user, this.tipoReal, this.pageReal, this.sizeReal).subscribe(
+      (data:any) => {
+        this.notiArrayRealizadas = data.content
+        this.filtrandoNoti = true
+        this.paginasReal = new Array(data.totalPages)
+        this.lastReal = data.last
+        this.firtsReal = data.first
+        this.numeroPagesReal = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+        console.log(this.notiArrayRealizadas);
+        if(this.notiArrayRealizadas.length == 0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No Hay Notificaciones Con Este Filtro',
+            timer: 3000
+          })
+          setTimeout(() => {
+            this.getNotiReal()
+          }, 3000);
+        }
+      }, (error:any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  limpiarNoti(tipo:string){
+    switch (tipo) {
+      case 'ALL':
+        this.tipoAll = ''
+        this.filtroAll = ''
+        this.getNotiAll()
+        break;
+      case 'VEN':
+        this.tipoVen = ''
+        this.filtroVen = ''
+        this.getNotiVen()
+        break;
+      case 'REAL':
+        this.tipoReal = ''
+        this.filtroRealizada = ''
+        break;
+    }
+  }
+
+  desactivarNoti(id: number, fecha:Date, idClas:number, obligacion:string) {
+    this.notiObj.idNotificacion = id
+    this.notiObj.fechaCreacion = fecha
+    this.notiObj.idClasificacion = idClas
+    this.notiObj.numeroObligacion = obligacion
+    
     Swal.fire({
       title: 'Confirmar Notificación',
       text: '¿Desea Confirmar La Notificación?',
@@ -3553,7 +4491,7 @@ export class HomeCarteraComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.cuentasCobrar.desactivateNotificacion(id).subscribe(
+        this.cuentasCobrar.desactivateNotificacion(this.notiObj).subscribe(
           (data: any) => {
             Swal.fire({
               icon: 'success',
@@ -3562,6 +4500,11 @@ export class HomeCarteraComponent implements OnInit {
               timer: 3000
             })
             this.getNotificaciones()
+            if(!this.filtroAgain){
+              this.getCuentasCobrar()
+            } else {
+              this.filtro()
+            }
           }, (error: any) => {
             Swal.fire({
               icon: 'error',
@@ -3640,16 +4583,11 @@ export class HomeCarteraComponent implements OnInit {
     var usuario = this.authService.getUsername();
     var fecha = new Date();
 
-    console.log(fecha.toISOString());
-
-
 
     if (usuario != null || usuario != undefined) {
       this.cuentasCobrar.alertasGestiones(usuario, fecha.toISOString()).subscribe(
         (data: any) => {
           this.alertasGestionesObject = data; 
-          console.log(data);
-          
         }, (error: any) => {
           console.log(error)
         }
