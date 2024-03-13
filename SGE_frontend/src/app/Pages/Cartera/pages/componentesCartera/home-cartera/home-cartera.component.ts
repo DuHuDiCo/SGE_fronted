@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { addMonths, format, isLeapYear, lastDayOfMonth, parse, parseISO } from 'date-fns';
+import ca from 'date-fns/locale/ca/index.js';
 
 import { Subscription } from 'rxjs';
 import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.service';
@@ -197,8 +198,8 @@ export class HomeCarteraComponent implements OnInit {
     clasificacionId: null
   }
 
-  notiId:number | null = null
-  clasifiNotiId:number | null = null
+  notiId: number | null = null
+  clasifiNotiId: number | null = null
 
   gestionSelected: any = {
     numeroObligacion: '',
@@ -303,7 +304,7 @@ export class HomeCarteraComponent implements OnInit {
     nombreTitular: ''
   }
 
-  notiObj:any = {
+  notiObj: any = {
     idNotificacion: 0,
     fechaCreacion: new Date(),
     idClasificacion: 0,
@@ -401,23 +402,23 @@ export class HomeCarteraComponent implements OnInit {
   ingresarTel: boolean = true
   botonGuardarGes: boolean = false
 
-  mostrarCuentaCobrar:boolean = false
+  mostrarCuentaCobrar: boolean = false
 
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
   botonFiltrarObligacion: boolean = false
   filtradoBuscar: boolean = false
   variableLimpiar: boolean = false
-  
+
   //FILTRO NOTIFICACIONES
-  filtroVen:string = ''
-  tipoVen:string = ''
+  filtroVen: string = ''
+  tipoVen: string = ''
 
-  filtroAll:string = ''
-  tipoAll:string = ''
+  filtroAll: string = ''
+  tipoAll: string = ''
 
-  filtroRealizada:string = ''
-  tipoReal:string = ''
+  filtroRealizada: string = ''
+  tipoReal: string = ''
 
   //PAGINACION NOTIFICACIONES
   filtrandoNoti: boolean = false
@@ -426,29 +427,29 @@ export class HomeCarteraComponent implements OnInit {
   initialConVen: number = 1;
   initialConReal: number = 1;
 
-  pageAll:number = 0
-  pageVen:number = 0
-  pageReal:number = 0
+  pageAll: number = 0
+  pageVen: number = 0
+  pageReal: number = 0
 
-  sizeAll:number = 20
-  sizeVen:number = 20
-  sizeReal:number = 20
+  sizeAll: number = 20
+  sizeVen: number = 20
+  sizeReal: number = 20
 
   paginasAll!: Array<number>
   paginasVen!: Array<number>
   paginasReal!: Array<number>
 
-  lastAll:boolean = false
-  lastVen:boolean = false
-  lastReal:boolean = false
+  lastAll: boolean = false
+  lastVen: boolean = false
+  lastReal: boolean = false
 
-  firtsAll:boolean = false
-  firtsVen:boolean = false
-  firtsReal:boolean = false
+  firtsAll: boolean = false
+  firtsVen: boolean = false
+  firtsReal: boolean = false
 
-  numeroPagesAll:number = 0
-  numeroPagesVen:number = 0
-  numeroPagesReal:number = 0
+  numeroPagesAll: number = 0
+  numeroPagesVen: number = 0
+  numeroPagesReal: number = 0
 
   contAll: number = 1
   contVen: number = 1
@@ -898,10 +899,10 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  getGestionesNoti(numeroObligacion:string, idGestion:number, fechaCreacion:Date, tipoGestion:string, idNotifi:number){
+  getGestionesNoti(numeroObligacion: string, idGestion: number, fechaCreacion: Date, tipoGestion: string, idNotifi: number) {
     this.mostrarCuentaCobrar = true
 
-    if(this.newGestion.numeroObligacion == numeroObligacion){
+    if (this.newGestion.numeroObligacion == numeroObligacion) {
       this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
       return
     } else {
@@ -916,7 +917,7 @@ export class HomeCarteraComponent implements OnInit {
         }
       )
     }
-    
+
 
     this.notiId = idNotifi
     if (this.newGestion.numeroObligacion == numeroObligacion) {
@@ -924,7 +925,7 @@ export class HomeCarteraComponent implements OnInit {
       return
     } else {
       this.spinnerSidebar = true
-      
+
       this.cuentaCobrarSelected = {
         idCuentasPorCobrar: 0,
         numeroObligacion: '',
@@ -1070,7 +1071,7 @@ export class HomeCarteraComponent implements OnInit {
               this.spinnerSidebar = false
             }
           }, (error: any) => {
-            if(this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0){
+            if (this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0) {
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -1084,44 +1085,44 @@ export class HomeCarteraComponent implements OnInit {
         )
       }, 2000);
     }
-    
+
   }
 
-  mostrarCpc(){
+  mostrarCpc() {
     this.mostrarCuentaCobrar = false
     $('#modalGestionCom').modal('hide');
   }
 
-  getOneGestionNoti(id: number, fechaCreacion:Date, tipoGestion:string) {
-    
+  getOneGestionNoti(id: number, fechaCreacion: Date, tipoGestion: string) {
+
     this.coutasRequest = []
     this.recibosPago = []
 
-    if(tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA'){
+    if (tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA') {
       this.notiId = null
       this.clasifiNotiId = null
     }
 
-    if(id != null){
+    if (id != null) {
       console.log(id);
-      
+
       var gestion = this.gestiones.find((g: any) => g.clasificacion.idClasificacionGestion == id)
 
       this.positionGestionSelected = this.gestiones.indexOf(gestion)
-  
+
       this.obtenerGestionSelected()
 
     } else {
       var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == tipoGestion && g.fechaGestion == fechaCreacion)
       console.log(gestion);
-      
+
       this.positionGestionSelected = this.gestiones.indexOf(gestion)
-  
+
       this.obtenerGestionSelected()
     }
   }
 
-  completarGestion(){
+  completarGestion() {
     $('#modalGestion').modal('show');
     $('#modalGestionCom').modal('hide');
     this.newGestion.notificacionId = this.notiId
@@ -1201,7 +1202,7 @@ export class HomeCarteraComponent implements OnInit {
         this.newGestion.userNotifying = user
 
         console.log(this.newGestion);
-        
+
         Swal.fire({
           title: 'Guardar Gestión',
           text: '¿Está Seguro De Crear Esta Gestión?',
@@ -1223,7 +1224,7 @@ export class HomeCarteraComponent implements OnInit {
                 } else {
                   this.filtroFirst()
                 }
-                
+
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
@@ -1325,15 +1326,15 @@ export class HomeCarteraComponent implements OnInit {
                 })
 
                 this.gestiones.push(notaPush)
-                
+
                 var gesArray = this.gestiones
-                
+
                 this.gestiones = []
-                
+
                 this.ordenarGestiones(gesArray)
                 console.log(this.gestiones);
-                
-                if(!this.filtroAgain){
+
+                if (!this.filtroAgain) {
                   this.getCuentasCobrar()
                 } else {
                   this.filtroFirst()
@@ -1506,11 +1507,11 @@ export class HomeCarteraComponent implements OnInit {
             this.getGestiones(this.newGestion.numeroObligacion)
             this.getNotificaciones()
             this.mostrarReporte()
-            if(!this.filtroAgain){
-                this.getCuentasCobrar()
-              } else {
-                  this.filtroFirst()
-                }
+            if (!this.filtroAgain) {
+              this.getCuentasCobrar()
+            } else {
+              this.filtroFirst()
+            }
 
             this.botonGuardarGes = false
             this.newGestion = {
@@ -1696,7 +1697,7 @@ export class HomeCarteraComponent implements OnInit {
     this.recibosPago = []
 
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
-    
+
     this.positionGestionSelected = this.gestiones.indexOf(gestion)
 
     this.obtenerGestionSelected()
@@ -1742,9 +1743,9 @@ export class HomeCarteraComponent implements OnInit {
     });
 
     console.log(this.gestionSelected.clasificacion.cuotasList);
-    
+
     console.log(this.cuotasList);
-    
+
     this.cuotasList.forEach((c: CuotaList) => {
 
       this.totalCuotasAcuerdo = this.totalCuotasAcuerdo + c.valorCuota
@@ -1896,7 +1897,7 @@ export class HomeCarteraComponent implements OnInit {
     this.reporte.cedula = this.cuentaCobrarSelected.clientes[0].numeroDocumento
     this.reporte.cedulaArchivo = event.target.value
     console.log(this.reporte);
-    
+
 
     if (this.reporte.cedula == null || this.reporte.cedula == '') {
       this.renderer.setAttribute(this.mySelect.nativeElement, 'disabled', 'true')
@@ -2014,15 +2015,15 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
-    if (this.acuerdo.tipoAcuerdo.trim() == '' || this.acuerdo.tipoAcuerdo.trim() == null) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Elija Un Tipo de Acuerdo',
-        timer: 3000
-      })
-      return
-    }
+    // if (this.acuerdo.tipoAcuerdo.trim() == '' || this.acuerdo.tipoAcuerdo.trim() == null) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Error',
+    //     text: 'Elija Un Tipo de Acuerdo',
+    //     timer: 3000
+    //   })
+    //   return
+    // }
 
     if (this.calculating == false) {
       this.calcularIntMora()
@@ -2032,7 +2033,7 @@ export class HomeCarteraComponent implements OnInit {
       this.calcularHonorarios()
     }
 
-    this.calcularByTipoAcuerdo()
+    // this.calcularByTipoAcuerdo()
 
     // if (this.acuerdo.valorCuotaMensual > this.acuerdoCal.valorTotalAcuerdo) {
     //   Swal.fire({
@@ -2044,17 +2045,17 @@ export class HomeCarteraComponent implements OnInit {
     //   return
     // }
 
-    var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
+    // var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
 
-    if (this.acuerdo.valorCuotaMensual < valorMinimo) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: `El Valor Mínimo De La Cuota debe de ser de: ${valorMinimo}`,
-        timer: 3000
-      })
-      return
-    }
+    // if (this.acuerdo.valorCuotaMensual < valorMinimo) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Error',
+    //     text: `El Valor Mínimo De La Cuota debe de ser de: ${valorMinimo}`,
+    //     timer: 3000
+    //   })
+    //   return
+    // }
 
     this.disabledFecha = true
     this.calcular()
@@ -2105,14 +2106,24 @@ export class HomeCarteraComponent implements OnInit {
     this.cuentasCalcular.username = user
 
 
-    if (this.acuerdo.tipoAcuerdo == "MORA") {
+    // if (this.acuerdo.tipoAcuerdo == "MORA" && this.cuentaCobrarSelected.moraObligatoria > 0) {
 
-      this.calcularCuotasConValorMoraIncluido()
-    } else {
-      this.calcularCuotas()
-    }
+    //   this.calcularCuotasConValorMoraIncluido()
+    // }
+
+    // if (this.acuerdo.tipoAcuerdo == "TOTAL" && this.cuentaCobrarSelected.moraObligatoria > 0) {
+    //   this.calcularCuotas()
+    // }
 
 
+    // if (this.acuerdo.tipoAcuerdo == "ABONO") {
+    //   alert("abono")
+    // } else {
+    //   alert("credito no esta en mora, debe seleccionar abono")
+
+    // }
+
+    this.calcularCuotasGeneral()
 
     this.disableds = new Array(this.cuotas.length)
     this.disableds.forEach(element => {
@@ -2557,6 +2568,250 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
+  //--------------------------------------------------------------------------
+
+
+  calcularCuotasGeneral() {
+
+    var totalObligatoria = this.cuentaCobrarSelected.totalObligatoria
+    var valorCuotaAnterior = this.cuentaCobrarSelected.valorCuota
+    var valorCuotaMensual = this.acuerdo.valorCuotaMensual
+    var moraOlbigatoria = this.cuentaCobrarSelected.moraObligatoria
+
+    //cuando el cliente esta al dia
+    if (moraOlbigatoria == 0) {
+
+
+      if (valorCuotaMensual <= valorCuotaAnterior && valorCuotaMensual <= totalObligatoria) {
+        //cliente al dia
+        this.calcularUnaCuota(valorCuotaMensual, valorCuotaMensual)
+      }
+
+      if (valorCuotaMensual > valorCuotaAnterior && valorCuotaMensual <= totalObligatoria) {
+
+        if ((totalObligatoria / valorCuotaMensual) <= 20) {
+          alert("preguntar entre abono y refinanciacion")
+
+          const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: "btn btn-primary",
+              cancelButton: "btn btn-secondary"
+            },
+            buttonsStyling: false
+          });
+          swalWithBootstrapButtons.fire({
+            title: "Desea realizar un abono  o un refinanciacion?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Abono",
+            cancelButtonText: "Refinanciacio",
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              swalWithBootstrapButtons.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire({
+                title: "Cancelled",
+                text: "Your imaginary file is safe :)",
+                icon: "error"
+              });
+            }
+          });
+
+
+
+          //se pregunta si desea hacer abono o refianciar el credito
+        } else {
+          alert("valor de la cuota ingresada no es permitido")
+          alert("revisar caso")
+        }
+
+      } else {
+        alert("el valor ingresado mayor al valor de total de la obligacion")
+        //el valor de la cuota sera el valor total de la obligacion
+      }
+
+
+
+    } else {
+      //cuando el cliente no esta al dia
+
+
+      if (valorCuotaMensual <= totalObligatoria) {
+
+        if (valorCuotaMensual >= valorCuotaAnterior) {
+
+          if (valorCuotaMensual > moraOlbigatoria) {
+            alert("crear varias cuota")
+            //calcula la primera cuota con interes y el valor de cuota ingresado y el restante con las cuotas anteriores sin interes
+            this.unaCoutaMora(totalObligatoria, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior)
+            
+          } else {
+            alert("metodo repartir la cuota mensual en la mora y va a calcular el resto de cuotas a deber")
+            //metodo para repartir la cuota mensual en la mora y va a calcular el resto de cuotas a deber
+          }
+
+        } else {
+          if ((totalObligatoria / valorCuotaMensual) <= 20) {
+            alert("refinanciacion sin permiso")
+            //refinanciar
+          } else {
+            alert("refinanciacion")
+            //preguntar si tiene el permiso para refianciacion
+          }
+
+
+        }
+
+      } else {
+        alert("el valor ingresado mayor al valor de total de la obligacion")
+        //el valor de la cuota sera el valor total de la obligacion
+      }
+
+
+    }
+
+  }
+
+
+  calcularUnaCuota(valorCuot: number, capitalCuota: number) {
+    var cuotaList = {
+      numeroCuota: 1,
+      fechaVencimiento: '',
+      valorCuota: valorCuot,
+      capitalCuota: capitalCuota,
+      interesCuota: 0,
+      honorarios: 0,
+      cumplio: false
+    }
+
+    this.cuotas.push(cuotaList)
+    this.cantidadFechas++
+    this.generarFechas()
+  }
+
+
+  unaCoutaMora(totalObligacion: number, valorCuotaMensual: number, moraObligatoria: number, valorCuotaAnterior: number) {
+    if (moraObligatoria == totalObligacion) {
+      //generar cuota con interes
+
+    } else {
+      var datos = this.generarParticipacionCuotas(valorCuotaMensual, totalObligacion)
+
+      alert(totalObligacion)
+      alert(datos.capital)
+      var nuevoTotalObligatorio = totalObligacion - datos.capital
+      alert(nuevoTotalObligatorio)
+      //total cuotas con el valor de la cuota anterior
+      var totalCuotas = this.obtenerTotalCuotas(nuevoTotalObligatorio, valorCuotaAnterior)
+      alert(totalCuotas)
+
+      var saldoCapital = nuevoTotalObligatorio
+
+      for (let i = 0; i < totalCuotas; i++) {
+        if (i == 0) {
+          //generar primer cuota con interes
+          
+          this.generarCuota(i+1, valorCuotaMensual, datos.capital, datos.interes, datos.honorarios);
+          saldoCapital = saldoCapital - datos.capital
+
+        }else if (saldoCapital > valorCuotaAnterior) {
+
+          this.generarCuota(i+1, valorCuotaAnterior, valorCuotaAnterior, 0, 0);
+          saldoCapital = saldoCapital - valorCuotaAnterior
+
+        }else{
+          this.generarCuota(i+1, saldoCapital, valorCuotaAnterior, 0, 0);
+          console.log(saldoCapital);
+          
+          saldoCapital = 0
+        }
+
+        
+
+
+      }
+
+    }
+
+
+
+  }
+
+
+
+
+  variasCuotasMora() {
+
+  }
+
+  refinanciacionCredito() {
+
+  }
+
+  refinanciacionSinMora() {
+
+  }
+
+  obtenerTotalCuotas(totalObligacion: number, valorCuota: number): number {
+    var totalCuotas = totalObligacion / valorCuota
+
+    if (totalCuotas < 1) {
+      return 1;
+    }
+    return Math.ceil(totalCuotas);
+  }
+
+
+  generarCuota(numeroCuota: number, cuotaValor: number, cuotaCapital: number, cuotaInteres: number, cuotaHonorario: number) {
+    var cuotaList = {
+      numeroCuota: numeroCuota,
+      fechaVencimiento: '',
+      valorCuota: cuotaValor,
+      capitalCuota: cuotaCapital,
+      interesCuota: cuotaInteres,
+      honorarios: cuotaHonorario,
+      cumplio: false
+    }
+
+    this.cuotas.push(cuotaList)
+    this.cantidadFechas++
+    this.generarFechas()
+  }
+
+
+  generarParticipacionCuotas(valorCuota:number, total:number){
+    var participacionCuotaMora = valorCuota / total
+    var capitalCuotaMora = this.cuentaCobrarSelected.moraObligatoria * participacionCuotaMora
+    var interesCuotaMora = this.acuerdoCal.valorInteresesMora * participacionCuotaMora
+    var honorariosCuota = 0
+    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      honorariosCuota = this.acuerdoCal.honoriarioAcuerdo * participacionCuotaMora
+    }
+
+    var datos = {
+      capital: capitalCuotaMora,
+      interes : interesCuotaMora,
+      honorarios: honorariosCuota
+    }
+    return datos
+  }
+  //----------------------------------------------------------------------
+
+
+
+
+
+
+
+
   // CACULAR COUTAS
   calcularCuotas() {
 
@@ -2719,8 +2974,6 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
-
-
   //CALCULAR CUOTAS CON LAS CUOTAS EN MORA
   calcularCuotasConValorMoraIncluido() {
     this.cuotas = []
@@ -2746,8 +2999,12 @@ export class HomeCarteraComponent implements OnInit {
     totalCuotasCredito = totalCuotasCredito < 0 ? 1 : totalCuotasCredito;
 
 
+
+
+
     if (this.cuentaCobrarSelected.moraObligatoria < this.acuerdo.valorCuotaMensual) {
 
+      alert("this.cuentaCobrarSelected.moraObligatoria < this.acuerdo.valorCuotaMensual")
       var cuotaList = {
         numeroCuota: 0,
         fechaVencimiento: '',
@@ -2767,7 +3024,7 @@ export class HomeCarteraComponent implements OnInit {
         honorariosCuota = this.acuerdoCal.honoriarioAcuerdo * participacionCuotaMora
       }
 
-      cuotaList.numeroCuota =  1
+      cuotaList.numeroCuota = 1
       cuotaList.valorCuota = this.acuerdoCal.valorCuotaMensual
       cuotaList.capitalCuota = parseInt(capitalCuotaMora.toFixed(0))
       cuotaList.interesCuota = parseInt(interesCuotaMora.toFixed(0))
@@ -2780,7 +3037,7 @@ export class HomeCarteraComponent implements OnInit {
         if (c.fechaVencimiento == "") {
           c.fechaVencimiento = this.fechasIncrementadas[i]
         }
-  
+
         c.numeroCuota = i + 1
       })
 
@@ -2788,6 +3045,7 @@ export class HomeCarteraComponent implements OnInit {
 
 
       if (this.acuerdo.valorCuotaMensual > valorCuotaAnterior && (totalCoutasMora * 2) < totalCuotasCredito) {
+        alert("this.acuerdo.valorCuotaMensual > valorCuotaAnterior && (totalCoutasMora * 2) < totalCuotasCredito")
         alert("Si")
 
         var restanteCuotas = totalCuotasCredito - totalCoutasMora
@@ -2799,6 +3057,7 @@ export class HomeCarteraComponent implements OnInit {
 
       } else {
         if (this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante > this.cuentaCobrarSelected.moraObligatoria) {
+          alert("this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante > this.cuentaCobrarSelected.moraObligatoria")
           if (this.validarPermisoDado(Permisos.REFINANCIACION, Roles.CARTERA) || this.validarPermisoDado("", Roles.ADMINISTRATION)) {
 
             Swal.fire({
@@ -2828,7 +3087,7 @@ export class HomeCarteraComponent implements OnInit {
 
         } else {
           if (this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante <= this.cuentaCobrarSelected.moraObligatoria) {
-
+            alert("this.acuerdo.valorCuotaMensual <= this.cuentaCobrarSelected.valorCuota && saldoRestante <= this.cuentaCobrarSelected.moraObligatoria")
 
 
             Swal.fire({
@@ -2855,7 +3114,7 @@ export class HomeCarteraComponent implements OnInit {
 
 
           } else {
-           
+
             // alert "revisar este caso"
             this.acuerdo.tipoAcuerdo = "TOTAL"
             this.mostrarOffcanvas()
@@ -2883,7 +3142,7 @@ export class HomeCarteraComponent implements OnInit {
     for (let i = 0; i < totalCuotas; i++) {
 
       if (i < totalCuotasMora && saldoTotalMoraLocal > this.acuerdoCal.valorCuotaMensual) {
-        
+
 
 
         var cuotaList = {
@@ -2922,7 +3181,7 @@ export class HomeCarteraComponent implements OnInit {
 
       } else {
         if (saldoTotalMoraLocal > 0 && saldoTotalMoraLocal < this.acuerdoCal.valorCuotaMensual && saldoTotalMoraLocal > this.cuentaCobrarSelected.valorCuota) {
-          
+
           //vamos aqui
           console.log(valorCapitalMora);
           var cuotaList = {
@@ -2959,7 +3218,7 @@ export class HomeCarteraComponent implements OnInit {
           continue;
         } else {
           if (saldoTotalMoraLocal <= this.cuentaCobrarSelected.valorCuota && saldoTotalMoraLocal > 0) {
-            
+
             //vamos aqui
             console.log(valorCapitalMora);
 
@@ -3002,7 +3261,7 @@ export class HomeCarteraComponent implements OnInit {
       }
 
       if (saldoTotalMoraLocal == 0 && saldoTotal > this.cuentaCobrarSelected.valorCuota) {
-        
+
         var cuotaList = {
           numeroCuota: 0,
           fechaVencimiento: '',
@@ -3020,7 +3279,7 @@ export class HomeCarteraComponent implements OnInit {
         this.cantidadFechas++
       } else {
         if (saldoTotalMoraLocal == 0 && saldoTotal <= this.cuentaCobrarSelected.valorCuota) {
-          
+
           var cuotaList = {
             numeroCuota: 0,
             fechaVencimiento: '',
@@ -3481,7 +3740,7 @@ export class HomeCarteraComponent implements OnInit {
   //FILTROS
   filtroFirst() {
     var td
-    var contenido:any
+    var contenido: any
     var partesMes
     var mesTd
     var anioTd
@@ -3502,7 +3761,7 @@ export class HomeCarteraComponent implements OnInit {
     this.filtros.clasificacionGestion = this.clasGesArray
 
     console.log(this.filtros);
-    
+
 
     if (
       (this.filtros.banco.length == 0) &&
@@ -3570,24 +3829,24 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
           (this.filtros.fechaCompromisoFin != null)) {
-            setTimeout(() => {
-              for (let i = 0; i < this.size; i++) {
-                td = document.getElementById(`td_${i}`)
-  
-                if(td != null && td != undefined){
-                  contenido = td.textContent;
-  
-                  partesMes = contenido.split('/')
-  
-                  mesTd = parseInt(partesMes[1], 10)
-                  anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
-                    td.classList.add("gestionado")
-                  }
+          setTimeout(() => {
+            for (let i = 0; i < this.size; i++) {
+              td = document.getElementById(`td_${i}`)
+
+              if (td != null && td != undefined) {
+                contenido = td.textContent;
+
+                partesMes = contenido.split('/')
+
+                mesTd = parseInt(partesMes[1], 10)
+                anioTd = parseInt(partesMes[2], 10)
+
+                if (mesTd == mesActual && anioTd == anioActual) {
+                  td.classList.add("gestionado")
                 }
               }
-            }, 100);
+            }
+          }, 100);
           this.variableLimpiar = true
         } else {
           this.variableLimpiar = false
@@ -3755,7 +4014,7 @@ export class HomeCarteraComponent implements OnInit {
         this.botonFiltrarObligacion = false
         this.cuentasCobrarBuscar = data
         console.log(this.cuentasCobrarBuscar);
-        
+
         this.filtradoBuscar = true
 
         if (this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
@@ -4291,13 +4550,13 @@ export class HomeCarteraComponent implements OnInit {
     this.cuentasCobrar.getNotificacionesVencidas(user, this.pageVen, this.sizeVen).subscribe(
       (data: any) => {
         this.paginasVen = new Array(data.totalPages)
-        this.notiArrayVencidas = data.content 
+        this.notiArrayVencidas = data.content
         this.lastVen = data.last
         this.firtsVen = data.first
         this.numeroPagesVen = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
         console.log(this.notiArrayVencidas);
-        
+
         if (user == null || user == undefined) {
           return
         }
@@ -4310,7 +4569,7 @@ export class HomeCarteraComponent implements OnInit {
             this.numeroPagesAll = data.totalPages
             this.cuentasCobrar.proSubject.next(true);
             console.log(this.notiArray);
-            
+
             if (user == null || user == undefined) {
               return
             }
@@ -4319,7 +4578,7 @@ export class HomeCarteraComponent implements OnInit {
               (data: any) => {
                 this.notiArrayRealizadas = data.content
                 console.log(this.notiArrayRealizadas);
-                
+
               }
             )
 
@@ -4333,7 +4592,7 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  getNotiVen(){
+  getNotiVen() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
@@ -4343,7 +4602,7 @@ export class HomeCarteraComponent implements OnInit {
     this.cuentasCobrar.getNotificacionesVencidas(user, this.pageVen, this.sizeVen).subscribe(
       (data: any) => {
         this.paginasVen = new Array(data.totalPages)
-        this.notiArrayVencidas = data.content 
+        this.notiArrayVencidas = data.content
         this.lastVen = data.last
         this.firtsVen = data.first
         this.numeroPagesVen = data.totalPages
@@ -4355,7 +4614,7 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  getNotiAll(){
+  getNotiAll() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
@@ -4377,7 +4636,7 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  getNotiReal(){
+  getNotiReal() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
@@ -4388,7 +4647,7 @@ export class HomeCarteraComponent implements OnInit {
       (data: any) => {
         this.notiArrayRealizadas = data.content
         console.log(this.notiArrayRealizadas);
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
@@ -4621,14 +4880,14 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
-  getNotiVenBySede(){
+  getNotiVenBySede() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
       return
     }
 
-    if(this.filtroVen == '' || this.filtroVen == null){
+    if (this.filtroVen == '' || this.filtroVen == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -4639,7 +4898,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     this.cuentasCobrar.getVencidasBySede(this.filtroVen, user, this.tipoVen, this.pageVen, this.sizeVen).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.notiArrayVencidas = data.content
         this.filtrandoNoti = true
         this.paginasVen = new Array(data.totalPages)
@@ -4648,7 +4907,7 @@ export class HomeCarteraComponent implements OnInit {
         this.numeroPagesVen = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
         console.log(this.notiArrayVencidas);
-        if(this.notiArrayVencidas.length == 0){
+        if (this.notiArrayVencidas.length == 0) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -4659,20 +4918,20 @@ export class HomeCarteraComponent implements OnInit {
             this.getNotiVen()
           }, 3000);
         }
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  getNotiAllBySede(){
+  getNotiAllBySede() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
       return
     }
 
-    if(this.filtroAll == '' || this.filtroAll == null){
+    if (this.filtroAll == '' || this.filtroAll == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -4683,7 +4942,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     this.cuentasCobrar.getAllBySede(this.filtroAll, user, this.tipoAll, this.pageAll, this.sizeAll).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.notiArray = data.content
         this.filtrandoNoti = true
         this.paginasAll = new Array(data.totalPages)
@@ -4692,7 +4951,7 @@ export class HomeCarteraComponent implements OnInit {
         this.numeroPagesAll = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
         console.log(this.notiArray);
-        if(this.notiArray.length == 0){
+        if (this.notiArray.length == 0) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -4703,20 +4962,20 @@ export class HomeCarteraComponent implements OnInit {
             this.getNotiAll()
           }, 3000);
         }
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  getNotiRealizadasBySede(){
+  getNotiRealizadasBySede() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
       return
     }
 
-    if(this.filtroRealizada == '' || this.filtroRealizada == null){
+    if (this.filtroRealizada == '' || this.filtroRealizada == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -4727,7 +4986,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     this.cuentasCobrar.getRealizadasBySede(this.filtroRealizada, user, this.tipoReal, this.pageReal, this.sizeReal).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.notiArrayRealizadas = data.content
         this.filtrandoNoti = true
         this.paginasReal = new Array(data.totalPages)
@@ -4736,7 +4995,7 @@ export class HomeCarteraComponent implements OnInit {
         this.numeroPagesReal = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
         console.log(this.notiArrayRealizadas);
-        if(this.notiArrayRealizadas.length == 0){
+        if (this.notiArrayRealizadas.length == 0) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -4747,13 +5006,13 @@ export class HomeCarteraComponent implements OnInit {
             this.getNotiReal()
           }, 3000);
         }
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  limpiarNoti(tipo:string){
+  limpiarNoti(tipo: string) {
     switch (tipo) {
       case 'ALL':
         this.tipoAll = ''
@@ -4772,12 +5031,12 @@ export class HomeCarteraComponent implements OnInit {
     }
   }
 
-  desactivarNoti(id: number, fecha:Date, idClas:number, obligacion:string) {
+  desactivarNoti(id: number, fecha: Date, idClas: number, obligacion: string) {
     this.notiObj.idNotificacion = id
     this.notiObj.fechaCreacion = fecha
     this.notiObj.idClasificacion = idClas
     this.notiObj.numeroObligacion = obligacion
-    
+
     Swal.fire({
       title: 'Confirmar Notificación',
       text: '¿Desea Confirmar La Notificación?',
@@ -4798,7 +5057,7 @@ export class HomeCarteraComponent implements OnInit {
               timer: 3000
             })
             this.getNotificaciones()
-            if(!this.filtroAgain){
+            if (!this.filtroAgain) {
               this.getCuentasCobrar()
             } else {
               this.filtroFirst()
@@ -4885,7 +5144,7 @@ export class HomeCarteraComponent implements OnInit {
     if (usuario != null || usuario != undefined) {
       this.cuentasCobrar.alertasGestiones(usuario, fecha.toISOString()).subscribe(
         (data: any) => {
-          this.alertasGestionesObject = data; 
+          this.alertasGestionesObject = data;
         }, (error: any) => {
           console.log(error)
         }
