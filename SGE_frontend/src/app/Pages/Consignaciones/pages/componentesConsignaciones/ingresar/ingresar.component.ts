@@ -111,13 +111,14 @@ export class IngresarComponent implements OnInit {
         Swal.fire('Error', 'Si quieres guardar una consignación debes de llenar el campo', 'error')
         return
       }
-
+      this.crearConsignacion = true
       this.ingresarService.confirmarConsignacion(this.consignacion.numeroRecibo, this.consignacion.fechaPago, this.consignacion.valor, this.consignacion.username).subscribe(
         (data: any) => {
           this.con = data
           if (this.con.consigRes.length <= 0) {
             this.ingresarService.saveConsignacion(this.consignacion).subscribe(
               (data: any) => {
+                this.crearConsignacion = false
                 Swal.fire('Felicidades', 'Su Consignación se ha Guardado con Éxito', 'success')
                 this.consignacion = {
                   idConsignacion: 0,
@@ -137,12 +138,14 @@ export class IngresarComponent implements OnInit {
       
 
               }, (error: any) => {
+                this.crearConsignacion = false
                 Swal.fire('Error', 'Error al Guardar La Consignación', 'error')
               }
             )
           }
 
           if (this.con.consigRes.length > 0) {
+            this.crearConsignacion = false
             if (this.con.mensaje == 'RECIBO VALOR Y FECHA DE PAGO') {
             }
             if (this.con.mensaje == 'RECIBO Y FECHA') {
@@ -162,6 +165,7 @@ export class IngresarComponent implements OnInit {
     } else {
       this.consignacion.observaciones = null
       
+      this.crearConsignacion = true
       this.ingresarService.confirmarConsignacion(this.consignacion.numeroRecibo, this.consignacion.fechaPago, this.consignacion.valor, this.consignacion.username).subscribe(
         (data: any) => {
           this.con = data
@@ -169,6 +173,7 @@ export class IngresarComponent implements OnInit {
           if (this.con.consigRes.length <= 0) {
             this.ingresarService.saveConsignacion(this.consignacion).subscribe(
               (data: any) => {
+                this.crearConsignacion = false
                 Swal.fire('Felicidades', 'Su Consignación se ha Guardado con Éxito', 'success')
                 this.consignacion = {
                   idConsignacion: 0,
@@ -186,11 +191,13 @@ export class IngresarComponent implements OnInit {
                 }, 2000);
 
               }, (error: any) => {
+                this.crearConsignacion = false
                 Swal.fire('Error', 'Error al Guardar La Consignación', 'error')
               }
             )
           }
           if (this.con.consigRes.length > 0) {
+            this.crearConsignacion = false
             if (this.con.mensaje == 'RECIBO VALOR Y FECHA DE PAGO') {
             }
             if (this.con.mensaje == 'RECIBO Y FECHA') {
@@ -203,6 +210,7 @@ export class IngresarComponent implements OnInit {
           }
           
         }, (error: any) => {
+          this.crearConsignacion = false
           Swal.fire('Error', 'Error al Guardar La Consignación', 'error')
 
         }
@@ -214,8 +222,10 @@ export class IngresarComponent implements OnInit {
   }
 
   confirmarObservacion(){
+    this.crearConsignacion = true
     this.ingresarService.saveConsignacion(this.consignacion).subscribe(
       (data: any) => {
+        this.crearConsignacion = false
         Swal.fire('Felicidades', 'Su Consignación se ha Guardado con Éxito', 'success')
         this.consignacion = {
           idConsignacion: 0,
@@ -233,6 +243,7 @@ export class IngresarComponent implements OnInit {
         }, 2000);
 
       }, (error: any) => {
+        this.crearConsignacion = false
         Swal.fire('Error', 'Error al Guardar La Consignación', 'error')
       }
     )
