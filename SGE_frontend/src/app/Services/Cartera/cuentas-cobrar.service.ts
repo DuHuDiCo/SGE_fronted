@@ -49,6 +49,10 @@ export class CuentasCobrarService {
     return this.http.post(`${baseUrl}/cuentas/filtrosCuentas?page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`, dto)
   }
 
+  getItems(username:string){
+    return this.http.get(`http://192.168.1.241:8021/api/v1/items/?username=${username}`)
+  }
+
   // CLASIFICACIONES
 
   getClasificacion(){

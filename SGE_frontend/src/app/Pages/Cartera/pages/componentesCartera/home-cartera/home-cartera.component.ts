@@ -471,6 +471,7 @@ export class HomeCarteraComponent implements OnInit {
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
     this.alertasGestiones()
+    this.getItems()
   }
 
   getTipoVen() {
@@ -3989,6 +3990,20 @@ export class HomeCarteraComponent implements OnInit {
     var re: any = document.getElementById('mostrarReciboPago')
     re.src = this.base64Recibo
     $('#reciboPago').modal('show');
+  }
+
+  getItems(){
+    var user = this.authService.getUsername();
+
+    if(user != null){
+      this.cuentasCobrar.getItems(user).subscribe(
+        (data:any) => {
+          console.log(data);
+        }, (error:any) => {
+          console.log(error);
+        }
+      )
+    }
   }
 
   // NOTIFICACIONES
