@@ -19,7 +19,7 @@
             data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             <i class="fa-solid fa-envelopes-bulk"></i>
             <span class="position-absolute start-100 translate-middle badge rounded-pill bg-secondary">
-                {{ notiArray.length }}
+                {{ totalNotiVen }}
             </span>
         </button>
 
@@ -2224,9 +2224,25 @@
                         <thead>
                             <tr>
                                 <th class="h">
+
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Titular
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+
                                     <div class="row justify-content-center">
                                         <div class="col-md-12">
                                             Cliente
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Obligacion
                                         </div>
                                     </div>
                                 </th>
@@ -2251,17 +2267,24 @@
                                         </div>
                                     </div>
                                 </th>
-                                <th class="h">
+                                <!-- <th class="h">
                                     <div class="row justify-content-center">
                                         <div class="col-md-12">
                                             Clas. Juridica
+                                        </div>
+                                    </div>
+                                </th> -->
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Asesor
                                         </div>
                                     </div>
                                 </th>
                                 <th class="h">
                                     <div class="row justify-content-center">
                                         <div class="col-md-12">
-                                            Asesor
+                                            Tipo Garante
                                         </div>
                                     </div>
                                 </th>
@@ -2272,14 +2295,17 @@
                                 data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style="cursor: pointer;"
                                 (click)="findCuentaCobrar(cc.numeroObligacion)">
                                 <td>{{ cc.cliente }}</td>
+                                <td>{{ cc.clientes[0].nombreTitular }}</td>
+                                <td>{{ cc.numeroObligacion }}</td>
                                 <td>{{ cc.banco.banco }}</td>
                                 <td>{{ cc.tiposVencimiento.tipoVencimiento }}
                                 </td>
                                 <td>{{ cc.sede.sede }}</td>
-                                <td>{{ cc.clasificacionJuridica }}</td>
+                                <!-- <td>{{ cc.clasificacionJuridica }}</td> -->
                                 <td>{{ cc.asesorCarteraResponse.usuario.nombres }}
                                     {{
                                     cc.asesorCarteraResponse.usuario.apellidos }}</td>
+                                <td>{{ cc.clientes[0].tipoGarante.tipoGarante }}</td>
                             </tr>
                         </tbody>
                     </table>

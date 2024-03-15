@@ -33,7 +33,7 @@ export class HomeCarteraComponent implements OnInit {
   private proSubscriptionBack!: Subscription;
 
   constructor(private cuentasCobrar: CuentasCobrarService, private authService: AuthenticationService, private router: Router, private renderer: Renderer2, private elementRef: ElementRef) {
-    this.listaDeAnios = this.obtenerListaDeAnios()    
+    this.listaDeAnios = this.obtenerListaDeAnios()
   }
 
   // ARRAY CUENTAS POR COBRAR
@@ -197,8 +197,8 @@ export class HomeCarteraComponent implements OnInit {
     clasificacionId: null
   }
 
-  notiId:number | null = null
-  clasifiNotiId:number | null = null
+  notiId: number | null = null
+  clasifiNotiId: number | null = null
 
   gestionSelected: any = {
     numeroObligacion: '',
@@ -303,7 +303,7 @@ export class HomeCarteraComponent implements OnInit {
     nombreTitular: ''
   }
 
-  notiObj:any = {
+  notiObj: any = {
     idNotificacion: 0,
     fechaCreacion: new Date(),
     idClasificacion: 0,
@@ -393,7 +393,7 @@ export class HomeCarteraComponent implements OnInit {
   desactivarAcu: boolean = false
   botonFiltro: boolean = false
   filtrando: boolean = false
-  filtroAgain:boolean = false
+  filtroAgain: boolean = false
 
   botonPdf: boolean = false
   pageGestion: number = 1;
@@ -401,23 +401,24 @@ export class HomeCarteraComponent implements OnInit {
   ingresarTel: boolean = true
   botonGuardarGes: boolean = false
 
-  mostrarCuentaCobrar:boolean = false
+  mostrarCuentaCobrar: boolean = false
+  totalNotiVen: number = 0
 
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
   botonFiltrarObligacion: boolean = false
-  filtradoBuscar:boolean = false
+  filtradoBuscar: boolean = false
   variableLimpiar: boolean = false
-  
+
   //FILTRO NOTIFICACIONES
-  filtroVen:string = ''
-  tipoVen:string = ''
+  filtroVen: string = ''
+  tipoVen: string = ''
 
-  filtroAll:string = ''
-  tipoAll:string = ''
+  filtroAll: string = ''
+  tipoAll: string = ''
 
-  filtroRealizada:string = ''
-  tipoReal:string = ''
+  filtroRealizada: string = ''
+  tipoReal: string = ''
 
   //PAGINACION NOTIFICACIONES
   filtrandoNoti: boolean = false
@@ -426,29 +427,29 @@ export class HomeCarteraComponent implements OnInit {
   initialConVen: number = 1;
   initialConReal: number = 1;
 
-  pageAll:number = 0
-  pageVen:number = 0
-  pageReal:number = 0
+  pageAll: number = 0
+  pageVen: number = 0
+  pageReal: number = 0
 
-  sizeAll:number = 20
-  sizeVen:number = 20
-  sizeReal:number = 20
+  sizeAll: number = 20
+  sizeVen: number = 20
+  sizeReal: number = 20
 
   paginasAll!: Array<number>
   paginasVen!: Array<number>
   paginasReal!: Array<number>
 
-  lastAll:boolean = false
-  lastVen:boolean = false
-  lastReal:boolean = false
+  lastAll: boolean = false
+  lastVen: boolean = false
+  lastReal: boolean = false
 
-  firtsAll:boolean = false
-  firtsVen:boolean = false
-  firtsReal:boolean = false
+  firtsAll: boolean = false
+  firtsVen: boolean = false
+  firtsReal: boolean = false
 
-  numeroPagesAll:number = 0
-  numeroPagesVen:number = 0
-  numeroPagesReal:number = 0
+  numeroPagesAll: number = 0
+  numeroPagesVen: number = 0
+  numeroPagesReal: number = 0
 
   contAll: number = 1
   contVen: number = 1
@@ -511,7 +512,7 @@ export class HomeCarteraComponent implements OnInit {
   // TRAER CUENTAS POR COBRAR
   getCuentasCobrar() {
     var td
-    var contenido:any
+    var contenido: any
     var partesMes
     var mesTd
     var anioTd
@@ -545,15 +546,15 @@ export class HomeCarteraComponent implements OnInit {
               for (let i = 0; i < this.size; i++) {
                 td = document.getElementById(`td_${i}`)
 
-                if(td != null && td != undefined){
+                if (td != null && td != undefined) {
                   contenido = td.textContent;
 
                   partesMes = contenido.split('/')
 
                   mesTd = parseInt(partesMes[1], 10)
                   anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
+
+                  if (mesTd == mesActual && anioTd == anioActual) {
                     td.classList.add("gestionado")
                   }
                 }
@@ -590,15 +591,15 @@ export class HomeCarteraComponent implements OnInit {
               for (let i = 0; i < this.size; i++) {
                 td = document.getElementById(`td_${i}`)
 
-                if(td != null && td != undefined){
+                if (td != null && td != undefined) {
                   contenido = td.textContent;
 
                   partesMes = contenido.split('/')
 
                   mesTd = parseInt(partesMes[1], 10)
                   anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
+
+                  if (mesTd == mesActual && anioTd == anioActual) {
                     td.classList.add("gestionado")
                   }
                 }
@@ -706,7 +707,7 @@ export class HomeCarteraComponent implements OnInit {
       return
     } else {
       this.spinnerSidebar = true
-      
+
       this.cuentaCobrarSelected = {
         idCuentasPorCobrar: 0,
         numeroObligacion: '',
@@ -854,7 +855,7 @@ export class HomeCarteraComponent implements OnInit {
               this.spinnerSidebar = false
             }
           }, (error: any) => {
-            if(this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0){
+            if (this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0) {
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -898,10 +899,10 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  getGestionesNoti(numeroObligacion:string, idGestion:number, fechaCreacion:Date, tipoGestion:string, idNotifi:number){
+  getGestionesNoti(numeroObligacion: string, idGestion: number, fechaCreacion: Date, tipoGestion: string, idNotifi: number) {
     this.mostrarCuentaCobrar = true
 
-    if(this.newGestion.numeroObligacion == numeroObligacion){
+    if (this.newGestion.numeroObligacion == numeroObligacion) {
       this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
       return
     } else {
@@ -916,7 +917,7 @@ export class HomeCarteraComponent implements OnInit {
         }
       )
     }
-    
+
 
     this.notiId = idNotifi
     if (this.newGestion.numeroObligacion == numeroObligacion) {
@@ -924,7 +925,7 @@ export class HomeCarteraComponent implements OnInit {
       return
     } else {
       this.spinnerSidebar = true
-      
+
       this.cuentaCobrarSelected = {
         idCuentasPorCobrar: 0,
         numeroObligacion: '',
@@ -1070,7 +1071,7 @@ export class HomeCarteraComponent implements OnInit {
               this.spinnerSidebar = false
             }
           }, (error: any) => {
-            if(this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0){
+            if (this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0) {
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -1084,44 +1085,44 @@ export class HomeCarteraComponent implements OnInit {
         )
       }, 2000);
     }
-    
+
   }
 
-  mostrarCpc(){
+  mostrarCpc() {
     this.mostrarCuentaCobrar = false
     $('#modalGestionCom').modal('hide');
   }
 
-  getOneGestionNoti(id: number, fechaCreacion:Date, tipoGestion:string) {
-    
+  getOneGestionNoti(id: number, fechaCreacion: Date, tipoGestion: string) {
+
     this.coutasRequest = []
     this.recibosPago = []
 
-    if(tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA'){
+    if (tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA') {
       this.notiId = null
       this.clasifiNotiId = null
     }
 
-    if(id != null){
+    if (id != null) {
       console.log(id);
-      
+
       var gestion = this.gestiones.find((g: any) => g.clasificacion.idClasificacionGestion == id)
 
       this.positionGestionSelected = this.gestiones.indexOf(gestion)
-  
+
       this.obtenerGestionSelected()
 
     } else {
       var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == tipoGestion && g.fechaGestion == fechaCreacion)
       console.log(gestion);
-      
+
       this.positionGestionSelected = this.gestiones.indexOf(gestion)
-  
+
       this.obtenerGestionSelected()
     }
   }
 
-  completarGestion(){
+  completarGestion() {
     $('#modalGestion').modal('show');
     $('#modalGestionCom').modal('hide');
     this.newGestion.notificacionId = this.notiId
@@ -1201,7 +1202,7 @@ export class HomeCarteraComponent implements OnInit {
         this.newGestion.userNotifying = user
 
         console.log(this.newGestion);
-        
+
         Swal.fire({
           title: 'Guardar Gestión',
           text: '¿Está Seguro De Crear Esta Gestión?',
@@ -1218,12 +1219,12 @@ export class HomeCarteraComponent implements OnInit {
               (data: any) => {
                 this.getGestiones(this.newGestion.numeroObligacion)
                 this.getNotificaciones()
-                if(!this.filtroAgain){
+                if (!this.filtroAgain) {
                   this.getCuentasCobrar()
                 } else {
                   this.filtro()
                 }
-                
+
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
@@ -1286,23 +1287,6 @@ export class HomeCarteraComponent implements OnInit {
 
         console.log(this.newGestion);
 
-        var notaPush = {
-          asesorCartera: user,
-          clasificacion: {
-            clasificacion: this.newGestion.clasificacion.tipoClasificacion,
-            detalleNota: this.newGestion.clasificacion.nota?.detalle,
-            fechaNota: new Date(),
-            nombresClasificacion: {
-              nombre: this.newGestion.clasificacion.nombreClasificacion,
-              tipo: this.newGestion.clasificacion.tipoClasificacion
-            }
-          },
-          detallesAdicionales: this.newGestion.detallesAdicionales,
-          fechaGestion: new Date(),
-          idGestion: this.newGestion.numeroObligacion,
-          numeroObligacion: this.newGestion.numeroObligacion
-        }
-
         Swal.fire({
           title: 'Guardar Gestión',
           text: '¿Está Seguro De Crear Esta Gestión?',
@@ -1324,20 +1308,14 @@ export class HomeCarteraComponent implements OnInit {
                   timer: 3000
                 })
 
-                this.gestiones.push(notaPush)
-                
-                var gesArray = this.gestiones
-                
-                this.gestiones = []
-                
-                this.ordenarGestiones(gesArray)
-                console.log(this.gestiones);
-                
-                if(!this.filtroAgain){
+                this.getGestiones(this.newGestion.numeroObligacion)
+                this.getNotificaciones()
+                if (!this.filtroAgain) {
                   this.getCuentasCobrar()
                 } else {
                   this.filtro()
                 }
+
                 this.gestionButton = false
                 this.newGestion = {
                   numeroObligacion: this.newGestion.numeroObligacion,
@@ -1506,11 +1484,11 @@ export class HomeCarteraComponent implements OnInit {
             this.getGestiones(this.newGestion.numeroObligacion)
             this.getNotificaciones()
             this.mostrarReporte()
-            if(!this.filtroAgain){
-                this.getCuentasCobrar()
-              } else {
-                  this.filtro()
-                }
+            if (!this.filtroAgain) {
+              this.getCuentasCobrar()
+            } else {
+              this.filtro()
+            }
 
             this.botonGuardarGes = false
             this.newGestion = {
@@ -1696,7 +1674,7 @@ export class HomeCarteraComponent implements OnInit {
     this.recibosPago = []
 
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
-    
+
     this.positionGestionSelected = this.gestiones.indexOf(gestion)
 
     this.obtenerGestionSelected()
@@ -1742,9 +1720,9 @@ export class HomeCarteraComponent implements OnInit {
     });
 
     console.log(this.gestionSelected.clasificacion.cuotasList);
-    
+
     console.log(this.cuotasList);
-    
+
     this.cuotasList.forEach((c: CuotaList) => {
 
       this.totalCuotasAcuerdo = this.totalCuotasAcuerdo + c.valorCuota
@@ -1896,7 +1874,7 @@ export class HomeCarteraComponent implements OnInit {
     this.reporte.cedula = this.cuentaCobrarSelected.clientes[0].numeroDocumento
     this.reporte.cedulaArchivo = event.target.value
     console.log(this.reporte);
-    
+
 
     if (this.reporte.cedula == null || this.reporte.cedula == '') {
       this.renderer.setAttribute(this.mySelect.nativeElement, 'disabled', 'true')
@@ -1917,7 +1895,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     console.log(this.reporte);
-    
+
   }
 
   mostrarBase64() {
@@ -1935,7 +1913,7 @@ export class HomeCarteraComponent implements OnInit {
     })
   }
 
-  cerrarCuenta(){
+  cerrarCuenta() {
     $('#offcanvasRight').offcanvas('hide');
     Swal.fire({
       icon: 'success',
@@ -2666,11 +2644,11 @@ export class HomeCarteraComponent implements OnInit {
       } else {
         this.cuotas.push(cuotaList)
       }
-      
+
 
     }
     console.log(this.cuotas);
-    
+
 
   }
 
@@ -3053,7 +3031,7 @@ export class HomeCarteraComponent implements OnInit {
   //FILTROS
   filtroFirst() {
     var td
-    var contenido:any
+    var contenido: any
     var partesMes
     var mesTd
     var anioTd
@@ -3173,30 +3151,30 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
           (this.filtros.fechaCompromisoFin != null)) {
-            setTimeout(() => {
-              for (let i = 0; i < this.size; i++) {
-                td = document.getElementById(`td_${i}`)
-  
-                if(td != null && td != undefined){
-                  contenido = td.textContent;
-  
-                  partesMes = contenido.split('/')
-  
-                  mesTd = parseInt(partesMes[1], 10)
-                  anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
-                    td.classList.add("gestionado")
-                  }
+          setTimeout(() => {
+            for (let i = 0; i < this.size; i++) {
+              td = document.getElementById(`td_${i}`)
+
+              if (td != null && td != undefined) {
+                contenido = td.textContent;
+
+                partesMes = contenido.split('/')
+
+                mesTd = parseInt(partesMes[1], 10)
+                anioTd = parseInt(partesMes[2], 10)
+
+                if (mesTd == mesActual && anioTd == anioActual) {
+                  td.classList.add("gestionado")
                 }
               }
-            }, 100);
+            }
+          }, 100);
           this.variableLimpiar = true
         } else {
           this.variableLimpiar = false
         }
         console.log(this.cuentasCobrarArray);
-        
+
         if (this.cuentasCobrarArray.length == 0) {
           Swal.fire({
             icon: 'error',
@@ -3217,7 +3195,7 @@ export class HomeCarteraComponent implements OnInit {
 
   filtro() {
     var td
-    var contenido:any
+    var contenido: any
     var partesMes
     var mesTd
     var anioTd
@@ -3238,7 +3216,7 @@ export class HomeCarteraComponent implements OnInit {
     this.filtros.clasificacionGestion = this.clasGesArray
 
     console.log(this.filtros);
-    
+
 
     if (
       (this.filtros.banco.length == 0) &&
@@ -3305,30 +3283,30 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
           (this.filtros.fechaCompromisoFin != null)) {
-            setTimeout(() => {
-              for (let i = 0; i < this.size; i++) {
-                td = document.getElementById(`td_${i}`)
-  
-                if(td != null && td != undefined){
-                  contenido = td.textContent;
-  
-                  partesMes = contenido.split('/')
-  
-                  mesTd = parseInt(partesMes[1], 10)
-                  anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
-                    td.classList.add("gestionado")
-                  }
+          setTimeout(() => {
+            for (let i = 0; i < this.size; i++) {
+              td = document.getElementById(`td_${i}`)
+
+              if (td != null && td != undefined) {
+                contenido = td.textContent;
+
+                partesMes = contenido.split('/')
+
+                mesTd = parseInt(partesMes[1], 10)
+                anioTd = parseInt(partesMes[2], 10)
+
+                if (mesTd == mesActual && anioTd == anioActual) {
+                  td.classList.add("gestionado")
                 }
               }
-            }, 100);
+            }
+          }, 100);
           this.variableLimpiar = true
         } else {
           this.variableLimpiar = false
         }
         console.log(this.cuentasCobrarArray);
-        
+
         if (this.cuentasCobrarArray.length == 0) {
           Swal.fire({
             icon: 'error',
@@ -3445,21 +3423,21 @@ export class HomeCarteraComponent implements OnInit {
     }
   }
 
-  metodoClasGestion(tipo:string, clas: string) {
+  metodoClasGestion(tipo: string, clas: string) {
 
-    var objeto:any = {
+    var objeto: any = {
       tipoClasificacion: tipo,
       nombreClasificacion: clas
     }
-    
+
     const index = this.clasGesArray.findIndex((element: any) => {
       return element.tipoClasificacion === tipo && element.nombreClasificacion === clas;
     });
 
     if (index !== -1) {
-        this.clasGesArray.splice(index, 1);
+      this.clasGesArray.splice(index, 1);
     } else {
-        this.clasGesArray.push(objeto);
+      this.clasGesArray.push(objeto);
     }
 
     console.log(this.clasGesArray);
@@ -3467,7 +3445,7 @@ export class HomeCarteraComponent implements OnInit {
 
   getByDato() {
     var td
-    var contenido:any
+    var contenido: any
     var partesMes
     var mesTd
     var anioTd
@@ -3505,24 +3483,24 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
           (this.filtros.fechaCompromisoFin != null)) {
-            setTimeout(() => {
-              for (let i = 0; i < this.size; i++) {
-                td = document.getElementById(`td_${i}`)
-  
-                if(td != null && td != undefined){
-                  contenido = td.textContent;
-  
-                  partesMes = contenido.split('/')
-  
-                  mesTd = parseInt(partesMes[1], 10)
-                  anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
-                    td.classList.add("gestionado")
-                  }
+          setTimeout(() => {
+            for (let i = 0; i < this.size; i++) {
+              td = document.getElementById(`td_${i}`)
+
+              if (td != null && td != undefined) {
+                contenido = td.textContent;
+
+                partesMes = contenido.split('/')
+
+                mesTd = parseInt(partesMes[1], 10)
+                anioTd = parseInt(partesMes[2], 10)
+
+                if (mesTd == mesActual && anioTd == anioActual) {
+                  td.classList.add("gestionado")
                 }
               }
-            }, 100);
+            }
+          }, 100);
           this.variableLimpiar = true
         } else {
           this.variableLimpiar = false
@@ -4024,13 +4002,14 @@ export class HomeCarteraComponent implements OnInit {
     this.cuentasCobrar.getNotificacionesVencidas(user, this.pageVen, this.sizeVen).subscribe(
       (data: any) => {
         this.paginasVen = new Array(data.totalPages)
-        this.notiArrayVencidas = data.content 
+        this.notiArrayVencidas = data.content
+        this.totalNotiVen = data.totalElements
         this.lastVen = data.last
         this.firtsVen = data.first
         this.numeroPagesVen = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
-        console.log(this.notiArrayVencidas);
-        
+        console.log(data);
+
         if (user == null || user == undefined) {
           return
         }
@@ -4043,7 +4022,7 @@ export class HomeCarteraComponent implements OnInit {
             this.numeroPagesAll = data.totalPages
             this.cuentasCobrar.proSubject.next(true);
             console.log(this.notiArray);
-            
+
             if (user == null || user == undefined) {
               return
             }
@@ -4052,7 +4031,7 @@ export class HomeCarteraComponent implements OnInit {
               (data: any) => {
                 this.notiArrayRealizadas = data.content
                 console.log(this.notiArrayRealizadas);
-                
+
               }
             )
 
@@ -4066,7 +4045,7 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  getNotiVen(){
+  getNotiVen() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
@@ -4076,7 +4055,7 @@ export class HomeCarteraComponent implements OnInit {
     this.cuentasCobrar.getNotificacionesVencidas(user, this.pageVen, this.sizeVen).subscribe(
       (data: any) => {
         this.paginasVen = new Array(data.totalPages)
-        this.notiArrayVencidas = data.content 
+        this.notiArrayVencidas = data.content
         this.lastVen = data.last
         this.firtsVen = data.first
         this.numeroPagesVen = data.totalPages
@@ -4088,7 +4067,7 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  getNotiAll(){
+  getNotiAll() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
@@ -4110,7 +4089,7 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  getNotiReal(){
+  getNotiReal() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
@@ -4121,7 +4100,7 @@ export class HomeCarteraComponent implements OnInit {
       (data: any) => {
         this.notiArrayRealizadas = data.content
         console.log(this.notiArrayRealizadas);
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
@@ -4354,14 +4333,14 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
-  getNotiVenBySede(){
+  getNotiVenBySede() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
       return
     }
 
-    if(this.filtroVen == '' || this.filtroVen == null){
+    if (this.filtroVen == '' || this.filtroVen == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -4372,7 +4351,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     this.cuentasCobrar.getVencidasBySede(this.filtroVen, user, this.tipoVen, this.pageVen, this.sizeVen).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.notiArrayVencidas = data.content
         this.filtrandoNoti = true
         this.paginasVen = new Array(data.totalPages)
@@ -4381,7 +4360,7 @@ export class HomeCarteraComponent implements OnInit {
         this.numeroPagesVen = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
         console.log(this.notiArrayVencidas);
-        if(this.notiArrayVencidas.length == 0){
+        if (this.notiArrayVencidas.length == 0) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -4392,20 +4371,20 @@ export class HomeCarteraComponent implements OnInit {
             this.getNotiVen()
           }, 3000);
         }
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  getNotiAllBySede(){
+  getNotiAllBySede() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
       return
     }
 
-    if(this.filtroAll == '' || this.filtroAll == null){
+    if (this.filtroAll == '' || this.filtroAll == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -4416,7 +4395,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     this.cuentasCobrar.getAllBySede(this.filtroAll, user, this.tipoAll, this.pageAll, this.sizeAll).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.notiArray = data.content
         this.filtrandoNoti = true
         this.paginasAll = new Array(data.totalPages)
@@ -4425,7 +4404,7 @@ export class HomeCarteraComponent implements OnInit {
         this.numeroPagesAll = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
         console.log(this.notiArray);
-        if(this.notiArray.length == 0){
+        if (this.notiArray.length == 0) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -4436,20 +4415,20 @@ export class HomeCarteraComponent implements OnInit {
             this.getNotiAll()
           }, 3000);
         }
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  getNotiRealizadasBySede(){
+  getNotiRealizadasBySede() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
       return
     }
 
-    if(this.filtroRealizada == '' || this.filtroRealizada == null){
+    if (this.filtroRealizada == '' || this.filtroRealizada == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -4460,7 +4439,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     this.cuentasCobrar.getRealizadasBySede(this.filtroRealizada, user, this.tipoReal, this.pageReal, this.sizeReal).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.notiArrayRealizadas = data.content
         this.filtrandoNoti = true
         this.paginasReal = new Array(data.totalPages)
@@ -4469,7 +4448,7 @@ export class HomeCarteraComponent implements OnInit {
         this.numeroPagesReal = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
         console.log(this.notiArrayRealizadas);
-        if(this.notiArrayRealizadas.length == 0){
+        if (this.notiArrayRealizadas.length == 0) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -4480,13 +4459,13 @@ export class HomeCarteraComponent implements OnInit {
             this.getNotiReal()
           }, 3000);
         }
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  limpiarNoti(tipo:string){
+  limpiarNoti(tipo: string) {
     switch (tipo) {
       case 'ALL':
         this.tipoAll = ''
@@ -4505,12 +4484,12 @@ export class HomeCarteraComponent implements OnInit {
     }
   }
 
-  desactivarNoti(id: number, fecha:Date, idClas:number, obligacion:string) {
+  desactivarNoti(id: number, fecha: Date, idClas: number, obligacion: string) {
     this.notiObj.idNotificacion = id
     this.notiObj.fechaCreacion = fecha
     this.notiObj.idClasificacion = idClas
     this.notiObj.numeroObligacion = obligacion
-    
+
     Swal.fire({
       title: 'Confirmar Notificación',
       text: '¿Desea Confirmar La Notificación?',
@@ -4531,7 +4510,7 @@ export class HomeCarteraComponent implements OnInit {
               timer: 3000
             })
             this.getNotificaciones()
-            if(!this.filtroAgain){
+            if (!this.filtroAgain) {
               this.getCuentasCobrar()
             } else {
               this.filtro()
@@ -4618,7 +4597,7 @@ export class HomeCarteraComponent implements OnInit {
     if (usuario != null || usuario != undefined) {
       this.cuentasCobrar.alertasGestiones(usuario, fecha.toISOString()).subscribe(
         (data: any) => {
-          this.alertasGestionesObject = data; 
+          this.alertasGestionesObject = data;
         }, (error: any) => {
           console.log(error)
         }
