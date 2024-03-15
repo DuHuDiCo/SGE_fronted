@@ -175,9 +175,9 @@ export type Filtros = {
   saldoCapitalFin: number | null,
   fechaCpcInicio: Date | null,
   fechaCpcFin: Date | null,
-  fechaGestionInicio: Date | null,
-  fechaGestionFin: Date | null,
-  fechaCompromisoInicio: string | null,
+  fechaGestionInicio: Date | string | null,
+  fechaGestionFin: Date | string | null,
+  fechaCompromisoInicio: Date| string | null,
   fechaCompromisoFin: string | null,
   isActive: boolean,
   clasificacionGestion: string[]

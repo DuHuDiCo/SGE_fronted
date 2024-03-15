@@ -3072,9 +3072,7 @@ export class HomeCarteraComponent implements OnInit {
     this.filtros.sede = this.sedesArray
     this.filtros.edadVencimiento = this.edadVenArray
     this.filtros.clasificacionGestion = this.clasGesArray
-
     console.log(this.filtros);
-    
 
     if (
       (this.filtros.banco.length == 0) &&
@@ -3088,9 +3086,9 @@ export class HomeCarteraComponent implements OnInit {
       (this.filtros.saldoCapitalFin == 0 || this.filtros.saldoCapitalFin == null) &&
       (this.filtros.fechaCpcInicio == null) &&
       (this.filtros.fechaCpcFin == null) &&
-      (this.filtros.fechaGestionInicio == null) &&
-      (this.filtros.fechaGestionFin == null) &&
-      (this.filtros.fechaCompromisoInicio == null) &&
+      (this.filtros.fechaGestionInicio == null || this.filtros.fechaGestionInicio == '') &&
+      (this.filtros.fechaGestionFin == null || this.filtros.fechaGestionFin == '') &&
+      (this.filtros.fechaCompromisoInicio == null || this.filtros.fechaCompromisoInicio == '') &&
       (this.filtros.fechaCompromisoFin == null)
     ) {
       Swal.fire({
@@ -3101,6 +3099,39 @@ export class HomeCarteraComponent implements OnInit {
       });
       return;
     }
+
+    if((this.filtros.fechaGestionInicio != null && this.filtros.fechaGestionInicio != '') && (this.filtros.fechaGestionFin == null || this.filtros.fechaGestionFin == '')) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe de Seleccionar La fecha de finalización',
+        timer: 3000,
+      });
+      return;
+    }
+
+    if((this.filtros.fechaGestionFin != null && this.filtros.fechaGestionFin != '') && (this.filtros.fechaGestionInicio == null || this.filtros.fechaGestionInicio == '')) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe de Seleccionar La fecha de Inicio',
+        timer: 3000,
+      });
+      return;
+    }
+
+    // FORMATEAR FECHA FIN DE GESTIÓN
+    if ((this.filtros.fechaGestionFin != null && this.filtros.fechaGestionInicio != null) || (this.filtros.fechaGestionFin != '' && this.filtros.fechaGestionInicio != '')) {
+      const fechaActual = new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' });
+  
+      const fechaObj = new Date(fechaActual);
+  
+      fechaObj.setHours(23, 59, 0, 0);
+  
+      this.filtros.fechaGestionFin = fechaObj;
+  
+      console.log(this.filtros.fechaGestionFin);
+  }
 
     var admin = this.authService.getRolesByName(ROLES.Administration);
 
