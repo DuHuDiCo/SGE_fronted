@@ -4018,16 +4018,32 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   getItems() {
-    this.sedes = []
-    this.tiposVen = []
-    this.clasificacionesJuridicas = []
+    
+   
+    
     var user = this.authService.getUsername();
 
     if (user != null) {
       this.cuentasCobrar.getItems(user).subscribe(
         (data: any) => {
-          this.sedes = data.sedes;
-          this.tiposVen = data.vencimientos
+          this.sedes = []
+          data.sedes.forEach((s:any) => {
+            var sede = {
+              'sede': s
+            }
+            this.sedes.push(sede)
+          });
+
+          this.tiposVen = []
+          data.vencimientos.forEach((tv:any) => {
+            var tipos:TipoVencimiento = {
+              'tipoVencimiento': tv,
+              idTipoVencimiento: 0
+            }
+            this.tiposVen.push(tipos)
+          });
+
+          this.clasificacionesJuridicas = []
           this.clasificacionesJuridicas = data.clasificacionJuridica
           console.log(data);
         }, (error: any) => {
