@@ -702,7 +702,7 @@
                                                                 [disabled]="deshabilitarInputs">
                                                         </div>
                                                     </div>
-                                                    <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'"
+                                                    <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'PREJURIDICO'"
                                                         class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Honorarios</span>
@@ -1456,7 +1456,7 @@
                                         <input [(ngModel)]="fechaCorte" type="date" class="form-control" readonly>
                                     </div>
                                 </div>
-                                <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'"
+                                <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'PREJURIDICO'"
                                     class="col-md-6">
                                     <div class="input-group input-group-sm mb-3">
                                         <span class="input-group-text fw-bold">Honorarios/Otros</span>
@@ -2083,7 +2083,7 @@
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Prejuridico"
+                                        <input class="form-check-input" type="checkbox" value="PREJURIDICO"
                                             (click)="metodoClas('PREJURIDICO')" #variableCol>
                                         <label class="form-check-label">
                                             <cite title="Source Title">Prejuridico</cite>
