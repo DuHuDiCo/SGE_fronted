@@ -46,3 +46,7 @@ export enum ROLES{
     Ventas = "Ventas",
     Archivos = "Archivos"
 }
+
+export enum ROLESCARTERA{
+    VER_TODOS= "VER TODOS"
+}

@@ -2075,25 +2075,11 @@
                                     </h6>
                                 </blockquote>
                                 <div class="collapse" id="collapseJur">
-                                    <div class="form-check">
+                                    <div class="form-check" *ngFor="let clasi of clasificacionesJuridicas">
                                         <input class="form-check-input" type="checkbox" value="Normal"
-                                            (click)="metodoClas('NORMAL')" #variableCol>
+                                            (click)="metodoClas(clasi)" #variableCol>
                                         <label class="form-check-label">
-                                            <cite title="Source Title">Normal</cite>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Prejuridico"
-                                            (click)="metodoClas('PREJURIDICO')" #variableCol>
-                                        <label class="form-check-label">
-                                            <cite title="Source Title">Prejuridico</cite>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Juridico"
-                                            (click)="metodoClas('ADMINISTRATIVO')" #variableCol>
-                                        <label class="form-check-label">
-                                            <cite title="Source Title">Administrativo</cite>
+                                            <cite title="Source Title">{{clasi}}</cite>
                                         </label>
                                     </div>
                                 </div>

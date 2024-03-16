@@ -50,7 +50,7 @@ export class CuentasCobrarService {
   }
 
   getItems(username:string){
-    return this.http.get(`http://192.168.1.241:8021/api/v1/items/?username=${username}`)
+    return this.http.get(`${baseUrl}/items/?username=${username}`)
   }
 
   // CLASIFICACIONES

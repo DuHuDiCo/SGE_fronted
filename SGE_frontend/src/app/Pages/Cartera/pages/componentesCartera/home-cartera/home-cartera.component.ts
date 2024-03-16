@@ -11,7 +11,7 @@ import { CuentaCobrarCalculate, CuentasCobrarResponse } from 'src/app/Types/Cart
 
 import { ClasificacionGestion, CuotaList, CuotasRequest, Filtros, Gestion, GestionArray, Gestiones, Notificacion, Pagos, PagosRequest, ReciboPago, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
 
-import { ROLES } from 'src/app/Types/Roles';
+import { ROLES, ROLESCARTERA } from 'src/app/Types/Roles';
 
 import Swal from 'sweetalert2';
 
@@ -46,6 +46,7 @@ export class HomeCarteraComponent implements OnInit {
   gestiones: any[] = []
   ClasificacionArray: clasificacion[] = []
   Columnas: string[] = []
+  clasificacionesJuridicas: string[] = ['NORMAL', 'PREJURIDICO', 'ADMINSTRATIVO']
   clasificacionesT: Tarea[] = []
   tiposVen: TipoVencimiento[] = []
   disableds!: Array<boolean>
@@ -349,7 +350,7 @@ export class HomeCarteraComponent implements OnInit {
   //TODO:CAMBIAR A 0 CUANDO CORRIJAN EL ARCHIVO
   page: number = 0;
   size: number = 10
-  fechaCreacion: string = 'fecha_creacion'
+  fechaCreacion: string = 'diasVencidos'
 
   // SPINNER DE LA TABLA
   spinner: boolean = true
@@ -471,7 +472,26 @@ export class HomeCarteraComponent implements OnInit {
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
     this.alertasGestiones()
-    this.getItems()
+
+
+
+
+    var admin = this.authService.getRolesByName(ROLES.Administration)
+    if (admin.length > 0) {
+      var cartera = this.authService.getRolesByName(ROLES.Cartera)
+
+      if (cartera.length > 0) {
+        var permiso = this.validarPermisoEnRolCartera(ROLESCARTERA.VER_TODOS, admin)
+        if (permiso.length > 0) {
+          this.getItems()
+        }
+
+      }
+
+
+    }
+
+
   }
 
   getTipoVen() {
@@ -3079,7 +3099,7 @@ export class HomeCarteraComponent implements OnInit {
       return;
     }
 
-    if((this.filtros.fechaGestionInicio != null && this.filtros.fechaGestionInicio != '') && (this.filtros.fechaGestionFin == null || this.filtros.fechaGestionFin == '')) {
+    if ((this.filtros.fechaGestionInicio != null && this.filtros.fechaGestionInicio != '') && (this.filtros.fechaGestionFin == null || this.filtros.fechaGestionFin == '')) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -3089,7 +3109,7 @@ export class HomeCarteraComponent implements OnInit {
       return;
     }
 
-    if((this.filtros.fechaGestionFin != null && this.filtros.fechaGestionFin != '') && (this.filtros.fechaGestionInicio == null || this.filtros.fechaGestionInicio == '')) {
+    if ((this.filtros.fechaGestionFin != null && this.filtros.fechaGestionFin != '') && (this.filtros.fechaGestionInicio == null || this.filtros.fechaGestionInicio == '')) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -3102,15 +3122,15 @@ export class HomeCarteraComponent implements OnInit {
     // FORMATEAR FECHA FIN DE GESTIÓN
     if ((this.filtros.fechaGestionFin != null && this.filtros.fechaGestionInicio != null) || (this.filtros.fechaGestionFin != '' && this.filtros.fechaGestionInicio != '')) {
       const fechaActual = new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' });
-  
+
       const fechaObj = new Date(fechaActual);
-  
+
       fechaObj.setHours(23, 59, 0, 0);
-  
+
       this.filtros.fechaGestionFin = fechaObj;
-  
+
       console.log(this.filtros.fechaGestionFin);
-  }
+    }
 
     var admin = this.authService.getRolesByName(ROLES.Administration);
 
@@ -3992,14 +4012,20 @@ export class HomeCarteraComponent implements OnInit {
     $('#reciboPago').modal('show');
   }
 
-  getItems(){
+  getItems() {
+    this.sedes = []
+    this.tiposVen = []
+    this.clasificacionesJuridicas = []
     var user = this.authService.getUsername();
 
-    if(user != null){
+    if (user != null) {
       this.cuentasCobrar.getItems(user).subscribe(
-        (data:any) => {
+        (data: any) => {
+          this.sedes = data.sedes;
+          this.tiposVen = data.vencimientos
+          this.clasificacionesJuridicas = data.clasificacionJuridica
           console.log(data);
-        }, (error:any) => {
+        }, (error: any) => {
           console.log(error);
         }
       )
