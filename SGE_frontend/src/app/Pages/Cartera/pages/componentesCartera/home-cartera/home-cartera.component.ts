@@ -350,7 +350,7 @@ export class HomeCarteraComponent implements OnInit {
   //TODO:CAMBIAR A 0 CUANDO CORRIJAN EL ARCHIVO
   page: number = 0;
   size: number = 10
-  fechaCreacion: string = 'diasVencidos'
+  fechaCreacion: string = 'dias_vencidos'
 
   // SPINNER DE LA TABLA
   spinner: boolean = true
@@ -477,14 +477,19 @@ export class HomeCarteraComponent implements OnInit {
 
 
     var admin = this.authService.getRolesByName(ROLES.Administration)
-    if (admin.length > 0) {
+    if (admin.length == 0) {
       var cartera = this.authService.getRolesByName(ROLES.Cartera)
 
       if (cartera.length > 0) {
-        var permiso = this.validarPermisoEnRolCartera(ROLESCARTERA.VER_TODOS, admin)
-        if (permiso.length > 0) {
-          this.getItems()
+        var permiso = this.validarPermisoEnRolCartera(ROLESCARTERA.VER_TODOS, cartera)
+        
+        
+        if(permiso != undefined || permiso != null){
+          if(permiso.length == 0){
+            this.getItems()
+          }
         }
+        
 
       }
 
