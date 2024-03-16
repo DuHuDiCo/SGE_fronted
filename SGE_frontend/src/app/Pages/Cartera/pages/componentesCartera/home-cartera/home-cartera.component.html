@@ -19,7 +19,7 @@
             data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             <i class="fa-solid fa-envelopes-bulk"></i>
             <span class="position-absolute start-100 translate-middle badge rounded-pill bg-secondary">
-                {{ notiArray.length }}
+                {{ totalNotiVen }}
             </span>
         </button>
 
@@ -2224,7 +2224,7 @@
                         <thead>
                             <tr>
                                 <th class="h">
-                                    
+
                                     <div class="row justify-content-center">
                                         <div class="col-md-12">
                                             Titular
@@ -2232,7 +2232,7 @@
                                     </div>
                                 </th>
                                 <th class="h">
-                                    
+
                                     <div class="row justify-content-center">
                                         <div class="col-md-12">
                                             Cliente
@@ -2305,7 +2305,7 @@
                                 <td>{{ cc.asesorCarteraResponse.usuario.nombres }}
                                     {{
                                     cc.asesorCarteraResponse.usuario.apellidos }}</td>
-                                    <td>{{ cc.clientes[0].tipoGarante.tipoGarante }}</td>
+                                <td>{{ cc.clientes[0].tipoGarante.tipoGarante }}</td>
                             </tr>
                         </tbody>
                     </table>
