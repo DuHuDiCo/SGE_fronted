@@ -3079,7 +3079,7 @@ export class HomeCarteraComponent implements OnInit {
       return;
     }
 
-    if((this.filtros.fechaGestionInicio != null && this.filtros.fechaGestionInicio != '') && (this.filtros.fechaGestionFin == null || this.filtros.fechaGestionFin == '')) {
+    if ((this.filtros.fechaGestionInicio != null && this.filtros.fechaGestionInicio != '') && (this.filtros.fechaGestionFin == null || this.filtros.fechaGestionFin == '')) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -3089,7 +3089,7 @@ export class HomeCarteraComponent implements OnInit {
       return;
     }
 
-    if((this.filtros.fechaGestionFin != null && this.filtros.fechaGestionFin != '') && (this.filtros.fechaGestionInicio == null || this.filtros.fechaGestionInicio == '')) {
+    if ((this.filtros.fechaGestionFin != null && this.filtros.fechaGestionFin != '') && (this.filtros.fechaGestionInicio == null || this.filtros.fechaGestionInicio == '')) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -3099,18 +3099,21 @@ export class HomeCarteraComponent implements OnInit {
       return;
     }
 
+    console.log(this.filtros);
+
+
     // FORMATEAR FECHA FIN DE GESTIÓN
-    if ((this.filtros.fechaGestionFin != null && this.filtros.fechaGestionInicio != null) || (this.filtros.fechaGestionFin != '' && this.filtros.fechaGestionInicio != '')) {
+    if ((this.filtros.fechaGestionFin != null && this.filtros.fechaGestionInicio != null) && (this.filtros.fechaGestionFin != '' && this.filtros.fechaGestionInicio != '')) {
       const fechaActual = new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' });
-  
+
       const fechaObj = new Date(fechaActual);
-  
+
       fechaObj.setHours(23, 59, 0, 0);
-  
+
       this.filtros.fechaGestionFin = fechaObj;
-  
+
       console.log(this.filtros.fechaGestionFin);
-  }
+    }
 
     var admin = this.authService.getRolesByName(ROLES.Administration);
 
@@ -3992,14 +3995,14 @@ export class HomeCarteraComponent implements OnInit {
     $('#reciboPago').modal('show');
   }
 
-  getItems(){
+  getItems() {
     var user = this.authService.getUsername();
 
-    if(user != null){
+    if (user != null) {
       this.cuentasCobrar.getItems(user).subscribe(
-        (data:any) => {
+        (data: any) => {
           console.log(data);
-        }, (error:any) => {
+        }, (error: any) => {
           console.log(error);
         }
       )
