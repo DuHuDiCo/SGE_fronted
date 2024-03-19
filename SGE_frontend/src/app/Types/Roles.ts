@@ -50,3 +50,10 @@ export enum ROLES{
 export enum ROLESCARTERA{
     VER_TODOS= "VER TODOS"
 }
+
+export enum CLASIFICACION_JURIDICA{
+    Normal = "NORMAL",
+    Prejuridico = "PREJURIDICO",
+    Administrativo = "ADMINISTRATIVO",
+    
+}
