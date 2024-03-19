@@ -200,4 +200,3 @@ export type Clientes = {
     tipoGarante: string
   }
 }
-

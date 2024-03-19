@@ -216,3 +216,12 @@ export enum Roles{
   
 }
 
+
+export enum TIPOACUERDO{
+  MORA = "MORA",
+  TOTAL = "TOTAL",
+  ABONO = "ABONO"
+  
+}
+
+
