@@ -11,7 +11,7 @@ import { CuentaCobrarCalculate, CuentasCobrarResponse } from 'src/app/Types/Cart
 
 import { ClasificacionGestion, CuotaList, CuotasRequest, Filtros, Gestion, GestionArray, Gestiones, Notificacion, Pagos, PagosRequest, ReciboPago, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
 
-import { ROLES } from 'src/app/Types/Roles';
+import { ROLES, ROLESCARTERA } from 'src/app/Types/Roles';
 
 import Swal from 'sweetalert2';
 
@@ -46,6 +46,7 @@ export class HomeCarteraComponent implements OnInit {
   gestiones: any[] = []
   ClasificacionArray: clasificacion[] = []
   Columnas: string[] = []
+  clasificacionesJuridicas: string[] = ['NORMAL', 'PREJURIDICO', 'ADMINSTRATIVO']
   clasificacionesT: Tarea[] = []
   tiposVen: TipoVencimiento[] = []
   disableds!: Array<boolean>
@@ -349,7 +350,7 @@ export class HomeCarteraComponent implements OnInit {
   //TODO:CAMBIAR A 0 CUANDO CORRIJAN EL ARCHIVO
   page: number = 0;
   size: number = 10
-  fechaCreacion: string = 'fecha_creacion'
+  fechaCreacion: string = 'dias_vencidos'
 
   // SPINNER DE LA TABLA
   spinner: boolean = true
@@ -471,7 +472,31 @@ export class HomeCarteraComponent implements OnInit {
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
     this.alertasGestiones()
-    this.getItems()
+
+
+
+
+    var admin = this.authService.getRolesByName(ROLES.Administration)
+    if (admin.length == 0) {
+      var cartera = this.authService.getRolesByName(ROLES.Cartera)
+
+      if (cartera.length > 0) {
+        var permiso = this.validarPermisoEnRolCartera(ROLESCARTERA.VER_TODOS, cartera)
+        
+        
+        if(permiso != undefined || permiso != null){
+          if(permiso.length == 0){
+            this.getItems()
+          }
+        }
+        
+
+      }
+
+
+    }
+
+
   }
 
   getTipoVen() {
@@ -3996,11 +4021,33 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   getItems() {
+
     var user = this.authService.getUsername();
 
     if (user != null) {
       this.cuentasCobrar.getItems(user).subscribe(
         (data: any) => {
+
+          this.sedes = []
+          data.sedes.forEach((s:any) => {
+            var sede = {
+              'sede': s
+            }
+            this.sedes.push(sede)
+          });
+
+          this.tiposVen = []
+          data.vencimientos.forEach((tv:any) => {
+            var tipos:TipoVencimiento = {
+              'tipoVencimiento': tv,
+              idTipoVencimiento: 0
+            }
+            this.tiposVen.push(tipos)
+          });
+
+          this.clasificacionesJuridicas = []
+          this.clasificacionesJuridicas = data.clasificacionJuridica
+
           console.log(data);
         }, (error: any) => {
           console.log(error);
