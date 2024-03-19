@@ -3124,8 +3124,11 @@ export class HomeCarteraComponent implements OnInit {
       return;
     }
 
+    console.log(this.filtros);
+
+
     // FORMATEAR FECHA FIN DE GESTIÓN
-    if ((this.filtros.fechaGestionFin != null && this.filtros.fechaGestionInicio != null) || (this.filtros.fechaGestionFin != '' && this.filtros.fechaGestionInicio != '')) {
+    if ((this.filtros.fechaGestionFin != null && this.filtros.fechaGestionInicio != null) && (this.filtros.fechaGestionFin != '' && this.filtros.fechaGestionInicio != '')) {
       const fechaActual = new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' });
 
       const fechaObj = new Date(fechaActual);
@@ -4018,14 +4021,13 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   getItems() {
-    
-   
-    
+
     var user = this.authService.getUsername();
 
     if (user != null) {
       this.cuentasCobrar.getItems(user).subscribe(
         (data: any) => {
+
           this.sedes = []
           data.sedes.forEach((s:any) => {
             var sede = {
@@ -4045,6 +4047,7 @@ export class HomeCarteraComponent implements OnInit {
 
           this.clasificacionesJuridicas = []
           this.clasificacionesJuridicas = data.clasificacionJuridica
+
           console.log(data);
         }, (error: any) => {
           console.log(error);
