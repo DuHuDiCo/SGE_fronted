@@ -1251,7 +1251,7 @@ export class HomeCarteraComponent implements OnInit {
                 if (!this.filtroAgain) {
                   this.getCuentasCobrar()
                 } else {
-                  this.filtroFirst()
+                  this.filtro()
                 }
 
                 Swal.fire({
@@ -1342,7 +1342,7 @@ export class HomeCarteraComponent implements OnInit {
                 if (!this.filtroAgain) {
                   this.getCuentasCobrar()
                 } else {
-                  this.filtroFirst()
+                  this.filtro()
                 }
 
                 this.gestionButton = false
@@ -3984,6 +3984,7 @@ export class HomeCarteraComponent implements OnInit {
         this.detalleRevision = ''
         this.spinnerCrearNota = false
         this.ocultarCrearRevision = false
+
       }, (error: any) => {
         Swal.fire({
           icon: 'error',
@@ -3997,6 +3998,13 @@ export class HomeCarteraComponent implements OnInit {
 
 
 
+  }
+
+  cancelNota() {
+    this.detalleRevision = ''
+    this.spinnerCrearNota = false
+    this.ocultarCrearRevision = false
+    this.ocultarAgregarPago = false
   }
 
   generarRecibo() {
@@ -4649,7 +4657,7 @@ export class HomeCarteraComponent implements OnInit {
             if (!this.filtroAgain) {
               this.getCuentasCobrar()
             } else {
-              this.filtroFirst()
+              this.filtro()
             }
           }, (error: any) => {
             Swal.fire({
