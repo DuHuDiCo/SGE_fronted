@@ -108,7 +108,6 @@ export class HomeCarteraComponent implements OnInit {
   cuotasSelected: any[] = []
   notiArray: Notificacion[] = []
   notiArrayVencidas: Notificacion[] = []
-  notiArrayRealizadas: Notificacion[] = []
   spinnerCrearNota: boolean = false
   // OBJETOS
 
@@ -475,8 +474,6 @@ export class HomeCarteraComponent implements OnInit {
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
     this.alertasGestiones()
-
-
 
 
     var admin = this.authService.getRolesByName(ROLES.Administration)
@@ -854,6 +851,8 @@ export class HomeCarteraComponent implements OnInit {
       setTimeout(() => {
         this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
           (data: any) => {
+            this.clasifiNotiId = null
+            this.notiId = null
             this.cuentaCobrarSelected = data
             console.log(this.cuentaCobrarSelected);
             this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
@@ -863,6 +862,8 @@ export class HomeCarteraComponent implements OnInit {
             this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
             this.getGestiones(numeroObligacion);
             this.cuentasCalcular.numeroObligacion = numeroObligacion
+            console.log(this.notiId);
+            console.log(this.clasifiNotiId);
             this.newGestion = {
               numeroObligacion: this.newGestion.numeroObligacion,
               clasificacion: {
@@ -883,6 +884,7 @@ export class HomeCarteraComponent implements OnInit {
             if (this.cuentaCobrarSelected.documentoCliente != '') {
               this.spinnerSidebar = false
             }
+
           }, (error: any) => {
             if (this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0) {
               Swal.fire({
@@ -910,7 +912,6 @@ export class HomeCarteraComponent implements OnInit {
   getGestiones(numeroObligacion: string) {
     this.alertasGestiones()
     this.gestiones = []
-    this.notiId = 0
     this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
       (data: any) => {
         console.log(data);
@@ -4161,19 +4162,6 @@ export class HomeCarteraComponent implements OnInit {
             this.numeroPagesAll = data.totalPages
             this.cuentasCobrar.proSubject.next(true);
             console.log(this.notiArray);
-
-            if (user == null || user == undefined) {
-              return
-            }
-
-            this.cuentasCobrar.getNotificacionesRealizadas(user, this.pageReal, this.sizeReal).subscribe(
-              (data: any) => {
-                this.notiArrayRealizadas = data.content
-                console.log(this.notiArrayRealizadas);
-
-              }
-            )
-
           }, (error: any) => {
             console.log(error);
           }
@@ -4228,23 +4216,198 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-
-  getNotiReal() {
-    var user = this.authService.getUsername()
-
-    if (user == null || user == undefined) {
+  openGestion(obligacion: string, idGestion: number, idNotifi: number, tipoGestion: string) {
+    this.col = true
+    if (this.newGestion.numeroObligacion == obligacion) {
+      $('#modalObligacion').modal('hide');
       return
+    } else {
+      this.spinnerSidebar = true
+      this.cuentaCobrarSelected = {
+        idCuentasPorCobrar: 0,
+        numeroObligacion: '',
+        cliente: '',
+        documentoCliente: '',
+        fechaCuentaCobrar: '',
+        fechaVencimiento: '',
+        tipo: '',
+        valorNotaDebito: 0,
+        valorCuota: 0,
+        valorPagos: 0,
+        nombre_usuario: '',
+        clasificacion: '',
+        vendedor: '',
+        clasificacionJuridica: '',
+        detalle: '',
+        sede: {
+          idSede: 0,
+          sede: ''
+        },
+        banco: {
+          idBanco: 0,
+          banco: ''
+        },
+        diasVencidos: 0,
+        gestion: [],
+        edadVencimiento: '',
+        condicionEspecial: '',
+        numeroCreditos: 0,
+        pagare: '',
+        moraObligatoria: 0,
+        totalObligatoria: 0,
+        cuotasMora: 0,
+        cuotas: 0,
+        asesorCarteraResponse: {
+          idAsesorCartera: 0,
+          usuario: {
+            idUsuario: 0,
+            username: '',
+            email: '',
+            nombres: '',
+            apellidos: '',
+            sede: '',
+            tipo_documento: '',
+            numero_documento: '',
+            celular: '',
+            fecha_nacimiento: new Date,
+            fecha_creacion: new Date,
+            status: false,
+            roles: [],
+            enabled: false,
+            authorities: [],
+            accountNonLocked: false,
+            accountNonExpired: false,
+            credentialsNonExpired: false,
+            password: ''
+          }
+        },
+        clientes: []
+      }
+
+      this.acuerdo = {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: new Date,
+        cuotasList: [],
+        username: ''
+      }
+
+      this.newGestion = {
+        numeroObligacion: '',
+        clasificacion: {
+          tipoClasificacion: null,
+          tarea: null,
+          nota: null,
+          acuerdoPago: null,
+          nombreClasificacion: ''
+        },
+        contact: false,
+        detallesAdicionales: '',
+        usernameToSetNotificacion: '',
+        userNotifying: '',
+        notificacionId: null,
+        clasificacionId: null
+      }
+
+      this.acuerdo = {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: '',
+        cuotasList: [],
+        username: ''
+      }
+
+      this.nota = {
+        detalle: ''
+      }
+
+      this.tarea = {
+        detalleTarea: '',
+        fechaFinTarea: '',
+        isPartOfRecaudo: false
+      }
+
+      this.codeudoresSelected = []
+      $('#modalObligacion').modal('hide');
+
+      this.getGestiones(obligacion);
+
+      setTimeout(() => {
+        this.cuentasCobrar.getCuentaByObligacion(obligacion).subscribe(
+          (data: any) => {
+            this.cuentaCobrarSelected = data
+            console.log(this.cuentaCobrarSelected);
+            this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
+            this.moraObligatoriaFirst = data.moraObligatoria
+            this.calcularFirst()
+            this.codeudores = data.clientes
+            this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
+            this.cuentasCalcular.numeroObligacion = obligacion
+            this.newGestion = {
+              numeroObligacion: this.newGestion.numeroObligacion,
+              clasificacion: {
+                tipoClasificacion: '',
+                tarea: null,
+                nota: null,
+                acuerdoPago: null,
+                nombreClasificacion: ''
+              },
+              contact: false,
+              detallesAdicionales: this.newGestion.detallesAdicionales,
+              usernameToSetNotificacion: '',
+              userNotifying: '',
+              notificacionId: null,
+              clasificacionId: null
+            }
+
+            if (this.cuentaCobrarSelected.documentoCliente != '') {
+              this.spinnerSidebar = false
+            }
+
+            this.notiId = idNotifi
+
+            if (tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA') {
+              this.notiId = null
+              this.clasifiNotiId = null
+            }
+
+
+            setTimeout(() => {
+              $('#modalGestionCom').modal('show');
+              var gestion = this.gestiones.find((g: any) => g.clasificacion.idClasificacionGestion == idGestion)
+
+              this.positionGestionSelected = this.gestiones.indexOf(gestion)
+
+              this.obtenerGestionSelected()
+              console.log(this.notiId);
+              console.log(this.clasifiNotiId);
+
+            }, 1000);
+
+          }, (error: any) => {
+            if (this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Cliente Sin Saldo En El Sistema',
+                timer: 3000
+              })
+              $('#offcanvasRight').offcanvas('hide');
+            }
+            console.log(error);
+          }
+        )
+      }, 2000);
     }
 
-    this.cuentasCobrar.getNotificacionesRealizadas(user, this.pageReal, this.sizeReal).subscribe(
-      (data: any) => {
-        this.notiArrayRealizadas = data.content
-        console.log(this.notiArrayRealizadas);
-
-      }, (error: any) => {
-        console.log(error);
-      }
-    )
   }
 
   //PAGINACION NOTIFICACIONES
@@ -4399,81 +4562,6 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
-  //REALIZADAS
-  backReal() {
-    if (!this.firtsReal) {
-      this.pageReal--
-      if (this.filtrandoNoti) {
-        this.getNotiRealizadasBySede()
-        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
-          (con: boolean) => {
-            this.isConReal = con;
-            this.contReal = this.contReal - this.sizeReal
-            this.proSubscriptionBack.unsubscribe()
-          }
-        );
-      } else {
-        this.getNotiReal()
-        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
-          (con: boolean) => {
-            this.isConReal = con;
-            this.contReal = this.contReal - this.sizeReal
-            this.proSubscriptionBack.unsubscribe()
-          }
-        );
-      }
-    }
-  }
-
-  nextReal() {
-    if (!this.lastReal) {
-      this.pageReal++
-      if (this.filtrandoNoti) {
-        this.getNotiRealizadasBySede()
-        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
-          (con: boolean) => {
-            this.isConReal = con;
-            this.contReal = this.contReal + this.sizeReal
-            this.proSubscriptionNext.unsubscribe()
-          }
-        );
-      } else {
-        this.getNotiReal()
-        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
-          (con: boolean) => {
-            this.isConReal = con;
-            this.contReal = this.contReal + this.sizeReal
-            this.proSubscriptionNext.unsubscribe()
-          }
-        );
-      }
-    }
-  }
-
-  goToPageReal(page: number) {
-    this.pageReal = page
-    if (this.filtrandoNoti) {
-      this.getNotiRealizadasBySede()
-      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
-        (con: boolean) => {
-          this.isConReal = con;
-          this.contReal = this.initialConReal + (this.pageReal * this.sizeReal);
-          this.proSubscriptionNext.unsubscribe()
-        }
-      );
-    } else {
-      this.getNotiReal()
-      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
-        (con: boolean) => {
-          this.isConReal = con;
-          this.contReal = this.initialConReal + (this.pageReal * this.sizeReal);
-          this.proSubscriptionNext.unsubscribe()
-        }
-      );
-    }
-
-  }
-
 
   getNotiVenBySede() {
     var user = this.authService.getUsername()
@@ -4557,50 +4645,6 @@ export class HomeCarteraComponent implements OnInit {
           })
           setTimeout(() => {
             this.getNotiAll()
-          }, 3000);
-        }
-      }, (error: any) => {
-        console.log(error);
-      }
-    )
-  }
-
-  getNotiRealizadasBySede() {
-    var user = this.authService.getUsername()
-
-    if (user == null || user == undefined) {
-      return
-    }
-
-    if (this.filtroRealizada == '' || this.filtroRealizada == null) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Seleccione Un Filtro',
-        timer: 3000
-      })
-      return
-    }
-
-    this.cuentasCobrar.getRealizadasBySede(this.filtroRealizada, user, this.tipoReal, this.pageReal, this.sizeReal).subscribe(
-      (data: any) => {
-        this.notiArrayRealizadas = data.content
-        this.filtrandoNoti = true
-        this.paginasReal = new Array(data.totalPages)
-        this.lastReal = data.last
-        this.firtsReal = data.first
-        this.numeroPagesReal = data.totalPages
-        this.cuentasCobrar.proSubject.next(true);
-        console.log(this.notiArrayRealizadas);
-        if (this.notiArrayRealizadas.length == 0) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No Hay Notificaciones Con Este Filtro',
-            timer: 3000
-          })
-          setTimeout(() => {
-            this.getNotiReal()
           }, 3000);
         }
       }, (error: any) => {
@@ -4749,8 +4793,6 @@ export class HomeCarteraComponent implements OnInit {
     }
   }
 
-
-
   validarPermisoDado(permiso: string, rol: string): boolean {
     var rolesObtenido = this.authService.getRolesByName(rol);
 
@@ -4774,6 +4816,8 @@ export class HomeCarteraComponent implements OnInit {
 
     return false
   }
+
+
 
 }
 
