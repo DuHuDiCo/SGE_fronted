@@ -2575,12 +2575,63 @@ export class HomeCarteraComponent implements OnInit {
 
           if (valorCuotaMensual > valorTotalMora) {
 
-            this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.MORA
-            this.acuerdo.tipoAcuerdo = TIPOACUERDO.MORA
-            //calcula la primera cuota con interes y el valor de cuota ingresado y el restante con las cuotas anteriores sin interes
-            this.unaCoutaMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios)
+            const swalWithBootstrapButtons = Swal.mixin({
+              customClass: {
+                confirmButton: "btn btn-primary",
+                cancelButton: "btn btn-secondary"
+              },
+              buttonsStyling: false
+            });
+            swalWithBootstrapButtons.fire({
+              title: "¿Abono de cuota único o saldar a cuotas el restate del credito?",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Abono",
+              cancelButtonText: "Cuotas",
+              reverseButtons: false,
+              buttonsStyling: false, // Deshabilita los estilos de botones predeterminados
+              customClass: {
+                confirmButton: "me-2 btn btn-info",
+                cancelButton: "btn btn-secondary "
+
+              }
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.ABONO
+                this.acuerdo.tipoAcuerdo = TIPOACUERDO.ABONO
+                var capital = valorCuotaMensual - valorIntereses - valorHonorarios
+
+                if ((valorIntereses + valorHonorarios) > valorCuotaMensual) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Accion Denegada',
+                    text: 'No es posible Realizar esta accion, otros valores mayor a la cuota ingresada',
+                    timer: 5000,
+                  });
+
+                } else {
+
+                  //calcularUnAbono(valorCuot: number, capitalCuota: number, interes:number, honorarios:number) {
+                  this.calcularUnAbono(valorCuotaMensual, capital, valorIntereses, valorHonorarios)
+                }
+              } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+              ) {
+                this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.MORA
+                this.acuerdo.tipoAcuerdo = TIPOACUERDO.MORA
+                //calcula la primera cuota con interes y el valor de cuota ingresado y el restante con las cuotas anteriores sin interes
+                this.unaCoutaMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios)
+              }
+            });
+
+
+
 
           } else {
+
+
+
             this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.MORA
             this.acuerdo.tipoAcuerdo = TIPOACUERDO.MORA
             //variasCuotasMora(valorInteres: number, valorCuotaMensual: number, moraObligatoria: number, valorCuotaAnterior: number, valorTotalObligatoria: number, valorHonorarios: number, valorTotalMora: number)
@@ -2664,6 +2715,25 @@ export class HomeCarteraComponent implements OnInit {
       capitalCuota: parseInt(capitalCuota.toFixed(0)),
       interesCuota: 0,
       honorarios: 0,
+      cumplio: false
+    }
+
+    this.cuotas.push(cuotaList)
+    this.cantidadFechas++
+    this.disableds[this.cuotas.length - 1] = true
+    this.generarFechas()
+  }
+
+
+  calcularUnAbono(valorCuot: number, capitalCuota: number, interes: number, honorarios: number) {
+    this.acuerdoCal.valorTotalAcuerdo = valorCuot
+    var cuotaList = {
+      numeroCuota: 1,
+      fechaVencimiento: '',
+      valorCuota: valorCuot,
+      capitalCuota: Math.ceil(capitalCuota),
+      interesCuota: Math.ceil(interes),
+      honorarios: Math.ceil(honorarios),
       cumplio: false
     }
 
