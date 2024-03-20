@@ -648,7 +648,7 @@ export class HomeCarteraComponent implements OnInit {
       this.page--
       if (this.filtrando) {
         this.spinner = true
-        this.filtroFirst()
+        this.filtro()
         this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
           (con: boolean) => {
             this.isCon = con;
@@ -678,7 +678,7 @@ export class HomeCarteraComponent implements OnInit {
       this.spinner = true
       this.page++
       if (this.filtrando) {
-        this.filtroFirst()
+        this.filtro()
         this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
           (con: boolean) => {
             this.isCon = con;
@@ -706,7 +706,7 @@ export class HomeCarteraComponent implements OnInit {
     this.page = page
     if (this.filtrando) {
       this.spinner = true
-      this.filtroFirst()
+      this.filtro()
       this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
         (con: boolean) => {
           this.isCon = con;
@@ -1426,12 +1426,12 @@ export class HomeCarteraComponent implements OnInit {
         }
 
         this.newGestion.clasificacion.acuerdoPago = this.acuerdo
-        this.cuotas.forEach((element:any, i:number) => {
+        this.cuotas.forEach((element: any, i: number) => {
           this.newGestion.clasificacion.acuerdoPago?.cuotasList.push(element)
-          
+
         });
-        
-        this.newGestion.clasificacion.acuerdoPago?.cuotasList.forEach((element:any, i:number) => {
+
+        this.newGestion.clasificacion.acuerdoPago?.cuotasList.forEach((element: any, i: number) => {
           element.fechaVencimiento = this.fechasIncrementadas[i]
         });
 
@@ -2139,7 +2139,7 @@ export class HomeCarteraComponent implements OnInit {
     this.acuerdo.valorTotalAcuerdo = this.acuerdoCal.valorTotalAcuerdo
   }
 
-  
+
   //METODOS CALCULADORA OFFCANVAS INFERIOR
 
   calcularFirst() {
@@ -2457,7 +2457,7 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
- 
+
 
   calcularCuotasGeneral() {
 
@@ -2931,7 +2931,7 @@ export class HomeCarteraComponent implements OnInit {
 
 
 
-  
+
 
   // CLASIFICACION
   getClasificacion() {
