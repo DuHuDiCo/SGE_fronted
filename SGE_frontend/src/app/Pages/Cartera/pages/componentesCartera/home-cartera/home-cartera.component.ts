@@ -2229,6 +2229,7 @@ export class HomeCarteraComponent implements OnInit {
     this.deshabilitarInputs = true
     this.isCalculate = false
     this.calculating = true
+    this.col = true
 
   }
 
@@ -2391,6 +2392,7 @@ export class HomeCarteraComponent implements OnInit {
 
       this.isCalculate = true
       this.calculating = true
+      this.col = true
     }
 
   }
