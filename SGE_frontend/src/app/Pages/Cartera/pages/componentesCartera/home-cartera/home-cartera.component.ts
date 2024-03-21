@@ -2756,7 +2756,7 @@ export class HomeCarteraComponent implements OnInit {
     var nuevoTotalObligatorio = valorTotalObligatoria - (valorCuotaMensual - valorInteres - valorHonorarios)
 
     //total cuotas con el valor de la cuota anterior
-    var totalCuotas = this.obtenerTotalCuotas(nuevoTotalObligatorio, valorCuotaMensual)
+    var totalCuotas = this.obtenerTotalCuotas(nuevoTotalObligatorio, valorCuotaAnterior)
 
 
 
@@ -2769,7 +2769,7 @@ export class HomeCarteraComponent implements OnInit {
     var saldoCapital = valorTotalObligatoria
 
 
-    for (let i = 0; i < totalCuotas; i++) {
+    for (let i = 0; i < totalCuotas +1; i++) {
       if (i == 0) {
         //generar primer cuota con interes
 
