@@ -334,7 +334,7 @@ export class HomeCarteraComponent implements OnInit {
     fechaCompromisoInicio: null,
     fechaCompromisoFin: null,
     isActive: false,
-    clasificacionGestion: []
+    clasificacionGestion:  null
   }
 
   limpiarFiltro: boolean = false
@@ -343,7 +343,7 @@ export class HomeCarteraComponent implements OnInit {
   edadVenArray: string[] = []
   sedesArray: string[] = []
   clasJurArray: string[] = []
-  clasGesArray: string[] = []
+  clasGesArray: any | null = null;
   asesores: any[] = []
 
   //VARIABLES
@@ -3218,7 +3218,7 @@ export class HomeCarteraComponent implements OnInit {
       (this.filtros.edadVencimiento.length == 0) &&
       (this.filtros.sede.length == 0) &&
       (this.filtros.clasiJuridica.length == 0) &&
-      (this.filtros.clasificacionGestion.length == 0) &&
+      (this.filtros.clasificacionGestion == null) &&
       (this.filtros.saldoCapitalInicio == 0 || this.filtros.saldoCapitalInicio == null) &&
       (this.filtros.saldoCapitalFin == 0 || this.filtros.saldoCapitalFin == null) &&
       (this.filtros.fechaCpcInicio == null) &&
@@ -3593,15 +3593,7 @@ export class HomeCarteraComponent implements OnInit {
       nombreClasificacion: clas
     }
 
-    const index = this.clasGesArray.findIndex((element: any) => {
-      return element.tipoClasificacion === tipo && element.nombreClasificacion === clas;
-    });
-
-    if (index !== -1) {
-      this.clasGesArray.splice(index, 1);
-    } else {
-      this.clasGesArray.push(objeto);
-    }
+    this.clasGesArray = objeto    
 
     console.log(this.clasGesArray);
   }

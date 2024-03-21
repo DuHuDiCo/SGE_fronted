@@ -180,7 +180,7 @@ export type Filtros = {
   fechaCompromisoInicio: Date| string | null,
   fechaCompromisoFin: string | null,
   isActive: boolean,
-  clasificacionGestion: string[]
+  clasificacionGestion: any  | null
 
 }
 
