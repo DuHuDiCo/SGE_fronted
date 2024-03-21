@@ -2548,7 +2548,7 @@ export class HomeCarteraComponent implements OnInit {
 
             } else {
               var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
-
+              this.col = true
               Swal.fire({
                 icon: 'error',
                 title: 'Accion Denegada',
@@ -2559,6 +2559,7 @@ export class HomeCarteraComponent implements OnInit {
           }
         }
       } else {
+        this.col = true
         Swal.fire({
           icon: 'error',
           title: 'Accion Denegada',
@@ -2573,115 +2574,130 @@ export class HomeCarteraComponent implements OnInit {
 
       if (valorCuotaMensual <= valorTotalAcuerdo) {
 
-        if ((valorTotalAcuerdo / valorCuotaMensual) <= 20) {
 
-          if (valorCuotaMensual >= valorTotalMora) {
+        const swalWithBootstrapButtons = Swal.mixin({
+          customClass: {
+            confirmButton: "btn btn-primary",
+            cancelButton: "btn btn-secondary"
+          },
+          buttonsStyling: false
+        });
+        swalWithBootstrapButtons.fire({
+          title: "¿Abono de cuota único o saldar a cuotas el restate del credito?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Abono",
+          cancelButtonText: "Cuotas",
+          reverseButtons: false,
+          buttonsStyling: false, // Deshabilita los estilos de botones predeterminados
+          customClass: {
+            confirmButton: "me-2 btn btn-info",
+            cancelButton: "btn btn-secondary "
 
-            const swalWithBootstrapButtons = Swal.mixin({
-              customClass: {
-                confirmButton: "btn btn-primary",
-                cancelButton: "btn btn-secondary"
-              },
-              buttonsStyling: false
-            });
-            swalWithBootstrapButtons.fire({
-              title: "¿Abono de cuota único o saldar a cuotas el restate del credito?",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonText: "Abono",
-              cancelButtonText: "Cuotas",
-              reverseButtons: false,
-              buttonsStyling: false, // Deshabilita los estilos de botones predeterminados
-              customClass: {
-                confirmButton: "me-2 btn btn-info",
-                cancelButton: "btn btn-secondary "
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.ABONO
+            this.acuerdo.tipoAcuerdo = TIPOACUERDO.ABONO
+            var capital = valorCuotaMensual - valorIntereses - valorHonorarios
+            var otrosValores = parseInt(valorIntereses) + parseInt(valorHonorarios)
 
+            if (otrosValores > valorCuotaMensual) {
+              this.col = true
+              Swal.fire({
+                icon: 'error',
+                title: 'Accion Denegada',
+                text: 'No es posible Realizar esta accion, otros valores mayor a la cuota ingresada',
+                timer: 5000,
+              });
+
+            } else {
+              var capital = (valorCuotaMensual - valorIntereses - valorHonorarios)
+
+              if (capital < 1000) {
+                this.col = true
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Accion Denegada',
+                  text: 'No es posible Realizar esta accion, el interes y honorarios son mayores al abono permitido',
+                  timer: 5000,
+                });
+              } else {
+
+
+                //calcularUnAbono(valorCuot: number, capitalCuota: number, interes:number, honorarios:number) {
+                this.calcularUnAbono(valorCuotaMensual, capital, valorIntereses, valorHonorarios)
               }
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.ABONO
-                this.acuerdo.tipoAcuerdo = TIPOACUERDO.ABONO
-                var capital = valorCuotaMensual - valorIntereses - valorHonorarios
+            }
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            if ((valorTotalAcuerdo / valorCuotaMensual) <= 20) {
 
-                if ((valorIntereses + valorHonorarios) > valorCuotaMensual) {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Accion Denegada',
-                    text: 'No es posible Realizar esta accion, otros valores mayor a la cuota ingresada',
-                    timer: 5000,
-                  });
+              if (valorCuotaMensual >= valorTotalMora) {
 
-                } else {
-
-                  //calcularUnAbono(valorCuot: number, capitalCuota: number, interes:number, honorarios:number) {
-                  this.calcularUnAbono(valorCuotaMensual, capital, valorIntereses, valorHonorarios)
-                }
-              } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-              ) {
                 this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.MORA
                 this.acuerdo.tipoAcuerdo = TIPOACUERDO.MORA
                 //calcula la primera cuota con interes y el valor de cuota ingresado y el restante con las cuotas anteriores sin interes
                 this.unaCoutaMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios)
+
+
+              } else {
+
+                this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.MORA
+                this.acuerdo.tipoAcuerdo = TIPOACUERDO.MORA
+                //variasCuotasMora(valorInteres: number, valorCuotaMensual: number, moraObligatoria: number, valorCuotaAnterior: number, valorTotalObligatoria: number, valorHonorarios: number, valorTotalMora: number)
+                this.variasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
               }
-            });
+
+            } else {
 
 
 
+              //preguntar si tiene el permiso para refianciacion
+              if (this.validarPermisoDado(Permisos.REFINANCIACION, Roles.CARTERA) || this.validarPermisoDado("", Roles.ADMINISTRATION)) {
 
-          } else {
+                Swal.fire({
+                  title: 'Refinanciacion de Pagare',
+                  text: 'La cuota ingresada es menor a la cuota actual de credito, ¿Está Seguro de Continuar?',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Confirmar',
+                  cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.TOTAL
+                    this.acuerdo.tipoAcuerdo = TIPOACUERDO.TOTAL
+                    this.todasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
+                  }
+                })
 
-            this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.MORA
-            this.acuerdo.tipoAcuerdo = TIPOACUERDO.MORA
-            //variasCuotasMora(valorInteres: number, valorCuotaMensual: number, moraObligatoria: number, valorCuotaAnterior: number, valorTotalObligatoria: number, valorHonorarios: number, valorTotalMora: number)
-            this.variasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
-          }
-
-        } else {
-
-
-
-          //preguntar si tiene el permiso para refianciacion
-          if (this.validarPermisoDado(Permisos.REFINANCIACION, Roles.CARTERA) || this.validarPermisoDado("", Roles.ADMINISTRATION)) {
-
-            Swal.fire({
-              title: 'Refinanciacion de Pagare',
-              text: 'La cuota ingresada es menor a la cuota actual de credito, ¿Está Seguro de Continuar?',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Confirmar',
-              cancelButtonText: 'Cancelar'
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.TOTAL
-                this.acuerdo.tipoAcuerdo = TIPOACUERDO.TOTAL
-                this.todasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
+              } else {
+                var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
+                this.col = true
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Accion Denegada',
+                  text: 'No tienes permisos para realizar esta accion, el valor minimo de cuota es: ' + valorMinimo + '. Contacta al coordinador de cartera',
+                  timer: 5000,
+                });
               }
-            })
 
-          } else {
-            var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
 
-            Swal.fire({
-              icon: 'error',
-              title: 'Accion Denegada',
-              text: 'No tienes permisos para realizar esta accion, el valor minimo de cuota es: ' + valorMinimo + '. Contacta al coordinador de cartera',
-              timer: 5000,
-            });
+            }
+
           }
-
-
-        }
+        });
 
 
 
 
 
       } else {
-
+        this.col = true
         //el valor de la cuota sera el valor total de la obligacion
         Swal.fire({
           icon: 'error',
