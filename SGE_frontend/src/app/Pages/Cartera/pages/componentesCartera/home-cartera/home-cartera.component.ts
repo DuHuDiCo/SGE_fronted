@@ -2640,7 +2640,7 @@ export class HomeCarteraComponent implements OnInit {
             }
             
 
-            alert(cuotasReales)
+            
             if ((valorTotalAcuerdo / valorCuotaMensual) <= cuotasReales  ) {
 
               
