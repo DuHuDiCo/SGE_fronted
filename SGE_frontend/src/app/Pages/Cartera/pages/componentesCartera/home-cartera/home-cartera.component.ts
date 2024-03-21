@@ -2575,7 +2575,7 @@ export class HomeCarteraComponent implements OnInit {
 
         if ((valorTotalAcuerdo / valorCuotaMensual) <= 20) {
 
-          if (valorCuotaMensual > valorTotalMora) {
+          if (valorCuotaMensual >= valorTotalMora) {
 
             const swalWithBootstrapButtons = Swal.mixin({
               customClass: {
@@ -2631,8 +2631,6 @@ export class HomeCarteraComponent implements OnInit {
 
 
           } else {
-
-
 
             this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.MORA
             this.acuerdo.tipoAcuerdo = TIPOACUERDO.MORA

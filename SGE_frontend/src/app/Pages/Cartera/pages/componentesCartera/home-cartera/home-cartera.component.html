@@ -677,7 +677,7 @@
                                                             <input (change)="calculadora($event)"
                                                                 id="boton_saldo_capital" type="text"
                                                                 [(ngModel)]="cuentaCobrarSelected.moraObligatoria"
-                                                                class="form-control" [disabled]="deshabilitarInputs">
+                                                                class="form-control" disabled >
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -687,7 +687,7 @@
                                                             <input (change)="calculadora($event)" id="boton_saldo_total"
                                                                 type="number"
                                                                 [(ngModel)]="cuentaCobrarSelected.totalObligatoria"
-                                                                class="form-control" [disabled]="deshabilitarInputs">
+                                                                class="form-control" disabled >
                                                         </div>
 
                                                     </div>
@@ -699,7 +699,7 @@
                                                             <input [(ngModel)]="acuerdoCal.valorInteresesMora"
                                                                 type="text" class="form-control"
                                                                 (change)="cambiarIntereses($event)"
-                                                                [disabled]="deshabilitarInputs">
+                                                                [disabled]="deshabilitarInputs" >
                                                         </div>
                                                     </div>
                                                     <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'PREJURIDICO'"
@@ -708,7 +708,7 @@
                                                             <span class="input-group-text fw-bold">Honorarios</span>
                                                             <input [(ngModel)]="acuerdoCal.honoriarioAcuerdo"
                                                                 type="number" class="form-control"
-                                                                [disabled]="deshabilitarInputs">
+                                                                disabled >
                                                         </div>
 
                                                     </div>
@@ -2091,7 +2091,7 @@
                         </div>
 
                         <!-- FILTRO CLASIFICACION GESTION -->
-                        <!-- <div class="col-md-12 mb-3">
+                        <div class="col-md-12 mb-3">
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseClas"
@@ -2109,7 +2109,7 @@
                                     </div>
                                 </div>
                             </figure>
-                        </div> -->
+                        </div>
 
                         <figure>
                             <blockquote class="blockquote">
