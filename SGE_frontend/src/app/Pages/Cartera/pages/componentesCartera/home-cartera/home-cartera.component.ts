@@ -2643,7 +2643,7 @@ export class HomeCarteraComponent implements OnInit {
             alert(cuotasReales)
             if ((valorTotalAcuerdo / valorCuotaMensual) <= cuotasReales  ) {
 
-              alert(cuotasReales)
+              
               if (valorCuotaMensual >= valorTotalMora) {
 
                 
@@ -3046,12 +3046,7 @@ export class HomeCarteraComponent implements OnInit {
     if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
       honorariosCuota = honorarios * participacionCuotaMora
     }
-    alert(valorCuota)
-    alert(total)
-    alert(capital)
-    alert(intereses)
-    alert(honorarios)
-    
+   
     var datos = {
       capital: parseInt(capitalCuotaMora.toFixed(0)),
       interes: parseInt(interesCuotaMora.toFixed(0)),
