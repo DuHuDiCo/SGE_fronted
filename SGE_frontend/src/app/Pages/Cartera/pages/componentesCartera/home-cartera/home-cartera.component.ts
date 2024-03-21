@@ -2583,7 +2583,7 @@ export class HomeCarteraComponent implements OnInit {
           buttonsStyling: false
         });
         swalWithBootstrapButtons.fire({
-          title: "¿Abono de cuota único o saldar a cuotas el restate del credito?",
+          title: "¿Abono de cuota único? o ¿saldar a cuotas el restante del credito?",
           icon: "warning",
           showCancelButton: true,
           confirmButtonText: "Abono",
@@ -2633,10 +2633,20 @@ export class HomeCarteraComponent implements OnInit {
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
           ) {
-            if ((valorTotalAcuerdo / valorCuotaMensual) <= 20) {
+            var capitalRestante = totalObligatoria - moraOlbigatoria
+            var cuotasReales = 0;
+            if(capitalRestante > 0){
+              cuotasReales = capitalRestante / valorCuotaAnterior
+            }
+            
 
+            alert(cuotasReales)
+            if ((valorTotalAcuerdo / valorCuotaMensual) <= cuotasReales  ) {
+
+              alert(cuotasReales)
               if (valorCuotaMensual >= valorTotalMora) {
 
+                
                 this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.MORA
                 this.acuerdo.tipoAcuerdo = TIPOACUERDO.MORA
                 //calcula la primera cuota con interes y el valor de cuota ingresado y el restante con las cuotas anteriores sin interes
@@ -2653,14 +2663,12 @@ export class HomeCarteraComponent implements OnInit {
 
             } else {
 
+              if ((valorTotalAcuerdo / valorCuotaMensual) <= 20) {
 
-
-              //preguntar si tiene el permiso para refianciacion
-              if (this.validarPermisoDado(Permisos.REFINANCIACION, Roles.CARTERA) || this.validarPermisoDado("", Roles.ADMINISTRATION)) {
-
+                
                 Swal.fire({
                   title: 'Refinanciacion de Pagare',
-                  text: 'La cuota ingresada es menor a la cuota actual de credito, ¿Está Seguro de Continuar?',
+                  text: 'El actual acuerdo ha superado la fecha máxima de vencimiento, por lo tanto, se requiere refinanciar el pagaré, ¿Está Seguro de Continuar?',
                   icon: 'warning',
                   showCancelButton: true,
                   confirmButtonColor: '#3085d6',
@@ -2671,20 +2679,53 @@ export class HomeCarteraComponent implements OnInit {
                   if (result.isConfirmed) {
                     this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.TOTAL
                     this.acuerdo.tipoAcuerdo = TIPOACUERDO.TOTAL
-                    this.todasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
+
+                    if(totalObligatoria == moraOlbigatoria){
+                      this.todasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
+                    }else{
+                      this.todasCuotasMora(valorIntereses, valorCuotaMensual, totalObligatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
+                    }
+
+                    
                   }
                 })
-
               } else {
-                var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
-                this.col = true
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Accion Denegada',
-                  text: 'No tienes permisos para realizar esta accion, el valor minimo de cuota es: ' + valorMinimo + '. Contacta al coordinador de cartera',
-                  timer: 5000,
-                });
+
+                //preguntar si tiene el permiso para refianciacion
+                if (this.validarPermisoDado(Permisos.REFINANCIACION, Roles.CARTERA) || this.validarPermisoDado("", Roles.ADMINISTRATION)) {
+
+                  Swal.fire({
+                    title: 'Refinanciacion de Pagare',
+                    text: 'El acuerdo ha excedido la fecha límite y supera las 20 cuotas permitidas. Se requiere refinanciar el pagaré. ¿Continuar?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Confirmar',
+                    cancelButtonText: 'Cancelar'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.TOTAL
+                      this.acuerdo.tipoAcuerdo = TIPOACUERDO.TOTAL
+                      this.todasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
+                    }
+                  })
+
+                } else {
+                  var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
+                  this.col = true
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Accion Denegada',
+                    text: 'No tienes permisos para realizar esta accion, el valor minimo de cuota es: ' + valorMinimo + '. Contacta al coordinador de cartera',
+                    timer: 5000,
+                  });
+                }
+
               }
+
+
+
 
 
             }
@@ -2785,7 +2826,7 @@ export class HomeCarteraComponent implements OnInit {
     var saldoCapital = valorTotalObligatoria
 
 
-    for (let i = 0; i < totalCuotas +1; i++) {
+    for (let i = 0; i < totalCuotas + 1; i++) {
       if (i == 0) {
         //generar primer cuota con interes
 
@@ -3005,7 +3046,12 @@ export class HomeCarteraComponent implements OnInit {
     if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
       honorariosCuota = honorarios * participacionCuotaMora
     }
-
+    alert(valorCuota)
+    alert(total)
+    alert(capital)
+    alert(intereses)
+    alert(honorarios)
+    
     var datos = {
       capital: parseInt(capitalCuotaMora.toFixed(0)),
       interes: parseInt(interesCuotaMora.toFixed(0)),
