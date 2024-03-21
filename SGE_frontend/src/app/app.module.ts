@@ -115,6 +115,10 @@ import { DateFormatPipe } from './Pipes/date-format.pipe';
 import { FormatoMonedaDirective } from './directivas/DirectivaFormatCurrency/formato-moneda.directive';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Dashboard/dashboard-panel-cartera/dashboard-panel-cartera.component';
+import { NavbarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/navbar-panel-cartera/navbar-panel-cartera.component';
+import { SidebarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/sidebar-panel-cartera/sidebar-panel-cartera.component';
+import { CardCreditoComponent } from './Pages/PanelGestionCartera/Pages/Components/card-credito/card-credito.component';
+import { InfoPrincipalComponent } from './Pages/PanelGestionCartera/Pages/Components/info-principal/info-principal.component';
 
 
 
@@ -242,7 +246,11 @@ import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Page
     FormatoMonedaDirective,
 
     FormatoMonedaDirective,
-      DashboardPanelCarteraComponent
+      DashboardPanelCarteraComponent,
+      NavbarPanelCarteraComponent,
+      SidebarPanelCarteraComponent,
+      CardCreditoComponent,
+      InfoPrincipalComponent
 
   ],
 

@@ -85,6 +85,7 @@ import { GuardCajaGuard } from './Guards/Cartera/guard-caja.guard';
 import { ClasificacionJuridicaComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion-juridica/clasificacion-juridica.component';
 import { CondicionEspecialComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/condicion-especial/condicion-especial.component';
 import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/firmas/firmas.component';
+import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Dashboard/dashboard-panel-cartera/dashboard-panel-cartera.component';
 
 
 
@@ -97,39 +98,39 @@ import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Config
 
 
 const routes: Routes = [
-  {path: '', redirectTo:'login' , pathMatch:'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
-    path:'login', 
-    component:LoginComponent,
+    path: 'login',
+    component: LoginComponent,
     canActivate: [LoginGuard]
   },
 
   {
-    path:'opciones', 
-    component:OpcionesComponent,
-    canActivate:[AuthenticationGuard]
+    path: 'opciones',
+    component: OpcionesComponent,
+    canActivate: [AuthenticationGuard]
   },
   {
-    path:'cambioContrasena', 
-    component:CambioContrasenaComponent,
+    path: 'cambioContrasena',
+    component: CambioContrasenaComponent,
   },
   {
-    path: 'cartera', redirectTo:'dashboard-cartera/inicio' , pathMatch:'full' 
+    path: 'cartera', redirectTo: 'dashboard-cartera/inicio', pathMatch: 'full'
   }
   ,
   {
-    path:"dashboard-cartera",
-    component:DashboardComponent,
-    canActivate:[AuthenticationGuard],
-    children:[
+    path: "dashboard-cartera",
+    component: DashboardComponent,
+    canActivate: [AuthenticationGuard],
+    children: [
       {
-        path:"inicio",
-        component:HomeCarteraComponent,
+        path: "inicio",
+        component: DashboardPanelCarteraComponent,
         canActivate: [GuardAsesoraGuard]
       },
       {
-        path:"clasificacion",
-        component:ClasificacionComponent
+        path: "clasificacion",
+        component: ClasificacionComponent
       },
       {
         path: "upload-data",
@@ -152,44 +153,44 @@ const routes: Routes = [
         component: FirmasComponent
       },
       {
-         path: "inicio-caja",
-         component: HomeCajaComponent,
-         canActivate: [GuardCajaGuard]
+        path: "inicio-caja",
+        component: HomeCajaComponent,
+        canActivate: [GuardCajaGuard]
       }
 
     ]
   },
   {
-    path:"perfil-usuario",
-    component:PerfilUsuarioComponent,
-    children:[]
+    path: "perfil-usuario",
+    component: PerfilUsuarioComponent,
+    children: []
   },
 
   {
-    path: 'caja', redirectTo:'dashboard-caja' , pathMatch:'full' 
+    path: 'caja', redirectTo: 'dashboard-caja', pathMatch: 'full'
   },
 
   {
     path: 'dashboard-caja',
     component: DashboardCajaComponent,
-    canActivate:[AuthenticationGuard],
+    canActivate: [AuthenticationGuard],
   },
 
   {
-    path: 'perfil', redirectTo:'dashboard-perfil/datos' , pathMatch:'full' 
+    path: 'perfil', redirectTo: 'dashboard-perfil/datos', pathMatch: 'full'
   },
   {
     path: 'dashboard-perfil',
     component: DashboardPerfilComponent,
-    canActivate:[AuthenticationGuard],
-    children:[
+    canActivate: [AuthenticationGuard],
+    children: [
       {
 
         path: 'configuracion-perfil',
         component: ConfiguracionPerfilComponent
       },
       {
-        path:"datos",
+        path: "datos",
         component: DatosPerfilComponent,
       },
     ]
@@ -198,34 +199,34 @@ const routes: Routes = [
 
 
 
-  {path: 'consignaciones', redirectTo:'dashboard-consignaciones/rankings' , pathMatch:'full' },
+  { path: 'consignaciones', redirectTo: 'dashboard-consignaciones/rankings', pathMatch: 'full' },
   {
-    path:'dashboard-consignaciones',
-    component:DashboarConsignacionesComponent,
-    canActivate:[AuthenticationGuard],
-    children:[
+    path: 'dashboard-consignaciones',
+    component: DashboarConsignacionesComponent,
+    canActivate: [AuthenticationGuard],
+    children: [
       {
-        path:'ingresar',
-        component:IngresarComponent
+        path: 'ingresar',
+        component: IngresarComponent
       },
       {
-        path:'consultar',
-        component:ConsultasComponent
+        path: 'consultar',
+        component: ConsultasComponent
       },
       {
-        path:'reportes',
-        component:ReportesComponent
+        path: 'reportes',
+        component: ReportesComponent
       },
       {
-        path:'bancos',
-        component:BancosComponent
+        path: 'bancos',
+        component: BancosComponent
       },
       {
-        path:'sucursales',
-        component:SucursalesComponent
+        path: 'sucursales',
+        component: SucursalesComponent
       },
       {
-        path:'estados',
+        path: 'estados',
         component: EstadosComponent
       },
       {
@@ -253,109 +254,109 @@ const routes: Routes = [
 
 
 
-  {path: 'administracion', redirectTo:'dashboard-administracion/gestionUsuarios' , pathMatch:'full' },
+  { path: 'administracion', redirectTo: 'dashboard-administracion/gestionUsuarios', pathMatch: 'full' },
   {
-    path:"dashboard-administracion",
-    component:DashboardAdminComponent,
-    canActivate:[AuthenticationGuard],
-    children:[
+    path: "dashboard-administracion",
+    component: DashboardAdminComponent,
+    canActivate: [AuthenticationGuard],
+    children: [
       {
-        path:'gestionUsuarios',
-        component:GestionUsuariosComponent
-        
+        path: 'gestionUsuarios',
+        component: GestionUsuariosComponent
+
       },
       {
-        path:'crearUsuarios',
-        component:CrearUsuariosComponent
-      
+        path: 'crearUsuarios',
+        component: CrearUsuariosComponent
+
       },
       {
-        path:'rolesUsuariosGuardados',
+        path: 'rolesUsuariosGuardados',
         component: RolesUsuariosGuardarComponent
       }
     ]
   },
-  
-  {path: 'sst', redirectTo:'dashboard-sst' , pathMatch:'full' },
+
+  { path: 'sst', redirectTo: 'dashboard-sst', pathMatch: 'full' },
   {
-    path:"dashboard-sst",
-    component:DashboardSSTComponent,
-    canActivate:[AuthenticationGuard],
-    children:[
+    path: "dashboard-sst",
+    component: DashboardSSTComponent,
+    canActivate: [AuthenticationGuard],
+    children: [
       {
-        path:'incapacidad-g',
-        component:IncapacidadGComponent
+        path: 'incapacidad-g',
+        component: IncapacidadGComponent
       },
       {
-        path:'incapacidad-arl',
-        component:IncapacidadArlComponent
+        path: 'incapacidad-arl',
+        component: IncapacidadArlComponent
       },
       {
-        path:'accidentes',
-        component:AccidentesComponent
+        path: 'accidentes',
+        component: AccidentesComponent
       },
       {
-        path:'incidentes',
-        component:IncidentesComponent
+        path: 'incidentes',
+        component: IncidentesComponent
       },
       {
-        path:'observaciones',
-        component:ObservacionesComponent
+        path: 'observaciones',
+        component: ObservacionesComponent
       },
       {
-        path:'evidencia',
-        component:EvidenciasComponent
+        path: 'evidencia',
+        component: EvidenciasComponent
       },
       {
-        path:'co-evidencias',
-        component:EvidenciasComponent
+        path: 'co-evidencias',
+        component: EvidenciasComponent
       },
       {
-        path:'evaluacion1',
-        component:Evalucion1Component
+        path: 'evaluacion1',
+        component: Evalucion1Component
       },
       {
-        path:'lista-chequeo',
-        component:ListaChequeoComponent
+        path: 'lista-chequeo',
+        component: ListaChequeoComponent
       },
       {
-        path:'reportes-sst',
-        component:ReportesSstComponent
+        path: 'reportes-sst',
+        component: ReportesSstComponent
       },
       {
-        path:'resultados-sst',
-        component:ResultadosSstComponent
+        path: 'resultados-sst',
+        component: ResultadosSstComponent
       },
     ]
   },
 
-  {path: 'Creditos', redirectTo:'dashboard-creditos' , pathMatch:'full' },
+  { path: 'Creditos', redirectTo: 'dashboard-creditos', pathMatch: 'full' },
   {
-    path:"dashboard-creditos",
-    component:DashboardCreditosComponent,
-    canActivate:[AuthenticationGuard],
-    children:[
+    path: "dashboard-creditos",
+    component: DashboardCreditosComponent,
+    canActivate: [AuthenticationGuard],
+    children: [
       {
-        path:'ver-creditos',
-        component:VerCreditosComponent
+        path: 'ver-creditos',
+        component: VerCreditosComponent
       },
       {
-        path:'crear-credito',
-        component:CrearCreditoComponent
+        path: 'crear-credito',
+        component: CrearCreditoComponent
       },
       {
-        path:'creditos-creados',
-        component:CreditosCreadosComponent
+        path: 'creditos-creados',
+        component: CreditosCreadosComponent
       },
     ]
   },
 
-  {path: 'Archivos', redirectTo:'dashboard-archivos/buscar-archivos' , pathMatch:'full' },
+  { path: 'Archivos', redirectTo: 'dashboard-archivos/buscar-archivos', pathMatch: 'full' },
   {
-    path:"dashboard-archivos",
-    component:DashboardArchivosComponent,
-    canActivate:[AuthenticationGuard],
-    children:[
+    path: "dashboard-archivos",
+    component: DashboardArchivosComponent,
+    canActivate: [AuthenticationGuard],
+    children: [
       {
         path: 'subir-archivos',
         component: SubirArchivosComponent
@@ -372,45 +373,45 @@ const routes: Routes = [
   },
 
 
-  {path: 'Ventas', redirectTo:'dashboard-ventas' , pathMatch:'full' },
+  { path: 'Ventas', redirectTo: 'dashboard-ventas', pathMatch: 'full' },
   {
-    path:"dashboard-ventas",
-    component:DashboardVentasComponent,
-    canActivate:[AuthenticationGuard],
-    children:[
+    path: "dashboard-ventas",
+    component: DashboardVentasComponent,
+    canActivate: [AuthenticationGuard],
+    children: [
       {
-        path:'proceso-ventas',
-        component:ProcesoVentasComponent
+        path: 'proceso-ventas',
+        component: ProcesoVentasComponent
       },
     ]
   },
 
-  {path: 'servicios', redirectTo:'dashboard-servicios' , pathMatch:'full' },
+  { path: 'servicios', redirectTo: 'dashboard-servicios', pathMatch: 'full' },
   {
     path: 'dashboard-servicios',
     component: DashboardServiciosComponent,
-    canActivate:[AuthenticationGuard],
+    canActivate: [AuthenticationGuard],
   },
 
 
-  {path: 'AdminGeneral', redirectTo:'dashboard-admin-general/system-roles' , pathMatch:'full' },
+  { path: 'AdminGeneral', redirectTo: 'dashboard-admin-general/system-roles', pathMatch: 'full' },
   {
-    path:"dashboard-admin-general",
-    component:DashboardSuperAdminComponent,
-    canActivate:[AuthenticationGuard],
-    children:[
+    path: "dashboard-admin-general",
+    component: DashboardSuperAdminComponent,
+    canActivate: [AuthenticationGuard],
+    children: [
       {
-        path:'system-roles',
+        path: 'system-roles',
         component: SystemRolesComponent
       },
       {
-        path:'system-permisos',
+        path: 'system-permisos',
         component: SystemPermisosComponent
       },
       {
-        path:'agregar-varios-clientes',
+        path: 'agregar-varios-clientes',
         component: AgregarVariosClientesComponent
-      }  
+      }
       ,
       {
         path: 'buscar-cliente',
