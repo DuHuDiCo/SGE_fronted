@@ -6,6 +6,7 @@
     width: 70px;
     background-color: #960010;
     color: white;
+    border: none;
 }
 
 .span-style {
@@ -42,6 +43,7 @@
     width: 200px;
     background-color: #e0e0e0;
     color: black;
+    border: none;
 }
 
 .options a {
@@ -55,4 +57,14 @@
 .list-group-item {
     background-color: #e0e0e0;
     padding: 5px;
+}
+
+.card-header {
+    background-color: #960010;
+    border: none;
+    color: white;
+}
+
+.card {
+    border: none;
 }

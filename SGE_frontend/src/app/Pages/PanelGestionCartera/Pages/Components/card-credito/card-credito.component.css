@@ -1,0 +1,27 @@
+.card-principal {
+    top: 20px;
+    left: 220px;
+    width: 83%;
+    background-color: rgba(225, 225, 225, 0.827);
+    border: none;
+}
+
+.input-g-sm {
+    display: block;
+}
+
+.font-alert {
+    font-size: 12px;
+    padding: 5px 0;
+}
+
+.bg-red {
+    color: white;
+    background-color: #960010;
+    border-color: #960010;
+}
+
+.bg-red:hover {
+    background: #d40000;
+    border-color: #d40000;
+}
