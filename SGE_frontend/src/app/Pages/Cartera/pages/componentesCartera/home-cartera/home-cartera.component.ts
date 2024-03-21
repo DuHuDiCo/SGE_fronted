@@ -3632,23 +3632,26 @@ export class HomeCarteraComponent implements OnInit {
       });
     }
 
+    var acuerdoDesactivated = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'ACUERDO DE PAGO' && ges.clasificacion.isActive == false)
+    if (acuerdoDesactivated != null || acuerdoDesactivated != undefined) {
+      acuerdoDesactivated.forEach((ges: any) => {
+        this.gestiones.push(ges)
+      });
+    }
+
+    var tareaDesactivated = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && ges.clasificacion.isActive == false)
+    if (tareaDesactivated != null || tareaDesactivated != undefined) {
+      tareaDesactivated.forEach((ges: any) => {
+        this.gestiones.push(ges)
+      });
+    }
+
     var notas = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'NOTA')
     if (notas != null || notas != undefined) {
       notas.forEach((ges: any) => {
         this.gestiones.push(ges)
       });
-
     }
-
-    var acuerdosFalse = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'ACUERDO DE PAGO' && !ges.clasificacion.isActive)
-    acuerdosFalse.forEach((ges: any) => {
-      this.gestiones.push(ges)
-    });
-
-    var tareaFalse = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && !ges.clasificacion.isActive)
-    tareaFalse.forEach((ges: any) => {
-      this.gestiones.push(ges)
-    });
   }
 
   agregarPagoACuotas() {
