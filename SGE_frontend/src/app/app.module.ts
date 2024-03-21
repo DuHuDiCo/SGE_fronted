@@ -114,6 +114,7 @@ import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Config
 import { DateFormatPipe } from './Pipes/date-format.pipe';
 import { FormatoMonedaDirective } from './directivas/DirectivaFormatCurrency/formato-moneda.directive';
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Dashboard/dashboard-panel-cartera/dashboard-panel-cartera.component';
 
 
 
@@ -240,7 +241,8 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
     DateFormatPipe,
     FormatoMonedaDirective,
 
-    FormatoMonedaDirective
+    FormatoMonedaDirective,
+      DashboardPanelCarteraComponent
 
   ],
 
