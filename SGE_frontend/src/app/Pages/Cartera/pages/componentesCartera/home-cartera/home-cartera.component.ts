@@ -1805,7 +1805,10 @@ export class HomeCarteraComponent implements OnInit {
         pago: false,
         interesCuota: c.interesCuota,
         pagosDto: null,
-        idCuota: c.idCuota
+        idCuota: c.idCuota,
+        saldoCapital: 0,
+        saldoHonorario: 0,
+        saldoIntereses: 0
       }
 
       if (c.pagos != null || c.pagos != undefined) {
@@ -1813,7 +1816,10 @@ export class HomeCarteraComponent implements OnInit {
           valorPago: c.pagos.valorPago,
           fechaPago: c.pagos.fechaPago,
 
-          saldoCuota: c.pagos.saldoCuota
+          saldoCuota: c.pagos.saldoCuota,
+          capital: 0,
+          intereses: 0,
+          honorarios: 0
         }
         couta.pagosDto = pagos
         if (c.pagos!.valorPago == 0) {
@@ -2785,7 +2791,7 @@ export class HomeCarteraComponent implements OnInit {
     var saldoCapital = valorTotalObligatoria
 
 
-    for (let i = 0; i < totalCuotas +1; i++) {
+    for (let i = 0; i < totalCuotas + 1; i++) {
       if (i == 0) {
         //generar primer cuota con interes
 
@@ -3727,8 +3733,10 @@ export class HomeCarteraComponent implements OnInit {
     });
   }
 
-  agregarPagoACuotas() {
 
+
+
+  agregarPagoACuotas() {
     this.mostrarAgregarPago = true
     this.ocultarAgregarPago = false
     if (this.pago.detalle.trim() == '' || this.pago.detalle.trim() == null || this.pago.detalle.trim() == undefined) {
@@ -3788,6 +3796,7 @@ export class HomeCarteraComponent implements OnInit {
 
 
     if (this.pago.valor >= this.totalCuotasAcuerdo) {
+
       valorTotal = this.totalCuotasAcuerdo;
       this.saldoAcuerdoPago = this.totalCuotasAcuerdo
       this.valorTotalIngresado = this.valorTotalIngresado + parseInt(valorTotal)
@@ -3799,15 +3808,15 @@ export class HomeCarteraComponent implements OnInit {
       this.cuotasList.forEach((c: CuotaList, i: number) => {
 
 
-
         if (c.pagos != null || c.pagos != undefined) {
           if (c.pagos.saldoCuota > 0) {
 
             valorTotal = valorTotal - c.pagos.saldoCuota
 
 
-            this.coutasRequest[i].capitalCuota = this.coutasRequest[i].capitalCuota - this.coutasRequest[i].pagosDto!.saldoCuota
-            this.cuotasList[i].capitalCuota = this.cuotasList[i].capitalCuota - this.cuotasList[i].pagos!.saldoCuota
+            this.coutasRequest[i].saldoCapital = this.coutasRequest[i].saldoCapital - this.coutasRequest[i].pagosDto!.saldoCuota
+
+            this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].saldoCapitalCuota - this.cuotasList[i].pagos!.saldoCuota
 
             this.coutasRequest[i].pagosDto!.saldoCuota = 0
             this.cuotasList[i].pagos!.saldoCuota = 0
@@ -3827,7 +3836,10 @@ export class HomeCarteraComponent implements OnInit {
               valorPago: c.valorCuota,
               fechaPago: date,
 
-              saldoCuota: 0
+              saldoCuota: 0,
+              capital: c.capitalCuota,
+              intereses: c.interesCuota,
+              honorarios: c.honorarios
             }
 
             var pagosOriginal: Pagos = {
@@ -3836,7 +3848,10 @@ export class HomeCarteraComponent implements OnInit {
               fechaPago: pagos.fechaPago,
               usuarioId: 0,
               saldoCuota: pagos.saldoCuota,
-              reciboPago: null
+              reciboPago: null,
+              valorCapital: c.capitalCuota,
+              valorIntereses: c.interesCuota,
+              valorHonorarios: c.honorarios
             }
 
             if (valorTotal > c.valorCuota) {
@@ -3855,14 +3870,14 @@ export class HomeCarteraComponent implements OnInit {
               this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.coutasRequest[i].interesCuota
 
 
-              this.coutasRequest[i].capitalCuota = 0
-              this.coutasRequest[i].honorarios = 0
-              this.coutasRequest[i].interesCuota = 0
+              this.coutasRequest[i].saldoCapital = 0
+              this.coutasRequest[i].saldoHonorario = 0
+              this.coutasRequest[i].saldoIntereses = 0
 
 
-              this.cuotasList[i].capitalCuota = 0
-              this.cuotasList[i].honorarios = 0
-              this.cuotasList[i].interesCuota = 0
+              this.cuotasList[i].saldoCapitalCuota = 0
+              this.cuotasList[i].saldoHonorarios = 0
+              this.cuotasList[i].salodInteresCuota = 0
             }
 
 
@@ -3873,8 +3888,8 @@ export class HomeCarteraComponent implements OnInit {
               if (this.coutasRequest[i].honorarios > 0) {
                 if (difere > 0) {
                   difere = difere - this.coutasRequest[i].honorarios
-                  this.coutasRequest[i].honorarios = 0
-                  this.cuotasList[i].honorarios = 0
+                  this.coutasRequest[i].saldoHonorario = 0
+                  this.cuotasList[i].saldoHonorarios = 0
                   this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
                 }
               }
@@ -3882,15 +3897,15 @@ export class HomeCarteraComponent implements OnInit {
               if (difere > 0) {
                 if (this.coutasRequest[i].interesCuota <= difere) {
                   difere = difere - this.coutasRequest[i].interesCuota
-                  this.coutasRequest[i].interesCuota = 0
-                  this.cuotasList[i].interesCuota = 0
+                  this.coutasRequest[i].saldoIntereses = 0
+                  this.cuotasList[i].salodInteresCuota = 0
                   this.saldoInteresesAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].interesCuota
                 }
               }
 
               if (difere > 0) {
-                this.coutasRequest[i].capitalCuota = this.coutasRequest[i].capitalCuota - difere
-                this.cuotasList[i].capitalCuota = this.cuotasList[i].capitalCuota - difere
+                this.coutasRequest[i].saldoCapital = this.coutasRequest[i].capitalCuota - difere
+                this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].capitalCuota - difere
                 this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - difere
 
               }
@@ -3905,19 +3920,21 @@ export class HomeCarteraComponent implements OnInit {
               this.cuotasList[i].pagos = pagosOriginal
 
               this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
-              this.coutasRequest[i].honorarios = 0
-              this.cuotasList[i].honorarios = 0
+              this.coutasRequest[i].saldoHonorario = 0
+              this.cuotasList[i].saldoHonorarios = 0
 
 
               this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.coutasRequest[i].interesCuota
-              this.coutasRequest[i].interesCuota = 0
-              this.cuotasList[i].interesCuota = 0
+              this.coutasRequest[i].saldoIntereses = 0
+              this.cuotasList[i].salodInteresCuota = 0
 
               this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - this.coutasRequest[i].capitalCuota
-              this.coutasRequest[i].capitalCuota = 0
-              this.cuotasList[i].capitalCuota = 0
+              this.coutasRequest[i].saldoCapital = 0
+              this.cuotasList[i].saldoCapitalCuota = 0
 
             }
+
+
           } else {
             if (valorTotal == 0) {
               i = 0
@@ -3929,7 +3946,10 @@ export class HomeCarteraComponent implements OnInit {
               valorPago: valorTotal,
               fechaPago: date,
 
-              saldoCuota: c.valorCuota - valorTotal
+              saldoCuota: c.valorCuota - valorTotal,
+              capital: valorTotal - c.interesCuota - c.honorarios,
+              intereses: c.interesCuota,
+              honorarios: c.honorarios
             }
             var pagosOriginal: Pagos = {
               idPago: 0,
@@ -3937,37 +3957,40 @@ export class HomeCarteraComponent implements OnInit {
               fechaPago: pagos.fechaPago,
               usuarioId: 0,
               saldoCuota: pagos.saldoCuota,
-              reciboPago: null
+              reciboPago: null,
+              valorCapital: c.capitalCuota,
+              valorIntereses: c.interesCuota,
+              valorHonorarios: c.honorarios
             }
 
 
             var difere = valorTotal
 
 
-            if (this.coutasRequest[i].honorarios > 0) {
-              if (difere > 0) {
-                difere = difere - this.coutasRequest[i].honorarios
-                this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
-                this.coutasRequest[i].honorarios = 0
-                this.cuotasList[i].honorarios = 0
 
-              }
+            if (difere > 0) {
+              difere = difere - this.coutasRequest[i].honorarios
+              this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
+              this.coutasRequest[i].saldoHonorario = 0
+              this.cuotasList[i].saldoHonorarios = 0
+
             }
+
 
             if (difere > 0) {
               if (this.coutasRequest[i].interesCuota <= difere) {
                 difere = difere - this.coutasRequest[i].interesCuota
                 this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.coutasRequest[i].interesCuota
-                this.coutasRequest[i].interesCuota = 0
-                this.cuotasList[i].interesCuota = 0
+                this.coutasRequest[i].saldoIntereses = 0
+                this.cuotasList[i].salodInteresCuota = 0
 
               }
             }
 
             if (difere > 0) {
               this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - difere
-              this.coutasRequest[i].capitalCuota = this.coutasRequest[i].capitalCuota - difere
-              this.cuotasList[i].capitalCuota = this.cuotasList[i].capitalCuota - difere
+              this.coutasRequest[i].saldoCapital = this.coutasRequest[i].capitalCuota - difere
+              this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].capitalCuota - difere
 
 
             }
@@ -3977,9 +4000,9 @@ export class HomeCarteraComponent implements OnInit {
             this.coutasRequest[i].pagosDto = pagos
             this.cuotasList[i].pagos = pagosOriginal
 
-            if (this.gestionSelected.clasificacion.coutasList[i].capitalCuota > 0) {
-              this.cuotasList[i].pagos.saldoCuota = this.cuotasList[i].capitalCuota
-              this.coutasRequest[i].pagosDto!.saldoCuota = this.cuotasList[i].capitalCuota
+            if (this.cuotasList[i].capitalCuota > 0) {
+              this.cuotasList[i].pagos.saldoCuota = this.cuotasList[i].saldoCapitalCuota
+              this.coutasRequest[i].pagosDto!.saldoCuota = this.cuotasList[i].saldoCapitalCuota
             }
           }
 
@@ -3987,7 +4010,7 @@ export class HomeCarteraComponent implements OnInit {
 
         }
 
-        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) < new Date()) {
+        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) <= new Date()) {
 
           this.coutasRequest[i].cumplio = false
           this.cuotasList[i].cumplio = false
@@ -3995,11 +4018,11 @@ export class HomeCarteraComponent implements OnInit {
         }
 
 
-        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) >= new Date()) {
+        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) > new Date()) {
 
-          this.coutasRequest[i].cumplio = true
-          this.cuotasList[i].cumplio = true
-          this.pago.cumpliendo = true
+          this.coutasRequest[i].cumplio = false
+          this.cuotasList[i].cumplio = false
+          this.pago.cumpliendo = false
 
         }
 
@@ -4008,7 +4031,6 @@ export class HomeCarteraComponent implements OnInit {
           this.cuotasList[i].cumplio = true
           this.pago.cumpliendo = true
         }
-
 
         this.coutasRequest[i].pago = c.pago
 
@@ -4023,8 +4045,9 @@ export class HomeCarteraComponent implements OnInit {
       this.pago.valor = 0
       this.activarGuardarPago = true
       this.ocultarCrearRevision = false
-
     }
+
+
   }
 
   crearNotaRevision() {
@@ -4118,31 +4141,31 @@ export class HomeCarteraComponent implements OnInit {
     if (user != null || user != undefined) {
       recibo.username = user;
 
-      this.cuentasCobrar.crearRecibo(recibo).subscribe(
-        (data: any) => {
+      // this.cuentasCobrar.crearRecibo(recibo).subscribe(
+      //   (data: any) => {
 
-          this.mostrarReciboPago(data.base64)
-          this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
+      //     this.mostrarReciboPago(data.base64)
+      //     this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
 
-          this.activarGuardarPago = false
-          this.savePago = false
-          this.coutasRequest = []
-          this.pago = {
-            valor: 0,
-            detalle: '',
-            medioPago: "",
-            numeroRecibo: '',
-            cumpliendo: false
-          }
+      //     this.activarGuardarPago = false
+      //     this.savePago = false
+      //     this.coutasRequest = []
+      //     this.pago = {
+      //       valor: 0,
+      //       detalle: '',
+      //       medioPago: "",
+      //       numeroRecibo: '',
+      //       cumpliendo: false
+      //     }
 
-          this.valorTotalIngresado = 0
-        }, (error: any) => {
-          this.activarGuardarPago = false
-          this.savePago = false
-          console.log(error);
+      //     this.valorTotalIngresado = 0
+      //   }, (error: any) => {
+      //     this.activarGuardarPago = false
+      //     this.savePago = false
+      //     console.log(error);
 
-        }
-      )
+      //   }
+      // )
     }
 
     $('#modalGestionCom').modal('hide');

@@ -677,7 +677,7 @@
                                                             <input (change)="calculadora($event)"
                                                                 id="boton_saldo_capital" type="text"
                                                                 [(ngModel)]="cuentaCobrarSelected.moraObligatoria"
-                                                                class="form-control" disabled >
+                                                                class="form-control" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -687,7 +687,7 @@
                                                             <input (change)="calculadora($event)" id="boton_saldo_total"
                                                                 type="number"
                                                                 [(ngModel)]="cuentaCobrarSelected.totalObligatoria"
-                                                                class="form-control" disabled >
+                                                                class="form-control" disabled>
                                                         </div>
 
                                                     </div>
@@ -699,7 +699,7 @@
                                                             <input [(ngModel)]="acuerdoCal.valorInteresesMora"
                                                                 type="text" class="form-control"
                                                                 (change)="cambiarIntereses($event)"
-                                                                [disabled]="deshabilitarInputs" >
+                                                                [disabled]="deshabilitarInputs">
                                                         </div>
                                                     </div>
                                                     <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'PREJURIDICO'"
@@ -707,8 +707,7 @@
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Honorarios</span>
                                                             <input [(ngModel)]="acuerdoCal.honoriarioAcuerdo"
-                                                                type="number" class="form-control"
-                                                                disabled >
+                                                                type="number" class="form-control" disabled>
                                                         </div>
 
                                                     </div>
@@ -1822,8 +1821,11 @@
                                         <th scope="col">Fecha Venc</th>
                                         <th scope="col">Valor Cuota</th>
                                         <th scope="col">Capital Cuota</th>
+                                        <th scope="col">Saldo Capital</th>
                                         <th scope="col">Honorarios</th>
+                                        <th scope="col">Saldo Honorarios</th>
                                         <th scope="col">Interes</th>
+                                        <th scope="col">Saldo Intereses</th>
                                         <th scope="col">Pago</th>
                                     </tr>
                                 </thead>
@@ -1834,8 +1836,11 @@
                                         <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
                                         <td>{{ g.valorCuota | number }}</td>
                                         <td>{{ g.capitalCuota | number }}</td>
+                                        <td>{{g.saldoCapitalCuota | number}}</td>
                                         <td>{{ g.honorarios | number }}</td>
+                                        <td>{{g.saldoHonorarios| number}}</td>
                                         <td>{{ g.interesCuota | number }}</td>
+                                        <td>{{g.salodInteresCuota | number}}</td>
                                         <td class="justify-content-center">
                                             <div class="row justify-content-center">
                                                 <div class="col-md-6">
