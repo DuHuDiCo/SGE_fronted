@@ -1,4 +1,19 @@
-.navbar-expand-lg {
-    background-color: #c8c4c4;
+.container-fluid {
+    padding: 0;
+}
+
+.navFalse {
+    width: 1170px;
+    left: 200px;
+    background-color: rgba(239, 239, 239, 0.979);
     border: none;
+    border-bottom: 1px rgba(163, 163, 163, 0.732) solid;
+}
+
+.navTrue {
+    width: 1370px;
+    left: 0px;
+    background-color: rgba(239, 239, 239, 0.979);
+    border: none;
+    border-bottom: 1px rgba(163, 163, 163, 0.732) solid;
 }

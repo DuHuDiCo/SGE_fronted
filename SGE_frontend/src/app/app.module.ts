@@ -120,6 +120,7 @@ import { SidebarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/
 import { CardCreditoComponent } from './Pages/PanelGestionCartera/Pages/Components/card-credito/card-credito.component';
 import { InfoPrincipalComponent } from './Pages/PanelGestionCartera/Pages/Components/info-principal/info-principal.component';
 import { ModalHistoricoGesComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-historico-ges/modal-historico-ges.component';
+import { OffcanvasNovedadesComponent } from './Pages/PanelGestionCartera/Pages/MainElements/offcanvas-novedades/offcanvas-novedades.component';
 
 
 
@@ -252,7 +253,8 @@ import { ModalHistoricoGesComponent } from './Pages/PanelGestionCartera/Pages/Ma
       SidebarPanelCarteraComponent,
       CardCreditoComponent,
       InfoPrincipalComponent,
-      ModalHistoricoGesComponent
+      ModalHistoricoGesComponent,
+      OffcanvasNovedadesComponent
 
   ],
 

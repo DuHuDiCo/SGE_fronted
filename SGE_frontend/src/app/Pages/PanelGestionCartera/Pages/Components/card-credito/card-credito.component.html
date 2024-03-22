@@ -1,4 +1,4 @@
-<div class="card card-principal">
+<div class="card" [ngClass]="{'card-principal': !btn, 'card-true': btn}">
     <div class="card-header">
         Información Del Credito
     </div>
@@ -67,7 +67,14 @@
                     <div class="col-md-12">
                         <div class="row justify-content-center text-center align-middle">
                             <div class="col-md-12">
-                                <button class="btn bg-red align-middle mt-4">Novedades</button>
+                                <button type="button" class="btn bg-red align-middle mt-4 position-relative"
+                                    data-bs-toggle="offcanvas" data-bs-target="#offcanvasNovedades">
+                                    Novedades <i class="fa-solid fa-bell"></i>
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-red">
+                                        2
+                                    </span>
+                                </button>
                             </div>
                             <div class="col-md-12">
                                 <button class="btn btn-secondary align-middle mt-2" data-bs-toggle="modal"
@@ -82,3 +89,4 @@
 </div>
 
 <app-modal-historico-ges></app-modal-historico-ges>
+<app-offcanvas-novedades></app-offcanvas-novedades>

@@ -1,10 +1,10 @@
-<app-card-credito></app-card-credito>
-
-<div class="card">
-    <div class="card-header">
-        Titulo
-    </div>
-    <div class="card-body">
-        Contenido
+<div class="container-fluid">
+    <div class="card mt-5" [ngClass]="{'cardFalse': !btn, 'cardTrue': btn}">
+        <div class="card-header">
+            Titulo
+        </div>
+        <div class="card-body">
+            Contenido
+        </div>
     </div>
 </div>

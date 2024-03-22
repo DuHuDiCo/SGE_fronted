@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-info-principal',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./info-principal.component.css']
 })
 export class InfoPrincipalComponent implements OnInit {
+
+  @Input() btn: any;
 
   constructor() { }
 

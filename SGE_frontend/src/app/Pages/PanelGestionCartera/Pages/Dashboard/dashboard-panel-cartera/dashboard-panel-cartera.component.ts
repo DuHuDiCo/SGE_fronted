@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardPanelCarteraComponent implements OnInit {
 
+  buttonState: boolean = false
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  changeBtn($data: any) {
+    this.buttonState = $data
+    console.log(this.buttonState);
   }
 
 }

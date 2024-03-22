@@ -26,24 +26,26 @@
     padding: 10px 10px 0px 20px;
 }
 
-.sidebar ul li a {
+.sidebar ul li {
     color: white;
     text-decoration: none;
+    cursor: pointer;
 }
 
-.sidebar ul li a:hover {
+.sidebar ul li:hover {
     color: #ff3030;
 }
 
 .options {
     position: fixed;
-    top: 56px;
+    top: 0;
     left: 70px;
     height: 100%;
     width: 200px;
-    background-color: #e0e0e0;
+    background-color: rgba(239, 239, 239, 0.979);
     color: black;
     border: none;
+    border-right: 1px rgba(191, 191, 191, 0.732) solid;
 }
 
 .options a {
@@ -55,7 +57,7 @@
 }
 
 .list-group-item {
-    background-color: #e0e0e0;
+    background-color: rgba(239, 239, 239, 0.979);
     padding: 5px;
 }
 
