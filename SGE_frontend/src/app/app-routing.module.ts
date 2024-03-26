@@ -86,6 +86,8 @@ import { ClasificacionJuridicaComponent } from './Pages/Cartera/pages/componente
 import { CondicionEspecialComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/condicion-especial/condicion-especial.component';
 import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/firmas/firmas.component';
 import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Dashboard/dashboard-panel-cartera/dashboard-panel-cartera.component';
+import { InfoPersonalComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentesGestion/info-personal/info-personal.component';
+import { CodeudorComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentesGestion/codeudor/codeudor.component';
 
 
 
@@ -116,8 +118,7 @@ const routes: Routes = [
   },
   {
     path: 'cartera', redirectTo: 'dashboard-cartera/inicio', pathMatch: 'full'
-  }
-  ,
+  },
   {
     path: "dashboard-cartera",
     component: DashboardComponent,
@@ -126,7 +127,19 @@ const routes: Routes = [
       {
         path: "inicio",
         component: DashboardPanelCarteraComponent,
-        canActivate: [GuardAsesoraGuard]
+        canActivate: [GuardAsesoraGuard],
+        children: [
+          {
+            path: "gestion",
+            component: InfoPersonalComponent,
+            canActivate: [AuthenticationGuard]
+          },
+          {
+            path: "codeudor",
+            component: CodeudorComponent,
+            canActivate: [AuthenticationGuard],
+          }
+        ]
       },
       {
         path: "clasificacion",

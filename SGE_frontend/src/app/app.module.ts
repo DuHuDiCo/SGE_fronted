@@ -121,6 +121,8 @@ import { CardCreditoComponent } from './Pages/PanelGestionCartera/Pages/Componen
 import { InfoPrincipalComponent } from './Pages/PanelGestionCartera/Pages/Components/info-principal/info-principal.component';
 import { ModalHistoricoGesComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-historico-ges/modal-historico-ges.component';
 import { OffcanvasNovedadesComponent } from './Pages/PanelGestionCartera/Pages/MainElements/offcanvas-novedades/offcanvas-novedades.component';
+import { CodeudorComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentesGestion/codeudor/codeudor.component';
+import { InfoPersonalComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentesGestion/info-personal/info-personal.component';
 
 
 
@@ -248,13 +250,15 @@ import { OffcanvasNovedadesComponent } from './Pages/PanelGestionCartera/Pages/M
     FormatoMonedaDirective,
 
     FormatoMonedaDirective,
-      DashboardPanelCarteraComponent,
-      NavbarPanelCarteraComponent,
-      SidebarPanelCarteraComponent,
-      CardCreditoComponent,
-      InfoPrincipalComponent,
-      ModalHistoricoGesComponent,
-      OffcanvasNovedadesComponent
+    DashboardPanelCarteraComponent,
+    NavbarPanelCarteraComponent,
+    SidebarPanelCarteraComponent,
+    CardCreditoComponent,
+    InfoPrincipalComponent,
+    ModalHistoricoGesComponent,
+    OffcanvasNovedadesComponent,
+    InfoPersonalComponent,
+    CodeudorComponent
 
   ],
 

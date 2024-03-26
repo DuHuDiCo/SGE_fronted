@@ -1,10 +1,3 @@
-<div class="container-fluid">
-    <div class="card mt-5" [ngClass]="{'cardFalse': !btn, 'cardTrue': btn}">
-        <div class="card-header">
-            Titulo
-        </div>
-        <div class="card-body">
-            Contenido
-        </div>
-    </div>
+<div class="container-fluid p-0" [ngClass]="{'cardFalse': !btn, 'cardTrue': btn}">
+    <router-outlet></router-outlet>
 </div>
