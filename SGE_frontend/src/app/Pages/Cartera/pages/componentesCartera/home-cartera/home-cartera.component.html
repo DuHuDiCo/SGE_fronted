@@ -1835,7 +1835,7 @@
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
                         <button
                             *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA' && gestionSelected.clasificacion.isActive == true && notiId != null && clasifiNotiId != null"
-                            type="button" class="btn btn-danger b" (click)="completarGestion()">Desactivar
+                            type="button" class="btn btn-danger b" (click)="desactivateGestion()">Desactivar
                             Gestión</button>
                     </span>
 

@@ -1159,6 +1159,69 @@ export class HomeCarteraComponent implements OnInit {
     this.newGestion.clasificacionId = this.clasifiNotiId
   }
 
+  desactivateGestion() {
+    console.log(this.gestionSelected.idGestion);
+
+    Swal.fire({
+      title: 'Desactivar Gestión',
+      text: '¿Está Seguro De Desactivar Esta Gestión?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Crear',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cuentasCobrar.desactivateGestion(this.gestionSelected.idGestion).subscribe(
+          (data: any) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Datos Guardados',
+              text: 'Gestión Desactivada Con Éxito',
+              timer: 3000
+            })
+            this.getNotificaciones()
+            if (!this.filtroAgain) {
+              this.getCuentasCobrar()
+            } else {
+              this.filtro()
+            }
+
+            this.gestionButton = false
+            this.newGestion = {
+              numeroObligacion: this.newGestion.numeroObligacion,
+              clasificacion: {
+                tipoClasificacion: null,
+                tarea: null,
+                nota: null,
+                acuerdoPago: null,
+                nombreClasificacion: ''
+              },
+              contact: false,
+              detallesAdicionales: this.newGestion.detallesAdicionales,
+              usernameToSetNotificacion: '',
+              userNotifying: '',
+              notificacionId: null,
+              clasificacionId: null
+            }
+            $('#modalGestionCom').modal('hide');
+            $('#offcanvasRight').offcanvas('hide');
+          }, (error: any) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error Al Desactivar La Gestión',
+              timer: 3000
+            })
+            console.log(error);
+          }
+        )
+
+      }
+    })
+  }
+
   getLastDato(numeroDocumento: string) {
     this.cuentasCobrar.getLastDatoAdicional(numeroDocumento).subscribe(
       (data: any) => {
