@@ -289,15 +289,27 @@
                                 <td>{{c.numeroCuota}}</td>
                                 <td>{{c.fechaVencimiento | date:'dd/MM/yyyy'}}</td>
                                 <td>{{c.valorCuota | number}}</td>
-                                <td>{{c.capitalCuota | number}}</td>
-                                <td>{{c.saldoCapitalCuota | number}}</td>
-                                <td>{{c.honorarios | number}}</td>
-                                <td>{{c.saldoHonorarios| number}}</td>
-                                <td>{{c.interesCuota| number}}</td>
-                                <td>{{c.salodInteresCuota | number}}</td>
+                                <td>{{ c.capitalCuota | number }}</td>
+                                <td *ngIf="c.saldoCapitalCuota == 0" style="background-color: gray;">
+                                    {{c.saldoCapitalCuota | number}}</td>
+                                <td *ngIf="c.saldoCapitalCuota > 0" style="background-color: yellow;">
+                                    {{c.saldoCapitalCuota | number}}</td>
+                                <td>{{ c.honorarios | number }}</td>
+                                
+                                <td *ngIf="c.saldoHonorarios > 0" style="background-color: yellow;">{{c.saldoHonorarios|
+                                    number}}</td>
+                                <td *ngIf="c.saldoHonorarios == 0" style="background-color: gray;">{{c.saldoHonorarios|
+                                    number}}</td>
+                                <td>{{ c.interesCuota | number }}</td>
+                                
+                                <td *ngIf="c.salodInteresCuota == 0" style="background-color: gray;">
+                                    {{c.salodInteresCuota | number}}</td>
+                                <td *ngIf="c.salodInteresCuota > 0" style="background-color: yellow;">
+                                    {{c.salodInteresCuota | number}}</td>
                                 <td *ngIf="coutasList[0].pagos != null || coutasList[0].pagos != null">{{c.pagos ==
                                     null?0:c.pagos.valorPago | number}}</td>
                                 <td>{{c.pagos == null? c.valorCuota :c.pagos.saldoCuota | number}}</td>
+                                
                             </tr>
 
                         </tbody>

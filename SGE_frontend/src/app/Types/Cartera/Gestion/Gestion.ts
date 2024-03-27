@@ -41,7 +41,7 @@ export type GestionArray = {
   clasificacion: {
     idClasificacionGestion: number,
     clasificacion: string
-  },
+  } | null,
   cpc: {
     idCuentasPorCobrar: number,
     numeroObligacion: string,

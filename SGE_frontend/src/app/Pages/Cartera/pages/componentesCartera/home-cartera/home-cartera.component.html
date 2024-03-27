@@ -1835,12 +1835,24 @@
                                         <td>{{ g.numeroCuota }}</td>
                                         <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
                                         <td>{{ g.valorCuota | number }}</td>
+
                                         <td>{{ g.capitalCuota | number }}</td>
-                                        <td>{{g.saldoCapitalCuota | number}}</td>
+                                        <td *ngIf="g.saldoCapitalCuota == 0" style="background-color: gray;">
+                                            {{g.saldoCapitalCuota | number}}</td>
+                                        <td *ngIf="g.saldoCapitalCuota > 0" style="background-color: yellow;">
+                                            {{g.saldoCapitalCuota | number}}</td>
                                         <td>{{ g.honorarios | number }}</td>
-                                        <td>{{g.saldoHonorarios| number}}</td>
+
+                                        <td *ngIf="g.saldoHonorarios > 0" style="background-color: yellow;">
+                                            {{g.saldoHonorarios| number}}</td>
+                                        <td *ngIf="g.saldoHonorarios == 0" style="background-color: gray;">
+                                            {{g.saldoHonorarios| number}}</td>
                                         <td>{{ g.interesCuota | number }}</td>
-                                        <td>{{g.salodInteresCuota | number}}</td>
+
+                                        <td *ngIf="g.salodInteresCuota == 0" style="background-color: gray;">
+                                            {{g.salodInteresCuota | number}}</td>
+                                        <td *ngIf="g.salodInteresCuota > 0" style="background-color: yellow;">
+                                            {{g.salodInteresCuota | number}}</td>
                                         <td class="justify-content-center">
                                             <div class="row justify-content-center">
                                                 <div class="col-md-6">
@@ -2106,8 +2118,8 @@
                                 </blockquote>
                                 <div class="collapse" id="collapseClas">
                                     <div class="form-check" *ngFor="let c of ClasificacionArray">
-                                        <input value="{{ c.nombre }}" class="form-check-input" type="checkbox"
-                                            (click)="metodoClasGestion(c.tipo, c.nombre)" #variableCol>
+                                        <input value="{{ c.idNombreClasificacion }}" class="form-check-input" type="checkbox"
+                                            (click)="metodoClasGestion(c.tipo, c.idNombreClasificacion)" #variableCol>
                                         <label class="form-check-label">
                                             <cite title="Source Title">{{ c.nombre }}</cite>
                                         </label>

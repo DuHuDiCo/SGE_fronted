@@ -110,7 +110,7 @@ export class HomeCajaComponent implements OnInit {
     this.cuentaCobrarService.getCuentaByCedula(cedula).subscribe(
       (data: any) => {
         this.cuentasCobrarGestiones = data;
-        
+
 
         if (this.cuentasCobrarGestiones != null || this.cuentasCobrarGestiones != undefined) {
           this.cuentasCobrarGestiones.forEach((cc: any) => {
@@ -118,7 +118,7 @@ export class HomeCajaComponent implements OnInit {
               var gestion = cc.gestion.filter((g: Gestion) => g.clasificacionGestion.isActive && g.clasificacionGestion.clasificacion == "ACUERDO DE PAGO")
               this.gestionesCuenta = gestion
               console.log(this.gestionesCuenta);
-              
+
               if (gestion.length > 0) {
                 gestion[0].clasificacionGestion.cuotasList.forEach((c: any) => {
 
@@ -127,14 +127,14 @@ export class HomeCajaComponent implements OnInit {
 
                 this.coutasList.forEach((c: CuotaList) => {
                   console.log(c);
-                  
+
 
 
 
                   this.totalCuotasAcuerdo = this.totalCuotasAcuerdo + c.valorCuota
-                  this.totalCapital = this.totalCapital + c.capitalCuota
-                  this.totalHonorarios = this.totalHonorarios + c.honorarios
-                  this.totalIntereses = this.totalIntereses + c.interesCuota
+                  this.totalCapital = this.totalCapital + c.saldoCapitalCuota
+                  this.totalHonorarios = this.totalHonorarios + c.saldoHonorarios
+                  this.totalIntereses = this.totalIntereses + c.salodInteresCuota
                   if (c.pagos != null || c.pagos != undefined) {
 
                     if (c.pagos.reciboPago != null || c.pagos.reciboPago != undefined) {
@@ -147,9 +147,9 @@ export class HomeCajaComponent implements OnInit {
 
                     }
 
-                    this.saldoInteresesAcuerdo = this.totalIntereses + c.interesCuota
-                    this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo + c.honorarios
-                    this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo + c.capitalCuota
+                    this.saldoInteresesAcuerdo = this.totalIntereses + c.salodInteresCuota
+                    this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo + c.saldoHonorarios
+                    this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo + c.saldoCapitalCuota
 
 
                   } else {
@@ -296,9 +296,25 @@ export class HomeCajaComponent implements OnInit {
 
     if (this.pago.valor >= this.totalCuotasAcuerdo) {
 
-      valorTotal = this.totalCuotasAcuerdo;
-      this.saldoAcuerdoPago = this.totalCuotasAcuerdo
-      this.valorTotalIngresado = this.valorTotalIngresado + parseInt(valorTotal)
+
+      Swal.fire({
+        title: "El valor ingresado es mayor al valor del acuerdo",
+        text: "El valor de la cuota sera: " + this.saldoAcuerdoPago,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, continuar",
+        cancelButtonText: "No, cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          valorTotal = this.totalCuotasAcuerdo;
+          this.saldoAcuerdoPago = this.totalCuotasAcuerdo
+          this.valorTotalIngresado = this.valorTotalIngresado + parseInt(valorTotal)
+        }
+      });
+
+
     }
 
 
@@ -313,19 +329,59 @@ export class HomeCajaComponent implements OnInit {
             valorTotal = valorTotal - c.pagos.saldoCuota
 
 
-            this.coutasRequest[i].capitalCuota = this.coutasRequest[i].capitalCuota - this.coutasRequest[i].pagosDto!.saldoCuota
 
-            this.coutasList[i].capitalCuota = this.coutasList[i].capitalCuota - this.coutasList[i].pagos!.saldoCuota
+            this.coutasRequest[i].saldoCapital = this.coutasList[i].saldoCapitalCuota - this.coutasList[i].pagos!.saldoCuota
 
-            this.coutasRequest[i].pagosDto!.saldoCuota = 0
-            this.coutasList[i].pagos!.saldoCuota = 0
+            this.coutasList[i].saldoCapitalCuota = this.coutasList[i].saldoCapitalCuota - this.coutasList[i].pagos!.saldoCuota
+
+
 
             this.coutasRequest[i].pagosDto!.valorPago = c.valorCuota
             this.coutasList[i].pagos!.valorPago = this.coutasRequest[i].pagosDto!.valorPago
+
+            this.coutasRequest[i].pagosDto!.capital = c.pagos.valorCapital + c.pagos.saldoCuota
+            this.coutasList[i].pagos!.valorCapital = c.pagos.valorCapital + c.pagos.saldoCuota
+
+            this.coutasRequest[i].pagosDto!.intereses = c.pagos.valorIntereses
+            this.coutasList[i].pagos!.valorIntereses = c.pagos.valorIntereses
+
+            this.coutasRequest[i].pagosDto!.honorarios = c.pagos.valorHonorarios
+            this.coutasList[i].pagos!.valorHonorarios = c.pagos.valorHonorarios
+
+
+            this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - c.pagos.saldoCuota
+            // this.saldoAcuerdoPago = this.saldoAcuerdoPago -c.pagos.saldoCuota
+            this.coutasRequest[i].pagosDto!.saldoCuota = 0
+            this.coutasList[i].pagos!.saldoCuota = 0
+
+
+            if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) <= new Date()) {
+
+              this.coutasRequest[i].cumplio = false
+              this.coutasList[i].cumplio = false
+              this.pago.cumpliendo = false
+            }
+
+
+            if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) > new Date()) {
+
+              this.coutasRequest[i].cumplio = false
+              this.coutasList[i].cumplio = false
+              this.pago.cumpliendo = false
+
+            }
+
+            if (c.pagos.saldoCuota == 0) {
+              this.coutasRequest[i].cumplio = true
+              this.coutasList[i].cumplio = true
+              this.pago.cumpliendo = true
+            }
+
+            this.coutasRequest[i].pago = c.pago
           }
         }
 
-        if (c.pagos == null || c.pagos == undefined && valorTotal > 0) {
+        if ((c.pagos == null || c.pagos == undefined) && valorTotal > 0) {
 
           if (valorTotal > 0 && valorTotal >= c.valorCuota) {
 
@@ -509,29 +565,7 @@ export class HomeCajaComponent implements OnInit {
 
         }
 
-        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) <= new Date()) {
 
-          this.coutasRequest[i].cumplio = false
-          this.coutasList[i].cumplio = false
-          this.pago.cumpliendo = false
-        }
-
-
-        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) > new Date()) {
-
-          this.coutasRequest[i].cumplio = false
-          this.coutasList[i].cumplio = false
-          this.pago.cumpliendo = false
-
-        }
-
-        if (c.pagos!.saldoCuota == 0) {
-          this.coutasRequest[i].cumplio = true
-          this.coutasList[i].cumplio = true
-          this.pago.cumpliendo = true
-        }
-
-        this.coutasRequest[i].pago = c.pago
 
       })
 
@@ -574,7 +608,7 @@ export class HomeCajaComponent implements OnInit {
       numeroRecibo: this.pago.numeroRecibo,
       cuotasDto: coutasFiltradas,
       valorTotal: this.valorTotalIngresado,
-      acuerdoTotal: this.gestionesCuenta[0].clasificacionGestion.valorTotalAcuerdo,
+      acuerdoTotal: this.saldoAcuerdoPago,
       capitalTotal: 0,
       honorariosTotal: 0,
       interesesTotal: 0,

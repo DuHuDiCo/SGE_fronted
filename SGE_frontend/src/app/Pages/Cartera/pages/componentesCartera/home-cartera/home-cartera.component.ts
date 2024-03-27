@@ -349,7 +349,10 @@ export class HomeCarteraComponent implements OnInit {
   //VARIABLES
   mensaje: string = ''
   base64: string = ''
-
+  bgcolorTotales: string = 'none'
+  bgcolorSaldosCapital: string = 'none'
+  bgcolorSaldosIntereses: string = 'none'
+  bgcolorSaldosHonorarios: string = 'none'
   // PARAMETROS PARA EL SERVICE
   //TODO:CAMBIAR A 0 CUANDO CORRIJAN EL ARCHIVO
   page: number = 0;
@@ -1761,10 +1764,14 @@ export class HomeCarteraComponent implements OnInit {
 
     this.cuotasList.forEach((c: CuotaList) => {
 
+
+      
+
+
       this.totalCuotasAcuerdo = this.totalCuotasAcuerdo + c.valorCuota
-      this.totalCapital = this.totalCapital + c.capitalCuota
-      this.totalHonorarios = this.totalHonorarios + c.honorarios
-      this.totalIntereses = this.totalIntereses + c.interesCuota
+      this.totalCapital = this.totalCapital + c.saldoCapitalCuota
+      this.totalHonorarios = this.totalHonorarios + c.saldoHonorarios
+      this.totalIntereses = this.totalIntereses + c.salodInteresCuota
       if (c.pagos != null || c.pagos != undefined) {
 
         if (c.pagos.reciboPago != null || c.pagos.reciboPago != undefined) {
@@ -1779,9 +1786,9 @@ export class HomeCarteraComponent implements OnInit {
 
         }
 
-        this.saldoInteresesAcuerdo = this.totalIntereses + c.interesCuota
-        this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo + c.honorarios
-        this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo + c.capitalCuota
+        this.saldoInteresesAcuerdo = this.totalIntereses + c.salodInteresCuota
+        this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo + c.saldoHonorarios
+        this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo + c.saldoCapitalCuota
 
 
       } else {
@@ -3210,6 +3217,7 @@ export class HomeCarteraComponent implements OnInit {
 
   //FILTROS
   filtroFirst() {
+    
     var td
     var contenido: any
     var partesMes
@@ -3240,7 +3248,7 @@ export class HomeCarteraComponent implements OnInit {
       (this.filtros.edadVencimiento.length == 0) &&
       (this.filtros.sede.length == 0) &&
       (this.filtros.clasiJuridica.length == 0) &&
-      (this.filtros.clasificacionGestion == 0) &&
+      (this.filtros.clasificacionGestion == null) &&
       (this.filtros.saldoCapitalInicio == 0 || this.filtros.saldoCapitalInicio == null) &&
       (this.filtros.saldoCapitalFin == 0 || this.filtros.saldoCapitalFin == null) &&
       (this.filtros.fechaCpcInicio == null) &&
@@ -3442,6 +3450,7 @@ export class HomeCarteraComponent implements OnInit {
     console.log(this.filtros);
     this.cuentasCobrar.filtro(this.page, this.size, this.fechaCreacion, this.filtros).subscribe(
       (data: any) => {
+        alert()
         this.botonFiltro = false
         this.filtrando = true
         this.filtroAgain = true
@@ -3535,7 +3544,7 @@ export class HomeCarteraComponent implements OnInit {
     this.edadVenArray = []
     this.sedesArray = []
     this.clasJurArray = []
-    this.clasGesArray = []
+    this.clasGesArray = null
 
     if (accion == 'LIMPIAR') {
       this.buscarObligacion = ''
@@ -3608,11 +3617,11 @@ export class HomeCarteraComponent implements OnInit {
     }
   }
 
-  metodoClasGestion(tipo: string, clas: string) {
+  metodoClasGestion(tipo: string, clas: number) {
 
     var objeto: any = {
       tipoClasificacion: tipo,
-      nombreClasificacion: clas
+      id: clas
     }
 
     this.clasGesArray = objeto
@@ -3794,14 +3803,29 @@ export class HomeCarteraComponent implements OnInit {
 
 
 
-
+    
     if (this.pago.valor >= this.totalCuotasAcuerdo) {
 
-      valorTotal = this.totalCuotasAcuerdo;
-      this.saldoAcuerdoPago = this.totalCuotasAcuerdo
-      this.valorTotalIngresado = this.valorTotalIngresado + parseInt(valorTotal)
-    }
 
+      Swal.fire({
+        title: "El valor ingresado es mayor al valor del acuerdo",
+        text: "El valor de la cuota sera: " + this.saldoAcuerdoPago,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, continuar",
+        cancelButtonText: "No, cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          valorTotal = this.totalCuotasAcuerdo;
+          this.saldoAcuerdoPago = this.totalCuotasAcuerdo
+          this.valorTotalIngresado = this.valorTotalIngresado + parseInt(valorTotal)
+        }
+      });
+
+
+    }
 
 
     if (valorTotal > 0) {
@@ -3813,20 +3837,35 @@ export class HomeCarteraComponent implements OnInit {
 
             valorTotal = valorTotal - c.pagos.saldoCuota
 
+            
 
-            this.coutasRequest[i].saldoCapital = this.coutasRequest[i].saldoCapital - this.coutasRequest[i].pagosDto!.saldoCuota
+            this.coutasRequest[i].saldoCapital = this.cuotasList[i].saldoCapitalCuota - this.cuotasList[i].pagos!.saldoCuota
 
             this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].saldoCapitalCuota - this.cuotasList[i].pagos!.saldoCuota
 
-            this.coutasRequest[i].pagosDto!.saldoCuota = 0
-            this.cuotasList[i].pagos!.saldoCuota = 0
+
 
             this.coutasRequest[i].pagosDto!.valorPago = c.valorCuota
             this.cuotasList[i].pagos!.valorPago = this.coutasRequest[i].pagosDto!.valorPago
+
+            this.coutasRequest[i].pagosDto!.capital = c.pagos.valorCapital + c.pagos.saldoCuota
+            this.cuotasList[i].pagos!.valorCapital = c.pagos.valorCapital + c.pagos.saldoCuota
+
+            this.coutasRequest[i].pagosDto!.intereses = c.pagos.valorIntereses
+            this.cuotasList[i].pagos!.valorIntereses = c.pagos.valorIntereses
+
+            this.coutasRequest[i].pagosDto!.honorarios = c.pagos.valorHonorarios
+            this.cuotasList[i].pagos!.valorHonorarios = c.pagos.valorHonorarios
+
+
+            this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - c.pagos.saldoCuota
+            this.saldoAcuerdoPago = this.saldoAcuerdoPago - c.pagos.saldoCuota
+            this.coutasRequest[i].pagosDto!.saldoCuota = 0
+            this.cuotasList[i].pagos!.saldoCuota = 0
           }
         }
 
-        if (c.pagos == null || c.pagos == undefined && valorTotal > 0) {
+        if ((c.pagos == null || c.pagos == undefined) && valorTotal > 0) {
 
           if (valorTotal > 0 && valorTotal >= c.valorCuota) {
 
@@ -3864,6 +3903,8 @@ export class HomeCarteraComponent implements OnInit {
 
               this.coutasRequest[i].pagosDto = pagos
               this.cuotasList[i].pagos = pagosOriginal
+
+              
 
               this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - this.coutasRequest[i].capitalCuota
               this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
@@ -4010,7 +4051,7 @@ export class HomeCarteraComponent implements OnInit {
 
         }
 
-        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) <= new Date()) {
+        if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) <= new Date()) {
 
           this.coutasRequest[i].cumplio = false
           this.cuotasList[i].cumplio = false
@@ -4018,7 +4059,7 @@ export class HomeCarteraComponent implements OnInit {
         }
 
 
-        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) > new Date()) {
+        if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) > new Date()) {
 
           this.coutasRequest[i].cumplio = false
           this.cuotasList[i].cumplio = false
@@ -4026,7 +4067,7 @@ export class HomeCarteraComponent implements OnInit {
 
         }
 
-        if (c.pagos!.saldoCuota == 0) {
+        if (c.pagos.saldoCuota == 0) {
           this.coutasRequest[i].cumplio = true
           this.cuotasList[i].cumplio = true
           this.pago.cumpliendo = true
@@ -4040,7 +4081,7 @@ export class HomeCarteraComponent implements OnInit {
       if (this.saldoAcuerdoPago < this.pago.valor) {
         this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.saldoAcuerdoPago
       } else {
-        this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.pago.valor
+        this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.valorTotalIngresado
       }
       this.pago.valor = 0
       this.activarGuardarPago = true
@@ -4116,6 +4157,7 @@ export class HomeCarteraComponent implements OnInit {
     this.savePago = true
 
 
+ 
 
     var recibo = {
       numeroObligacion: this.cuentaCobrarSelected.numeroObligacion,
@@ -4123,15 +4165,19 @@ export class HomeCarteraComponent implements OnInit {
       cuotasDto: coutasFiltradas,
       valorTotal: this.valorTotalIngresado,
       acuerdoTotal: this.saldoAcuerdoPago,
-      capitalTotal: this.saldoCapitalAcuerdo,
-      honorariosTotal: this.saldoHonoriariosAcuerdo,
-      interesesTotal: this.saldoInteresesAcuerdo,
+      capitalTotal: 0,
+      honorariosTotal: 0,
+      interesesTotal: 0,
       detalle: this.pago.detalle,
       metodoPago: this.pago.medioPago,
       cumpliendo: this.pago.cumpliendo,
       username: '',
-      nombreClasificacion: "Acuerdo de pago/Recaudo"
+      nombreClasificacion: "Acuerdo de pago/Recaudo",
+      saldoCapital: this.saldoCapitalAcuerdo,
+      saldoInteresesMora: this.saldoInteresesAcuerdo,
+      saldoHonorarios: this.saldoHonoriariosAcuerdo
     }
+
 
 
     console.log(recibo);
@@ -4141,31 +4187,31 @@ export class HomeCarteraComponent implements OnInit {
     if (user != null || user != undefined) {
       recibo.username = user;
 
-      // this.cuentasCobrar.crearRecibo(recibo).subscribe(
-      //   (data: any) => {
+      this.cuentasCobrar.crearRecibo(recibo).subscribe(
+        (data: any) => {
 
-      //     this.mostrarReciboPago(data.base64)
-      //     this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
+          this.mostrarReciboPago(data.base64)
+          this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
 
-      //     this.activarGuardarPago = false
-      //     this.savePago = false
-      //     this.coutasRequest = []
-      //     this.pago = {
-      //       valor: 0,
-      //       detalle: '',
-      //       medioPago: "",
-      //       numeroRecibo: '',
-      //       cumpliendo: false
-      //     }
+          this.activarGuardarPago = false
+          this.savePago = false
+          this.coutasRequest = []
+          this.pago = {
+            valor: 0,
+            detalle: '',
+            medioPago: "",
+            numeroRecibo: '',
+            cumpliendo: false
+          }
 
-      //     this.valorTotalIngresado = 0
-      //   }, (error: any) => {
-      //     this.activarGuardarPago = false
-      //     this.savePago = false
-      //     console.log(error);
+          this.valorTotalIngresado = 0
+        }, (error: any) => {
+          this.activarGuardarPago = false
+          this.savePago = false
+          console.log(error);
 
-      //   }
-      // )
+        }
+      )
     }
 
     $('#modalGestionCom').modal('hide');
