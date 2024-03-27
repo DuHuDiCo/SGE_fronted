@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import anime from 'animejs/lib/anime.es.js';
+import { SideBar } from 'src/app/Types/PanelCartera/sidebar';
 
 @Component({
   selector: 'app-sidebar-panel-cartera',
@@ -11,11 +12,13 @@ export class SidebarPanelCarteraComponent implements OnInit {
 
   @Output() messageEvent = new EventEmitter<any>();
 
+  arraySidebar: SideBar[] = []
   buttonState: boolean = false
 
   constructor() { }
 
   ngOnInit(): void {
+    this.fillArray()
   }
 
   optionSidebar() {
@@ -45,6 +48,62 @@ export class SidebarPanelCarteraComponent implements OnInit {
         opacity: [0, 1],
         easing: 'easeInOutQuad',
       });
+    }
+  }
+
+  fillArray() {
+    this.arraySidebar = [
+      {
+        name: 'Titular',
+        url: 'gestion',
+        var: false
+      },
+      {
+        name: 'Codeudores',
+        url: 'codeudor',
+        var: false
+      },
+      {
+        name: 'Reconocer',
+        url: '',
+        var: false
+      },
+      {
+        name: 'Archivo',
+        url: '',
+        var: false
+      },
+      {
+        name: 'Pagos',
+        url: '',
+        var: false
+      },
+      {
+        name: 'Consignaciones',
+        url: '',
+        var: false
+      },
+      {
+        name: 'Servicios',
+        url: '',
+        var: false
+      },
+      {
+        name: 'Ventas',
+        url: '',
+        var: false
+      },
+    ]
+  }
+
+  changeVar(position: number) {
+    for (let i = 0; i < this.arraySidebar.length; i++) {
+      if (i == position) {
+        this.arraySidebar[position].var = true
+      } else {
+        this.arraySidebar[i].var = false
+      }
+
     }
   }
 

@@ -13,3 +13,13 @@
     box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1);
     border: none;
 }
+
+.card-body {
+    padding: 5px;
+}
+
+.form-floating,
+.form-control,
+.input-group-text {
+    font-size: 12px;
+}

@@ -1,0 +1,162 @@
+<!-- Modal Nueva Gestión -->
+<div class="modal fade" id="modalAcuerdo" tabindex="-1" aria-labelledby="modalGestion" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalGestion">Nueva Gestión</h1>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" style="border: none"><i
+                        class="fa-solid fa-arrow-left"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- <div class="col" [ngClass]="{'col-md-12': col, 'col-md-4': !col}">
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" [(ngModel)]="newGestion.contact" [checked]="true"
+                                    type="checkbox" role="switch" checked>
+                                <label class="form-check-label">Existió contacto
+                                    Telefónico/Whatsapp con el Cliente y/o Tercero (?)</label>
+                            </div>
+                            <label for="">Seleccionar Una Clasificacion</label>
+                            <select class="form-select mb-3" style="border: 1px black solid;"
+                                [(ngModel)]="newGestion.clasificacion.nombreClasificacion" name="nombreClasificacion"
+                                (change)="tipoClasificacion($event)">
+
+                                <option *ngFor="let c of ClasificacionArray" [value]="c.nombre">{{
+                                    c.nombre }}</option>
+                            </select>
+
+                            <span *ngIf="newGestion.clasificacion.tipoClasificacion == 'ACUERDO DE PAGO'">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" style="height: 100px;"
+                                        [(ngModel)]="acuerdo.detalle"></textarea>
+                                    <label class="fw-bold">Detalle Acuerdo</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col" [ngClass]="{'col-md-12': !col, 'col-md-6': col}">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <span class="input-group-text fw-bold">Fecha Comp</span>
+                                            <input type="date" class="form-control"
+                                                [(ngModel)]="acuerdo.fechaCompromiso" [max]="maxFecha()"
+                                                [min]="minFecha()" [disabled]="disabledFecha">
+                                        </div>
+                                    </div>
+                                    <div class="col" [ngClass]="{'col-md-12': !col, 'col-md-6': col}">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <span class="input-group-text fw-bold">Valor Cuota</span>
+                                            <input type="number" class="form-control"
+                                                [(ngModel)]="acuerdo.valorCuotaMensual">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3 mb-3 justify-content-center">
+                                    <div class="col-md-2">
+                                        <button class="btn btn-danger b" (click)="mostrarOffcanvas()">Calcular</button>
+                                    </div>
+                                </div>
+                            </span>
+
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" style="height: 100px;"
+                                    [(ngModel)]="newGestion.detallesAdicionales"></textarea>
+                                <label for="floatingTextarea">Datos Adicionales</label>
+                            </div>
+                        </div>
+                        <div *ngIf="!col" class="col-md-8">
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text fw-bold">Mora/Total</span>
+                                        <span class="input-group-text  ps-5 pe-5">{{acuerdoCal.tipoAcuerdo }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text fw-bold">Valor Acuerdo</span>
+                                        <span class="input-group-text  ps-5 pe-5">{{acuerdoCal.valorTotalAcuerdo |
+                                            number}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text fw-bold">Int Mora</span>
+                                        <span class="input-group-text  ps-5 pe-5">{{acuerdoCal.valorInteresesMora |
+                                            number}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text fw-bold">Valor Cuota Mes</span>
+                                        <span class="input-group-text  ps-5 pe-5">{{acuerdoCal.valorCuotaMensual |
+                                            number}}</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text fw-bold">Fecha Corte</span>
+                                        <input [(ngModel)]="fechaCorte" type="date" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'PREJURIDICO'"
+                                    class="col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text fw-bold">Honorarios/Otros</span>
+                                        <input [(ngModel)]="acuerdoCal.honoriarioAcuerdo" type="number"
+                                            class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive align-middle">
+                                <table class="table table-bordered text-center table-hover table-sm align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#Cuotas</th>
+                                            <th scope="col">Fecha Venc</th>
+                                            <th scope="col">Valor Cuota</th>
+                                            <th scope="col">Capital Cuota</th>
+                                            <th scope="col">Honorarios</th>
+                                            <th scope="col">Interes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr *ngFor="let c of cuotas; let i = index;" style="font-size: 15px;">
+                                            <td>Cuota {{ i + 1 }}</td>
+                                            <td>{{ fechasIncrementadas[i] }}</td>
+                                            <td>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="number" class="form-control text-center"
+                                                        value="{{c.valorCuota}}" 
+                                                        [disabled]="disableds[i]">
+                                                </div>
+                                            </td>
+                                            <td>{{ c.capitalCuota | number }}</td>
+                                            <td>{{ c.honorarios | number }}</td>
+                                            <td>{{ c.interesCuota | number }}</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary" (click)="cancelarGestion()">Limpiar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#modalHistoricoG" (click)="abrirGestiones()">Histórico Gestiones</button>
+                    <button *ngIf="!gestionButton" type="button" class="btn btn-danger b"
+                        (click)="saveGestion()">Guardar</button>
+                    <button *ngIf="gestionButton" class="btn btn-danger b">
+                        Guardando...
+                        <span class="spinner-border spinner-border-sm float-right" role="status"
+                            aria-hidden="true"></span>
+                    </button> -->
+            </div>
+        </div>
+    </div>
+</div>
