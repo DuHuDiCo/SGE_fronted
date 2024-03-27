@@ -1,24 +1,9 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-1 pad-col">
-            <app-sidebar-panel-cartera (messageEvent)="changeBtn($event)"></app-sidebar-panel-cartera>
-        </div>
-        <div class="col-md-11 pad-col">
-            <div class="row">
-                <div class="col-md-10">
-                    <app-navbar-panel-cartera [btn]="buttonState"></app-navbar-panel-cartera>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <app-card-credito [btn]="buttonState"></app-card-credito>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12" style="height: 465px;">
-                    <app-info-principal [btn]="buttonState"></app-info-principal>
-                </div>
-            </div>
-        </div>
-    </div>
+    <app-sidebar-panel-cartera (messageEvent)="changeBtn($event)"></app-sidebar-panel-cartera>
+
+    <app-navbar-panel-cartera [btn]="buttonState"></app-navbar-panel-cartera>
+
+    <app-card-credito [btn]="buttonState"></app-card-credito>
+
+    <app-info-principal [btn]="buttonState"></app-info-principal>
 </div>
