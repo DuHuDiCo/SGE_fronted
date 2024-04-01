@@ -52,48 +52,53 @@ export class SidebarPanelCarteraComponent implements OnInit {
   }
 
   fillArray() {
-    this.arraySidebar = [
-      {
-        name: 'Titular',
-        url: 'gestion',
-        var: false
-      },
-      {
-        name: 'Codeudores',
-        url: 'codeudor',
-        var: false
-      },
-      {
-        name: 'Reconocer',
-        url: '',
-        var: false
-      },
-      {
-        name: 'Archivo',
-        url: '',
-        var: false
-      },
-      {
-        name: 'Pagos',
-        url: '',
-        var: false
-      },
-      {
-        name: 'Consignaciones',
-        url: '',
-        var: false
-      },
-      {
-        name: 'Servicios',
-        url: '',
-        var: false
-      },
-      {
-        name: 'Ventas',
-        url: '',
-        var: false
-      },
-    ]
+    const storedState = localStorage.getItem('sidebarState');
+    if (storedState !== null) {
+      this.arraySidebar = JSON.parse(storedState);
+    } else {
+      this.arraySidebar = [
+        {
+          name: 'Titular',
+          url: 'gestion',
+          var: false
+        },
+        {
+          name: 'Codeudores',
+          url: 'codeudor',
+          var: false
+        },
+        {
+          name: 'Reconocer',
+          url: '',
+          var: false
+        },
+        {
+          name: 'Archivo',
+          url: '',
+          var: false
+        },
+        {
+          name: 'Pagos',
+          url: '',
+          var: false
+        },
+        {
+          name: 'Consignaciones',
+          url: '',
+          var: false
+        },
+        {
+          name: 'Servicios',
+          url: '',
+          var: false
+        },
+        {
+          name: 'Ventas',
+          url: '',
+          var: false
+        },
+      ]
+    }
   }
 
   changeVar(position: number) {
@@ -103,7 +108,7 @@ export class SidebarPanelCarteraComponent implements OnInit {
       } else {
         this.arraySidebar[i].var = false
       }
-
+      localStorage.setItem('sidebarState', JSON.stringify(this.arraySidebar));
     }
   }
 

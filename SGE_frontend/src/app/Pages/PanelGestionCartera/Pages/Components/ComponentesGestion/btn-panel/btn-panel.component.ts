@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+
+declare var $: any;
 
 @Component({
   selector: 'app-btn-panel',
@@ -10,6 +12,9 @@ export class BtnPanelComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    $(document).ready(() => {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
   }
 
 }

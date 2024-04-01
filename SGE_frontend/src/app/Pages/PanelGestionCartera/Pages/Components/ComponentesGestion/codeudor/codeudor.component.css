@@ -1,3 +1,18 @@
+.bg-red {
+    color: white;
+    background-color: #960010;
+    border-color: #960010;
+}
+
+.bg-red:hover {
+    background: #d40000;
+    border-color: #d40000;
+}
+
+.card-disabled {
+    background-color: #e5b7bcf9;
+}
+
 .cardFalse {
     left: 220px;
     width: 83%;
@@ -14,17 +29,12 @@
     border: none;
 }
 
-.body-custom {
-    padding: 0px;
+.card-body {
     padding: 5px;
 }
 
-.form-floating {
+.form-floating,
+.form-control,
+.input-group-text {
     font-size: 12px;
-}
-
-.form-control {
-    padding: 10px 10px;
-    font-size: 12px;
-    height: fit-content;
 }

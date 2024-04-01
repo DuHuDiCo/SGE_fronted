@@ -125,6 +125,8 @@ import { CodeudorComponent } from './Pages/PanelGestionCartera/Pages/Components/
 import { InfoPersonalComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentesGestion/info-personal/info-personal.component';
 import { BtnPanelComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentesGestion/btn-panel/btn-panel.component';
 import { ModalAcuerdoComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-acuerdo/modal-acuerdo.component';
+import { ModalReferenciaComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-referencia/modal-referencia.component';
+import { ModalEditDatoComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-edit-dato/modal-edit-dato.component';
 
 
 
@@ -262,7 +264,9 @@ import { ModalAcuerdoComponent } from './Pages/PanelGestionCartera/Pages/MainEle
     InfoPersonalComponent,
     CodeudorComponent,
     BtnPanelComponent,
-    ModalAcuerdoComponent
+    ModalAcuerdoComponent,
+    ModalReferenciaComponent,
+    ModalEditDatoComponent
 
   ],
 
