@@ -1765,7 +1765,7 @@ export class HomeCarteraComponent implements OnInit {
     this.cuotasList.forEach((c: CuotaList) => {
 
 
-      
+
 
 
       this.totalCuotasAcuerdo = this.totalCuotasAcuerdo + c.valorCuota
@@ -3217,7 +3217,7 @@ export class HomeCarteraComponent implements OnInit {
 
   //FILTROS
   filtroFirst() {
-    
+
     var td
     var contenido: any
     var partesMes
@@ -3265,6 +3265,16 @@ export class HomeCarteraComponent implements OnInit {
         timer: 3000,
       });
       return;
+    }
+
+    if (this.filtros.clasificacionGestion != null && (this.filtros.fechaGestionFin == null && this.filtros.fechaGestionInicio == null)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debes seleccionar una fecha de gestion de inicio y fin ',
+        timer: 3000,
+      });
+      return
     }
 
     if ((this.filtros.fechaGestionInicio != null && this.filtros.fechaGestionInicio != '') && (this.filtros.fechaGestionFin == null || this.filtros.fechaGestionFin == '')) {
@@ -3328,6 +3338,7 @@ export class HomeCarteraComponent implements OnInit {
         this.first = data.first
         this.numeroPages = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
+        
 
         if (this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
           (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
@@ -3427,6 +3438,8 @@ export class HomeCarteraComponent implements OnInit {
       (this.filtros.fechaCompromisoInicio == null) &&
       (this.filtros.fechaCompromisoFin == null)
     ) {
+
+
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -3434,6 +3447,17 @@ export class HomeCarteraComponent implements OnInit {
         timer: 3000,
       });
       return;
+
+    }
+
+
+    if (this.filtros.clasificacionGestion != null && (this.filtros.fechaGestionInicio == null && this.filtros.fechaGestionFin == null)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debes seleccionar una fecha de gestion de inicio y fin ',
+        timer: 3000,
+      });
     }
 
     var admin = this.authService.getRolesByName(ROLES.Administration);
@@ -3450,7 +3474,7 @@ export class HomeCarteraComponent implements OnInit {
     console.log(this.filtros);
     this.cuentasCobrar.filtro(this.page, this.size, this.fechaCreacion, this.filtros).subscribe(
       (data: any) => {
-        alert()
+        
         this.botonFiltro = false
         this.filtrando = true
         this.filtroAgain = true
@@ -3803,7 +3827,7 @@ export class HomeCarteraComponent implements OnInit {
 
 
 
-    
+
     if (this.pago.valor >= this.totalCuotasAcuerdo) {
 
 
@@ -3837,7 +3861,7 @@ export class HomeCarteraComponent implements OnInit {
 
             valorTotal = valorTotal - c.pagos.saldoCuota
 
-            
+
 
             this.coutasRequest[i].saldoCapital = this.cuotasList[i].saldoCapitalCuota - this.cuotasList[i].pagos!.saldoCuota
 
@@ -3904,7 +3928,7 @@ export class HomeCarteraComponent implements OnInit {
               this.coutasRequest[i].pagosDto = pagos
               this.cuotasList[i].pagos = pagosOriginal
 
-              
+
 
               this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - this.coutasRequest[i].capitalCuota
               this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
@@ -4157,7 +4181,7 @@ export class HomeCarteraComponent implements OnInit {
     this.savePago = true
 
 
- 
+
 
     var recibo = {
       numeroObligacion: this.cuentaCobrarSelected.numeroObligacion,

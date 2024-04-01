@@ -100,7 +100,7 @@
                                                 <button type="button" class="page-link dropdown-toggle"
                                                     style="cursor: pointer; text-decoration: none; color: black; background-color: transparent; font-size: 13px;"
                                                     data-bs-toggle="dropdown">{{pageAll+1}}/{{numeroPagesAll}}</button>
-                                                <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
+                                                <ul class="dropdown-menu" style="overflow-y: auto; height: auto;">
                                                     <li *ngFor="let p of paginasAll;let i = index"><button
                                                             class="dropdown-item" (click)="goToPageAll(i)">{{i
                                                             + 1}}</button></li>
@@ -209,7 +209,7 @@
                                                 <button type="button" class="page-link dropdown-toggle"
                                                     style="cursor: pointer; text-decoration: none; color: black; background-color: transparent; font-size: 13px;"
                                                     data-bs-toggle="dropdown">{{pageVen+1}}/{{numeroPagesVen}}</button>
-                                                <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
+                                                <ul class="dropdown-menu" style="overflow-y: auto; height: auto;">
                                                     <li *ngFor="let p of paginasVen;let i = index"><button
                                                             class="dropdown-item" (click)="goToPageVen(i)">{{i
                                                             + 1}}</button></li>
@@ -319,7 +319,7 @@
                                                 <button type="button" class="page-link dropdown-toggle"
                                                     style="cursor: pointer; text-decoration: none; color: black; background-color: transparent; font-size: 13px;"
                                                     data-bs-toggle="dropdown">{{pageReal+1}}/{{numeroPagesReal}}</button>
-                                                <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
+                                                <ul class="dropdown-menu" style="overflow-y: auto; height: auto;">
                                                     <li *ngFor="let p of paginasReal;let i = index"><button
                                                             class="dropdown-item" (click)="goToPageReal(i)">{{i
                                                             + 1}}</button></li>
@@ -1210,7 +1210,7 @@
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaTarea | date:"d/M/yyyy")
                                     :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
-                                    'NOTA' ? 'NOTA' :
+                                    'NOTA' ? '--/--/----' :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso |
                                     date:"d/M/yyyy")))}}
                                 </td>
@@ -1236,7 +1236,7 @@
                                         <button type="button" class="page-link dropdown-toggle"
                                             style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
                                             data-bs-toggle="dropdown">{{page+1}}/{{numeroPages}}</button>
-                                        <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
+                                        <ul class="dropdown-menu" style="overflow-y: auto; height: auto;">
                                             <li *ngFor="let p of paginas;let i = index"><button class="dropdown-item"
                                                     (click)="goToPage(i)">{{i
                                                     + 1}}</button></li>
@@ -2132,10 +2132,16 @@
                             <blockquote class="blockquote">
                                 <h6 class="fw-bold">Saldo</h6>
                             </blockquote>
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text fw-bold">Desde/Hasta</span>
+                            <div class="input-group input-group-sm mb-1">
+                                <span class="input-group-text fw-bold">Desde</span>
                                 <input type="number" [(ngModel)]="filtros.saldoCapitalInicio" class="form-control">
+                                
+                            </div>
+
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text fw-bold">Hasta</span>
                                 <input type="number" [(ngModel)]="filtros.saldoCapitalFin" class="form-control">
+                                
                             </div>
                         </figure>
 

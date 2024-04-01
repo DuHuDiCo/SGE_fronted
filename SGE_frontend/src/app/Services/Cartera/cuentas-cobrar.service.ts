@@ -46,7 +46,7 @@ export class CuentasCobrarService {
 
   //FILTRO
   filtro(page:number, size:number, fechaCreacion:string, dto:Filtros, ){
-    alert("uno")
+    
     return this.http.post(`${baseUrl}/cuentas/filtrosCuentas?page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`, dto)
   }
 
