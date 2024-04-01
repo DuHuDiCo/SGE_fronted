@@ -23,7 +23,8 @@
             </span>
         </button>
 
-        <ul class="dropdown-menu scrollable-menu" style="background-color: rgb(201, 201, 201);">
+        <ul class="dropdown-menu"
+            style="background-color: white; overflow-y: auto; overflow-x: hidden; height: 600px; z-index: 999">
 
             <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -34,106 +35,95 @@
                     <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#vencidas"
                         type="button" role="tab" aria-controls="profile" aria-selected="false">Vencidas</button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#realizadas"
-                        type="button" role="tab" aria-controls="profile" aria-selected="false">Realizadas</button>
-                </li>
-
             </ul>
 
 
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="todas" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="list-group" style="width: 300px;">
+                    <div class="list-group" style="width: 600px;">
 
 
-                        <div class="row justify-content-start mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
+                        <div class="row justify-content-start mt-3 mb-3 ms-1">
+                            <div class="col-md-10">
                                 <select [(ngModel)]="tipoAll" class="form-select" style="border: 1px black solid;">
                                     <option>Seleccione Un Filtro</option>
                                     <option value="SEDE">Filtrar Por Sede</option>
                                     <option value="CEDULA">Filtrar Por Cédula</option>
                                 </select>
                             </div>
-                            <div *ngIf="filtroAll != ''" class="col-md-4">
+                            <div *ngIf="filtroAll != ''" class="col-md-2">
                                 <button class="btn b" (click)="limpiarNoti('ALL')"><i
                                         class="fa-solid fa-filter-circle-xmark"></i></button>
                             </div>
                         </div>
 
-                        <div *ngIf="tipoAll == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
+                        <div *ngIf="tipoAll == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-1">
 
-                            <div class="col-md-8">
+                            <div class="col-md-10">
                                 <select [(ngModel)]="filtroAll" class="form-select" style="border: 1px black solid;">
                                     <option>Seleccione Una Sede</option>
                                     <option *ngFor="let s of sedes; let i = index" value="{{ s.sede }}">{{ s.sede }}
                                     </option>
                                 </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <button class="btn b" (click)="getNotiAllBySede()"><i
                                         class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </div>
 
                         <div *ngIf="tipoAll == 'CEDULA'" class="row justify-content-center mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
-                                <input [(ngModel)]="filtroAll" type="text" class="form-control">
+                            <div class="col-md-10">
+                                <input [(ngModel)]="filtroAll" type="text" class="form-control"
+                                    style="border: 1px black solid;">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <button class="btn b" (click)="getNotiAllBySede()"><i
                                         class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </div>
 
-                        <nav *ngIf="numeroPagesAll > 1" class="row justify-content-center mt-2 ms-5 mb-2">
-                            <div *ngIf="!spinner">
-                                <nav>
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <a class="page-link" (click)="backAll()"
-                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Anterior</a>
-                                        </li>
+                        <div class="row justify-content-center text-center mb-3">
+                            <div class="col-md-5">
+                                <nav *ngIf="numeroPagesAll > 1">
+                                    <div *ngIf="!spinner">
+                                        <nav>
+                                            <ul class="pagination">
+                                                <li class="page-item">
+                                                    <a class="page-link b" (click)="backAll()"
+                                                        style="cursor: pointer; font-size: 13px;">Anterior</a>
+                                                </li>
 
-                                        <li class="page-item">
-                                            <div class="btn-group dropdown">
-                                                <button type="button" class="page-link dropdown-toggle"
-                                                    style="cursor: pointer; text-decoration: none; color: black; background-color: transparent; font-size: 13px;"
-                                                    data-bs-toggle="dropdown">{{pageAll+1}}/{{numeroPagesAll}}</button>
-                                                <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
-                                                    <li *ngFor="let p of paginasAll;let i = index"><button
-                                                            class="dropdown-item" (click)="goToPageAll(i)">{{i
-                                                            + 1}}</button></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" (click)="nextAll()"
-                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Siguiente</a>
-                                        </li>
-                                    </ul>
+                                                <li class="page-item">
+                                                    <div class="btn-group dropdown">
+                                                        <button type="button" class="page-link dropdown-toggle b"
+                                                            style="cursor: pointer; text-decoration: none; font-size: 13px;"
+                                                            data-bs-toggle="dropdown">{{pageAll+1}}/{{numeroPagesAll}}</button>
+                                                        <ul class="dropdown-menu"
+                                                            style="overflow-y: auto; height: 300px;">
+                                                            <li *ngFor="let p of paginasAll;let i = index"><button
+                                                                    class="dropdown-item" (click)="goToPageAll(i)">{{i
+                                                                    + 1}}</button></li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a class="page-link b" (click)="nextAll()"
+                                                        style="cursor: pointer; font-size: 13px;">Siguiente</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </nav>
                             </div>
-                        </nav>
+                        </div>
+
 
                         <a *ngFor="let n of notiArray" class="list-group-item" aria-current="true"
-                            style="background-color: rgb(201, 201, 201);">
-                            <div class="row justify-content-center mb-2">
-                                <div *ngIf="n.tipoGestion == 'TAREA'" class="col-md-4">
-                                    <button
-                                        (click)="desactivarNoti(n.idNotificaciones, n.fechaCreacion, n.gestionId, n.numeroObligacion)"
-                                        class="btn btn-sm b"><i class="fa-solid fa-check"></i></button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button
-                                        (click)="getGestionesNoti(n.numeroObligacion, n.gestionId, n.fechaCreacion, n.tipoGestion, n.idNotificaciones)"
-                                        data-bs-toggle="modal" data-bs-target="#modalGestionCom"
-                                        style="cursor: pointer;" class="btn btn-sm btn-primary"><i
-                                            class="fa-solid fa-file-pen"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="d-flex w-100 justify-content-between">
+                            style="border: 1px rgb(95, 93, 93) solid; cursor: pointer" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasRight"
+                            (click)="openGestion(n.numeroObligacion, n.gestionId, n.idNotificaciones, n.tipoGestion)">
+                            <div class="d-flex justify-content-between">
                                 <h6 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h6>
                                 <small>{{ n.fechaCreacion | dateFormat}}</small>
                             </div>
@@ -153,96 +143,88 @@
 
 
                 <div class="tab-pane fade" id="vencidas" role="tabpanel" aria-labelledby="profile-tab">
-                    <div class="list-group" style="width: 300px;">
+                    <div class="list-group" style="width: 600px;">
 
 
-                        <div *ngIf="notiArrayVencidas.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
+                        <div *ngIf="notiArrayVencidas.length != 0" class="row justify-content-start mt-3 mb-3 ms-1">
+                            <div class="col-md-10">
                                 <select [(ngModel)]="tipoVen" class="form-select" style="border: 1px black solid;">
                                     <option>Seleccione Un Filtro</option>
                                     <option value="SEDE">Filtrar Por Sede</option>
                                     <option value="CEDULA">Filtrar Por Cédula</option>
                                 </select>
                             </div>
-                            <div *ngIf="filtroVen != ''" class="col-md-4">
+                            <div *ngIf="filtroVen != ''" class="col-md-2">
                                 <button class="btn b" (click)="limpiarNoti('VEN')"><i
                                         class="fa-solid fa-filter-circle-xmark"></i></button>
                             </div>
                         </div>
 
-                        <div *ngIf="tipoVen == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
+                        <div *ngIf="tipoVen == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-1">
 
-                            <div class="col-md-8">
+                            <div class="col-md-10">
                                 <select [(ngModel)]="filtroVen" class="form-select" style="border: 1px black solid;">
                                     <option>Seleccione Una Sede</option>
                                     <option *ngFor="let s of sedes; let i = index" value="{{ s.sede }}">{{ s.sede }}
                                     </option>
                                 </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <button class="btn b" (click)="getNotiVenBySede()"><i
                                         class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </div>
 
-                        <div *ngIf="tipoVen == 'CEDULA'" class="row justify-content-center mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
-                                <input [(ngModel)]="filtroVen" type="text" class="form-control">
+                        <div *ngIf="tipoVen == 'CEDULA'" class="row justify-content-center mt-3 mb-3 ms-1">
+                            <div class="col-md-10">
+                                <input [(ngModel)]="filtroVen" type="text" class="form-control"
+                                    style="border: 1px black solid;">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <button class="btn b" (click)="getNotiVenBySede()"><i
                                         class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </div>
 
-                        <nav *ngIf="numeroPagesVen > 1" class="row justify-content-center mt-2 ms-5 mb-2">
-                            <div *ngIf="!spinner">
-                                <nav>
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <a class="page-link" (click)="backVen()"
-                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Anterior</a>
-                                        </li>
+                        <div class="row justify-content-center mb-3">
+                            <div class="col-md-5">
+                                <nav *ngIf="numeroPagesVen > 1">
+                                    <div *ngIf="!spinner">
+                                        <nav>
+                                            <ul class="pagination">
+                                                <li class="page-item">
+                                                    <a class="page-link b" (click)="backVen()"
+                                                        style="cursor: pointer; font-size: 13px;">Anterior</a>
+                                                </li>
 
-                                        <li class="page-item">
-                                            <div class="btn-group dropdown">
-                                                <button type="button" class="page-link dropdown-toggle"
-                                                    style="cursor: pointer; text-decoration: none; color: black; background-color: transparent; font-size: 13px;"
-                                                    data-bs-toggle="dropdown">{{pageVen+1}}/{{numeroPagesVen}}</button>
-                                                <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
-                                                    <li *ngFor="let p of paginasVen;let i = index"><button
-                                                            class="dropdown-item" (click)="goToPageVen(i)">{{i
-                                                            + 1}}</button></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" (click)="nextVen()"
-                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Siguiente</a>
-                                        </li>
-                                    </ul>
+                                                <li class="page-item">
+                                                    <div class="btn-group dropdown">
+                                                        <button type="button" class="page-link dropdown-toggle b"
+                                                            style="cursor: pointer; font-size: 13px;"
+                                                            data-bs-toggle="dropdown">{{pageVen+1}}/{{numeroPagesVen}}</button>
+                                                        <ul class="dropdown-menu"
+                                                            style="overflow-y: auto; height: 300px;">
+                                                            <li *ngFor="let p of paginasVen;let i = index"><button
+                                                                    class="dropdown-item" (click)="goToPageVen(i)">{{i
+                                                                    + 1}}</button></li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a class="page-link b" (click)="nextVen()"
+                                                        style="cursor: pointer; font-size: 13px;">Siguiente</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </nav>
                             </div>
-                        </nav>
+                        </div>
 
                         <a *ngFor="let n of notiArrayVencidas" class="list-group-item" aria-current="true"
-                            style="background-color: rgb(201, 201, 201);">
-                            <div class="row justify-content-center mb-2">
-                                <div class="col-md-4">
-                                    <button *ngIf="n.tipoGestion == 'TAREA'"
-                                        (click)="desactivarNoti(n.idNotificaciones, n.fechaCreacion, n.gestionId, n.numeroObligacion)"
-                                        class="btn btn-sm b"><i class="fa-solid fa-check"></i></button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button
-                                        (click)="getGestionesNoti(n.numeroObligacion, n.gestionId, n.fechaCreacion, n.tipoGestion, n.idNotificaciones)"
-                                        data-bs-toggle="modal" data-bs-target="#modalGestionCom"
-                                        style="cursor: pointer;" class="btn btn-sm btn-primary"><i
-                                            class="fa-solid fa-file-pen"></i></button>
-                                </div>
-                            </div>
+                            style="border: 1px rgb(95, 93, 93) solid;">
 
-                            <div class="d-flex w-100 justify-content-between">
+                            <div class="d-flex justify-content-between">
                                 <h6 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h6>
                                 <small>{{ n.fechaCreacion | dateFormat}}</small>
                             </div>
@@ -258,115 +240,6 @@
                         </a>
                     </div>
                 </div>
-
-
-
-                <div class="tab-pane fade" id="realizadas" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="list-group" style="width: 300px;">
-
-
-                        <div *ngIf="notiArrayRealizadas.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
-                                <select [(ngModel)]="tipoReal" class="form-select" style="border: 1px black solid;">
-                                    <option>Seleccione Un Filtro</option>
-                                    <option value="SEDE">Filtrar Por Sede</option>
-                                    <option value="CEDULA">Filtrar Por Cédula</option>
-                                </select>
-                            </div>
-
-                            <div *ngIf="filtroRealizada != ''" class="col-md-4">
-                                <button class="btn b" (click)="limpiarNoti('REAL')"><i
-                                        class="fa-solid fa-filter-circle-xmark"></i></button>
-                            </div>
-                        </div>
-
-                        <div *ngIf="tipoReal == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
-                                <select [(ngModel)]="filtroRealizada" class="form-select"
-                                    style="border: 1px black solid;">
-                                    <option>Seleccione Una Sede</option>
-                                    <option *ngFor="let s of sedes; let i = index" value="{{ s.sede }}">{{ s.sede }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn b" (click)="getNotiRealizadasBySede()"><i
-                                        class="fa-solid fa-magnifying-glass"></i></button>
-                            </div>
-                        </div>
-
-                        <div *ngIf="tipoReal == 'CEDULA'" class="row justify-content-center mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
-                                <input [(ngModel)]="filtroRealizada" type="text" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn b" (click)="getNotiRealizadasBySede()"><i
-                                        class="fa-solid fa-magnifying-glass"></i></button>
-                            </div>
-                        </div>
-
-                        <nav *ngIf="numeroPagesReal > 1" class="row justify-content-center mt-2 ms-5 mb-2">
-                            <div *ngIf="!spinner">
-                                <nav>
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <a class="page-link" (click)="backReal()"
-                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Anterior</a>
-                                        </li>
-
-                                        <li class="page-item">
-                                            <div class="btn-group dropdown">
-                                                <button type="button" class="page-link dropdown-toggle"
-                                                    style="cursor: pointer; text-decoration: none; color: black; background-color: transparent; font-size: 13px;"
-                                                    data-bs-toggle="dropdown">{{pageReal+1}}/{{numeroPagesReal}}</button>
-                                                <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
-                                                    <li *ngFor="let p of paginasReal;let i = index"><button
-                                                            class="dropdown-item" (click)="goToPageReal(i)">{{i
-                                                            + 1}}</button></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" (click)="nextReal()"
-                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Siguiente</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </nav>
-
-                        <a *ngFor="let n of notiArrayRealizadas" class="list-group-item" aria-current="true"
-                            style="background-color: rgb(201, 201, 201);">
-                            <div class="row justify-content-center mb-2">
-                                <div class="col-md-4">
-                                    <button (click)="hideNotiRealizada(n.idNotificaciones)" class="btn btn-sm b"><i
-                                            class="fa-solid fa-circle-minus"></i></button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button (click)="findCuentaCobrar(n.numeroObligacion)" data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasRight" style="cursor: pointer;"
-                                        class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
-                                </div>
-                            </div>
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h6>
-                                <small>{{ n.fechaCreacion | dateFormat}}</small>
-                            </div>
-                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | dateFormat}}</p>
-                            <small><b>Cliente:</b> {{ n.cliente }}</small><br>
-                            <small *ngIf="n.tipoGestion == 'TAREA'"><b>Creado Por:</b> {{ n.designatedBy }}</small>
-                        </a>
-                    </div>
-                    <div *ngIf="notiArrayRealizadas.length == 0" class="list-group">
-                        <a class="list-group-item list-group-item-action" aria-current="true">
-                            <p class="mb-1">No Tiene Notificaciones Realizadas En El Momento.</p>
-                            <small>Vuelva Más Tarde.</small>
-                        </a>
-                    </div>
-                </div>
-
-
-
             </div>
 
 
@@ -1961,7 +1834,14 @@
 
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
                         <button
-                            *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA' && gestionSelected.clasificacion.isActive == true && notiId != null"
+                            *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA' && gestionSelected.clasificacion.isActive == true && notiId != null && clasifiNotiId != null"
+                            type="button" class="btn btn-danger b" (click)="desactivateGestion()">Desactivar
+                            Gestión</button>
+                    </span>
+
+                    <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+                        <button
+                            *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA' && gestionSelected.clasificacion.isActive == true && notiId != null && clasifiNotiId != null"
                             type="button" class="btn btn-danger b" (click)="completarGestion()">Completar
                             Gestion</button>
                     </span>
