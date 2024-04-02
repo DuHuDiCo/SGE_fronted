@@ -4467,6 +4467,25 @@ export class HomeCarteraComponent implements OnInit {
                 timer: 3000
               })
               $('#offcanvasRight').offcanvas('hide');
+
+              this.notiId = idNotifi
+
+              if (tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA') {
+                this.notiId = null
+                this.clasifiNotiId = null
+              }
+
+              setTimeout(() => {
+                $('#modalGestionCom').modal('show');
+                var gestion = this.gestiones.find((g: any) => g.clasificacion.idClasificacionGestion == idGestion)
+
+                this.positionGestionSelected = this.gestiones.indexOf(gestion)
+
+                this.obtenerGestionSelected()
+                console.log(this.notiId);
+                console.log(this.clasifiNotiId);
+
+              }, 3000);
             }
             console.log(error);
           }
