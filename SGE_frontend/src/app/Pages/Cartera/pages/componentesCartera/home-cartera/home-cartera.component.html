@@ -83,40 +83,37 @@
                             </div>
                         </div>
 
-                        <div class="row justify-content-center text-center mb-3">
-                            <div class="col-md-5">
-                                <nav *ngIf="numeroPagesAll > 1">
-                                    <div *ngIf="!spinner">
-                                        <nav>
-                                            <ul class="pagination">
-                                                <li class="page-item">
-                                                    <a class="page-link b" (click)="backAll()"
-                                                        style="cursor: pointer; font-size: 13px;">Anterior</a>
-                                                </li>
 
-                                                <li class="page-item">
-                                                    <div class="btn-group dropdown">
-                                                        <button type="button" class="page-link dropdown-toggle b"
-                                                            style="cursor: pointer; text-decoration: none; font-size: 13px;"
-                                                            data-bs-toggle="dropdown">{{pageAll+1}}/{{numeroPagesAll}}</button>
-                                                        <ul class="dropdown-menu"
-                                                            style="overflow-y: auto; height: 300px;">
-                                                            <li *ngFor="let p of paginasAll;let i = index"><button
-                                                                    class="dropdown-item" (click)="goToPageAll(i)">{{i
-                                                                    + 1}}</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link b" (click)="nextAll()"
-                                                        style="cursor: pointer; font-size: 13px;">Siguiente</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
+                        <nav *ngIf="numeroPagesAll > 1" class="row justify-content-center mt-2 ms-5 mb-2">
+                            <div *ngIf="!spinner">
+                                <nav>
+                                    <ul class="pagination">
+                                        <li class="page-item">
+                                            <a class="page-link" (click)="backAll()"
+                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Anterior</a>
+                                        </li>
+
+                                        <li class="page-item">
+                                            <div class="btn-group dropdown">
+                                                <button type="button" class="page-link dropdown-toggle"
+                                                    style="cursor: pointer; text-decoration: none; color: black; background-color: transparent; font-size: 13px;"
+                                                    data-bs-toggle="dropdown">{{pageAll+1}}/{{numeroPagesAll}}</button>
+                                                <ul class="dropdown-menu" style="overflow-y: auto; height: auto;">
+                                                    <li *ngFor="let p of paginasAll;let i = index"><button
+                                                            class="dropdown-item" (click)="goToPageAll(i)">{{i
+                                                            + 1}}</button></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" (click)="nextAll()"
+                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Siguiente</a>
+                                        </li>
+                                    </ul>
+
                                 </nav>
                             </div>
-                        </div>
+                        </nav>
 
 
                         <a *ngFor="let n of notiArray" class="list-group-item" aria-current="true"
@@ -186,40 +183,36 @@
                             </div>
                         </div>
 
-                        <div class="row justify-content-center mb-3">
-                            <div class="col-md-5">
-                                <nav *ngIf="numeroPagesVen > 1">
-                                    <div *ngIf="!spinner">
-                                        <nav>
-                                            <ul class="pagination">
-                                                <li class="page-item">
-                                                    <a class="page-link b" (click)="backVen()"
-                                                        style="cursor: pointer; font-size: 13px;">Anterior</a>
-                                                </li>
+                        <nav *ngIf="numeroPagesVen > 1" class="row justify-content-center mt-2 ms-5 mb-2">
+                            <div *ngIf="!spinner">
+                                <nav>
+                                    <ul class="pagination">
+                                        <li class="page-item">
+                                            <a class="page-link" (click)="backVen()"
+                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Anterior</a>
+                                        </li>
 
-                                                <li class="page-item">
-                                                    <div class="btn-group dropdown">
-                                                        <button type="button" class="page-link dropdown-toggle b"
-                                                            style="cursor: pointer; font-size: 13px;"
-                                                            data-bs-toggle="dropdown">{{pageVen+1}}/{{numeroPagesVen}}</button>
-                                                        <ul class="dropdown-menu"
-                                                            style="overflow-y: auto; height: 300px;">
-                                                            <li *ngFor="let p of paginasVen;let i = index"><button
-                                                                    class="dropdown-item" (click)="goToPageVen(i)">{{i
-                                                                    + 1}}</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link b" (click)="nextVen()"
-                                                        style="cursor: pointer; font-size: 13px;">Siguiente</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
+                                        <li class="page-item">
+                                            <div class="btn-group dropdown">
+                                                <button type="button" class="page-link dropdown-toggle"
+                                                    style="cursor: pointer; text-decoration: none; color: black; background-color: transparent; font-size: 13px;"
+                                                    data-bs-toggle="dropdown">{{pageVen+1}}/{{numeroPagesVen}}</button>
+                                                <ul class="dropdown-menu" style="overflow-y: auto; height: auto;">
+                                                    <li *ngFor="let p of paginasVen;let i = index"><button
+                                                            class="dropdown-item" (click)="goToPageVen(i)">{{i
+                                                            + 1}}</button></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" (click)="nextVen()"
+                                                style="cursor: pointer; background-color: transparent; color: black; font-size: 13px;">Siguiente</a>
+                                        </li>
+                                    </ul>
+
                                 </nav>
                             </div>
-                        </div>
+                        </nav>
 
                         <a *ngFor="let n of notiArrayVencidas" class="list-group-item" aria-current="true"
                             style="border: 1px rgb(95, 93, 93) solid;">
@@ -240,12 +233,11 @@
                         </a>
                     </div>
                 </div>
+
             </div>
 
-
-
-
         </ul>
+        
     </div>
     <div class="card-c">
         <div class="row">
@@ -550,7 +542,7 @@
                                                             <input (change)="calculadora($event)"
                                                                 id="boton_saldo_capital" type="text"
                                                                 [(ngModel)]="cuentaCobrarSelected.moraObligatoria"
-                                                                class="form-control" [disabled]="deshabilitarInputs">
+                                                                class="form-control" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -560,7 +552,7 @@
                                                             <input (change)="calculadora($event)" id="boton_saldo_total"
                                                                 type="number"
                                                                 [(ngModel)]="cuentaCobrarSelected.totalObligatoria"
-                                                                class="form-control" [disabled]="deshabilitarInputs">
+                                                                class="form-control" disabled>
                                                         </div>
 
                                                     </div>
@@ -580,8 +572,7 @@
                                                         <div class="input-group input-group-sm mb-3">
                                                             <span class="input-group-text fw-bold">Honorarios</span>
                                                             <input [(ngModel)]="acuerdoCal.honoriarioAcuerdo"
-                                                                type="number" class="form-control"
-                                                                [disabled]="deshabilitarInputs">
+                                                                type="number" class="form-control" disabled>
                                                         </div>
 
                                                     </div>
@@ -656,7 +647,7 @@
                                                             <input type="date" class="form-control"
                                                                 [(ngModel)]="cuentaCobrarSelected.fechaVencimiento"
                                                                 (change)="calcularDiasVencidos($event)"
-                                                                [disabled]="deshabilitarInputs">
+                                                                [disabled]="deshabilitarInputs" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -1074,17 +1065,17 @@
                                     <p id="td_{{i}}">
                                         {{
                                         cc.gestion.length == 0
-                                        ? 'SIN GESTIÓN' :
+                                        ? '--/--/----' :
                                         cc.gestion[cc.gestion.length-1].fechaGestion | date:"d/M/yyyy" }}
                                     </p>
                                 </td>
-                                <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
+                                <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? '--/--/----' :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
                                     'TAREA' ?
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaTarea | date:"d/M/yyyy")
                                     :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
-                                    'NOTA' ? 'NOTA' :
+                                    'NOTA' ? '--/--/----' :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso |
                                     date:"d/M/yyyy")))}}
                                 </td>
@@ -1110,7 +1101,7 @@
                                         <button type="button" class="page-link dropdown-toggle"
                                             style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
                                             data-bs-toggle="dropdown">{{page+1}}/{{numeroPages}}</button>
-                                        <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
+                                        <ul class="dropdown-menu" style="overflow-y: auto; height: auto;">
                                             <li *ngFor="let p of paginas;let i = index"><button class="dropdown-item"
                                                     (click)="goToPage(i)">{{i
                                                     + 1}}</button></li>
@@ -1695,8 +1686,11 @@
                                         <th scope="col">Fecha Venc</th>
                                         <th scope="col">Valor Cuota</th>
                                         <th scope="col">Capital Cuota</th>
+                                        <th scope="col">Saldo Capital</th>
                                         <th scope="col">Honorarios</th>
+                                        <th scope="col">Saldo Honorarios</th>
                                         <th scope="col">Interes</th>
+                                        <th scope="col">Saldo Intereses</th>
                                         <th scope="col">Pago</th>
                                     </tr>
                                 </thead>
@@ -1706,9 +1700,24 @@
                                         <td>{{ g.numeroCuota }}</td>
                                         <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
                                         <td>{{ g.valorCuota | number }}</td>
+
                                         <td>{{ g.capitalCuota | number }}</td>
+                                        <td *ngIf="g.saldoCapitalCuota == 0" style="background-color: gray;">
+                                            {{g.saldoCapitalCuota | number}}</td>
+                                        <td *ngIf="g.saldoCapitalCuota > 0" style="background-color: yellow;">
+                                            {{g.saldoCapitalCuota | number}}</td>
                                         <td>{{ g.honorarios | number }}</td>
+
+                                        <td *ngIf="g.saldoHonorarios > 0" style="background-color: yellow;">
+                                            {{g.saldoHonorarios| number}}</td>
+                                        <td *ngIf="g.saldoHonorarios == 0" style="background-color: gray;">
+                                            {{g.saldoHonorarios| number}}</td>
                                         <td>{{ g.interesCuota | number }}</td>
+
+                                        <td *ngIf="g.salodInteresCuota == 0" style="background-color: gray;">
+                                            {{g.salodInteresCuota | number}}</td>
+                                        <td *ngIf="g.salodInteresCuota > 0" style="background-color: yellow;">
+                                            {{g.salodInteresCuota | number}}</td>
                                         <td class="justify-content-center">
                                             <div class="row justify-content-center">
                                                 <div class="col-md-6">
@@ -1981,8 +1990,8 @@
                                 </blockquote>
                                 <div class="collapse" id="collapseClas">
                                     <div class="form-check" *ngFor="let c of ClasificacionArray">
-                                        <input value="{{ c.nombre }}" class="form-check-input" type="checkbox"
-                                            (click)="metodoClasGestion(c.tipo, c.nombre)" #variableCol>
+                                        <input value="{{ c.idNombreClasificacion }}" class="form-check-input" type="checkbox"
+                                            (click)="metodoClasGestion(c.tipo, c.idNombreClasificacion)" #variableCol>
                                         <label class="form-check-label">
                                             <cite title="Source Title">{{ c.nombre }}</cite>
                                         </label>
@@ -1995,10 +2004,16 @@
                             <blockquote class="blockquote">
                                 <h6 class="fw-bold">Saldo</h6>
                             </blockquote>
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text fw-bold">Desde/Hasta</span>
+                            <div class="input-group input-group-sm mb-1">
+                                <span class="input-group-text fw-bold">Desde</span>
                                 <input type="number" [(ngModel)]="filtros.saldoCapitalInicio" class="form-control">
+                                
+                            </div>
+
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text fw-bold">Hasta</span>
                                 <input type="number" [(ngModel)]="filtros.saldoCapitalFin" class="form-control">
+                                
                             </div>
                         </figure>
 
