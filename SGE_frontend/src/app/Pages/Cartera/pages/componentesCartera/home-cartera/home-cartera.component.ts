@@ -120,7 +120,7 @@ export class HomeCarteraComponent implements OnInit {
     acuerdosDePagosActivos: 0,
     acuerdoPagoDia: 0,
     gestionesDia: 0,
-    cuentasTotales:0
+    cuentasTotales: 0
   }
 
   cuentaCobrarSelected: any = {
@@ -2713,18 +2713,18 @@ export class HomeCarteraComponent implements OnInit {
           ) {
             var capitalRestante = totalObligatoria - moraOlbigatoria
             var cuotasReales = 0;
-            if(capitalRestante > 0){
+            if (capitalRestante > 0) {
               cuotasReales = capitalRestante / valorCuotaAnterior
             }
-            
 
-            
-            if ((valorTotalAcuerdo / valorCuotaMensual) <= cuotasReales  ) {
 
-              
+
+            if ((valorTotalAcuerdo / valorCuotaMensual) <= cuotasReales) {
+
+
               if (valorCuotaMensual >= valorTotalMora) {
 
-                
+
                 this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.MORA
                 this.acuerdo.tipoAcuerdo = TIPOACUERDO.MORA
                 //calcula la primera cuota con interes y el valor de cuota ingresado y el restante con las cuotas anteriores sin interes
@@ -2743,7 +2743,7 @@ export class HomeCarteraComponent implements OnInit {
 
               if ((valorTotalAcuerdo / valorCuotaMensual) <= 20) {
 
-                
+
                 Swal.fire({
                   title: 'Refinanciacion de Pagare',
                   text: 'El actual acuerdo ha superado la fecha máxima de vencimiento, por lo tanto, se requiere refinanciar el pagaré, ¿Está Seguro de Continuar?',
@@ -2758,13 +2758,13 @@ export class HomeCarteraComponent implements OnInit {
                     this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.TOTAL
                     this.acuerdo.tipoAcuerdo = TIPOACUERDO.TOTAL
 
-                    if(totalObligatoria == moraOlbigatoria){
+                    if (totalObligatoria == moraOlbigatoria) {
                       this.todasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
-                    }else{
+                    } else {
                       this.todasCuotasMora(valorIntereses, valorCuotaMensual, totalObligatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
                     }
 
-                    
+
                   }
                 })
               } else {
@@ -3124,7 +3124,7 @@ export class HomeCarteraComponent implements OnInit {
     if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
       honorariosCuota = honorarios * participacionCuotaMora
     }
-   
+
     var datos = {
       capital: parseInt(capitalCuotaMora.toFixed(0)),
       interes: parseInt(interesCuotaMora.toFixed(0)),
@@ -3444,7 +3444,7 @@ export class HomeCarteraComponent implements OnInit {
         this.first = data.first
         this.numeroPages = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
-        
+
 
         if (this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
           (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
@@ -3580,7 +3580,7 @@ export class HomeCarteraComponent implements OnInit {
     console.log(this.filtros);
     this.cuentasCobrar.filtro(this.page, this.size, this.fechaCreacion, this.filtros).subscribe(
       (data: any) => {
-        
+
         this.botonFiltro = false
         this.filtrando = true
         this.filtroAgain = true
@@ -4184,26 +4184,32 @@ export class HomeCarteraComponent implements OnInit {
 
         }
 
-        if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) <= new Date()) {
-
-          this.coutasRequest[i].cumplio = false
-          this.cuotasList[i].cumplio = false
-          this.pago.cumpliendo = false
-        }
+        if (c.pagos != null || c.pagos != undefined) {
 
 
-        if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) > new Date()) {
 
-          this.coutasRequest[i].cumplio = false
-          this.cuotasList[i].cumplio = false
-          this.pago.cumpliendo = false
+          if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) <= new Date()) {
 
-        }
+            this.coutasRequest[i].cumplio = false
+            this.cuotasList[i].cumplio = false
+            this.pago.cumpliendo = false
+          }
 
-        if (c.pagos.saldoCuota == 0) {
-          this.coutasRequest[i].cumplio = true
-          this.cuotasList[i].cumplio = true
-          this.pago.cumpliendo = true
+
+          if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) > new Date()) {
+
+            this.coutasRequest[i].cumplio = false
+            this.cuotasList[i].cumplio = false
+            this.pago.cumpliendo = false
+
+          }
+
+          if (c.pagos.saldoCuota == 0) {
+            this.coutasRequest[i].cumplio = true
+            this.cuotasList[i].cumplio = true
+            this.pago.cumpliendo = true
+          }
+
         }
 
         this.coutasRequest[i].pago = c.pago
@@ -4320,31 +4326,31 @@ export class HomeCarteraComponent implements OnInit {
     if (user != null || user != undefined) {
       recibo.username = user;
 
-      this.cuentasCobrar.crearRecibo(recibo).subscribe(
-        (data: any) => {
+      // this.cuentasCobrar.crearRecibo(recibo).subscribe(
+      //   (data: any) => {
 
-          this.mostrarReciboPago(data.base64)
-          this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
+      //     this.mostrarReciboPago(data.base64)
+      //     this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
 
-          this.activarGuardarPago = false
-          this.savePago = false
-          this.coutasRequest = []
-          this.pago = {
-            valor: 0,
-            detalle: '',
-            medioPago: "",
-            numeroRecibo: '',
-            cumpliendo: false
-          }
+      //     this.activarGuardarPago = false
+      //     this.savePago = false
+      //     this.coutasRequest = []
+      //     this.pago = {
+      //       valor: 0,
+      //       detalle: '',
+      //       medioPago: "",
+      //       numeroRecibo: '',
+      //       cumpliendo: false
+      //     }
 
-          this.valorTotalIngresado = 0
-        }, (error: any) => {
-          this.activarGuardarPago = false
-          this.savePago = false
-          console.log(error);
+      //     this.valorTotalIngresado = 0
+      //   }, (error: any) => {
+      //     this.activarGuardarPago = false
+      //     this.savePago = false
+      //     console.log(error);
 
-        }
-      )
+      //   }
+      // )
     }
 
     $('#modalGestionCom').modal('hide');
