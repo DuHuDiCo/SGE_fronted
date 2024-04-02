@@ -41,7 +41,7 @@ export type GestionArray = {
   clasificacion: {
     idClasificacionGestion: number,
     clasificacion: string
-  },
+  } | null,
   cpc: {
     idCuentasPorCobrar: number,
     numeroObligacion: string,
@@ -89,11 +89,14 @@ export type CuotaList = {
   valorCuota: number,
   capitalCuota: number,
   honorarios: number,
+  saldoCapitalCuota: number,
+  saldoHonorarios: number,
+  salodInteresCuota: number,
   pagos: Pagos,
   interesCuota: number,
   cumplio: boolean,
-  pago:boolean
-  
+  pago: boolean
+
 }
 
 export type Gestiones = {
@@ -127,19 +130,25 @@ export type Pagos = {
   valorPago: number;
   fechaPago: Date;
   usuarioId: number;
+  valorCapital: number
+  valorIntereses: number
+  valorHonorarios: number
   saldoCuota: number;
-  reciboPago:ReciboPago | null
+  reciboPago: ReciboPago | null
 }
 
 export type CuotasRequest = {
-  idCuota:number,
+  idCuota: number,
   numeroCuota: number,
   fechaVencimiento: Date,
   valorCuota: number,
   capitalCuota: number,
   honorarios: number,
+  saldoCapital: number,
+  saldoHonorario: number,
+  saldoIntereses: number,
   cumplio: boolean,
-  pago:boolean
+  pago: boolean
   interesCuota: number
   pagosDto: PagosRequest | null
 }
@@ -149,7 +158,9 @@ export type PagosRequest = {
   valorPago: number;
   fechaPago: Date;
   saldoCuota: number;
-
+  capital: number
+  intereses: number
+  honorarios: number
 }
 
 
@@ -177,51 +188,51 @@ export type Filtros = {
   fechaCpcFin: Date | null,
   fechaGestionInicio: Date | string | null,
   fechaGestionFin: Date | string | null,
-  fechaCompromisoInicio: Date| string | null,
+  fechaCompromisoInicio: Date | string | null,
   fechaCompromisoFin: string | null,
   isActive: boolean,
-  clasificacionGestion: string[]
+  clasificacionGestion: any | null
 
 }
 
 export type Notificacion = {
   idNotificaciones: number,
-    tipoGestion: string,
-    fechaCreacion: Date,
-    fechaFinalizacion: Date,
-    numeroObligacion: string,
-    cliente: string,
-    isActive: boolean,
-    designatedBy: string,
-    designatedTo: number,
-    verRealizadas: string,
-    gestionId: number
+  tipoGestion: string,
+  fechaCreacion: Date,
+  fechaFinalizacion: Date,
+  numeroObligacion: string,
+  cliente: string,
+  isActive: boolean,
+  designatedBy: string,
+  designatedTo: number,
+  verRealizadas: string,
+  gestionId: number
 }
 
-export enum ClasificacionGestion{
+export enum ClasificacionGestion {
   AcuerdoPago = "ACUERDO DE PAGO",
   Nota = "NOTA",
   Tarea = "TAREA"
 }
 
 
-export enum Permisos{
+export enum Permisos {
   REFINANCIACION = "REFINANCIACION",
-  
+
 }
 
-export enum Roles{
+export enum Roles {
   CARTERA = "CARTERA",
   ADMINISTRATION = "ADMINISTRATION"
-  
+
 }
 
 
-export enum TIPOACUERDO{
+export enum TIPOACUERDO {
   MORA = "MORA",
   TOTAL = "TOTAL",
   ABONO = "ABONO"
-  
+
 }
 
 
