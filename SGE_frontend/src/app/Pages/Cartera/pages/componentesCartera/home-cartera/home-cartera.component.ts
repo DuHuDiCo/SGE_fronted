@@ -4283,160 +4283,185 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   openGestion(obligacion: string, idGestion: number, idNotifi: number, tipoGestion: string) {
-    this.col = true
-    if (this.newGestion.numeroObligacion == obligacion) {
-      $('#modalObligacion').modal('hide');
-      return
-    } else {
-      this.spinnerSidebar = true
-      this.cuentaCobrarSelected = {
-        idCuentasPorCobrar: 0,
-        numeroObligacion: '',
-        cliente: '',
-        documentoCliente: '',
-        fechaCuentaCobrar: '',
-        fechaVencimiento: '',
-        tipo: '',
-        valorNotaDebito: 0,
-        valorCuota: 0,
-        valorPagos: 0,
-        nombre_usuario: '',
-        clasificacion: '',
-        vendedor: '',
-        clasificacionJuridica: '',
-        detalle: '',
-        sede: {
-          idSede: 0,
-          sede: ''
-        },
-        banco: {
-          idBanco: 0,
-          banco: ''
-        },
-        diasVencidos: 0,
-        gestion: [],
-        edadVencimiento: '',
-        condicionEspecial: '',
-        numeroCreditos: 0,
-        pagare: '',
-        moraObligatoria: 0,
-        totalObligatoria: 0,
-        cuotasMora: 0,
-        cuotas: 0,
-        asesorCarteraResponse: {
-          idAsesorCartera: 0,
-          usuario: {
-            idUsuario: 0,
-            username: '',
-            email: '',
-            nombres: '',
-            apellidos: '',
-            sede: '',
-            tipo_documento: '',
-            numero_documento: '',
-            celular: '',
-            fecha_nacimiento: new Date,
-            fecha_creacion: new Date,
-            status: false,
-            roles: [],
-            enabled: false,
-            authorities: [],
-            accountNonLocked: false,
-            accountNonExpired: false,
-            credentialsNonExpired: false,
-            password: ''
+    this.spinnerSidebar = true
+    this.cuentaCobrarSelected = {
+      idCuentasPorCobrar: 0,
+      numeroObligacion: '',
+      cliente: '',
+      documentoCliente: '',
+      fechaCuentaCobrar: '',
+      fechaVencimiento: '',
+      tipo: '',
+      valorNotaDebito: 0,
+      valorCuota: 0,
+      valorPagos: 0,
+      nombre_usuario: '',
+      clasificacion: '',
+      vendedor: '',
+      clasificacionJuridica: '',
+      detalle: '',
+      sede: {
+        idSede: 0,
+        sede: ''
+      },
+      banco: {
+        idBanco: 0,
+        banco: ''
+      },
+      diasVencidos: 0,
+      gestion: [],
+      edadVencimiento: '',
+      condicionEspecial: '',
+      numeroCreditos: 0,
+      pagare: '',
+      moraObligatoria: 0,
+      totalObligatoria: 0,
+      cuotasMora: 0,
+      cuotas: 0,
+      asesorCarteraResponse: {
+        idAsesorCartera: 0,
+        usuario: {
+          idUsuario: 0,
+          username: '',
+          email: '',
+          nombres: '',
+          apellidos: '',
+          sede: '',
+          tipo_documento: '',
+          numero_documento: '',
+          celular: '',
+          fecha_nacimiento: new Date,
+          fecha_creacion: new Date,
+          status: false,
+          roles: [],
+          enabled: false,
+          authorities: [],
+          accountNonLocked: false,
+          accountNonExpired: false,
+          credentialsNonExpired: false,
+          password: ''
+        }
+      },
+      clientes: []
+    }
+
+    this.acuerdo = {
+      detalle: '',
+      valorCuotaMensual: 0,
+      tipoAcuerdo: '',
+      valorTotalAcuerdo: 0,
+      valorInteresesMora: 0,
+      honoriarioAcuerdo: 0,
+      fechaCompromiso: new Date,
+      cuotasList: [],
+      username: ''
+    }
+
+    this.newGestion = {
+      numeroObligacion: '',
+      clasificacion: {
+        tipoClasificacion: null,
+        tarea: null,
+        nota: null,
+        acuerdoPago: null,
+        nombreClasificacion: ''
+      },
+      contact: false,
+      detallesAdicionales: '',
+      usernameToSetNotificacion: '',
+      userNotifying: '',
+      notificacionId: null,
+      clasificacionId: null
+    }
+
+    this.acuerdo = {
+      detalle: '',
+      valorCuotaMensual: 0,
+      tipoAcuerdo: '',
+      valorTotalAcuerdo: 0,
+      valorInteresesMora: 0,
+      honoriarioAcuerdo: 0,
+      fechaCompromiso: '',
+      cuotasList: [],
+      username: ''
+    }
+
+    this.nota = {
+      detalle: ''
+    }
+
+    this.tarea = {
+      detalleTarea: '',
+      fechaFinTarea: '',
+      isPartOfRecaudo: false
+    }
+
+    this.codeudoresSelected = []
+    $('#modalObligacion').modal('hide');
+
+    this.getGestiones(obligacion);
+
+    setTimeout(() => {
+      this.cuentasCobrar.getCuentaByObligacion(obligacion).subscribe(
+        (data: any) => {
+          this.cuentaCobrarSelected = data
+          console.log(this.cuentaCobrarSelected);
+          this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
+          this.moraObligatoriaFirst = data.moraObligatoria
+          this.calcularFirst()
+          this.codeudores = data.clientes
+          this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
+          this.cuentasCalcular.numeroObligacion = obligacion
+          this.newGestion = {
+            numeroObligacion: this.newGestion.numeroObligacion,
+            clasificacion: {
+              tipoClasificacion: '',
+              tarea: null,
+              nota: null,
+              acuerdoPago: null,
+              nombreClasificacion: ''
+            },
+            contact: false,
+            detallesAdicionales: this.newGestion.detallesAdicionales,
+            usernameToSetNotificacion: '',
+            userNotifying: '',
+            notificacionId: null,
+            clasificacionId: null
           }
-        },
-        clientes: []
-      }
 
-      this.acuerdo = {
-        detalle: '',
-        valorCuotaMensual: 0,
-        tipoAcuerdo: '',
-        valorTotalAcuerdo: 0,
-        valorInteresesMora: 0,
-        honoriarioAcuerdo: 0,
-        fechaCompromiso: new Date,
-        cuotasList: [],
-        username: ''
-      }
+          if (this.cuentaCobrarSelected.documentoCliente != '') {
+            this.spinnerSidebar = false
+          }
 
-      this.newGestion = {
-        numeroObligacion: '',
-        clasificacion: {
-          tipoClasificacion: null,
-          tarea: null,
-          nota: null,
-          acuerdoPago: null,
-          nombreClasificacion: ''
-        },
-        contact: false,
-        detallesAdicionales: '',
-        usernameToSetNotificacion: '',
-        userNotifying: '',
-        notificacionId: null,
-        clasificacionId: null
-      }
+          this.notiId = idNotifi
 
-      this.acuerdo = {
-        detalle: '',
-        valorCuotaMensual: 0,
-        tipoAcuerdo: '',
-        valorTotalAcuerdo: 0,
-        valorInteresesMora: 0,
-        honoriarioAcuerdo: 0,
-        fechaCompromiso: '',
-        cuotasList: [],
-        username: ''
-      }
+          if (tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA') {
+            this.notiId = null
+            this.clasifiNotiId = null
+          }
 
-      this.nota = {
-        detalle: ''
-      }
 
-      this.tarea = {
-        detalleTarea: '',
-        fechaFinTarea: '',
-        isPartOfRecaudo: false
-      }
+          setTimeout(() => {
+            $('#modalGestionCom').modal('show');
+            var gestion = this.gestiones.find((g: any) => g.clasificacion.idClasificacionGestion == idGestion)
 
-      this.codeudoresSelected = []
-      $('#modalObligacion').modal('hide');
+            this.positionGestionSelected = this.gestiones.indexOf(gestion)
 
-      this.getGestiones(obligacion);
+            this.obtenerGestionSelected()
+            console.log(this.notiId);
+            console.log(this.clasifiNotiId);
 
-      setTimeout(() => {
-        this.cuentasCobrar.getCuentaByObligacion(obligacion).subscribe(
-          (data: any) => {
-            this.cuentaCobrarSelected = data
-            console.log(this.cuentaCobrarSelected);
-            this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
-            this.moraObligatoriaFirst = data.moraObligatoria
-            this.calcularFirst()
-            this.codeudores = data.clientes
-            this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
-            this.cuentasCalcular.numeroObligacion = obligacion
-            this.newGestion = {
-              numeroObligacion: this.newGestion.numeroObligacion,
-              clasificacion: {
-                tipoClasificacion: '',
-                tarea: null,
-                nota: null,
-                acuerdoPago: null,
-                nombreClasificacion: ''
-              },
-              contact: false,
-              detallesAdicionales: this.newGestion.detallesAdicionales,
-              usernameToSetNotificacion: '',
-              userNotifying: '',
-              notificacionId: null,
-              clasificacionId: null
-            }
+          }, 1000);
 
-            if (this.cuentaCobrarSelected.documentoCliente != '') {
-              this.spinnerSidebar = false
-            }
+        }, (error: any) => {
+          if (this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Cliente Sin Saldo En El Sistema',
+              timer: 3000
+            })
+            $('#offcanvasRight').offcanvas('hide');
 
             this.notiId = idNotifi
 
@@ -4444,7 +4469,6 @@ export class HomeCarteraComponent implements OnInit {
               this.notiId = null
               this.clasifiNotiId = null
             }
-
 
             setTimeout(() => {
               $('#modalGestionCom').modal('show');
@@ -4456,42 +4480,12 @@ export class HomeCarteraComponent implements OnInit {
               console.log(this.notiId);
               console.log(this.clasifiNotiId);
 
-            }, 1000);
-
-          }, (error: any) => {
-            if (this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0) {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Cliente Sin Saldo En El Sistema',
-                timer: 3000
-              })
-              $('#offcanvasRight').offcanvas('hide');
-
-              this.notiId = idNotifi
-
-              if (tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA') {
-                this.notiId = null
-                this.clasifiNotiId = null
-              }
-
-              setTimeout(() => {
-                $('#modalGestionCom').modal('show');
-                var gestion = this.gestiones.find((g: any) => g.clasificacion.idClasificacionGestion == idGestion)
-
-                this.positionGestionSelected = this.gestiones.indexOf(gestion)
-
-                this.obtenerGestionSelected()
-                console.log(this.notiId);
-                console.log(this.clasifiNotiId);
-
-              }, 3000);
-            }
-            console.log(error);
+            }, 3000);
           }
-        )
-      }, 2000);
-    }
+          console.log(error);
+        }
+      )
+    }, 2000);
 
   }
 
