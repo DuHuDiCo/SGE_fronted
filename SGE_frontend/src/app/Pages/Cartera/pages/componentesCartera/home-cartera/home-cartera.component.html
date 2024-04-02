@@ -113,7 +113,7 @@
 
                                 </nav>
                             </div>
-                        </div>
+                        </nav>
 
 
                         <a *ngFor="let n of notiArray" class="list-group-item" aria-current="true"
@@ -212,7 +212,7 @@
 
                                 </nav>
                             </div>
-                        </div>
+                        </nav>
 
                         <a *ngFor="let n of notiArrayVencidas" class="list-group-item" aria-current="true"
                             style="border: 1px rgb(95, 93, 93) solid;">
@@ -236,10 +236,8 @@
 
             </div>
 
-
-
-
         </ul>
+        
     </div>
     <div class="card-c">
         <div class="row">
@@ -1067,11 +1065,11 @@
                                     <p id="td_{{i}}">
                                         {{
                                         cc.gestion.length == 0
-                                        ? 'SIN GESTIÓN' :
+                                        ? '--/--/----' :
                                         cc.gestion[cc.gestion.length-1].fechaGestion | date:"d/M/yyyy" }}
                                     </p>
                                 </td>
-                                <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
+                                <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? '--/--/----' :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
                                     'TAREA' ?
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaTarea | date:"d/M/yyyy")

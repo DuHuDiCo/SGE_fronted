@@ -119,7 +119,8 @@ export class HomeCarteraComponent implements OnInit {
     acuerdosDePagosRealizados: 0,
     acuerdosDePagosActivos: 0,
     acuerdoPagoDia: 0,
-    gestionesDia: 0
+    gestionesDia: 0,
+    cuentasTotales:0
   }
 
   cuentaCobrarSelected: any = {
