@@ -14,22 +14,25 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row d-flex justify-content-start">
-                                    <div class="col-md-3 p-0">
+                                    <div class="col-md-2 p-0">
                                         <button class="btn btn-sm btn-primary" data-bs-toggle="collapse"
                                             data-bs-target="#addMessage"><i
                                                 class="fa-solid fa-phone-volume fa-sm"></i></button>
                                     </div>
-                                    <div class="col-md-3 p-0">
+                                    <div class="col-md-2 p-0">
                                         <button class="btn btn-sm btn-success" data-bs-toggle="collapse"
                                             data-bs-target="#addMessage"><i
                                                 class="fa-brands fa-whatsapp fa-lg"></i></button>
                                     </div>
-                                    <div class="col-md-3 p-0">
+                                    <div class="col-md-2 p-0">
                                         <button class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
                                             data-bs-target="#addMessage"><i class="fa-solid fa-comment"></i></button>
                                     </div>
                                     <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm bg-red"
+                                        <button class="btn btn-sm bg-red"><i class="fa-solid fa-eraser"></i></button>
+                                    </div>
+                                    <div class="col-md-3 p-0">
+                                        <button class="btn btn-sm btn-success"
                                             (click)="confirmarDato('CELULAR', 'fa-solid fa-mobile')"><i
                                                 class="fa-solid fa-check"></i></button>
                                     </div>
@@ -65,7 +68,15 @@
                                             data-bs-target="#addMessage"><i class="fa-regular fa-envelope"></i></button>
                                     </div>
                                     <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm bg-red"
+                                        <button class="btn btn-sm bg-red visually-hidden"
+                                            (click)="confirmarDato('DIRECCION', 'fa-solid fa-location-dot')"><i
+                                                class="fa-solid fa-check"></i></button>
+                                    </div>
+                                    <div class="col-md-3 p-0">
+                                        <button class="btn btn-sm bg-red"><i class="fa-solid fa-eraser"></i></button>
+                                    </div>
+                                    <div class="col-md-3 p-0">
+                                        <button class="btn btn-sm btn-success"
                                             (click)="confirmarDato('DIRECCION', 'fa-solid fa-location-dot')"><i
                                                 class="fa-solid fa-check"></i></button>
                                     </div>
@@ -107,7 +118,10 @@
                                                 class="fa-solid fa-envelopes-bulk"></i></button>
                                     </div>
                                     <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm bg-red"
+                                        <button class="btn btn-sm bg-red"><i class="fa-solid fa-eraser"></i></button>
+                                    </div>
+                                    <div class="col-md-3 p-0">
+                                        <button class="btn btn-sm btn-success"
                                             (click)="confirmarDato('CORREO', 'fa-solid fa-at')"><i
                                                 class="fa-solid fa-check"></i></button>
                                     </div>
@@ -144,7 +158,14 @@
                                                 class="fa-solid fa-phone-volume"></i></button>
                                     </div>
                                     <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm bg-red"
+                                        <button class="btn btn-sm bg-red visually-hidden"><i
+                                                class="fa-solid fa-check"></i></button>
+                                    </div>
+                                    <div class="col-md-3 p-0">
+                                        <button class="btn btn-sm bg-red"><i class="fa-solid fa-eraser"></i></button>
+                                    </div>
+                                    <div class="col-md-3 p-0">
+                                        <button class="btn btn-sm btn-success"
                                             (click)="confirmarDato('REF', 'fa-solid fa-address-book')"><i
                                                 class="fa-solid fa-check"></i></button>
                                     </div>
@@ -198,9 +219,15 @@
                 </div>
             </div>
         </div>
+        <div class="row justify-content-start mt-3" *ngIf="datosConfirmados.length >= 1">
+            <div class="col-md-12">
+                <button class="btn bg-red text-start" data-bs-toggle="modal"
+                    data-bs-target="#modalAcuerdo">Gestionar</button>
+            </div>
+        </div>
     </div>
 </div>
 
 <app-btn-panel></app-btn-panel>
-<app-modal-acuerdo></app-modal-acuerdo>
+<app-modal-acuerdo [datosConfirmados]="datosConfirmados"></app-modal-acuerdo>
 <app-modal-edit-dato></app-modal-edit-dato>

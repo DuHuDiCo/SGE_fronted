@@ -1,0 +1,14 @@
+.bg-red {
+    color: white;
+    background-color: #960010;
+    border-color: #960010;
+}
+
+.bg-red:hover {
+    background: #d40000;
+    border-color: #d40000;
+}
+
+.card-disabled {
+    background-color: #e5b7bcf9;
+}

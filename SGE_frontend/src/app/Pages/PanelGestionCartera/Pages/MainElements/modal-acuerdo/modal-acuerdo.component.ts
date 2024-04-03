@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.service';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { Gestion } from 'src/app/Types/Cartera/Gestion/Gestion';
@@ -9,6 +9,8 @@ import { Gestion } from 'src/app/Types/Cartera/Gestion/Gestion';
   styleUrls: ['./modal-acuerdo.component.css']
 })
 export class ModalAcuerdoComponent implements OnInit {
+
+  @Input() datosConfirmados!: any[];
 
   // OBJECTS
   newGestion: Gestion = {
@@ -56,6 +58,8 @@ export class ModalAcuerdoComponent implements OnInit {
     this.cuentasCobrar.getClasificacion().subscribe(
       (data: any) => {
         this.ClasificacionArray = data
+        console.log(data);
+
       }, (error: any) => {
         console.log(error);
       }
@@ -97,6 +101,22 @@ export class ModalAcuerdoComponent implements OnInit {
   calculateAcuerdo() {
     this.col = false
     this.disabledFecha = true
+  }
+
+  tipoClasificacion(event: any) {
+
+    this.newGestion.clasificacion.nombreClasificacion = event.target.value
+
+    var tipoClas = this.ClasificacionArray.find((t: any) => t.nombre == event.target.value)
+    if (tipoClas != undefined || tipoClas != null) {
+      this.newGestion.clasificacion.tipoClasificacion = tipoClas.tipo
+    }
+
+    if (this.newGestion.clasificacion.tipoClasificacion != 'ACUERDO DE PAGO') {
+      this.col = true
+      this.newGestion.contact = false
+      this.disabledFecha = false
+    }
   }
 
 }
