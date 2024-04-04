@@ -187,7 +187,9 @@ export class HomeCajaComponent implements OnInit {
                       saldoCuota: c.pagos.saldoCuota,
                       capital: 0,
                       intereses: 0,
-                      honorarios: 0
+                      honorarios: 0,
+                      existed: c.pagos.saldoCuota > 0 ? true : false,
+                      idPago: 0
                     }
                     couta.pagosDto = pagos
                     if (c.pagos!.valorPago == 0) {
@@ -328,31 +330,45 @@ export class HomeCajaComponent implements OnInit {
 
             valorTotal = valorTotal - c.pagos.saldoCuota
 
+            var saldoCuota = c.pagos.saldoCuota
+            if (saldoCuota > 0) {
+            
 
 
-            this.coutasRequest[i].saldoCapital = this.coutasList[i].saldoCapitalCuota - this.coutasList[i].pagos!.saldoCuota
+              this.coutasRequest[i].pagosDto!.valorPago = c.valorCuota
+              this.coutasList[i].pagos!.valorPago = this.coutasRequest[i].pagosDto!.valorPago
 
-            this.coutasList[i].saldoCapitalCuota = this.coutasList[i].saldoCapitalCuota - this.coutasList[i].pagos!.saldoCuota
+              this.coutasRequest[i].pagosDto!.capital = c.saldoCapitalCuota
+              this.coutasList[i].pagos!.valorCapital = c.saldoCapitalCuota
 
+              this.coutasRequest[i].pagosDto!.intereses = c.salodInteresCuota
+              this.coutasList[i].pagos!.valorIntereses = c.salodInteresCuota
 
-
-            this.coutasRequest[i].pagosDto!.valorPago = c.valorCuota
-            this.coutasList[i].pagos!.valorPago = this.coutasRequest[i].pagosDto!.valorPago
-
-            this.coutasRequest[i].pagosDto!.capital = c.pagos.valorCapital + c.pagos.saldoCuota
-            this.coutasList[i].pagos!.valorCapital = c.pagos.valorCapital + c.pagos.saldoCuota
-
-            this.coutasRequest[i].pagosDto!.intereses = c.pagos.valorIntereses
-            this.coutasList[i].pagos!.valorIntereses = c.pagos.valorIntereses
-
-            this.coutasRequest[i].pagosDto!.honorarios = c.pagos.valorHonorarios
-            this.coutasList[i].pagos!.valorHonorarios = c.pagos.valorHonorarios
+              this.coutasRequest[i].pagosDto!.honorarios = c.saldoHonorarios
+              this.coutasList[i].pagos!.valorHonorarios = c.saldoHonorarios
 
 
-            this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - c.pagos.saldoCuota
-            // this.saldoAcuerdoPago = this.saldoAcuerdoPago -c.pagos.saldoCuota
-            this.coutasRequest[i].pagosDto!.saldoCuota = 0
-            this.coutasList[i].pagos!.saldoCuota = 0
+              saldoCuota = saldoCuota - this.coutasList[i].salodInteresCuota
+              this.coutasList[i].salodInteresCuota = 0
+              this.coutasRequest[i].saldoIntereses = 0
+
+
+              saldoCuota = saldoCuota - this.coutasList[i].saldoHonorarios
+              this.coutasList[i].saldoHonorarios = 0
+              this.coutasRequest[i].saldoIntereses = 0
+
+              saldoCuota = saldoCuota - this.coutasList[i].saldoCapitalCuota
+              this.coutasRequest[i].saldoCapital = 0
+              this.coutasList[i].saldoCapitalCuota = 0
+
+
+              this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - c.pagos.saldoCuota
+              this.saldoAcuerdoPago = this.saldoAcuerdoPago - c.pagos.saldoCuota
+              this.coutasRequest[i].pagosDto!.saldoCuota = 0
+              this.coutasList[i].pagos!.saldoCuota = 0
+
+           
+            }
 
 
             if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) <= new Date()) {
@@ -394,7 +410,9 @@ export class HomeCajaComponent implements OnInit {
               saldoCuota: 0,
               capital: c.capitalCuota,
               intereses: c.interesCuota,
-              honorarios: c.honorarios
+              honorarios: c.honorarios,
+              existed: false,
+              idPago: 0
             }
 
             var pagosOriginal: Pagos = {
@@ -504,7 +522,9 @@ export class HomeCajaComponent implements OnInit {
               saldoCuota: c.valorCuota - valorTotal,
               capital: valorTotal - c.interesCuota - c.honorarios,
               intereses: c.interesCuota,
-              honorarios: c.honorarios
+              honorarios: c.honorarios,
+              existed: false,
+              idPago: 0
             }
             var pagosOriginal: Pagos = {
               idPago: 0,
