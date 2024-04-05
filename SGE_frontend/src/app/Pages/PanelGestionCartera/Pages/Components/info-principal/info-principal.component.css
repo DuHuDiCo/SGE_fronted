@@ -1,9 +1,42 @@
 .cardFalse {
+    margin-top: 80px;
     margin-left: 300px;
     width: 78%;
 }
 
 .cardTrue {
+    margin-top: 80px;
     margin-left: 80px;
     width: 94%;
 }
+
+@media only screen and (min-width: 1280px) and (max-width: 1366px) {
+    .cardFalse {
+        width: 77.5%;
+        margin-left: 280px;
+    }
+
+    .cardTrue {
+        width: 92%;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) and (max-width: 2560px) {
+    .cardFalse {
+        width: 83%;
+    }
+
+    .cardTrue {
+        width: 95%;
+    }
+  }
+
+  @media only screen and (min-width: 2560px) and (max-width: 3840px) {
+    .cardFalse {
+        width: 87%;
+    }
+
+    .cardTrue {
+        width: 96%;
+    }
+  }

@@ -1,5 +1,5 @@
 .card-principal {
-    top: 20px;
+    top: 80px;
     left: 300px;
     width: 78%;
     background-color: rgba(239, 239, 239, 0.979);
@@ -8,7 +8,7 @@
 }
 
 .card-true {
-    top: 20px;
+    top: 80px;
     left: 80px;
     width: 94%;
     background-color: rgba(239, 239, 239, 0.979);
@@ -35,3 +35,54 @@
     background: #d40000;
     border-color: #d40000;
 }
+
+@media only screen and (min-width: 1280px) and (max-width: 1366px) {
+    .card-principal {
+        width: 76.5%;
+        left: 280px;
+    }
+
+    .card-true {
+        width: 92%;
+    }
+  }
+
+  @media only screen and (min-width: 1366px) and (max-width: 1440px) {
+    .card-principal {
+        width: 76.5%;
+    }
+
+    .card-true {
+        width: 92%;
+    }
+  }
+
+  @media only screen and (min-width: 1440px) and (max-width: 1600px) {
+    .card-principal {
+        width: 76.5%;
+    }
+
+    .card-true {
+        width: 92%;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) and (max-width: 2560px) {
+    .card-principal {
+        width: 83%;
+    }
+
+    .card-true {
+        width: 95%;
+    }
+  }
+
+  @media only screen and (min-width: 2560px) and (max-width: 3840px) {
+    .card-principal {
+        width: 87%;
+    }
+
+    .card-true {
+        width: 96%;
+    }
+  }

@@ -17,7 +17,8 @@ export class InfoPersonalComponent implements OnInit {
       'CELULAR',
       'DIRECCION',
       'CORREO',
-      'REF'
+      'REF',
+      'INFOL'
     ]
   }
 
