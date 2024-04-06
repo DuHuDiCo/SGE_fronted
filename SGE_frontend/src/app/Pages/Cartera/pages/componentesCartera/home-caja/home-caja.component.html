@@ -65,7 +65,7 @@
                     </div>
                 </div>
 
-                <div class="row mt-3" *ngIf="coutasList.length > 0">
+                <div class="row mt-3" *ngIf="cuotasList.length > 0">
                     <div class="col-md-6">
                         <h6><strong>Valor Total Acuerdo: </strong>
                             {{gestionesCuenta[0].clasificacionGestion.valorTotalAcuerdo | number}}</h6>
@@ -158,7 +158,7 @@
 
                     </div>
                 </div>
-                <div class="row mt-2 mb-3" *ngIf="coutasList.length > 0">
+                <div class="row mt-2 mb-3" *ngIf="cuotasList.length > 0">
                     <div class="col-md-7">
                         <div class="row">
                             <div class="col-md-8"></div>
@@ -264,7 +264,7 @@
 
         </div>
 
-        <div class="row mt-4 text-center" *ngIf="coutasList.length > 0">
+        <div class="row mt-4 text-center" *ngIf="cuotasList.length > 0">
             <div class="col-md-12">
                 <div class="table-responsive">
                     <table class="table table-bordered">
@@ -279,13 +279,13 @@
                                 <th>Saldo Honorario</th>
                                 <th>Intereses</th>
                                 <th>Saldo Intereses</th>
-                                <th *ngIf="coutasList[0].pagos != null || coutasList[0].pagos != null">Pagos</th>
+                                <th *ngIf="cuotasList[0].pagos != null || cuotasList[0].pagos != null">Pagos</th>
                                 <th>Saldo Cuota</th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let c of coutasList;">
+                            <tr *ngFor="let c of cuotasList;">
                                 <td>{{c.numeroCuota}}</td>
                                 <td>{{c.fechaVencimiento | date:'dd/MM/yyyy'}}</td>
                                 <td>{{c.valorCuota | number}}</td>
@@ -306,7 +306,7 @@
                                     {{c.salodInteresCuota | number}}</td>
                                 <td *ngIf="c.salodInteresCuota > 0" style="background-color: yellow;">
                                     {{c.salodInteresCuota | number}}</td>
-                                <td *ngIf="coutasList[0].pagos != null || coutasList[0].pagos != null">{{c.pagos ==
+                                <td *ngIf="cuotasList[0].pagos != null || cuotasList[0].pagos != null">{{c.pagos ==
                                     null?0:c.pagos.valorPago | number}}</td>
                                 <td>{{c.pagos == null? c.valorCuota :c.pagos.saldoCuota | number}}</td>
                                 

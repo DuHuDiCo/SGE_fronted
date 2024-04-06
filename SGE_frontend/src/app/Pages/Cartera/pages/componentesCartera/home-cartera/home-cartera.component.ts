@@ -3980,7 +3980,7 @@ export class HomeCarteraComponent implements OnInit {
             if (saldoCuota > 0) {
               
               if (valorTotal <= c.pagos.saldoCuota) {
-                alert("<")
+                
 
                 var restante = valorTotal
 
@@ -4065,7 +4065,7 @@ export class HomeCarteraComponent implements OnInit {
                     restante = 0
 
                     var saldoInteres = this.cuotasList[i].salodInteresCuota - valorTotal
-                    alert(saldoInteres)
+                    
                     this.coutasRequest[i].saldoIntereses = saldoInteres
                     this.cuotasList[i].salodInteresCuota = saldoInteres
                     this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - valorTotal
@@ -4081,7 +4081,7 @@ export class HomeCarteraComponent implements OnInit {
 
 
 
-                    alert(this.cuotasList[i].pagos!.saldoCuota)
+                    
                   }
 
                 }
@@ -4186,7 +4186,7 @@ export class HomeCarteraComponent implements OnInit {
     
 
           if (valorTotal > 0 && valorTotal >= c.valorCuota) {
-            alert("1")
+            
 
 
             var pagos: PagosRequest = {
