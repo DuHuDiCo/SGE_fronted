@@ -3978,8 +3978,7 @@ export class HomeCarteraComponent implements OnInit {
 
             var saldoCuota = c.pagos.saldoCuota
             if (saldoCuota > 0) {
-              alert(c.pagos.saldoCuota)
-              alert(i)
+              
               if (valorTotal <= c.pagos.saldoCuota) {
                 alert("<")
 
@@ -4111,9 +4110,7 @@ export class HomeCarteraComponent implements OnInit {
                 }
                 valorTotal = 0
               } else {
-                alert(">")
-                alert(valorTotal)
-                alert(c.pagos.saldoCuota)
+                
                 valorTotal = valorTotal - c.pagos.saldoCuota
 
                 this.coutasRequest[i].pagosDto!.valorPago = c.valorCuota
@@ -4167,7 +4164,7 @@ export class HomeCarteraComponent implements OnInit {
                 this.cuotasList[i].saldoCapitalCuota = 0
 
                 this.coutasRequest[i].pagosDto!.saldoCuota = saldoCuota
-                
+                this.cuotasList[i].pagos!.saldoCuota = saldoCuota 
 
 
               }
@@ -4186,7 +4183,7 @@ export class HomeCarteraComponent implements OnInit {
 
         if ((c.pagos == null || c.pagos == undefined) && valorTotal > 0) {
 
-          alert(valorTotal)
+    
 
           if (valorTotal > 0 && valorTotal >= c.valorCuota) {
             alert("1")
@@ -4312,7 +4309,7 @@ export class HomeCarteraComponent implements OnInit {
 
           } else {
             if (valorTotal > 0 && valorTotal < c.valorCuota) {
-              alert("2")
+             
               if (valorTotal == 0) {
                 i = 0
 
@@ -4589,31 +4586,31 @@ export class HomeCarteraComponent implements OnInit {
     if (user != null || user != undefined) {
       recibo.username = user;
 
-      // this.cuentasCobrar.crearRecibo(recibo).subscribe(
-      //   (data: any) => {
+      this.cuentasCobrar.crearRecibo(recibo).subscribe(
+        (data: any) => {
 
-      //     this.mostrarReciboPago(data.base64)
-      //     this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
+          this.mostrarReciboPago(data.base64)
+          this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
 
-      //     this.activarGuardarPago = false
-      //     this.savePago = false
-      //     this.coutasRequest = []
-      //     this.pago = {
-      //       valor: 0,
-      //       detalle: '',
-      //       medioPago: "",
-      //       numeroRecibo: '',
-      //       cumpliendo: false
-      //     }
+          this.activarGuardarPago = false
+          this.savePago = false
+          this.coutasRequest = []
+          this.pago = {
+            valor: 0,
+            detalle: '',
+            medioPago: "",
+            numeroRecibo: '',
+            cumpliendo: false
+          }
 
-      //     this.valorTotalIngresado = 0
-      //   }, (error: any) => {
-      //     this.activarGuardarPago = false
-      //     this.savePago = false
-      //     console.log(error);
+          this.valorTotalIngresado = 0
+        }, (error: any) => {
+          this.activarGuardarPago = false
+          this.savePago = false
+          console.log(error);
 
-      //   }
-      // )
+        }
+      )
     }
 
     $('#modalGestionCom').modal('hide');
