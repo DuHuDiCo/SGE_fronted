@@ -215,13 +215,14 @@
                         </nav>
 
                         <a *ngFor="let n of notiArrayVencidas" class="list-group-item" aria-current="true"
-                            style="border: 1px rgb(95, 93, 93) solid;">
-
+                            style="border: 1px rgb(95, 93, 93) solid; cursor: pointer" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasRight"
+                            (click)="openGestion(n.numeroObligacion, n.gestionId, n.idNotificaciones, n.tipoGestion)">
                             <div class="d-flex justify-content-between">
-                                <h6 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h6>
+                                <h6 class="mb-1 fw-bold" style="margin-right: 20px;">{{ n.tipoGestion}}</h6>
                                 <small>{{ n.fechaCreacion | dateFormat}}</small>
                             </div>
-                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | dateFormat }}</p>
+                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | dateFormat}}</p>
                             <small><b>Cliente:</b> {{ n.cliente }}</small><br>
                             <small *ngIf="n.tipoGestion == 'TAREA'"><b>Creado Por:</b> {{ n.designatedBy }}</small>
                         </a>
