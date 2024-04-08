@@ -1071,16 +1071,16 @@
                                     </p>
                                 </td>
                                 <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? '--/--/----' :
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion) ==
                                     'TAREA' ?
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaTarea | date:"d/M/yyyy")
                                     :
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion) ==
                                     'NOTA' ? '--/--/----' :
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion) ==
                                     'ACUERDO DE PAGO' ?(cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso |
                                     date:"d/M/yyyy"):'--/--/----' 
-                                    ))}}
+                                    }}
                                 </td>
                                 <td *ngIf="!Columnas.includes('ULTIMA CLAS')">
                                     {{ cc.gestion.length == 0 ? 'SIN CLASIFICACIÓN' :
