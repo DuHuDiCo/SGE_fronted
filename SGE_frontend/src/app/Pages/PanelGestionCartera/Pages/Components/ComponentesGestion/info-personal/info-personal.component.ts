@@ -7,19 +7,33 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class InfoPersonalComponent implements OnInit {
 
-  datosPorConfirmar: any[] = []
+  // ARRAYS
+  datosPorConfirmar: string[] = []
   datosConfirmados: any[] = []
+
+  celArray: string[] = []
+  direccionArray: string[] = []
+  correoArray: string[] = []
+  refArray: string[] = []
+  infol: string[] = []
+
+  // VARIABLES
+  actionDato: string = ''
 
   constructor() { }
 
   ngOnInit(): void {
     this.datosPorConfirmar = [
-      'CELULAR',
-      'DIRECCION',
-      'CORREO',
-      'REF',
-      'INFOL'
+      'CALL-CEL',
+      'WHATSAPP-CEL',
+      'MSG-CEL',
+      'LETTER-ADDRESS'
     ]
+  }
+
+  asignarAccion(accion: string) {
+    this.actionDato = accion
+    console.log(this.actionDato);
   }
 
   confirmarDato(dato: string, icon: string) {
@@ -28,10 +42,19 @@ export class InfoPersonalComponent implements OnInit {
       icon: icon
     }
 
+    console.log(objDato);
+
     if (this.datosPorConfirmar.includes(dato)) {
       var position = this.datosPorConfirmar.indexOf(dato)
       this.datosPorConfirmar.splice(position, 1)
       this.datosConfirmados.push(objDato)
+
+      if (icon == 'fa-solid fa-eraser') {
+        this.celArray.push(dato)
+        if (this.celArray.length == 3) {
+
+        }
+      }
     }
     console.log(this.datosConfirmados);
   }

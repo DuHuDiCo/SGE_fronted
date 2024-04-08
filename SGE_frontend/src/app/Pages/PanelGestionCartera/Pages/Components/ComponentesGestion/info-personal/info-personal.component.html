@@ -1,7 +1,7 @@
 <!-- INFORMACION PERSONAL -->
 <div class="row">
     <div class="col-md-8 mt-4">
-        <div class="card mt-3" *ngIf="datosPorConfirmar.includes('CELULAR')">
+        <div class="card mt-3">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
@@ -15,18 +15,22 @@
                             <div class="col-md-12">
                                 <div class="row d-flex justify-content-start">
                                     <div class="col-md-4 p-0">
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i
+                                        <button *ngIf="datosPorConfirmar.includes('CALL-CEL')"
+                                            class="btn btn-sm btn-primary" data-bs-toggle="collapse"
+                                            data-bs-target="#addMessage" (click)="asignarAccion('CALL-CEL')"><i
                                                 class="fa-solid fa-phone-volume fa-sm"></i></button>
                                     </div>
                                     <div class="col-md-4 p-0">
-                                        <button class="btn btn-sm btn-success" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i
+                                        <button *ngIf="datosPorConfirmar.includes('WHATSAPP-CEL')"
+                                            class="btn btn-sm btn-success" data-bs-toggle="collapse"
+                                            data-bs-target="#addMessage" (click)="asignarAccion('WHATSAPP-CEL')"><i
                                                 class="fa-brands fa-whatsapp fa-lg"></i></button>
                                     </div>
                                     <div class="col-md-4 p-0">
-                                        <button class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i class="fa-solid fa-comment"></i></button>
+                                        <button *ngIf="datosPorConfirmar.includes('MSG-CEL')"
+                                            class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
+                                            data-bs-target="#addMessage" (click)="asignarAccion('MSG-CEL')"><i
+                                                class="fa-solid fa-comment"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -39,7 +43,7 @@
                             </div>
                             <div class="col-md-6">
                                 <button class="btn btn-sm btn-success"
-                                    (click)="confirmarDato('CELULAR', 'fa-solid fa-mobile')"><i
+                                    (click)="confirmarDato(actionDato, 'fa-solid fa-mobile')"><i
                                         class="fa-solid fa-check"></i></button>
                             </div>
                         </div>
@@ -54,7 +58,7 @@
             </div>
         </div>
 
-        <div class="card mt-3" *ngIf="datosPorConfirmar.includes('DIRECCION')">
+        <div class="card mt-3">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
@@ -69,11 +73,11 @@
                                 <div class="row d-flex justify-content-start">
                                     <div class="col-md-3 p-0">
                                         <button class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i class="fa-regular fa-envelope"></i></button>
+                                            data-bs-target="#addMessage" (click)="asignarAccion('LETTER-ADDRESS')"><i
+                                                class="fa-regular fa-envelope"></i></button>
                                     </div>
                                     <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm bg-red visually-hidden"
-                                            (click)="confirmarDato('DIRECCION', 'fa-solid fa-location-dot')"><i
+                                        <button class="btn btn-sm bg-red visually-hidden"><i
                                                 class="fa-solid fa-check"></i></button>
                                     </div>
                                 </div>
@@ -87,7 +91,7 @@
                             </div>
                             <div class="col-md-6">
                                 <button class="btn btn-sm btn-success"
-                                    (click)="confirmarDato('DIRECCION', 'fa-solid fa-location-dot')"><i
+                                    (click)="confirmarDato(actionDato, 'fa-solid fa-location-dot')"><i
                                         class="fa-solid fa-check"></i></button>
                             </div>
                         </div>
@@ -102,7 +106,7 @@
             </div>
         </div>
 
-        <div class="card mt-3" *ngIf="datosPorConfirmar.includes('CORREO')">
+        <div class="card mt-3">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
@@ -117,12 +121,12 @@
                                 <div class="row d-flex justify-content-start">
                                     <div class="col-md-6 p-0">
                                         <button class="btn btn-sm btn-primary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i
+                                            data-bs-target="#addMessage" (click)="asignarAccion('EMAIL(AUT)-EMAIL')"><i
                                                 class="fa-solid fa-paper-plane"></i></button>
                                     </div>
                                     <div class="col-md-6 p-0">
                                         <button class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i
+                                            data-bs-target="#addMessage" (click)="asignarAccion('EMAIL-EMAIL')"><i
                                                 class="fa-solid fa-envelopes-bulk"></i></button>
                                     </div>
                                 </div>
@@ -136,7 +140,7 @@
                             </div>
                             <div class="col-md-6">
                                 <button class="btn btn-sm btn-success"
-                                    (click)="confirmarDato('CORREO', 'fa-solid fa-at')"><i
+                                    (click)="confirmarDato(actionDato, 'fa-solid fa-at')"><i
                                         class="fa-solid fa-check"></i></button>
                             </div>
                         </div>
@@ -151,7 +155,7 @@
             </div>
         </div>
 
-        <div class="card mt-3" *ngIf="datosPorConfirmar.includes('REF')">
+        <div class="card mt-3">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
@@ -166,7 +170,7 @@
                                 <div class="row d-flex justify-content-start">
                                     <div class="col-md-6 p-0">
                                         <button class="btn btn-sm btn-primary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i
+                                            data-bs-target="#addMessage" (click)="asignarAccion('CALL-REF')"><i
                                                 class="fa-solid fa-phone-volume"></i></button>
                                     </div>
                                     <div class="col-md-6 p-0">
@@ -184,7 +188,7 @@
                             </div>
                             <div class="col-md-6">
                                 <button class="btn btn-sm btn-success"
-                                    (click)="confirmarDato('REF', 'fa-solid fa-address-book')"><i
+                                    (click)="confirmarDato(actionDato, 'fa-solid fa-address-book')"><i
                                         class="fa-solid fa-check"></i></button>
                             </div>
                         </div>
@@ -199,7 +203,7 @@
             </div>
         </div>
 
-        <div class="card mt-3 mb-3" *ngIf="datosPorConfirmar.includes('INFOL')">
+        <div class="card mt-3 mb-3">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
@@ -222,21 +226,22 @@
                                 <div class="row d-flex justify-content-start">
                                     <div class="col-md-3 p-0">
                                         <button class="btn btn-sm btn-primary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i
+                                            data-bs-target="#addMessage" (click)="asignarAccion('CALL-INFO')"><i
                                                 class="fa-solid fa-phone-volume fa-sm"></i></button>
                                     </div>
                                     <div class="col-md-3 p-0">
                                         <button class="btn btn-sm btn-success" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i
+                                            data-bs-target="#addMessage" (click)="asignarAccion('WHATSAPP-INFO')"><i
                                                 class="fa-brands fa-whatsapp fa-lg"></i></button>
                                     </div>
                                     <div class="col-md-3 p-0">
                                         <button class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i class="fa-solid fa-comment"></i></button>
+                                            data-bs-target="#addMessage" (click)="asignarAccion('MSG-INFO')"><i
+                                                class="fa-solid fa-comment"></i></button>
                                     </div>
                                     <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm btn-warning"><i
-                                                class="fa-solid fa-envelopes-bulk"></i></button>
+                                        <button class="btn btn-sm btn-warning"><i class="fa-solid fa-envelopes-bulk"
+                                                (click)="asignarAccion('EMAIL-INFO')"></i></button>
                                     </div>
                                 </div>
                             </div>
