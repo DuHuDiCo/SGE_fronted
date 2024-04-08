@@ -1,7 +1,7 @@
 <!-- INFORMACION PERSONAL -->
 <div class="row">
-    <div class="col-md-6 mt-4">
-        <div class="card mt-3" *ngIf="datosPorConfirmar.includes('CELULAR')">
+    <div class="col-md-8 mt-4">
+        <div class="card mt-3" *ngIf="datosPorConfirmar.includes('CEL')">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
@@ -10,33 +10,43 @@
                             <input type="number" class="form-control" value="3023671255" readonly>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row d-flex justify-content-start">
-                                    <div class="col-md-2 p-0">
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i
+                                    <div class="col-md-4 p-0">
+                                        <button *ngIf="datosPorConfirmar.includes('CALL-CEL')"
+                                            class="btn btn-sm btn-primary" data-bs-toggle="collapse"
+                                            data-bs-target="#addMessage"
+                                            (click)="asignarAccion('CALL-CEL', 'fa-solid fa-phone-volume fa-sm', 'CEL', 'Celular')"><i
                                                 class="fa-solid fa-phone-volume fa-sm"></i></button>
                                     </div>
-                                    <div class="col-md-2 p-0">
-                                        <button class="btn btn-sm btn-success" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i
+                                    <div class="col-md-4 p-0">
+                                        <button *ngIf="datosPorConfirmar.includes('WHATSAPP-CEL')"
+                                            class="btn btn-sm btn-success" data-bs-toggle="collapse"
+                                            data-bs-target="#addMessage"
+                                            (click)="asignarAccion('WHATSAPP-CEL', 'fa-brands fa-whatsapp fa-lg', 'CEL', 'Celular')"><i
                                                 class="fa-brands fa-whatsapp fa-lg"></i></button>
                                     </div>
-                                    <div class="col-md-2 p-0">
-                                        <button class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i class="fa-solid fa-comment"></i></button>
-                                    </div>
-                                    <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm bg-red"><i class="fa-solid fa-eraser"></i></button>
-                                    </div>
-                                    <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm btn-success"
-                                            (click)="confirmarDato('CELULAR', 'fa-solid fa-mobile')"><i
-                                                class="fa-solid fa-check"></i></button>
+                                    <div class="col-md-4 p-0">
+                                        <button *ngIf="datosPorConfirmar.includes('MSG-CEL')"
+                                            class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
+                                            data-bs-target="#addMessage"
+                                            (click)="asignarAccion('MSG-CEL', 'fa-solid fa-comment', 'CEL', 'Celular')"><i
+                                                class="fa-solid fa-comment"></i></button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn btn-sm bg-red"><i class="fa-solid fa-eraser"></i></button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-sm btn-success" (click)="confirmarDato('CEL')"
+                                    [disabled]="disabledArray[0]"><i class="fa-solid fa-check"></i></button>
                             </div>
                         </div>
                     </div>
@@ -59,28 +69,33 @@
                             <input type="text" class="form-control" value="Diagonal 43 #34-E20" readonly>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row d-flex justify-content-start">
                                     <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i class="fa-regular fa-envelope"></i></button>
+                                        <button *ngIf="datosPorConfirmar.includes('LETTER-ADDRESS')"
+                                            class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
+                                            data-bs-target="#addMessage"
+                                            (click)="asignarAccion('LETTER-ADDRESS', 'fa-regular fa-envelope', 'DIRECCION', 'Direccion')"><i
+                                                class="fa-regular fa-envelope"></i></button>
                                     </div>
                                     <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm bg-red visually-hidden"
-                                            (click)="confirmarDato('DIRECCION', 'fa-solid fa-location-dot')"><i
-                                                class="fa-solid fa-check"></i></button>
-                                    </div>
-                                    <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm bg-red"><i class="fa-solid fa-eraser"></i></button>
-                                    </div>
-                                    <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm btn-success"
-                                            (click)="confirmarDato('DIRECCION', 'fa-solid fa-location-dot')"><i
+                                        <button class="btn btn-sm bg-red visually-hidden"><i
                                                 class="fa-solid fa-check"></i></button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn btn-sm bg-red"><i class="fa-solid fa-eraser"></i></button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-sm btn-success" (click)="confirmarDato('DIRECCION')"
+                                    [disabled]="disabledArray[1]"><i class="fa-solid fa-check"></i></button>
                             </div>
                         </div>
                     </div>
@@ -103,29 +118,36 @@
                             <input type="email" class="form-control" value="hernandez.gomez292020@gmail.com" readonly>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row d-flex justify-content-start">
-                                    <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i
+                                    <div class="col-md-6 p-0">
+                                        <button *ngIf="datosPorConfirmar.includes('EMAIL(AUT)-EMAIL')"
+                                            class="btn btn-sm btn-primary" data-bs-toggle="collapse"
+                                            data-bs-target="#addMessage"
+                                            (click)="asignarAccion('EMAIL(AUT)-EMAIL', 'fa-solid fa-paper-plane', 'CORREO', 'Correo')"><i
                                                 class="fa-solid fa-paper-plane"></i></button>
                                     </div>
-                                    <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i
+                                    <div class="col-md-6 p-0">
+                                        <button *ngIf="datosPorConfirmar.includes('EMAIL-EMAIL')"
+                                            class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
+                                            data-bs-target="#addMessage"
+                                            (click)="asignarAccion('EMAIL-EMAIL', 'fa-solid fa-envelopes-bulk', 'CORREO', 'Correo')"><i
                                                 class="fa-solid fa-envelopes-bulk"></i></button>
                                     </div>
-                                    <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm bg-red"><i class="fa-solid fa-eraser"></i></button>
-                                    </div>
-                                    <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm btn-success"
-                                            (click)="confirmarDato('CORREO', 'fa-solid fa-at')"><i
-                                                class="fa-solid fa-check"></i></button>
-                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn btn-sm bg-red"><i class="fa-solid fa-eraser"></i></button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-sm btn-success" (click)="confirmarDato('CORREO')"
+                                    [disabled]="disabledArray[2]"><i class="fa-solid fa-check"></i></button>
                             </div>
                         </div>
                     </div>
@@ -148,28 +170,107 @@
                             <input type="email" class="form-control" value="" readonly>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row d-flex justify-content-start">
+                                    <div class="col-md-6 p-0">
+                                        <button *ngIf="datosPorConfirmar.includes('CALL-REF')"
+                                            class="btn btn-sm btn-primary" data-bs-toggle="collapse"
+                                            data-bs-target="#addMessage"
+                                            (click)="asignarAccion('CALL-REF', 'fa-solid fa-phone-volume', 'REF', 'Referencia')"><i
+                                                class="fa-solid fa-phone-volume"></i></button>
+                                    </div>
+                                    <div class="col-md-6 p-0">
+                                        <button class="btn btn-sm bg-red visually-hidden"><i
+                                                class="fa-solid fa-check"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn btn-sm bg-red"><i class="fa-solid fa-eraser"></i></button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-sm btn-success" (click)="confirmarDato('REF')"
+                                    [disabled]="disabledArray[3]"><i class="fa-solid fa-check"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse mt-3" id="addMessage">
+                    <div class="form-floating">
+                        <textarea class="form-control" placeholder="Observación"></textarea>
+                        <label>Observación</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-3 mb-3" *ngIf="datosPorConfirmar.includes('INFOL')">
+            <div class="card-body">
+                <div class="row">
                     <div class="col-md-6">
+                        <div class="input-group input-group-sm mb-1">
+                            <span class="input-group-text">Ocupación</span>
+                            <input type="email" class="form-control" value="Asalariado" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-1">
+                            <span class="input-group-text">Empresa</span>
+                            <input type="email" class="form-control" value="Gmj Hogar" readonly>
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text">Ingresos</span>
+                            <input type="email" class="form-control" value="1300000" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-auto">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row d-flex justify-content-start">
                                     <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="collapse"
-                                            data-bs-target="#addMessage"><i
-                                                class="fa-solid fa-phone-volume"></i></button>
+                                        <button *ngIf="datosPorConfirmar.includes('CALL-INFO')"
+                                            class="btn btn-sm btn-primary" data-bs-toggle="collapse"
+                                            data-bs-target="#addMessage"
+                                            (click)="asignarAccion('CALL-INFO', 'fa-solid fa-phone-volume fa-sm', 'INFOL', 'Información Laboral')"><i
+                                                class="fa-solid fa-phone-volume fa-sm"></i></button>
                                     </div>
                                     <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm bg-red visually-hidden"><i
-                                                class="fa-solid fa-check"></i></button>
+                                        <button *ngIf="datosPorConfirmar.includes('WHATSAPP-INFO')"
+                                            class="btn btn-sm btn-success" data-bs-toggle="collapse"
+                                            data-bs-target="#addMessage"
+                                            (click)="asignarAccion('WHATSAPP-INFO', 'fa-brands fa-whatsapp fa-lg', 'INFOL', 'Información Laboral')"><i
+                                                class="fa-brands fa-whatsapp fa-lg"></i></button>
                                     </div>
                                     <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm bg-red"><i class="fa-solid fa-eraser"></i></button>
+                                        <button *ngIf="datosPorConfirmar.includes('MSG-INFO')"
+                                            class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
+                                            data-bs-target="#addMessage"
+                                            (click)="asignarAccion('MSG-INFO', 'fa-solid fa-comment', 'INFOL', 'Información Laboral')"><i
+                                                class="fa-solid fa-comment"></i></button>
                                     </div>
                                     <div class="col-md-3 p-0">
-                                        <button class="btn btn-sm btn-success"
-                                            (click)="confirmarDato('REF', 'fa-solid fa-address-book')"><i
-                                                class="fa-solid fa-check"></i></button>
+                                        <button *ngIf="datosPorConfirmar.includes('EMAIL-INFO')"
+                                            class="btn btn-sm btn-warning"
+                                            (click)="asignarAccion('EMAIL-INFO', 'fa-solid fa-envelopes-bulk', 'INFOL', 'Información Laboral')"
+                                            data-bs-toggle="collapse" data-bs-target="#addMessage"><i
+                                                class="fa-solid fa-envelopes-bulk"></i></button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 my-auto">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn btn-sm bg-red"><i class="fa-solid fa-eraser"></i></button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-sm btn-success" (click)="confirmarDato('INFOL')"
+                                    [disabled]="disabledArray[4]"><i class="fa-solid fa-check"></i></button>
                             </div>
                         </div>
                     </div>
@@ -183,46 +284,27 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 mt-4">
+    <div class="col-md-4 mt-4">
         <div class="card card-disabled mt-3" *ngFor="let d of datosConfirmados">
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-10">
-                        <div class="row">
-                            <div class="col-md-1">
-                                <button class="btn btn-sm bg-red"><i class="{{ d.icon }}"></i></button>
-                            </div>
-                            <div class="col-md-11">
-                                <div class="input-group input-group-sm">
-                                    <input type="number" class="form-control" value="{{ d.dato }}" disabled>
-                                </div>
-                            </div>
+                <div class="row d-flex justify-content-evenly">
+                    <div class="col-md-1">
+                        <button class="btn btn-sm bg-red"><i class="{{ d.icon }}"></i></button>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" value="{{ d.text }}" disabled>
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row d-flex justify-content-start">
-                                    <div class="col-md-6 p-0">
-                                        <button class="btn btn-sm bg-red" (click)="cancelDato(d)"><i
-                                                class="fa-solid fa-trash"></i></button>
-                                    </div>
-                                    <div class="col-md-6 p-0">
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#modalEditar"><i
-                                                class="fa-solid fa-pen-to-square"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-md-1 p-0">
+                        <button class="btn btn-sm bg-red" (click)="cancelDato(d)"><i
+                                class="fa-solid fa-trash"></i></button>
+                    </div>
+                    <div class="col-md-1 p-0">
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar"><i
+                                class="fa-solid fa-pen-to-square"></i></button>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row justify-content-start mt-3" *ngIf="datosConfirmados.length >= 1">
-            <div class="col-md-12">
-                <button class="btn bg-red text-start" data-bs-toggle="modal"
-                    data-bs-target="#modalAcuerdo">Gestionar</button>
             </div>
         </div>
     </div>
