@@ -117,6 +117,7 @@ export class HomeCajaComponent implements OnInit {
             if (cc.gestion.length > 0) {
               var gestion = cc.gestion.filter((g: Gestion) => g.clasificacionGestion.isActive && g.clasificacionGestion.clasificacion == "ACUERDO DE PAGO")
               this.gestionesCuenta = gestion
+              console.log(this.gestionesCuenta);
 
               if (gestion.length > 0) {
                 gestion[0].clasificacionGestion.cuotasList.forEach((c: any) => {
@@ -125,13 +126,15 @@ export class HomeCajaComponent implements OnInit {
                 })
 
                 this.coutasList.forEach((c: CuotaList) => {
+                  console.log(c);
+
 
 
 
                   this.totalCuotasAcuerdo = this.totalCuotasAcuerdo + c.valorCuota
-                  this.totalCapital = this.totalCapital + c.capitalCuota
-                  this.totalHonorarios = this.totalHonorarios + c.honorarios
-                  this.totalIntereses = this.totalIntereses + c.interesCuota
+                  this.totalCapital = this.totalCapital + c.saldoCapitalCuota
+                  this.totalHonorarios = this.totalHonorarios + c.saldoHonorarios
+                  this.totalIntereses = this.totalIntereses + c.salodInteresCuota
                   if (c.pagos != null || c.pagos != undefined) {
 
                     if (c.pagos.reciboPago != null || c.pagos.reciboPago != undefined) {
@@ -144,9 +147,9 @@ export class HomeCajaComponent implements OnInit {
 
                     }
 
-                    this.saldoInteresesAcuerdo = this.totalIntereses + c.interesCuota
-                    this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo + c.honorarios
-                    this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo + c.capitalCuota
+                    this.saldoInteresesAcuerdo = this.totalIntereses + c.salodInteresCuota
+                    this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo + c.saldoHonorarios
+                    this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo + c.saldoCapitalCuota
 
 
                   } else {
@@ -170,7 +173,10 @@ export class HomeCajaComponent implements OnInit {
                     pago: false,
                     interesCuota: c.interesCuota,
                     pagosDto: null,
-                    idCuota: c.idCuota
+                    idCuota: c.idCuota,
+                    saldoCapital: c.saldoCapitalCuota,
+                    saldoHonorario: c.saldoHonorarios,
+                    saldoIntereses: c.salodInteresCuota
                   }
 
                   if (c.pagos != null || c.pagos != undefined) {
@@ -178,7 +184,10 @@ export class HomeCajaComponent implements OnInit {
                       valorPago: c.pagos.valorPago,
                       fechaPago: c.pagos.fechaPago,
 
-                      saldoCuota: c.pagos.saldoCuota
+                      saldoCuota: c.pagos.saldoCuota,
+                      capital: 0,
+                      intereses: 0,
+                      honorarios: 0
                     }
                     couta.pagosDto = pagos
                     if (c.pagos!.valorPago == 0) {
@@ -287,27 +296,32 @@ export class HomeCajaComponent implements OnInit {
 
     if (this.pago.valor >= this.totalCuotasAcuerdo) {
 
-      valorTotal = this.totalCuotasAcuerdo;
-      this.saldoAcuerdoPago = this.totalCuotasAcuerdo
-      this.valorTotalIngresado = this.valorTotalIngresado + parseInt(valorTotal)
+
+      Swal.fire({
+        title: "El valor ingresado es mayor al valor del acuerdo",
+        text: "El valor de la cuota sera: " + this.saldoAcuerdoPago,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, continuar",
+        cancelButtonText: "No, cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          valorTotal = this.totalCuotasAcuerdo;
+          this.saldoAcuerdoPago = this.totalCuotasAcuerdo
+          this.valorTotalIngresado = this.valorTotalIngresado + parseInt(valorTotal)
+        }
+      });
+
+
     }
 
 
 
     if (valorTotal > 0) {
       this.coutasList.forEach((c: CuotaList, i: number) => {
-        // if (this.pago.valor < c.valorCuota) {
-        //   Swal.fire({
-        //     icon: 'error',
-        //     title: 'Error',
-        //     text: 'Valor ingresado menor al valor de la cuota pactada',
-        //     timer: 3000
-        //   })
-        //   this.valorTotalIngresado = 0
-        //   valorTotal = 0
-        //   throw new Error('Valor ingresado menor al valor de la cuota pactada')
 
-        // }
 
         if (c.pagos != null || c.pagos != undefined) {
           if (c.pagos.saldoCuota > 0) {
@@ -315,18 +329,59 @@ export class HomeCajaComponent implements OnInit {
             valorTotal = valorTotal - c.pagos.saldoCuota
 
 
-            this.coutasRequest[i].capitalCuota = this.coutasRequest[i].capitalCuota - this.coutasRequest[i].pagosDto!.saldoCuota
-            this.coutasList[i].capitalCuota = this.coutasList[i].capitalCuota - this.coutasList[i].pagos!.saldoCuota
 
-            this.coutasRequest[i].pagosDto!.saldoCuota = 0
-            this.coutasList[i].pagos!.saldoCuota = 0
+            this.coutasRequest[i].saldoCapital = this.coutasList[i].saldoCapitalCuota - this.coutasList[i].pagos!.saldoCuota
+
+            this.coutasList[i].saldoCapitalCuota = this.coutasList[i].saldoCapitalCuota - this.coutasList[i].pagos!.saldoCuota
+
+
 
             this.coutasRequest[i].pagosDto!.valorPago = c.valorCuota
             this.coutasList[i].pagos!.valorPago = this.coutasRequest[i].pagosDto!.valorPago
+
+            this.coutasRequest[i].pagosDto!.capital = c.pagos.valorCapital + c.pagos.saldoCuota
+            this.coutasList[i].pagos!.valorCapital = c.pagos.valorCapital + c.pagos.saldoCuota
+
+            this.coutasRequest[i].pagosDto!.intereses = c.pagos.valorIntereses
+            this.coutasList[i].pagos!.valorIntereses = c.pagos.valorIntereses
+
+            this.coutasRequest[i].pagosDto!.honorarios = c.pagos.valorHonorarios
+            this.coutasList[i].pagos!.valorHonorarios = c.pagos.valorHonorarios
+
+
+            this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - c.pagos.saldoCuota
+            // this.saldoAcuerdoPago = this.saldoAcuerdoPago -c.pagos.saldoCuota
+            this.coutasRequest[i].pagosDto!.saldoCuota = 0
+            this.coutasList[i].pagos!.saldoCuota = 0
+
+
+            if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) <= new Date()) {
+
+              this.coutasRequest[i].cumplio = false
+              this.coutasList[i].cumplio = false
+              this.pago.cumpliendo = false
+            }
+
+
+            if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) > new Date()) {
+
+              this.coutasRequest[i].cumplio = false
+              this.coutasList[i].cumplio = false
+              this.pago.cumpliendo = false
+
+            }
+
+            if (c.pagos.saldoCuota == 0) {
+              this.coutasRequest[i].cumplio = true
+              this.coutasList[i].cumplio = true
+              this.pago.cumpliendo = true
+            }
+
+            this.coutasRequest[i].pago = c.pago
           }
         }
 
-        if (c.pagos == null || c.pagos == undefined && valorTotal > 0) {
+        if ((c.pagos == null || c.pagos == undefined) && valorTotal > 0) {
 
           if (valorTotal > 0 && valorTotal >= c.valorCuota) {
 
@@ -336,7 +391,10 @@ export class HomeCajaComponent implements OnInit {
               valorPago: c.valorCuota,
               fechaPago: date,
 
-              saldoCuota: 0
+              saldoCuota: 0,
+              capital: c.capitalCuota,
+              intereses: c.interesCuota,
+              honorarios: c.honorarios
             }
 
             var pagosOriginal: Pagos = {
@@ -345,7 +403,10 @@ export class HomeCajaComponent implements OnInit {
               fechaPago: pagos.fechaPago,
               usuarioId: 0,
               saldoCuota: pagos.saldoCuota,
-              reciboPago: null
+              reciboPago: null,
+              valorCapital: c.capitalCuota,
+              valorIntereses: c.interesCuota,
+              valorHonorarios: c.honorarios
             }
 
             if (valorTotal > c.valorCuota) {
@@ -364,14 +425,14 @@ export class HomeCajaComponent implements OnInit {
               this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.coutasRequest[i].interesCuota
 
 
-              this.coutasRequest[i].capitalCuota = 0
-              this.coutasRequest[i].honorarios = 0
-              this.coutasRequest[i].interesCuota = 0
+              this.coutasRequest[i].saldoCapital = 0
+              this.coutasRequest[i].saldoHonorario = 0
+              this.coutasRequest[i].saldoIntereses = 0
 
 
-              this.coutasList[i].capitalCuota = 0
-              this.coutasList[i].honorarios = 0
-              this.coutasList[i].interesCuota = 0
+              this.coutasList[i].saldoCapitalCuota = 0
+              this.coutasList[i].saldoHonorarios = 0
+              this.coutasList[i].salodInteresCuota = 0
             }
 
 
@@ -382,8 +443,8 @@ export class HomeCajaComponent implements OnInit {
               if (this.coutasRequest[i].honorarios > 0) {
                 if (difere > 0) {
                   difere = difere - this.coutasRequest[i].honorarios
-                  this.coutasRequest[i].honorarios = 0
-                  this.coutasList[i].honorarios = 0
+                  this.coutasRequest[i].saldoHonorario = 0
+                  this.coutasList[i].saldoHonorarios = 0
                   this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
                 }
               }
@@ -391,15 +452,15 @@ export class HomeCajaComponent implements OnInit {
               if (difere > 0) {
                 if (this.coutasRequest[i].interesCuota <= difere) {
                   difere = difere - this.coutasRequest[i].interesCuota
-                  this.coutasRequest[i].interesCuota = 0
-                  this.coutasList[i].interesCuota = 0
+                  this.coutasRequest[i].saldoIntereses = 0
+                  this.coutasList[i].salodInteresCuota = 0
                   this.saldoInteresesAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].interesCuota
                 }
               }
 
               if (difere > 0) {
-                this.coutasRequest[i].capitalCuota = this.coutasRequest[i].capitalCuota - difere
-                this.coutasList[i].capitalCuota = this.coutasList[i].capitalCuota - difere
+                this.coutasRequest[i].saldoCapital = this.coutasRequest[i].capitalCuota - difere
+                this.coutasList[i].saldoCapitalCuota = this.coutasList[i].capitalCuota - difere
                 this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - difere
 
               }
@@ -414,17 +475,17 @@ export class HomeCajaComponent implements OnInit {
               this.coutasList[i].pagos = pagosOriginal
 
               this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
-              this.coutasRequest[i].honorarios = 0
-              this.coutasList[i].honorarios = 0
+              this.coutasRequest[i].saldoHonorario = 0
+              this.coutasList[i].saldoHonorarios = 0
 
 
               this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.coutasRequest[i].interesCuota
-              this.coutasRequest[i].interesCuota = 0
-              this.coutasList[i].interesCuota = 0
+              this.coutasRequest[i].saldoIntereses = 0
+              this.coutasList[i].salodInteresCuota = 0
 
               this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - this.coutasRequest[i].capitalCuota
-              this.coutasRequest[i].capitalCuota = 0
-              this.coutasList[i].capitalCuota = 0
+              this.coutasRequest[i].saldoCapital = 0
+              this.coutasList[i].saldoCapitalCuota = 0
 
             }
 
@@ -440,7 +501,10 @@ export class HomeCajaComponent implements OnInit {
               valorPago: valorTotal,
               fechaPago: date,
 
-              saldoCuota: c.valorCuota - valorTotal
+              saldoCuota: c.valorCuota - valorTotal,
+              capital: valorTotal - c.interesCuota - c.honorarios,
+              intereses: c.interesCuota,
+              honorarios: c.honorarios
             }
             var pagosOriginal: Pagos = {
               idPago: 0,
@@ -448,37 +512,40 @@ export class HomeCajaComponent implements OnInit {
               fechaPago: pagos.fechaPago,
               usuarioId: 0,
               saldoCuota: pagos.saldoCuota,
-              reciboPago: null
+              reciboPago: null,
+              valorCapital: c.capitalCuota,
+              valorIntereses: c.interesCuota,
+              valorHonorarios: c.honorarios
             }
 
 
             var difere = valorTotal
 
 
-            if (this.coutasRequest[i].honorarios > 0) {
-              if (difere > 0) {
-                difere = difere - this.coutasRequest[i].honorarios
-                this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
-                this.coutasRequest[i].honorarios = 0
-                this.coutasList[i].honorarios = 0
 
-              }
+            if (difere > 0) {
+              difere = difere - this.coutasRequest[i].honorarios
+              this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
+              this.coutasRequest[i].saldoHonorario = 0
+              this.coutasList[i].saldoHonorarios = 0
+
             }
+
 
             if (difere > 0) {
               if (this.coutasRequest[i].interesCuota <= difere) {
                 difere = difere - this.coutasRequest[i].interesCuota
                 this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.coutasRequest[i].interesCuota
-                this.coutasRequest[i].interesCuota = 0
-                this.coutasList[i].interesCuota = 0
+                this.coutasRequest[i].saldoIntereses = 0
+                this.coutasList[i].salodInteresCuota = 0
 
               }
             }
 
             if (difere > 0) {
               this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - difere
-              this.coutasRequest[i].capitalCuota = this.coutasRequest[i].capitalCuota - difere
-              this.coutasList[i].capitalCuota = this.coutasList[i].capitalCuota - difere
+              this.coutasRequest[i].saldoCapital = this.coutasRequest[i].capitalCuota - difere
+              this.coutasList[i].saldoCapitalCuota = this.coutasList[i].capitalCuota - difere
 
 
             }
@@ -489,8 +556,8 @@ export class HomeCajaComponent implements OnInit {
             this.coutasList[i].pagos = pagosOriginal
 
             if (this.coutasList[i].capitalCuota > 0) {
-              this.coutasList[i].pagos.saldoCuota = this.coutasList[i].capitalCuota
-              this.coutasRequest[i].pagosDto!.saldoCuota = this.coutasList[i].capitalCuota
+              this.coutasList[i].pagos.saldoCuota = this.coutasList[i].saldoCapitalCuota
+              this.coutasRequest[i].pagosDto!.saldoCuota = this.coutasList[i].saldoCapitalCuota
             }
           }
 
@@ -498,29 +565,7 @@ export class HomeCajaComponent implements OnInit {
 
         }
 
-        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) <= new Date()) {
 
-          this.coutasRequest[i].cumplio = false
-          this.coutasList[i].cumplio = false
-          this.pago.cumpliendo = false
-        }
-
-
-        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) > new Date()) {
-
-          this.coutasRequest[i].cumplio = false
-          this.coutasList[i].cumplio = false
-          this.pago.cumpliendo = false
-
-        }
-
-        if (c.pagos!.saldoCuota == 0) {
-          this.coutasRequest[i].cumplio = true
-          this.coutasList[i].cumplio = true
-          this.pago.cumpliendo = true
-        }
-
-        this.coutasRequest[i].pago = c.pago
 
       })
 
@@ -564,14 +609,17 @@ export class HomeCajaComponent implements OnInit {
       cuotasDto: coutasFiltradas,
       valorTotal: this.valorTotalIngresado,
       acuerdoTotal: this.saldoAcuerdoPago,
-      capitalTotal: this.saldoCapitalAcuerdo,
-      honorariosTotal: this.saldoHonoriariosAcuerdo,
-      interesesTotal: this.saldoInteresesAcuerdo,
+      capitalTotal: 0,
+      honorariosTotal: 0,
+      interesesTotal: 0,
       detalle: this.pago.detalle,
       metodoPago: this.pago.medioPago,
       cumpliendo: this.pago.cumpliendo,
       username: '',
-      nombreClasificacion: null
+      nombreClasificacion: null,
+      saldoCapital: this.saldoCapitalAcuerdo,
+      saldoInteresesMora: this.saldoInteresesAcuerdo,
+      saldoHonorarios: this.saldoHonoriariosAcuerdo
     }
 
 
@@ -611,10 +659,10 @@ export class HomeCajaComponent implements OnInit {
     this.coutasList = []
     this.coutasRequest = []
     this.valorTotalIngresado = 0
-    this.saldoAcuerdoPago= 0
-    this.saldoCapitalAcuerdo= 0
-    this.saldoHonoriariosAcuerdo= 0
-    this.cuentasCobrarGestiones= []
+    this.saldoAcuerdoPago = 0
+    this.saldoCapitalAcuerdo = 0
+    this.saldoHonoriariosAcuerdo = 0
+    this.cuentasCobrarGestiones = []
     this.gestionesCuenta = []
     this.coutasSelected = []
     this.totalCapital = 0
@@ -623,7 +671,7 @@ export class HomeCajaComponent implements OnInit {
 
 
 
-    this.saldoInteresesAcuerdo= 0
+    this.saldoInteresesAcuerdo = 0
 
     this.pago = {
       valor: 0,

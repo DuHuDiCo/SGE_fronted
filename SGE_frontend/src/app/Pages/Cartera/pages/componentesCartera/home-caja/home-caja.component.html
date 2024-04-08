@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="row mt-3">
+        <div class="row mt-3 ">
             <div class="col-md-10 offset-md-1">
 
                 <div class="alert alert-warning" role="alert" *ngIf="cuentasCobrar.length <= 0">
@@ -177,7 +177,8 @@
                         <button class="btn btn-danger" *ngIf="activarGuardarPago" (click)="generarRecibo()"
                             style="background-color: #960010;border-color: #960010;"> <i class="fas fa-check"></i>
                             Guardar Pagos</button>&nbsp;
-                        <button class="btn btn-danger" *ngIf="activarGuardarPago" (click)="limpiarPagos()"> <i class="fas fa-times"></i>
+                        <button class="btn btn-danger" *ngIf="activarGuardarPago" (click)="limpiarPagos()"> <i
+                                class="fas fa-times"></i>
                             Cancelar</button>&nbsp;
                         <button class="btn btn-light" *ngIf="!activarGuardarPago" data-bs-toggle="modal"
                             data-bs-target="#exampleModal"> <i class="fas fa-plus"></i> Agregar pago</button>
@@ -258,38 +259,61 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mt-4" *ngIf="coutasList.length > 0">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Cuota</th>
-                                    <th>Fecha Vencimiento</th>
-                                    <th>Valor Cuota</th>
-                                    <th>Capital Cuota</th>
-                                    <th>Honorario</th>
-                                    <th>Intereses</th>
-                                    <th *ngIf="coutasList[0].pagos != null || coutasList[0].pagos != null">Pagos</th>
-                                    <th>Saldo Cuota</th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let c of coutasList;">
-                                    <td>{{c.numeroCuota}}</td>
-                                    <td>{{c.fechaVencimiento | date:'dd/MM/yyyy'}}</td>
-                                    <td>{{c.valorCuota | number}}</td>
-                                    <td>{{c.capitalCuota | number}}</td>
-                                    <td>{{c.honorarios | number}}</td>
-                                    <td>{{c.interesCuota | number}}</td>
-                                    <td *ngIf="coutasList[0].pagos != null || coutasList[0].pagos != null">{{c.pagos ==
-                                        null?0:c.pagos.valorPago | number}}</td>
-                                    <td>{{c.pagos == null? c.valorCuota :c.pagos.saldoCuota | number}}</td>
-                                </tr>
+            </div>
 
-                            </tbody>
-                        </table>
-                    </div>
+        </div>
+
+        <div class="row mt-4 text-center" *ngIf="coutasList.length > 0">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Cuota</th>
+                                <th>Fecha Vencimiento</th>
+                                <th>Valor Cuota</th>
+                                <th>Capital Cuota</th>
+                                <th>Saldo Capital</th>
+                                <th>Honorario</th>
+                                <th>Saldo Honorario</th>
+                                <th>Intereses</th>
+                                <th>Saldo Intereses</th>
+                                <th *ngIf="coutasList[0].pagos != null || coutasList[0].pagos != null">Pagos</th>
+                                <th>Saldo Cuota</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let c of coutasList;">
+                                <td>{{c.numeroCuota}}</td>
+                                <td>{{c.fechaVencimiento | date:'dd/MM/yyyy'}}</td>
+                                <td>{{c.valorCuota | number}}</td>
+                                <td>{{ c.capitalCuota | number }}</td>
+                                <td *ngIf="c.saldoCapitalCuota == 0" style="background-color: gray;">
+                                    {{c.saldoCapitalCuota | number}}</td>
+                                <td *ngIf="c.saldoCapitalCuota > 0" style="background-color: yellow;">
+                                    {{c.saldoCapitalCuota | number}}</td>
+                                <td>{{ c.honorarios | number }}</td>
+                                
+                                <td *ngIf="c.saldoHonorarios > 0" style="background-color: yellow;">{{c.saldoHonorarios|
+                                    number}}</td>
+                                <td *ngIf="c.saldoHonorarios == 0" style="background-color: gray;">{{c.saldoHonorarios|
+                                    number}}</td>
+                                <td>{{ c.interesCuota | number }}</td>
+                                
+                                <td *ngIf="c.salodInteresCuota == 0" style="background-color: gray;">
+                                    {{c.salodInteresCuota | number}}</td>
+                                <td *ngIf="c.salodInteresCuota > 0" style="background-color: yellow;">
+                                    {{c.salodInteresCuota | number}}</td>
+                                <td *ngIf="coutasList[0].pagos != null || coutasList[0].pagos != null">{{c.pagos ==
+                                    null?0:c.pagos.valorPago | number}}</td>
+                                <td>{{c.pagos == null? c.valorCuota :c.pagos.saldoCuota | number}}</td>
+                                
+                            </tr>
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
