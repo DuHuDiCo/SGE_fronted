@@ -120,7 +120,7 @@ export class HomeCarteraComponent implements OnInit {
     acuerdosDePagosActivos: 0,
     acuerdoPagoDia: 0,
     gestionesDia: 0,
-    cuentasTotales:0
+    cuentasTotales: 0
   }
 
   cuentaCobrarSelected: any = {
@@ -1185,11 +1185,11 @@ export class HomeCarteraComponent implements OnInit {
               text: 'Gestión Desactivada Con Éxito',
               timer: 3000
             })
-            this.getNotificaciones()
             if (!this.filtroAgain) {
-              this.getCuentasCobrar()
+              this.getNotificaciones()
             } else {
-              this.filtro()
+              this.getNotiAllBySede()
+              this.getNotiVenBySede()
             }
 
             this.gestionButton = false
