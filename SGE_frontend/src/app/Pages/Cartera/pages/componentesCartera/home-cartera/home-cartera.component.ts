@@ -1315,11 +1315,11 @@ export class HomeCarteraComponent implements OnInit {
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
                 this.getGestiones(this.newGestion.numeroObligacion)
-                this.getNotificaciones()
                 if (!this.filtroAgain) {
-                  this.getCuentasCobrar()
+                  this.getNotificaciones()
                 } else {
-                  this.filtro()
+                  this.getNotiAllBySede()
+                  this.getNotiVenBySede()
                 }
 
                 Swal.fire({
@@ -1668,6 +1668,12 @@ export class HomeCarteraComponent implements OnInit {
             })
             this.newGestion.contact = true
             this.getGestiones(this.newGestion.numeroObligacion)
+            if (!this.filtroAgain) {
+              this.getNotificaciones()
+            } else {
+              this.getNotiAllBySede()
+              this.getNotiVenBySede()
+            }
             setTimeout(() => {
               $('#modalGestion').modal('show');
               $('#modalGestionCom').modal('hide');
