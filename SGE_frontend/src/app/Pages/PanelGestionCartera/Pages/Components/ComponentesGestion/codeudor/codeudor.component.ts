@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 
 @Component({
   selector: 'app-codeudor',
@@ -30,7 +31,7 @@ export class CodeudorComponent implements OnInit {
   actionIcon: string = ''
   actionText: string = ''
 
-  constructor() { }
+  constructor(private carteraService: PanelCarteraService) { }
 
   ngOnInit(): void {
     this.datosPorConfirmar = [
@@ -170,6 +171,9 @@ export class CodeudorComponent implements OnInit {
         }
       }
     }
+
+    this.carteraService.setButtonState(true)
+
     console.log(this.datosConfirmados);
     this.actionDato = ''
     this.actionIcon = ''
@@ -208,7 +212,14 @@ export class CodeudorComponent implements OnInit {
         var position = array.indexOf(dato.dato)
         array.splice(position, 1)
       }
+
+      if (this.datosConfirmados.length == 0) {
+        this.carteraService.setButtonState(false)
+      } else {
+        this.carteraService.setButtonState(true)
+      }
     }
     console.log(this.datosPorConfirmar);
   }
+
 }
