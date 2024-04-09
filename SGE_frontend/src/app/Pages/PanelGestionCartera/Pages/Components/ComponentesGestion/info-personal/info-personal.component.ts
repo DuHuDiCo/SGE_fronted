@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 
 @Component({
   selector: 'app-info-personal',
@@ -6,8 +7,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./info-personal.component.css']
 })
 export class InfoPersonalComponent implements OnInit {
-
-  @Output() confirmDatos = new EventEmitter<any>();
 
   // ARRAYS
   datosPorConfirmar: string[] = []
@@ -32,7 +31,7 @@ export class InfoPersonalComponent implements OnInit {
   actionIcon: string = ''
   actionText: string = ''
 
-  constructor() { }
+  constructor(private carteraService: PanelCarteraService) { }
 
   ngOnInit(): void {
     this.datosPorConfirmar = [
@@ -172,8 +171,10 @@ export class InfoPersonalComponent implements OnInit {
         }
       }
     }
+
+    this.carteraService.setButtonState(true)
+
     console.log(this.datosConfirmados);
-    this.confirmDatos.emit(this.datosConfirmados)
     this.actionDato = ''
     this.actionIcon = ''
   }
@@ -211,9 +212,14 @@ export class InfoPersonalComponent implements OnInit {
         var position = array.indexOf(dato.dato)
         array.splice(position, 1)
       }
+
+      if (this.datosConfirmados.length == 0) {
+        this.carteraService.setButtonState(false)
+      } else {
+        this.carteraService.setButtonState(true)
+      }
     }
     console.log(this.datosPorConfirmar);
-    this.confirmDatos.emit(this.datosConfirmados)
   }
 
 }
