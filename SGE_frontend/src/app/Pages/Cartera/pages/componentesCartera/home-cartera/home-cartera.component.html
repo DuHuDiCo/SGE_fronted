@@ -2002,6 +2002,24 @@
                             </figure>
                         </div>
 
+                        <div class="col-md-12 mb-3">
+                            <figure>
+                                <blockquote class="blockquote">
+                                    <h6 class="fw-bold">Fecha Gestión</h6>
+                                </blockquote>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text fw-bold">Deste</span>
+                                    <input type="date" [(ngModel)]="filtros.fechaGestionInicio" class="form-control">
+
+                                </div>
+                                <br>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text fw-bold">Hasta</span>
+
+                                    <input type="date" [(ngModel)]="filtros.fechaGestionFin" class="form-control">
+                                </div>
+                            </figure>
+                        </div>
                         <figure>
                             <blockquote class="blockquote">
                                 <h6 class="fw-bold">Saldo</h6>
@@ -2031,24 +2049,7 @@
                             </figure>
 
                         </div>
-                        <div class="col-md-12 mb-3">
-                            <figure>
-                                <blockquote class="blockquote">
-                                    <h6 class="fw-bold">Fecha Gestión</h6>
-                                </blockquote>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text fw-bold">Deste</span>
-                                    <input type="date" [(ngModel)]="filtros.fechaGestionInicio" class="form-control">
 
-                                </div>
-                                <br>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text fw-bold">Hasta</span>
-
-                                    <input type="date" [(ngModel)]="filtros.fechaGestionFin" class="form-control">
-                                </div>
-                            </figure>
-                        </div>
                         <div class="col-md-12 mb-3">
                             <div class="col-md-12 mb-3">
                                 <figure>
