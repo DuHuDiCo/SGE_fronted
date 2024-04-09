@@ -4529,6 +4529,12 @@ export class HomeCarteraComponent implements OnInit {
         this.spinnerCrearNota = false
         this.ocultarCrearRevision = false
 
+        if (!this.filtroAgain) {
+          this.getCuentasCobrar()
+        } else {
+          this.filtro()
+        }
+
       }, (error: any) => {
         Swal.fire({
           icon: 'error',
