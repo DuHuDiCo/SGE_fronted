@@ -161,6 +161,8 @@ export type PagosRequest = {
   capital: number
   intereses: number
   honorarios: number
+  existed:boolean,
+  idPago :number
 }
 
 
