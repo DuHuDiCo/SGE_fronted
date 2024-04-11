@@ -493,8 +493,13 @@
                             <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                         </div>
 
+                        <div class="d-flex align-items-center" *ngIf="gestiones[0] == true">
+                            <strong>Sin Gestiones &nbsp;</strong>
+                        </div>
+
                         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalHistoricoG"
-                            (click)="cerrarGestiones()" *ngIf="gestiones.length > 0 ">Historico Gestiones</button>
+                            (click)="cerrarGestiones()" *ngIf="gestiones[0] != true && gestiones.length > 0">Historico
+                            Gestiones</button>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
@@ -1390,7 +1395,8 @@
     </div>
 
     <!-- Modal Historico Gestiones -->
-    <div class="modal fade" id="modalHistoricoG" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalHistoricoG" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        *ngIf="gestiones[0] != true && gestiones.length > 0">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
