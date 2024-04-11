@@ -4610,31 +4610,31 @@ export class HomeCarteraComponent implements OnInit {
     if (user != null || user != undefined) {
       recibo.username = user;
 
-      // this.cuentasCobrar.crearRecibo(recibo).subscribe(
-      //   (data: any) => {
+      this.cuentasCobrar.crearRecibo(recibo).subscribe(
+        (data: any) => {
 
-      //     this.mostrarReciboPago(data.base64)
-      //     this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
+          this.mostrarReciboPago(data.base64)
+          this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
 
-      //     this.activarGuardarPago = false
-      //     this.savePago = false
-      //     this.coutasRequest = []
-      //     this.pago = {
-      //       valor: 0,
-      //       detalle: '',
-      //       medioPago: "",
-      //       numeroRecibo: '',
-      //       cumpliendo: false
-      //     }
+          this.activarGuardarPago = false
+          this.savePago = false
+          this.coutasRequest = []
+          this.pago = {
+            valor: 0,
+            detalle: '',
+            medioPago: "",
+            numeroRecibo: '',
+            cumpliendo: false
+          }
 
-      //     this.valorTotalIngresado = 0
-      //   }, (error: any) => {
-      //     this.activarGuardarPago = false
-      //     this.savePago = false
-      //     console.log(error);
+          this.valorTotalIngresado = 0
+        }, (error: any) => {
+          this.activarGuardarPago = false
+          this.savePago = false
+          console.log(error);
 
-      //   }
-      // )
+        }
+      )
     }
 
     $('#modalGestionCom').modal('hide');
