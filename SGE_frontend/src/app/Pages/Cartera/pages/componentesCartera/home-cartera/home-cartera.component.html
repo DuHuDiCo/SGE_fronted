@@ -487,8 +487,14 @@
                         <button *ngIf="deshabilitarInputs" class="btn btn-danger b" data-bs-toggle="modal"
                             data-bs-target="#modalGestion">Nueva
                             Gestion</button>
+
+                        <div class="d-flex align-items-center" *ngIf="gestiones.length == 0">
+                            <strong>Cargando Gestiones &nbsp;</strong>
+                            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                        </div>
+                        
                         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalHistoricoG"
-                            (click)="cerrarGestiones()">Historico Gestiones</button>
+                            (click)="cerrarGestiones()" *ngIf="gestiones.length > 0 ">Historico Gestiones</button>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
@@ -1078,8 +1084,9 @@
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion) ==
                                     'NOTA' ? '--/--/----' :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion) ==
-                                    'ACUERDO DE PAGO' ?(cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso |
-                                    date:"d/M/yyyy"):'--/--/----' 
+                                    'ACUERDO DE PAGO'
+                                    ?(cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso |
+                                    date:"d/M/yyyy"):'--/--/----'
                                     }}
                                 </td>
                                 <td *ngIf="!Columnas.includes('ULTIMA CLAS')">

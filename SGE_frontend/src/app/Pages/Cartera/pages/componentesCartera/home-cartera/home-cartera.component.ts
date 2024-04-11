@@ -44,7 +44,7 @@ export class HomeCarteraComponent implements OnInit {
   // ARRAYS
   codeudores: any[] = []
   codeudoresSelected: any[] = []
-  gestiones: any[] = []
+  gestiones: any | null[] = []
   ClasificacionArray: clasificacion[] = []
   Columnas: string[] = []
   clasificacionesJuridicas: string[] = ['NORMAL', 'PREJURIDICO', 'ADMINSTRATIVO']
@@ -923,10 +923,10 @@ export class HomeCarteraComponent implements OnInit {
         this.getLastDato(numeroObligacion)
         this.ordenarGestiones(data)
         var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
-        console.log(gestion);
-        if (gestion != null || gestion != undefined) {
-          this.idGestion = gestion.idGestion
-        }
+          console.log(gestion);
+          if (gestion != null || gestion != undefined) {
+            this.idGestion = gestion.idGestion
+          }
       }, (error: any) => {
         console.log(error);
       }
@@ -1225,6 +1225,7 @@ export class HomeCarteraComponent implements OnInit {
       }
     })
   }
+
 
   getLastDato(numeroDocumento: string) {
     this.cuentasCobrar.getLastDatoAdicional(numeroDocumento).subscribe(
@@ -3384,15 +3385,15 @@ export class HomeCarteraComponent implements OnInit {
       return;
     }
 
-    if (this.filtros.clasificacionGestion != null && (this.filtros.fechaGestionFin == null && this.filtros.fechaGestionInicio == null)) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Debes seleccionar una fecha de gestion de inicio y fin ',
-        timer: 3000,
-      });
-      return
-    }
+    // if (this.filtros.clasificacionGestion != null && (this.filtros.fechaGestionFin == null && this.filtros.fechaGestionInicio == null)) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Error',
+    //     text: 'Debes seleccionar una fecha de gestion de inicio y fin ',
+    //     timer: 3000,
+    //   });
+    //   return
+    // }
 
     if ((this.filtros.fechaGestionInicio != null && this.filtros.fechaGestionInicio != '') && (this.filtros.fechaGestionFin == null || this.filtros.fechaGestionFin == '')) {
       Swal.fire({
@@ -3568,14 +3569,14 @@ export class HomeCarteraComponent implements OnInit {
     }
 
 
-    if (this.filtros.clasificacionGestion != null && (this.filtros.fechaGestionInicio == null && this.filtros.fechaGestionFin == null)) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Debes seleccionar una fecha de gestion de inicio y fin ',
-        timer: 3000,
-      });
-    }
+    // if (this.filtros.clasificacionGestion != null && (this.filtros.fechaGestionInicio == null && this.filtros.fechaGestionFin == null)) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Error',
+    //     text: 'Debes seleccionar una fecha de gestion de inicio y fin ',
+    //     timer: 3000,
+    //   });
+    // }
 
     var admin = this.authService.getRolesByName(ROLES.Administration);
 
@@ -3884,6 +3885,8 @@ export class HomeCarteraComponent implements OnInit {
         this.gestiones.push(ges)
       });
     }
+
+   
   }
 
 
@@ -3985,9 +3988,9 @@ export class HomeCarteraComponent implements OnInit {
 
             var saldoCuota = c.pagos.saldoCuota
             if (saldoCuota > 0) {
-              
+
               if (valorTotal <= c.pagos.saldoCuota) {
-                
+
 
                 var restante = valorTotal
 
@@ -4072,7 +4075,7 @@ export class HomeCarteraComponent implements OnInit {
                     restante = 0
 
                     var saldoInteres = this.cuotasList[i].salodInteresCuota - valorTotal
-                    
+
                     this.coutasRequest[i].saldoIntereses = saldoInteres
                     this.cuotasList[i].salodInteresCuota = saldoInteres
                     this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - valorTotal
@@ -4088,7 +4091,7 @@ export class HomeCarteraComponent implements OnInit {
 
 
 
-                    
+
                   }
 
                 }
@@ -4117,7 +4120,7 @@ export class HomeCarteraComponent implements OnInit {
                 }
                 valorTotal = 0
               } else {
-                
+
                 valorTotal = valorTotal - c.pagos.saldoCuota
 
                 this.coutasRequest[i].pagosDto!.valorPago = c.valorCuota
@@ -4171,7 +4174,7 @@ export class HomeCarteraComponent implements OnInit {
                 this.cuotasList[i].saldoCapitalCuota = 0
 
                 this.coutasRequest[i].pagosDto!.saldoCuota = saldoCuota
-                this.cuotasList[i].pagos!.saldoCuota = saldoCuota 
+                this.cuotasList[i].pagos!.saldoCuota = saldoCuota
 
 
               }
@@ -4190,10 +4193,10 @@ export class HomeCarteraComponent implements OnInit {
 
         if ((c.pagos == null || c.pagos == undefined) && valorTotal > 0) {
 
-    
+
 
           if (valorTotal > 0 && valorTotal >= c.valorCuota) {
-            
+
 
 
             var pagos: PagosRequest = {
@@ -4316,7 +4319,7 @@ export class HomeCarteraComponent implements OnInit {
 
           } else {
             if (valorTotal > 0 && valorTotal < c.valorCuota) {
-             
+
               if (valorTotal == 0) {
                 i = 0
 
