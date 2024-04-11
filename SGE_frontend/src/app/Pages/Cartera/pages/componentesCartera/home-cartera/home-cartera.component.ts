@@ -923,10 +923,15 @@ export class HomeCarteraComponent implements OnInit {
         this.getLastDato(numeroObligacion)
         this.ordenarGestiones(data)
         var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
-          console.log(gestion);
-          if (gestion != null || gestion != undefined) {
-            this.idGestion = gestion.idGestion
-          }
+        if (gestion != null || gestion != undefined) {
+          this.idGestion = gestion.idGestion
+        }
+        if (this.gestiones.length == 0) {
+          this.gestiones = [
+            true
+          ]
+        }
+        console.log(this.gestiones);
       }, (error: any) => {
         console.log(error);
       }
@@ -3886,7 +3891,7 @@ export class HomeCarteraComponent implements OnInit {
       });
     }
 
-   
+
   }
 
 
