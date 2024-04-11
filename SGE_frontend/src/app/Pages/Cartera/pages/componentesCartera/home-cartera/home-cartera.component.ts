@@ -4459,6 +4459,7 @@ export class HomeCarteraComponent implements OnInit {
         }
 
         if (c.pagos != null || c.pagos != undefined) {
+
           if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) <= new Date()) {
 
             this.coutasRequest[i].cumplio = false
@@ -4473,6 +4474,7 @@ export class HomeCarteraComponent implements OnInit {
             this.cuotasList[i].cumplio = false
             this.pago.cumpliendo = false
 
+
           }
 
           if (c.pagos.saldoCuota == 0) {
@@ -4480,6 +4482,7 @@ export class HomeCarteraComponent implements OnInit {
             this.cuotasList[i].cumplio = true
             this.pago.cumpliendo = true
           }
+
 
         }
 
@@ -4607,31 +4610,31 @@ export class HomeCarteraComponent implements OnInit {
     if (user != null || user != undefined) {
       recibo.username = user;
 
-      this.cuentasCobrar.crearRecibo(recibo).subscribe(
-        (data: any) => {
+      // this.cuentasCobrar.crearRecibo(recibo).subscribe(
+      //   (data: any) => {
 
-          this.mostrarReciboPago(data.base64)
-          this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
+      //     this.mostrarReciboPago(data.base64)
+      //     this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
 
-          this.activarGuardarPago = false
-          this.savePago = false
-          this.coutasRequest = []
-          this.pago = {
-            valor: 0,
-            detalle: '',
-            medioPago: "",
-            numeroRecibo: '',
-            cumpliendo: false
-          }
+      //     this.activarGuardarPago = false
+      //     this.savePago = false
+      //     this.coutasRequest = []
+      //     this.pago = {
+      //       valor: 0,
+      //       detalle: '',
+      //       medioPago: "",
+      //       numeroRecibo: '',
+      //       cumpliendo: false
+      //     }
 
-          this.valorTotalIngresado = 0
-        }, (error: any) => {
-          this.activarGuardarPago = false
-          this.savePago = false
-          console.log(error);
+      //     this.valorTotalIngresado = 0
+      //   }, (error: any) => {
+      //     this.activarGuardarPago = false
+      //     this.savePago = false
+      //     console.log(error);
 
-        }
-      )
+      //   }
+      // )
     }
 
     $('#modalGestionCom').modal('hide');
