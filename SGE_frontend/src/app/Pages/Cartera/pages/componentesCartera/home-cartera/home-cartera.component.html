@@ -1116,7 +1116,7 @@
                                         <button type="button" class="page-link dropdown-toggle"
                                             style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
                                             data-bs-toggle="dropdown">{{page+1}}/{{numeroPages}}</button>
-                                        <ul class="dropdown-menu" style="overflow-y: auto; height: auto;">
+                                        <ul class="dropdown-menu" style="overflow-y: auto; height: 300px;">
                                             <li *ngFor="let p of paginas;let i = index"><button class="dropdown-item"
                                                     (click)="goToPage(i)">{{i
                                                     + 1}}</button></li>
@@ -2008,10 +2008,12 @@
                                     <div class="form-check" *ngFor="let c of ClasificacionArray;let i = index;">
 
                                         <div class="form-check form-check-inline">
-                                            <input #variableCol class="form-check-input" (click)="metodoClasGestion(c.tipo, c.idNombreClasificacion)" type="radio" name="i" id="i" value="{{ c.idNombreClasificacion }}">
+                                            <input #variableCol class="form-check-input"
+                                                (click)="metodoClasGestion(c.tipo, c.idNombreClasificacion)"
+                                                type="radio" name="i" id="i" value="{{ c.idNombreClasificacion }}">
                                             <label class="form-check-label" for="i">{{ c.nombre }}</label>
-                                          </div>
-                                        
+                                        </div>
+
                                     </div>
                                 </div>
                             </figure>

@@ -3476,8 +3476,9 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionInicio != null) ||
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
-          (this.filtros.fechaCompromisoFin != null)) {
+          (this.filtros.fechaCompromisoFin != null) || (this.filtros.clasificacionGestion)) {
           setTimeout(() => {
+            alert('ENTRA')
             for (let i = 0; i < this.size; i++) {
               td = document.getElementById(`td_${i}`)
 
