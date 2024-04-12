@@ -3379,7 +3379,7 @@ export class HomeCarteraComponent implements OnInit {
       (this.filtros.fechaGestionInicio == null || this.filtros.fechaGestionInicio == '') &&
       (this.filtros.fechaGestionFin == null || this.filtros.fechaGestionFin == '') &&
       (this.filtros.fechaCompromisoInicio == null || this.filtros.fechaCompromisoInicio == '') &&
-      (this.filtros.fechaCompromisoFin == null)
+      (this.filtros.fechaCompromisoFin == null) && this.filtros.clasificacionGestion == null
     ) {
       Swal.fire({
         icon: 'error',
@@ -3476,9 +3476,8 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionInicio != null) ||
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
-          (this.filtros.fechaCompromisoFin != null) || (this.filtros.clasificacionGestion)) {
+          (this.filtros.fechaCompromisoFin != null) || (this.filtros.clasificacionGestion != null)) {
           setTimeout(() => {
-            alert('ENTRA')
             for (let i = 0; i < this.size; i++) {
               td = document.getElementById(`td_${i}`)
 
@@ -3560,7 +3559,7 @@ export class HomeCarteraComponent implements OnInit {
       (this.filtros.fechaGestionInicio == null) &&
       (this.filtros.fechaGestionFin == null) &&
       (this.filtros.fechaCompromisoInicio == null) &&
-      (this.filtros.fechaCompromisoFin == null)
+      (this.filtros.fechaCompromisoFin == null) && (this.filtros.clasificacionGestion == null)
     ) {
 
 
@@ -3623,7 +3622,7 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionInicio != null) ||
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
-          (this.filtros.fechaCompromisoFin != null)) {
+          (this.filtros.fechaCompromisoFin != null) || (this.filtros.clasificacionGestion != null)) {
           setTimeout(() => {
             for (let i = 0; i < this.size; i++) {
               td = document.getElementById(`td_${i}`)
