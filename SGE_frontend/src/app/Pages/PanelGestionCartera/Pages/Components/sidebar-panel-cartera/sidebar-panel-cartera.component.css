@@ -19,7 +19,10 @@
 .sidebar ul {
     list-style-type: none;
     padding: 0;
-    padding-left: 5px;
+}
+
+.margin-si {
+    padding-left: 5px
 }
 
 .sidebar ul li {
@@ -85,4 +88,9 @@
 
 .c-disabled {
     cursor: not-allowed;
+}
+
+.sidebar-selected {
+    color: #960010;
+    background-color: white;
 }
