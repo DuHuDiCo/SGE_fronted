@@ -1,5 +1,7 @@
 export type SideBar = {
     name: string,
-    url: string,
+    //TODO: QUITAR OPCIONAL
+    url?: string,
     var: boolean
+    disabled?: boolean
 }

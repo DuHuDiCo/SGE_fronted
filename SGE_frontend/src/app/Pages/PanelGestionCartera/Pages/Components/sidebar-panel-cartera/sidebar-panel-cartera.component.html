@@ -28,9 +28,11 @@
             </div>
             <div class="card-body" style="padding: 0;">
                 <a *ngFor="let s of arraySidebar; let i = index" class="list-group-item"
-                    [ngClass]="{'': !s.var , 'bg-red': s.var}" [routerLink]="s.url" (click)="changeVar(i)">
+                    [ngClass]="{'': !s.var , 'bg-red': s.var}" [routerLink]="s.url">
                     <div class="d-flex w-100 justify-content-center">
-                        <h6 class="mb-1">{{ s.name }}</h6>
+                        <button class="btn-disabled" [disabled]="s.disabled" (click)="changeVar(i)">
+                            <h6 class="mb-1" [ngClass]="{'': !s.var , 'color-white': s.var}">{{ s.name }}</h6>
+                        </button>
                     </div>
                 </a>
             </div>

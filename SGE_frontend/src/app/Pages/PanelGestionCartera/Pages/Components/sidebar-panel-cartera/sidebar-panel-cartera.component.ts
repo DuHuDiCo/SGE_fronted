@@ -69,33 +69,31 @@ export class SidebarPanelCarteraComponent implements OnInit {
         },
         {
           name: 'Reconocer',
-          url: '',
-          var: false
-        },
-        {
-          name: 'Archivo',
-          url: '',
-          var: false
-        },
-        {
-          name: 'Pagos',
-          url: '',
           var: false
         },
         {
           name: 'Consignaciones',
-          url: '',
           var: false
+        },
+        {
+          name: 'Archivo',
+          var: false,
+          disabled: true
+        },
+        {
+          name: 'Pagos',
+          var: false,
+          disabled: true
         },
         {
           name: 'Servicios',
-          url: '',
-          var: false
+          var: false,
+          disabled: true
         },
         {
           name: 'Ventas',
-          url: '',
-          var: false
+          var: false,
+          disabled: true
         },
       ]
     }
