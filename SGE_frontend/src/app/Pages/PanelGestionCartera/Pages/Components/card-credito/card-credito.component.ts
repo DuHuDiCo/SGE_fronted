@@ -8,15 +8,7 @@ import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera
 })
 export class CardCreditoComponent implements OnInit {
 
-  visibleButton!: boolean
-
   @Input() btn: any;
-
-  constructor(private carteraService: PanelCarteraService) {
-    this.carteraService.buttonState$.subscribe(state => {
-      this.visibleButton = state
-    })
-  }
 
   ngOnInit(): void {
   }

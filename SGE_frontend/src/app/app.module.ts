@@ -123,10 +123,10 @@ import { ModalHistoricoGesComponent } from './Pages/PanelGestionCartera/Pages/Ma
 import { OffcanvasNovedadesComponent } from './Pages/PanelGestionCartera/Pages/MainElements/offcanvas-novedades/offcanvas-novedades.component';
 import { CodeudorComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentesGestion/codeudor/codeudor.component';
 import { InfoPersonalComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentesGestion/info-personal/info-personal.component';
-import { BtnPanelComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentesGestion/btn-panel/btn-panel.component';
 import { ModalAcuerdoComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-acuerdo/modal-acuerdo.component';
 import { ModalReferenciaComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-referencia/modal-referencia.component';
 import { ModalEditDatoComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-edit-dato/modal-edit-dato.component';
+import { SidebarRightComponent } from './Pages/PanelGestionCartera/Pages/Components/sidebar-right/sidebar-right.component';
 
 
 
@@ -263,10 +263,10 @@ import { ModalEditDatoComponent } from './Pages/PanelGestionCartera/Pages/MainEl
     OffcanvasNovedadesComponent,
     InfoPersonalComponent,
     CodeudorComponent,
-    BtnPanelComponent,
     ModalAcuerdoComponent,
     ModalReferenciaComponent,
-    ModalEditDatoComponent
+    ModalEditDatoComponent,
+    SidebarRightComponent
 
   ],
 

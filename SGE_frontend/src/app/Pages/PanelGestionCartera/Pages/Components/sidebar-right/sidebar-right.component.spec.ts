@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BtnPanelComponent } from './btn-panel.component';
+import { SidebarRightComponent } from './sidebar-right.component';
 
-describe('BtnPanelComponent', () => {
-  let component: BtnPanelComponent;
-  let fixture: ComponentFixture<BtnPanelComponent>;
+describe('SidebarRightComponent', () => {
+  let component: SidebarRightComponent;
+  let fixture: ComponentFixture<SidebarRightComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BtnPanelComponent ]
+      declarations: [ SidebarRightComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BtnPanelComponent);
+    fixture = TestBed.createComponent(SidebarRightComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

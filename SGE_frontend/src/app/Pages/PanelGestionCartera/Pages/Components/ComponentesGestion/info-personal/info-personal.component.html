@@ -1,6 +1,6 @@
 <!-- INFORMACION PERSONAL -->
 <div class="row">
-    <div class="col-md-8 mt-4">
+    <div class="col-md-8 mt-4" style="overflow-y: auto; height: 500px;">
         <div class="card mt-3" *ngIf="datosPorConfirmar.includes('CEL')">
             <div class="card-body">
                 <div class="row">
@@ -284,7 +284,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 mt-4">
+    <div class="col-md-4 col-custom mt-4">
         <div class="card card-disabled mt-3" *ngFor="let d of datosConfirmados">
             <div class="card-body">
                 <div class="row d-flex justify-content-evenly">
@@ -310,6 +310,5 @@
     </div>
 </div>
 
-<app-btn-panel></app-btn-panel>
 <app-modal-acuerdo [datosConfirmados]="datosConfirmados"></app-modal-acuerdo>
 <app-modal-edit-dato></app-modal-edit-dato>

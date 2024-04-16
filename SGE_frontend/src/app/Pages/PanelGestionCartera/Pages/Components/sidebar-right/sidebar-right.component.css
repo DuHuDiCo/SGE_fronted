@@ -1,0 +1,35 @@
+.sidebar {
+    position: fixed;
+    top: 55px;
+    right: 0;
+    height: 100%;
+    width: 40px;
+    background-color: #960010;
+    color: rgb(161, 161, 161);
+    border: none;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 10px 10px 0px 15px;
+}
+
+.sidebar ul li {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.sidebar ul li:hover {
+    color: #c82031;
+}
+
+.btn-play {
+    position: fixed;
+    bottom: 20px;
+}

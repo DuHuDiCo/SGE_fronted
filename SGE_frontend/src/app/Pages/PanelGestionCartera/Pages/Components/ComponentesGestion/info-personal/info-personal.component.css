@@ -38,3 +38,24 @@
 .input-group-text {
     font-size: 12px;
 }
+
+.col-custom {
+    overflow-y: auto;
+    height: 500px;
+    width: 30%;
+}
+
+/* STYLES SCROLL */
+::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #b7b7b7c5;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
