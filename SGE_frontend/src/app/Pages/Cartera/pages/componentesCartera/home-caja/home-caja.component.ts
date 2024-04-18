@@ -393,8 +393,9 @@ export class HomeCajaComponent implements OnInit {
                 }
 
                 //INTERESES
-                if (restante > 0) {
+                if (restante > 0 && this.cuotasList[i].salodInteresCuota > 0) {
                   if (this.cuotasList[i].salodInteresCuota > 0 && restante > this.cuotasList[i].salodInteresCuota) {
+                    
 
                     restante = restante - this.cuotasList[i].salodInteresCuota
 
@@ -416,6 +417,7 @@ export class HomeCajaComponent implements OnInit {
 
 
                   } else {
+                    
                     restante = 0
 
                     var saldoInteres = this.cuotasList[i].salodInteresCuota - valorTotal
@@ -441,7 +443,7 @@ export class HomeCajaComponent implements OnInit {
                 }
                 //CAPITAL
                 if (restante > 0) {
-
+                  
                   this.coutasRequest[i].saldoCapital = this.cuotasList[i].saldoCapitalCuota - restante
                   this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].saldoCapitalCuota - restante
                   this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - restante
@@ -458,6 +460,7 @@ export class HomeCajaComponent implements OnInit {
                   restante = 0
 
                 } else {
+                  
                   this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].capitalCuota
                   this.coutasRequest[i].saldoCapital = this.cuotasList[i].capitalCuota
                   this.coutasRequest[i].pagosDto!.saldoCuota = 0
