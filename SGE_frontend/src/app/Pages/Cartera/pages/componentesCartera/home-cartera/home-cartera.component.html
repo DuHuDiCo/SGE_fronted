@@ -1703,10 +1703,10 @@
                                         <th scope="col">Valor Cuota</th>
                                         <th scope="col">Capital Cuota</th>
                                         <th scope="col">Saldo Capital</th>
-                                        <th scope="col">Honorarios</th>
-                                        <th scope="col">Saldo Honorarios</th>
                                         <th scope="col">Interes</th>
                                         <th scope="col">Saldo Intereses</th>
+                                        <th scope="col">Honorarios</th>
+                                        <th scope="col">Saldo Honorarios</th>
                                         <th scope="col">Pago</th>
                                     </tr>
                                 </thead>
@@ -1722,18 +1722,19 @@
                                             {{g.saldoCapitalCuota | number}}</td>
                                         <td *ngIf="g.saldoCapitalCuota > 0" style="background-color: yellow;">
                                             {{g.saldoCapitalCuota | number}}</td>
-                                        <td>{{ g.honorarios | number }}</td>
-
-                                        <td *ngIf="g.saldoHonorarios > 0" style="background-color: yellow;">
-                                            {{g.saldoHonorarios| number}}</td>
-                                        <td *ngIf="g.saldoHonorarios == 0" style="background-color: gray;">
-                                            {{g.saldoHonorarios| number}}</td>
+                                        
                                         <td>{{ g.interesCuota | number }}</td>
 
                                         <td *ngIf="g.salodInteresCuota == 0" style="background-color: gray;">
                                             {{g.salodInteresCuota | number}}</td>
                                         <td *ngIf="g.salodInteresCuota > 0" style="background-color: yellow;">
                                             {{g.salodInteresCuota | number}}</td>
+                                            <td>{{ g.honorarios | number }}</td>
+
+                                        <td *ngIf="g.saldoHonorarios > 0" style="background-color: yellow;">
+                                            {{g.saldoHonorarios| number}}</td>
+                                        <td *ngIf="g.saldoHonorarios == 0" style="background-color: gray;">
+                                            {{g.saldoHonorarios| number}}</td>
                                         <td class="justify-content-center">
                                             <div class="row justify-content-center">
                                                 <div class="col-md-6">
