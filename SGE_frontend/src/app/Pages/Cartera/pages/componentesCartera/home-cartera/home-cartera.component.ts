@@ -3995,7 +3995,7 @@ export class HomeCarteraComponent implements OnInit {
             if (saldoCuota > 0) {
 
               if (valorTotal <= c.pagos.saldoCuota) {
-
+                
 
                 var restante = valorTotal
 
@@ -4054,7 +4054,7 @@ export class HomeCarteraComponent implements OnInit {
                 }
 
                 //INTERESES
-                if (restante > 0) {
+                if (restante > 0 && this.cuotasList[i].salodInteresCuota > 0) {
                   if (this.cuotasList[i].salodInteresCuota > 0 && restante > this.cuotasList[i].salodInteresCuota) {
 
                     restante = restante - this.cuotasList[i].salodInteresCuota
@@ -4102,7 +4102,7 @@ export class HomeCarteraComponent implements OnInit {
                 }
                 //CAPITAL
                 if (restante > 0) {
-
+                  
                   this.coutasRequest[i].saldoCapital = this.cuotasList[i].saldoCapitalCuota - restante
                   this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].saldoCapitalCuota - restante
                   this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - restante
@@ -4119,6 +4119,7 @@ export class HomeCarteraComponent implements OnInit {
                   restante = 0
 
                 } else {
+                  
                   this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].capitalCuota
                   this.coutasRequest[i].saldoCapital = this.cuotasList[i].capitalCuota
                   this.coutasRequest[i].pagosDto!.saldoCuota = 0
@@ -4388,10 +4389,10 @@ export class HomeCarteraComponent implements OnInit {
 
 
               if (difere > this.cuotasList[i].salodInteresCuota) {
-                difere = difere - this.coutasRequest[i].saldoIntereses
+                difere = difere - this.cuotasList[i].salodInteresCuota
                 valorTotal = difere
-                pagos.intereses = this.coutasRequest[i].saldoIntereses
-                pagosOriginal.valorIntereses = this.coutasRequest[i].saldoIntereses
+                pagos.intereses = this.cuotasList[i].salodInteresCuota
+                pagosOriginal.valorIntereses = this.cuotasList[i].salodInteresCuota
                 this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.cuotasList[i].salodInteresCuota
                 this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.cuotasList[i].salodInteresCuota
                 this.coutasRequest[i].saldoIntereses = 0
