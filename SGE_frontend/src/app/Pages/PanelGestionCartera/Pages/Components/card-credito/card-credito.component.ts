@@ -8,9 +8,29 @@ import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera
 })
 export class CardCreditoComponent implements OnInit {
 
+  // VARIABLES
+  infoPersonal: boolean = false
+  saldos: boolean = false
+
   @Input() btn: any;
 
   ngOnInit(): void {
+  }
+
+  infoPersonalAccordion() {
+    if (this.infoPersonal == false) {
+      this.infoPersonal = true
+    } else {
+      this.infoPersonal = false
+    }
+  }
+
+  saldosAccordion() {
+    if (this.saldos == false) {
+      this.saldos = true
+    } else {
+      this.saldos = false
+    }
   }
 
 }

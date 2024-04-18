@@ -42,6 +42,16 @@
     border-color: #d40000;
 }
 
+.accordion-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(184, 39, 36, 0.725);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: transparent;
+    color: black;
+}
+
 @media only screen and (min-width: 1280px) and (max-width: 1366px) {
     .card-principal {
         width: 76.5%;
