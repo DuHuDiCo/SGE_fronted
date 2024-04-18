@@ -275,10 +275,10 @@
                                 <th>Valor Cuota</th>
                                 <th>Capital Cuota</th>
                                 <th>Saldo Capital</th>
-                                <th>Honorario</th>
-                                <th>Saldo Honorario</th>
                                 <th>Intereses</th>
                                 <th>Saldo Intereses</th>
+                                <th>Honorario</th>
+                                <th>Saldo Honorario</th>
                                 <th *ngIf="cuotasList[0].pagos != null || cuotasList[0].pagos != null">Pagos</th>
                                 <th>Saldo Cuota</th>
 
@@ -294,22 +294,23 @@
                                     {{c.saldoCapitalCuota | number}}</td>
                                 <td *ngIf="c.saldoCapitalCuota > 0" style="background-color: yellow;">
                                     {{c.saldoCapitalCuota | number}}</td>
-                                <td>{{ c.honorarios | number }}</td>
-                                
-                                <td *ngIf="c.saldoHonorarios > 0" style="background-color: yellow;">{{c.saldoHonorarios|
-                                    number}}</td>
-                                <td *ngIf="c.saldoHonorarios == 0" style="background-color: gray;">{{c.saldoHonorarios|
-                                    number}}</td>
+
                                 <td>{{ c.interesCuota | number }}</td>
-                                
+
                                 <td *ngIf="c.salodInteresCuota == 0" style="background-color: gray;">
                                     {{c.salodInteresCuota | number}}</td>
                                 <td *ngIf="c.salodInteresCuota > 0" style="background-color: yellow;">
                                     {{c.salodInteresCuota | number}}</td>
+                                <td>{{ c.honorarios | number }}</td>
+
+                                <td *ngIf="c.saldoHonorarios > 0" style="background-color: yellow;">{{c.saldoHonorarios|
+                                    number}}</td>
+                                <td *ngIf="c.saldoHonorarios == 0" style="background-color: gray;">{{c.saldoHonorarios|
+                                    number}}</td>
                                 <td *ngIf="cuotasList[0].pagos != null || cuotasList[0].pagos != null">{{c.pagos ==
                                     null?0:c.pagos.valorPago | number}}</td>
                                 <td>{{c.pagos == null? c.valorCuota :c.pagos.saldoCuota | number}}</td>
-                                
+
                             </tr>
 
                         </tbody>
