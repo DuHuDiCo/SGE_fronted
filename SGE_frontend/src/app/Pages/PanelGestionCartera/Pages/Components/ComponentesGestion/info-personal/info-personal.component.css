@@ -43,6 +43,14 @@
     width: 30%;
 }
 
+.font-c {
+    font-size: 14px;
+}
+
+.card-shadow {
+    background-color: #ff74824b;
+}
+
 /* STYLES SCROLL */
 ::-webkit-scrollbar {
     width: 8px;

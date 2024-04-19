@@ -8,6 +8,9 @@
                     class="fa-solid fa-clipboard sidebar-selected margin-si"></i></li>
             <span class="span-style text-center mb-3 sidebar-selected">Gestión</span>
 
+            <li (click)="optionSidebar()"><i class="fa-solid fa-calculator margin-si"></i></li>
+            <span class="span-style text-center mb-3">Asignación</span>
+
             <li (click)="optionSidebar()"><i class="fa-solid fa-file-signature margin-si"></i></li>
             <span class="span-style text-center mb-3">Acuerdo</span>
 
@@ -32,7 +35,7 @@
                     [ngClass]="{'': !s.var , 'bg-red': s.var}" [routerLink]="s.url">
                     <div class="d-flex w-100 justify-content-center">
                         <button class="btn-disabled" [disabled]="s.disabled" (click)="changeVar(i)">
-                            <h6 class="mb-1" [ngClass]="{'': !s.var , 'color-white': s.var}">{{ s.name }}</h6>
+                            <h6 class="mb-1 font" [ngClass]="{'': !s.var , 'color-white': s.var}">{{ s.name }}</h6>
                         </button>
                     </div>
                 </a>

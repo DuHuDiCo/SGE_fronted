@@ -94,29 +94,12 @@
                         <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionInfo">
                             <div class="accordion-body">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="card">
-                                            <div class="card-header card-pad card-font text-center">
-                                                Ubicación
-                                            </div>
-                                            <div class="card-body card-pad">
-                                                <div class="input-group input-group-sm mb-1">
-                                                    <span class="input-group-text fw-bold">Sede</span>
-                                                    <input type="text" class="form-control" value="Electro">
-                                                </div>
-                                                <div class="input-group input-group-sm mb-1">
-                                                    <span class="input-group-text fw-bold">Vendedor</span>
-                                                    <input type="text" class="form-control" value="Oscar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="col-md-8">
                                         <div class="card">
                                             <div class="card-header card-pad card-font text-center">
                                                 Responsables
                                             </div>
-                                            <div class="card-body card-pad over-card">
+                                            <div class="card-body card-pad">
                                                 <div class="row mt-2 mb-2">
                                                     <div class="col-md-8">
                                                         <div class="input-group input-group-sm">
@@ -209,6 +192,23 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-header card-pad card-font text-center">
+                                                Ubicación
+                                            </div>
+                                            <div class="card-body card-pad">
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Sede</span>
+                                                    <input type="text" class="form-control" value="Electro">
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Vendedor</span>
+                                                    <input type="text" class="form-control" value="Oscar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -223,22 +223,131 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne"
                                 (click)="saldosAccordion()">
-                                Accordion Item #2
+                                Saldos
                             </button>
                         </h2>
                         <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionSaldo">
                             <div class="accordion-body">
-                                <strong>This is the first item's accordion body.</strong> It is shown by default, until
-                                the
-                                collapse plugin adds the appropriate classes that we use to style each element. These
-                                classes
-                                control the overall appearance, as well as the showing and hiding via CSS transitions.
-                                You can
-                                modify any of this with custom CSS or overriding our default variables. It's also worth
-                                noting
-                                that just about any HTML can go within the <code>.accordion-body</code>, though the
-                                transition
-                                does limit overflow.
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-header card-pad card-font text-center">
+                                                Saldos Iniciales
+                                            </div>
+                                            <div class="card-body card-pad max-he">
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Nro Crédito</span>
+                                                    <input type="text" class="form-control" value="10011122243589"
+                                                        disabled>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Valor Inicial</span>
+                                                    <input type="text" class="form-control" value="4000000" disabled>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Valor Cuota</span>
+                                                    <input type="text" class="form-control" value="200000" disabled>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Fecha Obligación</span>
+                                                    <input type="date" class="form-control" value="01/05/2024" disabled>
+                                                </div>
+
+                                                <div class="input-group input-group-sm mt-4 mb-1">
+                                                    <span class="input-group-text fw-bold">Total Cuotas</span>
+                                                    <input type="number" class="form-control" value="20" disabled>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Fecha Ven Final</span>
+                                                    <input type="date" class="form-control" value="09/01/2025" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-header card-pad card-font text-center">
+                                                Calculo Mora Obligación
+                                            </div>
+                                            <div class="card-body card-pad">
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Capital Vencido</span>
+                                                    <input type="text" class="form-control" value="1000000" disabled>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Interés Mora</span>
+                                                    <input type="text" class="form-control" value="100000" disabled>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Honorarios</span>
+                                                    <input type="text" class="form-control" value="200000" disabled>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Otros</span>
+                                                    <input type="number" class="form-control" value="15000" disabled>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Total Vencido</span>
+                                                    <input type="number" class="form-control" value="1315000" disabled>
+                                                </div>
+
+                                                <div class="input-group input-group-sm mt-4 mb-1">
+                                                    <span class="input-group-text fw-bold">Cuotas Mora</span>
+                                                    <input type="number" class="form-control" value="5" disabled>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Fecha Inicio Mora</span>
+                                                    <input type="date" class="form-control" value="11/05/2024" disabled>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-header card-pad card-font text-center">
+                                                Calculo Total Obligación
+                                            </div>
+                                            <div class="card-body card-pad">
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Capital Obligación</span>
+                                                    <input type="text" class="form-control" value="2000000" disabled>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold disabled-input">Interés
+                                                        Mora</span>
+                                                    <input type="text" class="form-control disabled-input"
+                                                        value="100000" readonly>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span
+                                                        class="input-group-text fw-bold disabled-input">Honorarios</span>
+                                                    <input type="text" class="form-control disabled-input"
+                                                        value="200000" readonly>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold disabled-input">Otros</span>
+                                                    <input type="number" class="form-control disabled-input"
+                                                        value="15000" readonly>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Total Obligación</span>
+                                                    <input type="number" class="form-control" value="1315000" disabled>
+                                                </div>
+
+                                                <div class="input-group input-group-sm mt-4 mb-1">
+                                                    <span class="input-group-text fw-bold">Cuotas Pendientes</span>
+                                                    <input type="number" class="form-control" value="5" disabled>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-1">
+                                                    <span class="input-group-text fw-bold">Fecha Ult. Cuota Ven</span>
+                                                    <input type="date" class="form-control" value="11/05/2024" disabled>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

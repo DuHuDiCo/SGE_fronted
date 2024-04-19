@@ -29,7 +29,24 @@
     color: #c82031;
 }
 
-.btn-play {
+.floating-button {
     position: fixed;
-    bottom: 20px;
+    bottom: 30px;
+    right: 20px;
+    background-color: #198754;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+
+.floating-button:hover {
+    background-color: #c50e0e;
 }
