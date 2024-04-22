@@ -127,6 +127,7 @@ import { ModalAcuerdoComponent } from './Pages/PanelGestionCartera/Pages/MainEle
 import { ModalReferenciaComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-referencia/modal-referencia.component';
 import { ModalEditDatoComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-edit-dato/modal-edit-dato.component';
 import { SidebarRightComponent } from './Pages/PanelGestionCartera/Pages/Components/sidebar-right/sidebar-right.component';
+import { AddressGeneratorComponent } from './Pages/PanelGestionCartera/Pages/MainElements/address-generator/address-generator.component';
 
 
 
@@ -266,7 +267,8 @@ import { SidebarRightComponent } from './Pages/PanelGestionCartera/Pages/Compone
     ModalAcuerdoComponent,
     ModalReferenciaComponent,
     ModalEditDatoComponent,
-    SidebarRightComponent
+    SidebarRightComponent,
+    AddressGeneratorComponent
 
   ],
 

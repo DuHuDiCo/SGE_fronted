@@ -3,83 +3,6 @@
         <h6 style="font-size: 14px; margin: 0;">Información Del Credito</h6>
     </div>
     <div class="card-body">
-        <!-- <div class="row">
-            <div class="col-md-3" style="height: fit-content;">
-                <div class="input-group input-group-sm mb-1">
-                    <span class="input-group-text fw-bold">Saldo
-                        En Mora</span>
-                    <input type="text" class="form-control" disabled>
-                </div>
-                <div class="input-group input-group-sm mb-1">
-                    <span class="input-group-text fw-bold">Interes Mora</span>
-                    <input type="text" class="form-control" disabled>
-                </div>
-                <div class="input-group input-group-sm mb-1">
-                    <span class="input-group-text fw-bold">Saldo Mora Total</span>
-                    <span class="input-group-text ps-5 pe-5  flex-grow-1"></span>
-                </div>
-
-                <div class="input-group input-group-sm mb-1">
-                    <span class="input-group-text fw-bold">Valor Cuota</span>
-                    <input type="number" class="form-control" disabled>
-                </div>
-            </div>
-            <div class="col-md-3" style="height: fit-content;">
-                <div class="input-group input-group-sm mb-1">
-                    <span class="input-group-text fw-bold">Saldo Capital
-                        Total</span>
-                    <input type="number" class="form-control" disabled>
-                </div>
-                <div class="input-group input-group-sm mb-1">
-                    <span class="input-group-text fw-bold">Honorarios</span>
-                    <input type="number" class="form-control">
-                </div>
-                <div class="input-group input-group-sm mb-1">
-                    <span class="input-group-text fw-bold">Saldo Total</span>
-                    <span class="input-group-text ps-5 pe-5 flex-grow-1"></span>
-                </div>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-text fw-bold">Cuotas</span>
-                    <input type="text" class="form-control" disabled>
-                    <input type="text" class="form-control" disabled>
-                    <input type="text" class="form-control" disabled>
-                </div>
-            </div>
-            <div class="col-md-3" style="height: fit-content;">
-                <div class="input-group input-group-sm mb-1">
-                    <span class="input-group-text fw-bold">Mora/Venc</span>
-                    <input type="text" class="form-control" disabled>
-                    <input type="text" class="form-control" disabled>
-                </div>
-                <div class="input-group input-group-sm mb-1">
-                    <span class="input-group-text fw-bold">Fecha Venc</span>
-                    <input type="date" class="form-control">
-                </div>
-                <div class="input-group input-group-sm mb-1">
-                    <span class="input-group-text fw-bold">Sede</span>
-                    <input type="text" class="form-control" disabled>
-                    <input type="text" class="form-control" disabled>
-                </div>
-                <p class="alert alert-danger text-center font-alert">Crédito Vencido En Su Totalidad</p>
-            </div>
-            <div class="col-md-3" style="height: fit-content;">
-                <div class="row justify-content-center text-center align-middle">
-                    <div class="row mb-2">
-                        <div class="col-md-12">
-                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalRef"
-                                style="font-size: 12px;">Referencia</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalRef"
-                                style="font-size: 12px;">Referencia</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
         <div class="row">
             <div class="" [ngClass]="{'col-md-6': !infoPersonal, 'col-md-12': infoPersonal}">
                 <div *ngIf="!saldos" class="accordion" id="accordionInfo">
@@ -354,9 +277,15 @@
                 </div>
             </div>
         </div>
+        <div class="input-group input-group-sm mt-1 mb-1">
+            <span class="input-group-text fw-bold">Responsable</span>
+            <select class="form-select">
+                <option selected>Yeimar Fernando Sánchez</option>
+                <option>Duván Diaz</option>
+            </select>
+        </div>
     </div>
-</div>
 
-<app-modal-historico-ges></app-modal-historico-ges>
-<app-modal-referencia></app-modal-referencia>
-<app-offcanvas-novedades></app-offcanvas-novedades>
+    <app-modal-historico-ges></app-modal-historico-ges>
+    <app-modal-referencia></app-modal-referencia>
+    <app-offcanvas-novedades></app-offcanvas-novedades>

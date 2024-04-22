@@ -1,19 +1,225 @@
 <!-- Modal Editar -->
 <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditar" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Dato</h1>
+                <h6 class="modal-title">Seleccione El Dato que Desea Agregar</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-floating">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-                    <label for="floatingTextarea">Observación</label>
+
+                <div class="row text-center mb-3">
+                    <div class="col-md-3">
+                        <button class="btn btn-sm bg-red" #call data-title="Teléfono"
+                            (click)="asignarDato('telefono')"><i class="fa-solid fa-phone-volume"></i></button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-sm bg-red" #location data-title="Dirección"
+                            (click)="asignarDato('direccion')"><i class="fa-solid fa-location-dot"></i></button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-sm bg-red" #email data-title="Correo" (click)="asignarDato('correo')"><i
+                                class="fa-solid fa-envelopes-bulk"></i></button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-sm bg-red" #reference data-title="Referencia"
+                            (click)="asignarDato('referencia')"><i class="fa-solid fa-users-viewfinder"></i></button>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-sm bg-red" #infoLaboral data-title="Información Laboral"
+                            (click)="asignarDato('infoLab')"><i class="fa-solid fa-helmet-safety"></i></button>
+                    </div>
+                </div>
+
+                <div class="row mb-3" *ngIf="tipoDato == 'telefono'">
+                    <div class="col-md-2">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" value="+57" readonly>
+                            <label>Indicativo</label>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" placeholder="Número Telefónico">
+                            <label for="floatingInput">Número</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3" *ngIf="tipoDato == 'direccion'">
+                    <div class="col-md-12">
+                        <app-address-generator></app-address-generator>
+                    </div>
+
+                </div>
+
+                <div class="row mb-3" *ngIf="tipoDato == 'correo'">
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" placeholder="Correo">
+                            <label>Correo Electrónico</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3" *ngIf="tipoDato == 'referencia'">
+                    <div class="col-md-12">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <select class="form-select">
+                                        <option selected>Tipo De Referencia</option>
+                                        <option>Personal</option>
+                                        <option>Familiar</option>
+                                    </select>
+                                    <label>Referencia</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <select class="form-select">
+                                        <option selected>Seleccione El Parentesco</option>
+                                        <option>Padre</option>
+                                        <option>Madre</option>
+                                        <option>Hijo/a</option>
+                                        <option>Hermano/a</option>
+                                        <option>Primo/a</option>
+                                        <option>Otro</option>
+                                    </select>
+                                    <label>Parentesco</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" placeholder="Teléfono">
+                                    <label for="floatingInput">Teléfono</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" placeholder="Nombres">
+                                    <label for="floatingInput">Nombres</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" placeholder="Apellidos">
+                                    <label for="floatingInput">Apellidos</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3" *ngIf="tipoDato == 'infoLab'">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <select [(ngModel)]="ocupacion" class="form-select">
+                                        <option selected>Seleccione La Ocupación</option>
+                                        <option value="Asalariado">Asalariado</option>
+                                        <option value="Independiente">Independiente</option>
+                                        <option value="Pensionado">Pensionado</option>
+                                        <option value="Estudiante">Estudiante</option>
+                                    </select>
+                                    <label>Ocupación</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <span *ngIf="ocupacion == 'Asalariado'">
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" placeholder="Empresa">
+                                        <label>Empresa Donde Trabaja</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" placeholder="Dirección Empresa">
+                                        <label>Dirección Empresa</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" placeholder="Teléfono Empresa">
+                                        <label>Teléfono Empresa</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" placeholder="Cargo Que Desempeña">
+                                        <label>Cargo Que Desempeña</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <select class="form-select">
+                                            <option selected>Seleccione Un Rango</option>
+                                            <option>Menos de Un Año</option>
+                                            <option>De 1 a 3 Años</option>
+                                            <option>De 3 a 5 Años</option>
+                                            <option>Mas De 5 Años</option>
+                                        </select>
+                                        <label>Tiempo Servicio</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" placeholder="Salario Mensual">
+                                        <label>Salario Mensual</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+
+                        <span *ngIf="ocupacion == 'Independiente' || ocupacion == 'Estudiante'">
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" placeholder="Teléfono">
+                                        <label>Ingresos</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" placeholder="Teléfono">
+                                        <label>Fuente De Ingresos</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+
+                        <span *ngIf="ocupacion == 'Pensionado'">
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" placeholder="Teléfono">
+                                        <label>Salario Mensual</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" placeholder="Teléfono">
+                                        <label>Fuente De Ingresos</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Añadir Nuevo Dato</button>
+                <button type="button" class="btn btn-sm bg-red">Guardar</button>
             </div>
         </div>
     </div>
