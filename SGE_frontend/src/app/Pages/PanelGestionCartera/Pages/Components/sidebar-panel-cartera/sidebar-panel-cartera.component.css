@@ -10,7 +10,7 @@
 }
 
 .span-style {
-    font-size: 12px;
+    font-size: 11px;
     margin-left: -8px;
     display: block;
     text-align: center;
@@ -87,6 +87,10 @@
     font-size: 14px;
 }
 
+.font-title {
+    font-size: 14px;
+}
+
 .color-white {
     color: white;
 }
@@ -97,4 +101,50 @@
 
 .sidebar-selected {
     color: white;
+}
+
+.card-mode-disabled {
+    background-color: #960010;
+    color: white;
+    transition: all 0.3s;
+}
+
+.card-mode-activate {
+    background-color: #28a745;
+    color: white;
+    transition: all 0.3s;
+}
+
+.form-check-input:checked {
+    background-color: #dee2e6;
+    border-color: #dee2e6;
+}
+
+.form-check-input {
+    background-color: #dee2e6;
+    border-color: #dee2e6;
+}
+
+.form-check-input:focus {
+    box-shadow: none;
+}
+
+.floating-card {
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 70px;
+    height: fit-content;
+    width: 200px;
+    border: none;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: transparent;
+    color: black;
+}
+
+.accordion-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(184, 39, 36, 0.725);
 }

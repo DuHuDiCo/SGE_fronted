@@ -4,6 +4,12 @@
     </div>
     <div class="card-body">
         <div class="row">
+            <div class="input-group input-group-sm mt-1 mb-1">
+                <span class="input-group-text fw-bold">{{ tipoGaranteResponsable }}</span>
+                <select class="form-select" (click)="findTipoGarante($event)">
+                    <option *ngFor="let r of responsablesArray" value="{{ r.nombre }}">{{ r.nombre }}</option>
+                </select>
+            </div>
             <div class="" [ngClass]="{'col-md-6': !infoPersonal, 'col-md-12': infoPersonal}">
                 <div *ngIf="!saldos" class="accordion" id="accordionInfo">
                     <div class="accordion-item">
@@ -276,13 +282,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="input-group input-group-sm mt-1 mb-1">
-            <span class="input-group-text fw-bold">Responsable</span>
-            <select class="form-select">
-                <option selected>Yeimar Fernando Sánchez</option>
-                <option>Duván Diaz</option>
-            </select>
         </div>
     </div>
 

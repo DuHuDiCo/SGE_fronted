@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 import anime from 'animejs/lib/anime.es.js';
 import { SideBar } from 'src/app/Types/PanelCartera/sidebar';
@@ -14,8 +15,9 @@ export class SidebarPanelCarteraComponent implements OnInit {
 
   arraySidebar: SideBar[] = []
   buttonState: boolean = false
+  gestionMode: boolean = false
 
-  constructor() { }
+  constructor(private router:Router) { }
 
   ngOnInit(): void {
     this.fillArray()
@@ -58,13 +60,8 @@ export class SidebarPanelCarteraComponent implements OnInit {
     } else {
       this.arraySidebar = [
         {
-          name: 'Titular',
+          name: 'Gestión De Cobro',
           url: 'gestion',
-          var: false
-        },
-        {
-          name: 'Codeudores',
-          url: 'codeudor',
           var: false
         },
         {
@@ -108,6 +105,10 @@ export class SidebarPanelCarteraComponent implements OnInit {
       }
       localStorage.setItem('sidebarState', JSON.stringify(this.arraySidebar));
     }
+  }
+
+  goToHome(){
+    this.router.navigate(['/opciones']);
   }
 
 

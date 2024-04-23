@@ -39,6 +39,10 @@
     font-size: 12px;
 }
 
+.input-group .form-control {
+    font-size: 11px;
+}
+
 .col-custom {
     width: 30%;
 }

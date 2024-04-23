@@ -2,7 +2,7 @@
     top: 80px;
     left: 300px;
     width: 78%;
-    background-color: rgba(239, 239, 239, 0.979);
+    background-color: rgba(225, 225, 225, 0.979);
     box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1);
     border: none;
 }
@@ -11,7 +11,7 @@
     top: 80px;
     left: 80px;
     width: 94%;
-    background-color: rgba(239, 239, 239, 0.979);
+    background-color: rgba(225, 225, 225, 0.979);
     box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1);
     border: none;
 }
@@ -31,6 +31,10 @@
     font-size: 12px;
 }
 
+.input-group .form-select {
+    font-size: 11px;
+}
+
 .bg-red {
     color: white;
     background-color: #960010;
@@ -43,8 +47,8 @@
 }
 
 .accordion-button {
+    font-size: 13.5px;
     padding: 10px 12px;
-    font-size: 13px;
 }
 
 .accordion-button:focus {
