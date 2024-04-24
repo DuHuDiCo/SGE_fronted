@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { data } from 'jquery';
 import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 
 @Component({
@@ -31,7 +32,13 @@ export class InfoPersonalComponent implements OnInit {
   actionIcon: string = ''
   actionText: string = ''
 
-  constructor(private carteraService: PanelCarteraService) { }
+  tipoGarante: string = ''
+
+  constructor(private carteraService: PanelCarteraService) {
+    carteraService.data$.subscribe(data => {
+      this.tipoGarante = data
+    })
+  }
 
   ngOnInit(): void {
     this.datosPorConfirmar = [

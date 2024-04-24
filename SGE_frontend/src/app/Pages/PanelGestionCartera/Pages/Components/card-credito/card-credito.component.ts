@@ -19,19 +19,22 @@ export class CardCreditoComponent implements OnInit {
 
   @Input() btn: any;
 
+  constructor(private panelService: PanelCarteraService) { }
+
   ngOnInit(): void {
     this.responsablesArray = [
       {
-        tipoGarante: 'Titular',
+        tipoGarante: 'TITULAR',
         nombre: 'Yeimar Fernando Sánchez'
       },
       {
-        tipoGarante: 'Codeudor',
+        tipoGarante: 'CODEUDOR',
         nombre: 'Duván Diaz'
       }
     ]
 
     this.tipoGaranteResponsable = this.responsablesArray[0].tipoGarante
+    this.panelService.setTipoGarante(this.responsablesArray[0].tipoGarante)
   }
 
   infoPersonalAccordion() {
@@ -50,10 +53,11 @@ export class CardCreditoComponent implements OnInit {
     }
   }
 
-  findTipoGarante(event: any){
-    var type = this.responsablesArray.find((t:any) => t.nombre == event.target.value)
-    if(type != null && type != undefined){
+  findTipoGarante(event: any) {
+    var type = this.responsablesArray.find((t: any) => t.nombre == event.target.value)
+    if (type != null && type != undefined) {
       this.tipoGaranteResponsable = type.tipoGarante
+      this.panelService.setTipoGarante(this.tipoGaranteResponsable)
     }
   }
 
