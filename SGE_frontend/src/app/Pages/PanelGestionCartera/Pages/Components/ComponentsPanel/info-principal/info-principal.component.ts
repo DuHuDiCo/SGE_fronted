@@ -7,8 +7,6 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class InfoPrincipalComponent implements OnInit {
 
-  @Input() btn: any;
-
   constructor() { }
 
   ngOnInit(): void {

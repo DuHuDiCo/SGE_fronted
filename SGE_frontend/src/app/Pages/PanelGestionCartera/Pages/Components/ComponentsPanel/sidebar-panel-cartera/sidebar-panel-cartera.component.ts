@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import anime from 'animejs/lib/anime.es.js';
+import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 import { SideBar } from 'src/app/Types/PanelCartera/sidebar';
 
 @Component({
@@ -13,21 +14,53 @@ export class SidebarPanelCarteraComponent implements OnInit {
 
   @Output() messageEvent = new EventEmitter<any>();
 
+  // ARRAYS
   arraySidebar: SideBar[] = []
-  buttonState: boolean = false
-  gestionMode: boolean = false
+  optionsArray: any[] = [
+    false,
+    true,
+    false,
+    false,
+    false,
+    false
+  ]
 
-  constructor(private router:Router) { }
+  // VARIABLES
+  buttonState: boolean = false
+
+  gestionMode: boolean = false
+  asigMode: boolean = false
+
+  constructor(private router: Router, private carteraService: PanelCarteraService) { }
 
   ngOnInit(): void {
     this.fillArray()
   }
 
-  optionSidebar() {
+  // VOLVER AL INICIO
+  goToHome() {
+    this.router.navigate(['/opciones']);
+  }
+
+  // METODOS CAMBIO DE OPCION
+  sidebarOptions(position: number) {
+    this.sidebarAnimation()
+    if (this.optionsArray[position] == false) {
+      this.optionsArray[position] = true
+      for (let i = 0; i < this.optionsArray.length; i++) {
+        if (i != position) {
+          this.optionsArray[i] = false
+        }
+      }
+    }
+  }
+
+  sidebarAnimation() {
     if (this.buttonState == false) {
       var sidebar = document.getElementById('options');
       this.buttonState = true
       this.messageEvent.emit(this.buttonState)
+      this.carteraService.setSidebarState(this.buttonState)
       anime({
         targets: sidebar,
         translateX: ['0%', '-10%'],
@@ -43,6 +76,7 @@ export class SidebarPanelCarteraComponent implements OnInit {
       sidebar!.style.display = 'block'
       this.buttonState = false
       this.messageEvent.emit(this.buttonState)
+      this.carteraService.setSidebarState(this.buttonState)
       anime({
         targets: sidebar,
         translateX: ['-5%', '0%'],
@@ -105,10 +139,6 @@ export class SidebarPanelCarteraComponent implements OnInit {
       }
       localStorage.setItem('sidebarState', JSON.stringify(this.arraySidebar));
     }
-  }
-
-  goToHome(){
-    this.router.navigate(['/opciones']);
   }
 
 

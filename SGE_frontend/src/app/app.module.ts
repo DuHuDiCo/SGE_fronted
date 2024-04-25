@@ -115,19 +115,19 @@ import { DateFormatPipe } from './Pipes/date-format.pipe';
 import { FormatoMonedaDirective } from './directivas/DirectivaFormatCurrency/formato-moneda.directive';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Dashboard/dashboard-panel-cartera/dashboard-panel-cartera.component';
-import { NavbarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/navbar-panel-cartera/navbar-panel-cartera.component';
-import { SidebarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/sidebar-panel-cartera/sidebar-panel-cartera.component';
-import { CardCreditoComponent } from './Pages/PanelGestionCartera/Pages/Components/card-credito/card-credito.component';
-import { InfoPrincipalComponent } from './Pages/PanelGestionCartera/Pages/Components/info-principal/info-principal.component';
+import { NavbarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentsPanel/navbar-panel-cartera/navbar-panel-cartera.component';
+import { SidebarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentsPanel/sidebar-panel-cartera/sidebar-panel-cartera.component';
+import { CardCreditoComponent } from './Pages/PanelGestionCartera/Pages/Components/Gestion/card-credito/card-credito.component';
+import { InfoPrincipalComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentsPanel/info-principal/info-principal.component';
 import { ModalHistoricoGesComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-historico-ges/modal-historico-ges.component';
 import { OffcanvasNovedadesComponent } from './Pages/PanelGestionCartera/Pages/MainElements/offcanvas-novedades/offcanvas-novedades.component';
-import { CodeudorComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentesGestion/codeudor/codeudor.component';
-import { InfoPersonalComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentesGestion/info-personal/info-personal.component';
+import { InfoPersonalComponent } from './Pages/PanelGestionCartera/Pages/Components/Gestion/info-personal/info-personal.component';
 import { ModalAcuerdoComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-acuerdo/modal-acuerdo.component';
 import { ModalReferenciaComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-referencia/modal-referencia.component';
 import { ModalEditDatoComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-edit-dato/modal-edit-dato.component';
-import { SidebarRightComponent } from './Pages/PanelGestionCartera/Pages/Components/sidebar-right/sidebar-right.component';
+import { SidebarRightComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentsPanel/sidebar-right/sidebar-right.component';
 import { AddressGeneratorComponent } from './Pages/PanelGestionCartera/Pages/MainElements/address-generator/address-generator.component';
+import { AsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/asignacion/asignacion.component';
 
 
 
@@ -263,12 +263,12 @@ import { AddressGeneratorComponent } from './Pages/PanelGestionCartera/Pages/Mai
     ModalHistoricoGesComponent,
     OffcanvasNovedadesComponent,
     InfoPersonalComponent,
-    CodeudorComponent,
     ModalAcuerdoComponent,
     ModalReferenciaComponent,
     ModalEditDatoComponent,
     SidebarRightComponent,
-    AddressGeneratorComponent
+    AddressGeneratorComponent,
+    AsignacionComponent
 
   ],
 

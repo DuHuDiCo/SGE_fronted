@@ -13,13 +13,18 @@ export class CardCreditoComponent implements OnInit {
   infoPersonal: boolean = false
   saldos: boolean = false
   tipoGaranteResponsable: string = ''
+  btn!: boolean
 
   // ARRAYS
   responsablesArray: Responsables[] = []
 
-  @Input() btn: any;
 
-  constructor(private panelService: PanelCarteraService) { }
+  constructor(private panelService: PanelCarteraService) {
+    this.panelService.sidebarState$.subscribe(state => {
+      this.btn = state
+      console.log(this.btn);
+    })
+  }
 
   ngOnInit(): void {
     this.responsablesArray = [

@@ -16,7 +16,6 @@ export class DashboardPanelCarteraComponent implements OnInit {
 
   changeBtn($data: any) {
     this.buttonState = $data
-    console.log(this.buttonState);
   }
 
 }

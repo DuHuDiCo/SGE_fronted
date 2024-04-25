@@ -1,4 +1,4 @@
-<div class="card" [ngClass]="{'card-principal': !btn, 'card-true': btn}">
+<div class="card" [ngClass]="{'cardFalse': !btn, 'cardTrue': btn}">
     <div class="card-header">
         <h6 style="font-size: 14px; margin: 0;">Información Del Credito</h6>
     </div>
@@ -284,7 +284,8 @@
             </div>
         </div>
     </div>
+</div>
 
-    <app-modal-historico-ges></app-modal-historico-ges>
-    <app-modal-referencia></app-modal-referencia>
-    <app-offcanvas-novedades></app-offcanvas-novedades>
+<app-modal-historico-ges></app-modal-historico-ges>
+<app-modal-referencia></app-modal-referencia>
+<app-offcanvas-novedades></app-offcanvas-novedades>

@@ -33,10 +33,15 @@ export class InfoPersonalComponent implements OnInit {
   actionText: string = ''
 
   tipoGarante: string = ''
+  btn!: boolean
 
   constructor(private carteraService: PanelCarteraService) {
     carteraService.data$.subscribe(data => {
       this.tipoGarante = data
+    })
+
+    carteraService.sidebarState$.subscribe(state => {
+      this.btn = state
     })
   }
 

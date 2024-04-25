@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CodeudorComponent } from './codeudor.component';
+import { AsignacionComponent } from './asignacion.component';
 
-describe('CodeudorComponent', () => {
-  let component: CodeudorComponent;
-  let fixture: ComponentFixture<CodeudorComponent>;
+describe('AsignacionComponent', () => {
+  let component: AsignacionComponent;
+  let fixture: ComponentFixture<AsignacionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CodeudorComponent ]
+      declarations: [ AsignacionComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CodeudorComponent);
+    fixture = TestBed.createComponent(AsignacionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

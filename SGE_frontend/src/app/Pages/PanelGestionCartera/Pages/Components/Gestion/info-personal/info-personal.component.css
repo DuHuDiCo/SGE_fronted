@@ -14,19 +14,13 @@
 }
 
 .cardFalse {
-    left: 220px;
-    width: 83%;
-    background-color: rgba(239, 239, 239, 0.979);
-    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1);
-    border: none;
+    margin-left: 300px;
+    width: 75%;
 }
 
 .cardTrue {
-    left: 50px;
-    width: 95%;
-    background-color: rgba(239, 239, 239, 0.979);
-    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1);
-    border: none;
+    margin-left: 80px;
+    width: 90%;
 }
 
 .card-body {
@@ -37,6 +31,10 @@
 .form-control,
 .input-group-text {
     font-size: 12px;
+}
+
+.input-group .form-control {
+    font-size: 11px;
 }
 
 .col-custom {

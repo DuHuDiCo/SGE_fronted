@@ -1,5 +1,7 @@
+<app-card-credito></app-card-credito>
+
 <!-- TITULAR -->
-<div class="row" *ngIf="tipoGarante == 'TITULAR'">
+<div class="row" *ngIf="tipoGarante == 'TITULAR'" [ngClass]="{'cardFalse': !btn, 'cardTrue': btn}">
     <div class="col-md-8 col-custom-2 mt-4">
         <div class="card mt-3" *ngIf="datosPorConfirmar.includes('CEL')">
             <div class="card-body">
@@ -325,7 +327,7 @@
 </div>
 
 <!-- CODEUDOR -->
-<div class="row" *ngIf="tipoGarante == 'CODEUDOR'">
+<div class="row" *ngIf="tipoGarante == 'CODEUDOR'" [ngClass]="{'cardFalse': !btn, 'cardTrue': btn}">
     <div class="col-md-8 col-custom-2 mt-4">
         <div class="card mt-3" *ngIf="datosPorConfirmar.includes('CEL')">
             <div class="card-body">

@@ -86,8 +86,8 @@ import { ClasificacionJuridicaComponent } from './Pages/Cartera/pages/componente
 import { CondicionEspecialComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/condicion-especial/condicion-especial.component';
 import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/firmas/firmas.component';
 import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Dashboard/dashboard-panel-cartera/dashboard-panel-cartera.component';
-import { InfoPersonalComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentesGestion/info-personal/info-personal.component';
-import { CodeudorComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentesGestion/codeudor/codeudor.component';
+import { InfoPersonalComponent } from './Pages/PanelGestionCartera/Pages/Components/Gestion/info-personal/info-personal.component';
+import { AsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/asignacion/asignacion.component';
 
 
 
@@ -117,7 +117,7 @@ const routes: Routes = [
     component: CambioContrasenaComponent,
   },
   {
-    path: 'cartera', redirectTo: 'dashboard-cartera/inicio/gestion', pathMatch: 'full'
+    path: 'cartera', redirectTo: 'dashboard-cartera/inicio/asignacion', pathMatch: 'full'
   },
   {
     path: "dashboard-cartera",
@@ -135,9 +135,9 @@ const routes: Routes = [
             canActivate: [AuthenticationGuard]
           },
           {
-            path: "codeudor",
-            component: CodeudorComponent,
-            canActivate: [AuthenticationGuard],
+            path: "asignacion",
+            component: AsignacionComponent,
+            canActivate: [AuthenticationGuard]
           }
         ]
       },

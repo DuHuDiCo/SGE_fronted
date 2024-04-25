@@ -1,21 +1,3 @@
-.card-principal {
-    top: 80px;
-    left: 300px;
-    width: 78%;
-    background-color: rgba(225, 225, 225, 0.979);
-    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1);
-    border: none;
-}
-
-.card-true {
-    top: 80px;
-    left: 80px;
-    width: 94%;
-    background-color: rgba(225, 225, 225, 0.979);
-    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1);
-    border: none;
-}
-
 .input-g-sm {
     display: block;
 }
@@ -91,53 +73,51 @@
     background-color: transparent;
 }
 
+.cardFalse {
+    margin-top: 60px;
+    margin-left: 300px;
+    width: 75%;
+    background-color: rgba(225, 225, 225, 0.979);
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.cardTrue {
+    margin-top: 60px;
+    margin-left: 80px;
+    width: 88%;
+    background-color: rgba(225, 225, 225, 0.979);
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
 @media only screen and (min-width: 1280px) and (max-width: 1366px) {
-    .card-principal {
-        width: 76.5%;
-        left: 280px;
+    .cardFalse {
+        width: 77.5%;
+        margin-left: 280px;
     }
 
-    .card-true {
-        width: 92%;
-    }
-}
-
-@media only screen and (min-width: 1366px) and (max-width: 1440px) {
-    .card-principal {
-        width: 76.5%;
-    }
-
-    .card-true {
-        width: 92%;
-    }
-}
-
-@media only screen and (min-width: 1440px) and (max-width: 1600px) {
-    .card-principal {
-        width: 76.5%;
-    }
-
-    .card-true {
+    .cardTrue {
         width: 92%;
     }
 }
 
 @media only screen and (min-width: 1920px) and (max-width: 2560px) {
-    .card-principal {
+    .cardFalse {
         width: 83%;
     }
 
-    .card-true {
+    .cardTrue {
         width: 95%;
     }
 }
 
 @media only screen and (min-width: 2560px) and (max-width: 3840px) {
-    .card-principal {
+    .cardFalse {
         width: 87%;
     }
 
-    .card-true {
+    .cardTrue {
         width: 96%;
     }
 }
