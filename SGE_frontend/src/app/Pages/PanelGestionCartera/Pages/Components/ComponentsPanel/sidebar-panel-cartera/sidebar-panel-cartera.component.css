@@ -165,11 +165,6 @@
     border-radius: 0;
 }
 
-.accordion-button:not(.collapsed) {
-    background-color: transparent;
-    color: black;
-}
-
 .accordion-button:focus {
     outline: none;
     box-shadow: none;
@@ -183,4 +178,54 @@
     outline: none;
     box-shadow: none;
     border-color: transparent;
+}
+
+.form-check-input:checked {
+    background-color: #960010;
+    color: white;
+}
+
+.accordion-button {
+    padding: 0.5rem;
+    font-size: 14px;
+}
+
+.accordion-list.collapsed {
+    background-color: #b6b1b2f1;
+    color: black;
+}
+
+.accordion-list:not(.collapsed) {
+    background-color: #c56872dd;
+    color: black;
+}
+
+.accordion-filtros.collapsed {
+    background-color: #b6b1b2f1;
+    color: black;
+}
+
+.accordion-filtros:not(.collapsed) {
+    background-color: #6897c5dd;
+    color: black;
+}
+
+.accordion-columns.collapsed {
+    background-color: #b6b1b2f1;
+    color: black;
+}
+
+.accordion-columns:not(.collapsed) {
+    background-color: #c5bc68dd;
+    color: black;
+}
+
+.a-cuentas {
+    background-color: #b6b1b2f1;
+    padding: 0.5rem 0.5rem;
+    color: black;
+}
+
+.form-check-label {
+    font-size: 12px;
 }

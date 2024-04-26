@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 
 @Component({
   selector: 'app-asignacion',
@@ -7,11 +8,37 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class AsignacionComponent implements OnInit {
 
-  @Input() btn: any;
+  // ARRAYS
+  cuentasArray: any[] = []
+  columnasArray: string[] = [
+  ]
 
-  constructor() { }
+  // VARIABLES
+  btn!: boolean
+
+  constructor(private carteraService: PanelCarteraService) {
+    this.carteraService.sidebarState$.subscribe(state => {
+      this.btn = state
+    })
+
+    this.carteraService.columnasArray$.subscribe(colums => {
+      this.columnasArray = colums
+    })
+  }
 
   ngOnInit(): void {
   }
+
+  // ENVIAR CUENTA AL SIDEBAR
+  setCuenta(cliente: string) {
+    var cuenta = this.cuentasArray.find((c: any) => c == cliente)
+    if (cuenta == undefined || cuenta == '' || cuenta == null) {
+      this.cuentasArray.unshift(cliente)
+      this.carteraService.setCuentasArray(this.cuentasArray)
+    }
+    console.log(this.cuentasArray);
+  }
+
+
 
 }

@@ -120,39 +120,84 @@
                 <div class="accordion" id="accordionAsig">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#accordionListado">
+                            <button class="accordion-button collapsed accordion-list" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#accordionListado">
                                 Lista De Cuentas
                             </button>
                         </h2>
                         <div id="accordionListado" class="accordion-collapse collapse" data-bs-parent="#accordionAsig">
                             <div class="accordion-body p-0">
-                                <!-- <a *ngFor="let s of arraySidebar; let i = index" class="list-group-item"
-                                    [ngClass]="{'': !s.var , 'bg-gray': s.var}" [routerLink]="s.url">
-                                    <div class="d-flex w-100 justify-content-center">
-                                        <button class="btn-disabled" [disabled]="s.disabled" (click)="changeVar(i)">
-                                            <h6 class="mb-1 font" [ngClass]="{'': !s.var , 'color-white': s.var}">{{
-                                                s.name }}</h6>
-                                        </button>
+                                <!-- FILTROS  -->
+                                <div class="accordion" id="accordionFiltros">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed accordion-filtros" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#accordionF">
+                                                Filtros
+                                            </button>
+                                        </h2>
+                                        <div id="accordionF" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionFiltros">
+                                            <div class="accordion-body p-0">
+                                                <!-- <a *ngFor="let s of arraySidebar; let i = index" class="list-group-item"
+                                                [ngClass]="{'': !s.var , 'bg-gray': s.var}" [routerLink]="s.url">
+                                                <div class="d-flex w-100 justify-content-center">
+                                                    <button class="btn-disabled" [disabled]="s.disabled" (click)="changeVar(i)">
+                                                        <h6 class="mb-1 font" [ngClass]="{'': !s.var , 'color-white': s.var}">{{
+                                                            s.name }}</h6>
+                                                    </button>
+                                                </div>
+                                            </a> -->
+                                            </div>
+                                        </div>
                                     </div>
-                                </a> -->
+                                </div>
+
+                                <!-- COLUMNAS -->
+                                <div class="accordion" id="accordionCol">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed accordion-columns" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#accordionC">
+                                                Columnas
+                                            </button>
+                                        </h2>
+                                        <div id="accordionC" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionCol">
+                                            <div class="accordion-body p-0">
+                                                <div class="form-check" *ngFor="let col of columnsStatic">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        (click)="hideColumna(col)">
+                                                    <label class="form-check-label">
+                                                        {{ col }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- FILTROS -->
-                <div class="accordion" id="accordionFiltros">
+                <!-- CUENTAS RECIENTES -->
+                <a class="list-group-item a-cuentas mt-3" *ngIf="cuentasRecientes.length > 0">
+                    <h6 class="mb-1 font">Cuentas Abiertas</h6>
+                </a>
+                <div class="accordion" id="accordionCuentas" *ngFor="let c of cuentasRecientes">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#accordionF">
-                                Filtros
+                            <button class="accordion-button collapsed accordion-filtros" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#accordionR">
+                                {{ c }}
+                                <button class="btn bg-red btn-sm" (click)="deleteCuenta(c)"><i
+                                        class="fa-solid fa-trash fa-xs"></i></button>
                             </button>
                         </h2>
-                        <div id="accordionF" class="accordion-collapse collapse" data-bs-parent="#accordionFiltros">
+                        <div id="accordionR" class="accordion-collapse collapse" data-bs-parent="#accordionCuentas">
                             <div class="accordion-body p-0">
-                                <!-- <a *ngFor="let s of arraySidebar; let i = index" class="list-group-item"
+                                <a *ngFor="let s of arraySidebar; let i = index" class="list-group-item"
                                     [ngClass]="{'': !s.var , 'bg-gray': s.var}" [routerLink]="s.url">
                                     <div class="d-flex w-100 justify-content-center">
                                         <button class="btn-disabled" [disabled]="s.disabled" (click)="changeVar(i)">
@@ -160,7 +205,7 @@
                                                 s.name }}</h6>
                                         </button>
                                     </div>
-                                </a> -->
+                                </a>
                             </div>
                         </div>
                     </div>

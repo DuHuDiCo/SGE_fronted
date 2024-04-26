@@ -24,6 +24,34 @@ export class SidebarPanelCarteraComponent implements OnInit {
     false,
     false
   ]
+  cuentasRecientes: any[] = []
+
+  columnasArray: string[] = [
+    'Banco',
+    'Dias Vencidos',
+    'Edad De Vencimiento',
+    'Sucursal',
+    'Asesor',
+    'Clasificacion Jurídica',
+    'Saldo Capital',
+    'Año',
+    'Fecha Gestión',
+    'Fecha Compromiso',
+    'Ultima Clasificacion'
+  ]
+  columnsStatic: string[] = [
+    'Banco',
+    'Dias Vencidos',
+    'Edad De Vencimiento',
+    'Sucursal',
+    'Asesor',
+    'Clasificacion Jurídica',
+    'Saldo Capital',
+    'Año',
+    'Fecha Gestión',
+    'Fecha Compromiso',
+    'Ultima Clasificacion'
+  ]
 
   // VARIABLES
   buttonState: boolean = false
@@ -31,10 +59,15 @@ export class SidebarPanelCarteraComponent implements OnInit {
   gestionMode: boolean = false
   asigMode: boolean = false
 
-  constructor(private router: Router, private carteraService: PanelCarteraService) { }
+  constructor(private router: Router, private carteraService: PanelCarteraService) {
+    carteraService.cuentasArray$.subscribe(cuentas => {
+      this.cuentasRecientes = cuentas
+    })
+  }
 
   ngOnInit(): void {
     this.fillArray()
+    this.carteraService.setColumnasArray(this.columnasArray)
   }
 
   // VOLVER AL INICIO
@@ -55,6 +88,7 @@ export class SidebarPanelCarteraComponent implements OnInit {
     }
   }
 
+  // ANIMACIÓN SIDEBAR
   sidebarAnimation() {
     if (this.buttonState == false) {
       var sidebar = document.getElementById('options');
@@ -87,6 +121,7 @@ export class SidebarPanelCarteraComponent implements OnInit {
     }
   }
 
+  // LLENAR ARRAY OPCIONES
   fillArray() {
     const storedState = localStorage.getItem('sidebarState');
     if (storedState !== null) {
@@ -106,30 +141,32 @@ export class SidebarPanelCarteraComponent implements OnInit {
           name: 'Consignaciones',
           var: false
         },
-        {
-          name: 'Archivo',
-          var: false,
-          disabled: true
-        },
-        {
-          name: 'Pagos',
-          var: false,
-          disabled: true
-        },
-        {
-          name: 'Servicios',
-          var: false,
-          disabled: true
-        },
-        {
-          name: 'Ventas',
-          var: false,
-          disabled: true
-        },
+        // TODO: SECCIONES PENDIENTES
+        // {
+        //   name: 'Archivo',
+        //   var: false,
+        //   disabled: true
+        // },
+        // {
+        //   name: 'Pagos',
+        //   var: false,
+        //   disabled: true
+        // },
+        // {
+        //   name: 'Servicios',
+        //   var: false,
+        //   disabled: true
+        // },
+        // {
+        //   name: 'Ventas',
+        //   var: false,
+        //   disabled: true
+        // },
       ]
     }
   }
 
+  // CAMBIO DE OPCION
   changeVar(position: number) {
     for (let i = 0; i < this.arraySidebar.length; i++) {
       if (i == position) {
@@ -139,6 +176,24 @@ export class SidebarPanelCarteraComponent implements OnInit {
       }
       localStorage.setItem('sidebarState', JSON.stringify(this.arraySidebar));
     }
+  }
+
+  // OCULTAR COLUMNAS
+  hideColumna(columna: string) {
+    if (this.columnasArray.includes(columna)) {
+      var position = this.columnasArray.indexOf(columna)
+      this.columnasArray.splice(position, 1)
+    } else {
+      this.columnasArray.push(columna)
+    }
+    this.carteraService.setColumnasArray(this.columnasArray)
+  }
+
+  deleteCuenta(cuenta: string) {
+    var current = this.cuentasRecientes.find((c: any) => c == cuenta)
+    var position = this.cuentasRecientes.indexOf(current)
+    this.cuentasRecientes.splice(position, 1)
+    this.carteraService.setCuentasArray(this.cuentasRecientes)
   }
 
 

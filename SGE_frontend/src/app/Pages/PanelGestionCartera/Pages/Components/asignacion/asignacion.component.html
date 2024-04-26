@@ -1,5 +1,39 @@
-<div class="card" [ngClass]="{'cardFalse': !btn, 'cardTrue': btn}">
+<div class="card mb-3" [ngClass]="{'cardFalse': !btn, 'cardTrue': btn}">
     <div class="card-body">
-        Hola
+        <table class="table table-sm table-hover table-bordered table-responsive text-center">
+            <thead>
+                <tr class="thead-font text-center align-middle">
+                    <th scope="col">Cliente</th>
+                    <th scope="col" *ngIf="columnasArray.includes('Banco')">Banco</th>
+                    <th scope="col" *ngIf="columnasArray.includes('Dias Vencidos')">Dias Vencidos</th>
+                    <th scope="col" *ngIf="columnasArray.includes('Edad De Vencimiento')">E. Vencimiento</th>
+                    <th scope="col" *ngIf="columnasArray.includes('Sucursal')">Sucursal</th>
+                    <th scope="col" *ngIf="columnasArray.includes('Asesor')">Asesor</th>
+                    <th scope="col" *ngIf="columnasArray.includes('Clasificacion Jurídica')">Clas. Jurídica</th>
+                    <th scope="col" *ngIf="columnasArray.includes('Saldo Capital')">Saldo Capital</th>
+                    <th scope="col" *ngIf="columnasArray.includes('Año')">Año</th>
+                    <th scope="col" *ngIf="columnasArray.includes('Fecha Gestión')">F. Gestión</th>
+                    <th scope="col" *ngIf="columnasArray.includes('Fecha Compromiso')">F. Compromiso</th>
+                    <th scope="col" *ngIf="columnasArray.includes('Ultima Clasificacion')">U. Clas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tbody-font text-center align-middle"
+                    (click)="setCuenta('71770895-VASQUEZ JARAMILLO EDISON')">
+                    <td>71770895-VASQUEZ JARAMILLO EDISON</td>
+                    <td *ngIf="columnasArray.includes('Banco')">COL</td>
+                    <td *ngIf="columnasArray.includes('Dias Vencidos')">8000</td>
+                    <td *ngIf="columnasArray.includes('Edad De Vencimiento')">Mayor a 360</td>
+                    <td *ngIf="columnasArray.includes('Sucursal')">Boyaca</td>
+                    <td *ngIf="columnasArray.includes('Asesor')">Claudia</td>
+                    <td *ngIf="columnasArray.includes('Clasificacion Jurídica')">Prejuridico</td>
+                    <td *ngIf="columnasArray.includes('Saldo Capital')">243,000</td>
+                    <td *ngIf="columnasArray.includes('Año')">2000</td>
+                    <td *ngIf="columnasArray.includes('Fecha Gestión')">19/09/2023</td>
+                    <td *ngIf="columnasArray.includes('Fecha Compromiso')">--/--/----</td>
+                    <td *ngIf="columnasArray.includes('Ultima Clasificacion')">Mensaje/Msn.Voz</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

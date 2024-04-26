@@ -1,0 +1,26 @@
+.cardFalse {
+    margin-top: 60px;
+    margin-left: 300px;
+    width: 75%;
+    background-color: rgba(232, 232, 232, 0.751);
+    box-shadow: 0px 8px 12px rgba(139, 139, 139, 0.69);
+    border: none;
+}
+
+.cardTrue {
+    margin-top: 60px;
+    margin-left: 80px;
+    width: 90%;
+    background-color: rgba(232, 232, 232, 0.751);
+    box-shadow: 0px 8px 12px rgba(99, 99, 99, 0.69);
+    border: none;
+}
+
+.thead-font {
+    font-size: 14px;
+}
+
+.tbody-font {
+    font-size: 12px;
+    cursor: pointer;
+}
