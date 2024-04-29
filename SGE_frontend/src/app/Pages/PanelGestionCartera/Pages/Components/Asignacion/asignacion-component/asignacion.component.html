@@ -33,6 +33,20 @@
                     <td *ngIf="columnasArray.includes('Fecha Compromiso')">--/--/----</td>
                     <td *ngIf="columnasArray.includes('Ultima Clasificacion')">Mensaje/Msn.Voz</td>
                 </tr>
+                <tr class="tbody-font text-center align-middle" (click)="setCuenta('123456789-JOHAN ANDRES HERNANDEZ')">
+                    <td>123456789-JOHAN ANDRES HERNANDEZ</td>
+                    <td *ngIf="columnasArray.includes('Banco')">COL</td>
+                    <td *ngIf="columnasArray.includes('Dias Vencidos')">8000</td>
+                    <td *ngIf="columnasArray.includes('Edad De Vencimiento')">Mayor a 360</td>
+                    <td *ngIf="columnasArray.includes('Sucursal')">Boyaca</td>
+                    <td *ngIf="columnasArray.includes('Asesor')">Claudia</td>
+                    <td *ngIf="columnasArray.includes('Clasificacion Jurídica')">Prejuridico</td>
+                    <td *ngIf="columnasArray.includes('Saldo Capital')">243,000</td>
+                    <td *ngIf="columnasArray.includes('Año')">2000</td>
+                    <td *ngIf="columnasArray.includes('Fecha Gestión')">19/09/2023</td>
+                    <td *ngIf="columnasArray.includes('Fecha Compromiso')">--/--/----</td>
+                    <td *ngIf="columnasArray.includes('Ultima Clasificacion')">Mensaje/Msn.Voz</td>
+                </tr>
             </tbody>
         </table>
     </div>

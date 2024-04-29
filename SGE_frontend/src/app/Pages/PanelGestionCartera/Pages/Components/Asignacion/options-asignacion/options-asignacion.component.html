@@ -86,17 +86,18 @@
         <a class="list-group-item a-cuentas mt-3" *ngIf="cuentasRecientes.length > 0">
             <h6 class="mb-1 font">Cuentas Abiertas</h6>
         </a>
-        <div class="accordion" id="accordionCuentas" *ngFor="let c of cuentasRecientes">
+        <div class="accordion" id="accordionCuentas-{{i}}" *ngFor="let c of cuentasRecientes; let i = index">
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed accordion-filtros" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#accordionR">
+                        [attr.data-bs-target]="'#accordionR-' + i">
                         {{ c }}
                         <button class="btn bg-red btn-sm" (click)="deleteCuenta(c)"><i
                                 class="fa-solid fa-trash fa-xs"></i></button>
                     </button>
                 </h2>
-                <div id="accordionR" class="accordion-collapse collapse" data-bs-parent="#accordionCuentas">
+                <div id="accordionR-{{i}}" class="accordion-collapse collapse"
+                    [attr.data-bs-parent]="'#accordionCuentas-' + i">
                     <div class="accordion-body p-0">
                         <a *ngFor="let o of optionsAsignacion; let i = index" class="list-group-item"
                             [ngClass]="{'': !o.var , 'bg-gray': o.var}" [routerLink]="o.url">
