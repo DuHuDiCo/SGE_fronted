@@ -117,7 +117,6 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Dashboard/dashboard-panel-cartera/dashboard-panel-cartera.component';
 import { NavbarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentsPanel/navbar-panel-cartera/navbar-panel-cartera.component';
 import { SidebarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentsPanel/sidebar-panel-cartera/sidebar-panel-cartera.component';
-import { CardCreditoComponent } from './Pages/PanelGestionCartera/Pages/Components/Gestion/card-credito/card-credito.component';
 import { InfoPrincipalComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentsPanel/info-principal/info-principal.component';
 import { ModalHistoricoGesComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-historico-ges/modal-historico-ges.component';
 import { OffcanvasNovedadesComponent } from './Pages/PanelGestionCartera/Pages/MainElements/offcanvas-novedades/offcanvas-novedades.component';
@@ -127,7 +126,10 @@ import { ModalReferenciaComponent } from './Pages/PanelGestionCartera/Pages/Main
 import { ModalEditDatoComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-edit-dato/modal-edit-dato.component';
 import { SidebarRightComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentsPanel/sidebar-right/sidebar-right.component';
 import { AddressGeneratorComponent } from './Pages/PanelGestionCartera/Pages/MainElements/address-generator/address-generator.component';
-import { AsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/asignacion/asignacion.component';
+import { AsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/asignacion-component/asignacion.component';
+import { GestionAsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/gestion-asignacion/gestion-asignacion.component';
+import { OptionsGestionComponent } from './Pages/PanelGestionCartera/Pages/Components/Gestion/options-gestion/options-gestion.component';
+import { OptionsAsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/options-asignacion/options-asignacion.component';
 
 
 
@@ -258,7 +260,6 @@ import { AsignacionComponent } from './Pages/PanelGestionCartera/Pages/Component
     DashboardPanelCarteraComponent,
     NavbarPanelCarteraComponent,
     SidebarPanelCarteraComponent,
-    CardCreditoComponent,
     InfoPrincipalComponent,
     ModalHistoricoGesComponent,
     OffcanvasNovedadesComponent,
@@ -268,7 +269,10 @@ import { AsignacionComponent } from './Pages/PanelGestionCartera/Pages/Component
     ModalEditDatoComponent,
     SidebarRightComponent,
     AddressGeneratorComponent,
-    AsignacionComponent
+    AsignacionComponent,
+    GestionAsignacionComponent,
+    OptionsGestionComponent,
+    OptionsAsignacionComponent
 
   ],
 

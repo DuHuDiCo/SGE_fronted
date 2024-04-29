@@ -1,0 +1,115 @@
+<div class="card">
+    <div class="card-header text-center align-middle" style="margin-top: -5px; padding-bottom: 10px;"
+        [ngClass]="{'card-mode-disabled': !asigMode , 'card-mode-activate': asigMode}">
+        <div class="row mt-3">
+            <div class="col-md-8">Asignación</div>
+            <div class="col-md-2">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" [(ngModel)]="asigMode" type="checkbox" role="switch"
+                        [checked]="false" (click)="changeAsigMode()">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body" style="padding: 0;">
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+                <button class="btn bg-search border-search"><i class="fa fa-search"></i></button>
+            </div>
+            <input type="text" class="form-control border-search" placeholder="Buscar Cliente">
+        </div>
+
+        <!-- LISTADO -->
+        <div class="accordion" id="accordionAsig">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed accordion-list" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionListado">
+                        Lista De Cuentas
+                    </button>
+                </h2>
+                <div id="accordionListado" class="accordion-collapse collapse" data-bs-parent="#accordionAsig">
+                    <div class="accordion-body p-0">
+                        <!-- FILTROS  -->
+                        <div class="accordion" id="accordionFiltros">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed accordion-filtros" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#accordionF">
+                                        Filtros
+                                    </button>
+                                </h2>
+                                <div id="accordionF" class="accordion-collapse collapse"
+                                    data-bs-parent="#accordionFiltros">
+                                    <div class="accordion-body p-0">
+                                        <!-- <a *ngFor="let s of arraySidebar; let i = index" class="list-group-item"
+                                        [ngClass]="{'': !s.var , 'bg-gray': s.var}" [routerLink]="s.url">
+                                        <div class="d-flex w-100 justify-content-center">
+                                            <button class="btn-disabled" [disabled]="s.disabled" (click)="changeVar(i)">
+                                                <h6 class="mb-1 font" [ngClass]="{'': !s.var , 'color-white': s.var}">{{
+                                                    s.name }}</h6>
+                                            </button>
+                                        </div>
+                                    </a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- COLUMNAS -->
+                        <div class="accordion" id="accordionCol">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed accordion-columns" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#accordionC">
+                                        Columnas
+                                    </button>
+                                </h2>
+                                <div id="accordionC" class="accordion-collapse collapse" data-bs-parent="#accordionCol">
+                                    <div class="accordion-body p-0">
+                                        <div class="form-check" *ngFor="let col of columnsStatic">
+                                            <input class="form-check-input" type="checkbox" (click)="hideColumna(col)">
+                                            <label class="form-check-label">
+                                                {{ col }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CUENTAS RECIENTES -->
+        <a class="list-group-item a-cuentas mt-3" *ngIf="cuentasRecientes.length > 0">
+            <h6 class="mb-1 font">Cuentas Abiertas</h6>
+        </a>
+        <div class="accordion" id="accordionCuentas" *ngFor="let c of cuentasRecientes">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed accordion-filtros" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionR">
+                        {{ c }}
+                        <button class="btn bg-red btn-sm" (click)="deleteCuenta(c)"><i
+                                class="fa-solid fa-trash fa-xs"></i></button>
+                    </button>
+                </h2>
+                <div id="accordionR" class="accordion-collapse collapse" data-bs-parent="#accordionCuentas">
+                    <div class="accordion-body p-0">
+                        <a *ngFor="let o of optionsAsignacion; let i = index" class="list-group-item"
+                            [ngClass]="{'': !o.var , 'bg-gray': o.var}" [routerLink]="o.url">
+                            <div class="d-flex w-100 justify-content-center">
+                                <button class="btn-disabled" [disabled]="o.disabled" (click)="changeVar(i)">
+                                    <h6 class="mb-1 font" [ngClass]="{'': !o.var , 'color-white': o.var}">{{
+                                        o.name }}</h6>
+                                </button>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

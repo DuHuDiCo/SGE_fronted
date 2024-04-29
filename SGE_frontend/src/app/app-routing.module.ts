@@ -87,7 +87,8 @@ import { CondicionEspecialComponent } from './Pages/Cartera/pages/componentesCar
 import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/firmas/firmas.component';
 import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Dashboard/dashboard-panel-cartera/dashboard-panel-cartera.component';
 import { InfoPersonalComponent } from './Pages/PanelGestionCartera/Pages/Components/Gestion/info-personal/info-personal.component';
-import { AsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/asignacion/asignacion.component';
+import { AsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/asignacion-component/asignacion.component';
+import { GestionAsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/gestion-asignacion/gestion-asignacion.component';
 
 
 
@@ -137,6 +138,11 @@ const routes: Routes = [
           {
             path: "asignacion",
             component: AsignacionComponent,
+            canActivate: [AuthenticationGuard],
+          },
+          {
+            path: 'gestionAsignacion',
+            component: GestionAsignacionComponent,
             canActivate: [AuthenticationGuard]
           }
         ]

@@ -1,14 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { data } from 'jquery';
+import { Component, OnInit } from '@angular/core';
 import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 import { Responsables } from 'src/app/Types/PanelCartera/clienteObject';
 
 @Component({
-  selector: 'app-info-personal',
-  templateUrl: './info-personal.component.html',
-  styleUrls: ['./info-personal.component.css']
+  selector: 'app-gestion-asignacion',
+  templateUrl: './gestion-asignacion.component.html',
+  styleUrls: ['./gestion-asignacion.component.css']
 })
-export class InfoPersonalComponent implements OnInit {
+export class GestionAsignacionComponent implements OnInit {
 
   // VARIABLES
   infoPersonal: boolean = false
@@ -267,5 +266,6 @@ export class InfoPersonalComponent implements OnInit {
     }
     console.log(this.datosPorConfirmar);
   }
+
 
 }

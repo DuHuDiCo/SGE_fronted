@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CardCreditoComponent } from './card-credito.component';
+import { OptionsGestionComponent } from './options-gestion.component';
 
-describe('CardCreditoComponent', () => {
-  let component: CardCreditoComponent;
-  let fixture: ComponentFixture<CardCreditoComponent>;
+describe('OptionsGestionComponent', () => {
+  let component: OptionsGestionComponent;
+  let fixture: ComponentFixture<OptionsGestionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CardCreditoComponent ]
+      declarations: [ OptionsGestionComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CardCreditoComponent);
+    fixture = TestBed.createComponent(OptionsGestionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

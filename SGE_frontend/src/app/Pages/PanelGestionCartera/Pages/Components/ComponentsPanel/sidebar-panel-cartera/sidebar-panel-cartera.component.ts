@@ -24,50 +24,20 @@ export class SidebarPanelCarteraComponent implements OnInit {
     false,
     false
   ]
-  cuentasRecientes: any[] = []
-
-  columnasArray: string[] = [
-    'Banco',
-    'Dias Vencidos',
-    'Edad De Vencimiento',
-    'Sucursal',
-    'Asesor',
-    'Clasificacion Jurídica',
-    'Saldo Capital',
-    'Año',
-    'Fecha Gestión',
-    'Fecha Compromiso',
-    'Ultima Clasificacion'
-  ]
-  columnsStatic: string[] = [
-    'Banco',
-    'Dias Vencidos',
-    'Edad De Vencimiento',
-    'Sucursal',
-    'Asesor',
-    'Clasificacion Jurídica',
-    'Saldo Capital',
-    'Año',
-    'Fecha Gestión',
-    'Fecha Compromiso',
-    'Ultima Clasificacion'
-  ]
 
   // VARIABLES
   buttonState: boolean = false
-
-  gestionMode: boolean = false
-  asigMode: boolean = false
+  gestionMode!: boolean
+  asigMode!: boolean
 
   constructor(private router: Router, private carteraService: PanelCarteraService) {
-    carteraService.cuentasArray$.subscribe(cuentas => {
-      this.cuentasRecientes = cuentas
+    carteraService.gestionMode$.subscribe(gestion => {
+      this.gestionMode = gestion
     })
   }
 
   ngOnInit(): void {
     this.fillArray()
-    this.carteraService.setColumnasArray(this.columnasArray)
   }
 
   // VOLVER AL INICIO
@@ -166,35 +136,12 @@ export class SidebarPanelCarteraComponent implements OnInit {
     }
   }
 
-  // CAMBIO DE OPCION
-  changeVar(position: number) {
-    for (let i = 0; i < this.arraySidebar.length; i++) {
-      if (i == position) {
-        this.arraySidebar[position].var = true
-      } else {
-        this.arraySidebar[i].var = false
-      }
-      localStorage.setItem('sidebarState', JSON.stringify(this.arraySidebar));
-    }
+  changeGestionMode() {
+    this.carteraService.setGestionMode(this.gestionMode)
   }
 
-  // OCULTAR COLUMNAS
-  hideColumna(columna: string) {
-    if (this.columnasArray.includes(columna)) {
-      var position = this.columnasArray.indexOf(columna)
-      this.columnasArray.splice(position, 1)
-    } else {
-      this.columnasArray.push(columna)
-    }
-    this.carteraService.setColumnasArray(this.columnasArray)
+  changeAsigMode() {
+    this.carteraService.setAsigMode(this.asigMode)
   }
-
-  deleteCuenta(cuenta: string) {
-    var current = this.cuentasRecientes.find((c: any) => c == cuenta)
-    var position = this.cuentasRecientes.indexOf(current)
-    this.cuentasRecientes.splice(position, 1)
-    this.carteraService.setCuentasArray(this.cuentasRecientes)
-  }
-
 
 }

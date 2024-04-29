@@ -18,6 +18,14 @@ export class PanelCarteraService {
   private tipoGarante = new Subject<any>();
   data$ = this.tipoGarante.asObservable();
 
+  // GESTION MODE
+  private gestionMode = new Subject<boolean>();
+  gestionMode$ = this.gestionMode.asObservable()
+
+  // ASIGNACION MODE
+  private asigMode = new Subject<boolean>();
+  asigMode$ = this.asigMode.asObservable()
+
   // ARRAY DE CUENTAS ABIERTAS PARA EL SIDEBAR
   private cuentasArraySubject: BehaviorSubject<any> = new BehaviorSubject<[]>([])
   public cuentasArray$: Observable<any> = this.cuentasArraySubject.asObservable();
@@ -34,6 +42,14 @@ export class PanelCarteraService {
 
   setTipoGarante(data: any) {
     this.tipoGarante.next(data)
+  }
+
+  setGestionMode(data: any) {
+    this.gestionMode.next(data)
+  }
+
+  setAsigMode(data: any) {
+    this.asigMode.next(data)
   }
 
   setSidebarState(newState: boolean) {
