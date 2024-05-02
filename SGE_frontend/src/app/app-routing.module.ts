@@ -89,6 +89,7 @@ import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Page
 import { InfoPersonalComponent } from './Pages/PanelGestionCartera/Pages/Components/Gestion/info-personal/info-personal.component';
 import { AsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/asignacion-component/asignacion.component';
 import { GestionAsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/gestion-asignacion/gestion-asignacion.component';
+import { ParametrosComponent } from './Pages/AdminGeneral/GestionCartera/parametros/parametros.component';
 
 
 
@@ -452,6 +453,10 @@ const routes: Routes = [
       {
         path: 'roles-usuario',
         component: RolesUsuariosComponent
+      },
+      {
+        path: 'parametros',
+        component: ParametrosComponent
       }
     ]
   }

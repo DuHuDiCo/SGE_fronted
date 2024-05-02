@@ -130,6 +130,7 @@ import { AsignacionComponent } from './Pages/PanelGestionCartera/Pages/Component
 import { GestionAsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/gestion-asignacion/gestion-asignacion.component';
 import { OptionsGestionComponent } from './Pages/PanelGestionCartera/Pages/Components/Gestion/options-gestion/options-gestion.component';
 import { OptionsAsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/options-asignacion/options-asignacion.component';
+import { ParametrosComponent } from './Pages/AdminGeneral/GestionCartera/parametros/parametros.component';
 
 
 
@@ -272,7 +273,8 @@ import { OptionsAsignacionComponent } from './Pages/PanelGestionCartera/Pages/Co
     AsignacionComponent,
     GestionAsignacionComponent,
     OptionsGestionComponent,
-    OptionsAsignacionComponent
+    OptionsAsignacionComponent,
+    ParametrosComponent
 
   ],
 

@@ -1,0 +1,38 @@
+<div class="container">
+    <h2 class="mt-2 mb-4">Parámetros</h2>
+
+    <div class="row mt-4 mb-4" *ngIf="parametrosConfirm.length > 0">
+        <div class="col-md-12">
+            <div class="card card-bg">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3" *ngFor="let pc of parametrosConfirm">
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <h6>{{ pc.subParametro }}</h6>
+                                <button type="button" (click)="deleteFiltro(pc.parametro, pc.subParametro)"
+                                    class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <ng-container *ngFor="let p of parametrosArray">
+            <div class="col-md-4 mb-3" style="overflow-y: auto; height: 200px;"
+                *ngIf="!optionConfirm.includes(p.parametro)">
+                <h5>{{ p.parametro }}</h5>
+
+                <ul class="list-group" *ngFor="let sp of p.subParametros; let i = index">
+                    <li class="list-group-item" (click)="filtrosGenerales(p.parametro, sp.subParametro)">{{
+                        sp.subParametro
+                        }}</li>
+                </ul>
+            </div>
+        </ng-container>
+    </div>
+
+
+</div>
