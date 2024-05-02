@@ -24,21 +24,15 @@
 
             <li (click)="sidebarOptions(3)"><span
                     [ngClass]="{'': optionsArray[3] == false, 'sidebar-selected': optionsArray[3] == true}"><i
-                        class="fa-solid fa-list-check margin-si"></i></span></li>
+                        class="fa-solid fa-bell margin-si"></i></span></li>
             <span class="span-style text-center mb-3"
-                [ngClass]="{'': optionsArray[3] == false, 'sidebar-selected': optionsArray[3] == true}">Tarea</span>
+                [ngClass]="{'': optionsArray[3] == false, 'sidebar-selected': optionsArray[3] == true}">Evento</span>
 
             <li (click)="sidebarOptions(4)"><span
                     [ngClass]="{'': optionsArray[4] == false, 'sidebar-selected': optionsArray[4] == true}"><i
-                        class="fa-solid fa-bell margin-si"></i></span></li>
-            <span class="span-style text-center mb-3"
-                [ngClass]="{'': optionsArray[4] == false, 'sidebar-selected': optionsArray[4] == true}">Evento</span>
-
-            <li (click)="sidebarOptions(5)"><span
-                    [ngClass]="{'': optionsArray[5] == false, 'sidebar-selected': optionsArray[5] == true}"><i
                         class="fa-solid fa-user-shield margin-si"></i></span></li>
             <span class="span-style text-center mb-3"
-                [ngClass]="{'': optionsArray[5] == false, 'sidebar-selected': optionsArray[5] == true}">Localización</span>
+                [ngClass]="{'': optionsArray[4] == false, 'sidebar-selected': optionsArray[4] == true}">Localización</span>
         </ul>
     </div>
 

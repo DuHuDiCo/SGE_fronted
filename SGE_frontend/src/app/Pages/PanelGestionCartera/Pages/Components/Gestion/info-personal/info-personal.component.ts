@@ -3,6 +3,8 @@ import { data } from 'jquery';
 import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 import { Responsables } from 'src/app/Types/PanelCartera/clienteObject';
 
+declare var $: any
+
 @Component({
   selector: 'app-info-personal',
   templateUrl: './info-personal.component.html',
@@ -80,6 +82,10 @@ export class InfoPersonalComponent implements OnInit {
       'MSG-INFO',
       'EMAIL-INFO'
     ]
+
+    $(document).ready(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
   }
 
   infoPersonalAccordion() {
@@ -102,6 +108,9 @@ export class InfoPersonalComponent implements OnInit {
     var type = this.responsablesArray.find((t: any) => t.nombre == event.target.value)
     if (type != null && type != undefined) {
       this.tipoGarante = type.tipoGarante
+      $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
     }
   }
 

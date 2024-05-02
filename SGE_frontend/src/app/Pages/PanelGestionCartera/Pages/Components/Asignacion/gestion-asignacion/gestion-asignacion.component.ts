@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 import { Responsables } from 'src/app/Types/PanelCartera/clienteObject';
-
+declare var $: any
 @Component({
   selector: 'app-gestion-asignacion',
   templateUrl: './gestion-asignacion.component.html',
@@ -79,6 +79,9 @@ export class GestionAsignacionComponent implements OnInit {
       'MSG-INFO',
       'EMAIL-INFO'
     ]
+    $(document).ready(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
   }
 
   infoPersonalAccordion() {
@@ -101,6 +104,9 @@ export class GestionAsignacionComponent implements OnInit {
     var type = this.responsablesArray.find((t: any) => t.nombre == event.target.value)
     if (type != null && type != undefined) {
       this.tipoGarante = type.tipoGarante
+      $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
     }
   }
 

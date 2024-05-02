@@ -21,7 +21,6 @@ export class SidebarPanelCarteraComponent implements OnInit {
     true,
     false,
     false,
-    false,
     false
   ]
 
