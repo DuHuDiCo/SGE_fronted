@@ -14,7 +14,13 @@ export class ParametrosService {
     return this.http.get(`${this.url}/parametros/parametros`)
   }
 
-  filtrosGenerales(filtrosGenerales: any) {
-    return this.http.post(`${this.url}/filtros/`, filtrosGenerales)
+  // CUENTAS  
+  cuentas(username: string, parametros: any) {
+    return this.http.post(`${this.url}/cuentas/?username=${username}`, parametros)
   }
+
+  cuentasView(nameView: string) {
+    return this.http.get(`${this.url}/cuentas/view?nameView=${nameView}`)
+  }
+
 }

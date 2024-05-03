@@ -26,7 +26,8 @@
                 <h5>{{ p.parametro }}</h5>
 
                 <ul class="list-group" *ngFor="let sp of p.subParametros; let i = index">
-                    <li class="list-group-item" (click)="filtrosGenerales(p.parametro, sp.subParametro)">{{
+                    <li class="list-group-item" (click)="filtrosGenerales(p.parametro, sp.subParametro)">
+                        {{
                         sp.subParametro
                         }}</li>
                 </ul>
@@ -34,5 +35,6 @@
         </ng-container>
     </div>
 
+    <button class="btn btn-guardar" (click)="createView()">Crear Bloque</button>
 
 </div>
