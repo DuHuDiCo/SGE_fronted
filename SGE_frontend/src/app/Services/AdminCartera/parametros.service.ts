@@ -19,8 +19,8 @@ export class ParametrosService {
     return this.http.post(`${this.url}/cuentas/?username=${username}`, parametros)
   }
 
-  cuentasView(nameView: string) {
-    return this.http.get(`${this.url}/cuentas/view?nameView=${nameView}`)
+  cuentasView(nameView: string, parametros: any) {
+    return this.http.post(`${this.url}/cuentas/view?nameView=${nameView}`, parametros)
   }
 
 }

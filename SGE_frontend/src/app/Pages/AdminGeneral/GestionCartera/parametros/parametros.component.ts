@@ -172,7 +172,7 @@ export class ParametrosComponent implements OnInit {
     console.log(`Bloque_${this.viewsArray.length + 1}`);
 
 
-    this.parametrosService.cuentasView(`Bloque_${this.viewsArray.length + 1}`).subscribe(
+    this.parametrosService.cuentasView(`Bloque_${this.viewsArray.length + 1}`, this.filtrosGeneralObj).subscribe(
       (data: any) => {
         console.log(data);
         this.viewsArray.push(`Bloque_${this.viewsArray.length + 1}`)
