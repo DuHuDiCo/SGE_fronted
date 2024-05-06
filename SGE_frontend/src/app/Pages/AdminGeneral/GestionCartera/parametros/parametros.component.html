@@ -1,6 +1,12 @@
 <div class="container">
     <h2 class="mt-2 mb-4">Parámetros</h2>
 
+    <div class="card floating-card">
+        <div class="card-body">
+            <strong>Clientes:</strong> {{ clientesFiltro }}
+        </div>
+    </div>
+
     <div class="row mt-4 mb-4" *ngIf="parametrosConfirm.length > 0">
         <div class="col-md-12">
             <div class="card card-bg">
@@ -36,5 +42,6 @@
     </div>
 
     <button class="btn btn-guardar" (click)="createView()">Crear Bloque</button>
+    <button *ngIf="viewsArray.length > 0" class="btn btn-guardar" (click)="createCampaign()">Crear Campaña</button>
 
 </div>

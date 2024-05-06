@@ -131,6 +131,8 @@ import { GestionAsignacionComponent } from './Pages/PanelGestionCartera/Pages/Co
 import { OptionsGestionComponent } from './Pages/PanelGestionCartera/Pages/Components/Gestion/options-gestion/options-gestion.component';
 import { OptionsAsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/options-asignacion/options-asignacion.component';
 import { ParametrosComponent } from './Pages/AdminGeneral/GestionCartera/parametros/parametros.component';
+import { NgxUiLoaderHttpModule, NgxUiLoaderModule } from 'ngx-ui-loader';
+import { ngxUiLoaderConfig } from './utils/loaderConfig';
 
 
 
@@ -286,7 +288,12 @@ import { ParametrosComponent } from './Pages/AdminGeneral/GestionCartera/paramet
     HttpClientModule,
     AgregarClienteModule,
     NgxPaginationModule,
-    CommonModule
+    CommonModule,
+    NgxUiLoaderModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    NgxUiLoaderHttpModule.forRoot({
+      showForeground: true
+    }),
 
   ],
 

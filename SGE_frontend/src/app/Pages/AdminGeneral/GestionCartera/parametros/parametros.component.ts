@@ -32,6 +32,9 @@ export class ParametrosComponent implements OnInit {
     "diasEnd": null
   }
 
+  // VARIABLES
+  clientesFiltro: number = 0
+
   constructor(private parametrosService: ParametrosService, private authService: AuthenticationService) { }
 
   ngOnInit(): void {
@@ -91,6 +94,7 @@ export class ParametrosComponent implements OnInit {
 
     this.parametrosService.cuentas(user, this.filtrosGeneralObj).subscribe(
       (data: any) => {
+        this.clientesFiltro = data
         this.parametrosConfirm.push(paraObj)
         this.optionConfirm.push(paraObj.parametro)
         console.log(this.parametrosConfirm);
@@ -132,6 +136,8 @@ export class ParametrosComponent implements OnInit {
 
     this.parametrosService.cuentas(user, this.filtrosGeneralObj).subscribe(
       (data: any) => {
+        this.clientesFiltro = data
+
         var posPar = this.optionConfirm.indexOf(parametro)
         this.optionConfirm.splice(posPar, 1)
 
@@ -209,6 +215,18 @@ export class ParametrosComponent implements OnInit {
           text: 'Error Al Filtrar',
           timer: 3000
         })
+      }
+    )
+  }
+
+  createCampaign() {
+    console.log(this.viewsArray);
+
+    this.parametrosService.createCampaign(this.viewsArray).subscribe(
+      (data: any) => {
+        console.log(data);
+      }, (error: any) => {
+        console.log(error);
       }
     )
   }

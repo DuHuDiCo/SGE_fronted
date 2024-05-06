@@ -60,5 +60,15 @@
 .btn_check {
     border-color: #707274;
     border: none;
-    background-color: #dfe2e5;
+    background-color: #cacaca;
+}
+
+.floating-card {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    background-color: #e5bcc0e4;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 999;
 }
