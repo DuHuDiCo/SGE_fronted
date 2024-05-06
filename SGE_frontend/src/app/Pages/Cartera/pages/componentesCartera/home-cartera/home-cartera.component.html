@@ -522,18 +522,39 @@
                             <div class="card-body text-center">
                                 <div class="card mb-3">
                                     <div class="card-body text-center">
-                                        <div class="row text-center">
-                                            <div class="col-md-4">
-                                                <strong>Nro. Obligación:</strong> {{
-                                                cuentaCobrarSelected.numeroObligacion }}
+                                        <div class="row align-middle text-center">
+                                            <div class="col-md-3">
+                                                <div class="card border-none">
+                                                    <div class="card-body">
+                                                        <strong>Nro. Obligación:</strong> {{
+                                                        cuentaCobrarSelected.numeroObligacion }}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <strong>Nro. Creditos:</strong> {{ cuentaCobrarSelected.numeroCreditos
-                                                }}
+                                            <div class="col-md-3">
+                                                <div class="card border-none">
+                                                    <div class="card-body">
+                                                        <strong>Nro. Creditos:</strong> {{
+                                                        cuentaCobrarSelected.numeroCreditos
+                                                        }}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <strong>Condición Cliente:</strong> {{
-                                                cuentaCobrarSelected.condicionEspecial }}
+                                            <div class="col-md-3">
+                                                <div class="card border-none">
+                                                    <div class="card-body">
+                                                        <strong>Condición Cliente:</strong> {{
+                                                        cuentaCobrarSelected.condicionEspecial }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="card card-clas">
+                                                    <div class="card-body">
+                                                        <strong>Clasificación:</strong> {{
+                                                        cuentaCobrarSelected.clasificacionJuridica }}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1722,14 +1743,14 @@
                                             {{g.saldoCapitalCuota | number}}</td>
                                         <td *ngIf="g.saldoCapitalCuota > 0" style="background-color: yellow;">
                                             {{g.saldoCapitalCuota | number}}</td>
-                                        
+
                                         <td>{{ g.interesCuota | number }}</td>
 
                                         <td *ngIf="g.salodInteresCuota == 0" style="background-color: gray;">
                                             {{g.salodInteresCuota | number}}</td>
                                         <td *ngIf="g.salodInteresCuota > 0" style="background-color: yellow;">
                                             {{g.salodInteresCuota | number}}</td>
-                                            <td>{{ g.honorarios | number }}</td>
+                                        <td>{{ g.honorarios | number }}</td>
 
                                         <td *ngIf="g.saldoHonorarios > 0" style="background-color: yellow;">
                                             {{g.saldoHonorarios| number}}</td>

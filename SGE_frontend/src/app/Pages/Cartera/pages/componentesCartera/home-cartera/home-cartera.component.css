@@ -6,6 +6,15 @@
   color: #960010;
 }
 
+.card-clas {
+  border: none;
+  background-color: #e6bbbed4;
+}
+
+.border-none {
+  border: none;
+}
+
 .card-c {
   color: #000;
   position: relative;
