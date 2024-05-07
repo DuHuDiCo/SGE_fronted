@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ParametrosService } from 'src/app/Services/AdminCartera/parametros.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { Campaign } from 'src/app/Types/PanelCartera/campaign';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,6 +17,7 @@ export class ParametrosComponent implements OnInit {
   parametrosConfirm: any[] = []
   optionConfirm: string[] = []
   viewsArray: string[] = []
+  asesoresArray: any[] = []
 
   // OBJETOS
   filtrosGeneralObj: any = {
@@ -32,6 +34,14 @@ export class ParametrosComponent implements OnInit {
     "diasEnd": null
   }
 
+  campaignObj: Campaign = {
+    nombreCampaña: '',
+    parametros: [],
+    namesViews: [],
+    asesoresId: [],
+    parametroOrdenamientoDTOs: []
+  }
+
   // VARIABLES
   clientesFiltro: number = 0
 
@@ -39,6 +49,7 @@ export class ParametrosComponent implements OnInit {
 
   ngOnInit(): void {
     this.parametros()
+    this.getAsesores()
   }
 
   parametros() {
@@ -52,6 +63,8 @@ export class ParametrosComponent implements OnInit {
       }
     )
   }
+
+  // FILTROS GENERALES
 
   fillParametrosNoConfirm(array: any) {
     for (let i = 0; i < array.length; i++) {
@@ -70,7 +83,9 @@ export class ParametrosComponent implements OnInit {
 
     var paraObj = {
       parametro: parametro,
-      subParametro: subParametro
+      subParametros: [
+        subParametro
+      ]
     }
 
     switch (paraObj.parametro) {
@@ -97,6 +112,7 @@ export class ParametrosComponent implements OnInit {
         this.clientesFiltro = data
         this.parametrosConfirm.push(paraObj)
         this.optionConfirm.push(paraObj.parametro)
+        this.campaignObj.parametros.push(paraObj)
         console.log(this.parametrosConfirm);
         console.log(data);
       }, (error: any) => {
@@ -188,6 +204,7 @@ export class ParametrosComponent implements OnInit {
           text: 'Bloque Creado Con Éxito',
           timer: 3000
         })
+        this.campaignObj.namesViews = this.viewsArray
       }, (error: any) => {
         console.log(error);
       }
@@ -222,13 +239,40 @@ export class ParametrosComponent implements OnInit {
   createCampaign() {
     console.log(this.viewsArray);
 
-    this.parametrosService.createCampaign(this.viewsArray).subscribe(
+    this.parametrosService.createCampaign(this.campaignObj).subscribe(
       (data: any) => {
         console.log(data);
       }, (error: any) => {
         console.log(error);
       }
     )
+  }
+
+  // ASESORES
+
+  getAsesores() {
+    this.parametrosService.getAsesores().subscribe(
+      (data: any) => {
+        this.asesoresArray = data
+        var admin = this.asesoresArray.find((a: any) => a.usuario.nombres == 'admin')
+        var pos = this.asesoresArray.indexOf(admin)
+        this.asesoresArray.splice(pos, 1)
+        console.log(this.asesoresArray);
+      }, (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  asignarAsesor(asesorId: number) {
+    if (this.campaignObj.asesoresId.includes(asesorId)) {
+      var position = this.campaignObj.asesoresId.indexOf(asesorId)
+      this.campaignObj.asesoresId.splice(position, 1)
+    } else {
+      this.campaignObj.asesoresId.push(asesorId)
+    }
+    console.log(this.campaignObj);
+
   }
 
 }

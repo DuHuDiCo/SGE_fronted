@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Campaign } from 'src/app/Types/PanelCartera/campaign';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,13 @@ export class ParametrosService {
     return this.http.post(`${this.url}/cuentas/view?nameView=${nameView}`, parametros)
   }
 
-  createCampaign(views: string[]) {
-    return this.http.post(`${this.url}/cuentas/campaign`, views)
+  createCampaign(parametros: Campaign) {
+    return this.http.post(`${this.url}/cuentas/campaign`, parametros)
+  }
+
+  // ASESORES
+  getAsesores() {
+    return this.http.get(`${this.url}/asesores/`)
   }
 
 }
