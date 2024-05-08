@@ -74,35 +74,47 @@ export class ParametrosComponent implements OnInit {
     }
   }
 
-  filtrosGenerales(parametro: string, subParametro: string) {
+  filtrosGenerales(obj: any, subParametro: any) {
+
+    var paraObj = {
+      parametro: obj.parametro,
+      subParametros: [
+        subParametro.subParametro
+      ]
+    }
+
+    if (obj.parametro == 'MORA OBLIGATORIA') {
+      this.filtroMora(obj, subParametro)
+    }
+
+    if (obj.parametro == 'DIAS VENCIDOS') {
+      this.filtroDias(obj, subParametro)
+    }
+
+    if (obj.parametro == 'TOTAL OBLIGACION') {
+      this.filtroTotal(obj, subParametro)
+    }
 
     var user = this.authService.getUsername()
     if (user == null || user == undefined) {
       return
     }
 
-    var paraObj = {
-      parametro: parametro,
-      subParametros: [
-        subParametro
-      ]
-    }
-
     switch (paraObj.parametro) {
       case 'BANCO':
-        this.filtrosGeneralObj.bancos = subParametro
+        this.filtrosGeneralObj.bancos = subParametro.subParametro
         break;
       case 'EDAD VENCIMIENTO':
-        this.filtrosGeneralObj.edadVencimientos = subParametro
+        this.filtrosGeneralObj.edadVencimientos = subParametro.subParametro
         break;
       case 'SEDE':
-        this.filtrosGeneralObj.sede = subParametro
+        this.filtrosGeneralObj.sede = subParametro.subParametro
         break;
       case 'TIPO CLASIFICACION JURIDICA':
-        this.filtrosGeneralObj.juridica = subParametro
+        this.filtrosGeneralObj.juridica = subParametro.subParametro
         break;
       case 'TIPO DE CREDITO':
-        this.filtrosGeneralObj.tipoCredito = subParametro
+        this.filtrosGeneralObj.tipoCredito = subParametro.subParametro
     }
 
     console.log(this.filtrosGeneralObj);
@@ -127,6 +139,114 @@ export class ParametrosComponent implements OnInit {
     )
   }
 
+  // FILTRADO POR MORA
+  filtroMora(obj: any, subParametro: any) {
+    var inicio
+    var medio
+    var fin
+
+    for (let i = 1; i < obj.subParametros.length + 1; i++) {
+      if (i == 1) {
+        inicio = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
+      }
+
+      if (i == 2) {
+        medio = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
+      }
+
+      if (i == 3) {
+        fin = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
+      }
+    }
+
+    switch (subParametro.idSubParametro) {
+      case 1:
+        this.filtrosGeneralObj.moraStart = 1
+        this.filtrosGeneralObj.moraEnd = subParametro.subParametro
+        break;
+      case 2:
+        this.filtrosGeneralObj.moraStart = inicio.subParametro
+        this.filtrosGeneralObj.moraEnd = subParametro.subParametro
+        break;
+      // case 3:
+      //   this.filtrosGeneralObj.moraStart = subParametro.subParametro
+      //   this.filtrosGeneralObj.moraEnd = 
+      //   break;
+    }
+  }
+
+  // FILTRADO POR DIAS
+  filtroDias(obj: any, subParametro: any) {
+    var inicio
+    var medio
+    var fin
+
+    for (let i = 1; i < obj.subParametros.length + 1; i++) {
+      if (i == 1) {
+        inicio = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
+      }
+
+      if (i == 2) {
+        medio = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
+      }
+
+      if (i == 3) {
+        fin = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
+      }
+    }
+
+    switch (subParametro.idSubParametro) {
+      case 1:
+        this.filtrosGeneralObj.diasStart = 1
+        this.filtrosGeneralObj.diasEnd = subParametro.subParametro
+        break;
+      case 2:
+        this.filtrosGeneralObj.diasStart = inicio.subParametro
+        this.filtrosGeneralObj.diasEnd = subParametro.subParametro
+        break;
+      // case 3:
+      //   this.filtrosGeneralObj.diasStart = subParametro.subParametro
+      //   this.filtrosGeneralObj.diasEnd = 
+      //   break;
+    }
+  }
+
+  // FILTRADO POR TOTAL
+  filtroTotal(obj: any, subParametro: any) {
+    var inicio
+    var medio
+    var fin
+
+    for (let i = 1; i < obj.subParametros.length + 1; i++) {
+      if (i == 1) {
+        inicio = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
+      }
+
+      if (i == 2) {
+        medio = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
+      }
+
+      if (i == 3) {
+        fin = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
+      }
+    }
+
+    switch (subParametro.idSubParametro) {
+      case 1:
+        this.filtrosGeneralObj.diasStart = 1
+        this.filtrosGeneralObj.diasEnd = subParametro.subParametro
+        break;
+      case 2:
+        this.filtrosGeneralObj.diasStart = inicio.subParametro
+        this.filtrosGeneralObj.diasEnd = subParametro.subParametro
+        break;
+      // case 3:
+      //   this.filtrosGeneralObj.diasStart = subParametro.subParametro
+      //   this.filtrosGeneralObj.diasEnd = 
+      //   break;
+    }
+  }
+
   deleteFiltro(parametro: string, subParametro: string) {
     var user = this.authService.getUsername()
     if (user == null || user == undefined) {
@@ -148,6 +268,19 @@ export class ParametrosComponent implements OnInit {
         break;
       case 'TIPO DE CREDITO':
         this.filtrosGeneralObj.tipoCredito = null
+        break;
+      case 'MORA OBLIGATORIA':
+        this.filtrosGeneralObj.moraStart = null
+        this.filtrosGeneralObj.moraEnd = null
+        break;
+      case 'DIAS VENCIDOS':
+        this.filtrosGeneralObj.diasStart = null
+        this.filtrosGeneralObj.diasEnd = null
+        break;
+      // TERMINAR CASO
+      case 'TOTAL OBLIGACION':
+
+        break;
     }
 
     this.parametrosService.cuentas(user, this.filtrosGeneralObj).subscribe(

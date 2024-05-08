@@ -52,7 +52,7 @@
                         <h6 class="color-red">{{ p.parametro }}</h6>
 
                         <ul class="list-group" *ngFor="let sp of p.subParametros; let i = index">
-                            <li class="list-group-item" (click)="filtrosGenerales(p.parametro, sp.subParametro)">
+                            <li class="list-group-item" (click)="filtrosGenerales(p, sp)">
                                 <h6 class="font-sub">{{
                                     sp.subParametro
                                     }}</h6>
@@ -65,7 +65,7 @@
     </div>
 
     <!-- ORDENAMIENTO -->
-    <div class="tab-pane fade" id="ordenamiento" role="tabpanel" aria-labelledby="ordenamiento-tab">
+    <!-- <div class="tab-pane fade" id="ordenamiento" role="tabpanel" aria-labelledby="ordenamiento-tab">
         <div class="container">
             <h2 class="mt-2">Parámetros</h2>
 
@@ -114,7 +114,7 @@
 
             <button class="btn btn-guardar" (click)="createView()">Crear Bloque</button>
         </div>
-    </div>
+    </div> -->
 
     <!-- ASESORES -->
     <div class="tab-pane fade" id="asesores" role="tabpanel" aria-labelledby="asesores-tab">
