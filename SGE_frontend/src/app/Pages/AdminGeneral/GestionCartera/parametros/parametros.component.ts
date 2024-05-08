@@ -55,8 +55,8 @@ export class ParametrosComponent implements OnInit {
   parametros() {
     this.parametrosService.getParametros().subscribe(
       (data: any) => {
-        this.parametrosArray = data
-        this.fillParametrosNoConfirm(data)
+        this.parametrosArray = data.parametros
+        this.fillParametrosNoConfirm(data.parametros)
         console.log(data);
       }, (error: any) => {
         console.log(error);

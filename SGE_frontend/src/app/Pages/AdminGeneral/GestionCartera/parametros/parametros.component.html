@@ -34,8 +34,8 @@
                             <div class="row">
                                 <div class="col-md-3" *ngFor="let pc of parametrosConfirm">
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <h6>{{ pc.subParametro }}</h6>
-                                        <button type="button" (click)="deleteFiltro(pc.parametro, pc.subParametro)"
+                                        <h6>{{ pc.subParametros[0] }}</h6>
+                                        <button type="button" (click)="deleteFiltro(pc.parametro, pc.subParametros[0])"
                                             class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
                                 </div>
