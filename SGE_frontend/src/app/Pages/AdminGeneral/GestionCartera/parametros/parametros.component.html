@@ -51,23 +51,51 @@
                         *ngIf="!optionConfirm.includes(p.parametro)">
                         <h6 class="color-red">{{ p.parametro }}</h6>
 
-                        <ul class="list-group" *ngFor="let sp of p.subParametros; let i = index">
-                            <li class="list-group-item" (click)="filtrosGenerales(p, sp)">
-                                <h6 class="font-sub">{{
-                                    sp.subParametro
-                                    }}</h6>
-                            </li>
-                        </ul>
+                        <ng-container *ngFor="let sp of p.subParametros; let i = index">
+                            <ul class="list-group"
+                                *ngIf="!(p.parametro == 'MORA OBLIGATORIA' && sp.idSubParametro == 4 || p.parametro == 'DIAS VENCIDOS' && sp.idSubParametro == 4 || p.parametro == 'TOTAL OBLIGACION' && sp.idSubParametro == 4)">
+                                <li class="list-group-item" (click)="filtrosGenerales(p, sp)">
+                                    <h6 class="font-sub">{{
+                                        sp.subParametro
+                                        }}</h6>
+                                </li>
+                            </ul>
+                        </ng-container>
                     </div>
                 </ng-container>
+                <div class="row">
+                    <div class="col-md-6" *ngIf="!optionConfirm.includes('FECHA VENCIMIENTO')">
+                        <h5 class="color-red">FECHA VENCIMIENTO</h5>
+                        <div class="row mb-4">
+                            <div class="col-md-5">
+                                <div class="mt-3">
+                                    <label class="form-label fw-bold">Inicio</label>
+                                    <input type="date" class="form-control" [(ngModel)]="filtrosGeneralObj.fechaStart">
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="mt-3">
+                                    <label class="form-label fw-bold">Fin</label>
+                                    <input type="date" class="form-control" [(ngModel)]="filtrosGeneralObj.fechaEnd">
+                                </div>
+                            </div>
+                            <div class="col-md-2 mt-5">
+                                <button class="btn b" (click)="filtroFecha('FECHA VENCIMIENTO')">Filtrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-guardar" (click)="createView()">Crear
+                    Bloque</button>
             </div>
         </div>
     </div>
 
     <!-- ORDENAMIENTO -->
-    <!-- <div class="tab-pane fade" id="ordenamiento" role="tabpanel" aria-labelledby="ordenamiento-tab">
+    <div class="tab-pane fade" id="ordenamiento" role="tabpanel" aria-labelledby="ordenamiento-tab">
         <div class="container">
-            <h2 class="mt-2">Parámetros</h2>
+            <h2 class="mt-2">Ordenamiento</h2>
 
             <hr>
 
@@ -77,44 +105,36 @@
                 </div>
             </div>
 
-            <div class="row mt-4 mb-4" *ngIf="parametrosConfirm.length > 0">
+            <div class="row mt-4 mb-4" *ngIf="ordenamientoArray.length == 0">
                 <div class="col-md-12">
-                    <div class="card card-bg">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-3" *ngFor="let pc of parametrosConfirm">
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <h6>{{ pc.subParametro }}</h6>
-                                        <button type="button" (click)="deleteFiltro(pc.parametro, pc.subParametro)"
-                                            class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <h5>No Hay Filtros Para Ordenar</h5>
                 </div>
             </div>
 
             <div class="row">
-                <ng-container *ngFor="let p of parametrosArray">
-                    <div class="col-md-4 mb-3" style="overflow-y: auto; height: 200px;"
-                        *ngIf="!optionConfirm.includes(p.parametro)">
-                        <h6 class="color-red">{{ p.parametro }}</h6>
+                <ng-container *ngFor="let o of ordenamientoArray">
+                    <div class="col-md-4 mb-3" style="overflow-y: auto; height: 200px;">
+                        <h6 class="color-red">{{ o }}</h6>
 
-                        <ul class="list-group" *ngFor="let sp of p.subParametros; let i = index">
-                            <li class="list-group-item" (click)="filtrosGenerales(p.parametro, sp.subParametro)">
-                                <h6 class="font-sub">{{
-                                    sp.subParametro
-                                    }}</h6>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <h6 class="font-sub" (click)="asignarOrdenamiento(o, 'ASC')">De Menor a Mayor</h6>
+                            </li>
+                        </ul>
+
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <h6 class="font-sub" (click)="asignarOrdenamiento(o, 'DESC')">De Mayor a Menor</h6>
                             </li>
                         </ul>
                     </div>
                 </ng-container>
             </div>
 
-            <button class="btn btn-guardar" (click)="createView()">Crear Bloque</button>
+            <button *ngIf="ordenamientoArray.length > 0" class="btn btn-guardar" (click)="createView()">Crear
+                Bloque</button>
         </div>
-    </div> -->
+    </div>
 
     <!-- ASESORES -->
     <div class="tab-pane fade" id="asesores" role="tabpanel" aria-labelledby="asesores-tab">

@@ -19,6 +19,8 @@ export class ParametrosComponent implements OnInit {
   viewsArray: string[] = []
   asesoresArray: any[] = []
 
+  ordenamientoArray: any[] = []
+
   // OBJETOS
   filtrosGeneralObj: any = {
     "bancos": null,
@@ -31,7 +33,8 @@ export class ParametrosComponent implements OnInit {
     "moraStart": null,
     "moraEnd": null,
     "diasStart": null,
-    "diasEnd": null
+    "diasEnd": null,
+    orden: []
   }
 
   campaignObj: Campaign = {
@@ -64,8 +67,6 @@ export class ParametrosComponent implements OnInit {
     )
   }
 
-  // FILTROS GENERALES
-
   fillParametrosNoConfirm(array: any) {
     for (let i = 0; i < array.length; i++) {
       array[i].subParametros.forEach((element: any) => {
@@ -74,6 +75,7 @@ export class ParametrosComponent implements OnInit {
     }
   }
 
+  // FILTROS GENERALES
   filtrosGenerales(obj: any, subParametro: any) {
 
     var paraObj = {
@@ -85,14 +87,17 @@ export class ParametrosComponent implements OnInit {
 
     if (obj.parametro == 'MORA OBLIGATORIA') {
       this.filtroMora(obj, subParametro)
+      this.ordenamientoArray.push(paraObj.parametro)
     }
 
     if (obj.parametro == 'DIAS VENCIDOS') {
       this.filtroDias(obj, subParametro)
+      this.ordenamientoArray.push(paraObj.parametro)
     }
 
     if (obj.parametro == 'TOTAL OBLIGACION') {
       this.filtroTotal(obj, subParametro)
+      this.ordenamientoArray.push(paraObj.parametro)
     }
 
     var user = this.authService.getUsername()
@@ -139,11 +144,49 @@ export class ParametrosComponent implements OnInit {
     )
   }
 
+  // FILTRADO FECHA
+  filtroFecha(parametro: string) {
+    var paraObj = {
+      parametro: parametro,
+      subParametros: [
+        this.filtrosGeneralObj.fechaStart + ' - ' + this.filtrosGeneralObj.fechaEnd
+      ]
+    }
+
+    var user = this.authService.getUsername()
+    if (user == null || user == undefined) {
+      return
+    }
+
+    console.log(this.filtrosGeneralObj);
+
+    this.parametrosService.cuentas(user, this.filtrosGeneralObj).subscribe(
+      (data: any) => {
+        this.clientesFiltro = data
+        this.parametrosConfirm.push(paraObj)
+        this.optionConfirm.push(paraObj.parametro)
+        this.campaignObj.parametros.push(paraObj)
+        this.ordenamientoArray.push(paraObj.parametro)
+        console.log(this.parametrosConfirm);
+        console.log(data);
+      }, (error: any) => {
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error Al Filtrar',
+          timer: 3000
+        })
+      }
+    )
+  }
+
   // FILTRADO POR MORA
   filtroMora(obj: any, subParametro: any) {
     var inicio
     var medio
     var fin
+    var max
 
     for (let i = 1; i < obj.subParametros.length + 1; i++) {
       if (i == 1) {
@@ -156,6 +199,10 @@ export class ParametrosComponent implements OnInit {
 
       if (i == 3) {
         fin = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
+      }
+
+      if (i == 4) {
+        max = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
       }
     }
 
@@ -168,10 +215,10 @@ export class ParametrosComponent implements OnInit {
         this.filtrosGeneralObj.moraStart = inicio.subParametro
         this.filtrosGeneralObj.moraEnd = subParametro.subParametro
         break;
-      // case 3:
-      //   this.filtrosGeneralObj.moraStart = subParametro.subParametro
-      //   this.filtrosGeneralObj.moraEnd = 
-      //   break;
+      case 3:
+        this.filtrosGeneralObj.moraStart = subParametro.subParametro
+        this.filtrosGeneralObj.moraEnd = max.subParametro
+        break;
     }
   }
 
@@ -180,6 +227,7 @@ export class ParametrosComponent implements OnInit {
     var inicio
     var medio
     var fin
+    var max
 
     for (let i = 1; i < obj.subParametros.length + 1; i++) {
       if (i == 1) {
@@ -193,6 +241,10 @@ export class ParametrosComponent implements OnInit {
       if (i == 3) {
         fin = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
       }
+
+      if (i == 4) {
+        max = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
+      }
     }
 
     switch (subParametro.idSubParametro) {
@@ -204,10 +256,10 @@ export class ParametrosComponent implements OnInit {
         this.filtrosGeneralObj.diasStart = inicio.subParametro
         this.filtrosGeneralObj.diasEnd = subParametro.subParametro
         break;
-      // case 3:
-      //   this.filtrosGeneralObj.diasStart = subParametro.subParametro
-      //   this.filtrosGeneralObj.diasEnd = 
-      //   break;
+      case 3:
+        this.filtrosGeneralObj.diasStart = subParametro.subParametro
+        this.filtrosGeneralObj.diasEnd = max.subParametro
+        break;
     }
   }
 
@@ -216,6 +268,7 @@ export class ParametrosComponent implements OnInit {
     var inicio
     var medio
     var fin
+    var max
 
     for (let i = 1; i < obj.subParametros.length + 1; i++) {
       if (i == 1) {
@@ -229,24 +282,29 @@ export class ParametrosComponent implements OnInit {
       if (i == 3) {
         fin = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
       }
+
+      if (i == 4) {
+        max = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
+      }
     }
 
     switch (subParametro.idSubParametro) {
       case 1:
-        this.filtrosGeneralObj.diasStart = 1
-        this.filtrosGeneralObj.diasEnd = subParametro.subParametro
+        this.filtrosGeneralObj.totalStart = 1
+        this.filtrosGeneralObj.totalEnd = subParametro.subParametro
         break;
       case 2:
-        this.filtrosGeneralObj.diasStart = inicio.subParametro
-        this.filtrosGeneralObj.diasEnd = subParametro.subParametro
+        this.filtrosGeneralObj.totalStart = inicio.subParametro
+        this.filtrosGeneralObj.totalEnd = subParametro.subParametro
         break;
-      // case 3:
-      //   this.filtrosGeneralObj.diasStart = subParametro.subParametro
-      //   this.filtrosGeneralObj.diasEnd = 
-      //   break;
+      case 3:
+        this.filtrosGeneralObj.totalStart = subParametro.subParametro
+        this.filtrosGeneralObj.totalEnd = max.subParametro
+        break;
     }
   }
 
+  // BORRAR FILTRO
   deleteFiltro(parametro: string, subParametro: string) {
     var user = this.authService.getUsername()
     if (user == null || user == undefined) {
@@ -272,16 +330,27 @@ export class ParametrosComponent implements OnInit {
       case 'MORA OBLIGATORIA':
         this.filtrosGeneralObj.moraStart = null
         this.filtrosGeneralObj.moraEnd = null
+        this.deleteOrdenamiento(parametro)
         break;
       case 'DIAS VENCIDOS':
         this.filtrosGeneralObj.diasStart = null
         this.filtrosGeneralObj.diasEnd = null
+        this.deleteOrdenamiento(parametro)
         break;
-      // TERMINAR CASO
+      case 'FECHA VENCIMIENTO':
+        this.filtrosGeneralObj.fechaStart = null
+        this.filtrosGeneralObj.fechaEnd = null
+        this.deleteOrdenamiento(parametro)
+        break;
       case 'TOTAL OBLIGACION':
-
+        this.filtrosGeneralObj.totalStart = null
+        this.filtrosGeneralObj.totalEnd = null
+        this.deleteOrdenamiento(parametro)
         break;
     }
+
+    console.log(this.filtrosGeneralObj);
+
 
     this.parametrosService.cuentas(user, this.filtrosGeneralObj).subscribe(
       (data: any) => {
@@ -290,9 +359,11 @@ export class ParametrosComponent implements OnInit {
         var posPar = this.optionConfirm.indexOf(parametro)
         this.optionConfirm.splice(posPar, 1)
 
-        var subParFind = this.parametrosConfirm.find((p: any) => p.subParametro == subParametro)
+        var subParFind = this.parametrosConfirm.find((p: any) => p.subParametros[0] == subParametro)
 
         var position = this.parametrosConfirm.indexOf(subParFind)
+
+
         this.parametrosConfirm.splice(position, 1)
         console.log(this.parametrosConfirm);
         console.log(data);
@@ -308,13 +379,38 @@ export class ParametrosComponent implements OnInit {
     )
   }
 
+  // METODO PARA ELIMINAR DEL ARRAY DE ORDENAMIENTO
+  deleteOrdenamiento(parametro: string) {
+    var position = this.ordenamientoArray.indexOf(parametro)
+    this.ordenamientoArray.splice(position, 1)
+  }
+
+  // ORDENAR
+  asignarOrdenamiento(parametro: string, orden: string) {
+    var ordenObj = {
+      parametroOrdenamiento: parametro,
+      direccionOrdenamiento: orden,
+      bloque: `Bloque_${this.viewsArray.length + 1}`
+    }
+
+    this.filtrosGeneralObj.orden.push(ordenObj)
+
+    var position = this.ordenamientoArray.indexOf(parametro)
+    this.ordenamientoArray.splice(position, 1)
+
+    console.log(this.filtrosGeneralObj);
+  }
+
+  // CREAR BLOQUE
   createView() {
     var user = this.authService.getUsername()
     if (user == null || user == undefined) {
       return
     }
 
-    if (this.filtrosGeneralObj.bancos == null && this.filtrosGeneralObj.edadVencimientos == null && this.filtrosGeneralObj.sede == null && this.filtrosGeneralObj.juridica == null && this.filtrosGeneralObj.tipoCredito == null) {
+    if (this.filtrosGeneralObj.bancos == null && this.filtrosGeneralObj.edadVencimientos == null && this.filtrosGeneralObj.sede == null && this.filtrosGeneralObj.juridica == null && this.filtrosGeneralObj.tipoCredito == null &&
+      (this.filtrosGeneralObj.fechaStart == null && this.filtrosGeneralObj.fechaEnd == null) && (this.filtrosGeneralObj.moraStart == null && this.filtrosGeneralObj.moraEnd == null) && (this.filtrosGeneralObj.diasStart == null && this.filtrosGeneralObj.diasEnd == null)
+    ) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -330,14 +426,21 @@ export class ParametrosComponent implements OnInit {
     this.parametrosService.cuentasView(`Bloque_${this.viewsArray.length + 1}`, this.filtrosGeneralObj).subscribe(
       (data: any) => {
         console.log(data);
-        this.viewsArray.push(`Bloque_${this.viewsArray.length + 1}`)
-        Swal.fire({
-          icon: 'success',
-          title: 'Datos Guardados',
-          text: 'Bloque Creado Con Éxito',
-          timer: 3000
-        })
-        this.campaignObj.namesViews = this.viewsArray
+        this.parametrosService.viewUpdate(data.message).subscribe(
+          (data: any) => {
+            console.log(data);
+            this.viewsArray.push(`Bloque_${this.viewsArray.length + 1}`)
+            Swal.fire({
+              icon: 'success',
+              title: 'Datos Guardados',
+              text: 'Bloque Creado Con Éxito',
+              timer: 3000
+            })
+            this.campaignObj.namesViews = this.viewsArray
+          }, (error: any) => {
+            console.log(error);
+          }
+        )
       }, (error: any) => {
         console.log(error);
       }
@@ -369,6 +472,7 @@ export class ParametrosComponent implements OnInit {
     )
   }
 
+  // CREAR CAMPAÑA
   createCampaign() {
     console.log(this.viewsArray);
 
@@ -382,7 +486,6 @@ export class ParametrosComponent implements OnInit {
   }
 
   // ASESORES
-
   getAsesores() {
     this.parametrosService.getAsesores().subscribe(
       (data: any) => {
@@ -397,6 +500,7 @@ export class ParametrosComponent implements OnInit {
     )
   }
 
+  // ASIGNAR ASESOR
   asignarAsesor(asesorId: number) {
     if (this.campaignObj.asesoresId.includes(asesorId)) {
       var position = this.campaignObj.asesoresId.indexOf(asesorId)

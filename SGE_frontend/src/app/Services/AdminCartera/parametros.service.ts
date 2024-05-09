@@ -24,6 +24,10 @@ export class ParametrosService {
     return this.http.post(`${this.url}/cuentas/view?nameView=${nameView}`, parametros)
   }
 
+  viewUpdate(query: string) {
+    return this.http.post(`${this.url}/cuentas/viewupdate?query=${query}`, null)
+  }
+
   createCampaign(parametros: Campaign) {
     return this.http.post(`${this.url}/cuentas/campaign`, parametros)
   }
