@@ -105,15 +105,28 @@
                 </div>
             </div>
 
-            <div class="row mt-4 mb-4" *ngIf="ordenamientoArray.length == 0">
+            <div class="row mt-4 mb-4" *ngIf="ordenamientoConfirm.length > 0">
                 <div class="col-md-12">
-                    <h5>No Hay Filtros Para Ordenar</h5>
+                    <div class="card card-bg">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3" *ngFor="let o of ordenamientoConfirm">
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <h6>{{ o }}</h6>
+                                        <button type="button" (click)="deleteOrdenamientoCampaign(o)" class="btn-close"
+                                            data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="row">
                 <ng-container *ngFor="let o of ordenamientoArray">
-                    <div class="col-md-4 mb-3" style="overflow-y: auto; height: 200px;">
+                    <div class="col-md-4 mb-3" style="overflow-y: auto; height: 200px;"
+                        *ngIf="!ordenamientoConfirm.includes(o)">
                         <h6 class="color-red">{{ o }}</h6>
 
                         <ul class="list-group">
@@ -153,6 +166,22 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row justify-content-center align-items-center text-center mb-3" *ngIf="viewsArray.length > 0">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Nombre Campaña</label>
+                                <input type="text" class="form-control" placeholder="Campaña"
+                                    [(ngModel)]="campaignObj.nombreCampania">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <button *ngIf="viewsArray.length > 0" class="btn btn-guardar" (click)="createCampaign()">Crear
                 Campaña</button>
         </div>

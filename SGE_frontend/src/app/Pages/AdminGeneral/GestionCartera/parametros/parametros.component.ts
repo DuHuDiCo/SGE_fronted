@@ -20,6 +20,7 @@ export class ParametrosComponent implements OnInit {
   asesoresArray: any[] = []
 
   ordenamientoArray: any[] = []
+  ordenamientoConfirm: any[] = []
 
   // OBJETOS
   filtrosGeneralObj: any = {
@@ -38,7 +39,7 @@ export class ParametrosComponent implements OnInit {
   }
 
   campaignObj: Campaign = {
-    nombreCampaña: '',
+    nombreCampania: '',
     parametros: [],
     namesViews: [],
     asesoresId: [],
@@ -60,6 +61,7 @@ export class ParametrosComponent implements OnInit {
       (data: any) => {
         this.parametrosArray = data.parametros
         this.fillParametrosNoConfirm(data.parametros)
+        this.fillOrdenamiento()
         console.log(data);
       }, (error: any) => {
         console.log(error);
@@ -67,12 +69,24 @@ export class ParametrosComponent implements OnInit {
     )
   }
 
+  // LLENAR PARAMETROS SIN CONFIRMAR
   fillParametrosNoConfirm(array: any) {
     for (let i = 0; i < array.length; i++) {
       array[i].subParametros.forEach((element: any) => {
         this.parametrosNoConfirm.push(element.subParametro)
       });
     }
+  }
+
+  // LLENAR ORDENAMIENTO
+  fillOrdenamiento() {
+    for (let i = 0; i < this.parametrosArray.length; i++) {
+      var array = this.parametrosArray[i]
+      if (array.idParametro == null) {
+        this.ordenamientoArray.push(array.parametro)
+      }
+    }
+    this.ordenamientoArray.push('FECHA VENCIMIENTO')
   }
 
   // FILTROS GENERALES
@@ -87,17 +101,14 @@ export class ParametrosComponent implements OnInit {
 
     if (obj.parametro == 'MORA OBLIGATORIA') {
       this.filtroMora(obj, subParametro)
-      this.ordenamientoArray.push(paraObj.parametro)
     }
 
     if (obj.parametro == 'DIAS VENCIDOS') {
       this.filtroDias(obj, subParametro)
-      this.ordenamientoArray.push(paraObj.parametro)
     }
 
     if (obj.parametro == 'TOTAL OBLIGACION') {
       this.filtroTotal(obj, subParametro)
-      this.ordenamientoArray.push(paraObj.parametro)
     }
 
     var user = this.authService.getUsername()
@@ -166,7 +177,6 @@ export class ParametrosComponent implements OnInit {
         this.parametrosConfirm.push(paraObj)
         this.optionConfirm.push(paraObj.parametro)
         this.campaignObj.parametros.push(paraObj)
-        this.ordenamientoArray.push(paraObj.parametro)
         console.log(this.parametrosConfirm);
         console.log(data);
       }, (error: any) => {
@@ -330,22 +340,18 @@ export class ParametrosComponent implements OnInit {
       case 'MORA OBLIGATORIA':
         this.filtrosGeneralObj.moraStart = null
         this.filtrosGeneralObj.moraEnd = null
-        this.deleteOrdenamiento(parametro)
         break;
       case 'DIAS VENCIDOS':
         this.filtrosGeneralObj.diasStart = null
         this.filtrosGeneralObj.diasEnd = null
-        this.deleteOrdenamiento(parametro)
         break;
       case 'FECHA VENCIMIENTO':
         this.filtrosGeneralObj.fechaStart = null
         this.filtrosGeneralObj.fechaEnd = null
-        this.deleteOrdenamiento(parametro)
         break;
       case 'TOTAL OBLIGACION':
         this.filtrosGeneralObj.totalStart = null
         this.filtrosGeneralObj.totalEnd = null
-        this.deleteOrdenamiento(parametro)
         break;
     }
 
@@ -363,8 +369,10 @@ export class ParametrosComponent implements OnInit {
 
         var position = this.parametrosConfirm.indexOf(subParFind)
 
-
         this.parametrosConfirm.splice(position, 1)
+
+        this.deleteParametroCampaign(parametro)
+
         console.log(this.parametrosConfirm);
         console.log(data);
       }, (error: any) => {
@@ -379,10 +387,17 @@ export class ParametrosComponent implements OnInit {
     )
   }
 
-  // METODO PARA ELIMINAR DEL ARRAY DE ORDENAMIENTO
-  deleteOrdenamiento(parametro: string) {
-    var position = this.ordenamientoArray.indexOf(parametro)
-    this.ordenamientoArray.splice(position, 1)
+  // ELIMINAR PARAMETRO DE LA CAMPAÑA AL ELIMINARSE
+  deleteParametroCampaign(rol: string) {
+    var obj = this.campaignObj.parametros.find((r: any) => r.parametro == rol)
+
+    if (obj != undefined) {
+      var position = this.campaignObj.parametros.indexOf(obj)
+      this.campaignObj.parametros.splice(position, 1)
+    }
+
+    console.log(obj);
+
   }
 
   // ORDENAR
@@ -395,10 +410,29 @@ export class ParametrosComponent implements OnInit {
 
     this.filtrosGeneralObj.orden.push(ordenObj)
 
-    var position = this.ordenamientoArray.indexOf(parametro)
-    this.ordenamientoArray.splice(position, 1)
+    this.campaignObj.parametroOrdenamientoDTOs.push(ordenObj)
+    this.ordenamientoConfirm.push(parametro)
 
     console.log(this.filtrosGeneralObj);
+  }
+
+  // DELETE ORDENAMIENTO DE CAMPAÑA
+  deleteOrdenamientoCampaign(parametro: string) {
+    var objCampaign = this.campaignObj.parametroOrdenamientoDTOs.find((o: any) => o.parametroOrdenamiento == parametro)
+    if (objCampaign != undefined) {
+      var positionCampaign = this.campaignObj.parametroOrdenamientoDTOs.indexOf(objCampaign)
+      this.campaignObj.parametroOrdenamientoDTOs.splice(positionCampaign, 1)
+    }
+
+    var objArray = this.ordenamientoConfirm.find((or: any) => or == parametro)
+    var positionArray = this.ordenamientoConfirm.indexOf(objArray)
+    this.ordenamientoConfirm.splice(positionArray, 1)
+
+    var objFiltro = this.filtrosGeneralObj.orden.find((f: any) => f.parametroOrdenamiento == parametro)
+    var positionFiltro = this.filtrosGeneralObj.orden.indexOf(objFiltro)
+    this.filtrosGeneralObj.orden.splice(positionFiltro, 1)
+
+    console.log(this.ordenamientoArray);
   }
 
   // CREAR BLOQUE
@@ -448,6 +482,7 @@ export class ParametrosComponent implements OnInit {
 
     this.optionConfirm = []
     this.parametrosConfirm = []
+    this.ordenamientoConfirm = []
 
     this.filtrosGeneralObj = {
       "bancos": null,
@@ -455,6 +490,13 @@ export class ParametrosComponent implements OnInit {
       "sede": null,
       "juridica": null,
       "tipoCredito": null,
+      "fechaStart": null,
+      "fechaEnd": null,
+      "moraStart": null,
+      "moraEnd": null,
+      "diasStart": null,
+      "diasEnd": null,
+      orden: []
     }
 
     this.parametrosService.cuentas(user, this.filtrosGeneralObj).subscribe(
@@ -475,6 +517,9 @@ export class ParametrosComponent implements OnInit {
   // CREAR CAMPAÑA
   createCampaign() {
     console.log(this.viewsArray);
+
+    console.log(this.campaignObj);
+
 
     this.parametrosService.createCampaign(this.campaignObj).subscribe(
       (data: any) => {

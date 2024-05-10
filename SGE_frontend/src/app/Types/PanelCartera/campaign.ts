@@ -1,5 +1,5 @@
 export type Campaign = {
-    nombreCampaña: string,
+    nombreCampania: string,
     parametros: Parametros[],
     namesViews: string[],
     asesoresId: number[],
