@@ -22,6 +22,8 @@ export class ParametrosComponent implements OnInit {
   ordenamientoArray: any[] = []
   ordenamientoConfirm: any[] = []
 
+  combinacionesArray: any[] = []
+
   // OBJETOS
   filtrosGeneralObj: any = {
     "bancos": null,
@@ -98,6 +100,8 @@ export class ParametrosComponent implements OnInit {
         subParametro.subParametro
       ]
     }
+
+    this.añadirCombinacion(obj, subParametro)
 
     if (obj.parametro == 'MORA OBLIGATORIA') {
       this.filtroMora(obj, subParametro)
@@ -457,7 +461,7 @@ export class ParametrosComponent implements OnInit {
     console.log(`Bloque_${this.viewsArray.length + 1}`);
 
 
-    this.parametrosService.cuentasView(`Bloque_${this.viewsArray.length + 1}`, this.filtrosGeneralObj).subscribe(
+    this.parametrosService.cuentasView(`Bloque_${Math.floor(Math.random() * 100) + 1}`, this.filtrosGeneralObj).subscribe(
       (data: any) => {
         console.log(data);
         this.parametrosService.viewUpdate(data.message).subscribe(
@@ -516,10 +520,25 @@ export class ParametrosComponent implements OnInit {
 
   // CREAR CAMPAÑA
   createCampaign() {
-    console.log(this.viewsArray);
+    if (this.campaignObj.asesoresId.length == 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe Asignar Los Asesores',
+        timer: 3000
+      })
+      return
+    }
 
-    console.log(this.campaignObj);
-
+    if (this.campaignObj.nombreCampania == null || this.campaignObj.nombreCampania == '') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe darle un nombre a la campaña',
+        timer: 3000
+      })
+      return
+    }
 
     this.parametrosService.createCampaign(this.campaignObj).subscribe(
       (data: any) => {
@@ -554,7 +573,63 @@ export class ParametrosComponent implements OnInit {
       this.campaignObj.asesoresId.push(asesorId)
     }
     console.log(this.campaignObj);
+  }
 
+  añadirCombinacion(obj: any, subParametro: any) {
+    var combinacion
+
+    var parametros = {
+      parametro: obj.parametro,
+      subParametro: subParametro.subParametro
+    }
+
+    if (this.viewsArray.length > 0) {
+      for (let i = 0; i < this.combinacionesArray.length; i++) {
+        var subParams = this.combinacionesArray[i].split("/")
+        console.log(subParams);
+
+        for (let x = 0; x < subParams.length; x++) {
+          var params = subParams[x].split("$")
+          console.log(params);
+
+          if (params.includes(parametros.parametro)) {
+            var posParam = this.parametrosArray.find((pp: any) => pp.parametro == parametros.parametro)
+            console.log(posParam);
+
+
+            var posDisabledParam = this.parametrosArray.indexOf(posParam)
+            console.log(posDisabledParam);
+
+            if (params.includes(parametros.subParametro)) {
+              var arraySubP = posParam.subParametros
+              var posSub = arraySubP.find((ps: any) => ps.subParametro == parametros.subParametro)
+              console.log(posSub);
+
+              var posDisabledSub = posParam.subParametros.indexOf(posSub)
+              console.log(posDisabledSub);
+
+              const idButton = document.getElementById(`${parametros.subParametro} + ${posDisabledSub}`)
+              console.log(parametros.subParametro);
+              console.log(posDisabledSub);
+
+              idButton?.setAttribute('disabled', 'true')
+
+            }
+          }
+        }
+
+      }
+    }
+
+    if (this.combinacionesArray.length == 0) {
+      combinacion = parametros.subParametro + '$' + parametros.parametro
+    } else {
+      combinacion = this.combinacionesArray[0] + '/' + parametros.subParametro + '$' + parametros.parametro
+      this.combinacionesArray.splice(0, 1)
+    }
+
+    this.combinacionesArray.push(combinacion)
+    console.log(this.combinacionesArray);
   }
 
 }

@@ -54,11 +54,14 @@
                         <ng-container *ngFor="let sp of p.subParametros; let i = index">
                             <ul class="list-group"
                                 *ngIf="!(p.parametro == 'MORA OBLIGATORIA' && sp.idSubParametro == 4 || p.parametro == 'DIAS VENCIDOS' && sp.idSubParametro == 4 || p.parametro == 'TOTAL OBLIGACION' && sp.idSubParametro == 4)">
-                                <li class="list-group-item" (click)="filtrosGenerales(p, sp)">
-                                    <h6 class="font-sub">{{
-                                        sp.subParametro
-                                        }}</h6>
-                                </li>
+                                <button class="btn" (click)="filtrosGenerales(p, sp)" [id]="sp.subParametro + i">
+                                    <li class="list-group-item">
+                                        <h6 class="font-sub">{{
+                                            sp.subParametro
+                                            }}</h6>
+                                    </li>
+                                </button>
+
                             </ul>
                         </ng-container>
                     </div>
