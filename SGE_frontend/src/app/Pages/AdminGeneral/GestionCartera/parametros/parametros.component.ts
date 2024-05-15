@@ -23,6 +23,9 @@ export class ParametrosComponent implements OnInit {
   ordenamientoConfirm: any[] = []
 
   combinacionesArray: any[] = []
+  combinacionesIguales: any[] = []
+  combinacionesPerBloque: any[] = []
+  subParamNoCount: any[] = []
 
   // OBJETOS
   filtrosGeneralObj: any = {
@@ -475,6 +478,7 @@ export class ParametrosComponent implements OnInit {
               timer: 3000
             })
             this.campaignObj.namesViews = this.viewsArray
+            this.bloquearBotones()
           }, (error: any) => {
             console.log(error);
           }
@@ -576,60 +580,134 @@ export class ParametrosComponent implements OnInit {
   }
 
   añadirCombinacion(obj: any, subParametro: any) {
-    var combinacion
 
+    var arrayComb: any[] = []
     var parametros = {
       parametro: obj.parametro,
       subParametro: subParametro.subParametro
     }
 
+    arrayComb.push(parametros)
+
     if (this.viewsArray.length > 0) {
-      for (let i = 0; i < this.combinacionesArray.length; i++) {
-        var subParams = this.combinacionesArray[i].split("/")
-        console.log(subParams);
+      var ids: any[] = []
 
-        for (let x = 0; x < subParams.length; x++) {
-          var params = subParams[x].split("$")
-          console.log(params);
+      this.combinacionesArray.forEach(element => {
+        ids.push(element.numeroComb)
+      });
 
-          if (params.includes(parametros.parametro)) {
-            var posParam = this.parametrosArray.find((pp: any) => pp.parametro == parametros.parametro)
-            console.log(posParam);
+      for (let x = 0; x < this.combinacionesArray.length; x++) {
 
+        console.log(ids);
 
-            var posDisabledParam = this.parametrosArray.indexOf(posParam)
-            console.log(posDisabledParam);
+        for (let y = 0; y < ids.length; y++) {
+          if (this.combinacionesArray[x].numeroComb == ids[y] && this.combinacionesIguales.length == 0) {
+            this.combinacionesIguales.push(this.combinacionesArray[x])
+          }
 
-            if (params.includes(parametros.subParametro)) {
-              var arraySubP = posParam.subParametros
-              var posSub = arraySubP.find((ps: any) => ps.subParametro == parametros.subParametro)
-              console.log(posSub);
-
-              var posDisabledSub = posParam.subParametros.indexOf(posSub)
-              console.log(posDisabledSub);
-
-              const idButton = document.getElementById(`${parametros.subParametro} + ${posDisabledSub}`)
-              console.log(parametros.subParametro);
-              console.log(posDisabledSub);
-
-              idButton?.setAttribute('disabled', 'true')
-
+          if (this.combinacionesArray[x].numeroComb == ids[y] && this.combinacionesIguales.length > 0) {
+            if (!this.combinacionesIguales.includes(this.combinacionesArray[x])) {
+              this.combinacionesIguales.push(this.combinacionesArray[x])
             }
           }
+          if (this.combinacionesIguales.length > 0) {
+            var subParametroActual = this.combinacionesIguales.find((c: any) => c.subParametro == subParametro.subParametro)
+            console.log(subParametroActual);
+
+            if (this.combinacionesIguales.includes(subParametroActual)) {
+              for (let s = 0; s < this.combinacionesIguales.length; s++) {
+                if (this.combinacionesIguales[s].subParametro != subParametroActual) {
+                  var objParam = this.parametrosArray.find((p: any) => p.parametro == this.combinacionesIguales[s].parametro)
+                  console.log(objParam);
+
+                  var objSubParam = objParam.subParametros.find((p: any) => p.subParametro == this.combinacionesIguales[s].subParametro)
+                  console.log(objSubParam);
+
+                  var posSubParam = objParam.subParametros.indexOf(objSubParam)
+                  console.log(posSubParam);
+
+                  console.log(this.combinacionesIguales[s]);
+
+                  var boton = document.getElementById(objSubParam.subParametro + posSubParam);
+                  if (boton != null && boton != undefined) {
+                    boton.setAttribute('disabled', 'true');
+                  }
+                }
+              }
+            }
+          }
+          console.log(this.combinacionesIguales);
+        }
+      }
+
+    }
+
+
+    if (arrayComb.length != 0) {
+      for (let i = 0; i < arrayComb.length; i++) {
+        var combinacion = {
+          numeroComb: this.viewsArray.length + 1,
+          parametro: arrayComb[i].parametro,
+          subParametro: arrayComb[i].subParametro
+        }
+
+        this.combinacionesArray.push(combinacion)
+        this.combinacionesPerBloque.push(combinacion)
+      }
+    }
+    console.log(this.combinacionesArray);
+
+
+  }
+
+  bloquearBotones() {
+    var botonDisabled: any[] = []
+
+    if (this.combinacionesPerBloque.length == 1) {
+      var objParam = this.parametrosArray.find((p: any) => p.parametro == this.combinacionesArray[0].parametro)
+      console.log(objParam);
+
+      var objSubParam = objParam.subParametros.find((p: any) => p.subParametro == this.combinacionesArray[0].subParametro)
+      console.log(objSubParam);
+
+      var posSubParam = objParam.subParametros.indexOf(objSubParam)
+      console.log(posSubParam);
+
+      var boton = document.getElementById(objSubParam.subParametro + posSubParam);
+      if (boton != null && boton != undefined) {
+        boton.setAttribute('disabled', 'true');
+      }
+
+      botonDisabled.push(this.combinacionesArray[0])
+      this.combinacionesPerBloque.splice(0, 1)
+    }
+
+    console.log(this.combinacionesArray);
+
+    if (this.combinacionesArray.length > 1) {
+      for (let i = 0; i < this.combinacionesArray.length; i++) {
+        var objParam = this.parametrosArray.find((p: any) => p.parametro == this.combinacionesArray[i].parametro)
+        console.log(objParam);
+
+        var objSubParam = objParam.subParametros.find((p: any) => p.subParametro == this.combinacionesArray[i].subParametro)
+        console.log(objSubParam);
+
+        var posSubParam = objParam.subParametros.indexOf(objSubParam)
+        console.log(posSubParam);
+
+        var boton = document.getElementById(objSubParam.subParametro + posSubParam);
+        if (boton != null && boton != undefined) {
+          boton.removeAttribute('disabled');
         }
 
       }
     }
 
-    if (this.combinacionesArray.length == 0) {
-      combinacion = parametros.subParametro + '$' + parametros.parametro
-    } else {
-      combinacion = this.combinacionesArray[0] + '/' + parametros.subParametro + '$' + parametros.parametro
-      this.combinacionesArray.splice(0, 1)
-    }
+    console.log(this.combinacionesPerBloque);
 
-    this.combinacionesArray.push(combinacion)
-    console.log(this.combinacionesArray);
+    for (let x = 0; x < this.combinacionesPerBloque.length; x++) {
+      this.combinacionesPerBloque.splice(x, 1)
+    }
   }
 
 }
