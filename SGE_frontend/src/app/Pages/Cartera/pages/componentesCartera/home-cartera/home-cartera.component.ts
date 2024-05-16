@@ -2479,6 +2479,12 @@ export class HomeCarteraComponent implements OnInit {
       if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
         this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
         this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+
+        //HONORARIOS
+        if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
+          var resHonorarios = (parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+          this.acuerdoCal.honoriarioAcuerdo = resHonorarios.toFixed(0)
+        }
       } else {
         this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
         this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
@@ -3995,7 +4001,7 @@ export class HomeCarteraComponent implements OnInit {
             if (saldoCuota > 0) {
 
               if (valorTotal <= c.pagos.saldoCuota) {
-                
+
 
                 var restante = valorTotal
 
@@ -4102,7 +4108,7 @@ export class HomeCarteraComponent implements OnInit {
                 }
                 //CAPITAL
                 if (restante > 0) {
-                  
+
                   this.coutasRequest[i].saldoCapital = this.cuotasList[i].saldoCapitalCuota - restante
                   this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].saldoCapitalCuota - restante
                   this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - restante
@@ -4119,7 +4125,7 @@ export class HomeCarteraComponent implements OnInit {
                   restante = 0
 
                 } else {
-                  
+
                   this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].capitalCuota
                   this.coutasRequest[i].saldoCapital = this.cuotasList[i].capitalCuota
                   this.coutasRequest[i].pagosDto!.saldoCuota = 0
