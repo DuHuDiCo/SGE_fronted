@@ -202,7 +202,6 @@ export class ParametrosComponent implements OnInit {
   filtroMora(obj: any, subParametro: any) {
     var inicio
     var medio
-    var fin
     var max
 
     for (let i = 1; i < obj.subParametros.length + 1; i++) {
@@ -215,10 +214,6 @@ export class ParametrosComponent implements OnInit {
       }
 
       if (i == 3) {
-        fin = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
-      }
-
-      if (i == 4) {
         max = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
       }
     }
@@ -229,12 +224,12 @@ export class ParametrosComponent implements OnInit {
         this.filtrosGeneralObj.moraEnd = subParametro.subParametro
         break;
       case 2:
-        this.filtrosGeneralObj.moraStart = inicio.subParametro
-        this.filtrosGeneralObj.moraEnd = subParametro.subParametro
+        this.filtrosGeneralObj.moraStart = Math.floor(inicio.subParametro) + 1
+        this.filtrosGeneralObj.moraEnd = Math.floor(subParametro.subParametro)
         break;
       case 3:
-        this.filtrosGeneralObj.moraStart = subParametro.subParametro
-        this.filtrosGeneralObj.moraEnd = max.subParametro
+        this.filtrosGeneralObj.moraStart = Math.floor(medio.subParametro) + 1
+        this.filtrosGeneralObj.moraEnd = Math.floor(subParametro.subParametro)
         break;
     }
   }
@@ -243,7 +238,6 @@ export class ParametrosComponent implements OnInit {
   filtroDias(obj: any, subParametro: any) {
     var inicio
     var medio
-    var fin
     var max
 
     for (let i = 1; i < obj.subParametros.length + 1; i++) {
@@ -256,10 +250,6 @@ export class ParametrosComponent implements OnInit {
       }
 
       if (i == 3) {
-        fin = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
-      }
-
-      if (i == 4) {
         max = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
       }
     }
@@ -270,12 +260,12 @@ export class ParametrosComponent implements OnInit {
         this.filtrosGeneralObj.diasEnd = subParametro.subParametro
         break;
       case 2:
-        this.filtrosGeneralObj.diasStart = inicio.subParametro
+        this.filtrosGeneralObj.diasStart = parseInt(inicio.subParametro) + 1
         this.filtrosGeneralObj.diasEnd = subParametro.subParametro
         break;
       case 3:
-        this.filtrosGeneralObj.diasStart = subParametro.subParametro
-        this.filtrosGeneralObj.diasEnd = max.subParametro
+        this.filtrosGeneralObj.diasStart = parseInt(medio.subParametro) + 1
+        this.filtrosGeneralObj.diasEnd = subParametro.subParametro
         break;
     }
   }
@@ -284,7 +274,6 @@ export class ParametrosComponent implements OnInit {
   filtroTotal(obj: any, subParametro: any) {
     var inicio
     var medio
-    var fin
     var max
 
     for (let i = 1; i < obj.subParametros.length + 1; i++) {
@@ -297,10 +286,6 @@ export class ParametrosComponent implements OnInit {
       }
 
       if (i == 3) {
-        fin = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
-      }
-
-      if (i == 4) {
         max = obj.subParametros.find((sp: any) => sp.idSubParametro == i)
       }
     }
@@ -315,8 +300,8 @@ export class ParametrosComponent implements OnInit {
         this.filtrosGeneralObj.totalEnd = subParametro.subParametro
         break;
       case 3:
-        this.filtrosGeneralObj.totalStart = subParametro.subParametro
-        this.filtrosGeneralObj.totalEnd = max.subParametro
+        this.filtrosGeneralObj.totalStart = medio.subParametro
+        this.filtrosGeneralObj.totalEnd = subParametro.subParametro
         break;
     }
   }
