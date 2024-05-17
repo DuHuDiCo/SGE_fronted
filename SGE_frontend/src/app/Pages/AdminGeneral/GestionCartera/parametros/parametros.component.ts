@@ -22,11 +22,6 @@ export class ParametrosComponent implements OnInit {
   ordenamientoArray: any[] = []
   ordenamientoConfirm: any[] = []
 
-  combinacionesArray: any[] = []
-  combinacionesIguales: any[] = []
-  combinacionesPerBloque: any[] = []
-  subParamNoCount: any[] = []
-
   // OBJETOS
   filtrosGeneralObj: any = {
     "bancos": null,
@@ -40,6 +35,8 @@ export class ParametrosComponent implements OnInit {
     "moraEnd": null,
     "diasStart": null,
     "diasEnd": null,
+    "totalStart": null,
+    "totalEnd": null,
     orden: []
   }
 
@@ -67,6 +64,10 @@ export class ParametrosComponent implements OnInit {
         this.parametrosArray = data.parametros
         this.fillParametrosNoConfirm(data.parametros)
         this.fillOrdenamiento()
+        setTimeout(() => {
+          this.changeDatos(data.disponibilidad, data.parametros)
+          this.bloquearBotones(data.disponibilidad, data.parametros)
+        }, 200);
         console.log(data);
       }, (error: any) => {
         console.log(error);
@@ -96,15 +97,12 @@ export class ParametrosComponent implements OnInit {
 
   // FILTROS GENERALES
   filtrosGenerales(obj: any, subParametro: any) {
-
     var paraObj = {
       parametro: obj.parametro,
       subParametros: [
         subParametro.subParametro
       ]
     }
-
-    this.añadirCombinacion(obj, subParametro)
 
     if (obj.parametro == 'MORA OBLIGATORIA') {
       this.filtroMora(obj, subParametro)
@@ -293,15 +291,15 @@ export class ParametrosComponent implements OnInit {
     switch (subParametro.idSubParametro) {
       case 1:
         this.filtrosGeneralObj.totalStart = 1
-        this.filtrosGeneralObj.totalEnd = subParametro.subParametro
+        this.filtrosGeneralObj.totalEnd = Math.floor(subParametro.subParametro)
         break;
       case 2:
-        this.filtrosGeneralObj.totalStart = inicio.subParametro
-        this.filtrosGeneralObj.totalEnd = subParametro.subParametro
+        this.filtrosGeneralObj.totalStart = Math.floor(inicio.subParametro) + 1
+        this.filtrosGeneralObj.totalEnd = Math.floor(subParametro.subParametro)
         break;
       case 3:
-        this.filtrosGeneralObj.totalStart = medio.subParametro
-        this.filtrosGeneralObj.totalEnd = subParametro.subParametro
+        this.filtrosGeneralObj.totalStart = Math.floor(medio.subParametro) + 1
+        this.filtrosGeneralObj.totalEnd = Math.floor(subParametro.subParametro)
         break;
     }
   }
@@ -436,6 +434,7 @@ export class ParametrosComponent implements OnInit {
 
     if (this.filtrosGeneralObj.bancos == null && this.filtrosGeneralObj.edadVencimientos == null && this.filtrosGeneralObj.sede == null && this.filtrosGeneralObj.juridica == null && this.filtrosGeneralObj.tipoCredito == null &&
       (this.filtrosGeneralObj.fechaStart == null && this.filtrosGeneralObj.fechaEnd == null) && (this.filtrosGeneralObj.moraStart == null && this.filtrosGeneralObj.moraEnd == null) && (this.filtrosGeneralObj.diasStart == null && this.filtrosGeneralObj.diasEnd == null)
+      && (this.filtrosGeneralObj.totalStart == null && this.filtrosGeneralObj.totalEnd == null)
     ) {
       Swal.fire({
         icon: 'error',
@@ -454,8 +453,7 @@ export class ParametrosComponent implements OnInit {
         console.log(data);
         this.parametrosService.viewUpdate(data.message).subscribe(
           (data: any) => {
-            console.log(data);
-            this.viewsArray.push(`Bloque_${this.viewsArray.length + 1}`)
+            console.log(data); this.viewsArray.push(`Bloque_${this.viewsArray.length + 1}`)
             Swal.fire({
               icon: 'success',
               title: 'Datos Guardados',
@@ -463,7 +461,8 @@ export class ParametrosComponent implements OnInit {
               timer: 3000
             })
             this.campaignObj.namesViews = this.viewsArray
-            this.bloquearBotones()
+            this.changeDatos(data, this.parametrosArray)
+            this.bloquearBotones(data, this.parametrosArray)
           }, (error: any) => {
             console.log(error);
           }
@@ -546,7 +545,6 @@ export class ParametrosComponent implements OnInit {
         var admin = this.asesoresArray.find((a: any) => a.usuario.nombres == 'admin')
         var pos = this.asesoresArray.indexOf(admin)
         this.asesoresArray.splice(pos, 1)
-        console.log(this.asesoresArray);
       }, (error: any) => {
         console.log(error);
       }
@@ -564,134 +562,85 @@ export class ParametrosComponent implements OnInit {
     console.log(this.campaignObj);
   }
 
-  añadirCombinacion(obj: any, subParametro: any) {
+  bloquearBotones(newParametros: any, parametrosArray: any) {
+    for (let i = 0; i < parametrosArray.length; i++) {
 
-    var arrayComb: any[] = []
-    var parametros = {
-      parametro: obj.parametro,
-      subParametro: subParametro.subParametro
-    }
+      var obj: any
+      var position: number
 
-    arrayComb.push(parametros)
+      parametrosArray[i].subParametros.forEach((element: any) => {
+        switch (parametrosArray[i].parametro) {
+          case 'BANCO':
+            obj = newParametros.bancos.find((b: any) => b.nombre_banco == element.subParametro)
+            break;
+          case 'TIPO CLASIFICACION JURIDICA':
+            obj = newParametros.clasiJuridica.find((cj: any) => cj.nombre_clasificacion_juridica == element.subParametro)
+            break;
+          case 'EDAD VENCIMIENTO':
+            obj = newParametros.edad.find((e: any) => e.edad_vencimiento == element.subParametro)
+            break;
+          case 'SEDE':
+            obj = newParametros.sede.find((s: any) => s.nombre_sede == element.subParametro)
+            break;
+          case 'TIPO DE CREDITO':
+            obj = newParametros.tipoCredito.find((tc: any) => tc.tipo_credito == element.subParametro)
+            break;
+          case 'MORA OBLIGATORIA':
+            obj = newParametros.moraObligatoria.find((mo: any) => mo.mora_range == element.subParametro)
+            break;
+          case 'DIAS VENCIDOS':
+            obj = newParametros.dias.find((d: any) => d.mora_range == element.subParametro)
+            break;
+          case 'TOTAL OBLIGACION':
+            obj = newParametros.totalObligacion.find((to: any) => to.mora_range == element.subParametro)
+            console.log(obj);
+            break;
 
-    if (this.viewsArray.length > 0) {
-      var ids: any[] = []
+        }
 
-      this.combinacionesArray.forEach(element => {
-        ids.push(element.numeroComb)
+        if (obj == undefined) {
+          position = parametrosArray[i].subParametros.indexOf(element)
+
+          var boton = document.getElementById(parametrosArray[i].parametro + '-' + element.subParametro + '-' + position);
+
+          if (boton) {
+            console.log(boton);
+
+            boton.setAttribute('disabled', 'true');
+          }
+        }
       });
-
-      for (let x = 0; x < this.combinacionesArray.length; x++) {
-
-        console.log(ids);
-
-        for (let y = 0; y < ids.length; y++) {
-          if (this.combinacionesArray[x].numeroComb == ids[y] && this.combinacionesIguales.length == 0) {
-            this.combinacionesIguales.push(this.combinacionesArray[x])
-          }
-
-          if (this.combinacionesArray[x].numeroComb == ids[y] && this.combinacionesIguales.length > 0) {
-            if (!this.combinacionesIguales.includes(this.combinacionesArray[x])) {
-              this.combinacionesIguales.push(this.combinacionesArray[x])
-            }
-          }
-          if (this.combinacionesIguales.length > 0) {
-            var subParametroActual = this.combinacionesIguales.find((c: any) => c.subParametro == subParametro.subParametro)
-            console.log(subParametroActual);
-
-            if (this.combinacionesIguales.includes(subParametroActual)) {
-              for (let s = 0; s < this.combinacionesIguales.length; s++) {
-                if (this.combinacionesIguales[s].subParametro != subParametroActual) {
-                  var objParam = this.parametrosArray.find((p: any) => p.parametro == this.combinacionesIguales[s].parametro)
-                  console.log(objParam);
-
-                  var objSubParam = objParam.subParametros.find((p: any) => p.subParametro == this.combinacionesIguales[s].subParametro)
-                  console.log(objSubParam);
-
-                  var posSubParam = objParam.subParametros.indexOf(objSubParam)
-                  console.log(posSubParam);
-
-                  console.log(this.combinacionesIguales[s]);
-
-                  var boton = document.getElementById(objSubParam.subParametro + posSubParam);
-                  if (boton != null && boton != undefined) {
-                    boton.setAttribute('disabled', 'true');
-                  }
-                }
-              }
-            }
-          }
-          console.log(this.combinacionesIguales);
-        }
-      }
-
     }
-
-
-    if (arrayComb.length != 0) {
-      for (let i = 0; i < arrayComb.length; i++) {
-        var combinacion = {
-          numeroComb: this.viewsArray.length + 1,
-          parametro: arrayComb[i].parametro,
-          subParametro: arrayComb[i].subParametro
-        }
-
-        this.combinacionesArray.push(combinacion)
-        this.combinacionesPerBloque.push(combinacion)
-      }
-    }
-    console.log(this.combinacionesArray);
-
-
   }
 
-  bloquearBotones() {
-    var botonDisabled: any[] = []
-
-    if (this.combinacionesPerBloque.length == 1) {
-      var objParam = this.parametrosArray.find((p: any) => p.parametro == this.combinacionesArray[0].parametro)
-      console.log(objParam);
-
-      var objSubParam = objParam.subParametros.find((p: any) => p.subParametro == this.combinacionesArray[0].subParametro)
-      console.log(objSubParam);
-
-      var posSubParam = objParam.subParametros.indexOf(objSubParam)
-      console.log(posSubParam);
-
-      var boton = document.getElementById(objSubParam.subParametro + posSubParam);
-      if (boton != null && boton != undefined) {
-        boton.setAttribute('disabled', 'true');
+  changeDatos(newParametros: any, parametrosArray: any) {
+    for (let i = 0; i < parametrosArray.length; i++) {
+      if (parametrosArray[i].parametro == 'MORA OBLIGATORIA') {
+        parametrosArray[i].subParametros.forEach((element: any) => {
+          var obj = newParametros.moraObligatoria.find((mo: any) => mo.sort_order == element.idSubParametro)
+          if (obj) {
+            obj.mora_range = element.subParametro
+          }
+        });
       }
 
-      botonDisabled.push(this.combinacionesArray[0])
-      this.combinacionesPerBloque.splice(0, 1)
-    }
-
-    console.log(this.combinacionesArray);
-
-    if (this.combinacionesArray.length > 1) {
-      for (let i = 0; i < this.combinacionesArray.length; i++) {
-        var objParam = this.parametrosArray.find((p: any) => p.parametro == this.combinacionesArray[i].parametro)
-        console.log(objParam);
-
-        var objSubParam = objParam.subParametros.find((p: any) => p.subParametro == this.combinacionesArray[i].subParametro)
-        console.log(objSubParam);
-
-        var posSubParam = objParam.subParametros.indexOf(objSubParam)
-        console.log(posSubParam);
-
-        var boton = document.getElementById(objSubParam.subParametro + posSubParam);
-        if (boton != null && boton != undefined) {
-          boton.removeAttribute('disabled');
-        }
-
+      if (parametrosArray[i].parametro == 'DIAS VENCIDOS') {
+        parametrosArray[i].subParametros.forEach((element: any) => {
+          var obj = newParametros.dias.find((mo: any) => mo.sort_order == element.idSubParametro)
+          if (obj) {
+            obj.mora_range = element.subParametro
+          }
+        });
       }
-    }
 
-    console.log(this.combinacionesPerBloque);
-
-    for (let x = 0; x < this.combinacionesPerBloque.length; x++) {
-      this.combinacionesPerBloque.splice(x, 1)
+      if (parametrosArray[i].parametro == 'TOTAL OBLIGACION') {
+        parametrosArray[i].subParametros.forEach((element: any) => {
+          var obj = newParametros.totalObligacion.find((mo: any) => mo.sort_order == element.idSubParametro)
+          if (obj) {
+            obj.mora_range = element.subParametro
+          }
+        });
+      }
     }
   }
 

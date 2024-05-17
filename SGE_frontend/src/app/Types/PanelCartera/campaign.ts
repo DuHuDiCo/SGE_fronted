@@ -16,3 +16,14 @@ type parametroOrdenamientoDTOs = {
     direccionOrdenamiento: string,
     bloque: string
 }
+
+export type newParametros = {
+    bancos: any[],
+    clasiJuridica: any[]
+    dias: any[]
+    edad: any[]
+    moraObligatoria: any[]
+    sede: any[]
+    tipoCredito: any[]
+    tipoObligacion: any[]
+}
