@@ -133,6 +133,7 @@ import { OptionsAsignacionComponent } from './Pages/PanelGestionCartera/Pages/Co
 import { ParametrosComponent } from './Pages/AdminGeneral/GestionCartera/parametros/parametros.component';
 import { NgxUiLoaderHttpModule, NgxUiLoaderModule } from 'ngx-ui-loader';
 import { ngxUiLoaderConfig } from './utils/loaderConfig';
+import { SocketTestComponent } from './componentesGenerales/socket-test/socket-test.component';
 
 
 
@@ -276,7 +277,8 @@ import { ngxUiLoaderConfig } from './utils/loaderConfig';
     GestionAsignacionComponent,
     OptionsGestionComponent,
     OptionsAsignacionComponent,
-    ParametrosComponent
+    ParametrosComponent,
+    SocketTestComponent
 
   ],
 
