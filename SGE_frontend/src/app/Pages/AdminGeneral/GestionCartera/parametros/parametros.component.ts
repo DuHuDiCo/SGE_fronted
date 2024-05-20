@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ParametrosService } from 'src/app/Services/AdminCartera/parametros.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Campaign } from 'src/app/Types/PanelCartera/campaign';
+import { FiltroParametro, FiltrosGenerales } from 'src/app/Types/PanelCartera/filtros';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -23,20 +24,43 @@ export class ParametrosComponent implements OnInit {
   ordenamientoConfirm: any[] = []
 
   // OBJETOS
-  filtrosGeneralObj: any = {
-    "bancos": null,
-    "edadVencimientos": null,
-    "sede": null,
-    "juridica": null,
-    "tipoCredito": null,
-    "fechaStart": null,
-    "fechaEnd": null,
-    "moraStart": null,
-    "moraEnd": null,
-    "diasStart": null,
-    "diasEnd": null,
-    "totalStart": null,
-    "totalEnd": null,
+  filtrosGeneralObj: FiltrosGenerales = {
+    filtradoByTextPlain: {
+      cuentas: [],
+      ordenamientoDTO: []
+    },
+    parametrosFiltradoDTO: {
+      bancos: null,
+      edadVencimientos: null,
+      sede: null,
+      juridica: null,
+      tipoCredito: null,
+      fechaStart: null,
+      fechaEnd: null,
+      moraStart: null,
+      moraEnd: null,
+      diasStart: null,
+      diasEnd: null,
+      totalStart: null,
+      totalEnd: null,
+      orden: []
+    }
+  }
+
+  parametrosFiltradoDTO: FiltroParametro = {
+    bancos: null,
+    edadVencimientos: null,
+    sede: null,
+    juridica: null,
+    tipoCredito: null,
+    fechaStart: null,
+    fechaEnd: null,
+    moraStart: null,
+    moraEnd: null,
+    diasStart: null,
+    diasEnd: null,
+    totalStart: null,
+    totalEnd: null,
     orden: []
   }
 
@@ -50,6 +74,8 @@ export class ParametrosComponent implements OnInit {
 
   // VARIABLES
   clientesFiltro: number = 0
+  fileContent: string | ArrayBuffer | null = '';
+  clients: any[] = [];
 
   constructor(private parametrosService: ParametrosService, private authService: AuthenticationService) { }
 
@@ -68,7 +94,6 @@ export class ParametrosComponent implements OnInit {
           this.changeDatos(data.disponibilidad, data.parametros)
           this.bloquearBotones(data.disponibilidad, data.parametros)
         }, 200);
-        console.log(data);
       }, (error: any) => {
         console.log(error);
       }
@@ -121,26 +146,30 @@ export class ParametrosComponent implements OnInit {
       return
     }
 
-    switch (paraObj.parametro) {
-      case 'BANCO':
-        this.filtrosGeneralObj.bancos = subParametro.subParametro
-        break;
-      case 'EDAD VENCIMIENTO':
-        this.filtrosGeneralObj.edadVencimientos = subParametro.subParametro
-        break;
-      case 'SEDE':
-        this.filtrosGeneralObj.sede = subParametro.subParametro
-        break;
-      case 'TIPO CLASIFICACION JURIDICA':
-        this.filtrosGeneralObj.juridica = subParametro.subParametro
-        break;
-      case 'TIPO DE CREDITO':
-        this.filtrosGeneralObj.tipoCredito = subParametro.subParametro
+    if (this.filtrosGeneralObj.parametrosFiltradoDTO != null) {
+      switch (paraObj.parametro) {
+        case 'BANCO':
+          this.filtrosGeneralObj.parametrosFiltradoDTO.bancos = subParametro.subParametro
+          break;
+        case 'EDAD VENCIMIENTO':
+          this.filtrosGeneralObj.parametrosFiltradoDTO.edadVencimientos = subParametro.subParametro
+          break;
+        case 'SEDE':
+          this.filtrosGeneralObj.parametrosFiltradoDTO.sede = subParametro.subParametro
+          break;
+        case 'TIPO CLASIFICACION JURIDICA':
+          this.filtrosGeneralObj.parametrosFiltradoDTO.juridica = subParametro.subParametro
+          break;
+        case 'TIPO DE CREDITO':
+          this.filtrosGeneralObj.parametrosFiltradoDTO.tipoCredito = subParametro.subParametro
+      }
+
+      this.parametrosFiltradoDTO = this.filtrosGeneralObj.parametrosFiltradoDTO
     }
 
     console.log(this.filtrosGeneralObj);
 
-    this.parametrosService.cuentas(user, this.filtrosGeneralObj).subscribe(
+    this.parametrosService.cuentas(user, this.parametrosFiltradoDTO).subscribe(
       (data: any) => {
         this.clientesFiltro = data
         this.parametrosConfirm.push(paraObj)
@@ -165,7 +194,7 @@ export class ParametrosComponent implements OnInit {
     var paraObj = {
       parametro: parametro,
       subParametros: [
-        this.filtrosGeneralObj.fechaStart + ' - ' + this.filtrosGeneralObj.fechaEnd
+        this.filtrosGeneralObj.parametrosFiltradoDTO?.fechaStart + ' - ' + this.filtrosGeneralObj.parametrosFiltradoDTO?.fechaEnd
       ]
     }
 
@@ -218,16 +247,16 @@ export class ParametrosComponent implements OnInit {
 
     switch (subParametro.idSubParametro) {
       case 1:
-        this.filtrosGeneralObj.moraStart = 1
-        this.filtrosGeneralObj.moraEnd = subParametro.subParametro
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.moraStart = 1
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.moraEnd = subParametro.subParametro
         break;
       case 2:
-        this.filtrosGeneralObj.moraStart = Math.floor(inicio.subParametro) + 1
-        this.filtrosGeneralObj.moraEnd = Math.floor(subParametro.subParametro)
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.moraStart = Math.floor(inicio.subParametro) + 1
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.moraEnd = Math.floor(subParametro.subParametro)
         break;
       case 3:
-        this.filtrosGeneralObj.moraStart = Math.floor(medio.subParametro) + 1
-        this.filtrosGeneralObj.moraEnd = Math.floor(subParametro.subParametro)
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.moraStart = Math.floor(medio.subParametro) + 1
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.moraEnd = Math.floor(subParametro.subParametro)
         break;
     }
   }
@@ -254,16 +283,16 @@ export class ParametrosComponent implements OnInit {
 
     switch (subParametro.idSubParametro) {
       case 1:
-        this.filtrosGeneralObj.diasStart = 1
-        this.filtrosGeneralObj.diasEnd = subParametro.subParametro
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.diasStart = 1
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.diasEnd = subParametro.subParametro
         break;
       case 2:
-        this.filtrosGeneralObj.diasStart = parseInt(inicio.subParametro) + 1
-        this.filtrosGeneralObj.diasEnd = subParametro.subParametro
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.diasStart = parseInt(inicio.subParametro) + 1
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.diasEnd = subParametro.subParametro
         break;
       case 3:
-        this.filtrosGeneralObj.diasStart = parseInt(medio.subParametro) + 1
-        this.filtrosGeneralObj.diasEnd = subParametro.subParametro
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.diasStart = parseInt(medio.subParametro) + 1
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.diasEnd = subParametro.subParametro
         break;
     }
   }
@@ -290,16 +319,16 @@ export class ParametrosComponent implements OnInit {
 
     switch (subParametro.idSubParametro) {
       case 1:
-        this.filtrosGeneralObj.totalStart = 1
-        this.filtrosGeneralObj.totalEnd = Math.floor(subParametro.subParametro)
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.totalStart = 1
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.totalEnd = Math.floor(subParametro.subParametro)
         break;
       case 2:
-        this.filtrosGeneralObj.totalStart = Math.floor(inicio.subParametro) + 1
-        this.filtrosGeneralObj.totalEnd = Math.floor(subParametro.subParametro)
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.totalStart = Math.floor(inicio.subParametro) + 1
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.totalEnd = Math.floor(subParametro.subParametro)
         break;
       case 3:
-        this.filtrosGeneralObj.totalStart = Math.floor(medio.subParametro) + 1
-        this.filtrosGeneralObj.totalEnd = Math.floor(subParametro.subParametro)
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.totalStart = Math.floor(medio.subParametro) + 1
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.totalEnd = Math.floor(subParametro.subParametro)
         break;
     }
   }
@@ -313,35 +342,35 @@ export class ParametrosComponent implements OnInit {
 
     switch (parametro) {
       case 'BANCO':
-        this.filtrosGeneralObj.bancos = null
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.bancos = null
         break;
       case 'EDAD VENCIMIENTO':
-        this.filtrosGeneralObj.edadVencimientos = null
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.edadVencimientos = null
         break;
       case 'SEDE':
-        this.filtrosGeneralObj.sede = null
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.sede = null
         break;
       case 'TIPO CLASIFICACION JURIDICA':
-        this.filtrosGeneralObj.juridica = null
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.juridica = null
         break;
       case 'TIPO DE CREDITO':
-        this.filtrosGeneralObj.tipoCredito = null
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.tipoCredito = null
         break;
       case 'MORA OBLIGATORIA':
-        this.filtrosGeneralObj.moraStart = null
-        this.filtrosGeneralObj.moraEnd = null
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.moraStart = null
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.moraEnd = null
         break;
       case 'DIAS VENCIDOS':
-        this.filtrosGeneralObj.diasStart = null
-        this.filtrosGeneralObj.diasEnd = null
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.diasStart = null
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.diasEnd = null
         break;
       case 'FECHA VENCIMIENTO':
-        this.filtrosGeneralObj.fechaStart = null
-        this.filtrosGeneralObj.fechaEnd = null
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.fechaStart = null
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.fechaEnd = null
         break;
       case 'TOTAL OBLIGACION':
-        this.filtrosGeneralObj.totalStart = null
-        this.filtrosGeneralObj.totalEnd = null
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.totalStart = null
+        this.filtrosGeneralObj.parametrosFiltradoDTO!.totalEnd = null
         break;
     }
 
@@ -398,7 +427,11 @@ export class ParametrosComponent implements OnInit {
       bloque: `Bloque_${this.viewsArray.length + 1}`
     }
 
-    this.filtrosGeneralObj.orden.push(ordenObj)
+    if (this.clients.length == 0) {
+      this.filtrosGeneralObj.parametrosFiltradoDTO?.orden.push(ordenObj)
+    } else {
+      this.filtrosGeneralObj.filtradoByTextPlain!.ordenamientoDTO.push(ordenObj)
+    }
 
     this.campaignObj.parametroOrdenamientoDTOs.push(ordenObj)
     this.ordenamientoConfirm.push(parametro)
@@ -418,11 +451,16 @@ export class ParametrosComponent implements OnInit {
     var positionArray = this.ordenamientoConfirm.indexOf(objArray)
     this.ordenamientoConfirm.splice(positionArray, 1)
 
-    var objFiltro = this.filtrosGeneralObj.orden.find((f: any) => f.parametroOrdenamiento == parametro)
-    var positionFiltro = this.filtrosGeneralObj.orden.indexOf(objFiltro)
-    this.filtrosGeneralObj.orden.splice(positionFiltro, 1)
+    var objFiltro = this.filtrosGeneralObj.parametrosFiltradoDTO?.orden.find((f: any) => f.parametroOrdenamiento == parametro)
+    var positionFiltro = this.filtrosGeneralObj.parametrosFiltradoDTO?.orden.indexOf(objFiltro!)
+    this.filtrosGeneralObj.parametrosFiltradoDTO?.orden.splice(positionFiltro!, 1)
 
-    console.log(this.ordenamientoArray);
+    if (this.clients.length > 0) {
+      var objFiltroTP = this.filtrosGeneralObj.parametrosFiltradoDTO?.orden.findIndex((f: any) => f.parametroOrdenamiento == parametro)
+      this.filtrosGeneralObj.filtradoByTextPlain!.ordenamientoDTO.splice(objFiltroTP!, 1)
+    }
+
+    console.log(this.filtrosGeneralObj);
   }
 
   // CREAR BLOQUE
@@ -432,28 +470,70 @@ export class ParametrosComponent implements OnInit {
       return
     }
 
-    if (this.filtrosGeneralObj.bancos == null && this.filtrosGeneralObj.edadVencimientos == null && this.filtrosGeneralObj.sede == null && this.filtrosGeneralObj.juridica == null && this.filtrosGeneralObj.tipoCredito == null &&
-      (this.filtrosGeneralObj.fechaStart == null && this.filtrosGeneralObj.fechaEnd == null) && (this.filtrosGeneralObj.moraStart == null && this.filtrosGeneralObj.moraEnd == null) && (this.filtrosGeneralObj.diasStart == null && this.filtrosGeneralObj.diasEnd == null)
-      && (this.filtrosGeneralObj.totalStart == null && this.filtrosGeneralObj.totalEnd == null)
-    ) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Debe Seleccionar Al Menos Una Opción',
-        timer: 3000
-      })
-      return
+    if (this.filtrosGeneralObj.parametrosFiltradoDTO != null) {
+      if (this.filtrosGeneralObj.parametrosFiltradoDTO.bancos == null && this.filtrosGeneralObj.parametrosFiltradoDTO.edadVencimientos == null && this.filtrosGeneralObj.parametrosFiltradoDTO.sede == null && this.filtrosGeneralObj.parametrosFiltradoDTO.juridica == null && this.filtrosGeneralObj.parametrosFiltradoDTO.tipoCredito == null &&
+        (this.filtrosGeneralObj.parametrosFiltradoDTO.fechaStart == null && this.filtrosGeneralObj.parametrosFiltradoDTO.fechaEnd == null) && (this.filtrosGeneralObj.parametrosFiltradoDTO.moraStart == null && this.filtrosGeneralObj.parametrosFiltradoDTO.moraEnd == null) && (this.filtrosGeneralObj.parametrosFiltradoDTO.diasStart == null && this.filtrosGeneralObj.parametrosFiltradoDTO.diasEnd == null)
+        && (this.filtrosGeneralObj.parametrosFiltradoDTO.totalStart == null && this.filtrosGeneralObj.parametrosFiltradoDTO.totalEnd == null) && this.clients.length == 0
+      ) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Debe Seleccionar Al Menos Una Opción',
+          timer: 3000
+        })
+        return
+      }
     }
 
-    console.log(`Bloque_${this.viewsArray.length + 1}`);
+    if (this.clients.length == 0) {
+      if (this.filtrosGeneralObj.parametrosFiltradoDTO?.orden.length == 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Elija al Menos Un Ordenamiento',
+          timer: 3000
+        })
+        return
+      }
+    } else {
+      if (this.filtrosGeneralObj.filtradoByTextPlain!.ordenamientoDTO.length == 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Elija al Menos Un Ordenamiento',
+          timer: 3000
+        })
+        return
+      }
+    }
 
+    var nameView: string
 
-    this.parametrosService.cuentasView(`Bloque_${Math.floor(Math.random() * 100) + 1}`, this.filtrosGeneralObj).subscribe(
+    if (this.clients.length == 0) {
+      this.filtrosGeneralObj.filtradoByTextPlain = null
+
+      nameView = `Bloque_Manual_${this.viewsArray.length + 1}`
+
+    } else {
+      this.filtrosGeneralObj.parametrosFiltradoDTO = null
+
+      nameView = `Bloque_Text_Plain_${this.viewsArray.length + 1}`
+
+      for (let i = 0; i < this.clients.length; i++) {
+        this.filtrosGeneralObj.filtradoByTextPlain!.cuentas.push(this.clients[i][0])
+      }
+      console.log(this.filtrosGeneralObj.filtradoByTextPlain!.cuentas);
+    }
+
+    console.log(nameView);
+
+    this.parametrosService.cuentasView(nameView, this.filtrosGeneralObj).subscribe(
       (data: any) => {
         console.log(data);
         this.parametrosService.viewUpdate(data.message).subscribe(
           (data: any) => {
-            console.log(data); this.viewsArray.push(`Bloque_${this.viewsArray.length + 1}`)
+            console.log(data);
+            this.viewsArray.push(nameView)
             Swal.fire({
               icon: 'success',
               title: 'Datos Guardados',
@@ -477,18 +557,26 @@ export class ParametrosComponent implements OnInit {
     this.ordenamientoConfirm = []
 
     this.filtrosGeneralObj = {
-      "bancos": null,
-      "edadVencimientos": null,
-      "sede": null,
-      "juridica": null,
-      "tipoCredito": null,
-      "fechaStart": null,
-      "fechaEnd": null,
-      "moraStart": null,
-      "moraEnd": null,
-      "diasStart": null,
-      "diasEnd": null,
-      orden: []
+      filtradoByTextPlain: {
+        cuentas: [],
+        ordenamientoDTO: []
+      },
+      parametrosFiltradoDTO: {
+        bancos: null,
+        edadVencimientos: null,
+        sede: null,
+        juridica: null,
+        tipoCredito: null,
+        fechaStart: null,
+        fechaEnd: null,
+        moraStart: null,
+        moraEnd: null,
+        diasStart: null,
+        diasEnd: null,
+        totalStart: null,
+        totalEnd: null,
+        orden: []
+      }
     }
 
     this.parametrosService.cuentas(user, this.filtrosGeneralObj).subscribe(
@@ -593,7 +681,6 @@ export class ParametrosComponent implements OnInit {
             break;
           case 'TOTAL OBLIGACION':
             obj = newParametros.totalObligacion.find((to: any) => to.mora_range == element.subParametro)
-            console.log(obj);
             break;
 
         }
@@ -604,8 +691,6 @@ export class ParametrosComponent implements OnInit {
           var boton = document.getElementById(parametrosArray[i].parametro + '-' + element.subParametro + '-' + position);
 
           if (boton) {
-            console.log(boton);
-
             boton.setAttribute('disabled', 'true');
           }
         }
@@ -642,6 +727,30 @@ export class ParametrosComponent implements OnInit {
         });
       }
     }
+  }
+
+  // LEER Y PROCESAR EL ARCHIVO
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) {
+      return;
+    }
+
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.fileContent = reader.result;
+      if (typeof this.fileContent === 'string') {
+        this.processFileContent(this.fileContent);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  processFileContent(content: string): void {
+    const lines = content.split('\n');
+    this.clients = lines.map(line => line.split(','));
+    console.log(this.clients);
   }
 
 }

@@ -21,77 +21,115 @@
 
             <hr>
 
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <input class="form-control" type="file" (change)="onFileSelected($event)">
+                </div>
+            </div>
+
             <div class="card floating-card">
                 <div class="card-body p-2">
                     <strong>Clientes:</strong> {{ clientesFiltro }}
                 </div>
             </div>
 
-            <div class="row mt-4 mb-4" *ngIf="parametrosConfirm.length > 0">
+            <div class="row" *ngIf="clients.length > 0">
                 <div class="col-md-12">
-                    <div class="card card-bg">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-3" *ngFor="let pc of parametrosConfirm">
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <h6>{{ pc.subParametros[0] }}</h6>
-                                        <button type="button" (click)="deleteFiltro(pc.parametro, pc.subParametros[0])"
-                                            class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Número Obligación</th>
+                                    <th scope="col">Edad Vencimiento</th>
+                                    <th scope="col">Total Mora</th>
+                                    <th scope="col">Total Obligación</th>
+                                    <th scope="col">Clasificación Jurídica</th>
+                                    <th scope="col">Sede</th>
+                                    <th scope="col">Banco</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let c of clients; let i = index">
+                                    <th>{{ i + 1 }}</th>
+                                    <td *ngFor="let d of c">{{ d }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <span *ngIf="clients.length == 0">
+                <div class="row mt-4 mb-4" *ngIf="parametrosConfirm.length > 0">
+                    <div class="col-md-12">
+                        <div class="card card-bg">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3" *ngFor="let pc of parametrosConfirm">
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <h6>{{ pc.subParametros[0] }}</h6>
+                                            <button type="button"
+                                                (click)="deleteFiltro(pc.parametro, pc.subParametros[0])"
+                                                class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <ng-container *ngFor="let p of parametrosArray">
-                    <div class="col-md-4 mb-3" style="overflow-y: auto; height: 200px;"
-                        *ngIf="!optionConfirm.includes(p.parametro)">
-                        <h6 class="color-red">{{ p.parametro }}</h6>
-
-                        <ng-container *ngFor="let sp of p.subParametros; let i = index">
-                            <ul class="list-group">
-                                <button class="btn" (click)="filtrosGenerales(p, sp)"
-                                    [id]="p.parametro + '-' + sp.subParametro + '-' + i" style="border: none;">
-                                    <li class="list-group-item">
-                                        <h6 class="font-sub">{{
-                                            sp.subParametro
-                                            }}</h6>
-                                    </li>
-                                </button>
-
-                            </ul>
-                        </ng-container>
-                    </div>
-                </ng-container>
                 <div class="row">
-                    <div class="col-md-6" *ngIf="!optionConfirm.includes('FECHA VENCIMIENTO')">
-                        <h5 class="color-red">FECHA VENCIMIENTO</h5>
-                        <div class="row mb-4">
-                            <div class="col-md-5">
-                                <div class="mt-3">
-                                    <label class="form-label fw-bold">Inicio</label>
-                                    <input type="date" class="form-control" [(ngModel)]="filtrosGeneralObj.fechaStart">
+                    <ng-container *ngFor="let p of parametrosArray">
+                        <div class="col-md-4 mb-3" style="overflow-y: auto; height: 200px;"
+                            *ngIf="!optionConfirm.includes(p.parametro)">
+                            <h6 class="color-red">{{ p.parametro }}</h6>
+
+                            <ng-container *ngFor="let sp of p.subParametros; let i = index">
+                                <ul class="list-group">
+                                    <button class="btn" (click)="filtrosGenerales(p, sp)"
+                                        [id]="p.parametro + '-' + sp.subParametro + '-' + i" style="border: none;">
+                                        <li class="list-group-item">
+                                            <h6 class="font-sub">{{
+                                                sp.subParametro
+                                                }}</h6>
+                                        </li>
+                                    </button>
+
+                                </ul>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                    <div class="row">
+                        <div class="col-md-6" *ngIf="!optionConfirm.includes('FECHA VENCIMIENTO')">
+                            <h5 class="color-red">FECHA VENCIMIENTO</h5>
+                            <div class="row mb-4">
+                                <div class="col-md-5">
+                                    <div class="mt-3">
+                                        <label class="form-label fw-bold">Inicio</label>
+                                        <input type="date" class="form-control"
+                                            [(ngModel)]="filtrosGeneralObj.parametrosFiltradoDTO!.fechaStart">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="mt-3">
-                                    <label class="form-label fw-bold">Fin</label>
-                                    <input type="date" class="form-control" [(ngModel)]="filtrosGeneralObj.fechaEnd">
+                                <div class="col-md-5">
+                                    <div class="mt-3">
+                                        <label class="form-label fw-bold">Fin</label>
+                                        <input type="date" class="form-control"
+                                            [(ngModel)]="filtrosGeneralObj.parametrosFiltradoDTO!.fechaEnd">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2 mt-5">
-                                <button class="btn b" (click)="filtroFecha('FECHA VENCIMIENTO')">Filtrar</button>
+                                <div class="col-md-2 mt-5">
+                                    <button class="btn b" (click)="filtroFecha('FECHA VENCIMIENTO')">Filtrar</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </span>
 
-                <button class="btn btn-guardar" (click)="createView()">Crear
-                    Bloque</button>
-            </div>
+            <button class="btn btn-guardar" (click)="createView()">Crear
+                Bloque</button>
         </div>
     </div>
 
