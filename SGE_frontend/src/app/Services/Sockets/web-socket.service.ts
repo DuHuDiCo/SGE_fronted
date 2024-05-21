@@ -32,7 +32,7 @@ export class WebSocketService {
     this.rxStompService.activate();
     this.rxStompService.connected$.subscribe(
       () => {
-        this.rxStompService.watch("/topic/private-messages").subscribe(
+        this.rxStompService.watch("/user/queue/reply").subscribe(
           (message: any) => {
             this.messagesSubject.next(message.body)
           }
