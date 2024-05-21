@@ -34,6 +34,7 @@ export class WebSocketService {
       () => {
         this.rxStompService.watch("/user/queue/reply").subscribe(
           (message: any) => {
+            console.log(message.body)
             this.messagesSubject.next(message.body)
           }
         )
