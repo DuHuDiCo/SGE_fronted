@@ -20,7 +20,7 @@ export class SocketTestComponent implements OnInit {
   ngOnInit(): void {
 
     this.topicSubscription = this.webSocketService.watch('/topic/message').subscribe(
-      (message: Message) => {
+      (message: any) => {
         console.log(message.body);
 
       });
