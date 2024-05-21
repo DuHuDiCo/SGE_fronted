@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ParametrosService } from 'src/app/Services/AdminCartera/parametros.service';
 
 @Component({
@@ -6,20 +6,15 @@ import { ParametrosService } from 'src/app/Services/AdminCartera/parametros.serv
   templateUrl: './socket-test.component.html',
   styleUrls: ['./socket-test.component.css']
 })
-export class SocketTestComponent {
+export class SocketTestComponent implements OnInit {
 
-  message: string = '';
-  receivedMessage: string = '';
+  message: string = ''
 
-  constructor(private parametrosService: ParametrosService) {
-    this.parametrosService.messages.subscribe((msg: string) => {
-      this.receivedMessage = msg;
-    });
-  }
+  constructor(private parametrosService: ParametrosService) { }
 
-  sendMessage() {
-    this.parametrosService.sendMessage(this.message);
-    this.message = '';
+  ngOnInit(): void {
+
+
   }
 
 }
