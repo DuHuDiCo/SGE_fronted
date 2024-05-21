@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Message } from '@stomp/stompjs';
+import { Subscription } from 'rxjs';
 import { ParametrosService } from 'src/app/Services/AdminCartera/parametros.service';
+import { RxStompService } from 'src/app/Services/AdminCartera/rx-stomp.service';
+
 
 @Component({
   selector: 'app-socket-test',
@@ -9,11 +13,17 @@ import { ParametrosService } from 'src/app/Services/AdminCartera/parametros.serv
 export class SocketTestComponent implements OnInit {
 
   message: string = ''
+  private topicSubscription!: Subscription;
 
-  constructor(private parametrosService: ParametrosService) { }
+  constructor(private webSocketService: RxStompService) { }
 
   ngOnInit(): void {
 
+    this.topicSubscription = this.webSocketService.watch('/topic/message').subscribe(
+      (message: Message) => {
+        console.log(message.body);
+
+      });
 
   }
 

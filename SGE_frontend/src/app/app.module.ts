@@ -135,6 +135,9 @@ import { NgxUiLoaderHttpModule, NgxUiLoaderModule } from 'ngx-ui-loader';
 import { ngxUiLoaderConfig } from './utils/loaderConfig';
 import { SocketTestComponent } from './componentesGenerales/socket-test/socket-test.component';
 
+import { rxStompServiceFactory } from './rx-stomp-service-factory';
+import { RxStompService } from './Services/AdminCartera/rx-stomp.service';
+
 
 
 
@@ -300,7 +303,7 @@ import { SocketTestComponent } from './componentesGenerales/socket-test/socket-t
   ],
 
 
-  providers: [authInterceptorProviders, CurrencyPipe],
+  providers: [authInterceptorProviders, CurrencyPipe, { provide: RxStompService, useFactory: rxStompServiceFactory }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
