@@ -303,7 +303,7 @@ import { RxStompService } from './Services/AdminCartera/rx-stomp.service';
   ],
 
 
-  providers: [authInterceptorProviders, CurrencyPipe, { provide: RxStompService, useFactory: rxStompServiceFactory }],
+  providers: [authInterceptorProviders, CurrencyPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
