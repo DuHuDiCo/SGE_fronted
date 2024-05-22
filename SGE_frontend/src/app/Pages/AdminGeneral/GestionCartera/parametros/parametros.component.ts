@@ -171,11 +171,12 @@ export class ParametrosComponent implements OnInit {
 
     this.parametrosService.cuentas(user, this.parametrosFiltradoDTO).subscribe(
       (data: any) => {
-        this.clientesFiltro = data
+        this.clientesFiltro = data.filtradas
         this.parametrosConfirm.push(paraObj)
         this.optionConfirm.push(paraObj.parametro)
         this.campaignObj.parametros.push(paraObj)
-        console.log(this.parametrosConfirm);
+        this.changeDatos(data, this.parametrosArray)
+        this.bloquearBotones(data, this.parametrosArray)
         console.log(data);
       }, (error: any) => {
         console.log(error);
@@ -379,7 +380,7 @@ export class ParametrosComponent implements OnInit {
 
     this.parametrosService.cuentas(user, this.filtrosGeneralObj).subscribe(
       (data: any) => {
-        this.clientesFiltro = data
+        this.clientesFiltro = data.filtradas
 
         var posPar = this.optionConfirm.indexOf(parametro)
         this.optionConfirm.splice(posPar, 1)
