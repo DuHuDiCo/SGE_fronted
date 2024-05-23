@@ -74,7 +74,7 @@ export class ParametrosComponent implements OnInit {
 
   // VARIABLES
   clientesFiltro: number = 0
-  fileContent: string | ArrayBuffer | null = '';
+  fileContent: string | ArrayBuffer | null = null;
   clients: any[] = [];
 
   constructor(private parametrosService: ParametrosService, private authService: AuthenticationService) { }
@@ -88,6 +88,8 @@ export class ParametrosComponent implements OnInit {
     this.parametrosService.getParametros().subscribe(
       (data: any) => {
         this.parametrosArray = data.parametros
+        console.log(data.disponibilidad);
+
         this.fillParametrosNoConfirm(data.parametros)
         this.fillOrdenamiento()
         setTimeout(() => {
@@ -375,10 +377,14 @@ export class ParametrosComponent implements OnInit {
         break;
     }
 
-    console.log(this.filtrosGeneralObj);
+    if (this.filtrosGeneralObj.parametrosFiltradoDTO != null) {
+      this.parametrosFiltradoDTO = this.filtrosGeneralObj.parametrosFiltradoDTO
+    }
+
+    console.log(this.parametrosFiltradoDTO);
 
 
-    this.parametrosService.cuentas(user, this.filtrosGeneralObj).subscribe(
+    this.parametrosService.cuentas(user, this.parametrosFiltradoDTO).subscribe(
       (data: any) => {
         this.clientesFiltro = data.filtradas
 
@@ -392,6 +398,8 @@ export class ParametrosComponent implements OnInit {
         this.parametrosConfirm.splice(position, 1)
 
         this.deleteParametroCampaign(parametro)
+        this.changeDatos(data, this.parametrosArray)
+        this.bloquearBotones(data, this.parametrosArray)
 
         console.log(this.parametrosConfirm);
         console.log(data);
@@ -579,20 +587,6 @@ export class ParametrosComponent implements OnInit {
         orden: []
       }
     }
-
-    this.parametrosService.cuentas(user, this.filtrosGeneralObj).subscribe(
-      (data: any) => {
-        console.log(data);
-      }, (error: any) => {
-        console.log(error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Error Al Filtrar',
-          timer: 3000
-        })
-      }
-    )
   }
 
   // CREAR CAMPAÑA
@@ -651,7 +645,10 @@ export class ParametrosComponent implements OnInit {
     console.log(this.campaignObj);
   }
 
+  // MANEJO DE BOTONES
   bloquearBotones(newParametros: any, parametrosArray: any) {
+    this.desbloquearDisableds(parametrosArray)
+
     for (let i = 0; i < parametrosArray.length; i++) {
 
       var obj: any
@@ -699,6 +696,17 @@ export class ParametrosComponent implements OnInit {
     }
   }
 
+  desbloquearDisableds(parametrosArray: any) {
+    for (let i = 0; i < parametrosArray.length; i++) {
+      for (let x = 0; x < parametrosArray[i].subParametros.length; x++) {
+        var boton = document.getElementById(parametrosArray[i].parametro + '-' + parametrosArray[i].subParametros[x].subParametro + '-' + x);
+        if (boton) {
+          boton.removeAttribute('disabled');
+        }
+      }
+    }
+  }
+
   changeDatos(newParametros: any, parametrosArray: any) {
     for (let i = 0; i < parametrosArray.length; i++) {
       if (parametrosArray[i].parametro == 'MORA OBLIGATORIA') {
@@ -741,6 +749,7 @@ export class ParametrosComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = () => {
       this.fileContent = reader.result;
+      console.log(this.fileContent);
       if (typeof this.fileContent === 'string') {
         this.processFileContent(this.fileContent);
       }

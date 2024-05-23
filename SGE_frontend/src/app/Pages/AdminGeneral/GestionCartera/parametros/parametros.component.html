@@ -25,6 +25,16 @@
                 <div class="col-md-4">
                     <input class="form-control" type="file" (change)="onFileSelected($event)">
                 </div>
+                <div class="col-md-4">
+                    <select class="form-select" required>
+                        <option value="">Delimitante</option>
+                        <option value=",">Coma (,)</option>
+                        <option value=";">Punto y Coma (;)</option>
+                    </select>
+                </div>
+                <div class="col-md-1" *ngIf="fileContent != null">
+                    <button class="btn b">Cancelar</button>
+                </div>
             </div>
 
             <div class="card floating-card">
