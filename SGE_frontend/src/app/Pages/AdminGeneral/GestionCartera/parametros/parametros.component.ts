@@ -22,6 +22,8 @@ export class ParametrosComponent implements OnInit {
 
   ordenamientoArray: any[] = []
   ordenamientoConfirm: any[] = []
+  clients: any[] = [];
+  fileContent: string | ArrayBuffer | null = null;
 
   // OBJETOS
   filtrosGeneralObj: FiltrosGenerales = {
@@ -74,8 +76,8 @@ export class ParametrosComponent implements OnInit {
 
   // VARIABLES
   clientesFiltro: number = 0
-  fileContent: string | ArrayBuffer | null = null;
-  clients: any[] = [];
+  delimitante: string = ''
+  fileInput!: any
 
   constructor(private parametrosService: ParametrosService, private authService: AuthenticationService) { }
 
@@ -741,6 +743,20 @@ export class ParametrosComponent implements OnInit {
   // LEER Y PROCESAR EL ARCHIVO
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
+    this.fileInput = input
+
+    if (this.delimitante == '' || this.delimitante == undefined || this.delimitante == null) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Seleccione Un Delimitante',
+        timer: 3000
+      })
+
+      input.value = ''
+      return
+    }
+
     if (!input.files?.length) {
       return;
     }
@@ -759,8 +775,29 @@ export class ParametrosComponent implements OnInit {
 
   processFileContent(content: string): void {
     const lines = content.split('\n');
-    this.clients = lines.map(line => line.split(','));
-    console.log(this.clients);
+    var array = lines.map(line => line.split(this.delimitante));
+
+    if (array[0].length == 1) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Seleccione El Delimiante Correcto',
+        timer: 3000
+      })
+
+
+      this.fileInput = this.fileInput.value = ''
+      this.delimitante = ''
+      return
+    }
+
+    this.clients = array
+  }
+
+  cancelarArchivo() {
+    this.clients = []
+    this.delimitante = ''
+    this.fileInput = this.fileInput.value = ''
   }
 
 }

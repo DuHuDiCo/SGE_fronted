@@ -22,18 +22,19 @@
             <hr>
 
             <div class="row mb-3">
-                <div class="col-md-4">
-                    <input class="form-control" type="file" (change)="onFileSelected($event)">
-                </div>
-                <div class="col-md-4">
-                    <select class="form-select" required>
+                <h6 class="text-start fw-bold">Subir Por Archivo</h6>
+                <div class="col-md-2">
+                    <select [(ngModel)]="delimitante" class="form-select" required>
                         <option value="">Delimitante</option>
                         <option value=",">Coma (,)</option>
                         <option value=";">Punto y Coma (;)</option>
                     </select>
                 </div>
+                <div class="col-md-4">
+                    <input class="form-control" type="file" (change)="onFileSelected($event)">
+                </div>
                 <div class="col-md-1" *ngIf="fileContent != null">
-                    <button class="btn b">Cancelar</button>
+                    <button class="btn b" (click)="cancelarArchivo()">Cancelar</button>
                 </div>
             </div>
 
