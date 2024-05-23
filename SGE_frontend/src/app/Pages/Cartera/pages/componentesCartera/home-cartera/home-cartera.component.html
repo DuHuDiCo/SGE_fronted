@@ -480,8 +480,8 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <!-- SIDEBAR -->
-                <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasRight"
-                    aria-labelledby="offcanvasRightLabel" style="height: 95%;">
+                <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasRight" data-bs-backdrop="true"
+                    style="height: 95%;">
                     <div *ngIf="!spinnerSidebar" class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasRightLabel">Datos Cliente</h5>
                         <button *ngIf="deshabilitarInputs" class="btn btn-danger b" data-bs-toggle="modal"
@@ -579,12 +579,15 @@
                                                                 [disabled]="deshabilitarInputs">
                                                         </div>
                                                     </div>
-                                                    <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'PREJURIDICO'"
-                                                        class="col-md-6">
+                                                    <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text fw-bold">Honorarios</span>
-                                                            <input [(ngModel)]="acuerdoCal.honoriarioAcuerdo"
-                                                                type="number" class="form-control" disabled>
+                                                            <span class="input-group-text fw-bold">Saldo Total</span>
+
+                                                            <span
+                                                                class="input-group-text ps-5 pe-5">{{acuerdoCal.saldoAcuerdo
+                                                                | number}}</span>
+
+
                                                         </div>
 
                                                     </div>
@@ -601,15 +604,22 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+
+                                                    <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'PREJURIDICO'"
+                                                        class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text fw-bold">Saldo Total</span>
+                                                            <span class="input-group-text fw-bold">Honorarios</span>
+                                                            <input [(ngModel)]="acuerdoCal.honoriarioAcuerdo"
+                                                                type="number" class="form-control" disabled>
+                                                        </div>
 
-                                                            <span
-                                                                class="input-group-text ps-5 pe-5">{{acuerdoCal.saldoAcuerdo
-                                                                | number}}</span>
-
-
+                                                        <div class="form-check text-start">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                (click)="excluirHonorarios()"
+                                                                [disabled]="deshabilitarInputs">
+                                                            <label class="form-check-label" for="flexCheckDefault">
+                                                                Excluir Honorarios
+                                                            </label>
                                                         </div>
 
                                                     </div>
@@ -1395,7 +1405,7 @@
     </div>
 
     <!-- Modal Historico Gestiones -->
-    <div class="modal fade" id="modalHistoricoG" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    <div class="modal fade" id="modalHistoricoG" tabindex="-1" data-bs-backdrop="true" aria-hidden="true"
         *ngIf="gestiones[0] != true && gestiones.length > 0">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
@@ -1722,14 +1732,14 @@
                                             {{g.saldoCapitalCuota | number}}</td>
                                         <td *ngIf="g.saldoCapitalCuota > 0" style="background-color: yellow;">
                                             {{g.saldoCapitalCuota | number}}</td>
-                                        
+
                                         <td>{{ g.interesCuota | number }}</td>
 
                                         <td *ngIf="g.salodInteresCuota == 0" style="background-color: gray;">
                                             {{g.salodInteresCuota | number}}</td>
                                         <td *ngIf="g.salodInteresCuota > 0" style="background-color: yellow;">
                                             {{g.salodInteresCuota | number}}</td>
-                                            <td>{{ g.honorarios | number }}</td>
+                                        <td>{{ g.honorarios | number }}</td>
 
                                         <td *ngIf="g.saldoHonorarios > 0" style="background-color: yellow;">
                                             {{g.saldoHonorarios| number}}</td>

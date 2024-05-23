@@ -466,6 +466,8 @@ export class HomeCarteraComponent implements OnInit {
   isConVen: boolean = false
   isConReal: boolean = false
 
+  changeHonorarios: boolean = false
+
   @ViewChildren('variableCol') colcheck!: QueryList<ElementRef>;
 
   ngOnInit(): void {
@@ -2476,15 +2478,17 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     } else {
+      //HONORARIOS
       if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
-        this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
-        this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
-
-        //HONORARIOS
-        if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
+        if (this.changeHonorarios == false) {
           var resHonorarios = (parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
           this.acuerdoCal.honoriarioAcuerdo = resHonorarios.toFixed(0)
         }
+      }
+
+      if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
+        this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
       } else {
         this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
         this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
@@ -2498,7 +2502,56 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
+  excluirHonorarios() {
+    var event
+    if (this.acuerdoCal.honoriarioAcuerdo != 0) {
+      var boton_saldo_total = document.getElementById('boton_saldo_total') as HTMLInputElement;
+      var valorTotal = boton_saldo_total.value
 
+      this.acuerdoCal.honoriarioAcuerdo = 0
+
+      this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+
+      this.isCalculate = true
+      this.calculating = true
+      this.col = true
+      this.changeHonorarios = true
+    } else {
+      var boton_saldo_total = document.getElementById('boton_saldo_total') as HTMLInputElement;
+      var valorTotal = boton_saldo_total.value
+
+      if (this.acuerdoCal.valorInteresesMora < 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Digite Un Valor Válido',
+          timer: 3000
+        })
+        return
+      } else {
+        //HONORARIOS
+        if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
+          var resHonorarios = (parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+          this.acuerdoCal.honoriarioAcuerdo = resHonorarios.toFixed(0)
+        }
+
+        if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
+          this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+          this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        } else {
+          this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
+          this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
+        }
+        console.log(this.acuerdoCal);
+
+        this.isCalculate = true
+        this.calculating = true
+        this.col = true
+        this.changeHonorarios = false
+      }
+    }
+  }
 
   // CALCULAR LAS FECHAS DE LAS CUOTAS
   generarFechas() {
