@@ -90,7 +90,7 @@ export class ParametrosComponent implements OnInit {
     this.parametrosService.getParametros().subscribe(
       (data: any) => {
         this.parametrosArray = data.parametros
-        console.log(data.disponibilidad);
+        console.log(data.parametros);
 
         this.fillParametrosNoConfirm(data.parametros)
         this.fillOrdenamiento()
@@ -125,9 +125,10 @@ export class ParametrosComponent implements OnInit {
   }
 
   // FILTROS GENERALES
-  filtrosGenerales(obj: any, subParametro: any) {
+  filtrosGenerales(obj: any, subParametro: any, position: number) {
     var paraObj = {
       parametro: obj.parametro,
+      position: position,
       subParametros: [
         subParametro.subParametro
       ]

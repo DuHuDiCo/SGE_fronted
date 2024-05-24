@@ -77,14 +77,30 @@
                         <div class="card card-bg">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-3" *ngFor="let pc of parametrosConfirm">
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                            <h6>{{ pc.subParametros[0] }}</h6>
-                                            <button type="button"
-                                                (click)="deleteFiltro(pc.parametro, pc.subParametros[0])"
-                                                class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <ng-template *ngFor="let pc of parametrosConfirm">
+                                        <div class="col-md-3"
+                                            *ngIf="pc.parametro != 'MORA OBLIGATORIA' && pc.parametro != 'DIAS VENCIDOS' && pc.parametro != 'TOTAL OBLIGACION'">
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <h6>{{ pc.subParametros[0] }}</h6>
+                                                <button type="button"
+                                                    (click)="deleteFiltro(pc.parametro, pc.subParametros[0])"
+                                                    class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                            </div>
                                         </div>
-                                    </div>
+
+                                        <!-- <div class="col-md-3" *ngIf="pc.parametro == 'MORA OBLIGATORIA' || pc.parametro != 'DIAS VENCIDOS' || pc.parametro != 'TOTAL OBLIGACION'">
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <h6>{{ pc.position == 0 ? 'Desde 1 Hasta ' + pc.subParametros[0] : pc.position == 1
+                                                    ? 'Desde ' + p.subParametros[0].subParametro + ' Hasta ' +
+                                                    sp.subParametro
+                                                    : 'Mayor a ' + sp.subParametro }}</h6>
+                                                <button type="button"
+                                                    (click)="deleteFiltro(pc.parametro, pc.subParametros[0])"
+                                                    class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            </div>
+                                        </div> -->
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +115,7 @@
 
                             <ng-container *ngFor="let sp of p.subParametros; let i = index">
                                 <ul class="list-group">
-                                    <button class="btn" (click)="filtrosGenerales(p, sp)"
+                                    <button class="btn" (click)="filtrosGenerales(p, sp, i)"
                                         [id]="p.parametro + '-' + sp.subParametro + '-' + i" style="border: none;">
                                         <li class="list-group-item"
                                             *ngIf="p.parametro != 'MORA OBLIGATORIA' && p.parametro != 'DIAS VENCIDOS' && p.parametro != 'TOTAL OBLIGACION'">
@@ -108,13 +124,17 @@
                                                 }}</h6>
                                         </li>
                                         <li class="list-group-item"
-                                            *ngIf="p.parametro == 'MORA OBLIGATORIA' || p.parametro == 'TOTAL OBLIGACION'">
-                                            <h6 class="font-sub">{{
-                                                sp.subParametro
-                                                }}</h6>
-                                            <!-- {{ i == 1 ? 'Desde 1 Hasta' + sp.subParametro : i == 2
-                                                ? 'Desde' + sp[0].subParametro + 'Hasta' + sp.subParametro : 'Desde' +
-                                                sp[1].subParametro + 'Hasta' + sp.subParametro }} -->
+                                            *ngIf="p.parametro == 'MORA OBLIGATORIA' || p.parametro == 'TOTAL OBLIGACION' || p.parametro == 'DIAS VENCIDOS'">
+                                            <h6 class="font-sub">
+                                                {{
+                                                i == 0 ? ('Desde 1 Hasta ' + sp.subParametro) :
+                                                i == 1 ? ('Desde ' + (p.subParametros[0].subParametro | number) + '
+                                                Hasta ' + (sp.subParametro | number)) :
+                                                ('Mayor a ' + (sp.subParametro | number))
+                                                }}
+                                            </h6>
+
+
                                         </li>
                                     </button>
 
