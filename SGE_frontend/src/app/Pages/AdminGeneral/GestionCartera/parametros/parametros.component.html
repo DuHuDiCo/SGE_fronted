@@ -101,10 +101,20 @@
                                 <ul class="list-group">
                                     <button class="btn" (click)="filtrosGenerales(p, sp)"
                                         [id]="p.parametro + '-' + sp.subParametro + '-' + i" style="border: none;">
-                                        <li class="list-group-item">
+                                        <li class="list-group-item"
+                                            *ngIf="p.parametro != 'MORA OBLIGATORIA' && p.parametro != 'DIAS VENCIDOS' && p.parametro != 'TOTAL OBLIGACION'">
                                             <h6 class="font-sub">{{
                                                 sp.subParametro
                                                 }}</h6>
+                                        </li>
+                                        <li class="list-group-item"
+                                            *ngIf="p.parametro == 'MORA OBLIGATORIA' || p.parametro == 'TOTAL OBLIGACION'">
+                                            <h6 class="font-sub">{{
+                                                sp.subParametro
+                                                }}</h6>
+                                            <!-- {{ i == 1 ? 'Desde 1 Hasta' + sp.subParametro : i == 2
+                                                ? 'Desde' + sp[0].subParametro + 'Hasta' + sp.subParametro : 'Desde' +
+                                                sp[1].subParametro + 'Hasta' + sp.subParametro }} -->
                                         </li>
                                     </button>
 

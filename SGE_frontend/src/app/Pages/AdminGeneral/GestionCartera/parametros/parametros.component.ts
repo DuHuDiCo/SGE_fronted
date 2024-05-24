@@ -765,7 +765,6 @@ export class ParametrosComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = () => {
       this.fileContent = reader.result;
-      console.log(this.fileContent);
       if (typeof this.fileContent === 'string') {
         this.processFileContent(this.fileContent);
       }
@@ -791,12 +790,40 @@ export class ParametrosComponent implements OnInit {
       return
     }
 
+    for (let i = 0; i < array.length; i++) {
+      if (array[i][0] == '' || array[i][0] == null || typeof array[i][0] !== 'string') {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hay un número de obligación incorrecto',
+          timer: 3000
+        })
+        this.cancelarArchivo()
+        return
+      }
+      for (let j = 0; j < array[i].length; j++) {
+        const element = array[i][j];
+
+        if (element === '' || element === null || typeof element !== 'string') {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Faltan datos en el Archivo',
+            timer: 3000
+          });
+          this.cancelarArchivo();
+          return;
+        }
+      }
+    }
+
     this.clients = array
   }
 
   cancelarArchivo() {
     this.clients = []
     this.delimitante = ''
+    this.fileContent = null
     this.fileInput = this.fileInput.value = ''
   }
 
