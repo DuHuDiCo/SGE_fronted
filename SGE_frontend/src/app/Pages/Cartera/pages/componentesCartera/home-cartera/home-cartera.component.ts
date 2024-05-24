@@ -3510,6 +3510,8 @@ export class HomeCarteraComponent implements OnInit {
     console.log(this.filtros);
     this.cuentasCobrar.filtro(this.page, this.size, this.fechaCreacion, this.filtros).subscribe(
       (data: any) => {
+        console.log(data);
+
         this.botonFiltro = false
         this.filtrando = true
         this.filtroAgain = true
