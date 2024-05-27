@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { ParametrosService } from 'src/app/Services/AdminCartera/parametros.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Campaign } from 'src/app/Types/PanelCartera/campaign';
@@ -72,7 +72,8 @@ export class ParametrosComponent implements OnInit {
     parametros: [],
     namesViews: [],
     asesoresId: [],
-    parametroOrdenamientoDTOs: []
+    parametroOrdenamientoDTOs: [],
+    isAsignacion: false
   }
 
   // VARIABLES
@@ -91,19 +92,29 @@ export class ParametrosComponent implements OnInit {
     return true;
   }
 
-  @HostListener('window:beforeunload', ['$event'])
-  unloadNotification($event: any): void {
-    if (this.hasUnsavedChanges()) {
-      $event.returnValue = true;
-    }
+  deleteFiltrosAndBloques() {
+    this.parametrosService.deleteCuentas().pipe(
+      tap((data: any) => {
+      }), catchError((error) => {
+        console.error(error)
+        return of([])
+      })
+    ).subscribe()
   }
 
+  // @HostListener('window:beforeunload', ['$event'])
+  // unloadNotification($event: any): void {
+  //   if (this.hasUnsavedChanges()) {
+  //     $event.returnValue = true;
+  //   }
+  // }
+
   parametros() {
+    this.deleteFiltrosAndBloques()
     this.parametrosService.getParametros().subscribe(
       (data: any) => {
         this.parametrosArray = data.parametros
         console.log(data.parametros);
-
         this.fillParametrosNoConfirm(data.parametros)
         this.fillOrdenamiento()
         setTimeout(() => {
@@ -189,7 +200,9 @@ export class ParametrosComponent implements OnInit {
     this.parametrosService.cuentas(user, this.parametrosFiltradoDTO).subscribe(
       (data: any) => {
         this.clientesFiltro = data.filtradas
+
         this.parametrosConfirm.push(paraObj)
+        console.log(this.parametrosConfirm);
         this.optionConfirm.push(paraObj.parametro)
         this.campaignObj.parametros.push(paraObj)
         this.changeDatos(data, this.parametrosArray)
@@ -614,6 +627,18 @@ export class ParametrosComponent implements OnInit {
         timer: 3000
       })
       return
+    }
+
+    if (this.campaignObj.isAsignacion) {
+      if (this.campaignObj.asesoresId.length > 1) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No puede tener más de un asesor',
+          timer: 3000
+        })
+        return
+      }
     }
 
     if (this.campaignObj.nombreCampania == null || this.campaignObj.nombreCampania == '') {

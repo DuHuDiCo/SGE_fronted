@@ -32,6 +32,10 @@ export class ParametrosService {
     return this.http.post(`${this.url}/cuentas/campaign`, parametros)
   }
 
+  deleteCuentas() {
+    return this.http.delete(`${this.url}/cuentas/`)
+  }
+
   // ASESORES
   getAsesores() {
     return this.http.get(`${this.url}/asesores/`)

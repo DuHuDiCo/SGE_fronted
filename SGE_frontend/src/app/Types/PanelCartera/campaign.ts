@@ -3,7 +3,8 @@ export type Campaign = {
     parametros: Parametros[],
     namesViews: string[],
     asesoresId: number[],
-    parametroOrdenamientoDTOs: parametroOrdenamientoDTOs[]
+    parametroOrdenamientoDTOs: parametroOrdenamientoDTOs[],
+    isAsignacion: boolean
 }
 
 type Parametros = {

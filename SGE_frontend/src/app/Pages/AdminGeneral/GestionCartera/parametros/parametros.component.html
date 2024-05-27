@@ -77,30 +77,15 @@
                         <div class="card card-bg">
                             <div class="card-body">
                                 <div class="row">
-                                    <ng-template *ngFor="let pc of parametrosConfirm">
-                                        <div class="col-md-3"
-                                            *ngIf="pc.parametro != 'MORA OBLIGATORIA' && pc.parametro != 'DIAS VENCIDOS' && pc.parametro != 'TOTAL OBLIGACION'">
-                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                <h6>{{ pc.subParametros[0] }}</h6>
-                                                <button type="button"
-                                                    (click)="deleteFiltro(pc.parametro, pc.subParametros[0])"
-                                                    class="btn-close" data-bs-dismiss="alert"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                        </div>
 
-                                        <!-- <div class="col-md-3" *ngIf="pc.parametro == 'MORA OBLIGATORIA' || pc.parametro != 'DIAS VENCIDOS' || pc.parametro != 'TOTAL OBLIGACION'">
-                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                <h6>{{ pc.position == 0 ? 'Desde 1 Hasta ' + pc.subParametros[0] : pc.position == 1
-                                                    ? 'Desde ' + p.subParametros[0].subParametro + ' Hasta ' +
-                                                    sp.subParametro
-                                                    : 'Mayor a ' + sp.subParametro }}</h6>
-                                                <button type="button"
-                                                    (click)="deleteFiltro(pc.parametro, pc.subParametros[0])"
-                                                    class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                            </div>
-                                        </div> -->
-                                    </ng-template>
+                                    <div class="col-md-3" *ngFor="let pc of parametrosConfirm">
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <h6>{{ pc.subParametros[0] }}</h6>
+                                            <button type="button"
+                                                (click)="deleteFiltro(pc.parametro, pc.subParametros[0])"
+                                                class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -237,6 +222,17 @@
             <h2 class="mt-2">Asignar Asesores</h2>
 
             <hr>
+
+            <div class="row">
+                <div class="col-md-12 text-start">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch"
+                            [(ngModel)]="campaignObj.isAsignacion">
+                        <label class="form-check-label fw-bold">¿Es una campaña de asignación?</label>
+                    </div>
+                </div>
+            </div>
+            <br>
 
             <div class="row mb-3">
                 <div class="col-md-3" *ngFor="let a of asesoresArray">
