@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ParametrosService } from 'src/app/Services/AdminCartera/parametros.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Campaign } from 'src/app/Types/PanelCartera/campaign';
@@ -84,6 +85,17 @@ export class ParametrosComponent implements OnInit {
   ngOnInit(): void {
     this.parametros()
     this.getAsesores()
+  }
+
+  hasUnsavedChanges(): boolean {
+    return true;
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any): void {
+    if (this.hasUnsavedChanges()) {
+      $event.returnValue = true;
+    }
   }
 
   parametros() {
