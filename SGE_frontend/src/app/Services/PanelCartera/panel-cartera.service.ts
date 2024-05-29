@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
@@ -5,6 +6,8 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class PanelCarteraService {
+
+  url = 'http://192.168.1.241:8030/api/v1'
 
   // GESTIONSTATE
   private buttonStateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -34,7 +37,11 @@ export class PanelCarteraService {
   private columnasArraySubject: BehaviorSubject<any> = new BehaviorSubject<[]>([])
   public columnasArray$: Observable<any> = this.columnasArraySubject.asObservable();
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  cuentasByCampaña(campania: string) {
+    return this.http.get(`${this.url}/cuentas/?campania=${campania}`)
+  }
 
   setButtonState(newState: boolean) {
     this.buttonStateSubject.next(newState);

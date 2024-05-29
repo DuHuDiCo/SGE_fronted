@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { data } from 'jquery';
+import { catchError, of, tap } from 'rxjs';
 import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 import { Responsables } from 'src/app/Types/PanelCartera/clienteObject';
 
@@ -48,6 +49,7 @@ export class InfoPersonalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getCuentas()
     this.responsablesArray = [
       {
         tipoGarante: 'TITULAR',
@@ -86,6 +88,17 @@ export class InfoPersonalComponent implements OnInit {
     $(document).ready(function () {
       $('[data-toggle="tooltip"]').tooltip();
     });
+  }
+
+  getCuentas() {
+    this.panelService.cuentasByCampaña('ASIGNACION').pipe(
+      tap((data: any) => {
+        console.log(data);
+      }), catchError((error) => {
+        console.error(error);
+        return of([])
+      })
+    ).subscribe()
   }
 
   infoPersonalAccordion() {
