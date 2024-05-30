@@ -119,7 +119,7 @@ const routes: Routes = [
     component: CambioContrasenaComponent,
   },
   {
-    path: 'cartera', redirectTo: 'dashboard-cartera/inicio/asignacion', pathMatch: 'full'
+    path: 'cartera', redirectTo: 'dashboard-cartera/inicio/gestion', pathMatch: 'full'
   },
   {
     path: "dashboard-cartera",

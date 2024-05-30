@@ -4,13 +4,13 @@
             <li (click)="goToHome()"><i class="fa-solid fa-house margin-si" style="margin-left: -3px;"></i></li>
             <span class="span-style text-center mb-3">Inicio</span>
 
-            <li (click)="sidebarOptions(0)"><span
+            <li (click)="sidebarOptions(0)" [routerLink]="'/dashboard-cartera/inicio/gestion'"><span
                     [ngClass]="{'': optionsArray[0] == false, 'sidebar-selected': optionsArray[0] == true}"><i
                         class="fa-solid fa-clipboard margin-si"></i></span></li>
             <span class="span-style text-center mb-3"
                 [ngClass]="{'': optionsArray[0] == false, 'sidebar-selected': optionsArray[0] == true}">Gestión</span>
 
-            <li (click)="sidebarOptions(1)"><span
+            <li (click)="sidebarOptions(1)" [routerLink]="'/dashboard-cartera/inicio/asignacion'"><span
                     [ngClass]="{'': optionsArray[1] == false, 'sidebar-selected': optionsArray[1] == true}"><i
                         class="fa-solid fa-calculator margin-si"></i></span></li>
             <span class="span-style text-center mb-3"

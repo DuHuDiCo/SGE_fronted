@@ -17,8 +17,8 @@ export class SidebarPanelCarteraComponent implements OnInit {
   // ARRAYS
   arraySidebar: SideBar[] = []
   optionsArray: any[] = [
-    false,
     true,
+    false,
     false,
     false,
     false

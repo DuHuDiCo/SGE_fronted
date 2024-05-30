@@ -91,7 +91,7 @@ export class InfoPersonalComponent implements OnInit {
   }
 
   getCuentas() {
-    this.panelService.cuentasByCampaña('ASIGNACION').pipe(
+    this.panelService.cuentasByCampaña('FILTRADO').pipe(
       tap((data: any) => {
         console.log(data);
       }), catchError((error) => {

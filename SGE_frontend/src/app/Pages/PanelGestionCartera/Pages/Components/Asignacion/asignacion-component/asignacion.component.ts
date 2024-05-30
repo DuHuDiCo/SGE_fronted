@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { catchError, of, tap } from 'rxjs';
 import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 
 @Component({
@@ -27,6 +28,7 @@ export class AsignacionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getCuentas()
   }
 
   // ENVIAR CUENTA AL SIDEBAR
@@ -37,6 +39,17 @@ export class AsignacionComponent implements OnInit {
       this.carteraService.setCuentasArray(this.cuentasArray)
     }
     console.log(this.cuentasArray);
+  }
+
+  getCuentas() {
+    this.carteraService.cuentasByCampaña('ASIGNACION').pipe(
+      tap((data: any) => {
+        console.log(data);
+      }), catchError((error) => {
+        console.error(error);
+        return of([])
+      })
+    ).subscribe()
   }
 
 
