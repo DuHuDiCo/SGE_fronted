@@ -102,13 +102,6 @@ export class ParametrosComponent implements OnInit {
     ).subscribe()
   }
 
-  // @HostListener('window:beforeunload', ['$event'])
-  // unloadNotification($event: any): void {
-  //   if (this.hasUnsavedChanges()) {
-  //     $event.returnValue = true;
-  //   }
-  // }
-
   parametros() {
     this.deleteFiltrosAndBloques()
     this.parametrosService.getParametros().subscribe(
@@ -580,8 +573,16 @@ export class ParametrosComponent implements OnInit {
             this.campaignObj.namesViews = this.viewsArray
             this.changeDatos(data, this.parametrosArray)
             this.bloquearBotones(data, this.parametrosArray)
+            this.clientesFiltro = 0
           }, (error: any) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error al crear el Bloque',
+              timer: 3000
+            })
             console.log(error);
+            return
           }
         )
       }, (error: any) => {
@@ -653,9 +654,32 @@ export class ParametrosComponent implements OnInit {
 
     this.parametrosService.createCampaign(this.campaignObj).subscribe(
       (data: any) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Datos Guardados',
+          text: 'Campaña Creada Con Éxito',
+          timer: 3000
+        })
         console.log(data);
+        this.campaignObj = {
+          nombreCampania: '',
+          parametros: [],
+          namesViews: [],
+          asesoresId: [],
+          parametroOrdenamientoDTOs: [],
+          isAsignacion: false
+        }
+        this.viewsArray = []
+        this.clientesFiltro = 0
       }, (error: any) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al crear la campaña',
+          timer: 3000
+        })
         console.log(error);
+        return
       }
     )
   }

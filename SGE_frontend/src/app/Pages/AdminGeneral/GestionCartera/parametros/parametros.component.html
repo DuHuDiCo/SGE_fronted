@@ -227,7 +227,7 @@
                 <div class="col-md-12 text-start">
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" role="switch"
-                            [(ngModel)]="campaignObj.isAsignacion">
+                            [(ngModel)]="campaignObj.isAsignacion" [checked]="campaignObj.isAsignacion == true">
                         <label class="form-check-label fw-bold">¿Es una campaña de asignación?</label>
                     </div>
                 </div>
@@ -237,7 +237,8 @@
             <div class="row mb-3">
                 <div class="col-md-3" *ngFor="let a of asesoresArray">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" (click)="asignarAsesor(a.idAsesorCartera)">
+                        <input class="form-check-input" type="checkbox" (click)="asignarAsesor(a.idAsesorCartera)"
+                            [checked]="campaignObj.asesoresId.includes(a.idAsesorCartera)">
                         <label class="form-check-label" for="flexCheckDefault">
                             {{ a.usuario.nombres | uppercase }} {{ a.usuario.apellidos | uppercase }}
                         </label>
