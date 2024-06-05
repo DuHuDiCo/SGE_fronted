@@ -234,6 +234,16 @@ export class ParametrosComponent implements OnInit {
       return
     }
 
+    if ((this.filtrosGeneralObj.parametrosFiltradoDTO?.fechaStart == null || this.filtrosGeneralObj.parametrosFiltradoDTO?.fechaStart == '') || (this.filtrosGeneralObj.parametrosFiltradoDTO?.fechaEnd == null || this.filtrosGeneralObj.parametrosFiltradoDTO?.fechaEnd == '')) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe Seleccionar Las Fechas',
+        timer: 3000
+      })
+      return
+    }
+
     console.log(this.filtrosGeneralObj);
 
     this.parametrosService.cuentas(user, this.filtrosGeneralObj).subscribe(
