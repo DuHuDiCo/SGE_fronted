@@ -88,6 +88,13 @@ export class ParametrosComponent implements OnInit {
     this.getAsesores()
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any): void {
+    if (this.hasUnsavedChanges()) {
+      $event.returnValue = true;
+    }
+  }
+
   hasUnsavedChanges(): boolean {
     return true;
   }

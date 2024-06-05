@@ -21,20 +21,52 @@
 
             <hr>
 
-            <div class="row mb-3">
-                <h6 class="text-start fw-bold">Subir Por Archivo</h6>
-                <div class="col-md-2">
-                    <select [(ngModel)]="delimitante" class="form-select" required>
-                        <option value="">Delimitante</option>
-                        <option value=",">Coma (,)</option>
-                        <option value=";">Punto y Coma (;)</option>
-                    </select>
+            <!-- FILTRADOS -->
+            <span *ngIf="clients.length == 0">
+                <div class="row mt-4 mb-4" *ngIf="parametrosConfirm.length > 0">
+                    <div class="col-md-12">
+                        <div class="card card-bg">
+                            <div class="card-body">
+                                <div class="row">
+
+                                    <div class="col-md-3" *ngFor="let pc of parametrosConfirm">
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <h6>{{ pc.parametro == 'MORA OBLIGATORIA' || pc.parametro == 'DIAS VENCIDOS'
+                                                || pc.parametro == 'TOTAL OBLIGACION' ? pc.parametro :
+                                                pc.subParametros[0] }}</h6>
+                                            <button type="button"
+                                                (click)="deleteFiltro(pc.parametro, pc.subParametros[0])"
+                                                class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <input class="form-control" type="file" (change)="onFileSelected($event)">
+            </span>
+
+            <!-- ARCHIVO -->
+            <div class="card card-file ms-2 mb-3" style="width: fit-content;">
+                <div class="card-header">
+                    <h6 class="text-start">Subir Por Archivo</h6>
                 </div>
-                <div class="col-md-1" *ngIf="fileContent != null">
-                    <button class="btn b" (click)="cancelarArchivo()">Cancelar</button>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-5">
+                            <select [(ngModel)]="delimitante" class="form-select" required>
+                                <option value="">Delimitante</option>
+                                <option value=",">Coma (,)</option>
+                                <option value=";">Punto y Coma (;)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control" type="file" (change)="onFileSelected($event)">
+                        </div>
+                        <div class="col-md-1" *ngIf="fileContent != null">
+                            <button class="btn b" (click)="cancelarArchivo()">Cancelar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -44,6 +76,7 @@
                 </div>
             </div>
 
+            <!-- TABLA -->
             <div class="row" *ngIf="clients.length > 0">
                 <div class="col-md-12">
                     <div class="table-responsive">
@@ -71,27 +104,8 @@
                 </div>
             </div>
 
+            <!-- FILTROS -->
             <span *ngIf="clients.length == 0">
-                <div class="row mt-4 mb-4" *ngIf="parametrosConfirm.length > 0">
-                    <div class="col-md-12">
-                        <div class="card card-bg">
-                            <div class="card-body">
-                                <div class="row">
-
-                                    <div class="col-md-3" *ngFor="let pc of parametrosConfirm">
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                            <h6>{{ pc.subParametros[0] }}</h6>
-                                            <button type="button"
-                                                (click)="deleteFiltro(pc.parametro, pc.subParametros[0])"
-                                                class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="row">
                     <ng-container *ngFor="let p of parametrosArray">
                         <div class="col-md-4 mb-3" style="overflow-y: auto; height: 200px;"
@@ -192,8 +206,7 @@
 
             <div class="row">
                 <ng-container *ngFor="let o of ordenamientoArray">
-                    <div class="col-md-4 mb-3" style="overflow-y: auto; height: 200px;"
-                        *ngIf="!ordenamientoConfirm.includes(o)">
+                    <div class="col-md-4 mb-3" *ngIf="!ordenamientoConfirm.includes(o)">
                         <h6 class="color-red">{{ o }}</h6>
 
                         <ul class="list-group">
@@ -219,7 +232,7 @@
     <!-- ASESORES -->
     <div class="tab-pane fade" id="asesores" role="tabpanel" aria-labelledby="asesores-tab">
         <div class="container">
-            <h2 class="mt-2">Asignar Asesores</h2>
+            <h2 class="mt-2">Asesores</h2>
 
             <hr>
 
@@ -248,14 +261,10 @@
 
             <div class="row justify-content-center align-items-center text-center mb-3" *ngIf="viewsArray.length > 0">
                 <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label class="form-label">Nombre Campaña</label>
-                                <input type="text" class="form-control" placeholder="Campaña"
-                                    [(ngModel)]="campaignObj.nombreCampania">
-                            </div>
-                        </div>
+                    <div class="mt-2 mb-3">
+                        <label class="form-label color-red">Agregue un nombre a la Campaña</label>
+                        <input type="text" class="form-control" placeholder="Nombre Campaña"
+                            [(ngModel)]="campaignObj.nombreCampania">
                     </div>
                 </div>
             </div>
