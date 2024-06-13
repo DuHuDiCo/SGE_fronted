@@ -1,16 +1,16 @@
 <div class="card" [ngClass]="{'creditoFalse': !btn, 'creditoTrue': btn}">
-    <div class="card-header">
-        <h6 style="font-size: 14px; margin: 0;">Información Del Credito</h6>
-
-    </div>
     <div class="card-body">
         <div class="row">
-            <div class="input-group input-group-sm mt-1 mb-1">
-                <span class="input-group-text fw-bold">{{ tipoGarante }}</span>
+            <h6 class="color-red">Usted está Gestionando los datos de este cliente</h6>
+            <div class="input-group input-group-sm mt-1">
+                <span class="input-group-text fw-bold bg-red">{{ tipoGarante }}</span>
                 <select class="form-select" (click)="findTipoGarante($event)">
                     <option *ngFor="let r of responsablesArray" value="{{ r.nombre }}">{{ r.nombre }}</option>
                 </select>
             </div>
+
+            <hr class="mt-3">
+
             <div class="" [ngClass]="{'col-md-6': !infoPersonal, 'col-md-12': infoPersonal}">
                 <div *ngIf="!saldos" class="accordion" id="accordionInfo">
                     <div class="accordion-item">
@@ -313,23 +313,20 @@
                                                 <button *ngIf="datosPorConfirmar.includes('CALL-CEL')"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Llamada Telefónica" class="btn btn-sm btn-primary"
-                                                    data-bs-toggle="collapse" data-bs-target="#addMessage"
                                                     (click)="asignarAccion('CALL-CEL', 'fa-solid fa-phone-volume fa-sm', 'CEL', 'Celular')"><i
                                                         class="fa-solid fa-phone-volume fa-sm"></i></button>
                                             </div>
                                             <div class="col-md-4 p-0">
                                                 <button *ngIf="datosPorConfirmar.includes('WHATSAPP-CEL')"
                                                     data-toggle="tooltip" data-placement="top" title="Mensaje Whatsapp"
-                                                    class="btn btn-sm btn-success" data-bs-toggle="collapse"
-                                                    data-bs-target="#addMessage"
+                                                    class="btn btn-sm btn-success"
                                                     (click)="asignarAccion('WHATSAPP-CEL', 'fa-brands fa-whatsapp fa-lg', 'CEL', 'Celular')"><i
                                                         class="fa-brands fa-whatsapp fa-lg"></i></button>
                                             </div>
                                             <div class="col-md-4 p-0">
                                                 <button *ngIf="datosPorConfirmar.includes('MSG-CEL')"
                                                     data-toggle="tooltip" data-placement="top" title="Mensaje De Texto"
-                                                    class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
-                                                    data-bs-target="#addMessage"
+                                                    class="btn btn-sm btn-secondary"
                                                     (click)="asignarAccion('MSG-CEL', 'fa-solid fa-comment', 'CEL', 'Celular')"><i
                                                         class="fa-solid fa-comment"></i></button>
                                             </div>
@@ -347,12 +344,6 @@
                                             [disabled]="disabledArray[0]"><i class="fa-solid fa-check"></i></button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="collapse mt-3" id="addMessage">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Observación"></textarea>
-                                <label>Observación</label>
                             </div>
                         </div>
                     </div>
@@ -374,8 +365,7 @@
                                             <div class="col-md-3 p-0">
                                                 <button *ngIf="datosPorConfirmar.includes('LETTER-ADDRESS')"
                                                     data-toggle="tooltip" data-placement="top" title="Carta Cobro"
-                                                    class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
-                                                    data-bs-target="#addMessage"
+                                                    class="btn btn-sm btn-secondary"
                                                     (click)="asignarAccion('LETTER-ADDRESS', 'fa-regular fa-envelope', 'DIRECCION', 'Direccion')"><i
                                                         class="fa-regular fa-envelope"></i></button>
                                             </div>
@@ -399,12 +389,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="collapse mt-3" id="addMessage">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Observación"></textarea>
-                                <label>Observación</label>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -426,7 +410,6 @@
                                                 <button *ngIf="datosPorConfirmar.includes('EMAIL(AUT)-EMAIL')"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Correo Cobro (Aut)" class="btn btn-sm btn-primary"
-                                                    data-bs-toggle="collapse" data-bs-target="#addMessage"
                                                     (click)="asignarAccion('EMAIL(AUT)-EMAIL', 'fa-solid fa-paper-plane', 'CORREO', 'Correo')"><i
                                                         class="fa-solid fa-paper-plane"></i></button>
                                             </div>
@@ -434,7 +417,6 @@
                                                 <button *ngIf="datosPorConfirmar.includes('EMAIL-EMAIL')"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Correo Cobro (Man)" class="btn btn-sm btn-secondary"
-                                                    data-bs-toggle="collapse" data-bs-target="#addMessage"
                                                     (click)="asignarAccion('EMAIL-EMAIL', 'fa-solid fa-envelopes-bulk', 'CORREO', 'Correo')"><i
                                                         class="fa-solid fa-envelopes-bulk"></i></button>
                                             </div>
@@ -452,12 +434,6 @@
                                             [disabled]="disabledArray[2]"><i class="fa-solid fa-check"></i></button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="collapse mt-3" id="addMessage">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Observación"></textarea>
-                                <label>Observación</label>
                             </div>
                         </div>
                     </div>
@@ -480,7 +456,6 @@
                                                 <button *ngIf="datosPorConfirmar.includes('CALL-REF')"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Llamada Telefónica" class="btn btn-sm btn-primary"
-                                                    data-bs-toggle="collapse" data-bs-target="#addMessage"
                                                     (click)="asignarAccion('CALL-REF', 'fa-solid fa-phone-volume', 'REF', 'Referencia')"><i
                                                         class="fa-solid fa-phone-volume"></i></button>
                                             </div>
@@ -502,12 +477,6 @@
                                             [disabled]="disabledArray[3]"><i class="fa-solid fa-check"></i></button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="collapse mt-3" id="addMessage">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Observación"></textarea>
-                                <label>Observación</label>
                             </div>
                         </div>
                     </div>
@@ -538,23 +507,20 @@
                                                 <button *ngIf="datosPorConfirmar.includes('CALL-INFO')"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Llamada Telefónica" class="btn btn-sm btn-primary"
-                                                    data-bs-toggle="collapse" data-bs-target="#addMessage"
                                                     (click)="asignarAccion('CALL-INFO', 'fa-solid fa-phone-volume fa-sm', 'INFOL', 'Información Laboral')"><i
                                                         class="fa-solid fa-phone-volume fa-sm"></i></button>
                                             </div>
                                             <div class="col-md-3 p-0">
                                                 <button *ngIf="datosPorConfirmar.includes('WHATSAPP-INFO')"
                                                     data-toggle="tooltip" data-placement="top" title="Mensaje Whatsapp"
-                                                    class="btn btn-sm btn-success" data-bs-toggle="collapse"
-                                                    data-bs-target="#addMessage"
+                                                    class="btn btn-sm btn-success"
                                                     (click)="asignarAccion('WHATSAPP-INFO', 'fa-brands fa-whatsapp fa-lg', 'INFOL', 'Información Laboral')"><i
                                                         class="fa-brands fa-whatsapp fa-lg"></i></button>
                                             </div>
                                             <div class="col-md-3 p-0">
                                                 <button *ngIf="datosPorConfirmar.includes('MSG-INFO')"
                                                     data-toggle="tooltip" data-placement="top" title="Mensaje De Texto"
-                                                    class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
-                                                    data-bs-target="#addMessage"
+                                                    class="btn btn-sm btn-secondary"
                                                     (click)="asignarAccion('MSG-INFO', 'fa-solid fa-comment', 'INFOL', 'Información Laboral')"><i
                                                         class="fa-solid fa-comment"></i></button>
                                             </div>
@@ -562,8 +528,7 @@
                                                 <button *ngIf="datosPorConfirmar.includes('EMAIL-INFO')"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Carta Cobro (Empresa)" class="btn btn-sm btn-warning"
-                                                    (click)="asignarAccion('EMAIL-INFO', 'fa-solid fa-envelopes-bulk', 'INFOL', 'Información Laboral')"
-                                                    data-bs-toggle="collapse" data-bs-target="#addMessage"><i
+                                                    (click)="asignarAccion('EMAIL-INFO', 'fa-solid fa-envelopes-bulk', 'INFOL', 'Información Laboral')"><i
                                                         class="fa-solid fa-envelopes-bulk"></i></button>
                                             </div>
                                         </div>
@@ -580,23 +545,6 @@
                                             [disabled]="disabledArray[4]"><i class="fa-solid fa-check"></i></button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="collapse mt-3" id="addMessage">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Observación"></textarea>
-                                <label>Observación</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card card-shadow mt-3 mb-3">
-                    <div class="card-body-padding">
-                        <div class="row text-center">
-                            <div class="col-md-12">
-                                <button class="btn btn-sm bg-red" data-bs-toggle="modal"
-                                    data-bs-target="#modalEditar"><i class="fa-solid fa-plus"></i></button>
                             </div>
                         </div>
                     </div>
@@ -665,23 +613,20 @@
                                                 <button *ngIf="datosPorConfirmar.includes('CALL-CEL')"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Llamada Telefónica" class="btn btn-sm btn-primary"
-                                                    data-bs-toggle="collapse" data-bs-target="#addMessage"
                                                     (click)="asignarAccion('CALL-CEL', 'fa-solid fa-phone-volume fa-sm', 'CEL', 'Celular')"><i
                                                         class="fa-solid fa-phone-volume fa-sm"></i></button>
                                             </div>
                                             <div class="col-md-4 p-0">
                                                 <button *ngIf="datosPorConfirmar.includes('WHATSAPP-CEL')"
                                                     data-toggle="tooltip" data-placement="top" title="Mensaje Whatsapp"
-                                                    class="btn btn-sm btn-success" data-bs-toggle="collapse"
-                                                    data-bs-target="#addMessage"
+                                                    class="btn btn-sm btn-success"
                                                     (click)="asignarAccion('WHATSAPP-CEL', 'fa-brands fa-whatsapp fa-lg', 'CEL', 'Celular')"><i
                                                         class="fa-brands fa-whatsapp fa-lg"></i></button>
                                             </div>
                                             <div class="col-md-4 p-0">
                                                 <button *ngIf="datosPorConfirmar.includes('MSG-CEL')"
                                                     data-toggle="tooltip" data-placement="top" title="Mensaje De Texto"
-                                                    class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
-                                                    data-bs-target="#addMessage"
+                                                    class="btn btn-sm btn-secondary"
                                                     (click)="asignarAccion('MSG-CEL', 'fa-solid fa-comment', 'CEL', 'Celular')"><i
                                                         class="fa-solid fa-comment"></i></button>
                                             </div>
@@ -699,12 +644,6 @@
                                             [disabled]="disabledArray[0]"><i class="fa-solid fa-check"></i></button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="collapse mt-3" id="addMessage">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Observación"></textarea>
-                                <label>Observación</label>
                             </div>
                         </div>
                     </div>
@@ -726,8 +665,7 @@
                                             <div class="col-md-3 p-0">
                                                 <button *ngIf="datosPorConfirmar.includes('LETTER-ADDRESS')"
                                                     data-toggle="tooltip" data-placement="top" title="Carta Cobro"
-                                                    class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
-                                                    data-bs-target="#addMessage"
+                                                    class="btn btn-sm btn-secondary"
                                                     (click)="asignarAccion('LETTER-ADDRESS', 'fa-regular fa-envelope', 'DIRECCION', 'Direccion')"><i
                                                         class="fa-regular fa-envelope"></i></button>
                                             </div>
@@ -751,12 +689,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="collapse mt-3" id="addMessage">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Observación"></textarea>
-                                <label>Observación</label>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -778,7 +710,6 @@
                                                 <button *ngIf="datosPorConfirmar.includes('EMAIL(AUT)-EMAIL')"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Correo Cobro (Aut)" class="btn btn-sm btn-primary"
-                                                    data-bs-toggle="collapse" data-bs-target="#addMessage"
                                                     (click)="asignarAccion('EMAIL(AUT)-EMAIL', 'fa-solid fa-paper-plane', 'CORREO', 'Correo')"><i
                                                         class="fa-solid fa-paper-plane"></i></button>
                                             </div>
@@ -786,7 +717,6 @@
                                                 <button *ngIf="datosPorConfirmar.includes('EMAIL-EMAIL')"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Correo Cobro (Man)" class="btn btn-sm btn-secondary"
-                                                    data-bs-toggle="collapse" data-bs-target="#addMessage"
                                                     (click)="asignarAccion('EMAIL-EMAIL', 'fa-solid fa-envelopes-bulk', 'CORREO', 'Correo')"><i
                                                         class="fa-solid fa-envelopes-bulk"></i></button>
                                             </div>
@@ -804,12 +734,6 @@
                                             [disabled]="disabledArray[2]"><i class="fa-solid fa-check"></i></button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="collapse mt-3" id="addMessage">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Observación"></textarea>
-                                <label>Observación</label>
                             </div>
                         </div>
                     </div>
@@ -832,7 +756,6 @@
                                                 <button *ngIf="datosPorConfirmar.includes('CALL-REF')"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Llamada Telefónica" class="btn btn-sm btn-primary"
-                                                    data-bs-toggle="collapse" data-bs-target="#addMessage"
                                                     (click)="asignarAccion('CALL-REF', 'fa-solid fa-phone-volume', 'REF', 'Referencia')"><i
                                                         class="fa-solid fa-phone-volume"></i></button>
                                             </div>
@@ -854,12 +777,6 @@
                                             [disabled]="disabledArray[3]"><i class="fa-solid fa-check"></i></button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="collapse mt-3" id="addMessage">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Observación"></textarea>
-                                <label>Observación</label>
                             </div>
                         </div>
                     </div>
@@ -890,23 +807,20 @@
                                                 <button *ngIf="datosPorConfirmar.includes('CALL-INFO')"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Llamada Telefónica" class="btn btn-sm btn-primary"
-                                                    data-bs-toggle="collapse" data-bs-target="#addMessage"
                                                     (click)="asignarAccion('CALL-INFO', 'fa-solid fa-phone-volume fa-sm', 'INFOL', 'Información Laboral')"><i
                                                         class="fa-solid fa-phone-volume fa-sm"></i></button>
                                             </div>
                                             <div class="col-md-3 p-0">
                                                 <button *ngIf="datosPorConfirmar.includes('WHATSAPP-INFO')"
                                                     data-toggle="tooltip" data-placement="top" title="Mensaje Whatsapp"
-                                                    class="btn btn-sm btn-success" data-bs-toggle="collapse"
-                                                    data-bs-target="#addMessage"
+                                                    class="btn btn-sm btn-success"
                                                     (click)="asignarAccion('WHATSAPP-INFO', 'fa-brands fa-whatsapp fa-lg', 'INFOL', 'Información Laboral')"><i
                                                         class="fa-brands fa-whatsapp fa-lg"></i></button>
                                             </div>
                                             <div class="col-md-3 p-0">
                                                 <button *ngIf="datosPorConfirmar.includes('MSG-INFO')"
                                                     data-toggle="tooltip" data-placement="top" title="Mensaje De Texto"
-                                                    class="btn btn-sm btn-secondary" data-bs-toggle="collapse"
-                                                    data-bs-target="#addMessage"
+                                                    class="btn btn-sm btn-secondary"
                                                     (click)="asignarAccion('MSG-INFO', 'fa-solid fa-comment', 'INFOL', 'Información Laboral')"><i
                                                         class="fa-solid fa-comment"></i></button>
                                             </div>
@@ -914,8 +828,7 @@
                                                 <button *ngIf="datosPorConfirmar.includes('EMAIL-INFO')"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Carta Cobro (Empresa)" class="btn btn-sm btn-warning"
-                                                    (click)="asignarAccion('EMAIL-INFO', 'fa-solid fa-envelopes-bulk', 'INFOL', 'Información Laboral')"
-                                                    data-bs-toggle="collapse" data-bs-target="#addMessage"><i
+                                                    (click)="asignarAccion('EMAIL-INFO', 'fa-solid fa-envelopes-bulk', 'INFOL', 'Información Laboral')"><i
                                                         class="fa-solid fa-envelopes-bulk"></i></button>
                                             </div>
                                         </div>
@@ -932,23 +845,6 @@
                                             [disabled]="disabledArray[4]"><i class="fa-solid fa-check"></i></button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="collapse mt-3" id="addMessage">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Observación"></textarea>
-                                <label>Observación</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card card-shadow mt-3 mb-3">
-                    <div class="card-body-padding">
-                        <div class="row text-center">
-                            <div class="col-md-12">
-                                <button class="btn btn-sm bg-red" data-bs-toggle="modal"
-                                    data-bs-target="#modalEditar"><i class="fa-solid fa-plus"></i></button>
                             </div>
                         </div>
                     </div>

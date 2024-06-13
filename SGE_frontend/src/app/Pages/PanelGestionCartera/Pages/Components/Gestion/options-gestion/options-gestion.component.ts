@@ -16,7 +16,7 @@ export class OptionsGestionComponent implements OnInit {
       var: false
     },
     {
-      name: 'Reconocer',
+      name: 'Localización',
       var: false
     },
     {

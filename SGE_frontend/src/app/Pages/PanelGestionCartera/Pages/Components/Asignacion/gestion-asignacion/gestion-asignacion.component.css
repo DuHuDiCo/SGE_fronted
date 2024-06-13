@@ -16,6 +16,10 @@
     border: none;
 }
 
+.color-red {
+    color: #960010;
+}
+
 .input-g-sm {
     display: block;
 }
