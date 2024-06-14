@@ -7,3 +7,28 @@
     border: 1px rgba(198, 198, 198, 0.792) solid;
     border-radius: 10px;
 }
+
+.card-cobro {
+    background-color: rgba(225, 225, 225, 0.979);
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.bg-red {
+    color: white;
+    background-color: #960010;
+    border-color: #960010;
+}
+
+.bg-red:hover {
+    background: #d40000;
+    border-color: #d40000;
+}
+
+.card-disabled {
+    background-color: #e5b7bcf9;
+}
+
+.color-red {
+    color: #960010;
+}

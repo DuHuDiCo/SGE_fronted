@@ -3,11 +3,9 @@
         <h5 class="offcanvas-title" id="offcanvasBottomLabel">Novedades</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body small">
-        <div class="card card-cobro">
-            <div class="card-header">
-                Detalles De Cobro
-            </div>
+    <div class="offcanvas-body">
+        <h5 class="text-center color-red" *ngIf="datosConfirmados.length == 0">No hay novedades en este momento</h5>
+        <div class="card card-cobro" *ngIf="datosConfirmados.length > 0">
             <div class="card-body">
                 <div class="card card-disabled mb-3" *ngFor="let d of datosConfirmados">
                     <div class="card-body-padding">

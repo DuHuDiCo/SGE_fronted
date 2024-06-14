@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 
 @Component({
@@ -12,8 +12,8 @@ export class OffcanvasNovedadesComponent implements OnInit {
   btn!: boolean
 
   // ARRAYS
-  datosPorConfirmar: string[] = []
-  datosConfirmados: any[] = []
+  @Input() datosPorConfirmar: string[] = []
+  @Input() datosConfirmados: any[] = []
   celArray: string[] = []
   direccionArray: string[] = []
   correoArray: string[] = []
