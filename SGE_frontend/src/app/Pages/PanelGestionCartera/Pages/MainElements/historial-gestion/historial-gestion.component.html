@@ -1,0 +1,25 @@
+<div class="card b-none">
+    <div class="card-body b-none">
+        <div class="mt-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="timeline">
+                        <div class="timeline-item" *ngFor="let event of deliveryEvents">
+                            <div class="timeline-icon"></div>
+                            <div class="timeline-content">
+                                <div class="card b-none">
+                                    <div class="card-body">
+                                        <h6>{{ event.time | date }}</h6>
+                                        <h6>{{ event.status }}</h6>
+                                        <h6>{{ event.description }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -33,6 +33,12 @@
                         class="fa-solid fa-user-shield margin-si"></i></span></li>
             <span class="span-style text-center mb-3"
                 [ngClass]="{'': optionsArray[4] == false, 'sidebar-selected': optionsArray[4] == true}">Localización</span>
+
+            <li (click)="sidebarOptions(5)"><span
+                    [ngClass]="{'': optionsArray[5] == false, 'sidebar-selected': optionsArray[5] == true}"><i
+                        class="fas fa-credit-card"></i></span></li>
+            <span class="span-style text-center mb-3"
+                [ngClass]="{'': optionsArray[5] == false, 'sidebar-selected': optionsArray[5] == true}">Pagos</span>
         </ul>
     </div>
 

@@ -27,7 +27,6 @@ export class InfoPersonalComponent implements OnInit {
   responsablesArray: Responsables[] = []
   datosPorConfirmar: string[] = []
   datosConfirmados: any[] = []
-
   celArray: string[] = []
   direccionArray: string[] = []
   correoArray: string[] = []
@@ -245,49 +244,6 @@ export class InfoPersonalComponent implements OnInit {
     console.log(this.datosConfirmados);
     this.actionDato = ''
     this.actionIcon = ''
-  }
-
-  cancelDato(dato: any) {
-    var array: string[] = []
-
-    if (this.datosConfirmados.includes(dato)) {
-      var pos = this.datosConfirmados.indexOf(dato)
-      this.datosConfirmados.splice(pos, 1)
-      this.datosPorConfirmar.push(dato.dato)
-      if (!this.datosPorConfirmar.includes(dato.type)) {
-        this.datosPorConfirmar.push(dato.type)
-      }
-
-      switch (dato.type) {
-        case 'CEL':
-          array = this.celArray
-          break;
-        case 'DIRECCION':
-          array = this.direccionArray
-          break;
-        case 'CORREO':
-          array = this.correoArray
-          break;
-        case 'REF':
-          array = this.refArray
-          break;
-        case 'INFOL':
-          array = this.infolArray
-          break;
-      }
-
-      if (dato.type == dato.type) {
-        var position = array.indexOf(dato.dato)
-        array.splice(position, 1)
-      }
-
-      if (this.datosConfirmados.length == 0) {
-        this.panelService.setButtonState(false)
-      } else {
-        this.panelService.setButtonState(true)
-      }
-    }
-    console.log(this.datosPorConfirmar);
   }
 
 }
