@@ -4,6 +4,10 @@
     border: none;
 }
 
+.cursor {
+    cursor: pointer;
+}
+
 .timeline {
     position: relative;
     padding: 0 0 20px;
@@ -22,7 +26,6 @@
 
 .timeline-item {
     position: relative;
-    margin: 20px 0;
 }
 
 .timeline-item::after {

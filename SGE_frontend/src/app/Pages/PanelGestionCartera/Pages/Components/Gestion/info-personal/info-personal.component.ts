@@ -21,6 +21,7 @@ export class InfoPersonalComponent implements OnInit {
   actionDato: string = ''
   actionIcon: string = ''
   actionText: string = ''
+  typeAction: string = ''
   tipoGarante: string = 'TITULAR'
 
   // ARRAYS
@@ -130,6 +131,7 @@ export class InfoPersonalComponent implements OnInit {
     this.actionDato = accion
     this.actionIcon = icon
     this.actionText = text
+    this.typeAction = type
 
     switch (type) {
       case 'CEL':
@@ -240,6 +242,7 @@ export class InfoPersonalComponent implements OnInit {
     }
 
     this.panelService.setButtonState(true)
+    $('#offcanvasNovedades').offcanvas('show');
 
     console.log(this.datosConfirmados);
     this.actionDato = ''

@@ -278,7 +278,7 @@ import { HistorialGestionComponent } from './Pages/PanelGestionCartera/Pages/Mai
     OptionsGestionComponent,
     OptionsAsignacionComponent,
     ParametrosComponent,
-    HistorialGestionComponent
+    HistorialGestionComponent,
 
   ],
 
