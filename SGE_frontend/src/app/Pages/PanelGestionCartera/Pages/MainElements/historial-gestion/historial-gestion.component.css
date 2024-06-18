@@ -4,6 +4,10 @@
     border: none;
 }
 
+.color-red {
+    color: #960010;
+}
+
 .cursor {
     cursor: pointer;
 }
@@ -74,4 +78,14 @@
     border-top: 2px solid #e9ecef;
     border-left: 2px solid #e9ecef;
     transform: rotate(45deg);
+}
+
+.timeline-divider {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: calc(100% - 20px);
+    border: none;
+    border-top: 2px solid #bbbbbb;
+    margin: 0;
 }
