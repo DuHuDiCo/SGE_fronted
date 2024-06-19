@@ -534,10 +534,10 @@ export class ConsultasComponent implements OnInit {
                 observacion: ''
               }
 
-              var consi = this.cambioArray.find((x:any)=> x.idConsignacion == guardarArray.idConsignacion)
+              var consi = this.cambioArray.find((x: any) => x.idConsignacion == guardarArray.idConsignacion)
 
-              if(consi == null || consi == undefined){
-                this.cambioArray.push(guardarArray)  
+              if (consi == null || consi == undefined) {
+                this.cambioArray.push(guardarArray)
               }
               setTimeout(() => {
 
@@ -571,6 +571,7 @@ export class ConsultasComponent implements OnInit {
             Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
             return
           }
+          console.log(this.con);
 
 
         }, (error: any) => {
@@ -583,15 +584,15 @@ export class ConsultasComponent implements OnInit {
       if (this.validarPermiso('CREAR CONSIGNACIONES') && this.validarPermiso('CONSULTAR PENDIENTES')) {
         this.consultarService.getAllConsignaciones(p, this.page, this.size, "DESC").subscribe(
           (data: any) => {
-  
+
             this.spinner = false
             this.con = data.content
             this.numeroPages = data.totalPages
             this.con.forEach((e: any, index: number) => {
-  
+
               if (e.isSelected) {
                 var user = this.authService.getUsername()
-  
+
                 if (user == null || user == undefined) {
                   return
                 }
@@ -601,31 +602,31 @@ export class ConsultasComponent implements OnInit {
                   username: user,
                   observacion: ''
                 }
-  
-                var consi = this.cambioArray.find((x:any)=> x.idConsignacion == guardarArray.idConsignacion)
-  
-                if(consi == null || consi == undefined){
-                  this.cambioArray.push(guardarArray)  
+
+                var consi = this.cambioArray.find((x: any) => x.idConsignacion == guardarArray.idConsignacion)
+
+                if (consi == null || consi == undefined) {
+                  this.cambioArray.push(guardarArray)
                 }
                 setTimeout(() => {
-  
+
                   if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
                     this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
                   } else {
                     this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
                   }
-  
+
                   if (this.cambioArray.length > 0) {
                     this.cambios = true
                   } else {
                     this.cambios = false
                   }
                 }, 100);
-  
-  
+
+
               }
             });
-  
+
             this.paginas = new Array(data.totalPages)
             this.last = data.last
             this.first = data.first
@@ -634,29 +635,30 @@ export class ConsultasComponent implements OnInit {
               c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
             })
             this.botones = new Array<boolean>(this.con.length).fill(false)
-  
+
             if (this.con.length <= 0) {
               Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
               return
             }
-  
-  
+            console.log(this.con);
+
+
           }, (error: any) => {
-  
+
           }
         )
       } else {
         this.consultarService.getAllConsignaciones(p, this.page, this.size, "ASC").subscribe(
           (data: any) => {
-  
+
             this.spinner = false
             this.con = data.content
             this.numeroPages = data.totalPages
             this.con.forEach((e: any, index: number) => {
-  
+
               if (e.isSelected) {
                 var user = this.authService.getUsername()
-  
+
                 if (user == null || user == undefined) {
                   return
                 }
@@ -666,31 +668,31 @@ export class ConsultasComponent implements OnInit {
                   username: user,
                   observacion: ''
                 }
-  
-                var consi = this.cambioArray.find((x:any)=> x.idConsignacion == guardarArray.idConsignacion)
-  
-                if(consi == null || consi == undefined){
-                  this.cambioArray.push(guardarArray)  
+
+                var consi = this.cambioArray.find((x: any) => x.idConsignacion == guardarArray.idConsignacion)
+
+                if (consi == null || consi == undefined) {
+                  this.cambioArray.push(guardarArray)
                 }
                 setTimeout(() => {
-  
+
                   if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
                     this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
                   } else {
                     this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
                   }
-  
+
                   if (this.cambioArray.length > 0) {
                     this.cambios = true
                   } else {
                     this.cambios = false
                   }
                 }, 100);
-  
-  
+
+
               }
             });
-  
+
             this.paginas = new Array(data.totalPages)
             this.last = data.last
             this.first = data.first
@@ -699,24 +701,19 @@ export class ConsultasComponent implements OnInit {
               c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
             })
             this.botones = new Array<boolean>(this.con.length).fill(false)
-  
+
             if (this.con.length <= 0) {
               Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
               return
             }
-  
-  
+
+
           }, (error: any) => {
-  
+
           }
         )
       }
-
-      
     }
-
-    
-
   }
 
   img(dataURI: string) {
@@ -1707,18 +1704,18 @@ export class ConsultasComponent implements OnInit {
 
   //METODO PARA CAMBIAR EL ESTADO DE LA CONSIGNACION
   cambiarConsignacion() {
-    if(this.tipoReporte == ''){
-      if(this.validarPermiso('APLICAR')){
+    if (this.tipoReporte == '') {
+      if (this.validarPermiso('APLICAR')) {
         this.tipoReporte = 'APLICADAS'
       }
 
-      if(this.validarPermiso('COMPROBAR')){
+      if (this.validarPermiso('COMPROBAR')) {
         this.tipoReporte = 'COMPROBADAS'
       }
     }
 
     this.botonCambiarConsignacion = true
-    
+
 
     setTimeout(() => {
       this.consultarService.cambiarEstadoConsignacion(this.cambioArray, this.tipoReporte).subscribe(
