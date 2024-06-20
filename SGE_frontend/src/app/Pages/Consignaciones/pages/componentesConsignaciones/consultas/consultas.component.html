@@ -37,19 +37,19 @@
       </div>
       <div *appConsignacionesDirective="permisos[9]" class="col-md-3 col-12">
         <!-- <input class="c form-control" type="search" placeholder="Digite Una Cédula"> -->
-        <!-- <form action="" class="search-bar">
+        <form action="" class="search-bar">
           <input [(ngModel)]="cedula" name="cedula" type="search" name="search" pattern=".*\S.*" required
             (keyup.enter)="getConsignacionByCedula()">
-          <button class="search-btn" type="submit">
+          <button class="search-btn" type="submit" (click)="getConsignacionByCedula()">
             <span>Search</span>
           </button>
-        </form> -->
-        <div class="input-group">
+        </form>
+        <!-- <div class="input-group">
           <input [(ngModel)]="cedula" name="cedula" type="text" class="form-control" placeholder="Digite Una Cédula"
             (keyup.enter)="getConsignacionByCedula()" style="margin: 15px auto;">
           <button class="btn b" type="button" (click)="getConsignacionByCedula()" style="margin: 15px auto;"><i
               class="fa-solid fa-magnifying-glass"></i></button>
-        </div>
+        </div> -->
 
       </div>
       <div *ngIf="filtro" class="row">

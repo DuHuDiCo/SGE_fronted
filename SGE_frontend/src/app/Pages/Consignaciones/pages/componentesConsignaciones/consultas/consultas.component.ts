@@ -1035,7 +1035,9 @@ export class ConsultasComponent implements OnInit {
         text: 'Digite Una Cédula Válida',
         timer: 3000
       })
+      return
     }
+
     this.consultarService.getConsignacionByCedula(this.cedula).subscribe(
       (data: any) => {
         if (data.length == 0) {
