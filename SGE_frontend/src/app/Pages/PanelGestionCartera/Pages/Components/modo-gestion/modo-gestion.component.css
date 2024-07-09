@@ -1,0 +1,43 @@
+.container-fluid {
+    margin: 10px;
+}
+
+.btn-option {
+    background-color: #939090;
+    color: white;
+}
+
+.card-info {
+    border: none;
+    background-color: #DCDCDC;
+}
+
+.text-red {
+    color: #960010;
+}
+
+.input-select {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    box-shadow: 5px 5px 10px #960010;
+}
+
+.span-select {
+    background-color: #960010;
+    box-shadow: 5px 5px 10px #960010;
+    color: white;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+
+.span-disabled {
+    background-color: #939090;
+    color: white;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+
+.input-disabled {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
