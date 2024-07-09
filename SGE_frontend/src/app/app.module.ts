@@ -114,26 +114,14 @@ import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Config
 import { DateFormatPipe } from './Pipes/date-format.pipe';
 import { FormatoMonedaDirective } from './directivas/DirectivaFormatCurrency/formato-moneda.directive';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Dashboard/dashboard-panel-cartera/dashboard-panel-cartera.component';
-import { NavbarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentsPanel/navbar-panel-cartera/navbar-panel-cartera.component';
-import { SidebarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentsPanel/sidebar-panel-cartera/sidebar-panel-cartera.component';
-import { InfoPrincipalComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentsPanel/info-principal/info-principal.component';
-import { ModalHistoricoGesComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-historico-ges/modal-historico-ges.component';
-import { OffcanvasNovedadesComponent } from './Pages/PanelGestionCartera/Pages/MainElements/offcanvas-novedades/offcanvas-novedades.component';
-import { InfoPersonalComponent } from './Pages/PanelGestionCartera/Pages/Components/Gestion/info-personal/info-personal.component';
-import { ModalAcuerdoComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-acuerdo/modal-acuerdo.component';
-import { ModalReferenciaComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-referencia/modal-referencia.component';
-import { ModalEditDatoComponent } from './Pages/PanelGestionCartera/Pages/MainElements/modal-edit-dato/modal-edit-dato.component';
-import { SidebarRightComponent } from './Pages/PanelGestionCartera/Pages/Components/ComponentsPanel/sidebar-right/sidebar-right.component';
-import { AddressGeneratorComponent } from './Pages/PanelGestionCartera/Pages/MainElements/address-generator/address-generator.component';
-import { AsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/asignacion-component/asignacion.component';
-import { GestionAsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/gestion-asignacion/gestion-asignacion.component';
-import { OptionsGestionComponent } from './Pages/PanelGestionCartera/Pages/Components/Gestion/options-gestion/options-gestion.component';
-import { OptionsAsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/options-asignacion/options-asignacion.component';
 import { ParametrosComponent } from './Pages/AdminGeneral/GestionCartera/parametros/parametros.component';
 import { NgxUiLoaderHttpModule, NgxUiLoaderModule } from 'ngx-ui-loader';
 import { ngxUiLoaderConfig } from './utils/loaderConfig';
-import { HistorialGestionComponent } from './Pages/PanelGestionCartera/Pages/MainElements/historial-gestion/historial-gestion.component';
+import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/dashboard-panel-cartera/dashboard-panel-cartera.component';
+import { ModoGestionComponent } from './Pages/PanelGestionCartera/Pages/Components/modo-gestion/modo-gestion.component';
+import { SidebarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/sidebar-panel-cartera/sidebar-panel-cartera.component';
+import { SidebarRightPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/sidebar-right-panel-cartera/sidebar-right-panel-cartera.component';
+import { NavbarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/navbar-panel-cartera/navbar-panel-cartera.component';
 
 
 
@@ -261,25 +249,12 @@ import { HistorialGestionComponent } from './Pages/PanelGestionCartera/Pages/Mai
     FormatoMonedaDirective,
 
     FormatoMonedaDirective,
-    DashboardPanelCarteraComponent,
-    NavbarPanelCarteraComponent,
-    SidebarPanelCarteraComponent,
-    InfoPrincipalComponent,
-    ModalHistoricoGesComponent,
-    OffcanvasNovedadesComponent,
-    InfoPersonalComponent,
-    ModalAcuerdoComponent,
-    ModalReferenciaComponent,
-    ModalEditDatoComponent,
-    SidebarRightComponent,
-    AddressGeneratorComponent,
-    AsignacionComponent,
-    GestionAsignacionComponent,
-    OptionsGestionComponent,
-    OptionsAsignacionComponent,
     ParametrosComponent,
-    HistorialGestionComponent,
-
+    DashboardPanelCarteraComponent,
+    ModoGestionComponent,
+    SidebarPanelCarteraComponent,
+    SidebarRightPanelCarteraComponent,
+    NavbarPanelCarteraComponent
   ],
 
 

@@ -85,11 +85,9 @@ import { GuardCajaGuard } from './Guards/Cartera/guard-caja.guard';
 import { ClasificacionJuridicaComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion-juridica/clasificacion-juridica.component';
 import { CondicionEspecialComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/condicion-especial/condicion-especial.component';
 import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/firmas/firmas.component';
-import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Dashboard/dashboard-panel-cartera/dashboard-panel-cartera.component';
-import { InfoPersonalComponent } from './Pages/PanelGestionCartera/Pages/Components/Gestion/info-personal/info-personal.component';
-import { AsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/asignacion-component/asignacion.component';
-import { GestionAsignacionComponent } from './Pages/PanelGestionCartera/Pages/Components/Asignacion/gestion-asignacion/gestion-asignacion.component';
 import { ParametrosComponent } from './Pages/AdminGeneral/GestionCartera/parametros/parametros.component';
+import { DashboardPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/dashboard-panel-cartera/dashboard-panel-cartera.component';
+import { ModoGestionComponent } from './Pages/PanelGestionCartera/Pages/Components/modo-gestion/modo-gestion.component';
 
 
 
@@ -119,7 +117,7 @@ const routes: Routes = [
     component: CambioContrasenaComponent,
   },
   {
-    path: 'cartera', redirectTo: 'dashboard-cartera/inicio/gestion', pathMatch: 'full'
+    path: 'cartera', redirectTo: 'dashboard-cartera/dashboard-cartera/modo-gestion', pathMatch: 'full'
   },
   {
     path: "dashboard-cartera",
@@ -127,25 +125,13 @@ const routes: Routes = [
     canActivate: [AuthenticationGuard],
     children: [
       {
-        path: "inicio",
+        path: "dashboard-cartera",
         component: DashboardPanelCarteraComponent,
-        canActivate: [GuardAsesoraGuard],
         children: [
           {
-            path: "gestion",
-            component: InfoPersonalComponent,
-            canActivate: [AuthenticationGuard]
+            path: "modo-gestion",
+            component: ModoGestionComponent,
           },
-          {
-            path: "asignacion",
-            component: AsignacionComponent,
-            canActivate: [AuthenticationGuard],
-          },
-          {
-            path: 'gestionAsignacion',
-            component: GestionAsignacionComponent,
-            canActivate: [AuthenticationGuard]
-          }
         ]
       },
       {
