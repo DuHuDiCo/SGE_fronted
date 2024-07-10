@@ -2627,6 +2627,10 @@ export class HomeCarteraComponent implements OnInit {
     var valorIntereses = this.acuerdoCal.valorInteresesMora
     var valorHonorarios = this.acuerdoCal.honoriarioAcuerdo
 
+
+
+    
+
     //cuando el cliente esta al dia
     if (moraOlbigatoria == 0) {
 
@@ -2788,6 +2792,7 @@ export class HomeCarteraComponent implements OnInit {
             result.dismiss === Swal.DismissReason.cancel
           ) {
             var capitalRestante = totalObligatoria - moraOlbigatoria
+            
             var cuotasReales = 0;
             if (capitalRestante > 0) {
               cuotasReales = capitalRestante / valorCuotaAnterior
@@ -3094,7 +3099,7 @@ export class HomeCarteraComponent implements OnInit {
   todasCuotasMora(valorInteres: number, valorCuotaMensual: number, moraObligatoria: number, valorCuotaAnterior: number, valorTotalObligatoria: number, valorHonorarios: number, valorTotalMora: number) {
 
     var saldoTotal = this.acuerdoCal.saldoAcuerdo
-
+    
 
 
 
@@ -3103,12 +3108,14 @@ export class HomeCarteraComponent implements OnInit {
     var totalCuotas = this.obtenerTotalCuotas(saldoTotal, valorCuotaMensual)
 
     var totalCuotasSinDecimal = parseInt(totalCuotas.toFixed(0))
+    
 
     var participacionCuota = this.generarParticipacionCuotas(valorCuotaMensual, saldoTotal, moraObligatoria, valorInteres, valorHonorarios)
 
 
 
     totalCuotas = saldoTotal / valorCuotaMensual
+    
 
     var saldoCapitalTotalConIntereses = saldoTotal
 
@@ -3117,6 +3124,7 @@ export class HomeCarteraComponent implements OnInit {
     var honorariosMora = valorHonorarios
 
     for (let i = 0; i < totalCuotas + 1; i++) {
+     
 
       if (saldoCapitalTotalConIntereses > valorCuotaMensual) {
         //crear las primeras cuotas con mora
@@ -3136,11 +3144,20 @@ export class HomeCarteraComponent implements OnInit {
       } else {
 
         if (saldoCapitalTotalConIntereses < 20000) {
+          
+          participacionCuota.capital = capitalMora
+          participacionCuota.interes = interesesMora
+          participacionCuota.honorarios = honorariosMora
           this.cuotas[this.cuotas.length - 1].valorCuota = this.cuotas[this.cuotas.length - 1].valorCuota + saldoCapitalTotalConIntereses
           this.cuotas[this.cuotas.length - 1].capitalCuota = this.cuotas[this.cuotas.length - 1].capitalCuota + participacionCuota.capital
           this.cuotas[this.cuotas.length - 1].interesCuota = this.cuotas[this.cuotas.length - 1].interesCuota + participacionCuota.interes
           this.cuotas[this.cuotas.length - 1].honorariosCuota = this.cuotas[this.cuotas.length - 1].honorariosCuota + participacionCuota.honorarios
 
+
+          
+          var capitalMora = 0
+          var interesesMora = 0
+          var honorariosMora = 0
           saldoCapitalTotalConIntereses = 0
           break;
         } else {
@@ -3920,6 +3937,7 @@ export class HomeCarteraComponent implements OnInit {
 
   ordenarGestiones(gestiones: any[]) {
     var gesTrue = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'ACUERDO DE PAGO' && ges.clasificacion.isActive)
+
     gesTrue.forEach((ges: any) => {
       this.gestiones.push(ges)
     });
@@ -3931,27 +3949,33 @@ export class HomeCarteraComponent implements OnInit {
       });
     }
 
-    var acuerdoDesactivated = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'ACUERDO DE PAGO' && ges.clasificacion.isActive == false)
-    if (acuerdoDesactivated != null || acuerdoDesactivated != undefined) {
-      acuerdoDesactivated.forEach((ges: any) => {
-        this.gestiones.push(ges)
-      });
-    }
+    // var acuerdoDesactivated = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'ACUERDO DE PAGO' && ges.clasificacion.isActive == false)
+    // if (acuerdoDesactivated != null || acuerdoDesactivated != undefined) {
+    //   acuerdoDesactivated.forEach((ges: any) => {
+    //     this.gestiones.push(ges)
+    //   });
+    // }
 
-    var tareaDesactivated = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && ges.clasificacion.isActive == false)
-    if (tareaDesactivated != null || tareaDesactivated != undefined) {
-      tareaDesactivated.forEach((ges: any) => {
-        this.gestiones.push(ges)
-      });
-    }
+    // var tareaDesactivated = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && ges.clasificacion.isActive == false)
+    // if (tareaDesactivated != null || tareaDesactivated != undefined) {
+    //   tareaDesactivated.forEach((ges: any) => {
+    //     this.gestiones.push(ges)
+    //   });
+    // }
 
-    var notas = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'NOTA')
-    if (notas != null || notas != undefined) {
-      notas.forEach((ges: any) => {
-        this.gestiones.push(ges)
-      });
-    }
+    // var notas = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'NOTA')
+    // if (notas != null || notas != undefined) {
+    //   notas.forEach((ges: any) => {
+    //     this.gestiones.push(ges)
+    //   });
+    // }
+    const objetosOrdenados: any[] = [...gestiones].sort((a, b) => {
+      return new Date(b.fechaGestion).getTime() - new Date(a.fechaGestion).getTime();
+    });
 
+    for (let obj of objetosOrdenados) {
+      this.gestiones.push(obj)
+    }
 
   }
 
