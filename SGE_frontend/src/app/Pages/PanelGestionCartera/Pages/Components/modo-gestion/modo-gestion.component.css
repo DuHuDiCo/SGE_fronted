@@ -41,3 +41,54 @@
     border-top-left-radius: 0.25rem;
     border-bottom-left-radius: 0.25rem;
 }
+
+/* LINEA DE TIEMPO */
+.timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e0e0e0;
+    padding: 10px;
+    position: relative;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #7e7e7e;
+    z-index: 1;
+}
+
+.timeline-item {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-item .circle {
+    width: 30px;
+    height: 30px;
+    background-color: #960010;
+    border-radius: 50%;
+    margin: 0 25px;
+}
+
+.timeline-item .date,
+.timeline-item .title,
+.timeline-item .description {
+    margin: 5px 0;
+}
+
+.text-timeline-14 {
+    text-align: start;
+    font-size: 14px;
+}
+
+.text-timeline-12 {
+    text-align: start;
+    font-size: 12px;
+}
