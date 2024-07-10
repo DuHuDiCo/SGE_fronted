@@ -126,6 +126,7 @@ import { HistoricoGestionesComponent } from './Pages/PanelGestionCartera/Element
 import { NovedadesComponent } from './Pages/PanelGestionCartera/Elements/novedades/novedades.component';
 import { AgregarDatosComponent } from './Pages/PanelGestionCartera/Elements/agregar-datos/agregar-datos.component';
 import { LocalizacionComponent } from './Pages/PanelGestionCartera/Elements/localizacion/localizacion.component';
+import { AddressGeneratorComponent } from './Pages/PanelGestionCartera/Elements/address-generator/address-generator.component';
 
 
 
@@ -262,7 +263,8 @@ import { LocalizacionComponent } from './Pages/PanelGestionCartera/Elements/loca
     HistoricoGestionesComponent,
     NovedadesComponent,
     AgregarDatosComponent,
-    LocalizacionComponent
+    LocalizacionComponent,
+    AddressGeneratorComponent
   ],
 
 
