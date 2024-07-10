@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarPanelCarteraComponent implements OnInit {
 
+  modoGestion: boolean = false
+
   constructor() { }
 
   ngOnInit(): void {

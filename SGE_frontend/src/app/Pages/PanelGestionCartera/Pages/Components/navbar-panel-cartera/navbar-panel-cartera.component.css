@@ -19,9 +19,23 @@
     cursor: pointer;
 }
 
-.modo-gestion {
+.modo-gestion-disabled {
     width: 15%;
     height: 100%;
     background-color: rgb(144, 144, 144);
     padding: 10px 0;
+    transition: all 0.5s;
+}
+
+.modo-gestion {
+    width: 15%;
+    height: 100%;
+    background-color: #19a865;
+    padding: 10px 0;
+}
+
+.form-check-input:checked {
+    background-color: #9e212d;
+    box-shadow: none;
+    border: none;
 }
