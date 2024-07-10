@@ -122,6 +122,10 @@ import { ModoGestionComponent } from './Pages/PanelGestionCartera/Pages/Componen
 import { SidebarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/sidebar-panel-cartera/sidebar-panel-cartera.component';
 import { SidebarRightPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/sidebar-right-panel-cartera/sidebar-right-panel-cartera.component';
 import { NavbarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/Components/navbar-panel-cartera/navbar-panel-cartera.component';
+import { HistoricoGestionesComponent } from './Pages/PanelGestionCartera/Elements/historico-gestiones/historico-gestiones.component';
+import { NovedadesComponent } from './Pages/PanelGestionCartera/Elements/novedades/novedades.component';
+import { AgregarDatosComponent } from './Pages/PanelGestionCartera/Elements/agregar-datos/agregar-datos.component';
+import { LocalizacionComponent } from './Pages/PanelGestionCartera/Elements/localizacion/localizacion.component';
 
 
 
@@ -254,7 +258,11 @@ import { NavbarPanelCarteraComponent } from './Pages/PanelGestionCartera/Pages/C
     ModoGestionComponent,
     SidebarPanelCarteraComponent,
     SidebarRightPanelCarteraComponent,
-    NavbarPanelCarteraComponent
+    NavbarPanelCarteraComponent,
+    HistoricoGestionesComponent,
+    NovedadesComponent,
+    AgregarDatosComponent,
+    LocalizacionComponent
   ],
 
 
