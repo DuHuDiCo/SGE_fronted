@@ -2,7 +2,8 @@
     <div class="col-nav p-0">
         <nav class="navbar p-0">
             <nav class="navbar navbar-expand-lg bg-body-tertiary p-0">
-                <div class="container-fluid  p-0">
+                <div class="container-fluid p-0">
+                    <!-- MODO GESTIÓN -->
                     <div [ngClass]="{'modo-gestion-disabled': !modoGestion, 'modo-gestion': modoGestion}">
                         <div class="row">
                             <div class="col-md-8 text-center">
@@ -10,16 +11,48 @@
                             </div>
                             <div class="col-md-4 p-0">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch"
+                                    <input class="form-check-input check-modo-gestion" type="checkbox" role="switch"
                                         [(ngModel)]="modoGestion">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="container-fluid p-0">
-                        <div class="d-flex justify-content-end">
-                            <span><i class="fa-solid fa-chart-line icon-navbar"></i></span>
-                            <span><i class="fa-solid fa-gear icon-navbar"></i></span>
+                        <div class="row">
+                            <!-- CUENTAS ABIERTAS -->
+                            <div class="col-md-5 d-flex">
+                                <div class="d-flex">
+                                    <div class="ms-2"
+                                        [ngClass]="{'card-cuenta-select': cuentaSelect == c, 'card-cuenta-off': cuentaSelect != c}"
+                                        *ngFor="let c of cuentasArray; let i = index" id="card_{{i}}">
+                                        <div class="row">
+                                            <div class="col-md-10" (click)="cambiarCuenta(c)">
+                                                <h6 class="text-white text-size-10 mt-2 m-0 px-3">{{ c }}</h6>
+                                            </div>
+                                            <div class="col-md-2 p-0" (click)="cerrarCuenta(c, i)">
+                                                <span class="icon-pointer"><i
+                                                        class="fa-solid fa-x fa-xs text-white"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- BUSCAR CLIENTE -->
+                            <div class="col-md-5 d-flex align-items-center align-middle">
+                                <form class="d-flex ms-2" role="search">
+                                    <input class="form-control form-control-sm input-search me-2" type="search"
+                                        placeholder="Buscar Cliente">
+                                    <span class="icon-pointer"><i
+                                            class="fa-solid fa-magnifying-glass mt-2 me-2"></i></span>
+                                </form>
+                            </div>
+
+                            <!-- OPCIONES USUARIO -->
+                            <div class="col-md-2 d-flex justify-content-end">
+                                <span><i class="fa-solid fa-chart-line icon-navbar mt-2"></i></span>
+                                <span><i class="fa-solid fa-gear icon-navbar mt-2"></i></span>
+                            </div>
                         </div>
                     </div>
                 </div>

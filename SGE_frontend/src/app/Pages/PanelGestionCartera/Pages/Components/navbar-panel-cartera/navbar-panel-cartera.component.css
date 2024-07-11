@@ -34,8 +34,55 @@
     padding: 10px 0;
 }
 
-.form-check-input:checked {
-    background-color: #9e212d;
+.check-modo-gestion:checked {
+    background-color: #0e8a50;
     box-shadow: none;
     border: none;
+}
+
+.check-modo-gestion:focus {
+    box-shadow: none;
+}
+
+.input-search {
+    border: none;
+    border-bottom: 1px black solid;
+}
+
+.input-search:focus {
+    box-shadow: none;
+}
+
+.icon-pointer {
+    cursor: pointer;
+}
+
+.card-cuenta-select {
+    padding: 10px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: #960010;
+    bottom: 0;
+    margin-bottom: 0;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.card-cuenta-off {
+    padding: 10px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: rgb(144, 144, 144);
+    bottom: 0;
+    margin-bottom: 0;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.text-white {
+    color: white;
+}
+
+.text-size-10 {
+    font-size: 12px;
 }

@@ -7,9 +7,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModoGestionComponent implements OnInit {
 
+  responsableSelect: string = 'Yeimar Fernando Sánchez'
+
+  responsables: any[] = [
+    {
+      tipoGarante: 'Titular',
+      nombre: 'Yeimar Fernando Sánchez'
+    },
+    {
+      tipoGarante: 'Codeudor',
+      nombre: 'Duvan Huberto Diaz'
+    },
+    {
+      tipoGarante: 'Codeudor',
+      nombre: 'Johan Andres Hernandez'
+    }
+  ]
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  cambiarResponsable(nombre: string) {
+    this.responsableSelect = nombre
   }
 
 }

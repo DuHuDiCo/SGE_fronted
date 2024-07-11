@@ -18,24 +18,15 @@
                         <div class="card-body">
                             <h6 class="text-red">Responsables</h6>
 
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text span-select">Titular</span>
-                                <input type="text" class="form-control input-select" value="Yeimar Fernando Sánchez"
-                                    disabled>
+                            <div class="input-group input-group-sm mb-3" *ngFor="let r of responsables"
+                                (click)="cambiarResponsable(r.nombre)">
+                                <span class="input-group-text"
+                                    [ngClass]="{'span-select': responsableSelect == r.nombre, 'span-disabled': responsableSelect != r.nombre}">{{
+                                    r.tipoGarante }}</span>
+                                <input type="text" class="form-control input-select-control"
+                                    [ngClass]="{'input-select': responsableSelect == r.nombre, 'input-disabled': responsableSelect != r.nombre}"
+                                    value="{{ r.nombre }}" readonly>
                             </div>
-
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text span-disabled">Codeudor</span>
-                                <input type="text" class="form-control input-disabled" value="Duvan Humberto Diaz"
-                                    disabled>
-                            </div>
-
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text span-disabled">Codeudor</span>
-                                <input type="text" class="form-control input-disabled" value="Johan Andrés Hernandez"
-                                    disabled>
-                            </div>
-
                         </div>
                     </div>
                 </div>
