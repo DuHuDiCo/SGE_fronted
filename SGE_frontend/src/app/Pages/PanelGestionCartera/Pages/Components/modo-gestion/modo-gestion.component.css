@@ -50,6 +50,10 @@
     cursor: pointer;
 }
 
+.input-info {
+    font-size: 12px
+}
+
 /* LINEA DE TIEMPO */
 .timeline {
     display: flex;

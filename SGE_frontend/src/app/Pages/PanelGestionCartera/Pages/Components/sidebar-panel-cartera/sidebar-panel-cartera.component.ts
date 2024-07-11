@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 
 @Component({
   selector: 'app-sidebar-panel-cartera',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarPanelCarteraComponent implements OnInit {
 
-  constructor() { }
+  buscarState!: boolean
+
+  constructor(private panelService: PanelCarteraService) {
+    this.panelService.buscarState.subscribe(state => {
+      this.buscarState = state
+    })
+  }
 
   ngOnInit(): void {
   }

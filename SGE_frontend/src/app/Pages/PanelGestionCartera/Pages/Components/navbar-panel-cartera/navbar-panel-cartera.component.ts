@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import anime from 'animejs/lib/anime.es.js';
+import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 
 @Component({
   selector: 'app-navbar-panel-cartera',
@@ -9,6 +10,7 @@ import anime from 'animejs/lib/anime.es.js';
 export class NavbarPanelCarteraComponent implements OnInit {
 
   modoGestion: boolean = false
+  buscarState!: boolean
   cuentaSelect: string = '1002143638'
 
   cuentasArray: string[] = [
@@ -17,7 +19,11 @@ export class NavbarPanelCarteraComponent implements OnInit {
     '1002143636'
   ]
 
-  constructor() { }
+  constructor(private panelService: PanelCarteraService) {
+    this.panelService.buscarState.subscribe(state => {
+      this.buscarState = state
+    })
+  }
 
   ngOnInit(): void {
   }
