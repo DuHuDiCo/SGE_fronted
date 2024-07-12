@@ -127,6 +127,7 @@ import { NovedadesComponent } from './Pages/PanelGestionCartera/Elements/novedad
 import { AgregarDatosComponent } from './Pages/PanelGestionCartera/Elements/agregar-datos/agregar-datos.component';
 import { LocalizacionComponent } from './Pages/PanelGestionCartera/Elements/localizacion/localizacion.component';
 import { AddressGeneratorComponent } from './Pages/PanelGestionCartera/Elements/address-generator/address-generator.component';
+import { ModalConfirmacionNovedadComponent } from './Pages/PanelGestionCartera/Elements/modal-confirmacion-novedad/modal-confirmacion-novedad.component';
 
 
 
@@ -264,7 +265,8 @@ import { AddressGeneratorComponent } from './Pages/PanelGestionCartera/Elements/
     NovedadesComponent,
     AgregarDatosComponent,
     LocalizacionComponent,
-    AddressGeneratorComponent
+    AddressGeneratorComponent,
+    ModalConfirmacionNovedadComponent
   ],
 
 

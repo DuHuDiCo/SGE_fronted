@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 
 @Component({
   selector: 'app-modo-gestion',
@@ -24,13 +25,17 @@ export class ModoGestionComponent implements OnInit {
     }
   ]
 
-  constructor() { }
+  constructor(private panelCarteraService: PanelCarteraService) { }
 
   ngOnInit(): void {
   }
 
   cambiarResponsable(nombre: string) {
     this.responsableSelect = nombre
+  }
+
+  enviarDatoToConfirm(dato: string) {
+    this.panelCarteraService.setDatoConfirm(dato)
   }
 
 }

@@ -13,6 +13,10 @@ export class PanelCarteraService {
   private buscarStateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public buscarState: Observable<boolean> = this.buscarStateSubject.asObservable();
 
+  // DATOS PARA CONFIRMAR
+  private datoConfirmSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public datoConfirm: Observable<string> = this.datoConfirmSubject.asObservable();
+
   constructor(private http: HttpClient) { }
 
   cuentasByCampaña(campania: string) {
@@ -21,6 +25,10 @@ export class PanelCarteraService {
 
   setBuscarState(newState: boolean) {
     this.buscarStateSubject.next(newState);
+  }
+
+  setDatoConfirm(dato: string) {
+    this.datoConfirmSubject.next(dato);
   }
 
 }
