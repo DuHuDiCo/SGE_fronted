@@ -13,9 +13,9 @@ export class PanelCarteraService {
   private buscarStateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public buscarState: Observable<boolean> = this.buscarStateSubject.asObservable();
 
-  // DATOS PARA CONFIRMAR
-  private datoConfirmSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  public datoConfirm: Observable<string> = this.datoConfirmSubject.asObservable();
+  // DATOS PARA CONFIRMAR ARRAY
+  private datosArraySubject: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public datosArray: Observable<any> = this.datosArraySubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -27,8 +27,8 @@ export class PanelCarteraService {
     this.buscarStateSubject.next(newState);
   }
 
-  setDatoConfirm(dato: string) {
-    this.datoConfirmSubject.next(dato);
+  setDatoArray(array: any) {
+    this.datosArraySubject.next(array);
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
 
 @Component({
   selector: 'app-novedades',
@@ -7,7 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NovedadesComponent implements OnInit {
 
-  constructor() { }
+  // ARRAYS
+  datosArray: any[] = []
+
+  constructor(private panelCarteraService: PanelCarteraService) {
+    this.panelCarteraService.datosArray.subscribe(dato => {
+      this.datosArray = dato;
+    });
+  }
 
   ngOnInit(): void {
   }

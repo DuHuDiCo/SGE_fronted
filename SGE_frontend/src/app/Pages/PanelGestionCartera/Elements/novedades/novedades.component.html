@@ -4,33 +4,20 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <!-- <h5 class="text-center color-red" *ngIf="datosConfirmados.length == 0">No hay novedades en este momento</h5>
-        <div class="card card-cobro" *ngIf="datosConfirmados.length > 0">
+        <div class="card mb-2" *ngFor="let c of datosArray">
             <div class="card-body">
-                <h6>Datos Titular</h6>
-                <div class="card card-disabled mb-3" *ngFor="let d of datosConfirmados">
-                    <div class="card-body-padding">
-                        <div class="row d-flex justify-content-evenly">
-                            <div class="col-md-1">
-                                <button class="btn btn-sm bg-red"><i class="{{ d.icon }}"></i></button>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control" value="{{ d.text }}" disabled>
-                                </div>
-                            </div>
-                            <div class="col-md-1 p-0">
-                                <button class="btn btn-sm bg-red" (click)="cancelDato(d)"><i
-                                        class="fa-solid fa-trash"></i></button>
-                            </div>
-                            <div class="col-md-1 p-0">
-                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#modalEditar"><i class="fa-solid fa-pen-to-square"></i></button>
-                            </div>
-                        </div>
+                <h6 class="title">{{ c.tipo }}</h6>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <span><i class="{{ c.icon }}"></i></span>
+                    </div>
+                    <div class="col-md-10">
+                        <h6 class="text-12">{{ c.dato }}</h6>
                     </div>
                 </div>
+
             </div>
-        </div> -->
+        </div>
     </div>
 </div>

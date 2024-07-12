@@ -32,3 +32,17 @@
 .color-red {
     color: #960010;
 }
+
+.title {
+    font-size: 14px;
+    color: #960010;
+}
+
+.text-12 {
+    font-size: 12px;
+}
+
+.card {
+    border: none;
+    background-color: #d3d3d3;
+}

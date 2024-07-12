@@ -9,6 +9,7 @@ import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera
 export class ModoGestionComponent implements OnInit {
 
   responsableSelect: string = 'Yeimar Fernando Sánchez'
+  datoConfirmObj: any = {}
 
   responsables: any[] = [
     {
@@ -34,8 +35,12 @@ export class ModoGestionComponent implements OnInit {
     this.responsableSelect = nombre
   }
 
-  enviarDatoToConfirm(dato: string) {
-    this.panelCarteraService.setDatoConfirm(dato)
+  enviarDatoToConfirm(dato: string, icon: string, tipo: string) {
+    this.datoConfirmObj = {
+      dato: dato,
+      icon: icon,
+      tipo: tipo
+    }
   }
 
 }
