@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import anime from 'animejs/lib/anime.es.js';
 import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
+declare var $: any;
 
 @Component({
   selector: 'app-novedades',
@@ -53,6 +54,11 @@ export class NovedadesComponent implements OnInit {
     var pos = this.datosConfirmArray.findIndex((d: any) => d.tipo == tipo && d.boton == boton)
     this.datosConfirmArray.splice(pos, 1)
     this.panelCarteraService.setDatoConfirmArray(this.datosConfirmArray)
+
+    if (this.datosArray.length == 0) {
+      this.buttonAnimated = false
+      $('#offcanvasNovedades').offcanvas('hide');
+    }
   }
 
 }
