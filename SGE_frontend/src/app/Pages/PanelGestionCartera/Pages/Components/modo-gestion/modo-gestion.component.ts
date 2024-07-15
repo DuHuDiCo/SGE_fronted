@@ -31,7 +31,6 @@ export class ModoGestionComponent implements OnInit {
   constructor(private panelCarteraService: PanelCarteraService) {
     this.panelCarteraService.datosConfirmArray.subscribe(array => {
       this.datosConfirmArray = array
-      console.log(this.datosConfirmArray);
     })
   }
 
