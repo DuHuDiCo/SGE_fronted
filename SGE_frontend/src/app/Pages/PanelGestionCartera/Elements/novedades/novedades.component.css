@@ -68,3 +68,7 @@
 .floating-button:hover {
     background-color: #c50e0e;
 }
+
+.icon-pointer {
+    cursor: pointer;
+}

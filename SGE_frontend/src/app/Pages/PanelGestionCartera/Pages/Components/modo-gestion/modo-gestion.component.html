@@ -39,7 +39,8 @@
                             <h6 class="text-red">Clasificación de cliente</h6>
 
                             <!-- CELULAR -->
-                            <div class="card">
+                            <div class="card"
+                                *ngIf="!(datosConfirmArray.includes('Celular-LLAMADA') && datosConfirmArray.includes('Celular-WHATSAPP') && datosConfirmArray.includes('Celular-MENSAJE'))">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-8">
@@ -52,16 +53,24 @@
                                             <div class="row">
                                                 <div class="col-md-12 d-flex justify-content-between">
                                                     <button class="btn btn-sm btn-primary rounded-circle"
-                                                        data-bs-toggle="modal" data-bs-target="#modalConfirmNovedad"
-                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-phone-volume', 'Celular')"><i
+                                                        *ngIf="!datosConfirmArray.includes('Celular-LLAMADA')"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Llamada Telefónica" data-bs-toggle="modal"
+                                                        data-bs-target="#modalConfirmNovedad"
+                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-phone-volume', 'Celular', 'LLAMADA')"><i
                                                             class="fa-solid fa-phone-volume"></i></button>
                                                     <button class="btn btn-sm btn-success rounded-circle"
-                                                        data-bs-toggle="modal" data-bs-target="#modalConfirmNovedad"
-                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-brands fa-whatsapp fa-lg', 'Celular')"><i
+                                                        *ngIf="!datosConfirmArray.includes('Celular-WHATSAPP')"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Mensaje Whatsapp" data-bs-toggle="modal"
+                                                        data-bs-target="#modalConfirmNovedad"
+                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-brands fa-whatsapp fa-lg', 'Celular', 'WHATSAPP')"><i
                                                             class="fa-brands fa-whatsapp fa-lg"></i></button>
                                                     <button class="btn btn-sm btn-secondary rounded-circle"
+                                                        *ngIf="!datosConfirmArray.includes('Celular-MENSAJE')"
+                                                        data-toggle="tooltip" data-placement="top" title="Mensaje Texto"
                                                         data-bs-toggle="modal" data-bs-target="#modalConfirmNovedad"
-                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-comment', 'Celular')"><i
+                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-comment', 'Celular', 'MENSAJE')"><i
                                                             class="fa-solid fa-comment"></i></button>
                                                 </div>
                                             </div>
@@ -71,7 +80,7 @@
                             </div>
 
                             <!-- DIRECCIÓN -->
-                            <div class="card">
+                            <div class="card" *ngIf="!datosConfirmArray.includes('Dirección-CARTA')">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-8">
@@ -85,8 +94,10 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <button class="btn btn-sm btn-secondary rounded-circle"
+                                                        *ngIf="!datosConfirmArray.includes('Dirección-CARTA')"
+                                                        data-toggle="tooltip" data-placement="top" title="Carta Cobro"
                                                         data-bs-toggle="modal" data-bs-target="#modalConfirmNovedad"
-                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-envelope', 'Dirección')"><i
+                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-envelope', 'Dirección', 'CARTA')"><i
                                                             class="fa-solid fa-envelope"></i></button>
                                                 </div>
                                             </div>
@@ -96,7 +107,8 @@
                             </div>
 
                             <!-- CORREO -->
-                            <div class="card">
+                            <div class="card"
+                                *ngIf="!(datosConfirmArray.includes('Correo-CORREOAUT') && datosConfirmArray.includes('Correo-CORREOMAN'))">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-8">
@@ -110,12 +122,18 @@
                                             <div class="row">
                                                 <div class="col-md-12 d-flex justify-content-between">
                                                     <button class="btn btn-sm btn-primary rounded-circle"
-                                                        data-bs-toggle="modal" data-bs-target="#modalConfirmNovedad"
-                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-paper-plane', 'Correo')"><i
+                                                        *ngIf="!datosConfirmArray.includes('Correo-CORREOAUT')"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Correo Cobro (Aut)" data-bs-toggle="modal"
+                                                        data-bs-target="#modalConfirmNovedad"
+                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-paper-plane', 'Correo', 'CORREOAUT')"><i
                                                             class="fa-solid fa-paper-plane"></i></button>
                                                     <button class="btn btn-sm btn-secondary rounded-circle"
-                                                        data-bs-toggle="modal" data-bs-target="#modalConfirmNovedad"
-                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-envelopes-bulk', 'Correo')"><i
+                                                        *ngIf="!datosConfirmArray.includes('Correo-CORREOMAN')"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Correo Cobro (Man)" data-bs-toggle="modal"
+                                                        data-bs-target="#modalConfirmNovedad"
+                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-envelopes-bulk', 'Correo', 'CORREOMAN')"><i
                                                             class="fa-solid fa-envelopes-bulk"></i></button>
                                                 </div>
                                             </div>
@@ -125,7 +143,7 @@
                             </div>
 
                             <!-- REFERENCIAS -->
-                            <div class="card">
+                            <div class="card" *ngIf="!datosConfirmArray.includes('Referencias-LLAMADA')">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-8">
@@ -139,8 +157,11 @@
                                             <div class="row">
                                                 <div class="col-md-12 d-flex justify-content-start">
                                                     <button class="btn btn-sm btn-primary rounded-circle"
-                                                        data-bs-toggle="modal" data-bs-target="#modalConfirmNovedad"
-                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-phone-volume', 'Referencias')"><i
+                                                        *ngIf="!datosConfirmArray.includes('Referencias-LLAMADA')"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Llamada Telefonica" data-bs-toggle="modal"
+                                                        data-bs-target="#modalConfirmNovedad"
+                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-phone-volume', 'Referencias', 'LLAMADA')"><i
                                                             class="fa-solid fa-phone-volume"></i></button>
                                                 </div>
                                             </div>
@@ -150,7 +171,8 @@
                             </div>
 
                             <!-- INFORMACIÓN LABORAL -->
-                            <div class="card">
+                            <div class="card"
+                                *ngIf="!(datosConfirmArray.includes('InfoLaboral-LLAMADA') && datosConfirmArray.includes('InfoLaboral-WHATSAPP') && datosConfirmArray.includes('InfoLaboral-MENSAJE') && datosConfirmArray.includes('InfoLaboral-CARTA'))">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-8">
@@ -163,12 +185,18 @@
                                             <div class="row">
                                                 <div class="col-md-12 d-flex justify-content-between">
                                                     <button class="btn btn-sm btn-primary rounded-circle"
-                                                        data-bs-toggle="modal" data-bs-target="#modalConfirmNovedad"
-                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-phone-volume', 'Info Laboral')"><i
+                                                        *ngIf="!datosConfirmArray.includes('InfoLaboral-LLAMADA')"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Llamada Telefonica" data-bs-toggle="modal"
+                                                        data-bs-target="#modalConfirmNovedad"
+                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-phone-volume', 'InfoLaboral', 'LLAMADA')"><i
                                                             class="fa-solid fa-phone-volume"></i></button>
                                                     <button class="btn btn-sm btn-success rounded-circle"
-                                                        data-bs-toggle="modal" data-bs-target="#modalConfirmNovedad"
-                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-brands fa-whatsapp fa-lg', 'Info Laboral')"><i
+                                                        *ngIf="!datosConfirmArray.includes('InfoLaboral-WHATSAPP')"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Mensaje Whatsapp" data-bs-toggle="modal"
+                                                        data-bs-target="#modalConfirmNovedad"
+                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-brands fa-whatsapp fa-lg', 'InfoLaboral', 'WHATSAPP')"><i
                                                             class="fa-brands fa-whatsapp fa-lg"></i></button>
                                                 </div>
                                             </div>
@@ -193,12 +221,17 @@
                                             <div class="row">
                                                 <div class="col-md-12 d-flex justify-content-between">
                                                     <button class="btn btn-sm btn-secondary rounded-circle"
+                                                        *ngIf="!datosConfirmArray.includes('InfoLaboral-MENSAJE')"
+                                                        data-toggle="tooltip" data-placement="top" title="Mensaje Texto"
                                                         data-bs-toggle="modal" data-bs-target="#modalConfirmNovedad"
-                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-comment', 'Info Laboral')"><i
+                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-comment', 'InfoLaboral', 'MENSAJE')"><i
                                                             class="fa-solid fa-comment"></i></button>
                                                     <button class="btn btn-sm btn-warning rounded-circle"
-                                                        data-bs-toggle="modal" data-bs-target="#modalConfirmNovedad"
-                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-envelopes-bulk', 'Info Laboral')"><i
+                                                        *ngIf="!datosConfirmArray.includes('InfoLaboral-CARTA')"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Carta Cobro (Empresa)" data-bs-toggle="modal"
+                                                        data-bs-target="#modalConfirmNovedad"
+                                                        (click)="enviarDatoToConfirm('3023671255', 'fa-solid fa-envelopes-bulk', 'InfoLaboral', 'CARTA')"><i
                                                             class="fa-solid fa-envelopes-bulk"></i></button>
                                                 </div>
                                             </div>

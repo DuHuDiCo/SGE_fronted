@@ -11,11 +11,16 @@ export class NovedadesComponent implements OnInit {
 
   // ARRAYS
   datosArray: any[] = []
+  datosConfirmArray: any[] = []
 
   constructor(private panelCarteraService: PanelCarteraService) {
     this.panelCarteraService.datosArray.subscribe(dato => {
       this.datosArray = dato;
     });
+
+    this.panelCarteraService.datosConfirmArray.subscribe(array => {
+      this.datosConfirmArray = array
+    })
   }
 
   private buttonAnimated = false;
@@ -38,6 +43,16 @@ export class NovedadesComponent implements OnInit {
       direction: 'alternate',
       loop: true,
     });
+  }
+
+  cancelarAccion(tipo: string, boton: string) {
+    var pos = this.datosArray.findIndex((d: any) => d.tipo == tipo && d.boton == boton)
+    this.datosArray.splice(pos, 1)
+    this.panelCarteraService.setDatoArray(this.datosArray)
+
+    var pos = this.datosConfirmArray.findIndex((d: any) => d.tipo == tipo && d.boton == boton)
+    this.datosConfirmArray.splice(pos, 1)
+    this.panelCarteraService.setDatoConfirmArray(this.datosConfirmArray)
   }
 
 }

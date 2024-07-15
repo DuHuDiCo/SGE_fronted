@@ -17,6 +17,10 @@ export class PanelCarteraService {
   private datosArraySubject: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public datosArray: Observable<any> = this.datosArraySubject.asObservable();
 
+  // DATOS CONFIRMADOS ARRAY
+  private datosConfirmArraySubject: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public datosConfirmArray: Observable<any> = this.datosConfirmArraySubject.asObservable();
+
   constructor(private http: HttpClient) { }
 
   cuentasByCampaña(campania: string) {
@@ -29,6 +33,10 @@ export class PanelCarteraService {
 
   setDatoArray(array: any) {
     this.datosArraySubject.next(array);
+  }
+
+  setDatoConfirmArray(array: any) {
+    this.datosConfirmArraySubject.next(array);
   }
 
 }

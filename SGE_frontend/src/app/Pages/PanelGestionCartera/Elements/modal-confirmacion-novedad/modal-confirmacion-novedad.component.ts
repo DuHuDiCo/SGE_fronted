@@ -10,19 +10,28 @@ declare var $: any;
 export class ModalConfirmacionNovedadComponent implements OnInit {
 
   datosArray: any[] = []
+  datosConfirmArray: any[] = []
   @Input() datoConfirmar: any;
 
   constructor(private panelCarteraService: PanelCarteraService) {
-
+    this.panelCarteraService.datosConfirmArray.subscribe(array => {
+      this.datosConfirmArray = array
+    })
   }
 
   ngOnInit(): void {
   }
 
   confirmarDato() {
+    var stringConfirm
+    stringConfirm = this.datoConfirmar.tipo + '-' + this.datoConfirmar.boton
+    this.datosConfirmArray.push(stringConfirm)
+    this.panelCarteraService.setDatoConfirmArray(this.datosConfirmArray)
+
     this.datosArray.push(this.datoConfirmar)
     this.panelCarteraService.setDatoArray(this.datosArray)
     $('#offcanvasNovedades').offcanvas('show');
+    console.log(this.datosArray);
   }
 
 }

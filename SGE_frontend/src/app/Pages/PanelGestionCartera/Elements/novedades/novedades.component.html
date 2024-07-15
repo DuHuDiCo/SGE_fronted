@@ -12,8 +12,11 @@
                     <div class="col-md-2">
                         <span><i class="{{ c.icon }}"></i></span>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                         <h6 class="text-12">{{ c.dato }}</h6>
+                    </div>
+                    <div class="col-md-2 icon-pointer" (click)="cancelarAccion(c.tipo, c.boton)">
+                        <span><i class="fa-solid fa-x"></i></span>
                     </div>
                 </div>
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PanelCarteraService } from 'src/app/Services/PanelCartera/panel-cartera.service';
+declare var $: any;
 
 @Component({
   selector: 'app-modo-gestion',
@@ -25,21 +26,31 @@ export class ModoGestionComponent implements OnInit {
       nombre: 'Johan Andres Hernandez'
     }
   ]
+  datosConfirmArray: any[] = []
 
-  constructor(private panelCarteraService: PanelCarteraService) { }
+  constructor(private panelCarteraService: PanelCarteraService) {
+    this.panelCarteraService.datosConfirmArray.subscribe(array => {
+      this.datosConfirmArray = array
+      console.log(this.datosConfirmArray);
+    })
+  }
 
   ngOnInit(): void {
+    $(document).ready(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
   }
 
   cambiarResponsable(nombre: string) {
     this.responsableSelect = nombre
   }
 
-  enviarDatoToConfirm(dato: string, icon: string, tipo: string) {
+  enviarDatoToConfirm(dato: string, icon: string, tipo: string, boton: string) {
     this.datoConfirmObj = {
       dato: dato,
       icon: icon,
-      tipo: tipo
+      tipo: tipo,
+      boton: boton
     }
   }
 
