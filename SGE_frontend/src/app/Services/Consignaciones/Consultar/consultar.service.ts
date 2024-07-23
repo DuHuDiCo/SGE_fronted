@@ -38,7 +38,7 @@ export class ConsultarService {
   }
 
   getConsignacionByCedula(cedula: string, page: number, size: number) {
-    return this.http.get(`http://192.168.1.241:8007/api/v1/consignacion/getConsignacionByCliente/${cedula}?page=${page}&size=${size}`)
+    return this.http.get(`${baseUrl}/consignacion/getConsignacionByCliente/${cedula}?page=${page}&size=${size}`)
   }
 
   cambiarEstadoConsignacion(cambioEstado: any, tipoReporte: string) {
