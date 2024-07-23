@@ -252,6 +252,7 @@ export class ConsultasComponent implements OnInit {
   botonFiltrar: boolean = false
   botonCambiarConsignacion: boolean = false
   crearCliente: boolean = false
+  filterByCedula: boolean = false
 
   estado: string = 'null'
   fecha: any = 'null'
@@ -375,6 +376,7 @@ export class ConsultasComponent implements OnInit {
       return
     }
     this.cambiarEstado.username = user
+    this.filterByCedula = false
 
     if (this.validarPermiso('CONSULTAR COMPROBADOS')) {
       this.consultarService.listarComprobados(user, this.page, this.size, "ASC").subscribe(
@@ -515,7 +517,6 @@ export class ConsultasComponent implements OnInit {
     if (this.validarPermiso('CONSULTAR PENDIENTES') && this.validarPermiso('COMPROBAR CONSIGNACIONES')) {
       this.consultarService.getAllConsignaciones(p, this.page, this.size, "ASC").subscribe(
         (data: any) => {
-
           this.spinner = false
           this.con = data.content
           this.numeroPages = data.totalPages
@@ -534,10 +535,10 @@ export class ConsultasComponent implements OnInit {
                 observacion: ''
               }
 
-              var consi = this.cambioArray.find((x:any)=> x.idConsignacion == guardarArray.idConsignacion)
+              var consi = this.cambioArray.find((x: any) => x.idConsignacion == guardarArray.idConsignacion)
 
-              if(consi == null || consi == undefined){
-                this.cambioArray.push(guardarArray)  
+              if (consi == null || consi == undefined) {
+                this.cambioArray.push(guardarArray)
               }
               setTimeout(() => {
 
@@ -583,15 +584,14 @@ export class ConsultasComponent implements OnInit {
       if (this.validarPermiso('CREAR CONSIGNACIONES') && this.validarPermiso('CONSULTAR PENDIENTES')) {
         this.consultarService.getAllConsignaciones(p, this.page, this.size, "DESC").subscribe(
           (data: any) => {
-  
             this.spinner = false
             this.con = data.content
             this.numeroPages = data.totalPages
             this.con.forEach((e: any, index: number) => {
-  
+
               if (e.isSelected) {
                 var user = this.authService.getUsername()
-  
+
                 if (user == null || user == undefined) {
                   return
                 }
@@ -601,31 +601,31 @@ export class ConsultasComponent implements OnInit {
                   username: user,
                   observacion: ''
                 }
-  
-                var consi = this.cambioArray.find((x:any)=> x.idConsignacion == guardarArray.idConsignacion)
-  
-                if(consi == null || consi == undefined){
-                  this.cambioArray.push(guardarArray)  
+
+                var consi = this.cambioArray.find((x: any) => x.idConsignacion == guardarArray.idConsignacion)
+
+                if (consi == null || consi == undefined) {
+                  this.cambioArray.push(guardarArray)
                 }
                 setTimeout(() => {
-  
+
                   if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
                     this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
                   } else {
                     this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
                   }
-  
+
                   if (this.cambioArray.length > 0) {
                     this.cambios = true
                   } else {
                     this.cambios = false
                   }
                 }, 100);
-  
-  
+
+
               }
             });
-  
+
             this.paginas = new Array(data.totalPages)
             this.last = data.last
             this.first = data.first
@@ -634,29 +634,29 @@ export class ConsultasComponent implements OnInit {
               c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
             })
             this.botones = new Array<boolean>(this.con.length).fill(false)
-  
+
             if (this.con.length <= 0) {
               Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
               return
             }
-  
-  
+
+
           }, (error: any) => {
-  
+
           }
         )
       } else {
         this.consultarService.getAllConsignaciones(p, this.page, this.size, "ASC").subscribe(
           (data: any) => {
-  
+
             this.spinner = false
             this.con = data.content
             this.numeroPages = data.totalPages
             this.con.forEach((e: any, index: number) => {
-  
+
               if (e.isSelected) {
                 var user = this.authService.getUsername()
-  
+
                 if (user == null || user == undefined) {
                   return
                 }
@@ -666,31 +666,31 @@ export class ConsultasComponent implements OnInit {
                   username: user,
                   observacion: ''
                 }
-  
-                var consi = this.cambioArray.find((x:any)=> x.idConsignacion == guardarArray.idConsignacion)
-  
-                if(consi == null || consi == undefined){
-                  this.cambioArray.push(guardarArray)  
+
+                var consi = this.cambioArray.find((x: any) => x.idConsignacion == guardarArray.idConsignacion)
+
+                if (consi == null || consi == undefined) {
+                  this.cambioArray.push(guardarArray)
                 }
                 setTimeout(() => {
-  
+
                   if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
                     this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
                   } else {
                     this.cambiarBotones(index, 'DESACTIVAR', e.idConsignacion, 'COMPROBADO')
                   }
-  
+
                   if (this.cambioArray.length > 0) {
                     this.cambios = true
                   } else {
                     this.cambios = false
                   }
                 }, 100);
-  
-  
+
+
               }
             });
-  
+
             this.paginas = new Array(data.totalPages)
             this.last = data.last
             this.first = data.first
@@ -699,23 +699,23 @@ export class ConsultasComponent implements OnInit {
               c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
             })
             this.botones = new Array<boolean>(this.con.length).fill(false)
-  
+
             if (this.con.length <= 0) {
               Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
               return
             }
-  
-  
+
+
           }, (error: any) => {
-  
+
           }
         )
       }
 
-      
+
     }
 
-    
+
 
   }
 
@@ -874,15 +874,19 @@ export class ConsultasComponent implements OnInit {
     if (!this.last) {
       this.page++
       if (this.filtrando) {
-        this.filtrar(this.estado, this.fecha, this.sede, this.page, this.sizes)
+        this.pages++
+        this.filtrar(this.estado, this.fecha, this.sede, this.pages, this.sizes)
         this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
           (con: boolean) => {
-
             this.isCon = con;
             this.cont = this.cont + this.size
             this.proSubscriptionNext.unsubscribe()
           }
         );
+      } else if (this.filterByCedula) {
+        this.pages++
+        this.getConsignacionByCedula()
+        this.cont = this.cont + this.size
       } else {
         this.getRoles()
         this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
@@ -902,16 +906,21 @@ export class ConsultasComponent implements OnInit {
     if (!this.first) {
       this.page--
       if (this.filtrando) {
-        this.filtrar(this.estado, this.fecha, this.sede, this.page, this.sizes)
+        this.pages--
+        this.filtrar(this.estado, this.fecha, this.sede, this.pages, this.sizes)
         this.proSubscriptionBack = this.consultarService.proSubject.subscribe(
           (con: boolean) => {
-
             this.isCon = con;
             this.cont = this.cont - this.size
             this.proSubscriptionBack.unsubscribe()
           }
         );
-      } else {
+      } else if (this.filterByCedula) {
+        this.pages--
+        this.getConsignacionByCedula()
+        this.cont = this.cont - this.size
+      }
+      else {
         this.getRoles()
         this.proSubscriptionBack = this.consultarService.proSubject.subscribe(
           (con: boolean) => {
@@ -930,7 +939,8 @@ export class ConsultasComponent implements OnInit {
   goToPage(page: number) {
     this.page = page
     if (this.filtrando) {
-      this.filtrar(this.estado, this.fecha, this.sede, this.page, this.sizes)
+      this.pages = page
+      this.filtrar(this.estado, this.fecha, this.sede, this.pages, this.sizes)
       this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
         (con: boolean) => {
           this.isCon = con;
@@ -938,7 +948,12 @@ export class ConsultasComponent implements OnInit {
           this.proSubscriptionNext.unsubscribe()
         }
       );
-    } else {
+    } else if (this.filterByCedula) {
+      this.pages = page
+      this.getConsignacionByCedula()
+      this.cont = this.initialCon + (this.page * this.sizes)
+    }
+    else {
       this.getRoles()
       this.proSubscriptionNext = this.consultarService.proSubject.subscribe(
         (con: boolean) => {
@@ -1013,6 +1028,11 @@ export class ConsultasComponent implements OnInit {
     this.spinner = true
     this.numeroPages = 0
     setTimeout(() => {
+      if (!this.filtrando) {
+        this.pages = 1
+        this.page = 0
+        this.cont = 1
+      }
       this.filtrar(this.estado, this.fecha, this.sede, this.pages, this.sizes)
     }, 2000);
 
@@ -1031,6 +1051,16 @@ export class ConsultasComponent implements OnInit {
 
   //FILTRAR UNA CONSIGNACION POR CEDULA DEL CLIENTE
   getConsignacionByCedula() {
+    if (this.filtrando) {
+      this.pages = 1
+      this.filtrando = false
+    }
+
+    if (!this.filterByCedula) {
+      this.cont = 1
+    }
+
+    this.page = this.pages
     if (this.cedula == '' || this.cedula == null) {
       Swal.fire({
         icon: 'error',
@@ -1039,7 +1069,7 @@ export class ConsultasComponent implements OnInit {
         timer: 3000
       })
     }
-    this.consultarService.getConsignacionByCedula(this.cedula).subscribe(
+    this.consultarService.getConsignacionByCedula(this.cedula, this.pages, this.size).subscribe(
       (data: any) => {
         if (data.length == 0) {
           Swal.fire({
@@ -1050,20 +1080,24 @@ export class ConsultasComponent implements OnInit {
           })
           return
         }
-        this.con = data
-        this.botones = new Array<boolean>(this.con.length).fill(false)
-        this.paginas = new Array(data.totalPages)
-        this.last = data.last
-        this.first = data.first
-        this.con.forEach((element: any) => {
-          element.actualizaciones = element.actualizaciones.filter((a: any) => a.isCurrent == true)
-        });
+        console.log(data);
+
         Swal.fire({
           icon: 'success',
           title: 'Datos Guardados',
           text: 'Estas Fueron Las Consignaciones Encontradas',
           timer: 3000
         })
+        this.con = data.content
+        this.botones = new Array<boolean>(this.con.length).fill(false)
+        this.paginas = new Array(data.totalPages)
+        this.last = data.last
+        this.first = data.first
+        this.numeroPages = data.totalPages
+        this.filterByCedula = true
+        this.con.forEach((element: any) => {
+          element.actualizaciones = element.actualizaciones.filter((a: any) => a.isCurrent == true)
+        });
       }, (error: any) => {
         console.log(error);
       }
@@ -1707,18 +1741,18 @@ export class ConsultasComponent implements OnInit {
 
   //METODO PARA CAMBIAR EL ESTADO DE LA CONSIGNACION
   cambiarConsignacion() {
-    if(this.tipoReporte == ''){
-      if(this.validarPermiso('APLICAR')){
+    if (this.tipoReporte == '') {
+      if (this.validarPermiso('APLICAR')) {
         this.tipoReporte = 'APLICADAS'
       }
 
-      if(this.validarPermiso('COMPROBAR')){
+      if (this.validarPermiso('COMPROBAR')) {
         this.tipoReporte = 'COMPROBADAS'
       }
     }
 
     this.botonCambiarConsignacion = true
-    
+
 
     setTimeout(() => {
       this.consultarService.cambiarEstadoConsignacion(this.cambioArray, this.tipoReporte).subscribe(
@@ -1832,6 +1866,7 @@ export class ConsultasComponent implements OnInit {
     this.consultarService.filter(estado, fecha, sede, pages, sizes).subscribe(
       (data: any) => {
         this.filtrando = true
+        this.filterByCedula = false
 
         if (data.content.length == 0) {
           Swal.fire({
