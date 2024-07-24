@@ -1071,7 +1071,7 @@ export class ConsultasComponent implements OnInit {
     }
     this.consultarService.getConsignacionByCedula(this.cedula, this.pages, this.size).subscribe(
       (data: any) => {
-        if (data.length == 0) {
+        if (data == null || data.length == 0) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
