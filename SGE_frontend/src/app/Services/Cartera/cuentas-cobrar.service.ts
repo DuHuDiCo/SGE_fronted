@@ -49,7 +49,7 @@ export class CuentasCobrarService {
   filtro(page: number, size: number, fechaCreacion: string, dto: Filtros,) {
 
 
-    return this.http.post(`http://192.168.1.241:8021/api/v1/cuentas/filtrosCuentas?page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`, dto)
+    return this.http.post(`${baseUrl}/cuentas/filtrosCuentas?page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`, dto)
   }
 
   getItems(username: string) {
