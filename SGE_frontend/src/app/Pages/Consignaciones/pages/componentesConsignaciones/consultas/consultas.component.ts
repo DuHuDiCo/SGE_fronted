@@ -1029,7 +1029,7 @@ export class ConsultasComponent implements OnInit {
     this.numeroPages = 0
     setTimeout(() => {
       if (!this.filtrando) {
-        this.pages = 1
+        this.pages = 0
         this.page = 0
         this.cont = 1
       }
@@ -1052,7 +1052,7 @@ export class ConsultasComponent implements OnInit {
   //FILTRAR UNA CONSIGNACION POR CEDULA DEL CLIENTE
   getConsignacionByCedula() {
     if (this.filtrando) {
-      this.pages = 1
+      this.pages = 0
       this.filtrando = false
     }
 
@@ -1862,11 +1862,16 @@ export class ConsultasComponent implements OnInit {
   }
 
   filtrar(estado: string, fecha: any, sede: string, pages: number, sizes: number) {
+    console.log(estado);
+    console.log(fecha);
+    console.log(sede);
+    console.log(pages);
 
     this.consultarService.filter(estado, fecha, sede, pages, sizes).subscribe(
       (data: any) => {
         this.filtrando = true
         this.filterByCedula = false
+        console.log(data);
 
         if (data.content.length == 0) {
           Swal.fire({
