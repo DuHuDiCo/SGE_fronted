@@ -57,6 +57,8 @@ export class HomeCarteraComponent implements OnInit {
   mostrarCrearRevision: boolean = false
   ocultarCrearRevision: boolean = false
 
+  interesesModifides: boolean = false;
+
   totalNotiVen: any[] = []
 
   pago: any = {
@@ -2130,7 +2132,7 @@ export class HomeCarteraComponent implements OnInit {
       this.calcularIntMora()
     }
 
-    if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
+    if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico && !this.interesesModifides) {
       this.calcularHonorarios()
     }
 
@@ -2208,10 +2210,12 @@ export class HomeCarteraComponent implements OnInit {
 
   calcularHonorarios() {
     var cal = (this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+   
 
     var res = cal.toFixed(0)
     this.acuerdoCal.honoriarioAcuerdo = res
     this.acuerdo.honoriarioAcuerdo = this.acuerdoCal.honoriarioAcuerdo
+
   }
 
   calcularByTipoAcuerdo() {
@@ -2331,6 +2335,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   confirmarDatos() {
+
     if (this.isCalculate == false) {
       Swal.fire({
         icon: 'error',
@@ -2352,6 +2357,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   habilitar() {
+
     this.deshabilitarInputs = false
     this.isCalculate = false
   }
@@ -2481,11 +2487,13 @@ export class HomeCarteraComponent implements OnInit {
       //HONORARIOS
       if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
         if (this.changeHonorarios == false) {
+
           var resHonorarios = (parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+          
           this.acuerdoCal.honoriarioAcuerdo = resHonorarios.toFixed(0)
+
         }
       }
-
       if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
         this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
         this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
@@ -2500,6 +2508,8 @@ export class HomeCarteraComponent implements OnInit {
       this.col = true
     }
 
+    
+    this.interesesModifides = true
   }
 
   excluirHonorarios() {
@@ -2530,9 +2540,11 @@ export class HomeCarteraComponent implements OnInit {
         })
         return
       } else {
+        
         //HONORARIOS
         if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
           var resHonorarios = (parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+
           this.acuerdoCal.honoriarioAcuerdo = resHonorarios.toFixed(0)
         }
 
@@ -2627,9 +2639,7 @@ export class HomeCarteraComponent implements OnInit {
     var valorIntereses = this.acuerdoCal.valorInteresesMora
     var valorHonorarios = this.acuerdoCal.honoriarioAcuerdo
 
-
-
-    
+  
 
     //cuando el cliente esta al dia
     if (moraOlbigatoria == 0) {
@@ -2791,8 +2801,9 @@ export class HomeCarteraComponent implements OnInit {
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
           ) {
+      
             var capitalRestante = totalObligatoria - moraOlbigatoria
-            
+
             var cuotasReales = 0;
             if (capitalRestante > 0) {
               cuotasReales = capitalRestante / valorCuotaAnterior
@@ -2866,6 +2877,10 @@ export class HomeCarteraComponent implements OnInit {
                     if (result.isConfirmed) {
                       this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.TOTAL
                       this.acuerdo.tipoAcuerdo = TIPOACUERDO.TOTAL
+
+
+                      
+
                       this.todasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
                     }
                   })
@@ -3108,14 +3123,14 @@ export class HomeCarteraComponent implements OnInit {
     var totalCuotas = this.obtenerTotalCuotas(saldoTotal, valorCuotaMensual)
 
     var totalCuotasSinDecimal = parseInt(totalCuotas.toFixed(0))
-    
 
-    var participacionCuota = this.generarParticipacionCuotas(valorCuotaMensual, saldoTotal, moraObligatoria, valorInteres, valorHonorarios)
+
+    var participacionCuota = this.generarParticipacionCuotas(valorCuotaMensual, saldoTotal, valorTotalObligatoria, valorInteres, valorHonorarios)
 
 
 
     totalCuotas = saldoTotal / valorCuotaMensual
-    
+
 
     var saldoCapitalTotalConIntereses = saldoTotal
 
@@ -3124,7 +3139,7 @@ export class HomeCarteraComponent implements OnInit {
     var honorariosMora = valorHonorarios
 
     for (let i = 0; i < totalCuotas + 1; i++) {
-     
+
 
       if (saldoCapitalTotalConIntereses > valorCuotaMensual) {
         //crear las primeras cuotas con mora
@@ -3144,7 +3159,7 @@ export class HomeCarteraComponent implements OnInit {
       } else {
 
         if (saldoCapitalTotalConIntereses < 20000) {
-          
+
           participacionCuota.capital = capitalMora
           participacionCuota.interes = interesesMora
           participacionCuota.honorarios = honorariosMora
@@ -3154,14 +3169,14 @@ export class HomeCarteraComponent implements OnInit {
           this.cuotas[this.cuotas.length - 1].honorariosCuota = this.cuotas[this.cuotas.length - 1].honorariosCuota + participacionCuota.honorarios
 
 
-          
+
           var capitalMora = 0
           var interesesMora = 0
           var honorariosMora = 0
           saldoCapitalTotalConIntereses = 0
           break;
         } else {
-          var participacionCuota = this.generarParticipacionCuotas(saldoCapitalTotalConIntereses, saldoTotal, moraObligatoria, valorInteres, valorHonorarios)
+          var participacionCuota = this.generarParticipacionCuotas(saldoCapitalTotalConIntereses, saldoTotal, valorTotalObligatoria, valorInteres, valorHonorarios)
 
 
           this.generarCuota(i + 1, saldoCapitalTotalConIntereses, participacionCuota.capital, participacionCuota.interes, participacionCuota.honorarios)
