@@ -295,8 +295,8 @@ export class HomeCarteraComponent implements OnInit {
   reporte: any = {
     numeroObligacion: "",
     numeroAlterno: "",
-    cedula: "",
-    cedulaArchivo: "",
+    cedula: null,
+    cedulaArchivo: null,
     username: ""
   }
 
