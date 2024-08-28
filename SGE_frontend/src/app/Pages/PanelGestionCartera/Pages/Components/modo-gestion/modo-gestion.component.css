@@ -2,6 +2,11 @@
     margin: 10px;
 }
 
+.color-red {
+    background-color: #960010;
+    color: white;
+}
+
 .btn-option {
     background-color: #939090;
     color: white;
@@ -53,6 +58,25 @@
 .input-info {
     font-size: 12px
 }
+
+.compact-table th,
+.compact-table td {
+    padding: 0.25rem;
+    font-size: 0.75rem;
+}
+
+.compact-table th {
+    font-weight: bold;
+}
+
+.card-body {
+    padding: 0.5rem;
+}
+
+.h6-compact {
+    margin-bottom: 0.25rem;
+}
+
 
 /* LINEA DE TIEMPO */
 .timeline {

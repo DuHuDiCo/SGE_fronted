@@ -12,6 +12,7 @@ export class ModoGestionComponent implements OnInit {
   responsableSelect: string = 'Yeimar Fernando Sánchez'
   datoConfirmObj: any = {}
 
+  // ARRAYS
   responsables: any[] = [
     {
       tipoGarante: 'Titular',
@@ -27,6 +28,7 @@ export class ModoGestionComponent implements OnInit {
     }
   ]
   datosConfirmArray: any[] = []
+  arrayCard: string[] = []
 
   constructor(private panelCarteraService: PanelCarteraService) {
     this.panelCarteraService.datosConfirmArray.subscribe(array => {
@@ -38,6 +40,15 @@ export class ModoGestionComponent implements OnInit {
     $(document).ready(function () {
       $('[data-toggle="tooltip"]').tooltip();
     });
+  }
+
+  openCards(name: string) {
+    if (!this.arrayCard.includes(name)) {
+      this.arrayCard.push(name)
+    } else {
+      var posCard = this.arrayCard.findIndex((ar: string) => ar == name)
+      this.arrayCard.splice(posCard, 1)
+    }
   }
 
   cambiarResponsable(nombre: string) {

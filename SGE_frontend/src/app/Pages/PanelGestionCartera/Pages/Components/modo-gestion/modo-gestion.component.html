@@ -3,8 +3,11 @@
     <!-- OPCIONES CARDS -->
     <div class="row">
         <div class="col-md-12">
-            <button class="btn btn-sm btn-option me-2">Pagos</button>
-            <button class="btn btn-sm btn-option">Consignaciones</button>
+            <button [ngClass]="{ 'color-red': arrayCard.includes('Pagos'), 'btn-option': !arrayCard.includes('Pagos')}"
+                class="btn btn-sm me-2" (click)="openCards('Pagos')">Pagos</button>
+            <button
+                [ngClass]="{ 'color-red': arrayCard.includes('Consignaciones'), 'btn-option': !arrayCard.includes('Consignaciones')}"
+                class="btn btn-sm btn-option color-red" (click)="openCards('Consignaciones')">Consignaciones</button>
         </div>
     </div>
 
@@ -247,7 +250,9 @@
         </div>
 
         <!-- LADO DERECHO -->
+
         <div class="col-md-8">
+            <!-- MORA -->
             <div class="row mb-3">
                 <div class="col-md-12">
                     <div class="card card-info">
@@ -359,7 +364,8 @@
                 </div>
             </div>
 
-            <div class="row">
+            <!-- ULTIMA CLASIFICACIÓN -->
+            <div class="row mb-3">
                 <div class="col-md-12">
                     <div class="card card-info">
                         <div class="card-body">
@@ -401,6 +407,52 @@
                     </div>
                 </div>
             </div>
+
+            <!-- CONSIGNACIONES -->
+            <div class="row" *ngIf="arrayCard.includes('Consignaciones')">
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-body p-2">
+                            <h6 class="text-red mb-1">Consignaciones</h6>
+
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered text-center compact-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Número Recibo</th>
+                                            <th scope="col">Documento</th>
+                                            <th scope="col">Nombre Cliente</th>
+                                            <th scope="col">Fecha Pago</th>
+                                            <th scope="col">Fecha Creacion</th>
+                                            <th scope="col">Valor</th>
+                                            <th scope="col">Estado</th>
+                                            <th scope="col">Sede</th>
+                                            <th scope="col">Banco</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>111111</td>
+                                            <td>11111</td>
+                                            <td>Duvan Diaz</td>
+                                            <td>2024-02-02</td>
+                                            <td>2024-02-04</td>
+                                            <td>$ 200000</td>
+                                            <td>Comprobado</td>
+                                            <td>Andes</td>
+                                            <td>Bancolombia - Tranferencia</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
 
