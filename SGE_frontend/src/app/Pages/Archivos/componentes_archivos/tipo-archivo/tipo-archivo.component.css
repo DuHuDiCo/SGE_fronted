@@ -1,28 +1,12 @@
-.container-b{
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    margin: 40px auto;
-    margin-top: 70px;
-    border-radius: 40px;
+.card-create {
     background: #dfe2e5;
-    box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
 }
 
-.container-t{
-    text-align: center;
-    background: rgb(255, 255, 255);
-    color: #000;
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 35px 60px 0 rgba(0, 0, 0, 0.3);
-}
-
-.imagen-portada{
+.imagen-portada {
     max-height: 410px;
     border-radius: 5px 5px 0 0;
 }
+
 .imagen-portada img {
     display: block;
     object-fit: cover;
@@ -32,15 +16,7 @@
     border-radius: 30%;
 }
 
-.titulo{
-    text-align: center;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    padding-top: 30px;
-}
-
-.subtitulo{
+.subtitulo {
     text-align: center;
     font-size: 16px;
     font-weight: 700;
@@ -48,11 +24,12 @@
     letter-spacing: 3px;
 }
 
-.campos{
+.campos {
     margin-top: 55px;
 }
 
-.usuario,.file{
+.usuario,
+.file {
     border-radius: 25px;
     text-align: center;
     width: 100%;
@@ -61,7 +38,7 @@
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 
-.input-usuario{
+.input-usuario {
     border: none;
     align-items: center;
     text-align: center;
@@ -72,7 +49,7 @@
     border-bottom: 10px;
 }
 
-.file{
+.file {
     border-radius: 25px;
     text-align: center;
     width: 90%;
@@ -80,7 +57,7 @@
     background: #ecf0f3;
 }
 
-.form-select{
+.form-select {
     border-radius: 25px;
     text-align: center;
     margin: 15px auto;
@@ -88,41 +65,11 @@
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 
-.boton{
-    display: block;
-    object-fit: cover;
-    margin: 15px auto;
-    margin-top: 25px;
-    overflow: hidden;
-    padding: 10px;
+.btn-save {
     color: #fff;
     background: #9C1717;
-    cursor: pointer;
-    width: 20%;
-    outline: none;
-    border: #cbced1;
-    border-radius: 18px;
-    height: 50px;
-    margin-bottom: 30px;
-    box-shadow: 2px 2px 2px #707274, -2px 0px 2px 0px #707274;
 }
 
-.boton:hover{
-    background: #D60303 ;
-}
-
-@media (min-width: 1200px){
-.container, .container-lg, .container-md, .container-sm, .container-xl {
-    max-width: 1000px;
-    }
-}
-
-/* Media query for mobile-sized screens */
-@media (max-width: 576px) {
-    .container {
-        width: 400px;
-    }
-    .boton {
-        width: auto;
-    }
+.btn-save:hover {
+    background: #D60303;
 }

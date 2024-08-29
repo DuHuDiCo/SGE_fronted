@@ -1,59 +1,58 @@
-<div class="container">
-    <div class="container-b">
-        <h5 class="titulo mb-3">Crear Tipos de Archivo</h5>
-        <h5 class="mt-4 mb-4">En esta sección podrá Crear los diferentes tipos de archivos para Guardar</h5>
+<div class="container-fluid">
+    <div class="row mt-2">
+        <div class="col-md-4 mb-3">
+            <div class="card card-create">
+                <div class="card-body">
+                    <h5 class="fw-bold text-center mb-3">Crear Tipos de Archivo</h5>
 
-        <div class="row text-center">
-            <div class="col-md-12">
-                <div class="usuario mt-4">
-                    <input [(ngModel)]="tipoArchivo.tipoArchivo" name="tipoArchivo" type="text" class="input-usuario"
-                        placeholder="Nombre Tipo Archivo">
+                    <div class="usuario mt-4">
+                        <input [(ngModel)]="tipoArchivo.tipoArchivo" name="tipoArchivo" type="text"
+                            class="input-usuario" placeholder="Nombre Tipo Archivo">
+                    </div>
+                </div>
+                <div class="row text-center mb-3">
+                    <div class="col-md-12">
+                        <button (click)="saveTipoArchivo()" class="btn btn-save">Guardar</button>
+                    </div>
                 </div>
             </div>
-            <button *ngIf="!botonGuardarTipo" (click)="saveTipoArchivo()" class="boton">Guardar</button>
-            <button *ngIf="botonGuardarTipo" type="button" class="boton mb-4"
-                style="background-color: #960010;border-color: #960010;">
-                Guardando...
-                <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-            </button>
+        </div>
+        <div class="col-md-8">
+            <div class="card card-create">
+                <div class="card-body">
+                    <h5 class="fw-bold text-center">Tipos de Archivos</h5>
+                    <div class="table-responsive">
+                        <table class="table table-borderless text-center mt-3 mb-5">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nombre</th>
+                                    <th *appArchivos="permisos[1]" scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let t of tiposArchivos;let i = index">
+                                    <th>{{ i + 1 }}</th>
+                                    <td>{{ t.tipoArchivo }}</td>
+                                    <td *appArchivos="permisos[1]">
+                                        <button *appArchivos="permisos[1]" (click)="getById(t.idTipoArchivo)"
+                                            data-bs-toggle="modal" data-bs-target="#modalEditar"
+                                            class="btn btn-sm btn-primary me-2"><i
+                                                class="fa-solid fa-pen-to-square"></i></button>
+
+                                        <span *appRolesPerfiles="rolesArray[6]">
+                                            <button (click)="deleteTipoArchivo(t.idTipoArchivo)"
+                                                class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-<div class="container">
-    <div class="container-t">
-        <h5 class="titulo">Tipos de Archivos</h5>
-        <table class="table table-responsive table-bordered mt-3 mb-5">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nombre</th>
-                    <th *appArchivos="permisos[1]" scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let t of tiposArchivos;let i = index">
-                    <th>{{ i + 1 }}</th>
-                    <td>{{ t.tipoArchivo }}</td>
-                    <td *appArchivos="permisos[1]">
-                        <button *appArchivos="permisos[1]" (click)="getById(t.idTipoArchivo)" data-bs-toggle="modal" data-bs-target="#modalEditar"
-                            class="btn btn-sm btn-primary me-2"><i class="fa-solid fa-pen-to-square"></i></button>
-
-                        <span *appRolesPerfiles="rolesArray[6]">
-                            <button *ngIf="!botonEliminar" (click)="deleteTipoArchivo(t.idTipoArchivo)"
-                            class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
-                        <button *ngIf="botonEliminar" type="button" class="btn btn-sm btn-danger"
-                            style="background-color: #960010;border-color: #960010;">
-                            <span class="spinner-border spinner-border-sm float-right" role="status"
-                                aria-hidden="true"></span>
-                        </button>
-                        </span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <br>
 </div>
 
 <!-- Modal Editar -->
@@ -71,19 +70,14 @@
                             <input [(ngModel)]="modal.tipoArchivo" name="tipoArchivo" type="text" class="input-usuario"
                                 placeholder="Nombre">
                         </div>
-                    </div>    
+                    </div>
                 </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button *ngIf="!botonEditar" (click)="update()" type="button" class="btn btn-primary"
-                        style="background-color: #960010; border-color: #960010;">Actualizar</button>
-                    <button *ngIf="botonEditar" type="button" class="btn btn-danger"
-                        style="background-color: #960010;border-color: #960010;">
-                        <span class="spinner-border spinner-border-sm float-right" role="status"
-                            aria-hidden="true"></span>
-                    </button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button (click)="update()" type="button" class="btn btn-primary"
+                    style="background-color: #960010; border-color: #960010;">Actualizar</button>
             </div>
         </div>
     </div>
+</div>
