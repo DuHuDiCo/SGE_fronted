@@ -1,18 +1,16 @@
-.container-t{
-    text-align: center;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    margin-top: 70px;
-    border-radius: 40px;
+.card-custom {
     background: #dfe2e5;
-    box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
 }
 
-.imagen-portada{
+.imagen-portada {
     max-height: 410px;
     border-radius: 5px 5px 0 0;
 }
+
+.text-red {
+    color: #9C1717;
+}
+
 .imagen-portada img {
     display: block;
     object-fit: cover;
@@ -22,27 +20,12 @@
     border-radius: 30%;
 }
 
-.titulo{
-    text-align: center;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    padding-top: 30px;
-}
-
-.subtitulo{
-    text-align: center;
-    font-size: 16px;
-    font-weight: 700;
-    margin-top: 7px;
-    letter-spacing: 3px;
-}
-
-.campos{
+.campos {
     margin-top: 55px;
 }
 
-.usuario,.file{
+.usuario,
+.file {
     border-radius: 25px;
     text-align: center;
     width: 100%;
@@ -57,14 +40,14 @@
     outline: none;
     background: none;
     font-size: 15px;
-    margin: 13px auto; /* Cambia "10px" a "auto" para centrar horizontalmente */
+    margin: 13px auto;
     border-bottom: 10px;
-    max-width: 300px; /* Establece un ancho máximo para hacerlo más pequeño */
-    width: 100%; /* Asegúrate de que el ancho sea del 100% */
+    max-width: 300px;
+    width: 100%;
 }
 
 
-.file{
+.file {
     border-radius: 25px;
     text-align: center;
     width: 90%;
@@ -72,7 +55,7 @@
     background: #ecf0f3;
 }
 
-.form-select{
+.form-select {
     border-radius: 25px;
     text-align: center;
     margin: 15px auto;
@@ -80,7 +63,13 @@
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 
-.boton{
+.btn-consultar {
+    color: #fff;
+    background: #9C1717;
+    transition: all 0.2s;
+}
+
+.boton {
     display: block;
     object-fit: cover;
     margin: 15px auto;
@@ -97,21 +86,9 @@
     height: 50px;
     margin-bottom: 30px;
     box-shadow: 2px 2px 2px #707274, -2px 0px 2px 0px #707274;
+    transition: all 0.2s;
 }
 
-.boton:hover{
-    background: #D60303 ;
-}
-
-@media (min-width: 1200px){
-.container, .container-lg, .container-md, .container-sm, .container-xl {
-    max-width: 1000px;
-    }
-}
-
-/* Media query for mobile-sized screens */
-@media (max-width: 576px) {
-    .container {
-        width: 400px;
-    }
+.boton:hover {
+    background: #D60303;
 }

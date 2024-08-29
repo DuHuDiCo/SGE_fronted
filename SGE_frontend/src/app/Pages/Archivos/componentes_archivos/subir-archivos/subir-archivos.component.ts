@@ -24,7 +24,7 @@ export class SubirArchivosComponent implements OnInit {
   botonAutorizacion: boolean = false
   datosPersonales: boolean = false
   botonCedulaCliente: boolean = false
-  botonCedulaCodeudor:boolean = false
+  botonCedulaCodeudor: boolean = false
   botonPagare: boolean = false
   botonGuardar: boolean = false
   cedula: string = ''
@@ -34,7 +34,7 @@ export class SubirArchivosComponent implements OnInit {
   display: string = 'none'
 
   obligacion: Obligacion[] = []
-  nombresArchivos:string[] = []
+  nombresArchivos: string[] = []
   numeroObligacion: string = ''
 
   archivo: Archivo = {
@@ -49,10 +49,10 @@ export class SubirArchivosComponent implements OnInit {
     nombreArchivo: ''
   }
 
-  tiposArchivos:TipoArchivo[] = []
+  tiposArchivos: TipoArchivo[] = []
 
 
-  constructor(private ingresarService: IngresarService,private subirService:SubirArchivoService , private authService: AuthenticationService, private tipoArchivoService:TipoArchivoService, private router:Router, private sanitizer: DomSanitizer) { }
+  constructor(private ingresarService: IngresarService, private subirService: SubirArchivoService, private authService: AuthenticationService, private tipoArchivoService: TipoArchivoService, private router: Router, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.getAllTipoArchivo()
@@ -81,7 +81,7 @@ export class SubirArchivosComponent implements OnInit {
           timer: 2500
         })
         break;
-        case 'CREDITO':
+      case 'CREDITO':
         if (this.archivo.base64.length == 0) {
           Swal.fire('Error', 'Seleccione El Crédito Correspondiente', 'error')
           return
@@ -98,72 +98,72 @@ export class SubirArchivosComponent implements OnInit {
         }
         break;
       case 'FACTURA':
-          this.botonFactura = false
-          this.botonAutorizacion = true
-          this.width = this.width + Math.round(100 / this.tiposArchivos.length)
-          Swal.fire({
-            icon: 'info',
-            title: 'Paso #3 Completado',
-            text: 'Seleccione el Archivo Correspondiente',
-            timer: 2500
-          })
+        this.botonFactura = false
+        this.botonAutorizacion = true
+        this.width = this.width + Math.round(100 / this.tiposArchivos.length)
+        Swal.fire({
+          icon: 'info',
+          title: 'Paso #3 Completado',
+          text: 'Seleccione el Archivo Correspondiente',
+          timer: 2500
+        })
         break;
-      
+
       case 'AUTORIZACION':
-          this.botonAutorizacion = false
-          this.datosPersonales = true
-          this.width = this.width + Math.round(100 / this.tiposArchivos.length)
-          Swal.fire({
-            icon: 'info',
-            title: 'Paso #4 Completado',
-            text: 'Seleccione el Archivo Correspondiente',
-            timer: 2500
-          })
+        this.botonAutorizacion = false
+        this.datosPersonales = true
+        this.width = this.width + Math.round(100 / this.tiposArchivos.length)
+        Swal.fire({
+          icon: 'info',
+          title: 'Paso #4 Completado',
+          text: 'Seleccione el Archivo Correspondiente',
+          timer: 2500
+        })
         break;
       case 'DATOSPERSONALES':
-          this.datosPersonales = false
-          this.botonCedulaCliente = true
-          this.width = this.width + Math.round(100 / this.tiposArchivos.length)
-          Swal.fire({
-            icon: 'info',
-            title: 'Paso #5 Completado',
-            text: 'Seleccione el Archivo Correspondiente',
-            timer: 2500
-          })
+        this.datosPersonales = false
+        this.botonCedulaCliente = true
+        this.width = this.width + Math.round(100 / this.tiposArchivos.length)
+        Swal.fire({
+          icon: 'info',
+          title: 'Paso #5 Completado',
+          text: 'Seleccione el Archivo Correspondiente',
+          timer: 2500
+        })
         break;
       case 'CEDULACLIENTE':
-          this.botonCedulaCliente = false
-          this.botonCedulaCodeudor = true
-          this.width = this.width + Math.round(100 / this.tiposArchivos.length)
-          Swal.fire({
-            icon: 'info',
-            title: 'Paso #6 Completado',
-            text: 'Seleccione el Archivo Correspondiente',
-            timer: 2500
-          })
+        this.botonCedulaCliente = false
+        this.botonCedulaCodeudor = true
+        this.width = this.width + Math.round(100 / this.tiposArchivos.length)
+        Swal.fire({
+          icon: 'info',
+          title: 'Paso #6 Completado',
+          text: 'Seleccione el Archivo Correspondiente',
+          timer: 2500
+        })
         break;
-        case 'CEDULACODEUDOR':
-          this.botonCedulaCodeudor = false
-          this.botonPagare = true
-          this.width = this.width + Math.round(100 / this.tiposArchivos.length)
-          Swal.fire({
-            icon: 'info',
-            title: 'Paso #7 Completado',
-            text: 'Seleccione el Archivo Correspondiente',
-            timer: 2500
-          })
+      case 'CEDULACODEUDOR':
+        this.botonCedulaCodeudor = false
+        this.botonPagare = true
+        this.width = this.width + Math.round(100 / this.tiposArchivos.length)
+        Swal.fire({
+          icon: 'info',
+          title: 'Paso #7 Completado',
+          text: 'Seleccione el Archivo Correspondiente',
+          timer: 2500
+        })
         break;
       case 'PAGARE':
-          this.botonPagare = false
-          this.botonGuardar = true
-          this.width = this.width + Math.round(100 / this.tiposArchivos.length)
-          this.display = 'none'
-          Swal.fire({
-            icon: 'success',
-            title: 'Paso #8 Completado',
-            text: 'El Registro se Ha Completado',
-            timer: 2500
-          })
+        this.botonPagare = false
+        this.botonGuardar = true
+        this.width = this.width + Math.round(100 / this.tiposArchivos.length)
+        this.display = 'none'
+        Swal.fire({
+          icon: 'success',
+          title: 'Paso #8 Completado',
+          text: 'El Registro se Ha Completado',
+          timer: 2500
+        })
         break;
     }
   }
@@ -203,11 +203,11 @@ export class SubirArchivosComponent implements OnInit {
     )
   }
 
-  getAllTipoArchivo(){
+  getAllTipoArchivo() {
     this.tipoArchivoService.getAll().subscribe(
-      (data:any) => {
+      (data: any) => {
         this.tiposArchivos = data
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
@@ -215,7 +215,7 @@ export class SubirArchivosComponent implements OnInit {
 
   numeroO(obligacion: string, accion: string) {
     this.archivo.numeroObligacion = obligacion
-    
+
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
@@ -226,17 +226,17 @@ export class SubirArchivosComponent implements OnInit {
     this.isEmpty(obligacion, accion)
   }
 
-  public obtenerFile(event: any, tipoArchivo:TipoArchivo) {
+  obtenerFile(event: any, tipoArchivo: TipoArchivo) {
     var archivo = event.target.files[0];
-    
+
     if (archivo.size > 1048576) {
       Swal.fire('Error', 'El Archivo Es Demasiado Pesado', 'error')
       this.base64.base46 = ''
       return
     }
 
-    this.archivo.base64.forEach((element:any, index:number) => {
-      if(element.tipoArchivo == tipoArchivo){
+    this.archivo.base64.forEach((element: any, index: number) => {
+      if (element.tipoArchivo == tipoArchivo) {
         this.archivo.base64.splice(index, 1)
         this.nombresArchivos.splice(index, 1)
       }
@@ -257,7 +257,7 @@ export class SubirArchivosComponent implements OnInit {
     })
   }
 
-  public extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
+  extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
     try {
       const unsafeImg = window.URL.createObjectURL($event);
       const image = this.sanitizer.bypassSecurityTrustUrl(unsafeImg);
@@ -279,16 +279,16 @@ export class SubirArchivosComponent implements OnInit {
     }
   })
 
-  save(){
+  save() {
     this.subirService.save(this.archivo).subscribe(
-      (data:any) => {
+      (data: any) => {
         Swal.fire({
           icon: 'success',
           title: 'Datos Guardados',
           text: 'Archivos Guardados Exitosamente',
           timer: 2500
         })
-      }, (error:any) => {
+      }, (error: any) => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -300,10 +300,10 @@ export class SubirArchivosComponent implements OnInit {
     )
   }
 
-  isEmpty(obligacion:string, accion:string){
+  isEmpty(obligacion: string, accion: string) {
     this.subirService.isEmpty(obligacion).subscribe(
-      (data:any) => {
-        if(data){
+      (data: any) => {
+        if (data) {
           this.cambiarInputs(accion)
         } else {
           Swal.fire('Error', 'Esta Obligacion Ya Contiene Archivos, Puede Subirlos A continuación', 'error')
@@ -311,7 +311,7 @@ export class SubirArchivosComponent implements OnInit {
             this.router.navigate(['/dashboard-archivos/buscar-archivos'])
           }, 3000);
         }
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )

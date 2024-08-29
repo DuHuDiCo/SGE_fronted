@@ -16,24 +16,24 @@ import Swal from 'sweetalert2';
 })
 export class BuscarArchivosComponent implements OnInit {
 
-  cedula:string = ''
-  url:string = ''
-  dataUri:string = 'data:image/jpg;base64'
-  base64Pdf:string = ''
-  cards:boolean = false
-  tabla:boolean = false
-  filtro:boolean = false
-  tipoArc:number = 0
-  numeroArc:number = 0
+  cedula: string = ''
+  url: string = ''
+  dataUri: string = 'data:image/jpg;base64'
+  base64Pdf: string = ''
+  cards: boolean = false
+  tabla: boolean = false
+  filtro: boolean = false
+  tipoArc: number = 0
+  numeroArc: number = 0
 
   obligacion: any[] = []
-  archivos:any[] = []
-  datos:any[] = []
-  tiposArchivos:TipoArchivo[] = []
+  archivos: any[] = []
+  datos: any[] = []
+  tiposArchivos: TipoArchivo[] = []
   rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
   permisos: string[] = ['ELIMINAR ARCHIVOS', 'EDITAR ARCHIVOS', 'SUBIR UN ARCHIVO', 'SUBIR ARCHIVOS', 'CREAR TIPOS ARCHIVO', 'EDITAR TIPOS ARCHIVO']
 
-  modal:EditarArchivo = {
+  modal: EditarArchivo = {
     idArchivo: 0,
     base64: '',
     username: '',
@@ -41,7 +41,7 @@ export class BuscarArchivosComponent implements OnInit {
     nombreOriginal: ''
   }
 
-  subirArchivo:Archivo = {
+  subirArchivo: Archivo = {
     numeroObligacion: '',
     base64: [],
     username: ''
@@ -52,7 +52,7 @@ export class BuscarArchivosComponent implements OnInit {
     tipoArchivo: '',
     nombreArchivo: ''
   }
-  constructor(private buscarService:SubirArchivoService, private router:Router, private subirService:SubirArchivoService, private authService:AuthenticationService, private tipoArchivoService:TipoArchivoService, private sanitizer: DomSanitizer) { }
+  constructor(private buscarService: SubirArchivoService, private router: Router, private subirService: SubirArchivoService, private authService: AuthenticationService, private tipoArchivoService: TipoArchivoService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.getAllTipo()
@@ -61,8 +61,8 @@ export class BuscarArchivosComponent implements OnInit {
   @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
 
   //BUSCAR POR CÉDULA
-  filter(){
-    if(this.cedula.trim() == '' || this.cedula.trim() == null){
+  filter() {
+    if (this.cedula.trim() == '' || this.cedula.trim() == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -72,41 +72,40 @@ export class BuscarArchivosComponent implements OnInit {
       return
     }
     this.filtro = true
-    setTimeout(() => {
-      this.buscarService.filter(this.cedula).subscribe(
-        (data:any) => {
-          this.datos = data
-          data.forEach((element:any) => {
-            this.obligacion.push(element.cuentaPorCobrar)
-            this.numeroArc = element.archivos.length
-          });
-          this.tabla = true
-          this.filtro = false
-          this.cedula = ''
-            Swal.fire({
-              icon: 'info',
-              title: 'Estas Son Las Obligaciones Encontradas',
-              text: 'Elija Una Obligación',
-              timer: 2500
-            })
-        }, (error:any) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Error Al Buscar Los Archivos',
-            timer: 2500
-          })
-          this.filtro = false
-          console.log(error);
-        }
-      )
-    }, 2000);
+    this.obligacion = []
+    this.buscarService.filter(this.cedula).subscribe(
+      (data: any) => {
+        this.datos = data
+        data.forEach((element: any) => {
+          this.obligacion.push(element.cuentaPorCobrar)
+          this.numeroArc = element.archivos.length
+        });
+        this.tabla = true
+        this.filtro = false
+        this.cedula = ''
+        Swal.fire({
+          icon: 'info',
+          title: 'Estas Son Las Obligaciones Encontradas',
+          text: 'Elija Una Obligación',
+          timer: 2500
+        })
+      }, (error: any) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error Al Buscar Los Archivos',
+          timer: 2500
+        })
+        this.filtro = false
+        console.log(error);
+      }
+    )
   }
 
-  isEmpty(obligacion:string){
+  isEmpty(obligacion: string) {
     this.subirService.isEmpty(obligacion).subscribe(
-      (data:any) => {
-        if(data){
+      (data: any) => {
+        if (data) {
           Swal.fire('Error', 'Esta Obligacion No Contiene Archivos, Puede Subirlos A continuación', 'error')
           setTimeout(() => {
             this.router.navigate(['/dashboard-archivos/subir-archivos'])
@@ -121,33 +120,33 @@ export class BuscarArchivosComponent implements OnInit {
           this.cards = true
           this.tabla = false
         }
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  getAllTipo(){
+  getAllTipo() {
     this.tipoArchivoService.getAll().subscribe(
-      (data:any) => {
+      (data: any) => {
         this.tiposArchivos = data
         this.tipoArc = data.length
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  saveOne(){
-    
+  saveOne() {
+
     this.buscarService.saveOne(this.subirArchivo).subscribe(
-      (data:any) => {
+      (data: any) => {
         Swal.fire('Datos Guardados', 'Archivo Guardado Con éxito', 'success')
         setTimeout(() => {
           window.location.reload()
         }, 2000);
-        
-      }, (error:any) => {
+
+      }, (error: any) => {
         Swal.fire('Error', 'Erro al Guardar El Archivo', 'error')
         console.log(error);
       }
@@ -155,7 +154,7 @@ export class BuscarArchivosComponent implements OnInit {
   }
 
   //LLENAR LAS CARDS
-  llenarCards(position:number, obligacion:string){
+  llenarCards(position: number, obligacion: string) {
 
     this.subirArchivo.numeroObligacion = obligacion
     var user = this.authService.getUsername()
@@ -168,9 +167,9 @@ export class BuscarArchivosComponent implements OnInit {
     this.isEmpty(obligacion)
 
     this.archivos = this.datos[position].archivos
-    this.archivos.forEach((element:any, index:number) => {
-      var tipo = this.tiposArchivos.find((t:any) => t.tipoArchivo == element.tipoArchivo.tipoArchivo)
-      if(tipo != null || tipo != undefined){
+    this.archivos.forEach((element: any, index: number) => {
+      var tipo = this.tiposArchivos.find((t: any) => t.tipoArchivo == element.tipoArchivo.tipoArchivo)
+      if (tipo != null || tipo != undefined) {
         var position = this.tiposArchivos.indexOf(tipo)
         this.tiposArchivos.splice(position, 1)
       }
@@ -178,15 +177,15 @@ export class BuscarArchivosComponent implements OnInit {
   }
 
   //LLENAR LOS MODALES CON SU PDF
-  pdf(base64:string){
+  pdf(base64: string) {
     const embed = this.pdfEmbed.nativeElement;
     embed.src = base64;
   }
 
   //ABRIR EL MODAL PARA EDITAR
-  abrirModal(id:number){
-    var archivo = this.archivos.find((a:any) => a.idArchivo == id)
-    if(archivo != null || archivo != undefined){
+  abrirModal(id: number) {
+    var archivo = this.archivos.find((a: any) => a.idArchivo == id)
+    if (archivo != null || archivo != undefined) {
       this.modal.idArchivo = archivo.idArchivo
       this.modal.nombreOriginal = archivo.nombreOriginal
       this.modal.tipoArchivo = archivo.tipoArchivo.tipoArchivo
@@ -194,29 +193,29 @@ export class BuscarArchivosComponent implements OnInit {
   }
 
   //EDITAR UN ARCHIVO
-  editar(){
+  editar() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
       return
     }
     this.modal.username = user
-    
+
     this.buscarService.update(this.modal).subscribe(
-        (data:any) => {
-          Swal.fire('Datos Guardados', 'Archivo Actualizado Con éxito', 'success')
-          setTimeout(() => {
-            window.location.reload()
-          }, 2000);
-        }, (error:any) => {
-          Swal.fire('Error', 'Erro al Actualizar El Archivo', 'error')
-          console.log(error);
-        }
-      )
+      (data: any) => {
+        Swal.fire('Datos Guardados', 'Archivo Actualizado Con éxito', 'success')
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000);
+      }, (error: any) => {
+        Swal.fire('Error', 'Erro al Actualizar El Archivo', 'error')
+        console.log(error);
+      }
+    )
   }
 
   //ELIMINAR UN ARCHIVO
-  eliminar(id:number){
+  eliminar(id: number) {
     Swal.fire({
       title: 'Eliminar El Archivo',
       text: '¿Estas seguro de Este Archivo?',
@@ -227,24 +226,24 @@ export class BuscarArchivosComponent implements OnInit {
       confirmButtonText: 'Eliminar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
-        if (result.isConfirmed) {
-          setTimeout(() => {
-            this.buscarService.delete(id).subscribe(
-              (data: any) => {
-                this.archivos = this.archivos.filter((archivos:any) => archivos.idArchivo != id);
-                Swal.fire('Archivo Eliminado', 'El Archivo ha sido Eliminado Exitosamente', 'success')
-                setTimeout(() => {
-                  window.location.reload()
-                }, 2000);
-              },
-              (error:any) => {
-                Swal.fire('Error', 'Error al Eliminar El Archivo', 'error')
-                console.log(error);
-              }
-            )
-          }, 2000);
-        }
-    })    
+      if (result.isConfirmed) {
+        setTimeout(() => {
+          this.buscarService.delete(id).subscribe(
+            (data: any) => {
+              this.archivos = this.archivos.filter((archivos: any) => archivos.idArchivo != id);
+              Swal.fire('Archivo Eliminado', 'El Archivo ha sido Eliminado Exitosamente', 'success')
+              setTimeout(() => {
+                window.location.reload()
+              }, 2000);
+            },
+            (error: any) => {
+              Swal.fire('Error', 'Error al Eliminar El Archivo', 'error')
+              console.log(error);
+            }
+          )
+        }, 2000);
+      }
+    })
   }
 
   //METODOS PARA CONVERTIR EN BASE64
