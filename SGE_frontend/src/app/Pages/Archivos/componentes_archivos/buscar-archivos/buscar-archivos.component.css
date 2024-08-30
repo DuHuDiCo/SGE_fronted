@@ -62,11 +62,15 @@
 .custom-card {
     position: relative;
     border: none;
-    transition: transform 0.3s ease;
+    transition: transform 0.5s ease;
     cursor: pointer;
     background-color: #f2f6fc;
     color: black;
     border: 1px solid #d8d9dc;
+}
+
+.border-none {
+    border: none;
 }
 
 .custom-card .card-image {
@@ -77,14 +81,6 @@
     margin-top: 8px;
     background-color: white;
     background-position: center;
-}
-
-.footer {
-    display: none;
-    margin-top: -26px;
-    text-align: center;
-    border: 1px solid #d8d9dc;
-    border-top: none;
 }
 
 .c:hover .footer {

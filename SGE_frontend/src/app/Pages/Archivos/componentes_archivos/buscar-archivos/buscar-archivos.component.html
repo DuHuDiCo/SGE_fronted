@@ -59,36 +59,40 @@
 
 <div *ngIf="cards" class="container">
   <div class="row">
-    <div (click)="pdf(a.dataUir + ',' + a.ruta)" *ngFor="let a of archivos; let i = index" class="col-md-4 c">
-      <div class="custom-card text-center mb-3" data-bs-toggle="modal" data-bs-target="#modalImagen">
+    <div *ngFor="let a of archivos; let i = index" class="col-md-4 c">
+      <div class="custom-card text-center mb-3">
         <div class="fw-bold" style="margin-top: 15px;">{{ a.nombreOriginal }}</div>
-        <div class="card-image" [style.background-image]="'url(' + dataUri + ',' + a.rutaMiniatura + ')'"></div>
+        <div class="card-image" [style.background-image]="'url(' + dataUri + ',' + a.rutaMiniatura + ')'"
+          (click)="pdf(a.dataUir + ',' + a.ruta)" data-bs-toggle="modal" data-bs-target="#modalImagen"></div>
         <div class="card-body">
           <p class="card-text fw-bold">{{ a.tipoArchivo.tipoArchivo }}</p>
           <p class="card-text">{{ obligacion[obligacion.length-1].cliente.nombres }} {{
             obligacion[obligacion.length-1].cliente.apellidos }}</p>
           <p class="card-text">{{ obligacion[obligacion.length-1].numeroObligacion }}</p>
-        </div>
-      </div>
-      <div *appRolesPerfiles="rolesArray[2].toUpperCase()" class="footer mb-3">
-        <div class="button-container mb-3">
-          <button *appArchivos="permisos[0]" (click)="abrirModal(a.idArchivo)" class="btn btn-primary me-2 mt-3"
-            data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen-to-square"></i></button>
-          <button *appRolesPerfiles="rolesArray[6]" (click)="eliminar(a.idArchivo)" class="btn btn-danger mt-3"
-            style="background-color: #960010; border-color: #960010;"><i class="fa-solid fa-trash"></i></button>
-        </div>
-      </div>
-    </div>
-    <div *appArchivos="permisos[2]" class="card" style="width: 19.1rem;">
-      <div class="card-body custom-body">
-        <div class="row text-center align-middle">
-          <div class="col-md-12">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSubir"><i
-                class="fa-solid fa-plus"></i></button>
+
+          <div *appRolesPerfiles="rolesArray[2].toUpperCase()" class="mb-3">
+            <button *appArchivos="permisos[0]" (click)="abrirModal(a.idArchivo)" class="btn btn-primary me-2 mt-3"
+              data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button *appRolesPerfiles="rolesArray[6]" (click)="eliminar(a.idArchivo)" class="btn btn-danger mt-3"
+              style="background-color: #960010; border-color: #960010;"><i class="fa-solid fa-trash"></i></button>
           </div>
         </div>
       </div>
     </div>
+    <div class="col-md-4">
+      <div *appArchivos="permisos[2]" class="custom-card border-none h-100 text-center d-flex align-items-center">
+        <div class="card-body custom-body">
+          <div class="row text-center align-middle h-100">
+            <div class="col-md-12">
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSubir">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 

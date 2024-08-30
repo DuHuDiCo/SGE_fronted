@@ -131,6 +131,8 @@ export class BuscarArchivosComponent implements OnInit {
       (data: any) => {
         this.tiposArchivos = data
         this.tipoArc = data.length
+        console.log(data);
+
       }, (error: any) => {
         console.log(error);
       }
@@ -167,13 +169,8 @@ export class BuscarArchivosComponent implements OnInit {
     this.isEmpty(obligacion)
 
     this.archivos = this.datos[position].archivos
-    this.archivos.forEach((element: any, index: number) => {
-      var tipo = this.tiposArchivos.find((t: any) => t.tipoArchivo == element.tipoArchivo.tipoArchivo)
-      if (tipo != null || tipo != undefined) {
-        var position = this.tiposArchivos.indexOf(tipo)
-        this.tiposArchivos.splice(position, 1)
-      }
-    });
+    console.log(this.tiposArchivos);
+
   }
 
   //LLENAR LOS MODALES CON SU PDF
