@@ -114,6 +114,8 @@ import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Config
 import { DateFormatPipe } from './Pipes/date-format.pipe';
 import { FormatoMonedaDirective } from './directivas/DirectivaFormatCurrency/formato-moneda.directive';
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { NgxUiLoaderHttpModule, NgxUiLoaderModule } from 'ngx-ui-loader';
+import { ngxUiLoaderConfig } from './utils/loaderConfig';
 
 
 
@@ -252,7 +254,11 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
     HttpClientModule,
     AgregarClienteModule,
     NgxPaginationModule,
-    CommonModule
+    CommonModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    NgxUiLoaderHttpModule.forRoot({
+      showForeground: true
+    }),
 
   ],
 
