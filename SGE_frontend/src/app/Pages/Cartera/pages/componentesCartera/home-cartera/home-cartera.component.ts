@@ -2210,7 +2210,7 @@ export class HomeCarteraComponent implements OnInit {
 
   calcularHonorarios() {
     var cal = (this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
-   
+
 
     var res = cal.toFixed(0)
     this.acuerdoCal.honoriarioAcuerdo = res
@@ -2489,7 +2489,7 @@ export class HomeCarteraComponent implements OnInit {
         if (this.changeHonorarios == false) {
 
           var resHonorarios = (parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
-          
+
           this.acuerdoCal.honoriarioAcuerdo = resHonorarios.toFixed(0)
 
         }
@@ -2508,7 +2508,7 @@ export class HomeCarteraComponent implements OnInit {
       this.col = true
     }
 
-    
+
     this.interesesModifides = true
   }
 
@@ -2540,7 +2540,7 @@ export class HomeCarteraComponent implements OnInit {
         })
         return
       } else {
-        
+
         //HONORARIOS
         if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
           var resHonorarios = (parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
@@ -2639,7 +2639,7 @@ export class HomeCarteraComponent implements OnInit {
     var valorIntereses = this.acuerdoCal.valorInteresesMora
     var valorHonorarios = this.acuerdoCal.honoriarioAcuerdo
 
-  
+
 
     //cuando el cliente esta al dia
     if (moraOlbigatoria == 0) {
@@ -2801,7 +2801,7 @@ export class HomeCarteraComponent implements OnInit {
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
           ) {
-      
+
             var capitalRestante = totalObligatoria - moraOlbigatoria
 
             var cuotasReales = 0;
@@ -2879,7 +2879,7 @@ export class HomeCarteraComponent implements OnInit {
                       this.acuerdo.tipoAcuerdo = TIPOACUERDO.TOTAL
 
 
-                      
+
 
                       this.todasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
                     }
@@ -3114,7 +3114,7 @@ export class HomeCarteraComponent implements OnInit {
   todasCuotasMora(valorInteres: number, valorCuotaMensual: number, moraObligatoria: number, valorCuotaAnterior: number, valorTotalObligatoria: number, valorHonorarios: number, valorTotalMora: number) {
 
     var saldoTotal = this.acuerdoCal.saldoAcuerdo
-    
+
 
 
 
@@ -3951,39 +3951,24 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   ordenarGestiones(gestiones: any[]) {
+
     var gesTrue = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'ACUERDO DE PAGO' && ges.clasificacion.isActive)
 
     gesTrue.forEach((ges: any) => {
       this.gestiones.push(ges)
+      var pos = this.gestiones.findIndex((gestion: any) => gestion == ges)
+      this.gestiones.splice(pos, 1)
     });
 
-    var tareas = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && ges.clasificacion.isActive)
+    var tareas = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && ges.clasificacion.isActive == true)
     if (tareas != null || tareas != undefined) {
       tareas.forEach((ges: any) => {
         this.gestiones.push(ges)
+        var pos = this.gestiones.findIndex((gestion: any) => gestion == ges)
+        this.gestiones.splice(pos, 1)
       });
     }
 
-    // var acuerdoDesactivated = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'ACUERDO DE PAGO' && ges.clasificacion.isActive == false)
-    // if (acuerdoDesactivated != null || acuerdoDesactivated != undefined) {
-    //   acuerdoDesactivated.forEach((ges: any) => {
-    //     this.gestiones.push(ges)
-    //   });
-    // }
-
-    // var tareaDesactivated = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && ges.clasificacion.isActive == false)
-    // if (tareaDesactivated != null || tareaDesactivated != undefined) {
-    //   tareaDesactivated.forEach((ges: any) => {
-    //     this.gestiones.push(ges)
-    //   });
-    // }
-
-    // var notas = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'NOTA')
-    // if (notas != null || notas != undefined) {
-    //   notas.forEach((ges: any) => {
-    //     this.gestiones.push(ges)
-    //   });
-    // }
     const objetosOrdenados: any[] = [...gestiones].sort((a, b) => {
       return new Date(b.fechaGestion).getTime() - new Date(a.fechaGestion).getTime();
     });
@@ -3991,6 +3976,8 @@ export class HomeCarteraComponent implements OnInit {
     for (let obj of objetosOrdenados) {
       this.gestiones.push(obj)
     }
+
+    console.log(this.gestiones);
 
   }
 
