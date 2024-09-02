@@ -11,6 +11,11 @@
     color: #9C1717;
 }
 
+.custom-icon {
+    cursor: pointer;
+    font-size: 50px;
+}
+
 .imagen-portada img {
     display: block;
     object-fit: cover;
@@ -89,6 +94,7 @@
     transition: all 0.2s;
 }
 
-.boton:hover {
+.boton,
+.btn-consultar:hover {
     background: #D60303;
 }

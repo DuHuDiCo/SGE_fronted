@@ -300,4 +300,17 @@ export class SubirArchivosComponent implements OnInit {
     )
   }
 
+  triggerFileInput(input: string): void {
+    const fileInput = document.getElementById(input) as HTMLInputElement;
+    fileInput.click();
+  }
+
+  handleFileInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      // Maneja los archivos seleccionados
+      console.log(input.files);
+    }
+  }
+
 }
