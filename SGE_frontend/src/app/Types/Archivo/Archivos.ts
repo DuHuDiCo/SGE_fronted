@@ -5,8 +5,7 @@ export type Archivo = {
 }
 
 export type Base64 = {
-  base46: string,
-  nombreArchivo: string,
+  base46: string[],
   tipoArchivo: string
 }
 

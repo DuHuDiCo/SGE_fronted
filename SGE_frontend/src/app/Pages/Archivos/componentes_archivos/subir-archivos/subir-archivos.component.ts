@@ -17,25 +17,28 @@ import Swal from 'sweetalert2';
 })
 export class SubirArchivosComponent implements OnInit {
 
+  // VARIABLES
   botonComenzar: boolean = true
   botonCedula: boolean = false
   botonGuardar: boolean = false
   cedula: string = ''
   tabla: boolean = false
+  disabledSelect: boolean = false
   background_color: string = '#960010'
   width: number = 0
   display: string = 'none'
 
+  tipoArchivo: string = ''
+
   obligacion: Obligacion[] = []
-  nombresArchivos: string[] = []
+  cantidadArchivos: number = 0
   numeroObligacion: string = ''
 
   archivo: Archivo = {
     numeroObligacion: '',
     base64: [
       {
-        base46: '',
-        nombreArchivo: '',
+        base46: [],
         tipoArchivo: ''
       }
     ],
@@ -43,9 +46,8 @@ export class SubirArchivosComponent implements OnInit {
   }
 
   base64: Base64 = {
-    base46: '',
+    base46: [],
     tipoArchivo: '',
-    nombreArchivo: ''
   }
 
   tiposArchivos: TipoArchivo[] = []
@@ -73,9 +75,9 @@ export class SubirArchivosComponent implements OnInit {
         this.botonCedula = false
         this.display = 'block'
         Swal.fire({
-          icon: 'info',
-          title: 'Paso #1 Completado',
-          text: 'Seleccione el Archivo Correspondiente',
+          icon: 'success',
+          title: 'Archivos',
+          text: 'Seleccione los Archivos Correspondientes',
           timer: 2500
         })
         break;
@@ -201,7 +203,7 @@ export class SubirArchivosComponent implements OnInit {
     }
 
     this.archivo.base64 = Array.from({ length: this.tiposArchivos.length }, (_, index) => ({
-      base46: '',
+      base46: [],
       nombreArchivo: '',
       tipoArchivo: this.tiposArchivos[index].tipoArchivo
     }));
@@ -209,32 +211,44 @@ export class SubirArchivosComponent implements OnInit {
     this.archivo.numeroObligacion = obligacion
     this.archivo.username = user
     this.isEmpty(obligacion, accion)
+    console.log(this.archivo);
+
   }
 
-  obtenerFile(event: any, tipoArchivo: TipoArchivo) {
-    var archivo = event.target.files[0];
-
-    if (archivo.size > 1048576) {
-      Swal.fire('Error', 'El Archivo Es Demasiado Pesado', 'error')
-      this.base64.base46 = ''
-      return
+  selectArchivos(event: any) {
+    if (event.target.value != '') {
+      this.disabledSelect = true
     }
+  }
 
-    console.log(tipoArchivo);
+  cancelarArchivos() {
+    var pos = this.archivo.base64.findIndex((a: Base64) => a.tipoArchivo = this.tipoArchivo)
+    this.archivo.base64[pos].base46 = []
+    this.cantidadArchivos = 0
+    this.disabledSelect = false
+    console.log(this.archivo);
+  }
 
+  obtenerFile(event: any) {
+    const archivo = event.target as HTMLInputElement;
 
-    this.archivo.base64.forEach((element: any, index: number) => {
-      if (element.tipoArchivo == tipoArchivo.tipoArchivo) {
-        this.nombresArchivos.splice(index, 1)
+    // if (archivo.size > 1048576) {
+    //   Swal.fire('Error', 'El Archivo Es Demasiado Pesado', 'error')
+    //   this.base64.base46 = []
+    //   return
+    // }
 
-        this.extraerBase64(archivo).then((file: any) => {
-          this.nombresArchivos.push(archivo.name)
-          element.base46 = file.base;
-          element.tipoArchivo = tipoArchivo.tipoArchivo
-          element.nombreArchivo = archivo.name
+    if (archivo.files) {
+      var pos = this.archivo.base64.findIndex((a: Base64) => a.tipoArchivo == this.tipoArchivo)
+
+      for (let i = 0; i < archivo.files.length; i++) {
+        this.extraerBase64(archivo.files[i]).then((file: any) => {
+          this.archivo.base64[pos].base46.push(file.base);
         })
       }
-    });
+
+      this.cantidadArchivos = archivo.files.length
+    }
 
     console.log(this.archivo);
 
@@ -303,14 +317,6 @@ export class SubirArchivosComponent implements OnInit {
   triggerFileInput(input: string): void {
     const fileInput = document.getElementById(input) as HTMLInputElement;
     fileInput.click();
-  }
-
-  handleFileInput(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files) {
-      // Maneja los archivos seleccionados
-      console.log(input.files);
-    }
   }
 
 }

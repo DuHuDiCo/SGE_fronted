@@ -48,9 +48,8 @@ export class BuscarArchivosComponent implements OnInit {
   }
 
   base64: Base64 = {
-    base46: '',
+    base46: [],
     tipoArchivo: '',
-    nombreArchivo: ''
   }
   constructor(private buscarService: SubirArchivoService, private router: Router, private subirService: SubirArchivoService, private authService: AuthenticationService, private tipoArchivoService: TipoArchivoService, private sanitizer: DomSanitizer) { }
 
@@ -255,7 +254,7 @@ export class BuscarArchivosComponent implements OnInit {
 
     if (archivo.size > 1048576) {
       Swal.fire('Error', 'El Archivo Es Demasiado Pesado', 'error')
-      this.base64.base46 = ''
+      this.base64.base46 = []
       return
     }
 
@@ -263,7 +262,6 @@ export class BuscarArchivosComponent implements OnInit {
       this.modal.base64 = file.base;
       this.base64.base46 = file.base;
       this.modal.nombreOriginal = archivo.name
-      this.base64.nombreArchivo = archivo.name
       this.subirArchivo.base64.push(this.base64)
     })
   }
