@@ -478,10 +478,8 @@ export class HomeCarteraComponent implements OnInit {
     this.getTipoVen()
     this.getSedes()
     this.getAsesores()
-    this.getNotificaciones()
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
-    this.alertasGestiones()
 
 
     var admin = this.authService.getRolesByName(ROLES.Administration)
@@ -554,7 +552,6 @@ export class HomeCarteraComponent implements OnInit {
     const mesActual = new Date().getMonth() + 1
     const anioActual = new Date().getFullYear()
 
-    this.alertasGestiones()
     this.filtrando = false
     var admin = this.authService.getRolesByName(ROLES.Administration);
 
@@ -587,6 +584,7 @@ export class HomeCarteraComponent implements OnInit {
 
                   mesTd = parseInt(partesMes[1], 10)
                   anioTd = parseInt(partesMes[2], 10)
+
 
                   if (mesTd == mesActual && anioTd == anioActual) {
                     td.classList.add("gestionado")
@@ -3571,19 +3569,28 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaCompromisoInicio != null) ||
           (this.filtros.fechaCompromisoFin != null) || (this.filtros.clasificacionGestion != null)) {
           setTimeout(() => {
-            for (let i = 0; i < this.size; i++) {
-              td = document.getElementById(`td_${i}`)
+            if (this.filtros.clasificacionGestion != 'Acuerdo de pago') {
+              for (let i = 0; i < this.size; i++) {
+                td = document.getElementById(`td_${i}`)
 
-              if (td != null && td != undefined) {
-                contenido = td.textContent;
+                if (td != null && td != undefined) {
+                  contenido = td.textContent;
 
-                partesMes = contenido.split('/')
+                  if (this.cuentasCobrarArray[i].isLast) {
+                    td.classList.add("gestionado")
+                  }
+                }
+              }
+            } else {
+              for (let i = 0; i < this.size; i++) {
+                td = document.getElementById(`td_${i}`)
 
-                mesTd = parseInt(partesMes[1], 10)
-                anioTd = parseInt(partesMes[2], 10)
+                if (td != null && td != undefined) {
+                  contenido = td.textContent;
 
-                if (mesTd == mesActual && anioTd == anioActual) {
-                  td.classList.add("gestionado")
+                  if (this.cuentasCobrarArray[i].isLast) {
+                    td.classList.add("gestionado")
+                  }
                 }
               }
             }
