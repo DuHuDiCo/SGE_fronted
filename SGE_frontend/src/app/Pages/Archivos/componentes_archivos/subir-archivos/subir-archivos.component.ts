@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { SubirArchivoService } from 'src/app/Services/Archivo/SubirArchivos/subir-archivo.service';
@@ -17,31 +17,32 @@ import Swal from 'sweetalert2';
 })
 export class SubirArchivosComponent implements OnInit {
 
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
   // VARIABLES
   botonComenzar: boolean = true
   botonCedula: boolean = false
   botonGuardar: boolean = false
   cedula: string = ''
   tabla: boolean = false
-  disabledSelect: boolean = false
   background_color: string = '#960010'
   width: number = 0
   display: string = 'none'
-
   tipoArchivo: string = ''
-
-  obligacion: Obligacion[] = []
   cantidadArchivos: number = 0
+  disabledSelect: boolean = false
+  disabledCargar: boolean = true
   numeroObligacion: string = ''
 
+  // ARRAYS
+  obligacion: Obligacion[] = []
+  tiposArchivos: TipoArchivo[] = []
+  tiposArchivosSelected: string[] = []
+
+  // OBJETOS
   archivo: Archivo = {
     numeroObligacion: '',
-    base64: [
-      {
-        base46: [],
-        tipoArchivo: ''
-      }
-    ],
+    base64: [],
     username: ''
   }
 
@@ -50,7 +51,6 @@ export class SubirArchivosComponent implements OnInit {
     tipoArchivo: '',
   }
 
-  tiposArchivos: TipoArchivo[] = []
 
 
   constructor(private ingresarService: IngresarService, private subirService: SubirArchivoService, private authService: AuthenticationService, private tipoArchivoService: TipoArchivoService, private router: Router, private sanitizer: DomSanitizer) { }
@@ -78,61 +78,6 @@ export class SubirArchivosComponent implements OnInit {
           icon: 'success',
           title: 'Archivos',
           text: 'Seleccione los Archivos Correspondientes',
-          timer: 2500
-        })
-        break;
-      case 'CREDITO':
-        this.width = this.width + Math.round(100 / this.tiposArchivos.length)
-        Swal.fire({
-          icon: 'info',
-          title: 'Paso #2 Completado',
-          text: 'Seleccione el Archivo Correspondiente',
-          timer: 2500
-        })
-        break;
-      case 'FACTURA':
-        this.width = this.width + Math.round(100 / this.tiposArchivos.length)
-        Swal.fire({
-          icon: 'info',
-          title: 'Paso #3 Completado',
-          text: 'Seleccione el Archivo Correspondiente',
-          timer: 2500
-        })
-        break;
-
-      case 'AUTORIZACION':
-        this.width = this.width + Math.round(100 / this.tiposArchivos.length)
-        Swal.fire({
-          icon: 'info',
-          title: 'Paso #4 Completado',
-          text: 'Seleccione el Archivo Correspondiente',
-          timer: 2500
-        })
-        break;
-      case 'DATOSPERSONALES':
-        this.width = this.width + Math.round(100 / this.tiposArchivos.length)
-        Swal.fire({
-          icon: 'info',
-          title: 'Paso #5 Completado',
-          text: 'Seleccione el Archivo Correspondiente',
-          timer: 2500
-        })
-        break;
-      case 'CEDULACLIENTE':
-        this.width = this.width + Math.round(100 / this.tiposArchivos.length)
-        Swal.fire({
-          icon: 'info',
-          title: 'Paso #6 Completado',
-          text: 'Seleccione el Archivo Correspondiente',
-          timer: 2500
-        })
-        break;
-      case 'CEDULACODEUDOR':
-        this.width = this.width + Math.round(100 / this.tiposArchivos.length)
-        Swal.fire({
-          icon: 'info',
-          title: 'Paso #7 Completado',
-          text: 'Seleccione el Archivo Correspondiente',
           timer: 2500
         })
         break;
@@ -226,32 +171,67 @@ export class SubirArchivosComponent implements OnInit {
     this.archivo.base64[pos].base46 = []
     this.cantidadArchivos = 0
     this.disabledSelect = false
+    this.disabledCargar = true
+    this.fileInput.nativeElement.value = '';
     console.log(this.archivo);
+  }
+
+  cargarArchivos() {
+    if (!this.tiposArchivosSelected.includes(this.tipoArchivo)) {
+      this.width = this.width + Math.round(100 / this.tiposArchivos.length)
+      this.tiposArchivosSelected.push(this.tipoArchivo)
+    }
+    this.tipoArchivo = ''
+    this.disabledSelect = false
+    this.disabledCargar = true
+    this.cantidadArchivos = 0
+    Swal.fire({
+      icon: 'success',
+      title: 'Datos Guardados',
+      text: 'Archivos Cargados',
+      timer: 2500
+    })
+    console.log(this.tiposArchivosSelected);
   }
 
   obtenerFile(event: any) {
     const archivo = event.target as HTMLInputElement;
+    if (this.tipoArchivo != '') {
 
-    // if (archivo.size > 1048576) {
-    //   Swal.fire('Error', 'El Archivo Es Demasiado Pesado', 'error')
-    //   this.base64.base46 = []
-    //   return
-    // }
+      // if (archivo.size > 1048576) {
+      //   Swal.fire('Error', 'El Archivo Es Demasiado Pesado', 'error')
+      //   this.base64.base46 = []
+      //   return
+      // }
 
-    if (archivo.files) {
-      var pos = this.archivo.base64.findIndex((a: Base64) => a.tipoArchivo == this.tipoArchivo)
+      if (archivo.files) {
+        var pos = this.archivo.base64.findIndex((a: Base64) => a.tipoArchivo == this.tipoArchivo)
 
-      for (let i = 0; i < archivo.files.length; i++) {
-        this.extraerBase64(archivo.files[i]).then((file: any) => {
-          this.archivo.base64[pos].base46.push(file.base);
-        })
+        if (this.archivo.base64[pos].base46.length > 0) {
+          this.archivo.base64[pos].base46 = []
+        }
+
+        for (let i = 0; i < archivo.files.length; i++) {
+          this.extraerBase64(archivo.files[i]).then((file: any) => {
+            this.archivo.base64[pos].base46.push(file.base);
+          })
+        }
+        this.cantidadArchivos = archivo.files.length
+        if (this.cantidadArchivos > 0) {
+          this.disabledCargar = false
+        }
       }
-
-      this.cantidadArchivos = archivo.files.length
+      this.disabledSelect = true
+      console.log(this.archivo);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Acción Inválida',
+        text: 'Seleccione el tipo de Archivo',
+        timer: 2500
+      })
+      archivo.value = ''
     }
-
-    console.log(this.archivo);
-
   }
 
   extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
