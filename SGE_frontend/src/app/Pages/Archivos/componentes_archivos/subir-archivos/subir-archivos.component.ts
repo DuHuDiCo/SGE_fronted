@@ -149,7 +149,6 @@ export class SubirArchivosComponent implements OnInit {
 
     this.archivo.base64 = Array.from({ length: this.tiposArchivos.length }, (_, index) => ({
       base46: [],
-      nombreArchivo: '',
       tipoArchivo: this.tiposArchivos[index].tipoArchivo
     }));
 
