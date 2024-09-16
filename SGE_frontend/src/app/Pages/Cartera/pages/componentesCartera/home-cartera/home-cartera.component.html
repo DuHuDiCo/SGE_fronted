@@ -257,8 +257,8 @@
                     style="height: 95%;">
                     <div *ngIf="!spinnerSidebar" class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasRightLabel">Datos Cliente</h5>
-                        <button *ngIf="deshabilitarInputs" class="btn btn-danger b" data-bs-toggle="modal"
-                            data-bs-target="#modalGestion">Nueva
+                        <button *ngIf="deshabilitarInputs" class="btn btn-danger b"
+                            (click)="validateCuenta(cuentaCobrarSelected.idCuentasPorCobrar)">Nueva
                             Gestion</button>
 
                         <div class="d-flex align-items-center" *ngIf="gestiones.length == 0">
@@ -947,12 +947,14 @@
     </div>
 
     <!-- Modal Nueva Gestión -->
-    <div class="modal fade" id="modalGestion" tabindex="-1" aria-labelledby="modalGestion" aria-hidden="true">
+    <div class="modal fade" id="modalGestion" tabindex="-1" aria-labelledby="modalGestion" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="modalGestion">Nueva Gestión</h1>
-                    <button type="button" data-bs-dismiss="modal" aria-label="Close" style="border: none"><i
+                    <button type="button" data-bs-dismiss="modal" aria-label="Close" style="border: none"
+                        (click)="desbloquearCuenta(cuentaCobrarSelected.idCuentasPorCobrar)"><i
                             class="fa-solid fa-arrow-left"></i></button>
                 </div>
                 <div class="modal-body">

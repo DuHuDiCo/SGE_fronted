@@ -1,16 +1,15 @@
 import { Component, ElementRef, HostListener, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
-import { addMonths, format, isLeapYear, lastDayOfMonth, parse, parseISO } from 'date-fns';
-import ca from 'date-fns/locale/ca/index.js';
+import { isLeapYear } from 'date-fns';
 
-import { Subscription } from 'rxjs';
+import { catchError, of, Subscription, tap } from 'rxjs';
 import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Tarea } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { CuentaCobrarCalculate, CuentasCobrarResponse } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
 
-import { ClasificacionGestion, CuotaList, CuotasRequest, Filtros, Gestion, GestionArray, Gestiones, Notificacion, Pagos, PagosRequest, Permisos, ReciboPago, Roles, TIPOACUERDO, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
+import { ClasificacionGestion, CuotaList, CuotasRequest, Filtros, Gestion, Gestiones, Notificacion, Pagos, PagosRequest, Permisos, ReciboPago, Roles, TIPOACUERDO, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
 
 import { CLASIFICACION_JURIDICA, ROLES, ROLESCARTERA } from 'src/app/Types/Roles';
 
@@ -5084,6 +5083,39 @@ export class HomeCarteraComponent implements OnInit {
       )
     }, 2000);
 
+  }
+
+  validateCuenta(idCuenta: number) {
+    this.cuentasCobrar.getCuentaBlocked(idCuenta).pipe(
+      tap((data: any) => {
+        if (data != null && data != undefined) {
+          $('#modalGestion').modal('show');
+        }
+        console.log(data);
+      }), catchError((error: any) => {
+        if (error.status == 400) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Esta cuenta ya fue tomada por un asesor',
+            timer: 3000
+          })
+        }
+        console.log(error);
+        return of([])
+      })
+    ).subscribe()
+  }
+
+  desbloquearCuenta(idCuenta: number) {
+    this.cuentasCobrar.getCuentaChangeBlocked(idCuenta).pipe(
+      tap((data: any) => {
+        console.log(data);
+      }), catchError((error: any) => {
+        console.log(error);
+        return of([])
+      })
+    ).subscribe()
   }
 
   //PAGINACION NOTIFICACIONES

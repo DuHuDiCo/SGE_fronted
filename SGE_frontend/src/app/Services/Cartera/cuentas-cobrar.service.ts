@@ -38,6 +38,14 @@ export class CuentasCobrarService {
     return this.http.get(`${baseUrl}/cuentas/cuentasByDato?dato=${dato}`)
   }
 
+  getCuentaBlocked(idCuenta: number) {
+    return this.http.get(`http://192.168.1.241:8021/api/v1/cuentas/blocked?idCuenta=${idCuenta}`)
+  }
+
+  getCuentaChangeBlocked(idCuenta: number) {
+    return this.http.put(`http://192.168.1.241:8021/api/v1/cuentas/changeBlocked?idCuenta=${idCuenta}`, null)
+  }
+
 
   updateCuentaCobrar(cuentaCobrar: CuentaCobrarCalculate) {
     return this.http.put(`${baseUrl}/cuentas/updateCuentaCobrarToCalculate`, cuentaCobrar)
