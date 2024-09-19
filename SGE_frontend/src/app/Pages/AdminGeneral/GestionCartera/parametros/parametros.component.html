@@ -117,13 +117,13 @@
                                     <button class="btn" (click)="filtrosGenerales(p, sp, i)"
                                         [id]="p.parametro + '-' + sp.subParametro + '-' + i" style="border: none;">
                                         <li class="list-group-item"
-                                            *ngIf="p.parametro != 'MORA OBLIGATORIA' && p.parametro != 'DIAS VENCIDOS' && p.parametro != 'TOTAL OBLIGACION'">
+                                            *ngIf="p.parametro != 'MONTO VENCIDO' && p.parametro != 'DIAS VENCIDOS' && p.parametro != 'TOTAL OBLIGACION'">
                                             <h6 class="font-sub">{{
                                                 sp.subParametro
                                                 }}</h6>
                                         </li>
                                         <li class="list-group-item"
-                                            *ngIf="p.parametro == 'MORA OBLIGATORIA' || p.parametro == 'TOTAL OBLIGACION' || p.parametro == 'DIAS VENCIDOS'">
+                                            *ngIf="p.parametro == 'MONTO VENCIDO' || p.parametro == 'TOTAL OBLIGACION' || p.parametro == 'DIAS VENCIDOS'">
                                             <h6 class="font-sub">
                                                 {{
                                                 i == 0 ? ('Desde 1 Hasta ' + sp.subParametro) :

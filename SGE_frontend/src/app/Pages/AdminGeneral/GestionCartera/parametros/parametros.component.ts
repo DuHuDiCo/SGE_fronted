@@ -114,7 +114,7 @@ export class ParametrosComponent implements OnInit {
     this.parametrosService.getParametros().subscribe(
       (data: any) => {
         this.parametrosArray = data.parametros
-        console.log(data.parametros);
+        console.log(data);
         this.fillParametrosNoConfirm(data.parametros)
         this.fillOrdenamiento()
         setTimeout(() => {
@@ -741,7 +741,7 @@ export class ParametrosComponent implements OnInit {
             obj = newParametros.bancos.find((b: any) => b.nombre_banco == element.subParametro)
             break;
           case 'TIPO CLASIFICACION JURIDICA':
-            obj = newParametros.clasiJuridica.find((cj: any) => cj.nombre_clasificacion_juridica == element.subParametro)
+            obj = newParametros.clasiJuridica.find((cj: any) => cj.clasificacion_obligacion == element.subParametro)
             break;
           case 'EDAD VENCIMIENTO':
             obj = newParametros.edad.find((e: any) => e.edad_vencimiento == element.subParametro)
