@@ -116,6 +116,7 @@ import { FormatoMonedaDirective } from './directivas/DirectivaFormatCurrency/for
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { NgxUiLoaderHttpModule, NgxUiLoaderModule } from 'ngx-ui-loader';
 import { ngxUiLoaderConfig } from './utils/loaderConfig';
+import { CuadreDiarioComponent } from './Pages/Caja/componentes-caja/cuadre-diario/cuadre-diario.component';
 
 
 
@@ -242,7 +243,8 @@ import { ngxUiLoaderConfig } from './utils/loaderConfig';
     DateFormatPipe,
     FormatoMonedaDirective,
 
-    FormatoMonedaDirective
+    FormatoMonedaDirective,
+      CuadreDiarioComponent
 
   ],
 
