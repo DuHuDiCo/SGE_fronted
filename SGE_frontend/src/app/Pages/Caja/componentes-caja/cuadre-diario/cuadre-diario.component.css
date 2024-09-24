@@ -1,0 +1,23 @@
+.card-c {
+    color: #000;
+    position: relative;
+    margin-top: 50px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #eaecee;
+    box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
+    padding: 20px;
+    margin-bottom: 30px;
+
+}
+
+.btn-color {
+    color: white;
+    background-color: #960010;
+    border-color: #960010;
+}
+
+.btn-color:hover {
+    background: #d40000;
+    border-color: #d40000;
+}
