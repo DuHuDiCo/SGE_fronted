@@ -23,9 +23,9 @@ export class CuadreDiarioComponent implements OnInit {
   }
 
   crearCuadreDiario() {
-    var obj = {
-      fechaCuadre: this.fechaCuadre
-    }
+    // var obj = {
+    //   fechaCuadre: this.fechaCuadre
+    // }
     // this.cuadreDiarioService.createCuadreDiario(obj).pipe(
     //   tap((data: any) => {
     //     // this.getIngresos()
