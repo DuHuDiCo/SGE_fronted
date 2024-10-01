@@ -1,7 +1,7 @@
 export type IngresosDiariosArray = {
     idIngresosDiarios: number,
     valorIngreso: number,
-    fechaIngreso: Date
+    fechaIngreso: Date,
     tipoIngreso: {
         idTipoIngreso: number,
         nombre: string
@@ -19,3 +19,6 @@ export type CuadreDiario = {
     fechaCuadre: Date,
     valorTotalCuadre: number
 }
+
+
+

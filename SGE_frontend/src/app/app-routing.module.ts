@@ -86,6 +86,9 @@ import { ClasificacionJuridicaComponent } from './Pages/Cartera/pages/componente
 import { CondicionEspecialComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/condicion-especial/condicion-especial.component';
 import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/firmas/firmas.component';
 import { CuadreDiarioComponent } from './Pages/Caja/componentes-caja/cuadre-diario/cuadre-diario.component';
+import { IngresosDiariosComponent } from './Pages/Caja/componentes-caja/ingresos-diarios/ingresos-diarios.component';
+import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-mensual/cuadre-mensual.component';
+import { TipoIngresoComponent } from './Pages/Caja/componentes-caja/tipo-ingreso/tipo-ingreso.component';
 
 
 
@@ -178,6 +181,18 @@ const routes: Routes = [
       {
         path: 'cuadre-diario',
         component: CuadreDiarioComponent
+      },
+      {
+        path: 'ingresos-diarios',
+        component: IngresosDiariosComponent
+      },
+      {
+        path: 'tipo-ingreso',
+        component: TipoIngresoComponent,
+      },
+      {
+        path: 'cuadre-mensual',
+        component: CuadreMensualComponent
       }
     ]
   },

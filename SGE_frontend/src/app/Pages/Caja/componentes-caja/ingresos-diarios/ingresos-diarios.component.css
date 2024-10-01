@@ -1,0 +1,72 @@
+.card-c {
+  color: #000;
+  position: relative;
+  margin-top: 50px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #eaecee;
+  box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.btn-color {
+  color: white;
+  background-color: #960010;
+  border-color: #960010;
+}
+
+.btn-color:hover {
+  background: #d40000;
+  border-color: #d40000;
+}
+
+
+.placeholder{
+    background: #000000d8;
+}
+
+.c{
+    border-radius: 25px;
+    text-align: center;
+    margin: 15px auto;
+    padding: 10px;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+}
+
+
+.form-select{
+    border-radius: 25px;
+    text-align: center;
+    margin: 15px auto;
+    padding: 10px;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+}
+
+  .form-control{
+    border-radius: 25px;
+    text-align: center;
+    margin: 15px auto;
+    padding: 10px;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+}
+
+.form-select{
+    border: none;
+    outline: none;
+
+}
+
+.btn-floating {
+  position: fixed;
+  bottom: 120px;
+  right: 50px;  
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}

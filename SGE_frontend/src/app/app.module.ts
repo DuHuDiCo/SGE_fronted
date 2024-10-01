@@ -117,6 +117,9 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { NgxUiLoaderHttpModule, NgxUiLoaderModule } from 'ngx-ui-loader';
 import { ngxUiLoaderConfig } from './utils/loaderConfig';
 import { CuadreDiarioComponent } from './Pages/Caja/componentes-caja/cuadre-diario/cuadre-diario.component';
+import { IngresosDiariosComponent } from './Pages/Caja/componentes-caja/ingresos-diarios/ingresos-diarios.component';
+import { TipoIngresoComponent } from './Pages/Caja/componentes-caja/tipo-ingreso/tipo-ingreso.component';
+import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-mensual/cuadre-mensual.component';
 
 
 
@@ -244,7 +247,10 @@ import { CuadreDiarioComponent } from './Pages/Caja/componentes-caja/cuadre-diar
     FormatoMonedaDirective,
 
     FormatoMonedaDirective,
-      CuadreDiarioComponent
+      CuadreDiarioComponent,
+      IngresosDiariosComponent,
+      TipoIngresoComponent,
+      CuadreMensualComponent
 
   ],
 

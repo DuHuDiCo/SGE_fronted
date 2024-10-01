@@ -13,7 +13,7 @@ import { CuadreDiario, IngresosDiariosArray } from 'src/app/Types/Caja/CuadreDia
 })
 export class CuadreDiarioComponent implements OnInit {
 
-  fechaCuadre: Date = new Date()
+  fechaCuadre: string = '';
   ingresosDiario: IngresosDiariosArray[] = []
   cuadreDiario: CuadreDiario | null = null
 
@@ -26,15 +26,15 @@ export class CuadreDiarioComponent implements OnInit {
     var obj = {
       fechaCuadre: this.fechaCuadre
     }
-    this.cuadreDiarioService.createCuadreDiario(obj).pipe(
-      tap((data: any) => {
-        // this.getIngresos()
-        this.cuadreDiario = data
-      }), catchError((error: Error) => {
-        console.log(error);
-        return of([])
-      })
-    ).subscribe()
+    // this.cuadreDiarioService.createCuadreDiario(obj).pipe(
+    //   tap((data: any) => {
+    //     // this.getIngresos()
+    //     this.cuadreDiario = data
+    //   }), catchError((error: Error) => {
+    //     console.log(error);
+    //     return of([])
+    //   })
+    // ).subscribe()
   }
 
   getIngresos() {
