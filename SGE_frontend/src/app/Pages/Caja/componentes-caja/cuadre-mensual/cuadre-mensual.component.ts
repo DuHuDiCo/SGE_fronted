@@ -38,7 +38,6 @@ export class CuadreMensualComponent{
         icon: 'error',
         title: 'Fecha cuadre mensual vacia',
         text: 'Seleccione una fecha para poder crear el cuadre mensual',
-        timer: 3000
       })
       return
     }
@@ -61,7 +60,11 @@ export class CuadreMensualComponent{
           })
         ).subscribe();
       } else {
-        console.log("No hay cuadres diarios para crear el cuadre mensual.");
+        Swal.fire({
+          icon: 'error',
+          title: 'No hay cuadres diarios',
+          text: 'No hay cuadres diarios para crear el cuadre mensual.',
+        })
       }
     });
   }
@@ -89,7 +92,11 @@ export class CuadreMensualComponent{
           if (data && data.length > 0) {
             console.log("Cuadre mensual obtenido:", data);
           } else {
-            console.log("No se encontraron registros de cuadre mensual.");
+            Swal.fire({
+              icon: 'error',
+              title: 'No se encontraron cuadres mensuales',
+              text: 'No hay cuadres mensuales en la fecha seleccionada.',
+            })
           }
         }),
         catchError((error: Error) => {
@@ -116,7 +123,11 @@ export class CuadreMensualComponent{
   //buscar los cuadres mensuales modal
   abrirModalBuscar() {
     if (!this.fechaInicial || !this.fechaFinal) {
-        console.error("Las fechas no pueden estar vacías.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Campos vacios',
+        text: 'Las fechas no pueden estar vacias.',
+      })
         return; 
     }
     
@@ -126,7 +137,11 @@ export class CuadreMensualComponent{
         console.log("Resultados de la búsqueda: Cuadre mensual:", this.cuadreMensual);
         console.log("Resultados de la búsqueda: Cuadres diarios:", this.cuadresDiario);
         
-        this.resultadosBusqueda = Array.isArray(this.cuadreMensual) ? this.cuadreMensual : [this.cuadreMensual];
+        if (Array.isArray(this.cuadreMensual)) {
+          this.resultadosBusqueda = this.cuadreMensual;
+      } else {
+          this.resultadosBusqueda = [this.cuadreMensual];
+      }
     });
   }
 }

@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 export class CuadreDiarioComponent {
 
   //variables
+  modoCreacion: boolean = false;
   fechaCuadre: string = '';
   ingresosDiario: IngresosDiariosArray[] = [];
   cuadreDiario: CuadreDiario | null = null;
@@ -26,6 +27,7 @@ export class CuadreDiarioComponent {
   
   // Agregar un cuadre diario
   crearCuadreDiario() {
+    this.modoCreacion = true;
     if (this.fechaCuadre == null || this.fechaCuadre.trim() == '') {
       Swal.fire({
         icon: 'error',
@@ -96,6 +98,7 @@ export class CuadreDiarioComponent {
 //Buscar un cuadre diario modal
 abrirModalBuscar() {
   //validaciones
+  this.modoCreacion = false;
   if (this.fechaInicial == null || this.fechaInicial.trim() == '') {
     Swal.fire({
       icon: 'error',
@@ -170,6 +173,5 @@ abrirModalBuscar() {
     // Guardar el PDF
     doc.save('reporte.pdf');
   }
-
 
 }

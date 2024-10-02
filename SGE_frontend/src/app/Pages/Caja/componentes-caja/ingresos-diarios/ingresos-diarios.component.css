@@ -149,3 +149,70 @@
   font-size: 1.1em;
 }
 
+/* Estilos para la tabla */
+.table-responsive {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table {
+  background-color: white; /* Fondo blanco para la tabla */
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+  padding: 12px;
+  border: none;
+}
+
+.table thead {
+  background-color: #dddada; /* Encabezado rojo */
+  color: rgb(0, 0, 0); /* Texto blanco */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #dddada; /* Fondo ligero para hover (rojo suave) */
+}
+
+/* Botones de acción dentro de la tabla */
+.table .btn {
+  border-radius: 50px;
+  padding: 5px 10px;
+}
+
+.table .btn-primary {
+  background-color: rgb(0, 183, 255); /* Botón editar en rojo */
+  border: none;
+  color: white; /* Texto blanco */
+}
+
+.table .btn-danger {
+  background-color: #c50e0e; /* Botón eliminar en negro */
+  border: none;
+  color: white; /* Texto blanco */
+}
+
+/* Botón de buscar */
+.btn-color {
+  background-color: darkred; /* Botón de buscar en rojo */
+  color: white; /* Texto blanco */
+  border-radius: 25px;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-color:hover {
+  background-color: #c50e0e; /* Hover en un rojo más oscuro */
+}
+
+
+
