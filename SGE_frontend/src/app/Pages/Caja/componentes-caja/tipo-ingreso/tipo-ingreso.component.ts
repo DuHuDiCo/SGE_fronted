@@ -13,8 +13,8 @@ export class TipoIngresoComponent implements OnInit {
 
   constructor(private cajaService: CajaService) { }
 
+  //variables
   tipoIngresosArray:TiposIngresos[] = []
-
   tiposIngresos: any = {
     NOMBRE: ''
   }
@@ -23,6 +23,7 @@ export class TipoIngresoComponent implements OnInit {
     this.getTiposIngresos()
   }
 
+  //obtener todos los tipos e ingresos
   getTiposIngresos(){
     this.cajaService.getTiposDeIngresos().subscribe(
       (data:any) =>{
@@ -34,6 +35,7 @@ export class TipoIngresoComponent implements OnInit {
     )
   }
 
+  //crear tipo de ingreso
   save(){
     if(this.tiposIngresos.NOMBRE.trim() == '' || this.tiposIngresos.NOMBRE.trim() == null){
       Swal.fire({
@@ -72,5 +74,4 @@ export class TipoIngresoComponent implements OnInit {
         }
       )
   }
-
 }

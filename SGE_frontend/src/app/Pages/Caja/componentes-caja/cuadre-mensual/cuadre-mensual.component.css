@@ -1,0 +1,161 @@
+.card-c {
+  color: #000;
+  position: relative;
+  margin-top: 50px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #eaecee;
+  box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.btn-color {
+  color: white;
+  background-color: #960010;
+  border-color: #960010;
+  margin-top: 3px;
+}
+
+.btn-color:hover {
+  background: #d40000;
+  border-color: #d40000;
+}
+
+/* Mantener la misma anchura entre el span y el input */
+.same-width {
+  flex: 1; /* Ambos elementos crecerán o reducirán al mismo tamaño dentro del contenedor */
+  max-width: 150px; /* Ajusta según tus necesidades */
+}
+
+.input-group-text {
+  text-align: center; /* Centramos el texto en el span */
+}
+
+/* Ajustar la misma anchura para el span */
+.same-width {
+  flex-basis: 30%; /* El span ocupará el 30% del ancho total */
+  max-width: 150px; /* Limita el ancho máximo del span */
+  text-align: center;
+}
+
+/* Hacer que el input sea más largo */
+.input-larger {
+  flex-basis: 70%; /* El input ocupará el 70% del ancho total */
+}
+
+/* Estilos personalizados */
+.placeholder {
+  background: #000000d8;
+}
+
+.c {
+  border-radius: 25px;
+  text-align: center;
+  margin: 15px auto;
+  padding: 10px;
+  box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+}
+
+.form-select, .form-control {
+  border-radius: 25px;
+  text-align: center;
+  padding: 10px;
+  box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+}
+
+.form-select {
+  border: none;
+  outline: none;
+}
+
+
+/* BOTON FLOTANTE */
+.floating-button {
+    position: fixed;
+    bottom: 30px;
+    left: 20px;
+    background-color: #960010;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+  }
+  
+  .floating-button:hover {
+    background-color: #c50e0e;
+  }
+
+  .floating-button:hover {
+    background-color: #c50e0e;
+  }
+  
+  @keyframes fadeInFromBottom {
+    0% {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+  
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .floating-button {
+    animation: fadeInFromBottom 1s ease forwards;
+  }
+  
+  /* Ajustar el tamaño del icono y centrarlo en el contenedor */
+  .floating-button .icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+  }
+  
+  .floating-button .icon-container i {
+    font-size: 40px;
+  }
+  
+  /* Nueva animación para el hover del icono */
+  @keyframes iconShrink {
+    0% {
+      transform: scale(1);
+    }
+  
+    100% {
+      transform: scale(0.7);
+    }
+  }
+  
+  /* Aplicar la animación al icono en el hover */
+  .floating-button:hover .icon-container {
+    animation: iconShrink 0.3s ease forwards;
+    padding-bottom: 30px;
+  }
+  
+  /* Estilos para el texto que aparece en el hover */
+  .floating-button .text-container {
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  /* Mostramos el texto cuando el botón está en hover */
+  .floating-button:hover .text-container {
+    opacity: 1;
+    padding-bottom: 15px;
+    font-size: 1.1em;
+  }
+  

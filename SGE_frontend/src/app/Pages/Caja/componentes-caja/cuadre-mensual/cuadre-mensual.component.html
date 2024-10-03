@@ -1,1 +1,131 @@
-<p>cuadre-mensual works!</p>
+<div class="container-fluid">
+    <div class="card-c">
+        <h4 class="fw-bold">Crear Cuadre Mensual</h4>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-floating mb-3">
+                    <input type="date" [(ngModel)]="fechaCuadre" class="form-control" placeholder="Fecha Cuadre">
+                    <label>Fecha Cuadre</label>
+                </div>
+            </div>
+            <div class="col-md-8 text-start">
+                <button class="btn btn-lg btn-color align-middle" (click)="crearCuadreMensual()">Crear</button>
+            </div>
+        </div>
+
+    <div class="row mt-3">
+        <div *ngIf="cuadreMensual != null">
+            <h5>Cuadre Mensual</h5>
+            <table class="table table-bordered align-middle text-center">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Año</th>
+                        <th>Cartera</th>
+                        <th>Iniciales</th>
+                        <th>Contado</th>
+                        <th>Gastos</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="cuadreMensual">
+                        <td>{{ cuadreMensual.fechaCuadre | date:'dd/MM/yyyy'}}</td>
+                        <td>{{ cuadreMensual.anio}}</td>
+                        <td>{{ cuadreMensual.valorTotalCartera | currency:'$':'symbol':'1.0-0' }}</td>
+                        <td>{{ cuadreMensual.valorTotalIniciales | currency:'$':'symbol':'1.0-0' }}</td>
+                        <td>{{ cuadreMensual.valorTotalContado | currency:'$':'symbol':'1.0-0'}}</td>
+                        <td>{{ cuadreMensual.valorTotalGastos | currency:'$':'symbol':'1.0-0' }}</td>
+                        <td>{{ cuadreMensual.valorTotalMes | currency:'$':'symbol':'1.0-0' }}</td>
+                    </tr>
+                    <tr *ngFor="let d of resultadosBusqueda">
+                        <td>{{ d.fechaCuadre | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ d.anio }}</td>
+                        <td>{{ d.valorTotalCartera | currency:'$':'symbol':'1.0-0' }}</td>
+                        <td>{{ d.valorTotalIniciales | currency:'$':'symbol':'1.0-0' }}</td>
+                        <td>{{ d.valorTotalContado | currency:'$':'symbol':'1.0-0' }}</td>
+                        <td>{{ d.valorTotalGastos | currency:'$':'symbol':'1.0-0' }}</td>
+                        <td>{{ d.valorTotalMes | currency:'$':'symbol':'1.0-0' }}</td>
+                    </tr>                    
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="cuadresDiario.length > 0">
+            <h5>Cuadres Darios</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle text-center">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Cartera</th>
+                            <th>Iniciales</th>
+                            <th>Contado</th>
+                            <th>Gastos</th>
+                            <th>Bancolombia</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let c of cuadresDiario">
+                            <td>{{ c.fechaCuadre | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ c.valorCartera | currency:'$':'symbol':'1.0-0' }}</td>
+                            <td>{{ c.valorIniciales | currency:'$':'symbol':'1.0-0' }}</td>
+                            <td>{{ c.valorContado | currency:'$':'symbol':'1.0-0' }}</td>
+                            <td>{{ c.valorGastos | currency:'$':'symbol':'1.0-0' }}</td>
+                            <td>{{ c.valorBancolombia | currency:'$':'symbol':'1.0-0' }}</td>
+                            <td>{{ c.valorTotalCuadre | currency:'$':'symbol':'1.0-0' }}</td>
+                        </tr>
+                        <tr *ngFor="let d of resultadosBusqueda">
+                            <td>{{ d.fechaCuadre | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ d.valorCartera | currency:'$':'symbol':'1.0-0' }}</td>
+                            <td>{{ d.valorIniciales | currency:'$':'symbol':'1.0-0' }}</td>
+                            <td>{{ d.valorContado | currency:'$':'symbol':'1.0-0' }}</td>
+                            <td>{{ d.valorGastos | currency:'$':'symbol':'1.0-0' }}</td>
+                            <td>{{ d.valorBancolombia | currency:'$':'symbol':'1.0-0' }}</td>
+                            <td>{{ d.valorTotalCuadre | currency:'$':'symbol':'1.0-0' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>        
+    </div>
+</div>
+
+
+    <div class="floating-button-container">
+        <button class="floating-button fadeInFromBottom" data-bs-toggle="modal" data-bs-target="#modalCuadreMensual">
+            <div class="icon-container">
+                <i class="fa-solid fa-magnifying-glass fa-2x"></i>
+            </div><br>
+            <div class="text-container">
+                <span class="text">Buscar</span>
+            </div>
+        </button>
+    </div>
+
+    <div class="modal fade" id="modalCuadreMensual" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Buscar Cuadres Diarios</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-4">
+                        <span class="input-group-text fw-bold same-width">Fecha Inicial</span>
+                        <input [(ngModel)]="fechaInicial" type="date" class="form-control input-larger">
+                    </div>
+                    <div class="input-group mb-4">
+                        <span class="input-group-text fw-bold same-width">Fecha Final</span>
+                        <input [(ngModel)]="fechaFinal" type="date" class="form-control input-larger">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-danger b" (click)="abrirModalBuscar()">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    

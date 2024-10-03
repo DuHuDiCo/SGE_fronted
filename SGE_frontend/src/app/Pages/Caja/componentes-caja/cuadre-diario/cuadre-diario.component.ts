@@ -2,53 +2,131 @@ import { Component, OnInit } from '@angular/core';
 import jsPDF from 'jspdf';
 
 import autoTable from 'jspdf-autotable'
-import { catchError, of, tap } from 'rxjs';
+import { catchError, of, switchMap, tap } from 'rxjs';
 import { CajaService } from 'src/app/Services/Caja/caja.service';
 import { CuadreDiario, IngresosDiariosArray } from 'src/app/Types/Caja/CuadreDiario';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cuadre-diario',
   templateUrl: './cuadre-diario.component.html',
   styleUrls: ['./cuadre-diario.component.css']
 })
-export class CuadreDiarioComponent implements OnInit {
+export class CuadreDiarioComponent {
 
+  //variables
   fechaCuadre: string = '';
-  ingresosDiario: IngresosDiariosArray[] = []
-  cuadreDiario: CuadreDiario | null = null
-
+  ingresosDiario: IngresosDiariosArray[] = [];
+  cuadreDiario: CuadreDiario | null = null;
+  fechaInicial: string = ''; 
+  fechaFinal: string = '';
+  resultadosBusqueda: any[] = [];
+  
   constructor(private cuadreDiarioService: CajaService) { }
-
-  ngOnInit(): void {
-  }
-
+  
+  // Agregar un cuadre diario
   crearCuadreDiario() {
-    // var obj = {
-    //   fechaCuadre: this.fechaCuadre
-    // }
-    // this.cuadreDiarioService.createCuadreDiario(obj).pipe(
-    //   tap((data: any) => {
-    //     // this.getIngresos()
-    //     this.cuadreDiario = data
-    //   }), catchError((error: Error) => {
-    //     console.log(error);
-    //     return of([])
-    //   })
-    // ).subscribe()
-  }
-
-  getIngresos() {
-    this.cuadreDiarioService.getIngresosByFecha(this.fechaCuadre).pipe(
-      tap((data: any) => {
-        this.ingresosDiario = data
-      }), catchError((error: Error) => {
-        console.log(error);
-        return of([])
+    if (this.fechaCuadre == null || this.fechaCuadre.trim() == '') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Fecha cuadre diario vacia',
+        text: 'Seleccione una fecha para poder crear el cuadre diario',
+        timer: 3000
       })
-    ).subscribe()
+      return
+    }
+
+    this.getIngresos().pipe(
+      switchMap(() => {
+        if (this.ingresosDiario.length > 0) {
+          var fechaCuadre = new Date(this.fechaCuadre).toISOString();
+          var obj = { fechaCuadre: fechaCuadre };
+  
+          return this.cuadreDiarioService.createCuadreDiario(obj).pipe(
+            tap((data: any) => {
+              this.cuadreDiario = data;
+              console.log(data);
+            }),
+            catchError((error: Error) => {
+              console.log(error);
+              return of([]); 
+            })
+          );
+        } else {
+          console.log("No hay ingresos para crear el cuadre diario.");
+          return of([]);
+        }
+      })
+    ).subscribe();
+  }
+  
+  // Obtener los ingresos diarios
+  getIngresos() {
+    console.log("Fecha enviada para ingresos:", this.fechaCuadre);
+    return this.cuadreDiarioService.getIngresosByFecha(this.fechaCuadre).pipe(
+      tap((data: any) => {
+        this.ingresosDiario = data;
+        console.log("Datos de ingresos:", data);
+      }),
+      catchError((error: Error) => {
+        console.log("Error al obtener los ingresos:", error);
+        return of([]); 
+      })
+    );
+  }
+  
+  // Buscar los cuadres diarios
+  getCuadreDiario(fechaInicial: string, fechaFinal: string) {
+    return this.cuadreDiarioService.getCuadreDiario(fechaInicial, fechaFinal).pipe(
+      tap((data: any) => {
+        if (data && data.length > 0) {
+          this.resultadosBusqueda = data;
+          console.log("Cuadre diario obtenido:", this.resultadosBusqueda);
+        } else {
+          console.log("No se encontraron registros de cuadre diario.");
+        }
+      }),
+      catchError((error: Error) => {
+        console.log("Error al obtener el cuadre diario:", error);
+        return of([]); 
+      })
+    );
+  }
+  
+//Buscar un cuadre diario modal
+abrirModalBuscar() {
+  //validaciones
+  if (this.fechaInicial == null || this.fechaInicial.trim() == '') {
+    Swal.fire({
+      icon: 'error',
+      title: 'Campo fecha inicial vacia',
+      text: 'Seleccione una fecha inicial para buscar un cuadre mensual',
+      timer: 3000
+    })
+    return
   }
 
+  if (this.fechaFinal == null || this.fechaFinal.trim() == '') {
+    Swal.fire({
+      icon: 'error',
+      title: 'Campo fecha final vacia',
+      text: 'Seleccione una fecha final para buscar un cuadre mensual',
+      timer: 3000
+    })
+    return
+  }
 
+  if (!this.fechaInicial || !this.fechaFinal) {
+    console.error("Las fechas no pueden estar vacías.");
+    return; 
+  }
+  this.getCuadreDiario(this.fechaInicial, this.fechaFinal).subscribe((data: CuadreDiario | null) => {
+    this.cuadreDiario = data;
+    console.log("Resultados de la busqueda cuadre diario:", data);
+  });
+}
+
+//Generar PDF
   generarPDF() {
     const doc = new jsPDF('p', 'mm', 'a4');
 

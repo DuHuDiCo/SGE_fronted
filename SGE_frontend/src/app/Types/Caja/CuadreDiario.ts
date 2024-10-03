@@ -9,6 +9,7 @@ export type IngresosDiariosArray = {
 }
 
 export type CuadreDiario = {
+    length: number
     idCuadreDiario: number,
     valorCartera: number,
     valorIniciales: number,
@@ -17,7 +18,11 @@ export type CuadreDiario = {
     valorBancolombia: number,
     fechaCreacion: Date,
     fechaCuadre: Date,
-    valorTotalCuadre: number
+    valorTotalCuadre: number,
+    usuario: {
+        idUsuario: number,
+        username: string
+    }
 }
 
 

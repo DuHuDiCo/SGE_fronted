@@ -11,14 +11,12 @@ import Swal from 'sweetalert2';
   styleUrls: ['./ingresos-diarios.component.css']
 })
 export class IngresosDiariosComponent{
-currency: number | undefined;
-
   constructor(private cajaService: CajaService) { }
 
+  //variables
   isEditing: boolean = false;
   idIngreso: number = 0;
   fechaIngreso: string = '';
-
   ingresosDiariosArray: IngresosDiariosArray[] = [];
   tipoIngreso: any = [];
 
@@ -28,11 +26,13 @@ currency: number | undefined;
       tipoIngreso: ''
   }
 
+  //Modal crear ingresos diarios
   ModalCrear() {
     this.isEditing = false; 
     this.ingresosDiarios = { valorIngreso: 0, fechaIngreso: '', tipoIngreso: '' }; 
   }
 
+  //Modal editar ingresos diarios
   ModalEditar(ingreso: IngresosDiariosArray) {
     console.log(ingreso);
     this.idIngreso = ingreso.idIngresosDiarios;
@@ -53,6 +53,7 @@ currency: number | undefined;
   }
   
   ngOnInit(): void {
+    //obtener todos los tipos de ingresos
     this.cajaService.getTiposDeIngresos().pipe(
       tap((data: any)=>{
         this.tipoIngreso = data;
@@ -68,8 +69,9 @@ currency: number | undefined;
     ).subscribe()
   }
 
+  //buscar todos los ingresos diarios
   getIngresosDiarios() {
-    if (this.fechaIngreso == null) {
+    if (this.fechaIngreso == null || this.fechaIngreso.trim() == '') {
       Swal.fire({
         icon: 'error',
         title: 'Campo fecha ingresos vacia',
@@ -78,6 +80,8 @@ currency: number | undefined;
       })
       return
     }
+    console.log("Fecha enviada a la API para ingresos:", this.fechaIngreso); 
+
     this.cajaService.getIngresosByFecha(this.fechaIngreso).pipe(
       tap((data: any) => {
         this.ingresosDiariosArray = data; 
@@ -90,8 +94,8 @@ currency: number | undefined;
     ).subscribe()
   }
 
+  //crear un ingreso diario
   createIngresosDiarios() {
-
     if (this.ingresosDiarios.valorIngreso <= 0) {
       Swal.fire({
         icon: 'error',
@@ -102,7 +106,7 @@ currency: number | undefined;
       return
     }
 
-    if (this.ingresosDiarios.fechaIngreso == null) {
+    if (this.ingresosDiarios.fechaIngreso == null || this.ingresosDiarios.fechaIngreso.trim() == '') {
       Swal.fire({
         icon: 'error',
         title: 'Campo fecha vacia',
@@ -112,10 +116,10 @@ currency: number | undefined;
       return
     }
 
-    if (this.ingresosDiarios.tipoIngreso == null) {
+    if (this.ingresosDiarios.tipoIngreso == null || this.ingresosDiarios.tipoIngreso.trim() == '') {
       Swal.fire({
         icon: 'error',
-        title: 'Capo tipo ingreso vacio',
+        title: 'Campo tipo ingreso vacio',
         text: 'Seleccione un tipo de ingreso',
         timer: 3000
       })
@@ -140,8 +144,14 @@ currency: number | undefined;
     ).subscribe()
 
     console.log('Datos a enviar:', this.ingresosDiarios); 
+    this.ingresosDiarios = {
+      valorIngreso: 0,
+      fechaIngreso: '',
+      tipoIngreso: ''
+    }
   }
 
+  //actualizar un ingreso diario
   updateIngresosDiarios(ingreso: IngresosDiariosArray) {
     if (this.ingresosDiarios.valorIngreso <= 0) {
       Swal.fire({
@@ -194,6 +204,7 @@ currency: number | undefined;
     ).subscribe();
   }
 
+  //eliminar un ingreso diario
   deleteIngresosDiarios(idIngreso: number){
     Swal.fire({
       title: "Eliminar ingreso diario",

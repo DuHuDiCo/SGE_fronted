@@ -11,6 +11,7 @@ export class CajaService {
 
   constructor(private http: HttpClient) { }
 
+//Ingresos diarios
   getIngresosByFecha(fecha: string) {
     return this.http.get(`http://192.168.1.241:8009/api/v1/ingresosDiarios/getByFecha?fecha=${fecha}`);
   }
@@ -27,6 +28,7 @@ export class CajaService {
     return this.http.delete(`http://192.168.1.241:8009/api/v1/ingresosDiarios/delete/${idIngreso}`);
   }
 
+  //Tipos de ingresos
   getTiposDeIngresos(){
     return this.http.get(`http://192.168.1.241:8009/api/v1/tipoIngresos/`);
   }
@@ -35,12 +37,21 @@ export class CajaService {
     return this.http.post(`http://192.168.1.241:8009/api/v1/tipoIngresos/saveTipoIngreso`, tipoIngreso);
   }
 
-  getCuadreDiario(fechaInicial: string, fechaFinal: string, usuarioId: number){
-    return this.http.get(`http://192.168.1.241:8009/api/v1/cuadreDiario/getByMes?fechaInicial=${fechaInicial}&fechaFinal=${fechaFinal}&usuarioId=${usuarioId}`);
+  //Cuadres diarios
+  getCuadreDiario(fechaInicial: string, fechaFinal: string){
+    return this.http.get(`http://192.168.1.241:8009/api/v1/cuadreDiario/getByMes?fechaInicial=${fechaInicial}&fechaFinal=${fechaFinal}`);
   }
 
-  createCuadreDiario(fechaCuadre: Date) {
-    return this.http.post(`http://192.168.1.241:8009/api/v1/cuadreDiario/save`, fechaCuadre);
+  createCuadreDiario(obj: { fechaCuadre: string }) {
+    return this.http.post('http://192.168.1.241:8009/api/v1/cuadreDiario/save', obj);
+  }
+  
+  //Cuadres mensuales
+  createCuadreMensual(obj: {fechaCuadre: string}) {
+    return this.http.post('http://192.168.1.241:8009/api/v1/cuadreMensual/save', obj);
   }
 
+  getCuadreMensual(fechaInicial: string, fechaFinal: string){
+    return this.http.get(`http://192.168.1.241:8009/api/v1/cuadreMensual/getByMes?fechaInicial=${fechaInicial}&fechaFinal=${fechaFinal}`);
+  }
 }

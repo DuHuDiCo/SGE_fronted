@@ -2,16 +2,16 @@
   <div class="card-c">
       <h4 class="fw-bold">Buscar ingresos diarios por fecha</h4>
       <div class="row">
-          <div class="col-md-4">
-              <div class="form-floating mb-3">
-                  <input type="date" [(ngModel)]="fechaIngreso" class="form-control" placeholder="Fecha Cuadre">
-                  <label>Fecha ingreso</label>
-              </div>
+        <div class="col-md-4">
+          <div class="form-floating mb-3">
+            <input type="date" [(ngModel)]="fechaIngreso" class="form-control" placeholder="Fecha Cuadre">
+            <label>Fecha ingreso</label>
           </div>
-          <div class="col-md-8 text-start mt-2">
-              <button class="btn btn-lg btn-color" (click)="getIngresosDiarios()">Buscar</button>
-          </div>
-      </div>
+        </div>
+        <div class="col-md-8 text-start">
+          <button class="btn btn-lg btn-color align-middle" (click)="getIngresosDiarios()">Buscar</button>
+        </div>
+      </div>      
 
       <div *ngIf="ingresosDiariosArray.length > 0">
           <h5>Ingresos Diarios</h5>
@@ -45,14 +45,21 @@
       </div>
   </div>
 
-  <button class="btn btn-primary btn-floating" data-bs-toggle="modal" data-bs-target="#Modal" (click)="ModalCrear()">
-    <i class="fa-solid fa-plus"></i>
-  </button>
+  <div class="floating-button-container">
+    <button class="floating-button fadeInFromBottom" data-bs-toggle="modal" data-bs-target="#Modal" (click)="ModalCrear()">
+      <div class="icon-container">
+          <i class="fa-solid fa-plus"></i>
+        </div><br>
+        <div class="text-container">
+            <span class="text">Agregar</span>
+        </div>
+    </button>
+  </div>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">{{ isEditing ? 'Editar Ingreso Diario' : 'Crear Ingreso Diario' }}</h1>
@@ -61,30 +68,29 @@
 
       <div class="modal-body">
         <div class="row justify-content-center text-center">
-          <div class="col-md-10">
-            <input type="date" class="form-control text-center" [(ngModel)]="ingresosDiarios.fechaIngreso" required>
+          <div class="col-md-10 input-group mb-3">
+            <span class="input-group-text fw-bold same-width">Fecha Ingreso</span>
+            <input type="date" class="form-control input-larger" [(ngModel)]="ingresosDiarios.fechaIngreso" required>
           </div>
         </div>
-      </div>
 
-      <div class="modal-body">
         <div class="row justify-content-center text-center">
-          <div class="col-md-10">
-            <input type="number" class="form-control text-center" placeholder="Valor ingreso diario" [(ngModel)]="ingresosDiarios.valorIngreso" required>
+          <div class="col-md-10 input-group mb-3">
+            <span class="input-group-text fw-bold same-width">Valor Ingreso</span>
+            <input type="number" class="form-control input-larger" placeholder="Valor ingreso diario" [(ngModel)]="ingresosDiarios.valorIngreso" required>
           </div>
         </div>
-      </div>
 
-      <div class="modal-body">
         <div class="row justify-content-center text-center">
-          <div class="col-md-10">
-            <select [(ngModel)]="ingresosDiarios.tipoIngreso" name="tipoIngreso" class="form-control text-center" required>
+          <div class="col-md-10 input-group mb-3">
+            <span class="input-group-text fw-bold same-width">Tipo Ingreso</span>
+            <select [(ngModel)]="ingresosDiarios.tipoIngreso" name="tipoIngreso" class="form-control input-larger" required>
               <option value="" disabled selected>Seleccione un tipo de ingreso</option>
               <option *ngFor="let t of tipoIngreso" [value]="t.nombre">{{ t.nombre }}</option>
             </select>
           </div>
         </div>
-      </div>    
+      </div>  
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -95,5 +101,6 @@
     </div>
   </div>
 </div>
+ 
 
   

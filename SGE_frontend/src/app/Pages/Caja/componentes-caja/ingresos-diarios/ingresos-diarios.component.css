@@ -14,6 +14,7 @@
   color: white;
   background-color: #960010;
   border-color: #960010;
+  margin-top: 3px;
 }
 
 .btn-color:hover {
@@ -22,51 +23,129 @@
 }
 
 
-.placeholder{
-    background: #000000d8;
+/* Ajustar la misma anchura para el span */
+.same-width {
+  flex-basis: 30%; /* El span ocupará el 30% del ancho total */
+  max-width: 150px; /* Limita el ancho máximo del span */
+  text-align: center;
 }
 
-.c{
-    border-radius: 25px;
-    text-align: center;
-    margin: 15px auto;
-    padding: 10px;
-    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+/* Hacer que el input sea más largo */
+.input-larger {
+  flex-basis: 70%; /* El input ocupará el 70% del ancho total */
 }
 
-
-.form-select{
-    border-radius: 25px;
-    text-align: center;
-    margin: 15px auto;
-    padding: 10px;
-    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+/* Estilos personalizados */
+.placeholder {
+  background: #000000d8;
 }
 
-  .form-control{
-    border-radius: 25px;
-    text-align: center;
-    margin: 15px auto;
-    padding: 10px;
-    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+.c {
+  border-radius: 25px;
+  text-align: center;
+  margin: 15px auto;
+  padding: 10px;
+  box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 
-.form-select{
-    border: none;
-    outline: none;
-
+.form-select, .form-control {
+  border-radius: 25px;
+  text-align: center;
+  padding: 10px;
+  box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 
-.btn-floating {
+.form-select {
+  border: none;
+  outline: none;
+}
+
+/* BOTON FLOTANTE */
+.floating-button {
   position: fixed;
   bottom: 120px;
-  right: 50px;  
+  right: 47px;  
+  background-color: #960010;
+  color: #fff;
+  border: none;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 999;
 }
+
+.floating-button:hover {
+  background-color: #c50e0e;
+}
+
+.floating-button:hover {
+  background-color: #c50e0e;
+}
+
+@keyframes fadeInFromBottom {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.floating-button {
+  animation: fadeInFromBottom 1s ease forwards;
+}
+
+/* Ajustar el tamaño del icono y centrarlo en el contenedor */
+.floating-button .icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+}
+
+.floating-button .icon-container i {
+  font-size: 40px;
+}
+
+/* Nueva animación para el hover del icono */
+@keyframes iconShrink {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0.7);
+  }
+}
+
+/* Aplicar la animación al icono en el hover */
+.floating-button:hover .icon-container {
+  animation: iconShrink 0.3s ease forwards;
+  padding-bottom: 30px;
+}
+
+/* Estilos para el texto que aparece en el hover */
+.floating-button .text-container {
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Mostramos el texto cuando el botón está en hover */
+.floating-button:hover .text-container {
+  opacity: 1;
+  padding-bottom: 15px;
+  font-size: 1.1em;
+}
+
