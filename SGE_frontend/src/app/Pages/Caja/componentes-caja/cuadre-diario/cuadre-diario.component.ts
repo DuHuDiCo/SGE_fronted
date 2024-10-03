@@ -18,22 +18,7 @@ export class CuadreDiarioComponent {
   modoCreacion: boolean = false;
   fechaCuadre: string = '';
   ingresosDiario: IngresosDiariosArray[] = [];
-  cuadreDiario: CuadreDiario = {
-    length: 0,
-    idCuadreDiario: 0,
-    valorCartera: 0,
-    valorIniciales: 0,
-    valorContado: 0,
-    valorGastos: 0,
-    valorBancolombia: 0,
-    fechaCreacion: new Date(),
-    fechaCuadre: new Date(),
-    valorTotalCuadre: 0,
-    usuario: {
-      idUsuario: 0,
-      username: ''
-    }
-  };
+  cuadreDiario: CuadreDiario | null = null;
 
   fechaInicial: string = '';
   fechaFinal: string = '';
@@ -48,7 +33,6 @@ export class CuadreDiarioComponent {
 
   // Agregar un cuadre diario
   crearCuadreDiario() {
-    this.modoCreacion = true;
     if (this.fechaCuadre == null || this.fechaCuadre.trim() == '') {
       Swal.fire({
         icon: 'error',
@@ -64,21 +48,30 @@ export class CuadreDiarioComponent {
         if (this.ingresosDiario.length > 0) {
           var fechaCuadre = new Date(this.fechaCuadre).toISOString();
           var obj = { fechaCuadre: fechaCuadre };
+          console.log(obj);
 
-          this.convertirArray()
+          // this.convertirArray()
 
           return this.cuadreDiarioService.createCuadreDiario(obj).pipe(
             tap((data: any) => {
               this.cuadreDiario = data;
+              this.modoCreacion = true;
               console.log(data);
             }),
-            catchError((error: Error) => {
+            catchError((error: any) => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error al Crear el Cuadre Diario',
+                text: error.error.message,
+                timer: 3000
+              })
+              this.ingresosDiario = []
+              this.cuadreDiario = null;
+              this.modoCreacion = false;
               console.log(error);
               return of([]);
             })
           );
-
-          return '';
         } else {
           console.log("No hay ingresos para crear el cuadre diario.");
           return of([]);
@@ -136,12 +129,12 @@ export class CuadreDiarioComponent {
 
     var arrayCuadreDiario: string[] = [];
 
-    arrayCuadreDiario.push(this.cuadreDiario.valorCartera.toString());
-    arrayCuadreDiario.push(this.cuadreDiario.valorIniciales.toString());
-    arrayCuadreDiario.push(this.cuadreDiario.valorContado.toString());
-    arrayCuadreDiario.push(this.cuadreDiario.valorGastos.toString());
-    arrayCuadreDiario.push(this.cuadreDiario.valorBancolombia.toString());
-    arrayCuadreDiario.push(this.cuadreDiario.valorTotalCuadre.toString());
+    arrayCuadreDiario.push(this.cuadreDiario!.valorCartera.toString());
+    arrayCuadreDiario.push(this.cuadreDiario!.valorIniciales.toString());
+    arrayCuadreDiario.push(this.cuadreDiario!.valorContado.toString());
+    arrayCuadreDiario.push(this.cuadreDiario!.valorGastos.toString());
+    arrayCuadreDiario.push(this.cuadreDiario!.valorBancolombia.toString());
+    arrayCuadreDiario.push(this.cuadreDiario!.valorTotalCuadre.toString());
     this.cuadreDiarioPDF.push(arrayCuadreDiario);
     console.log(this.cuadreDiarioPDF);
 
