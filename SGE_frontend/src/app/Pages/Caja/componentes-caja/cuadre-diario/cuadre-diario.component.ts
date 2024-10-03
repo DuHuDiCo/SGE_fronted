@@ -17,13 +17,34 @@ export class CuadreDiarioComponent {
   //variables
   fechaCuadre: string = '';
   ingresosDiario: IngresosDiariosArray[] = [];
-  cuadreDiario: CuadreDiario | null = null;
-  fechaInicial: string = ''; 
+  cuadreDiario: CuadreDiario = {
+    length: 0,
+    idCuadreDiario: 0,
+    valorCartera: 0,
+    valorIniciales: 0,
+    valorContado: 0,
+    valorGastos: 0,
+    valorBancolombia: 0,
+    fechaCreacion: new Date(),
+    fechaCuadre: new Date(),
+    valorTotalCuadre: 0,
+    usuario: {
+      idUsuario: 0,
+      username: ''
+    }
+  };
+
+  fechaInicial: string = '';
   fechaFinal: string = '';
   resultadosBusqueda: any[] = [];
-  
+
+  // ARRAYS PDF
+  ingresosDiarioPDF: string[][] = [];
+  cuadreDiarioPDF: string[][] = [];
+
+
   constructor(private cuadreDiarioService: CajaService) { }
-  
+
   // Agregar un cuadre diario
   crearCuadreDiario() {
     if (this.fechaCuadre == null || this.fechaCuadre.trim() == '') {
@@ -41,7 +62,9 @@ export class CuadreDiarioComponent {
         if (this.ingresosDiario.length > 0) {
           var fechaCuadre = new Date(this.fechaCuadre).toISOString();
           var obj = { fechaCuadre: fechaCuadre };
-  
+
+          this.convertirArray()
+
           return this.cuadreDiarioService.createCuadreDiario(obj).pipe(
             tap((data: any) => {
               this.cuadreDiario = data;
@@ -49,9 +72,11 @@ export class CuadreDiarioComponent {
             }),
             catchError((error: Error) => {
               console.log(error);
-              return of([]); 
+              return of([]);
             })
           );
+
+          return '';
         } else {
           console.log("No hay ingresos para crear el cuadre diario.");
           return of([]);
@@ -59,7 +84,7 @@ export class CuadreDiarioComponent {
       })
     ).subscribe();
   }
-  
+
   // Obtener los ingresos diarios
   getIngresos() {
     console.log("Fecha enviada para ingresos:", this.fechaCuadre);
@@ -70,11 +95,11 @@ export class CuadreDiarioComponent {
       }),
       catchError((error: Error) => {
         console.log("Error al obtener los ingresos:", error);
-        return of([]); 
+        return of([]);
       })
     );
   }
-  
+
   // Buscar los cuadres diarios
   getCuadreDiario(fechaInicial: string, fechaFinal: string) {
     return this.cuadreDiarioService.getCuadreDiario(fechaInicial, fechaFinal).pipe(
@@ -88,45 +113,72 @@ export class CuadreDiarioComponent {
       }),
       catchError((error: Error) => {
         console.log("Error al obtener el cuadre diario:", error);
-        return of([]); 
+        return of([]);
       })
     );
   }
-  
-//Buscar un cuadre diario modal
-abrirModalBuscar() {
-  //validaciones
-  if (this.fechaInicial == null || this.fechaInicial.trim() == '') {
-    Swal.fire({
-      icon: 'error',
-      title: 'Campo fecha inicial vacia',
-      text: 'Seleccione una fecha inicial para buscar un cuadre mensual',
-      timer: 3000
-    })
-    return
+
+  // PREPARAR ARRAYS
+  convertirArray() {
+    var arrayingresosDiario: string[] = [];
+    for (var i = 0; i < this.ingresosDiario.length; i++) {
+      const fecha = new Date(this.ingresosDiario[i].fechaIngreso);
+      const formattedDate = fecha.toLocaleDateString('es-CO');
+      arrayingresosDiario.push(formattedDate);
+
+      arrayingresosDiario.push(this.ingresosDiario[i].valorIngreso.toString());
+      arrayingresosDiario.push(this.ingresosDiario[i].tipoIngreso.nombre);
+    }
+    this.ingresosDiarioPDF.push(arrayingresosDiario);
+    console.log(this.ingresosDiarioPDF);
+
+    var arrayCuadreDiario: string[] = [];
+
+    arrayCuadreDiario.push(this.cuadreDiario.valorCartera.toString());
+    arrayCuadreDiario.push(this.cuadreDiario.valorIniciales.toString());
+    arrayCuadreDiario.push(this.cuadreDiario.valorContado.toString());
+    arrayCuadreDiario.push(this.cuadreDiario.valorGastos.toString());
+    arrayCuadreDiario.push(this.cuadreDiario.valorBancolombia.toString());
+    arrayCuadreDiario.push(this.cuadreDiario.valorTotalCuadre.toString());
+    this.cuadreDiarioPDF.push(arrayCuadreDiario);
+    console.log(this.cuadreDiarioPDF);
+
   }
 
-  if (this.fechaFinal == null || this.fechaFinal.trim() == '') {
-    Swal.fire({
-      icon: 'error',
-      title: 'Campo fecha final vacia',
-      text: 'Seleccione una fecha final para buscar un cuadre mensual',
-      timer: 3000
-    })
-    return
+  //Buscar un cuadre diario modal
+  abrirModalBuscar() {
+    //validaciones
+    if (this.fechaInicial == null || this.fechaInicial.trim() == '') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Campo fecha inicial vacia',
+        text: 'Seleccione una fecha inicial para buscar un cuadre mensual',
+        timer: 3000
+      })
+      return
+    }
+
+    if (this.fechaFinal == null || this.fechaFinal.trim() == '') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Campo fecha final vacia',
+        text: 'Seleccione una fecha final para buscar un cuadre mensual',
+        timer: 3000
+      })
+      return
+    }
+
+    if (!this.fechaInicial || !this.fechaFinal) {
+      console.error("Las fechas no pueden estar vacías.");
+      return;
+    }
+    this.getCuadreDiario(this.fechaInicial, this.fechaFinal).subscribe((data: CuadreDiario) => {
+      this.cuadreDiario = data;
+      console.log("Resultados de la busqueda cuadre diario:", data);
+    });
   }
 
-  if (!this.fechaInicial || !this.fechaFinal) {
-    console.error("Las fechas no pueden estar vacías.");
-    return; 
-  }
-  this.getCuadreDiario(this.fechaInicial, this.fechaFinal).subscribe((data: CuadreDiario | null) => {
-    this.cuadreDiario = data;
-    console.log("Resultados de la busqueda cuadre diario:", data);
-  });
-}
-
-//Generar PDF
+  //Generar PDF
   generarPDF() {
     const doc = new jsPDF('p', 'mm', 'a4');
 
@@ -134,18 +186,23 @@ abrirModalBuscar() {
     doc.setFontSize(12);
     doc.text('Ingresos Diarios', 10, 10);
 
-    // Datos de la primera tabla
-    const ingresosData = [
-      ['01/01/2024', '1000', 'Ingreso A'],
-      ['02/01/2024', '2000', 'Ingreso B'],
-    ];
-
     // Generar la primera tabla
     autoTable(doc, {
       head: [['Fecha', 'Valor', 'Tipo Ingreso']],
-      body: ingresosData,
+      body: this.ingresosDiarioPDF,
       startY: 20,
       theme: 'grid',
+      headStyles: {
+        fillColor: [150, 0, 16],
+        textColor: [255, 255, 255],
+      },
+      bodyStyles: {
+        fillColor: [240, 240, 240],
+        textColor: [0, 0, 0],
+      },
+      alternateRowStyles: {
+        fillColor: [255, 255, 255],
+      },
     });
 
     // Añadir un salto de página si es necesario
@@ -154,15 +211,10 @@ abrirModalBuscar() {
     // Encabezado de la segunda tabla
     doc.text('Detalles de Ingresos', 10, 10);
 
-    // Datos de la segunda tabla
-    const detallesData = [
-      ['01/01/2024', '1', 'A', '1', '1', '1', '1'],
-    ];
-
     // Generar la segunda tabla
     autoTable(doc, {
       head: [['Fecha', 'Cartera', 'Iniciales', 'Contado', 'Gastos', 'Bancolombia', 'Total']],
-      body: detallesData,
+      body: this.cuadreDiarioPDF,
       startY: 20,
       theme: 'grid',
     });
