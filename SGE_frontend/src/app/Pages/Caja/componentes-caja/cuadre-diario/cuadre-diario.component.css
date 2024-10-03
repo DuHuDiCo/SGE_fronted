@@ -148,4 +148,56 @@
     padding-bottom: 15px;
     font-size: 1.1em;
   }
+
+/* Estilos para la tabla */
+/* Estilos para la tabla */
+.table-responsive {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table {
+  background-color: white; /* Fondo blanco para la tabla */
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  table-layout: fixed; /* Establecer un diseño fijo para la tabla */
+  width: 100%; /* Asegurar que la tabla use todo el ancho disponible */
+}
+
+.table th, .table td {
+  vertical-align: middle;
+  padding: 12px;
+  border: none;
+  overflow: hidden; /* Ocultar el desbordamiento de texto */
+  text-overflow: ellipsis; /* Añadir puntos suspensivos para contenido largo */
+  white-space: nowrap; /* Evitar que el texto se divida en múltiples líneas */
+}
+
+.table thead {
+  background-color: #dddada; /* Encabezado gris claro */
+  color: rgb(0, 0, 0); /* Texto negro */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #dddada; /* Fondo ligero para hover (gris suave) */
+}
+
+.btn-color {
+  background-color: darkred; /* Botón de buscar en rojo */
+  color: white; /* Texto blanco */
+  border-radius: 25px;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-color:hover {
+  background-color: #c50e0e; /* Hover en un rojo más oscuro */
+}
   

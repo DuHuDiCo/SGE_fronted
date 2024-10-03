@@ -13,30 +13,8 @@
             </div>
         </div>
 
-        <div class="row mt-3">
-            <div class="col-md-6" *ngIf="ingresosDiario.length > 0">
-                <h5>Ingresos Diarios</h5>
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle text-center">
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Tipo Ingreso</th>
-                                <th>Valor</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let i of ingresosDiario">
-                                <td>{{ i.fechaIngreso | date:'dd/MM/yyyy' }}</td>
-                                <td>{{ i.tipoIngreso.nombre }}</td>
-                                <td>{{ i.valorIngreso | currency:'$':'symbol':'1.0-0' }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="col-md-6" *ngIf="cuadreDiario != null">
+        <div class="row mt-3">        
+            <div class="col-md-12" *ngIf="modoCreacion === false && cuadreDiario != null">
                 <h5>Cuadres Diarios</h5>
                 <div class="table-responsive">
                     <table class="table table-bordered align-middle text-center">
@@ -75,7 +53,69 @@
                     </table>
                 </div>
             </div>
-        </div>
+        
+            <div class="col-md-6" *ngIf="modoCreacion === true">
+                <h5>Ingresos Diarios</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle text-center">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Tipo Ingreso</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let i of ingresosDiario">
+                                <td>{{ i.fechaIngreso | date:'dd/MM/yyyy' }}</td>
+                                <td>{{ i.tipoIngreso.nombre }}</td>
+                                <td>{{ i.valorIngreso | currency:'$':'symbol':'1.0-0' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        
+            <div class="col-md-6" *ngIf="modoCreacion === true">
+                <h5>Cuadres Diarios</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle text-center">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Cartera</th>
+                                <th>Iniciales</th>
+                                <th>Contado</th>
+                                <th>Gastos</th>
+                                <th>Bancolombia</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="cuadreDiario">
+                                <td>{{ cuadreDiario.fechaCuadre | date:'dd/MM/yyyy' }}</td>
+                                <td>{{ cuadreDiario.valorCartera | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ cuadreDiario.valorIniciales | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ cuadreDiario.valorContado | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ cuadreDiario.valorGastos | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ cuadreDiario.valorBancolombia | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ cuadreDiario.valorTotalCuadre | currency:'$':'symbol':'1.0-0' }}</td>
+                            </tr>
+        
+                            <tr *ngFor="let resultado of resultadosBusqueda">
+                                <td>{{ resultado.fechaCuadre | date:'dd/MM/yyyy' }}</td>
+                                <td>{{ resultado.valorCartera | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ resultado.valorIniciales | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ resultado.valorContado | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ resultado.valorGastos | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ resultado.valorBancolombia | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ resultado.valorTotalCuadre | currency:'$':'symbol':'1.0-0' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>                     
     </div>
 
     <div class="floating-button-container">
