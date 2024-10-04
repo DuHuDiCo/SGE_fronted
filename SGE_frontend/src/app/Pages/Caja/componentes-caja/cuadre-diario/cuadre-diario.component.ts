@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
   templateUrl: './cuadre-diario.component.html',
   styleUrls: ['./cuadre-diario.component.css']
 })
-export class CuadreDiarioComponent {
+export class CuadreDiarioComponent implements OnInit{
 
   //variables
   modoCreacion: boolean = false;
@@ -23,13 +23,21 @@ export class CuadreDiarioComponent {
   fechaInicial: string = '';
   fechaFinal: string = '';
   resultadosBusqueda: any[] = [];
+  maxFechaCuadre: string | undefined;
 
   // ARRAYS PDF
   ingresosDiarioPDF: string[][] = [];
   cuadreDiarioPDF: string[][] = [];
 
+  setMaxFechaCuadre() {
+    const today = new Date();
+    this.maxFechaCuadre = today.toISOString().split('T')[0]; 
+  }
 
   constructor(private cuadreDiarioService: CajaService) { }
+  ngOnInit(): void {
+    this.setMaxFechaCuadre()
+  }
 
   // Agregar un cuadre diario
   crearCuadreDiario() {
@@ -38,7 +46,6 @@ export class CuadreDiarioComponent {
         icon: 'error',
         title: 'Fecha cuadre diario vacia',
         text: 'Seleccione una fecha para poder crear el cuadre diario',
-        timer: 3000
       })
       return
     }
@@ -69,7 +76,6 @@ export class CuadreDiarioComponent {
                 icon: 'error',
                 title: 'Error al Crear el Cuadre Diario',
                 text: error.error.message,
-                timer: 3000
               })
               this.ingresosDiario = []
               this.cuadreDiario = null;
@@ -151,7 +157,6 @@ export class CuadreDiarioComponent {
     arrayCuadreDiario.push(this.cuadreDiario!.valorTotalCuadre.toString());
     this.cuadreDiarioPDF.push(arrayCuadreDiario);
     console.log(this.cuadreDiarioPDF);
-
   }
 
   //Buscar un cuadre diario modal
@@ -163,7 +168,6 @@ export class CuadreDiarioComponent {
         icon: 'error',
         title: 'Campo fecha inicial vacia',
         text: 'Seleccione una fecha inicial para buscar un cuadre mensual',
-        timer: 3000
       })
       return
     }
@@ -173,7 +177,6 @@ export class CuadreDiarioComponent {
         icon: 'error',
         title: 'Campo fecha final vacia',
         text: 'Seleccione una fecha final para buscar un cuadre mensual',
-        timer: 3000
       })
       return
     }
@@ -185,6 +188,7 @@ export class CuadreDiarioComponent {
     this.getCuadreDiario(this.fechaInicial, this.fechaFinal).subscribe((data: CuadreDiario) => {
       this.cuadreDiario = data;
       console.log("Resultados de la busqueda cuadre diario:", data);
+      
     });
   }
 

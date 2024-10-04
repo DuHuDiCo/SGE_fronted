@@ -4,8 +4,8 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-floating mb-3">
-                    <input type="date" [(ngModel)]="fechaCuadre" class="form-control" placeholder="Fecha Cuadre">
-                    <label>Fecha Cuadre</label>
+                    <input type="month" [(ngModel)]="fechaCuadre" class="form-control" placeholder="Fecha Cuadre">
+                    <label>Mes del cuadre mensual</label>
                 </div>
             </div>
             <div class="col-md-8 text-start">
@@ -29,8 +29,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="cuadreMensual">
-                        <td>{{ cuadreMensual.fechaCuadre | date:'dd/MM/yyyy'}}</td>
+                    <tr *ngIf="!modoCreacion && cuadreMensual">
+                        <td>{{ cuadreMensual.fechaCreacion | date: 'dd/MM'}}</td>
                         <td>{{ cuadreMensual.anio}}</td>
                         <td>{{ cuadreMensual.valorTotalCartera | currency:'$':'symbol':'1.0-0' }}</td>
                         <td>{{ cuadreMensual.valorTotalIniciales | currency:'$':'symbol':'1.0-0' }}</td>
@@ -39,7 +39,7 @@
                         <td>{{ cuadreMensual.valorTotalMes | currency:'$':'symbol':'1.0-0' }}</td>
                     </tr>
                     <tr *ngFor="let d of resultadosBusqueda">
-                        <td>{{ d.fechaCuadre | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ d.fechaCreacion | date:'dd/MM' }}</td>
                         <td>{{ d.anio }}</td>
                         <td>{{ d.valorTotalCartera | currency:'$':'symbol':'1.0-0' }}</td>
                         <td>{{ d.valorTotalIniciales | currency:'$':'symbol':'1.0-0' }}</td>
@@ -50,7 +50,7 @@
                 </tbody>
             </table>
         </div>
-        <div *ngIf="cuadresDiario.length > 0">
+        <div *ngIf="cuadresDiario.length > 0 ">
             <h5>Cuadres Darios</h5>
             <div class="table-responsive">
                 <table class="table table-bordered align-middle text-center">
@@ -105,27 +105,27 @@
 
     <div class="modal fade" id="modalCuadreMensual" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Buscar Cuadres Diarios</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="input-group mb-4">
-                        <span class="input-group-text fw-bold same-width">Fecha Inicial</span>
-                        <input [(ngModel)]="fechaInicial" type="date" class="form-control input-larger">
-                    </div>
-                    <div class="input-group mb-4">
-                        <span class="input-group-text fw-bold same-width">Fecha Final</span>
-                        <input [(ngModel)]="fechaFinal" type="date" class="form-control input-larger">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-danger b" (click)="abrirModalBuscar()">Buscar</button>
-                </div>
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Buscar Cuadre Mensual</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+              <div class="input-group mb-3">
+                <span class="input-group-text fw-bold same-width">Cuadre mensual</span>
+                <input [(ngModel)]="fechaCuadre" type="month" class="form-control input-larger">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-danger" (click)="abrirModalBuscar()">Buscar</button>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+      
+
+      
+      
     
     

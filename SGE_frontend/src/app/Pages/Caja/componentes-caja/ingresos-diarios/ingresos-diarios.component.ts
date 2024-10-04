@@ -10,20 +10,26 @@ import Swal from 'sweetalert2';
   templateUrl: './ingresos-diarios.component.html',
   styleUrls: ['./ingresos-diarios.component.css']
 })
-export class IngresosDiariosComponent{
+export class IngresosDiariosComponent implements OnInit{
+    //variables
+    isEditing: boolean = false;
+    idIngreso: number = 0;
+    fechaIngreso: string = '';
+    ingresosDiariosArray: IngresosDiariosArray[] = [];
+    tipoIngreso: any = [];
+    maxFechaIngreso: string | undefined;
+  
+    ingresosDiarios: any = {
+        valorIngreso: 0,
+        fechaIngreso: '',
+        tipoIngreso: ''
+    }
+  
   constructor(private cajaService: CajaService) { }
-
-  //variables
-  isEditing: boolean = false;
-  idIngreso: number = 0;
-  fechaIngreso: string = '';
-  ingresosDiariosArray: IngresosDiariosArray[] = [];
-  tipoIngreso: any = [];
-
-  ingresosDiarios: any = {
-      valorIngreso: 0,
-      fechaIngreso: '',
-      tipoIngreso: ''
+  
+  setMaxFechaIngreso() {
+    const today = new Date();
+    this.maxFechaIngreso = today.toISOString().split('T')[0]; 
   }
 
   //Modal crear ingresos diarios
@@ -53,6 +59,7 @@ export class IngresosDiariosComponent{
   }
   
   ngOnInit(): void {
+    this.setMaxFechaIngreso()
     //obtener todos los tipos de ingresos
     this.cajaService.getTiposDeIngresos().pipe(
       tap((data: any)=>{

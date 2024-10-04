@@ -18,6 +18,7 @@ export class CuadreMensualComponent{
   fechaInicial: string = ''; 
   fechaFinal: string = '';
   resultadosBusqueda: any[] = [];
+  modoCreacion: boolean = false;
   
   constructor(private cuadreMensualService: CajaService) { }
   
@@ -29,6 +30,10 @@ export class CuadreMensualComponent{
   
     this.fechaInicial = new Date(año, mes, 1).toISOString().split('T')[0]; 
     this.fechaFinal = new Date(año, mes + 1, 0).toISOString().split('T')[0]; 
+
+    console.log(this.fechaInicial);
+    console.log(this.fechaFinal);
+    
   }
   
   // Agregar un cuadre diario
@@ -47,16 +52,24 @@ export class CuadreMensualComponent{
     this.getCuadresDiarios(this.fechaInicial, this.fechaFinal).subscribe(() => {
       if (this.cuadresDiario.length > 0) {
         const fechaCuadre = new Date(this.fechaCuadre).toISOString();
-        const obj = { fechaCuadre: fechaCuadre };
+        const obj = { fecha: fechaCuadre };
   
         this.cuadreMensualService.createCuadreMensual(obj).pipe(
           tap((data: any) => {
             this.cuadreMensual = data;
             console.log(data);
           }),
-          catchError((error: Error) => {
+          catchError((error: any) => {
             console.log(error);
-            return of(null); 
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al Crear el Cuadre Mensual',
+              text: error.error.message,
+            })
+            this.cuadresDiario = []
+            this.cuadreMensual = null;
+            this.modoCreacion = false;
+            return of([]); 
           })
         ).subscribe();
       } else {
@@ -85,9 +98,9 @@ export class CuadreMensualComponent{
   }
 
   //buscar los cuadres mensuales
-  getCuadreMensual(fechaInicial: string, fechaFinal: string) {
+  getCuadreMensual(fecha: string) {
     return forkJoin({
-      cuadreMensual: this.cuadreMensualService.getCuadreMensual(fechaInicial, fechaFinal).pipe(
+      cuadreMensual: this.cuadreMensualService.getCuadreMensual(fecha).pipe(
         tap((data: any) => {
           if (data && data.length > 0) {
             console.log("Cuadre mensual obtenido:", data);
@@ -104,7 +117,7 @@ export class CuadreMensualComponent{
           return of([]); 
         })
       ),
-      cuadresDiarios: this.cuadreMensualService.getCuadreDiario(fechaInicial, fechaFinal).pipe(
+      cuadresDiarios: this.cuadreMensualService.getCuadreDiario(this.fechaInicial, this.fechaFinal).pipe(
         tap((data: any) => {
           if (data && data.length > 0) {
             console.log("Cuadres diarios obtenidos:", data);
@@ -122,26 +135,29 @@ export class CuadreMensualComponent{
   
   //buscar los cuadres mensuales modal
   abrirModalBuscar() {
-    if (!this.fechaInicial || !this.fechaFinal) {
+    if (!this.fechaCuadre) {
       Swal.fire({
         icon: 'error',
         title: 'Campos vacios',
         text: 'Las fechas no pueden estar vacias.',
-      })
-        return; 
+      });
+      return; 
     }
-    
-    this.getCuadreMensual(this.fechaInicial, this.fechaFinal).subscribe(({ cuadreMensual, cuadresDiarios }) => {
-        this.cuadreMensual = cuadreMensual; 
-        this.cuadresDiario = cuadresDiarios; 
-        console.log("Resultados de la búsqueda: Cuadre mensual:", this.cuadreMensual);
-        console.log("Resultados de la búsqueda: Cuadres diarios:", this.cuadresDiario);
-        
-        if (Array.isArray(this.cuadreMensual)) {
-          this.resultadosBusqueda = this.cuadreMensual;
+  
+    this.setFechasParaCuadre(); 
+  
+    this.getCuadreMensual(this.fechaCuadre).subscribe(({ cuadreMensual, cuadresDiarios }) => {
+      this.cuadreMensual = cuadreMensual; 
+      this.cuadresDiario = cuadresDiarios; 
+      console.log("Resultados de la búsqueda: Cuadre mensual:", this.cuadreMensual);
+      console.log("Resultados de la búsqueda: Cuadres diarios:", this.cuadresDiario);
+      
+      if (Array.isArray(this.cuadreMensual)) {
+        this.resultadosBusqueda = this.cuadreMensual;
       } else {
-          this.resultadosBusqueda = [this.cuadreMensual];
+        this.resultadosBusqueda = [this.cuadreMensual];
       }
     });
   }
+  
 }

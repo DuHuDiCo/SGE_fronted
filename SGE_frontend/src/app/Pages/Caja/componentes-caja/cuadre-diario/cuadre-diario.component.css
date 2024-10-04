@@ -25,16 +25,12 @@
 /* Ajustar la misma anchura para el span */
 .same-width {
   flex-basis: 30%;
-  /* El span ocupará el 30% del ancho total */
   max-width: 150px;
-  /* Limita el ancho máximo del span */
   text-align: center;
 }
 
-/* Hacer que el input sea más largo */
 .input-larger {
   flex-basis: 70%;
-  /* El input ocupará el 70% del ancho total */
 }
 
 /* Estilos personalizados */
