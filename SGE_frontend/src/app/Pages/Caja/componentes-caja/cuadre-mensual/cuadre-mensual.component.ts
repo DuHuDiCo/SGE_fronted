@@ -10,32 +10,39 @@ import Swal from 'sweetalert2';
   templateUrl: './cuadre-mensual.component.html',
   styleUrls: ['./cuadre-mensual.component.css']
 })
-export class CuadreMensualComponent{
+export class CuadreMensualComponent {
   //variables
-  fechaCuadre: string = ''; 
+  fechaCuadre: string = '';
   cuadresDiario: CuadreDiario[] = [];
-  cuadreMensual: CuadreMensual | null = null; 
-  fechaInicial: string = ''; 
+  cuadreMensual: CuadreMensual | null = null;
+  fechaInicial: string = '';
   fechaFinal: string = '';
   resultadosBusqueda: any[] = [];
   modoCreacion: boolean = false;
-  
+
   constructor(private cuadreMensualService: CajaService) { }
-  
+
   //Metodo de fecha inicial y fecha final
   setFechasParaCuadre() {
-    const fechaSeleccionada = new Date(this.fechaCuadre);
-    const mes = fechaSeleccionada.getMonth(); 
-    const año = fechaSeleccionada.getFullYear(); 
-  
-    this.fechaInicial = new Date(año, mes, 1).toISOString().split('T')[0]; 
-    this.fechaFinal = new Date(año, mes + 1, 0).toISOString().split('T')[0]; 
+
+ var fechaCuadre = (this.fechaCuadre + "-01").split("-")
+    console.log(this.fechaCuadre);
+
+
+    const fechaSeleccionada = new Date(Number(fechaCuadre[0]), Number(fechaCuadre[1]) -1, 1)
+    console.log(fechaSeleccionada);
+
+    const mes = fechaSeleccionada.getMonth();
+    const año = fechaSeleccionada.getFullYear();
+
+    this.fechaInicial = new Date(año, mes, 1).toISOString().split('T')[0];
+    this.fechaFinal = new Date(año, mes + 1, 0).toISOString().split('T')[0];
 
     console.log(this.fechaInicial);
     console.log(this.fechaFinal);
-    
+
   }
-  
+
   // Agregar un cuadre diario
   crearCuadreMensual() {
     if (this.fechaCuadre == null || this.fechaCuadre.trim() == '') {
@@ -48,12 +55,12 @@ export class CuadreMensualComponent{
     }
 
     this.setFechasParaCuadre();
-  
+
     this.getCuadresDiarios(this.fechaInicial, this.fechaFinal).subscribe(() => {
       if (this.cuadresDiario.length > 0) {
         const fechaCuadre = new Date(this.fechaCuadre).toISOString();
         const obj = { fecha: fechaCuadre };
-  
+
         this.cuadreMensualService.createCuadreMensual(obj).pipe(
           tap((data: any) => {
             this.cuadreMensual = data;
@@ -69,7 +76,7 @@ export class CuadreMensualComponent{
             this.cuadresDiario = []
             this.cuadreMensual = null;
             this.modoCreacion = false;
-            return of([]); 
+            return of([]);
           })
         ).subscribe();
       } else {
@@ -81,7 +88,7 @@ export class CuadreMensualComponent{
       }
     });
   }
-  
+
   // Obtener los cuadres diarios
   getCuadresDiarios(fechaInicial: string, fechaFinal: string) {
     console.log("Fecha enviada para cuadres:", this.fechaCuadre);
@@ -92,7 +99,7 @@ export class CuadreMensualComponent{
       }),
       catchError((error: Error) => {
         console.log("Error al obtener los cuadres diarios:", error);
-        return of([]); 
+        return of([]);
       })
     );
   }
@@ -114,7 +121,7 @@ export class CuadreMensualComponent{
         }),
         catchError((error: Error) => {
           console.log("Error al obtener el cuadre mensual:", error);
-          return of([]); 
+          return of([]);
         })
       ),
       cuadresDiarios: this.cuadreMensualService.getCuadreDiario(this.fechaInicial, this.fechaFinal).pipe(
@@ -127,12 +134,12 @@ export class CuadreMensualComponent{
         }),
         catchError((error: Error) => {
           console.log("Error al obtener los cuadres diarios:", error);
-          return of([]); 
+          return of([]);
         })
       )
     });
   }
-  
+
   //buscar los cuadres mensuales modal
   abrirModalBuscar() {
     if (!this.fechaCuadre) {
@@ -141,17 +148,17 @@ export class CuadreMensualComponent{
         title: 'Campos vacios',
         text: 'Las fechas no pueden estar vacias.',
       });
-      return; 
+      return;
     }
-  
-    this.setFechasParaCuadre(); 
-  
+
+    this.setFechasParaCuadre();
+
     this.getCuadreMensual(this.fechaCuadre).subscribe(({ cuadreMensual, cuadresDiarios }) => {
-      this.cuadreMensual = cuadreMensual; 
-      this.cuadresDiario = cuadresDiarios; 
+      this.cuadreMensual = cuadreMensual;
+      this.cuadresDiario = cuadresDiarios;
       console.log("Resultados de la búsqueda: Cuadre mensual:", this.cuadreMensual);
       console.log("Resultados de la búsqueda: Cuadres diarios:", this.cuadresDiario);
-      
+
       if (Array.isArray(this.cuadreMensual)) {
         this.resultadosBusqueda = this.cuadreMensual;
       } else {
@@ -159,5 +166,5 @@ export class CuadreMensualComponent{
       }
     });
   }
-  
+
 }
