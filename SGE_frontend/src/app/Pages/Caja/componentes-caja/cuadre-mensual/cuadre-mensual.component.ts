@@ -174,5 +174,95 @@ export class CuadreMensualComponent {
       }
     });
   }
+
+  convertirArray() {
+    for (var i = 0; i < this.cuadresDiario.length; i++) {
+      var arrayCuadreDiario: string[] = [];
+      const fecha = new Date(this.cuadresDiario[i].fechaCuadre);
+      const formattedDate = fecha.toLocaleDateString('es-CO');
+      arrayCuadreDiario.push(formattedDate);
+
+      arrayCuadreDiario.push(this.cuadresDiario[i].valorCartera.toString());
+      arrayCuadreDiario.push(this.cuadresDiario[i].valorIniciales.toString());
+      arrayCuadreDiario.push(this.cuadresDiario[i].valorContado.toString());
+      arrayCuadreDiario.push(this.cuadresDiario[i].valorGastos.toString());
+      arrayCuadreDiario.push(this.cuadresDiario[i].valorBancolombia.toString());
+      arrayCuadreDiario.push(this.cuadresDiario[i].valorTotalCuadre.toString());
+      this.cuadreDiarioPDF.push(arrayCuadreDiario);
+      console.log(this.cuadreDiarioPDF);
+    }
+
+    var arrayCuadreMensual: string[] = [];
+
+    const fecha = new Date(this.cuadreMensual!.fechaCreacion);
+    const formattedDate = fecha.toLocaleDateString('es-CO');
+    arrayCuadreMensual.push(formattedDate);
+
+    arrayCuadreMensual.push(formattedDate);
+    arrayCuadreMensual.push(this.cuadreMensual!.anio.toString());
+    arrayCuadreMensual.push(this.cuadreMensual!.mes.toString());
+    arrayCuadreMensual.push(this.cuadreMensual!.valorTotalCartera.toString());
+    arrayCuadreMensual.push(this.cuadreMensual!.valorTotalContado.toString());
+    arrayCuadreMensual.push(this.cuadreMensual!.valorTotalIniciales.toString());
+    arrayCuadreMensual.push(this.cuadreMensual!.valorTotalGastos.toString());
+    arrayCuadreMensual.push(this.cuadreMensual!.valorTotalMes.toString());
+    console.log(this.cuadreMensualPDF);
+  }
+
+  //Generar PDF
+  generarPDF() {
+    const doc = new jsPDF('p', 'mm', 'a4');
+
+    // Encabezado del PDF
+    doc.setFontSize(12);
+    doc.text('Ingresos Diarios', 10, 10);
+
+    // Generar la primera tabla
+    autoTable(doc, {
+      head: [['Fecha', 'Cartera', 'Iniciales', 'Contado', 'Gastos', 'Bancolombia', 'Total']],
+      body: this.cuadreDiarioPDF,
+      startY: 20,
+      theme: 'grid',
+      headStyles: {
+        fillColor: [150, 0, 16],
+        textColor: [255, 255, 255],
+      },
+      bodyStyles: {
+        fillColor: [240, 240, 240],
+        textColor: [0, 0, 0],
+      },
+      alternateRowStyles: {
+        fillColor: [255, 255, 255],
+      },
+    });
+
+    // Añadir un salto de página si es necesario
+    doc.addPage();
+
+    // Encabezado de la segunda tabla
+    doc.text('Cuadre Generado', 10, 10);
+
+    // Generar la segunda tabla
+    autoTable(doc, {
+      head: [['Año', 'Mes', 'Cartera', 'Contado', 'Iniciales', 'Gatos', 'Total']],
+      body: this.cuadreDiarioPDF,
+      startY: 20,
+      theme: 'grid',
+      headStyles: {
+        fillColor: [150, 0, 16],
+        textColor: [255, 255, 255],
+      },
+      bodyStyles: {
+        fillColor: [240, 240, 240],
+        textColor: [0, 0, 0],
+      },
+      alternateRowStyles: {
+        fillColor: [255, 255, 255],
+      },
+    });
+
+    // Guardar el PDF
+    doc.save('reporte.pdf');
+  }
   
 }
