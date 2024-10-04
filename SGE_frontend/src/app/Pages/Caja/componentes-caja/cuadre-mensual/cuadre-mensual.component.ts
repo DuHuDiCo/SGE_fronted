@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { catchError, forkJoin, of, switchMap, tap } from 'rxjs';
 import { CajaService } from 'src/app/Services/Caja/caja.service';
 import { CuadreDiario } from 'src/app/Types/Caja/CuadreDiario';
@@ -19,6 +21,10 @@ export class CuadreMensualComponent {
   fechaFinal: string = '';
   resultadosBusqueda: any[] = [];
   modoCreacion: boolean = false;
+
+  // ARRAYS PDF
+  cuadreDiarioPDF: string[][] = [];
+  cuadreMensualPDF: string[][] = [];
 
   constructor(private cuadreMensualService: CajaService) { }
 
@@ -64,6 +70,8 @@ export class CuadreMensualComponent {
         this.cuadreMensualService.createCuadreMensual(obj).pipe(
           tap((data: any) => {
             this.cuadreMensual = data;
+            this.convertirArray();
+            this.generarPDF();
             console.log(data);
           }),
           catchError((error: any) => {
@@ -166,5 +174,5 @@ export class CuadreMensualComponent {
       }
     });
   }
-
+  
 }
