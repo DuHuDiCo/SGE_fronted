@@ -50,12 +50,18 @@ export class CuadreDiarioComponent {
           var obj = { fechaCuadre: fechaCuadre };
           console.log(obj);
 
-          // this.convertirArray()
 
           return this.cuadreDiarioService.createCuadreDiario(obj).pipe(
             tap((data: any) => {
               this.cuadreDiario = data;
               this.modoCreacion = true;
+              Swal.fire({
+                icon: 'success',
+                title: 'Cuadre Diario Creado',
+                text: 'Descargando...',
+              })
+              this.convertirArray()
+              this.generarPDF()
               console.log(data);
             }),
             catchError((error: any) => {
@@ -73,7 +79,12 @@ export class CuadreDiarioComponent {
             })
           );
         } else {
-          console.log("No hay ingresos para crear el cuadre diario.");
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al Crear el Cuadre Diario',
+            text: 'No hay ingresos para crear el cuadre diario.',
+            timer: 3000
+          })
           return of([]);
         }
       })
@@ -115,20 +126,23 @@ export class CuadreDiarioComponent {
 
   // PREPARAR ARRAYS
   convertirArray() {
-    var arrayingresosDiario: string[] = [];
     for (var i = 0; i < this.ingresosDiario.length; i++) {
+      var arrayingresosDiario: string[] = [];
       const fecha = new Date(this.ingresosDiario[i].fechaIngreso);
       const formattedDate = fecha.toLocaleDateString('es-CO');
       arrayingresosDiario.push(formattedDate);
 
       arrayingresosDiario.push(this.ingresosDiario[i].valorIngreso.toString());
       arrayingresosDiario.push(this.ingresosDiario[i].tipoIngreso.nombre);
+      this.ingresosDiarioPDF.push(arrayingresosDiario);
     }
-    this.ingresosDiarioPDF.push(arrayingresosDiario);
     console.log(this.ingresosDiarioPDF);
 
     var arrayCuadreDiario: string[] = [];
 
+    const fecha = new Date(this.cuadreDiario!.fechaCreacion);
+    const formattedDate = fecha.toLocaleDateString('es-CO');
+    arrayCuadreDiario.push(formattedDate);
     arrayCuadreDiario.push(this.cuadreDiario!.valorCartera.toString());
     arrayCuadreDiario.push(this.cuadreDiario!.valorIniciales.toString());
     arrayCuadreDiario.push(this.cuadreDiario!.valorContado.toString());
@@ -205,7 +219,7 @@ export class CuadreDiarioComponent {
     doc.addPage();
 
     // Encabezado de la segunda tabla
-    doc.text('Detalles de Ingresos', 10, 10);
+    doc.text('Cuadre Generado', 10, 10);
 
     // Generar la segunda tabla
     autoTable(doc, {
@@ -213,6 +227,17 @@ export class CuadreDiarioComponent {
       body: this.cuadreDiarioPDF,
       startY: 20,
       theme: 'grid',
+      headStyles: {
+        fillColor: [150, 0, 16],
+        textColor: [255, 255, 255],
+      },
+      bodyStyles: {
+        fillColor: [240, 240, 240],
+        textColor: [0, 0, 0],
+      },
+      alternateRowStyles: {
+        fillColor: [255, 255, 255],
+      },
     });
 
     // Guardar el PDF
