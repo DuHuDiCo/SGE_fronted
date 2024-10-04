@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import jsPDF from 'jspdf';
 
 import autoTable from 'jspdf-autotable'
@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
   templateUrl: './cuadre-diario.component.html',
   styleUrls: ['./cuadre-diario.component.css']
 })
-export class CuadreDiarioComponent implements OnInit{
+export class CuadreDiarioComponent implements OnInit {
 
   //variables
   modoCreacion: boolean = false;
@@ -29,9 +29,12 @@ export class CuadreDiarioComponent implements OnInit{
   ingresosDiarioPDF: string[][] = [];
   cuadreDiarioPDF: string[][] = [];
 
+  // REFERENCIA AL PDF
+  @ViewChild('content', { static: false }) content!: ElementRef;
+
   setMaxFechaCuadre() {
     const today = new Date();
-    this.maxFechaCuadre = today.toISOString().split('T')[0]; 
+    this.maxFechaCuadre = today.toISOString().split('T')[0];
   }
 
   constructor(private cuadreDiarioService: CajaService) { }
@@ -188,7 +191,7 @@ export class CuadreDiarioComponent implements OnInit{
     this.getCuadreDiario(this.fechaInicial, this.fechaFinal).subscribe((data: CuadreDiario) => {
       this.cuadreDiario = data;
       console.log("Resultados de la busqueda cuadre diario:", data);
-      
+
     });
   }
 
