@@ -6,7 +6,6 @@ export type CuadreMensual = {
     valorTotalContado: number,
     valorTotalIniciales: number,
     valorTotalGastos: number,
-    fechaCreacion: Date,
     valorTotalMes: number,
     mes: number,
 
