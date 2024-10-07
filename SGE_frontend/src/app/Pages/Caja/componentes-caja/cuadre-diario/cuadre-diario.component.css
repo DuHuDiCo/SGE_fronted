@@ -17,6 +17,10 @@
   margin-top: 3px;
 }
 
+.color-red {
+  color: #960010;
+}
+
 .btn-color:hover {
   background: #d40000;
   border-color: #d40000;

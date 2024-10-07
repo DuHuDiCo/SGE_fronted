@@ -31,11 +31,11 @@ export class CuadreMensualComponent {
   //Metodo de fecha inicial y fecha final
   setFechasParaCuadre() {
 
- var fechaCuadre = (this.fechaCuadre + "-01").split("-")
+    var fechaCuadre = (this.fechaCuadre + "-01").split("-")
     console.log(this.fechaCuadre);
 
 
-    const fechaSeleccionada = new Date(Number(fechaCuadre[0]), Number(fechaCuadre[1]) -1, 1)
+    const fechaSeleccionada = new Date(Number(fechaCuadre[0]), Number(fechaCuadre[1]) - 1, 1)
     console.log(fechaSeleccionada);
 
     const mes = fechaSeleccionada.getMonth();
@@ -192,12 +192,6 @@ export class CuadreMensualComponent {
     }
 
     var arrayCuadreMensual: string[] = [];
-
-    const fecha = new Date(this.cuadreMensual!.fechaCreacion);
-    const formattedDate = fecha.toLocaleDateString('es-CO');
-    arrayCuadreMensual.push(formattedDate);
-
-    arrayCuadreMensual.push(formattedDate);
     arrayCuadreMensual.push(this.cuadreMensual!.anio.toString());
     arrayCuadreMensual.push(this.cuadreMensual!.mes.toString());
     arrayCuadreMensual.push(this.cuadreMensual!.valorTotalCartera.toString());
@@ -205,6 +199,7 @@ export class CuadreMensualComponent {
     arrayCuadreMensual.push(this.cuadreMensual!.valorTotalIniciales.toString());
     arrayCuadreMensual.push(this.cuadreMensual!.valorTotalGastos.toString());
     arrayCuadreMensual.push(this.cuadreMensual!.valorTotalMes.toString());
+    this.cuadreMensualPDF.push(arrayCuadreMensual);
     console.log(this.cuadreMensualPDF);
   }
 
@@ -214,7 +209,7 @@ export class CuadreMensualComponent {
 
     // Encabezado del PDF
     doc.setFontSize(12);
-    doc.text('Ingresos Diarios', 10, 10);
+    doc.text('Cuadres Diarios', 10, 10);
 
     // Generar la primera tabla
     autoTable(doc, {
@@ -243,8 +238,8 @@ export class CuadreMensualComponent {
 
     // Generar la segunda tabla
     autoTable(doc, {
-      head: [['Año', 'Mes', 'Cartera', 'Contado', 'Iniciales', 'Gatos', 'Total']],
-      body: this.cuadreDiarioPDF,
+      head: [['Año', 'Mes', 'Cartera', 'Contado', 'Iniciales', 'Gastos', 'Total']],
+      body: this.cuadreMensualPDF,
       startY: 20,
       theme: 'grid',
       headStyles: {
@@ -263,5 +258,5 @@ export class CuadreMensualComponent {
     // Guardar el PDF
     doc.save('reporte.pdf');
   }
-  
+
 }
