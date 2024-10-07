@@ -21,7 +21,18 @@ export type CuadreDiario = {
     valorTotalCuadre: number,
     usuario: {
         idUsuario: number,
-        username: string
+        username: string,
+        email: string,
+        password: string,
+        nombres: string,
+        apellidos: string,
+        sede: string,
+        tipo_documento: string,
+        numero_documento: string,
+        celular: string,
+        fecha_nacimiento: Date,
+        fecha_creacion: Date,
+        status: boolean,
     }
 }
 
