@@ -39,8 +39,8 @@
                             <td>{{ cuadreMensual.valorTotalMes | currency:'$':'symbol':'1.0-0' }}</td>
                         </tr>
                         <tr *ngFor="let d of resultadosBusqueda">
-                            <td>{{ d.fechaCreacion | date:'dd/MM' }}</td>
                             <td>{{ d.anio }}</td>
+                            <td>{{ d.mes }}</td>
                             <td>{{ d.valorTotalCartera | currency:'$':'symbol':'1.0-0' }}</td>
                             <td>{{ d.valorTotalIniciales | currency:'$':'symbol':'1.0-0' }}</td>
                             <td>{{ d.valorTotalContado | currency:'$':'symbol':'1.0-0' }}</td>

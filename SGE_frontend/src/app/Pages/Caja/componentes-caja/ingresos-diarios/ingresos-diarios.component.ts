@@ -103,7 +103,6 @@ export class IngresosDiariosComponent implements OnInit{
     ).subscribe();
   }
   
-
   //crear un ingreso diario
   createIngresosDiarios() {
     if (this.ingresosDiarios.valorIngreso <= 0) {

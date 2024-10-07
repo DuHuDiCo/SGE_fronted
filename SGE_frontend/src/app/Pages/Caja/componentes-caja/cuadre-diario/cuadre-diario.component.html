@@ -32,16 +32,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngIf="cuadreDiario">
-                                <td>{{ cuadreDiario.fechaCuadre | date:'dd/MM/yyyy' }}</td>
-                                <td>{{ cuadreDiario.valorCartera | currency:'$':'symbol':'1.0-0' }}</td>
-                                <td>{{ cuadreDiario.valorIniciales | currency:'$':'symbol':'1.0-0' }}</td>
-                                <td>{{ cuadreDiario.valorContado | currency:'$':'symbol':'1.0-0' }}</td>
-                                <td>{{ cuadreDiario.valorGastos | currency:'$':'symbol':'1.0-0' }}</td>
-                                <td>{{ cuadreDiario.valorBancolombia | currency:'$':'symbol':'1.0-0' }}</td>
-                                <td>{{ cuadreDiario.valorTotalCuadre | currency:'$':'symbol':'1.0-0' }}</td>
-                            </tr>
-
                             <tr *ngFor="let resultado of resultadosBusqueda">
                                 <td>{{ resultado.fechaCuadre | date:'dd/MM/yyyy' }}</td>
                                 <td>{{ resultado.valorCartera | currency:'$':'symbol':'1.0-0' }}</td>
