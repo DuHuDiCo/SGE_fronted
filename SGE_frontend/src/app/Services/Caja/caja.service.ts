@@ -42,7 +42,7 @@ getCuadreDiario(fechaInicial: string, fechaFinal: string) {
   return this.http.get(`http://192.168.1.241:8009/api/v1/cuadreDiario/getByMes?fechaInicial=${fechaInicial}&fechaFinal=${fechaFinal}`);
 }
 
-createCuadreDiario(obj: { fechaCuadre: string }) {
+createCuadreDiario(obj: { fechaCuadre: Date }) {
   return this.http.post('http://192.168.1.241:8009/api/v1/cuadreDiario/save', obj);
 }
 

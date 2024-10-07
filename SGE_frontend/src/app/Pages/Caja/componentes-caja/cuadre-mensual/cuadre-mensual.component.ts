@@ -101,8 +101,11 @@ export class CuadreMensualComponent {
     console.log("Fecha enviada para cuadres:", this.fechaCuadre);
     return this.cuadreMensualService.getCuadreDiario(fechaInicial, fechaFinal).pipe(
       tap((data: any) => {
-        this.cuadresDiario = data;
-        console.log("Datos de cuadres diarios:", data);
+        this.cuadresDiario = data.map((diario: any) => {
+          diario.fechaCuadre = diario.fechaCuadre.split('T')[0]; 
+          return diario;
+        });
+        console.log(this.cuadresDiario);
       }),
       catchError((error: Error) => {
         console.log("Error al obtener los cuadres diarios:", error);
@@ -134,7 +137,10 @@ export class CuadreMensualComponent {
       cuadresDiarios: this.cuadreMensualService.getCuadreDiario(this.fechaInicial, this.fechaFinal).pipe(
         tap((data: any) => {
           if (data && data.length > 0) {
-            console.log("Cuadres diarios obtenidos:", data);
+            this.cuadresDiario = data.map((diario: any) => {
+              diario.fechaCuadre = diario.fechaCuadre.split('T')[0]; 
+            console.log("Cuadres diarios obtenidos:", diario);
+          });
           } else {
             console.log("No se encontraron registros de cuadres diarios.");
           }

@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { jsPDF } from 'jspdf';
+import { Component, OnInit } from '@angular/core';
+import jsPDF from 'jspdf';
 
 import autoTable from 'jspdf-autotable'
 import { catchError, of, switchMap, tap } from 'rxjs';
@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
   templateUrl: './cuadre-diario.component.html',
   styleUrls: ['./cuadre-diario.component.css']
 })
-export class CuadreDiarioComponent implements OnInit {
+export class CuadreDiarioComponent implements OnInit{
 
   //variables
   modoCreacion: boolean = false;
@@ -29,12 +29,9 @@ export class CuadreDiarioComponent implements OnInit {
   ingresosDiarioPDF: string[][] = [];
   cuadreDiarioPDF: string[][] = [];
 
-  // REFERENCIA AL PDF
-  @ViewChild('content', { static: false }) content!: ElementRef;
-
   setMaxFechaCuadre() {
     const today = new Date();
-    this.maxFechaCuadre = today.toISOString().split('T')[0];
+    this.maxFechaCuadre = today.toISOString().split('T')[0]; 
   }
 
   constructor(private cuadreDiarioService: CajaService) { }
@@ -52,14 +49,13 @@ export class CuadreDiarioComponent implements OnInit {
       })
       return
     }
-
     this.getIngresos().pipe(
       switchMap(() => {
         if (this.ingresosDiario.length > 0) {
-          var fechaCuadre = new Date(this.fechaCuadre).toISOString();
-          var obj = { fechaCuadre: fechaCuadre };
-          console.log(obj);
-
+          const [year, month, day] = this.fechaCuadre.split('-').map(Number); 
+          const date = new Date(year, month - 1, day); 
+          var obj = { fechaCuadre: date};
+          alert(obj)
 
           return this.cuadreDiarioService.createCuadreDiario(obj).pipe(
             tap((data: any) => {
@@ -105,7 +101,11 @@ export class CuadreDiarioComponent implements OnInit {
     console.log("Fecha enviada para ingresos:", this.fechaCuadre);
     return this.cuadreDiarioService.getIngresosByFecha(this.fechaCuadre).pipe(
       tap((data: any) => {
-        this.ingresosDiario = data;
+        this.ingresosDiario = data.map((ingreso: any) => {
+          ingreso.fechaIngreso = ingreso.fechaIngreso.split('T')[0]; 
+          return ingreso;
+        });
+        console.log(this.ingresosDiario);
         console.log("Datos de ingresos:", data);
       }),
       catchError((error: Error) => {
@@ -120,13 +120,11 @@ export class CuadreDiarioComponent implements OnInit {
     return this.cuadreDiarioService.getCuadreDiario(fechaInicial, fechaFinal).pipe(
       tap((data: any) => {
         if (data && data.length > 0) {
-          this.resultadosBusqueda = data.map((resultado: any) => {
-            if (resultado.fechaCuadre) {
-              resultado.fechaCuadre = resultado.fechaCuadre.split('T')[0];
-            }
-            return resultado;
+          this.cuadreDiario = data.map((diario: any) => {
+            diario.fechaCuadre = diario.fechaCuadre.split('T')[0]; 
+            return diario;
           });
-          console.log("Cuadre diario obtenido:", this.resultadosBusqueda);
+          console.log("Cuadre diario obtenido:", this.cuadreDiario);
         } else {
           console.log("No se encontraron registros de cuadre diario.");
         }
@@ -137,25 +135,16 @@ export class CuadreDiarioComponent implements OnInit {
       })
     );
   }
-  
+
   // PREPARAR ARRAYS
   convertirArray() {
-    const formatCurrency = (value: number) => {
-      return new Intl.NumberFormat('es-CO', {
-        style: 'currency',
-        currency: 'COP',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      }).format(value);
-    };
-
     for (var i = 0; i < this.ingresosDiario.length; i++) {
       var arrayingresosDiario: string[] = [];
       const fecha = new Date(this.ingresosDiario[i].fechaIngreso);
-      const formattedDate = fecha.toLocaleString('es-CO', { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit' });
+      const formattedDate = fecha.toLocaleDateString('es-CO');
       arrayingresosDiario.push(formattedDate);
 
-      arrayingresosDiario.push(formatCurrency(this.ingresosDiario[i].valorIngreso));
+      arrayingresosDiario.push(this.ingresosDiario[i].valorIngreso.toString());
       arrayingresosDiario.push(this.ingresosDiario[i].tipoIngreso.nombre);
       this.ingresosDiarioPDF.push(arrayingresosDiario);
     }
@@ -166,12 +155,12 @@ export class CuadreDiarioComponent implements OnInit {
     const fecha = new Date(this.cuadreDiario!.fechaCreacion);
     const formattedDate = fecha.toLocaleDateString('es-CO');
     arrayCuadreDiario.push(formattedDate);
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorCartera));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorIniciales));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorContado));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorGastos));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorBancolombia));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorTotalCuadre));
+    arrayCuadreDiario.push(this.cuadreDiario!.valorCartera.toString());
+    arrayCuadreDiario.push(this.cuadreDiario!.valorIniciales.toString());
+    arrayCuadreDiario.push(this.cuadreDiario!.valorContado.toString());
+    arrayCuadreDiario.push(this.cuadreDiario!.valorGastos.toString());
+    arrayCuadreDiario.push(this.cuadreDiario!.valorBancolombia.toString());
+    arrayCuadreDiario.push(this.cuadreDiario!.valorTotalCuadre.toString());
     this.cuadreDiarioPDF.push(arrayCuadreDiario);
     console.log(this.cuadreDiarioPDF);
   }
@@ -205,7 +194,7 @@ export class CuadreDiarioComponent implements OnInit {
     this.getCuadreDiario(this.fechaInicial, this.fechaFinal).subscribe((data: CuadreDiario) => {
       this.cuadreDiario = data;
       console.log("Resultados de la busqueda cuadre diario:", data);
-
+      
     });
   }
 
@@ -214,128 +203,52 @@ export class CuadreDiarioComponent implements OnInit {
     const doc = new jsPDF('p', 'mm', 'a4');
 
     // Encabezado del PDF
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.text('CUADRE DIARIO', 105, 10, { align: 'center' });
-
-    // Subtítulos del encabezado
     doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold'); // Títulos en negrita
-    doc.text('Nombre Usuario:', 10, 20);
-    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreDiario!.usuario.nombres + ' ' + this.cuadreDiario!.usuario.apellidos, 50, 20);
+    doc.text('Ingresos Diarios', 10, 10);
 
-    doc.setFont('helvetica', 'bold'); // Títulos en negrita
-    doc.text('Almacén:', 140, 20);
-    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreDiario!.usuario.sede, 165, 20);
-
-    // Fecha
-    const fecha = new Date(this.cuadreDiario!.fechaCreacion);
-    const formattedDate = fecha.toLocaleDateString('es-CO');
-
-    doc.setFont('helvetica', 'bold'); // Títulos en negrita
-    doc.text('Fecha Creación:', 10, 30);
-    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(formattedDate, 50, 30);
-
-    // Línea separadora
-    doc.line(10, 35, 200, 35);
-
-    // Título debajo de la línea separadora con más espacio
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Resumen', 105, 50, { align: 'center' }); // Ajustado a 50 para más espacio
-
-    // Generar el resumen
-    const fechaCuadre = new Date(this.cuadreDiario!.fechaCreacion);
-    const formattCuadre = fechaCuadre.toLocaleDateString('es-CO');
-
-    // Espacio adicional para el resumen
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold'); // Títulos en negrita
-
-    doc.text('Fecha Cuadre:', 10, 60); // Ajustado a 60
-    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(formattCuadre, 50, 60);
-
-    doc.setFont('helvetica', 'bold'); // Título en negrita
-    doc.text('Total Cartera:', 120, 60);
-    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreDiario!.valorCartera.toLocaleString('es-CO') + ' COP', 165, 60);
-
-    doc.setFont('helvetica', 'bold'); // Títulos en negrita
-    doc.text('Total Iniciales:', 10, 70); // Ajustado a 70
-    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreDiario!.valorIniciales.toLocaleString('es-CO') + ' COP', 50, 70);
-
-    doc.setFont('helvetica', 'bold'); // Títulos en negrita
-    doc.text('Total Contado:', 120, 70);
-    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreDiario!.valorContado.toLocaleString('es-CO') + ' COP', 165, 70);
-
-    doc.setFont('helvetica', 'bold'); // Títulos en negrita
-    doc.text('Total Gastos:', 10, 80); // Ajustado a 80
-    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreDiario!.valorGastos.toLocaleString('es-CO') + ' COP', 50, 80);
-
-    doc.setFont('helvetica', 'bold'); // Títulos en negrita
-    doc.text('Total Bancolombia:', 120, 80);
-    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreDiario!.valorBancolombia.toLocaleString('es-CO') + ' COP', 165, 80);
-
-    doc.setFont('helvetica', 'bold'); // Títulos en negrita
-    doc.text('Total Diario:', 10, 90); // Ajustado a 90
-    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreDiario!.valorTotalCuadre.toLocaleString('es-CO') + ' COP', 50, 90);
-
-    // Más espacio entre el resumen y el título de ingresos
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Ingresos', 105, 100, { align: 'center' }); // Ajustado a 100 para más espacio
-
-
-    // Generar tabla de ingresos
+    // Generar la primera tabla
     autoTable(doc, {
       head: [['Fecha', 'Valor', 'Tipo Ingreso']],
       body: this.ingresosDiarioPDF,
-      startY: 110, // Comienza la tabla un poco más abajo para evitar superposición
+      startY: 20,
       theme: 'grid',
       headStyles: {
         fillColor: [150, 0, 16],
         textColor: [255, 255, 255],
-        halign: 'center'
       },
       bodyStyles: {
         fillColor: [240, 240, 240],
         textColor: [0, 0, 0],
-        halign: 'center'
       },
       alternateRowStyles: {
         fillColor: [255, 255, 255],
       },
     });
 
+    // Añadir un salto de página si es necesario
+    doc.addPage();
+
+    // Encabezado de la segunda tabla
+    doc.text('Cuadre Generado', 10, 10);
+
     // Generar la segunda tabla
-    // autoTable(doc, {
-    //   head: [['Fecha Cuadre', 'Total Cartera', 'Total Iniciales', 'Total Contado', 'Total Gastos', 'Total Bancolombia', 'Total Diario']],
-    //   body: this.cuadreDiarioPDF,
-    //   startY: 40,
-    //   theme: 'grid',
-    //   headStyles: {
-    //     fillColor: [150, 0, 16],
-    //     textColor: [255, 255, 255],
-    //     halign: 'center'
-    //   },
-    //   bodyStyles: {
-    //     fillColor: [240, 240, 240],
-    //     textColor: [0, 0, 0],
-    //     halign: 'center'
-    //   },
-    //   alternateRowStyles: {
-    //     fillColor: [255, 255, 255],
-    //   },
-    // });
+    autoTable(doc, {
+      head: [['Fecha', 'Cartera', 'Iniciales', 'Contado', 'Gastos', 'Bancolombia', 'Total']],
+      body: this.cuadreDiarioPDF,
+      startY: 20,
+      theme: 'grid',
+      headStyles: {
+        fillColor: [150, 0, 16],
+        textColor: [255, 255, 255],
+      },
+      bodyStyles: {
+        fillColor: [240, 240, 240],
+        textColor: [0, 0, 0],
+      },
+      alternateRowStyles: {
+        fillColor: [255, 255, 255],
+      },
+    });
 
     // Guardar el PDF
     doc.save('reporte.pdf');
