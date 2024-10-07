@@ -137,7 +137,7 @@ export class CuadreDiarioComponent implements OnInit {
       })
     );
   }
-  
+
   // PREPARAR ARRAYS
   convertirArray() {
     const formatCurrency = (value: number) => {
@@ -152,7 +152,7 @@ export class CuadreDiarioComponent implements OnInit {
     for (var i = 0; i < this.ingresosDiario.length; i++) {
       var arrayingresosDiario: string[] = [];
       const fecha = new Date(this.ingresosDiario[i].fechaIngreso);
-      const formattedDate = fecha.toLocaleString('es-CO', { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit' });
+      const formattedDate = fecha.toLocaleString('es-CO');
       arrayingresosDiario.push(formattedDate);
 
       arrayingresosDiario.push(formatCurrency(this.ingresosDiario[i].valorIngreso));
