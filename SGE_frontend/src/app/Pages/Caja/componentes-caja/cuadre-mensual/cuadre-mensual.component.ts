@@ -208,52 +208,116 @@ export class CuadreMensualComponent {
     const doc = new jsPDF('p', 'mm', 'a4');
 
     // Encabezado del PDF
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text('CUADRE MENSUAL', 105, 10, { align: 'center' });
+
+    // Subtítulos del encabezado
     doc.setFontSize(12);
-    doc.text('Cuadres Diarios', 10, 10);
+    doc.setFont('helvetica', 'bold'); // Títulos en negrita
+    doc.text('Nombre Usuario:', 10, 20);
+    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
+    doc.text(this.cuadreMensual!.usuario.nombres + ' ' + this.cuadreMensual!.usuario.apellidos, 50, 20);
+
+    doc.setFont('helvetica', 'bold'); // Títulos en negrita
+    doc.text('Almacén:', 140, 20);
+    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
+    doc.text(this.cuadreMensual!.usuario.sede, 165, 20);
+
+    doc.setFont('helvetica', 'bold'); // Títulos en negrita
+    doc.text('Fecha Creación:', 10, 30);
+    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
+    doc.text(this.cuadreMensual?.anio + '-' + this.cuadreMensual?.mes, 50, 30);
+
+    // Línea separadora
+    doc.line(10, 35, 200, 35);
+
+    // Título debajo de la línea separadora con más espacio
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Resumen', 105, 50, { align: 'center' }); // Ajustado a 50 para más espacio
+
+    // Generar el resumen
+    const fechaCuadre = new Date(this.cuadreMensual!.fechaCuadre);
+    const formattCuadre = fechaCuadre.toLocaleDateString('es-CO');
+
+    // Espacio adicional para el resumen
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold'); // Títulos en negrita
+
+    doc.text('Fecha Cuadre:', 10, 60); // Ajustado a 60
+    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
+    doc.text(formattCuadre, 50, 60);
+
+    doc.setFont('helvetica', 'bold'); // Título en negrita
+    doc.text('Total Cartera:', 120, 60);
+    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
+    doc.text(this.cuadreMensual!.valorTotalCartera.toLocaleString('es-CO') + ' COP', 165, 60);
+
+    doc.setFont('helvetica', 'bold'); // Títulos en negrita
+    doc.text('Total Iniciales:', 10, 70); // Ajustado a 70
+    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
+    doc.text(this.cuadreMensual!.valorTotalIniciales.toLocaleString('es-CO') + ' COP', 50, 70);
+
+    doc.setFont('helvetica', 'bold'); // Títulos en negrita
+    doc.text('Total Contado:', 120, 70);
+    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
+    doc.text(this.cuadreMensual!.valorTotalContado.toLocaleString('es-CO') + ' COP', 165, 70);
+
+    doc.setFont('helvetica', 'bold'); // Títulos en negrita
+    doc.text('Total Gastos:', 10, 80); // Ajustado a 80
+    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
+    doc.text(this.cuadreMensual!.valorTotalGastos.toLocaleString('es-CO') + ' COP', 50, 80);
+
+    doc.setFont('helvetica', 'bold'); // Títulos en negrita
+    doc.text('Total Mes:', 10, 90); // Ajustado a 90
+    doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
+    doc.text(this.cuadreMensual!.valorTotalMes.toLocaleString('es-CO') + ' COP', 50, 90);
+
+    // Más espacio entre el resumen y el título de ingresos
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Cuadres Diarios', 105, 100, { align: 'center' }); // Ajustado a 100 para más espacio
 
     // Generar la primera tabla
     autoTable(doc, {
       head: [['Fecha', 'Cartera', 'Iniciales', 'Contado', 'Gastos', 'Bancolombia', 'Total']],
       body: this.cuadreDiarioPDF,
-      startY: 20,
+      startY: 110,
       theme: 'grid',
       headStyles: {
         fillColor: [150, 0, 16],
         textColor: [255, 255, 255],
+        halign: 'center'
       },
       bodyStyles: {
         fillColor: [240, 240, 240],
         textColor: [0, 0, 0],
+        halign: 'center'
       },
       alternateRowStyles: {
         fillColor: [255, 255, 255],
       },
     });
-
-    // Añadir un salto de página si es necesario
-    doc.addPage();
-
-    // Encabezado de la segunda tabla
-    doc.text('Cuadre Generado', 10, 10);
 
     // Generar la segunda tabla
-    autoTable(doc, {
-      head: [['Año', 'Mes', 'Cartera', 'Contado', 'Iniciales', 'Gastos', 'Total']],
-      body: this.cuadreMensualPDF,
-      startY: 20,
-      theme: 'grid',
-      headStyles: {
-        fillColor: [150, 0, 16],
-        textColor: [255, 255, 255],
-      },
-      bodyStyles: {
-        fillColor: [240, 240, 240],
-        textColor: [0, 0, 0],
-      },
-      alternateRowStyles: {
-        fillColor: [255, 255, 255],
-      },
-    });
+    // autoTable(doc, {
+    //   head: [['Año', 'Mes', 'Cartera', 'Contado', 'Iniciales', 'Gastos', 'Total']],
+    //   body: this.cuadreMensualPDF,
+    //   startY: 20,
+    //   theme: 'grid',
+    //   headStyles: {
+    //     fillColor: [150, 0, 16],
+    //     textColor: [255, 255, 255],
+    //   },
+    //   bodyStyles: {
+    //     fillColor: [240, 240, 240],
+    //     textColor: [0, 0, 0],
+    //   },
+    //   alternateRowStyles: {
+    //     fillColor: [255, 255, 255],
+    //   },
+    // });
 
     // Guardar el PDF
     doc.save('reporte.pdf');
