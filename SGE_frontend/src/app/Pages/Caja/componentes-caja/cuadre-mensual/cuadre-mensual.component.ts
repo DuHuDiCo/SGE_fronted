@@ -46,7 +46,6 @@ export class CuadreMensualComponent {
 
     console.log(this.fechaInicial);
     console.log(this.fechaFinal);
-
   }
 
   // Agregar un cuadre diario

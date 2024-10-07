@@ -117,7 +117,12 @@ export class CuadreDiarioComponent implements OnInit{
     return this.cuadreDiarioService.getCuadreDiario(fechaInicial, fechaFinal).pipe(
       tap((data: any) => {
         if (data && data.length > 0) {
-          this.resultadosBusqueda = data;
+          this.resultadosBusqueda = data.map((resultado: any) => {
+            if (resultado.fechaCuadre) {
+              resultado.fechaCuadre = resultado.fechaCuadre.split('T')[0];
+            }
+            return resultado;
+          });
           console.log("Cuadre diario obtenido:", this.resultadosBusqueda);
         } else {
           console.log("No se encontraron registros de cuadre diario.");
@@ -129,7 +134,7 @@ export class CuadreDiarioComponent implements OnInit{
       })
     );
   }
-
+  
   // PREPARAR ARRAYS
   convertirArray() {
     for (var i = 0; i < this.ingresosDiario.length; i++) {

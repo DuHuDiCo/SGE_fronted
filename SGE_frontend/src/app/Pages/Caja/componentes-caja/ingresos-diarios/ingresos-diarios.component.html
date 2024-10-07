@@ -27,7 +27,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let ingreso of ingresosDiariosArray">
-              <td>{{ ingreso.fechaIngreso | date:'dd/MM/yyyy' }}</td>
+              <td>{{ ingreso.fechaIngreso | date:'dd/MM/yyyy'}}</td>
               <td>{{ ingreso.tipoIngreso.nombre }}</td>
               <td>{{ ingreso.valorIngreso | currency:'$':'symbol':'1.0-0' }}</td>
               <td>

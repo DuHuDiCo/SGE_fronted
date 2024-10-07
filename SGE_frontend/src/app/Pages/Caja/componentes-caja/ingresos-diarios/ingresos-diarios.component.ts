@@ -81,25 +81,28 @@ export class IngresosDiariosComponent implements OnInit{
     if (this.fechaIngreso == null || this.fechaIngreso.trim() == '') {
       Swal.fire({
         icon: 'error',
-        title: 'Campo fecha ingresos vacia',
+        title: 'Campo fecha ingresos vacía',
         text: 'Seleccione una fecha para poder buscarla',
         timer: 3000
-      })
-      return
+      });
+      return;
     }
-    console.log("Fecha enviada a la API para ingresos:", this.fechaIngreso); 
-
+  
     this.cajaService.getIngresosByFecha(this.fechaIngreso).pipe(
       tap((data: any) => {
-        this.ingresosDiariosArray = data; 
-        console.log(data);
-        
-      }), catchError((error: Error) => {
+        this.ingresosDiariosArray = data.map((ingreso: any) => {
+          ingreso.fechaIngreso = ingreso.fechaIngreso.split('T')[0]; 
+          return ingreso;
+        });
+        console.log(this.ingresosDiariosArray);
+      }), 
+      catchError((error: Error) => {
         console.log(error);
-        return of([])
+        return of([]);
       })
-    ).subscribe()
+    ).subscribe();
   }
+  
 
   //crear un ingreso diario
   createIngresosDiarios() {
