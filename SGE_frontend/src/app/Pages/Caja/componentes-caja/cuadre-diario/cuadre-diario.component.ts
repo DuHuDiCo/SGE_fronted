@@ -55,7 +55,6 @@ export class CuadreDiarioComponent implements OnInit{
           const [year, month, day] = this.fechaCuadre.split('-').map(Number); 
           const date = new Date(year, month - 1, day); 
           var obj = { fechaCuadre: date};
-          alert(obj)
 
           return this.cuadreDiarioService.createCuadreDiario(obj).pipe(
             tap((data: any) => {
