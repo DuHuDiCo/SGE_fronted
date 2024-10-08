@@ -14,7 +14,7 @@
         </div>
 
         <div class="row mt-3">
-            <div *ngIf="cuadreMensual != null">
+            <div *ngIf="cuadreMensual != null && resultadosBusqueda.length > 0">
                 <h5>Cuadres Mensuales</h5>
                 <table class="table table-bordered align-middle text-center">
                     <thead>
@@ -47,10 +47,6 @@
                             <td>{{ d.valorTotalGastos | currency:'$':'symbol':'1.0-0' }}</td>
                             <td>{{ d.valorTotalMes | currency:'$':'symbol':'1.0-0' }}</td>
                         </tr>
-                        
-                        <!-- <tr *ngIf="resultadosBusqueda.length === 0">
-                            <td colspan="7" class="text-center">No hay registro de cuadre mensual</td>
-                        </tr> -->
                     </tbody>
                 </table>
             </div>
@@ -91,7 +87,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 
