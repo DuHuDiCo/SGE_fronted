@@ -18,6 +18,8 @@ export class IngresosDiariosComponent implements OnInit{
     ingresosDiariosArray: IngresosDiariosArray[] = [];
     tipoIngreso: any = [];
     maxFechaIngreso: string | undefined;
+    fechaInicial: string = '';
+    fechaFinal: string = '';
   
     ingresosDiarios: any = {
         valorIngreso: 0,
@@ -26,7 +28,15 @@ export class IngresosDiariosComponent implements OnInit{
     }
   
   constructor(private cajaService: CajaService) { }
-  
+
+  setFechasParaCuadreDiario() {
+    this.fechaInicial = this.fechaIngreso;
+    this.fechaFinal = this.fechaIngreso;
+
+    console.log(this.fechaInicial);
+    console.log(this.fechaFinal);
+  }
+
   setMaxFechaIngreso() {
     const today = new Date();
     this.maxFechaIngreso = today.toISOString().split('T')[0]; 
@@ -111,7 +121,6 @@ getIngresosDiarios() {
     })
   ).subscribe();
 }
-
 
 //crear un ingreso diario
 createIngresosDiarios() {
