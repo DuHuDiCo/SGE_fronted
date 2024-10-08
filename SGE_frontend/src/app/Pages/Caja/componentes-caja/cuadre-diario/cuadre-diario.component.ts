@@ -13,7 +13,7 @@ import { throwError } from 'rxjs';
   templateUrl: './cuadre-diario.component.html',
   styleUrls: ['./cuadre-diario.component.css']
 })
-export class CuadreDiarioComponent implements OnInit{
+export class CuadreDiarioComponent implements OnInit {
 
   //variables
   modoCreacion: boolean = false;
@@ -32,7 +32,7 @@ export class CuadreDiarioComponent implements OnInit{
 
   setMaxFechaCuadre() {
     const today = new Date();
-    this.maxFechaCuadre = today.toISOString().split('T')[0]; 
+    this.maxFechaCuadre = today.toISOString().split('T')[0];
   }
 
   constructor(private cuadreDiarioService: CajaService) { }
@@ -53,9 +53,9 @@ export class CuadreDiarioComponent implements OnInit{
     this.getIngresos().pipe(
       switchMap(() => {
         if (this.ingresosDiario.length > 0) {
-          const [year, month, day] = this.fechaCuadre.split('-').map(Number); 
-          const date = new Date(year, month - 1, day); 
-          var obj = { fechaCuadre: date};
+          const [year, month, day] = this.fechaCuadre.split('-').map(Number);
+          const date = new Date(year, month - 1, day);
+          var obj = { fechaCuadre: date };
 
           return this.cuadreDiarioService.createCuadreDiario(obj).pipe(
             tap((data: any) => {
@@ -102,7 +102,7 @@ export class CuadreDiarioComponent implements OnInit{
     return this.cuadreDiarioService.getIngresosByFecha(this.fechaCuadre).pipe(
       tap((data: any) => {
         this.ingresosDiario = data.map((ingreso: any) => {
-          ingreso.fechaIngreso = ingreso.fechaIngreso.split('T')[0]; 
+          ingreso.fechaIngreso = ingreso.fechaIngreso.split('T')[0];
           return ingreso;
         });
         console.log(this.ingresosDiario);
@@ -147,7 +147,7 @@ export class CuadreDiarioComponent implements OnInit{
     for (var i = 0; i < this.ingresosDiario.length; i++) {
       var arrayingresosDiario: string[] = [];
       const fecha = new Date(this.ingresosDiario[i].fechaIngreso);
-      const formattedDate = fecha.toLocaleDateString('es-CO');
+      const formattedDate = fecha.toLocaleString('es-CO');
       arrayingresosDiario.push(formattedDate);
 
       arrayingresosDiario.push(this.ingresosDiario[i].valorIngreso.toString());
@@ -200,7 +200,7 @@ export class CuadreDiarioComponent implements OnInit{
     this.getCuadreDiario(this.fechaInicial, this.fechaFinal).subscribe((data: CuadreDiario) => {
       this.cuadreDiario = data;
       console.log("Resultados de la busqueda cuadre diario:", data);
-      
+
     });
   }
 
