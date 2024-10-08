@@ -65,8 +65,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">{{ isEditing ? 'Editar Ingreso Diario' : 'Crear Ingreso
-          Diario' }}</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">{{ isEditing ? 'Editar Ingreso Diario' : 'Crear Ingreso Diario' }}</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
@@ -74,34 +73,38 @@
         <div class="row justify-content-center text-center">
           <div class="col-md-10 input-group mb-3">
             <span class="input-group-text fw-bold same-width">Fecha Ingreso</span>
-            <input type="date" class="form-control input-larger" [(ngModel)]="ingresosDiarios.fechaIngreso"  [attr.max]="maxFechaIngreso" required>
+            <input type="date" class="form-control input-larger" [(ngModel)]="ingresosDiarios.fechaIngreso" [attr.max]="maxFechaIngreso" required>
           </div>
         </div>
 
         <div class="row justify-content-center text-center">
           <div class="col-md-10 input-group mb-3">
             <span class="input-group-text fw-bold same-width">Valor Ingreso</span>
-            <input type="number" class="form-control input-larger" placeholder="Valor ingreso diario"
-              [(ngModel)]="ingresosDiarios.valorIngreso" required>
+            <input type="number" class="form-control input-larger" placeholder="Valor ingreso diario" [(ngModel)]="ingresosDiarios.valorIngreso" required>
           </div>
         </div>
 
         <div class="row justify-content-center text-center">
           <div class="col-md-10 input-group mb-3">
             <span class="input-group-text fw-bold same-width">Tipo Ingreso</span>
-            <select [(ngModel)]="ingresosDiarios.tipoIngreso" name="tipoIngreso" class="form-control input-larger"
-              required>
+            <select [(ngModel)]="ingresosDiarios.tipoIngreso" name="tipoIngreso" class="form-control input-larger" required>
               <option value="" disabled selected>Seleccione un tipo de ingreso</option>
               <option *ngFor="let t of tipoIngreso" [value]="t.nombre">{{ t.nombre }}</option>
             </select>
+          </div>
+        </div>
+
+        <div class="row justify-content-center text-center" *ngIf="ingresosDiarios.tipoIngreso === 'GASTOS'">
+          <div class="col-md-10 input-group mb-3">
+            <span class="input-group-text fw-bold same-width">Descripción</span>
+            <input type="textarea" class="form-control input-larger" placeholder="Descripción de los gastos" [(ngModel)]="ingresosDiarios.descripcion">
           </div>
         </div>
       </div>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger"
-          (click)="isEditing ? updateIngresosDiarios(ingresosDiarios) : createIngresosDiarios()">
+        <button type="button" class="btn btn-danger" (click)="isEditing ? updateIngresosDiarios(ingresosDiarios) : createIngresosDiarios()">
           {{ isEditing ? 'Actualizar' : 'Crear' }}
         </button>
       </div>

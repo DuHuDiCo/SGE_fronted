@@ -47,13 +47,17 @@
                             <td>{{ d.valorTotalGastos | currency:'$':'symbol':'1.0-0' }}</td>
                             <td>{{ d.valorTotalMes | currency:'$':'symbol':'1.0-0' }}</td>
                         </tr>
+                        
+                        <!-- <tr *ngIf="resultadosBusqueda.length === 0">
+                            <td colspan="7" class="text-center">No hay registro de cuadre mensual</td>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>
-            <div *ngIf="cuadresDiario.length > 0 ">
-                <h5>Cuadres Darios</h5>
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle text-center">
+            <div *ngIf="cuadresDiario.length > 0">
+                <h5>Cuadres Diarios</h5>
+                <div class="table-responsive table-wrapper">
+                    <table class="table table-bordered align-middle text-center fixed-header">
                         <thead>
                             <tr>
                                 <th>Fecha</th>
@@ -87,7 +91,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div>            
         </div>
     </div>
 

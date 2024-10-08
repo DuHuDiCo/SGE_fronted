@@ -6,6 +6,7 @@ import { catchError, of, switchMap, tap } from 'rxjs';
 import { CajaService } from 'src/app/Services/Caja/caja.service';
 import { CuadreDiario, IngresosDiariosArray } from 'src/app/Types/Caja/CuadreDiario';
 import Swal from 'sweetalert2';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-cuadre-diario',
@@ -119,22 +120,28 @@ export class CuadreDiarioComponent implements OnInit{
     return this.cuadreDiarioService.getCuadreDiario(fechaInicial, fechaFinal).pipe(
       tap((data: any) => {
         if (data && data.length > 0) {
-          this.cuadreDiario = data.map((diario: any) => {
-            diario.fechaCuadre = diario.fechaCuadre.split('T')[0]; 
-            return diario;
+          this.resultadosBusqueda = data.map((resultado: any) => {
+            if (resultado.fechaCuadre) {
+              resultado.fechaCuadre = resultado.fechaCuadre.split('T')[0];
+            }
+            return resultado;
           });
-          console.log("Cuadre diario obtenido:", this.cuadreDiario);
+          console.log("Cuadre diario obtenido:", this.resultadosBusqueda);
         } else {
-          console.log("No se encontraron registros de cuadre diario.");
+          Swal.fire({
+            icon: 'info',
+            title: 'Sin cuadres diarios',
+            text: 'No hay cuadres diarios en las fechas seleccionadas.',
+          })
         }
       }),
       catchError((error: Error) => {
         console.log("Error al obtener el cuadre diario:", error);
-        return of([]);
+        return throwError(error); 
       })
     );
   }
-
+  
   // PREPARAR ARRAYS
   convertirArray() {
     for (var i = 0; i < this.ingresosDiario.length; i++) {
@@ -252,5 +259,4 @@ export class CuadreDiarioComponent implements OnInit{
     // Guardar el PDF
     doc.save('reporte.pdf');
   }
-
 }

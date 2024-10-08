@@ -173,19 +173,35 @@
   
   .table tbody tr:hover {
     background-color: #dddada;
-    /* Fondo ligero para hover (gris suave) */
   }
   
+  .table-wrapper {
+    max-height: 400px; 
+    overflow-y: auto;
+}
+
+.fixed-header thead {
+    position: sticky;
+    top: 0;
+    background-color:  #dddada;
+    z-index: 100;
+}
+
+.fixed-header th {
+    background-color: #dddada; 
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); 
+}
+
   /* Botón de buscar */
 .btn-color {
-  background-color: darkred; /* Botón de buscar en rojo */
-  color: white; /* Texto blanco */
+  background-color: darkred; 
+  color: white; 
   border-radius: 25px;
   padding: 10px 20px;
   transition: background-color 0.3s ease;
 }
 
 .btn-color:hover {
-  background-color: #c50e0e; /* Hover en un rojo más oscuro */
+  background-color: #c50e0e; 
 }
 

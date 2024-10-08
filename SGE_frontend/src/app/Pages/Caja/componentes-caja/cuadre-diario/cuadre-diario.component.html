@@ -4,11 +4,10 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-floating mb-3">
-                    <input type="date" [(ngModel)]="fechaCuadre" class="form-control" placeholder="Fecha Cuadre"
-                        [attr.max]="maxFechaCuadre">
+                    <input type="date" [(ngModel)]="fechaCuadre" class="form-control" placeholder="Fecha Cuadre" 
+                           [attr.max]="maxFechaCuadre">
                     <label>Fecha Cuadre</label>
                 </div>
-
             </div>
             <div class="col-md-8 text-start">
                 <button class="btn btn-lg btn-color align-middle" (click)="crearCuadreDiario()">Crear</button>
@@ -32,6 +31,16 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr *ngIf="cuadreDiario">
+                                <td>{{ cuadreDiario.fechaCuadre | date:'dd/MM/yyyy' }}</td>
+                                <td>{{ cuadreDiario.valorCartera | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ cuadreDiario.valorIniciales | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ cuadreDiario.valorContado | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ cuadreDiario.valorGastos | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ cuadreDiario.valorBancolombia | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ cuadreDiario.valorTotalCuadre | currency:'$':'symbol':'1.0-0' }}</td>
+                            </tr>
+
                             <tr *ngFor="let resultado of resultadosBusqueda">
                                 <td>{{ resultado.fechaCuadre | date:'dd/MM/yyyy' }}</td>
                                 <td>{{ resultado.valorCartera | currency:'$':'symbol':'1.0-0' }}</td>
@@ -41,6 +50,10 @@
                                 <td>{{ resultado.valorBancolombia | currency:'$':'symbol':'1.0-0' }}</td>
                                 <td>{{ resultado.valorTotalCuadre | currency:'$':'symbol':'1.0-0' }}</td>
                             </tr>
+
+                            <!-- <tr *ngIf="resultadosBusqueda.length === 0 && !cuadreDiario">
+                                <td colspan="7" class="text-center">No hay registros de cuadres diarios</td>
+                            </tr> -->
                         </tbody>
                     </table>
                 </div>
@@ -62,6 +75,10 @@
                                 <td>{{ i.fechaIngreso | date:'dd/MM/yyyy'}}</td>
                                 <td>{{ i.tipoIngreso.nombre }}</td>
                                 <td>{{ i.valorIngreso | currency:'$':'symbol':'1.0-0' }}</td>
+                            </tr>
+
+                            <tr *ngIf="ingresosDiario.length === 0 && !cuadreDiario">
+                                <td colspan="3" class="text-center">No hay registros</td>
                             </tr>
                         </tbody>
                     </table>
@@ -103,6 +120,10 @@
                                 <td>{{ resultado.valorBancolombia | currency:'$':'symbol':'1.0-0' }}</td>
                                 <td>{{ resultado.valorTotalCuadre | currency:'$':'symbol':'1.0-0' }}</td>
                             </tr>
+<!-- 
+                            <tr *ngIf="resultadosBusqueda.length === 0 && !cuadreDiario">
+                                <td colspan="7" class="text-center">No hay registros</td>
+                            </tr> -->
                         </tbody>
                     </table>
                 </div>
