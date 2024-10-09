@@ -4687,7 +4687,7 @@ export class HomeCarteraComponent implements OnInit {
       numeroObligacion: this.cuentaCobrarSelected.numeroObligacion,
       numeroRecibo: this.pago.numeroRecibo,
       cuotasDto: coutasFiltradas,
-      valorTotal: this.valorTotalIngresado,
+      valorTotal: Number(this.valorTotalIngresado),
       acuerdoTotal: this.saldoAcuerdoPago,
       capitalTotal: 0,
       honorariosTotal: 0,
@@ -4739,7 +4739,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     $('#modalGestionCom').modal('hide');
-
+    this.valorTotalIngresado = 0
 
   }
 
