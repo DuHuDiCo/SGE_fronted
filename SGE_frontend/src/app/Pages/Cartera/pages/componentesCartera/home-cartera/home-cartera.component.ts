@@ -3273,6 +3273,7 @@ export class HomeCarteraComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.desbloquearCuenta(this.cuentaCobrarSelected.idCuentasPorCobrar);
         this.newGestion = {
           numeroObligacion: this.newGestion.numeroObligacion,
           clasificacion: {
