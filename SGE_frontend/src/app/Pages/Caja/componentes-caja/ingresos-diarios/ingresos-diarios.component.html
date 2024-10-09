@@ -22,6 +22,7 @@
               <th scope="col">Fecha Ingreso</th>
               <th scope="col">Tipo Ingreso</th>
               <th scope="col">Valor Ingreso</th>
+              <th scope="col">Descripcion</th>
               <th scope="col">Acciones</th>
             </tr>
           </thead>
@@ -30,6 +31,7 @@
               <td>{{ ingreso.fechaIngreso | date:'dd/MM/yyyy'}}</td>
               <td>{{ ingreso.tipoIngreso.nombre }}</td>
               <td>{{ ingreso.valorIngreso | currency:'$':'symbol':'1.0-0' }}</td>
+              <td>{{ ingreso.descripcion === null ? "Sin descripcion" : ingreso.descripcion}}</td>
               <td>
                 <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#Modal"
                   (click)="ModalEditar(ingreso)">

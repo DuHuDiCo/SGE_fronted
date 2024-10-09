@@ -64,6 +64,7 @@
                                 <th>Fecha</th>
                                 <th>Tipo Ingreso</th>
                                 <th>Valor</th>
+                                <th>Descripcion</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -71,6 +72,7 @@
                                 <td>{{ i.fechaIngreso | date:'dd/MM/yyyy'}}</td>
                                 <td>{{ i.tipoIngreso.nombre }}</td>
                                 <td>{{ i.valorIngreso | currency:'$':'symbol':'1.0-0' }}</td>
+                                <td>{{ i.descripcion === null ? "Sin descripcion" : i.descripcion }}</td>
                             </tr>
 
                             <tr *ngIf="ingresosDiario.length === 0 && !cuadreDiario">

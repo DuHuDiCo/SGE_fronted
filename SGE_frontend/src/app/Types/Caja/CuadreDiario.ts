@@ -2,13 +2,15 @@ export type IngresosDiariosArray = {
     idIngresosDiarios: number,
     valorIngreso: number,
     fechaIngreso: Date,
+    descripcion: string,
     tipoIngreso: {
         idTipoIngreso: number,
         nombre: string
-    }
+    },
 }
 
 export type CuadreDiario = {
+    some(arg0: (cuadre: any) => boolean): unknown
     length: number
     idCuadreDiario: number,
     valorCartera: number,

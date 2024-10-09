@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { data } from 'jquery';
 import { catchError, of, tap } from 'rxjs';
 import { CajaService } from 'src/app/Services/Caja/caja.service';
 import { CuadreDiario, IngresosDiariosArray } from 'src/app/Types/Caja/CuadreDiario';
@@ -28,14 +27,6 @@ export class IngresosDiariosComponent implements OnInit{
     }
   
   constructor(private cajaService: CajaService) { }
-
-  setFechasParaCuadreDiario() {
-    this.fechaInicial = this.fechaIngreso;
-    this.fechaFinal = this.fechaIngreso;
-
-    console.log(this.fechaInicial);
-    console.log(this.fechaFinal);
-  }
 
   setMaxFechaIngreso() {
     const today = new Date();
@@ -156,34 +147,66 @@ createIngresosDiarios() {
 
   const [year, month, day] = this.ingresosDiarios.fechaIngreso.split('-').map(Number);
   const fechaFormateada = new Date(year, month - 1, day);  
-  
-  this.ingresosDiarios.fechaIngreso = fechaFormateada;
 
+  const fechaInicial = this.ingresosDiarios.fechaIngreso;
+  const fechaFinal = this.ingresosDiarios.fechaIngreso;
+
+  this.cajaService.getCuadreDiario(fechaInicial, fechaFinal).pipe(
+    tap((cuadreDiario: any) => {
+      console.log(cuadreDiario);
+      
+      if (cuadreDiario.length > 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Ingreso no permitido',
+          text: 'Ya existe un cuadre diario para esta fecha.',
+        });
+        return;
+      }
+      this.ingresosDiarios.fechaIngreso = fechaFormateada;
+      this.crearIngresoDiario()
+    }), catchError((error: Error) => {
+      console.log(error);
+      return of([])
+    })
+  ).subscribe();
+}
+
+crearIngresoDiario(){
+  console.log(this.ingresosDiarios);
+  
   this.cajaService.createIngresosDiarios(this.ingresosDiarios).pipe(
     tap((data: any) => {
       Swal.fire({
         icon: 'success',
         title: 'Datos Guardados',
-        text: 'Ingresos diarios creado con éxito',
-        timer: 3000
+        text: 'Ingresos diarios creado con exito',
       });
       console.log(data);
+      console.log(this.ingresosDiarios.fechaIngreso);
 
-      if (this.ingresosDiarios.fechaIngreso != this.cajaService.getIngresosByFecha(this.fechaIngreso)) {
+      const fechaIngresoFormateadaEnviar = new Date(this.ingresosDiarios.fechaIngreso).toISOString();
+      const fechaIngresoFormateada = new Date(this.ingresosDiarios.fechaIngreso).toISOString();
+
+      if (fechaIngresoFormateadaEnviar != fechaIngresoFormateada) {
         console.log("No pertenece");
       } else {
         this.ingresosDiariosArray.push(data);
       }
+
+      console.log('Datos a enviar:', this.ingresosDiarios);
+      this.ingresosDiarios = {
+        valorIngreso: 0,
+        fechaIngreso: '',
+        tipoIngreso: ''
+      };
+    }), catchError((error: Error) => {
+      console.log(error);
+      return of([])
     })
   ).subscribe();
-
-  console.log('Datos a enviar:', this.ingresosDiarios);
-  this.ingresosDiarios = {
-    valorIngreso: 0,
-    fechaIngreso: '',
-    tipoIngreso: ''
-  };
 }
+
 
   //actualizar un ingreso diario
   updateIngresosDiarios(ingreso: IngresosDiariosArray) {
