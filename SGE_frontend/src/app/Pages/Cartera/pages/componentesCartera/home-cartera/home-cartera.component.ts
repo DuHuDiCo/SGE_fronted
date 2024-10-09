@@ -477,6 +477,7 @@ export class HomeCarteraComponent implements OnInit {
     this.getTipoVen()
     this.getSedes()
     this.getAsesores()
+    this.alertasGestiones()
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
 
@@ -915,7 +916,6 @@ export class HomeCarteraComponent implements OnInit {
 
   // GESTIONES
   getGestiones(numeroObligacion: string) {
-    this.alertasGestiones()
     this.gestiones = []
     this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
       (data: any) => {
