@@ -39,11 +39,11 @@ export class CuentasCobrarService {
   }
 
   getCuentaBlocked(idCuenta: number) {
-    return this.http.get(`http://192.168.1.241:8021/api/v1/cuentas/blocked?idCuenta=${idCuenta}`)
+    return this.http.get(`${baseUrl}/cuentas/blocked?idCuenta=${idCuenta}`)
   }
 
   getCuentaChangeBlocked(idCuenta: number) {
-    return this.http.put(`http://192.168.1.241:8021/api/v1/cuentas/changeBlocked?idCuenta=${idCuenta}`, null)
+    return this.http.put(`${baseUrl}/cuentas/changeBlocked?idCuenta=${idCuenta}`, null)
   }
 
 
@@ -57,7 +57,7 @@ export class CuentasCobrarService {
   filtro(page: number, size: number, fechaCreacion: string, dto: Filtros,) {
 
 
-    return this.http.post(`http://192.168.1.241:8021/api/v1/cuentas/filtrosCuentas?page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`, dto)
+    return this.http.post(`${baseUrl}/cuentas/filtrosCuentas?page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`, dto)
   }
 
   getItems(username: string) {
@@ -101,7 +101,7 @@ export class CuentasCobrarService {
   }
 
   desactivateGestion(idGestion: number) {
-    return this.http.get(`http://192.168.1.241:8021/api/v1/gestiones/desactivateGestion?idGestion=${idGestion}`)
+    return this.http.get(`${baseUrl}/gestiones/desactivateGestion?idGestion=${idGestion}`)
   }
 
   reporte(data: any) {
