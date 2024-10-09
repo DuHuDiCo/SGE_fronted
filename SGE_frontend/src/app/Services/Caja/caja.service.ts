@@ -3,6 +3,7 @@ import { r3JitTypeSourceSpan } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IngresosDiariosArray } from 'src/app/Types/Caja/CuadreDiario';
+import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
   providedIn: 'root'
