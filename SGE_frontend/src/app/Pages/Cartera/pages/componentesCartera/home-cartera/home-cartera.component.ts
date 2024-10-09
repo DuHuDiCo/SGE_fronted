@@ -1525,7 +1525,7 @@ export class HomeCarteraComponent implements OnInit {
         $('#modalDetalle').modal('show');
       }
     }
-
+    this.alertasGestiones()
 
 
   }

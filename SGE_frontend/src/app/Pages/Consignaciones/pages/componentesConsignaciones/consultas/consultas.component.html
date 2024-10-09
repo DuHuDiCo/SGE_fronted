@@ -466,7 +466,7 @@
                 <th scope="col">Usuario</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="detalle.observaciones">
               <tr *ngFor="let d of detalle.observaciones; let i = index">
                 <th scope="row">{{ i + 1 }}</th>
                 <td>{{ d.detalle }}</td>
