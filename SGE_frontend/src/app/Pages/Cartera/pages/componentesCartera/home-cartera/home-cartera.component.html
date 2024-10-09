@@ -867,7 +867,7 @@
                                 <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? '--/--/----' :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion) ==
                                     'TAREA' ?
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaTarea | date:"d/M/yyyy")
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaFinTarea | date:"d/M/yyyy")
                                     :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion) ==
                                     'NOTA' ? '--/--/----' :
