@@ -741,6 +741,7 @@ export class ConsultasComponent implements OnInit {
         this.actu = data
         this.cuentasPorCobrar = data
         this.detalle = data
+        console.log(this.detalle);
         this.observacionDto.idConsignacion = data.idConsignacion
         var actua = this.actu.actualizaciones.find((a: any) => a.isCurrent == true)
 
@@ -754,7 +755,7 @@ export class ConsultasComponent implements OnInit {
 
 
       }, (error: any) => {
-
+        console.log(error);
       }
     )
   }
