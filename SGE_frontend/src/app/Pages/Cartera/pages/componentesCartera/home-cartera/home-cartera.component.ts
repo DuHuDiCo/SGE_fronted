@@ -4638,7 +4638,7 @@ export class HomeCarteraComponent implements OnInit {
         } else {
           this.filtro()
         }
-
+        this.desbloquearCuenta(this.cuentaCobrarSelected.idCuentasPorCobrar);
       }, (error: any) => {
         Swal.fire({
           icon: 'error',
@@ -4708,7 +4708,7 @@ export class HomeCarteraComponent implements OnInit {
 
           this.mostrarReciboPago(data.base64)
           this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
-
+          this.desbloquearCuenta(this.cuentaCobrarSelected.idCuentasPorCobrar);
           this.activarGuardarPago = false
           this.savePago = false
           this.coutasRequest = []
