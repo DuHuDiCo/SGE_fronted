@@ -1329,7 +1329,7 @@ export class HomeCarteraComponent implements OnInit {
                   this.getNotiAllBySede()
                   this.getNotiVenBySede()
                 }
-
+                this.desbloquearCuenta(this.cuentaCobrarSelected.idCuentasPorCobrar);
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
@@ -1420,7 +1420,7 @@ export class HomeCarteraComponent implements OnInit {
                 } else {
                   this.filtro()
                 }
-
+                this.desbloquearCuenta(this.cuentaCobrarSelected.idCuentasPorCobrar);
                 this.gestionButton = false
                 this.newGestion = {
                   numeroObligacion: this.newGestion.numeroObligacion,
@@ -1598,7 +1598,7 @@ export class HomeCarteraComponent implements OnInit {
             } else {
               this.filtro()
             }
-
+            this.desbloquearCuenta(this.cuentaCobrarSelected.idCuentasPorCobrar);
             this.botonGuardarGes = false
             this.newGestion = {
               numeroObligacion: this.newGestion.numeroObligacion,
