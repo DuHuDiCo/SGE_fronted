@@ -916,6 +916,7 @@ export class HomeCarteraComponent implements OnInit {
 
   // GESTIONES
   getGestiones(numeroObligacion: string) {
+    this.alertasGestiones()
     this.gestiones = []
     this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
       (data: any) => {
@@ -1525,9 +1526,6 @@ export class HomeCarteraComponent implements OnInit {
         $('#modalDetalle').modal('show');
       }
     }
-    this.alertasGestiones()
-
-
   }
 
   ingresarTelefono() {
