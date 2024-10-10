@@ -867,7 +867,8 @@
                                 <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? '--/--/----' :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion) ==
                                     'TAREA' ?
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaFinTarea | date:"d/M/yyyy")
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaFinTarea |
+                                    date:"d/M/yyyy")
                                     :
                                     (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion) ==
                                     'NOTA' ? '--/--/----' :
@@ -1180,8 +1181,8 @@
     </div>
 
     <!-- Modal Historico Gestiones -->
-    <div class="modal fade" id="modalHistoricoG" tabindex="-1" data-bs-backdrop="true" aria-hidden="true"
-        *ngIf="gestiones[0] != true && gestiones.length > 0">
+    <div class="modal fade" id="modalHistoricoG" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-hidden="true" *ngIf="gestiones[0] != true && gestiones.length > 0">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
