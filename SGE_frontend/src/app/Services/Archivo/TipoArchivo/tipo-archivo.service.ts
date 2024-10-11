@@ -7,27 +7,27 @@ import { TipoArchivo } from 'src/app/Types/Archivo/TipoArchivo';
 })
 export class TipoArchivoService {
 
-  url = 'http://192.168.1.183:8008/api/v1'
+  url = 'http://192.168.1.241:8008/api/v1'
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  save(tipoArchivo:string){
+  save(tipoArchivo: string) {
     return this.http.post(`${this.url}/tipoArchivo/saveTipoArchivo`, tipoArchivo)
   }
 
-  getAll(){
+  getAll() {
     return this.http.get(`${this.url}/tipoArchivo/getAllTiposArchivo`)
   }
 
-  getById(id:number){
+  getById(id: number) {
     return this.http.get(`${this.url}/tipoArchivo/getTipoArchivo/${id}`)
   }
 
-  delete(idTipoArchivo:number){
+  delete(idTipoArchivo: number) {
     return this.http.delete(`${this.url}/tipoArchivo/eliminarTipoArchivo?idTipoArchivo=${idTipoArchivo}`)
   }
 
-  update(tipoArchivo:TipoArchivo){
+  update(tipoArchivo: TipoArchivo) {
     return this.http.put(`${this.url}/tipoArchivo/editarTipoArchivo`, tipoArchivo)
   }
 }
