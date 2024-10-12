@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Archivo, EditarArchivo } from 'src/app/Types/Archivo/Archivos';
 
 @Injectable({
@@ -10,6 +11,13 @@ export class SubirArchivoService {
   url = 'http://192.168.1.241:8008/api/v1'
 
   constructor(private http: HttpClient) { }
+
+  private numeroObligacion = new BehaviorSubject<any>(null);
+  currentData = this.numeroObligacion.asObservable();
+
+  send(date:any){
+    this.numeroObligacion.next(date);
+  }
 
   save(archivo: Archivo) {
     return this.http.post(`${this.url}/archivo/saveArchivo`, archivo)

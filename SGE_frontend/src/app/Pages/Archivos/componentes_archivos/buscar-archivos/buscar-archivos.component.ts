@@ -82,7 +82,6 @@ export class BuscarArchivosComponent implements OnInit {
         });
         this.tabla = true
         this.filtro = false
-        this.cedula = ''
         Swal.fire({
           icon: 'info',
           title: 'Estas Son Las Obligaciones Encontradas',
@@ -102,30 +101,33 @@ export class BuscarArchivosComponent implements OnInit {
     )
   }
 
-  isEmpty(obligacion: string) {
-    this.subirService.isEmpty(obligacion).subscribe(
-      (data: any) => {
-        if (data) {
-          Swal.fire('Error', 'Esta Obligacion No Contiene Archivos, Puede Subirlos A continuación', 'error')
-          setTimeout(() => {
-            this.router.navigate(['/dashboard-archivos/subir-archivos'])
-          }, 3000);
-        } else {
-          Swal.fire({
-            icon: 'success',
-            title: 'Datos Guardados',
-            text: 'Estos Son Los Archivos Encontrados',
-            timer: 2500
-          })
-          this.cards = true
-          this.tabla = false
-        }
-      }, (error: any) => {
-        console.log(error);
+isEmpty(obligacion: string) {
+  this.subirService.isEmpty(obligacion).subscribe(
+    (data: any) => {
+      if (data) {
+        Swal.fire('Error', 'Esta Obligacion No Contiene Archivos, Puede Subirlos A continuación', 'error')
+        setTimeout(() => {
+          this.subirService.send(obligacion);  
+          console.log('obligacion enviada:', obligacion);  
+          this.router.navigate(['/dashboard-archivos/subir-archivos']);
+        }, 3000);
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Datos Guardados',
+          text: 'Estos Son Los Archivos Encontrados',
+          timer: 2500
+        });
+        this.cards = true;
+        this.tabla = false;
       }
-    )
-  }
+    }, (error: any) => {
+      console.log(error);
+    }
+  );
+}
 
+  
   getAllTipo() {
     this.tipoArchivoService.getAll().subscribe(
       (data: any) => {

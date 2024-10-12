@@ -38,6 +38,7 @@ export class SubirArchivosComponent implements OnInit {
   obligacion: Obligacion[] = []
   tiposArchivos: TipoArchivo[] = []
   tiposArchivosSelected: string[] = []
+  numeroObligacionRecibida: String = '';
 
   // OBJETOS
   archivo: Archivo = {
@@ -52,12 +53,19 @@ export class SubirArchivosComponent implements OnInit {
     nombreArchivo: ''
   }
 
-
-
   constructor(private ingresarService: IngresarService, private subirService: SubirArchivoService, private authService: AuthenticationService, private tipoArchivoService: TipoArchivoService, private router: Router, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.getAllTipoArchivo()
+    setTimeout(() => {
+      this.subirService.currentData.subscribe(data => {
+        if (data) {
+          this.numeroObligacionRecibida = data;
+          this.numeroO(this.numeroObligacion, '');
+          console.log('obligacion recibida:', this.numeroObligacionRecibida);
+        }
+      });
+    }, 300);
   }
 
   cambiarInputs(accion: string) {
@@ -97,7 +105,6 @@ export class SubirArchivosComponent implements OnInit {
   }
 
   getObligacionByCedula() {
-
     const cedula = this.cedula.trim()
     if (this.cedula.trim() == '' || isNaN(parseInt(cedula))) {
       Swal.fire('Error', 'Debe de Ingresar una Cédula Válida', 'error')
@@ -120,13 +127,11 @@ export class SubirArchivosComponent implements OnInit {
         if (this.obligacion.length <= 0) {
           Swal.fire('Error', 'Digite Una Cédula Válida', 'error')
           this.tabla = false
-          this.cedula = ''
           return
         }
       }, (error: any) => {
         Swal.fire('Error', 'Error Al Traer Las Obligaciones', 'error')
         this.cedula = ''
-
       }
     )
   }
@@ -156,9 +161,13 @@ export class SubirArchivosComponent implements OnInit {
 
     this.archivo.numeroObligacion = obligacion
     this.archivo.username = user
-    this.isEmpty(obligacion, accion)
+    if (this.numeroObligacionRecibida == null) {
+      this.isEmpty(obligacion, accion)
+    }else{
+      this.botonComenzar = false
+      this.botonCedula = false
+    }
     console.log(this.archivo);
-
   }
 
   selectArchivos(event: any) {
@@ -178,6 +187,8 @@ export class SubirArchivosComponent implements OnInit {
   }
 
   cargarArchivos() {
+    console.log(this.tiposArchivosSelected);
+    
     if (!this.tiposArchivosSelected.includes(this.tipoArchivo)) {
       this.width = this.width + Math.round(100 / this.tiposArchivos.length)
       this.tiposArchivosSelected.push(this.tipoArchivo)
@@ -290,7 +301,7 @@ export class SubirArchivosComponent implements OnInit {
         if (data) {
           this.cambiarInputs(accion)
         } else {
-          Swal.fire('Error', 'Esta Obligacion Ya Contiene Archivos, Puede Subirlos A continuación', 'error')
+          Swal.fire('Error', 'Esta Obligacion Ya Contiene Archivos, Puedes visualizarlos A continuación', 'error')
           setTimeout(() => {
             this.router.navigate(['/dashboard-archivos/buscar-archivos'])
           }, 3000);
