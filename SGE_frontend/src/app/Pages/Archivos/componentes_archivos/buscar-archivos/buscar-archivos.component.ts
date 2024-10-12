@@ -50,6 +50,7 @@ export class BuscarArchivosComponent implements OnInit {
   base64: Base64 = {
     base46: [],
     tipoArchivo: '',
+    nombreArchivo: ''
   }
   constructor(private buscarService: SubirArchivoService, private router: Router, private subirService: SubirArchivoService, private authService: AuthenticationService, private tipoArchivoService: TipoArchivoService, private sanitizer: DomSanitizer) { }
 

@@ -49,6 +49,7 @@ export class SubirArchivosComponent implements OnInit {
   base64: Base64 = {
     base46: [],
     tipoArchivo: '',
+    nombreArchivo: ''
   }
 
 
@@ -149,7 +150,8 @@ export class SubirArchivosComponent implements OnInit {
 
     this.archivo.base64 = Array.from({ length: this.tiposArchivos.length }, (_, index) => ({
       base46: [],
-      tipoArchivo: this.tiposArchivos[index].tipoArchivo
+      tipoArchivo: this.tiposArchivos[index].tipoArchivo,
+      nombreArchivo: ''
     }));
 
     this.archivo.numeroObligacion = obligacion
@@ -210,9 +212,13 @@ export class SubirArchivosComponent implements OnInit {
           this.archivo.base64[pos].base46 = []
         }
 
+
+
         for (let i = 0; i < archivo.files.length; i++) {
           this.extraerBase64(archivo.files[i]).then((file: any) => {
+            console.log(file);
             this.archivo.base64[pos].base46.push(file.base);
+            this.archivo.base64[pos].nombreArchivo = 'ARCHIVO';
           })
         }
         this.cantidadArchivos = archivo.files.length
@@ -256,6 +262,8 @@ export class SubirArchivosComponent implements OnInit {
   })
 
   save() {
+    console.log(this.archivo);
+
     this.subirService.save(this.archivo).subscribe(
       (data: any) => {
         Swal.fire({

@@ -110,11 +110,11 @@
               </div>
             </div>
 
-            <input type="file" accept="image/*" capture="camera" id="cameraInput" class="d-none"
+            <input type="file" accept="application/pdf" capture="camera" id="cameraInput" class="d-none"
               (change)="obtenerFile($event)">
 
-            <input type="file" accept="image/*" #fileInput id="fileInput" class="d-none" (change)="obtenerFile($event)"
-              multiple>
+            <input type="file" accept="application/pdf" #fileInput id="fileInput" class="d-none"
+              (change)="obtenerFile($event)" multiple>
           </div>
         </div>
       </div>
