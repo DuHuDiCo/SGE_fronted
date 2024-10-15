@@ -140,10 +140,16 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
+        <span *ngIf="archivosCargados.length == 0">
+          <h5 class="text-center">No hay archivos cargados.</h5>
+        </span>
+
         <div *ngFor="let archivo of archivo.base64; let i = index;">
-          <h6>{{ archivo.nombreArchivo }}</h6>
-          <h6>{{ archivo.tipoArchivo}}</h6>
-          <embed type="application/pdf" [src]="archivosCargados[i]" width="500px" height="500px">
+          <span *ngIf="archivosCargados[i] != null && archivosCargados.length > 0">
+            <h6>{{ archivo.nombreArchivo }}</h6>
+            <h6>{{ archivo.tipoArchivo}}</h6>
+            <embed type="application/pdf" [src]="archivosCargados[i]" height="500px" style="width: 100%;">
+          </span>
         </div>
 
         <div *ngIf="archivo.base64.length === 0">
