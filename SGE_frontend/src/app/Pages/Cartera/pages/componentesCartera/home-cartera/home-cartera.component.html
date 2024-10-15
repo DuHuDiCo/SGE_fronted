@@ -850,8 +850,8 @@
                                 <td *ngIf="!Columnas.includes('EDAD VENC')">{{ cc.tiposVencimiento.tipoVencimiento }}
                                 </td>
                                 <td *ngIf="!Columnas.includes('SUCURSAL')">{{ cc.sede.sede }}</td>
-                                <td *ngIf="!Columnas.includes('ASESOR')">{{ cc.asesorCarteraResponse.usuario.nombres }}
-                                    {{
+                                <td *ngIf="!Columnas.includes('ASESOR')">{{ cc.asesorCarteraResponse.idAsesorCartera ==
+                                    22 ? 'SIN ASESOR' : cc.asesorCarteraResponse.usuario.nombres + ' ' +
                                     cc.asesorCarteraResponse.usuario.apellidos }}</td>
                                 <td *ngIf="!Columnas.includes('CLAS JURI')">{{ cc.clasificacionJuridica }}</td>
                                 <td *ngIf="!Columnas.includes('SALDO CAP')">{{ cc.totalObligatoria | number }}</td>
