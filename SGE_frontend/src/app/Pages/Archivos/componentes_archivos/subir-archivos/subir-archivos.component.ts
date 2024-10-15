@@ -50,7 +50,7 @@ export class SubirArchivosComponent implements OnInit {
     username: ''
   }
 
-  base64: Base64 = { 
+  base64: Base64 = {
     base46: [],
     tipoArchivo: '',
     nombreArchivo: ''
@@ -192,9 +192,19 @@ export class SubirArchivosComponent implements OnInit {
 
   cargarArchivos() {
     if (!this.tiposArchivosSelected.includes(this.tipoArchivo)) {
+      this.archivosCargados = []
       this.width = this.width + Math.round(100 / this.tiposArchivos.length)
       this.tiposArchivosSelected.push(this.tipoArchivo)
+
+      for (let index = 0; index < this.archivo.base64.length; index++) {
+        for (let i = 0; i < this.archivo.base64[index].base46.length; i++) {
+          this.archivosCargados.push(this.sanitizer.bypassSecurityTrustResourceUrl(this.archivo.base64[index].base46[i]));
+        }
+      }
     }
+
+    console.log(this.archivosCargados);
+
 
     this.tipoArchivo = ''
     this.disabledSelect = false
@@ -236,13 +246,6 @@ export class SubirArchivosComponent implements OnInit {
         this.cantidadArchivos = archivo.files.length
         if (this.cantidadArchivos > 0) {
           this.disabledCargar = false
-        }
-
-        for (let index = 0; index < this.archivo.base64.length; index++) {
-
-          for (let i = 0; i < this.archivo.base64[index].base46.length; i++) {
-            this.archivosCargados.push(this.sanitizer.bypassSecurityTrustResourceUrl(this.archivo.base64[index].base46[i]));
-          }
         }
       }
 
