@@ -65,63 +65,71 @@
   </div>
 
   <div class="row d-flex justify-content-center" *ngIf="!botonComenzar && !botonCedula">
-  <div class="progress mt-2 mb-2" role="progressbar" aria-label="Example with label" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-    <div class="progress-bar progress-bar-striped progress-bar-animated"
-      [style]="{ 'width': width+'%', 'background-color': background_color, 'display': display }">{{ width }}%
+    <div class="progress mt-2 mb-2" role="progressbar" aria-label="Example with label" aria-valuenow="20"
+      aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar progress-bar-striped progress-bar-animated"
+        [style]="{ 'width': width+'%', 'background-color': background_color, 'display': display }">{{ width }}%
+      </div>
     </div>
-  </div>
 
-  <!-- Cards Archivos -->
-  <div class="col-md-6 mb-2">
-    <div class="card card-custom">
-      <div class="card-body">
-        <div class="col-md-12 col-12">
-          <select [(ngModel)]="tipoArchivo" name="tipoArchivo" (change)="selectArchivos($event)" class="form-select" [disabled]="disabledSelect">
-            <option value="" selected>Seleccionar el Tipo de Archivo</option>
-            <option *ngFor="let t of tiposArchivos" value="{{ t.tipoArchivo }}">{{t.tipoArchivo}}</option>
-          </select>
+    <!-- Cards Archivos -->
+    <div class="col-md-6 mb-2">
+      <div class="card card-custom">
+        <div class="card-body">
+          <div class="col-md-12 col-12">
+            <select [(ngModel)]="tipoArchivo" name="tipoArchivo" (change)="selectArchivos($event)" class="form-select"
+              [disabled]="disabledSelect">
+              <option value="" selected>Seleccionar el Tipo de Archivo</option>
+              <option *ngFor="let t of tiposArchivos" value="{{ t.tipoArchivo }}">{{t.tipoArchivo}}</option>
+            </select>
 
-          <div class="row text-center">
-            <div class="col-md-6 col-6 d-block d-sm-none" *ngIf="cantidadArchivos == 0">
-              <h6 class="fw-bold text-red">Tomar Fotos</h6>
-              <span (click)="triggerFileInput('cameraInput')">
-                <i class="fa-solid fa-camera custom-icon"></i>
-              </span>
+            <div class="row text-center">
+              <div class="col-md-6 col-6 d-block d-sm-none" *ngIf="cantidadArchivos == 0">
+                <h6 class="fw-bold text-red">Tomar Fotos</h6>
+                <span (click)="triggerFileInput('cameraInput')">
+                  <i class="fa-solid fa-camera custom-icon"></i>
+                </span>
+              </div>
+              <div class="col-md-12" [ngClass]="{'col-6': cantidadArchivos == 0, 'col-12': cantidadArchivos > 0}">
+                <h6 class="fw-bold text-red">Seleccionar Fotos</h6>
+                <span (click)="triggerFileInput('fileInput')">
+                  <i class="fa-solid fa-folder-open custom-icon"></i>
+                </span>
+                <h6 class="fw-bold mt-3" *ngIf="cantidadArchivos > 0">{{ cantidadArchivos }} Archivo(s) Seleccionado(s)
+                </h6>
+              </div>
             </div>
-            <div class="col-md-12" [ngClass]="{'col-6': cantidadArchivos == 0, 'col-12': cantidadArchivos > 0}">
-              <h6 class="fw-bold text-red">Seleccionar Fotos</h6>
-              <span (click)="triggerFileInput('fileInput')">
-                <i class="fa-solid fa-folder-open custom-icon"></i>
-              </span>
-              <h6 class="fw-bold mt-3" *ngIf="cantidadArchivos > 0">{{ cantidadArchivos }} Archivo(s) Seleccionado(s)</h6>
+
+            <div class="row mt-3">
+              <div class="col-md-4 text-end">
+                <button class="btn btn-lg btn-consultar" (click)="cargarArchivos()"
+                  [disabled]="disabledCargar">Cargar</button>
+              </div>
+              <div class="col-md-4 text-center">
+                <button class="btn btn-lg btn-consultar" (click)="cancelarArchivos()"
+                  [disabled]="disabledCargar">Cancelar</button>
+              </div>
+              <div class="col-md-4 text-start">
+                <button class="btn btn-lg btn-reintentar" data-bs-toggle="modal" data-bs-target="#verArchivosModal"
+                  [disabled]="disabledCargar">Ver archivos</button>
+              </div>
             </div>
+
+            <input type="file" accept="application/pdf" capture="camera" id="cameraInput" class="d-none"
+              (change)="obtenerFile($event)">
+            <input type="file" accept="application/pdf" #fileInput id="fileInput" class="d-none"
+              (change)="obtenerFile($event)" multiple>
           </div>
-
-          <div class="row mt-3">
-            <div class="col-md-4 text-end">
-              <button class="btn btn-lg btn-consultar" (click)="cargarArchivos()" [disabled]="disabledCargar">Cargar</button>
-            </div>
-            <div class="col-md-4 text-center">
-              <button class="btn btn-lg btn-consultar" (click)="cancelarArchivos()" [disabled]="disabledCargar">Cancelar</button>
-            </div>
-            <div class="col-md-4 text-start">
-              <button class="btn btn-lg btn-reintentar" data-bs-toggle="modal" data-bs-target="#verArchivosModal" [disabled]="disabledCargar">Ver archivos</button>
-            </div>            
-          </div>
-
-          <input type="file" accept="application/pdf" capture="camera" id="cameraInput" class="d-none" (change)="obtenerFile($event)">
-          <input type="file" accept="application/pdf" #fileInput id="fileInput" class="d-none" (change)="obtenerFile($event)" multiple>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-12 text-center">
-      <button (click)="save()" class="boton">Guardar</button>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <button (click)="save()" class="boton">Guardar</button>
+      </div>
     </div>
   </div>
-</div>
 </div>
 
 <div class="modal fade" id="verArchivosModal" tabindex="-1" aria-labelledby="verArchivosModalLabel" aria-hidden="true">
@@ -132,10 +140,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <div *ngFor="let archivo of archivo.base64">
+        <div *ngFor="let archivo of archivo.base64; let i = index;">
           <h6>{{ archivo.nombreArchivo }}</h6>
           <h6>{{ archivo.tipoArchivo}}</h6>
-          <img *ngIf="archivo.base46[0]" [src]="archivo.base46[0]" class="img-fluid mb-2" alt="{{ archivo.nombreArchivo }}">
+          <embed type="application/pdf" [src]="archivosCargados[i]" width="500px" height="500px">
         </div>
 
         <div *ngIf="archivo.base64.length === 0">
