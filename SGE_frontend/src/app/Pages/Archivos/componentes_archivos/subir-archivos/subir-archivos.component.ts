@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { SubirArchivoService } from 'src/app/Services/Archivo/SubirArchivos/subir-archivo.service';
 import { TipoArchivoService } from 'src/app/Services/Archivo/TipoArchivo/tipo-archivo.service';
@@ -39,6 +39,7 @@ export class SubirArchivosComponent implements OnInit {
   tiposArchivos: TipoArchivo[] = []
   tiposArchivosSelected: string[] = []
   numeroObligacionRecibida: String = '';
+  archivosCargados: SafeResourceUrl[] = [];
 
   // OBJETOSs
   archivo: Archivo = {
@@ -164,7 +165,7 @@ export class SubirArchivosComponent implements OnInit {
     this.archivo.username = user
     if (this.numeroObligacionRecibida == null) {
       this.isEmpty(obligacion, accion)
-    }else{
+    } else {
       this.botonComenzar = false
       this.botonCedula = false
     }
@@ -188,14 +189,13 @@ export class SubirArchivosComponent implements OnInit {
   }
 
   cargarArchivos() {
-    console.log(this.tiposArchivosSelected);
-    
     if (!this.tiposArchivosSelected.includes(this.tipoArchivo)) {
       this.width = this.width + Math.round(100 / this.tiposArchivos.length)
       this.tiposArchivosSelected.push(this.tipoArchivo)
     }
+
     this.tipoArchivo = ''
-    this.disabledSelect = false //cambiar a false
+    this.disabledSelect = false
     this.disabledCargar = false
     this.cantidadArchivos = 0
     Swal.fire({
@@ -210,7 +210,7 @@ export class SubirArchivosComponent implements OnInit {
   obtenerFile(event: any) {
     const archivo = event.target as HTMLInputElement;
     if (this.tipoArchivo != '') {
- 
+
       // if (archivo.size > 1048576) {
       //   Swal.fire('Error', 'El Archivo Es Demasiado Pesado', 'error')
       //   this.base64.base46 = []
@@ -235,6 +235,13 @@ export class SubirArchivosComponent implements OnInit {
         if (this.cantidadArchivos > 0) {
           this.disabledCargar = false
         }
+
+        for (let index = 0; index < this.archivo.base64.length; index++) {
+          for (let i = 0; i < this.archivo.base64[index].base46.length; i++) {
+            this.archivosCargados.push(this.sanitizer.bypassSecurityTrustResourceUrl(this.archivo.base64[index].base46[i]));
+          }
+        }
+
       }
       this.disabledSelect = true
       console.log(this.archivo);
