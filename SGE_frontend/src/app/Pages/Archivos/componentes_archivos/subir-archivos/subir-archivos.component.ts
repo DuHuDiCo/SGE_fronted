@@ -41,7 +41,9 @@ export class SubirArchivosComponent implements OnInit {
   numeroObligacionRecibida: String = '';
   archivosCargados: SafeResourceUrl[] = [];
 
-  // OBJETOSs
+  tipoArchivosCargados: String = ''
+
+  // OBJETOS
   archivo: Archivo = {
     numeroObligacion: '',
     base64: [],
@@ -237,12 +239,13 @@ export class SubirArchivosComponent implements OnInit {
         }
 
         for (let index = 0; index < this.archivo.base64.length; index++) {
+
           for (let i = 0; i < this.archivo.base64[index].base46.length; i++) {
             this.archivosCargados.push(this.sanitizer.bypassSecurityTrustResourceUrl(this.archivo.base64[index].base46[i]));
           }
         }
-
       }
+
       this.disabledSelect = true
       console.log(this.archivo);
     } else {
