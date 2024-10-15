@@ -40,14 +40,14 @@ export class SubirArchivosComponent implements OnInit {
   tiposArchivosSelected: string[] = []
   numeroObligacionRecibida: String = '';
 
-  // OBJETOS
+  // OBJETOSs
   archivo: Archivo = {
     numeroObligacion: '',
     base64: [],
     username: ''
   }
 
-  base64: Base64 = {
+  base64: Base64 = { 
     base46: [],
     tipoArchivo: '',
     nombreArchivo: ''
