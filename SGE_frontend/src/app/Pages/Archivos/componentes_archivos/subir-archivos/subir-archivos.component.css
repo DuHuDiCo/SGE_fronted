@@ -74,6 +74,12 @@
     transition: all 0.2s;
 }
 
+.btn-reintentar {
+    color: #fff;
+    background: #9C1717;
+    transition: all 0.2s;
+}
+
 .boton {
     display: block;
     object-fit: cover;

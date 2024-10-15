@@ -129,18 +129,6 @@ import { LocalizacionComponent } from './Pages/PanelGestionCartera/Elements/loca
 import { AddressGeneratorComponent } from './Pages/PanelGestionCartera/Elements/address-generator/address-generator.component';
 import { ModalConfirmacionNovedadComponent } from './Pages/PanelGestionCartera/Elements/modal-confirmacion-novedad/modal-confirmacion-novedad.component';
 
-
-
-
-
-
-
-
-
-
-
-
-
 @NgModule({
   declarations: [
     AppComponent,

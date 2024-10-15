@@ -31,7 +31,7 @@ export class SubirArchivosComponent implements OnInit {
   tipoArchivo: string = ''
   cantidadArchivos: number = 0
   disabledSelect: boolean = false
-  disabledCargar: boolean = true
+  disabledCargar: boolean = false
   numeroObligacion: string = ''
 
   // ARRAYS
@@ -147,6 +147,7 @@ export class SubirArchivosComponent implements OnInit {
   }
 
   numeroO(obligacion: string, accion: string) {
+    this.display = 'block'
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
@@ -194,8 +195,8 @@ export class SubirArchivosComponent implements OnInit {
       this.tiposArchivosSelected.push(this.tipoArchivo)
     }
     this.tipoArchivo = ''
-    this.disabledSelect = false
-    this.disabledCargar = true
+    this.disabledSelect = false //cambiar a false
+    this.disabledCargar = false
     this.cantidadArchivos = 0
     Swal.fire({
       icon: 'success',
@@ -209,7 +210,7 @@ export class SubirArchivosComponent implements OnInit {
   obtenerFile(event: any) {
     const archivo = event.target as HTMLInputElement;
     if (this.tipoArchivo != '') {
-
+ 
       // if (archivo.size > 1048576) {
       //   Swal.fire('Error', 'El Archivo Es Demasiado Pesado', 'error')
       //   this.base64.base46 = []
@@ -222,8 +223,6 @@ export class SubirArchivosComponent implements OnInit {
         if (this.archivo.base64[pos].base46.length > 0) {
           this.archivo.base64[pos].base46 = []
         }
-
-
 
         for (let i = 0; i < archivo.files.length; i++) {
           this.extraerBase64(archivo.files[i]).then((file: any) => {
