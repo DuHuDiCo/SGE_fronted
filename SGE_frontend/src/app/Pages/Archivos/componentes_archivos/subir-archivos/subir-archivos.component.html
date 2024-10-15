@@ -103,7 +103,7 @@
             <div class="row mt-3">
               <div class="col-md-4 text-end">
                 <button class="btn btn-lg btn-consultar" (click)="cargarArchivos()"
-                  [disabled]="disabledCargar">Cargar</button>
+                  [disabled]="disabledCargar">Cargar archivo</button>
               </div>
               <div class="col-md-4 text-center">
                 <button class="btn btn-lg btn-consultar" (click)="cancelarArchivos()"
@@ -133,7 +133,7 @@
 </div>
 
 <div class="modal fade" id="verArchivosModal" tabindex="-1" aria-labelledby="verArchivosModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="verArchivosModalLabel">Archivos Seleccionados</h5>
@@ -144,11 +144,10 @@
           <h5 class="text-center">No hay archivos cargados.</h5>
         </span>
 
-        <div *ngFor="let archivo of archivo.base64; let i = index;">
+        <div *ngFor="let archivo of archivosCargados; let i = index;">
           <span *ngIf="archivosCargados[i] != null && archivosCargados.length > 0">
-            <h6>{{ archivo.nombreArchivo }}</h6>
-            <h6>{{ archivo.tipoArchivo}}</h6>
-            <embed type="application/pdf" [src]="archivosCargados[i]" height="500px" style="width: 100%;">
+            <h6>{{ tiposArchivosSelected }}</h6>
+            <embed type="application/pdf" [src]="archivosCargados[i]" height="300px" style="width: 50%;">
           </span>
         </div>
 

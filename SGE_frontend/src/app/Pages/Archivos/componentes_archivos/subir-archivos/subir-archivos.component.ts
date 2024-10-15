@@ -39,9 +39,13 @@ export class SubirArchivosComponent implements OnInit {
   tiposArchivos: TipoArchivo[] = []
   tiposArchivosSelected: string[] = []
   numeroObligacionRecibida: String = '';
-  archivosCargados: SafeResourceUrl[] = [];
-
-  tipoArchivosCargados: String = ''
+  archivosCargados: any[] = [
+    {
+      base64: [],      
+      tipoArchivo: '' 
+    }
+  ];
+  
 
   // OBJETOS
   archivo: Archivo = {
@@ -192,32 +196,42 @@ export class SubirArchivosComponent implements OnInit {
 
   cargarArchivos() {
     if (!this.tiposArchivosSelected.includes(this.tipoArchivo)) {
-      this.archivosCargados = []
-      this.width = this.width + Math.round(100 / this.tiposArchivos.length)
-      this.tiposArchivosSelected.push(this.tipoArchivo)
-
+      this.archivosCargados = [];
+      this.width = this.width + Math.round(100 / this.tiposArchivos.length);
+      this.tiposArchivosSelected.push(this.tipoArchivo);
+      
+  
       for (let index = 0; index < this.archivo.base64.length; index++) {
         for (let i = 0; i < this.archivo.base64[index].base46.length; i++) {
           this.archivosCargados.push(this.sanitizer.bypassSecurityTrustResourceUrl(this.archivo.base64[index].base46[i]));
         }
       }
+  
+      for (let i = 0; i < this.tiposArchivos.length; i++) {
+        if (this.tiposArchivos[i].tipoArchivo === this.tipoArchivo) {
+          this.tiposArchivos.splice(i, 1); 
+          break; 
+        }
+      }
     }
-
+  
     console.log(this.archivosCargados);
-
-
-    this.tipoArchivo = ''
-    this.disabledSelect = false
-    this.disabledCargar = false
-    this.cantidadArchivos = 0
+  
+    this.tipoArchivo = '';
+    this.disabledSelect = false;
+    this.disabledCargar = false;
+    this.cantidadArchivos = 0;
+  
     Swal.fire({
       icon: 'success',
       title: 'Datos Guardados',
       text: 'Archivos Cargados',
       timer: 2500
-    })
+    });
+  
     console.log(this.tiposArchivosSelected);
-  }
+  }  
+  
 
   obtenerFile(event: any) {
     const archivo = event.target as HTMLInputElement;
