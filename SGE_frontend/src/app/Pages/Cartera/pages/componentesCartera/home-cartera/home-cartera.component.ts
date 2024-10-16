@@ -356,6 +356,8 @@ export class HomeCarteraComponent implements OnInit {
   bgcolorSaldosCapital: string = 'none'
   bgcolorSaldosIntereses: string = 'none'
   bgcolorSaldosHonorarios: string = 'none'
+  username: string | null = ''
+
   // PARAMETROS PARA EL SERVICE
   //TODO:CAMBIAR A 0 CUANDO CORRIJAN EL ARCHIVO
   page: number = 0;
@@ -482,6 +484,7 @@ export class HomeCarteraComponent implements OnInit {
     this.alertasGestiones()
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
+    this.username = this.authService.getUsername()
 
 
     var admin = this.authService.getRolesByName(ROLES.Administration)
