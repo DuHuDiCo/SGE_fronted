@@ -201,6 +201,29 @@ export class SubirArchivosComponent implements OnInit {
     console.log(this.archivo);
   }
 
+  eliminarArchivos(tipoArchivo: String){
+    if (!this.archivosCargados.includes(this.tiposArchivosSelected)) {
+      this.archivosEliminados = [];
+      this.width = this.width - Math.round(100 / this.tiposArchivos.length);
+      this.archivosEliminados.push(this.tiposArchivosSelected);
+      console.log(this.tiposArchivosSelected);
+      console.log(this.archivosEliminados);
+
+      for (let index = 0; index < this.archivosCargados.length; index++) {
+        if (this.archivosCargados[index].tipoArchivo == tipoArchivo) {
+          console.log(tipoArchivo);
+          console.log(this.archivosCargados.tipoArchivo);
+          
+          this.archivosCargados.splice(index, 1);
+  
+          console.log(tipoArchivo);
+          console.log(this.archivosCargados.tipoArchivo);
+          
+        }   
+      }   
+    }
+  }
+
   cargarArchivos() {
     if (!this.tiposArchivosSelected.includes(this.tipoArchivo)) {
       this.archivosCargados = [];
