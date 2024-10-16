@@ -82,7 +82,7 @@
             <select [(ngModel)]="tipoArchivo" name="tipoArchivo" (change)="selectArchivos($event)" class="form-select"
               [disabled]="disabledSelect">
               <option value="" selected>Seleccionar el Tipo de Archivo</option>
-              <option *ngFor="let t of tiposArchivos" value="{{ t.tipoArchivo }}">{{t.tipoArchivo}}</option>
+              <option *ngFor="let t of tiposArchivos" value="{{ t }}">{{t}}</option>
             </select>
 
             <div class="row text-center">
@@ -113,7 +113,7 @@
               </div>
               <div class="col-md-4 text-start">
                 <button class="btn btn-lg btn-reintentar" data-bs-toggle="modal" data-bs-target="#verArchivosModal"
-                [disabled]="disabledVer">Ver archivos</button>
+                  [disabled]="disabledVer">Ver archivos</button>
               </div>
             </div>
 
@@ -146,8 +146,9 @@
           <div class="card">
             <div class="card-body">
               <h6>TIPO ARCHIVO: {{ archivo.tipoArchivo }}</h6>
-              <embed type="application/pdf" [src]="archivo.base64" height="300px" style="width: 100%;">
-                <div class="text-center mt-3">
+              <embed *ngIf="archivo.base64 != ''" type="application/pdf" [src]="archivo.base64" height="300px"
+                style="width: 100%;">
+              <div class="text-center mt-3">
                 <button (click)="eliminarArchivos(archivo.tipoArchivo)" class="btn btn-danger">Eliminar</button>
               </div>
             </div>

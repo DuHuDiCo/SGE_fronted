@@ -36,7 +36,7 @@ export class SubirArchivosComponent implements OnInit {
 
   // ARRAYS
   obligacion: Obligacion[] = []
-  tiposArchivos: TipoArchivo[] = []
+  tiposArchivos: string[] = []
   tiposArchivosSelected: string[] = []
   numeroObligacionRecibida: String = '';
 
@@ -54,13 +54,6 @@ export class SubirArchivosComponent implements OnInit {
   }
 
   archivosCargados: any = [
-    {
-      base64: '',
-      tipoArchivo: ''
-    }
-  ];
-
-  archivosEliminados: any = [
     {
       base64: '',
       tipoArchivo: ''
@@ -151,7 +144,9 @@ export class SubirArchivosComponent implements OnInit {
   getAllTipoArchivo() {
     this.tipoArchivoService.getAll().subscribe(
       (data: any) => {
-        this.tiposArchivos = data
+        data.forEach((element: TipoArchivo) => {
+          this.tiposArchivos.push(element.tipoArchivo)
+        });
       }, (error: any) => {
         console.log(error);
       }
@@ -168,7 +163,7 @@ export class SubirArchivosComponent implements OnInit {
 
     this.archivo.base64 = Array.from({ length: this.tiposArchivos.length }, (_, index) => ({
       base46: [],
-      tipoArchivo: this.tiposArchivos[index].tipoArchivo,
+      tipoArchivo: this.tiposArchivos[index],
       nombreArchivo: ''
     }));
 
@@ -195,35 +190,36 @@ export class SubirArchivosComponent implements OnInit {
     this.cantidadArchivos = 0
     this.disabledSelect = false
     this.disabledCargar = false
-    this.disabledVer  = false
+    this.disabledVer = false
     this.fileInput.nativeElement.value = '';
     console.log(this.archivo);
   }
 
-  eliminarArchivos(tipoArchivo: String){
+  eliminarArchivos(tipoArchivo: string) {
     if (!this.archivosCargados.includes(this.tiposArchivosSelected)) {
-      this.archivosEliminados = [];
       this.width = this.width - Math.round(100 / this.tiposArchivos.length - 3);
       console.log(this.width);
-      
-      this.archivosEliminados.push(this.tiposArchivosSelected);
 
       for (let index = 0; index < this.archivosCargados.length; index++) {
         if (this.archivosCargados[index].tipoArchivo == tipoArchivo) {
-          console.log(tipoArchivo);
-          console.log(this.archivosCargados.tipoArchivo);
-          
           this.archivosCargados.splice(index, 1);
-  
-          console.log(tipoArchivo);
-          console.log(this.archivosCargados); 
-          
-          // for (let index = 0; index < .length; index++) {
-          //   const element = array[index];
-            
-          // }
-        }   
-      }   
+        }
+      }
+
+      for (let i = 0; i < this.archivo.base64.length; i++) {
+        if (this.archivo.base64[i].tipoArchivo == tipoArchivo) {
+          this.archivo.base64[i].base46 = [];
+        }
+      }
+
+      var pos = this.archivo.base64.findIndex((a: Base64) => a.tipoArchivo == tipoArchivo)
+      this.tiposArchivosSelected.splice(pos, 1);
+
+      // UNSHIFT: SIRVE PARA PUSHEARLO EN LA PRIMER POSICION DEL ARRAY
+      this.tiposArchivos.unshift(tipoArchivo)
+      console.log(this.archivo);
+      console.log(this.tiposArchivosSelected);
+
     }
   }
 
@@ -247,7 +243,7 @@ export class SubirArchivosComponent implements OnInit {
       }
 
       for (let i = 0; i < this.tiposArchivos.length; i++) {
-        if (this.tiposArchivos[i].tipoArchivo === this.tipoArchivo) {
+        if (this.tiposArchivos[i] === this.tipoArchivo) {
           this.tiposArchivos.splice(i, 1);
           break;
         }
