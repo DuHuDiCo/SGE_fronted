@@ -57,14 +57,6 @@ export class BuscarArchivosComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllTipo()
-    setTimeout(() => {
-      this.subirService.currentData.subscribe(data => {
-        if (data) {
-          this.numeroObligacionRecibida = data;
-          console.log('obligacion recibida:', this.numeroObligacionRecibida);
-        }
-      });
-    }, 300);
   }
 
   @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
@@ -110,31 +102,31 @@ export class BuscarArchivosComponent implements OnInit {
     )
   }
 
-isEmpty(obligacion: string) {
-  this.subirService.isEmpty(obligacion).subscribe(
-    (data: any) => {
-      if (data) {
-        Swal.fire('Error', 'Esta Obligacion No Contiene Archivos, Puede Subirlos A continuación', 'error')
-        setTimeout(() => {
-          this.subirService.send(obligacion);  
-          console.log('obligacion enviada:', obligacion);  
-          this.router.navigate(['/dashboard-archivos/subir-archivos']);
-        }, 3000);
-      } else {
-        Swal.fire({
-          icon: 'success',
-          title: 'Datos Guardados',
-          text: 'Estos Son Los Archivos Encontrados',
-          timer: 2500
-        });
-        this.cards = true;
-        this.tabla = false;
+  isEmpty(obligacion: string) {
+    this.subirService.isEmpty(obligacion).subscribe(
+      (data: any) => {
+        if (data) {
+          Swal.fire('Error', 'Esta Obligacion No Contiene Archivos, Puede Subirlos A continuación', 'error')
+          setTimeout(() => {
+            this.subirService.send(obligacion);
+            console.log('obligacion enviada:', obligacion);
+            this.router.navigate(['/dashboard-archivos/subir-archivos']);
+          }, 3000);
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Datos Guardados',
+            text: 'Estos Son Los Archivos Encontrados',
+            timer: 2500
+          });
+          this.cards = true;
+          this.tabla = false;
+        }
+      }, (error: any) => {
+        console.log(error);
       }
-    }, (error: any) => {
-      console.log(error);
-    }
-  );
-}
+    );
+  }
 
   getAllTipo() {
     this.tipoArchivoService.getAll().subscribe(
@@ -147,10 +139,6 @@ isEmpty(obligacion: string) {
         console.log(error);
       }
     )
-  }
-
-  saveArchivos(){
-    this.router.navigate(['/dashboard-archivos/subir-archivos'])
   }
 
   saveOne() {
@@ -292,13 +280,10 @@ isEmpty(obligacion: string) {
         });
       };
       reader.onerror = error => {
-        resolve({
-          base: null
-        });
+        reject(error);
       };
-
     } catch (e) {
-      return null;
+      reject(e);
     }
-  })
+  });
 }
