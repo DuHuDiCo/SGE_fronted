@@ -39,13 +39,6 @@ export class SubirArchivosComponent implements OnInit {
   tiposArchivos: TipoArchivo[] = []
   tiposArchivosSelected: string[] = []
   numeroObligacionRecibida: String = '';
-  archivosCargados: any = [
-    {
-      base64: '',
-      tipoArchivo: ''
-    }
-  ];
-
 
   // OBJETOS
   archivo: Archivo = {
@@ -59,6 +52,20 @@ export class SubirArchivosComponent implements OnInit {
     tipoArchivo: '',
     nombreArchivo: ''
   }
+
+  archivosCargados: any = [
+    {
+      base64: '',
+      tipoArchivo: ''
+    }
+  ];
+
+  archivosEliminados: any = [
+    {
+      base64: '',
+      tipoArchivo: ''
+    }
+  ];
 
   constructor(private ingresarService: IngresarService, private subirService: SubirArchivoService, private authService: AuthenticationService, private tipoArchivoService: TipoArchivoService, private router: Router, private sanitizer: DomSanitizer) { }
 
