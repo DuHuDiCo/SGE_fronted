@@ -161,8 +161,8 @@ export type PagosRequest = {
   capital: number
   intereses: number
   honorarios: number
-  existed:boolean,
-  idPago :number
+  existed: boolean,
+  idPago: number
 }
 
 
@@ -193,8 +193,8 @@ export type Filtros = {
   fechaCompromisoInicio: Date | string | null,
   fechaCompromisoFin: string | null,
   isActive: boolean,
-  clasificacionGestion: any | null
-
+  clasificacionGestion: any | null,
+  sinAsesor: number | null
 }
 
 export type Notificacion = {

@@ -335,7 +335,8 @@ export class HomeCarteraComponent implements OnInit {
     fechaCompromisoInicio: null,
     fechaCompromisoFin: null,
     isActive: false,
-    clasificacionGestion: null
+    clasificacionGestion: null,
+    sinAsesor: null
   }
 
   limpiarFiltro: boolean = false
@@ -3782,7 +3783,8 @@ export class HomeCarteraComponent implements OnInit {
       fechaCompromisoInicio: null,
       fechaCompromisoFin: null,
       isActive: false,
-      clasificacionGestion: []
+      clasificacionGestion: [],
+      sinAsesor: null
     }
 
     this.bancosArray = []
