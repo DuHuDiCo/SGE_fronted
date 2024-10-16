@@ -24,14 +24,14 @@ export class SubirArchivosComponent implements OnInit {
   botonCedula: boolean = false
   botonGuardar: boolean = false
   cedula: string = ''
-  tabla: boolean = false
   background_color: string = '#960010'
   width: number = 0
   display: string = 'none'
   tipoArchivo: string = ''
   cantidadArchivos: number = 0
   disabledSelect: boolean = false
-  disabledCargar: boolean = false
+  disabledCargar: boolean = true
+  disabledVer: boolean = true
   numeroObligacion: string = ''
 
   // ARRAYS
@@ -129,7 +129,6 @@ export class SubirArchivosComponent implements OnInit {
       (data: any) => {
         this.obligacion = data
         if (this.obligacion.length > 0) {
-          this.tabla = true
           Swal.fire({
             icon: 'success',
             title: 'Estas Son Las Obligaciones Encontradas',
@@ -140,7 +139,6 @@ export class SubirArchivosComponent implements OnInit {
         }
         if (this.obligacion.length <= 0) {
           Swal.fire('Error', 'Digite Una Cédula Válida', 'error')
-          this.tabla = false
           return
         }
       }, (error: any) => {
@@ -196,7 +194,8 @@ export class SubirArchivosComponent implements OnInit {
     this.archivo.base64[pos].base46 = []
     this.cantidadArchivos = 0
     this.disabledSelect = false
-    this.disabledCargar = true
+    this.disabledCargar = false
+    this.disabledVer  = false
     this.fileInput.nativeElement.value = '';
     console.log(this.archivo);
   }
@@ -204,10 +203,10 @@ export class SubirArchivosComponent implements OnInit {
   eliminarArchivos(tipoArchivo: String){
     if (!this.archivosCargados.includes(this.tiposArchivosSelected)) {
       this.archivosEliminados = [];
-      this.width = this.width - Math.round(100 / this.tiposArchivos.length);
+      this.width = this.width - Math.round(100 / this.tiposArchivos.length - 3);
+      console.log(this.width);
+      
       this.archivosEliminados.push(this.tiposArchivosSelected);
-      console.log(this.tiposArchivosSelected);
-      console.log(this.archivosEliminados);
 
       for (let index = 0; index < this.archivosCargados.length; index++) {
         if (this.archivosCargados[index].tipoArchivo == tipoArchivo) {
@@ -217,7 +216,12 @@ export class SubirArchivosComponent implements OnInit {
           this.archivosCargados.splice(index, 1);
   
           console.log(tipoArchivo);
-          console.log(this.archivosCargados.tipoArchivo);  
+          console.log(this.archivosCargados); 
+          
+          // for (let index = 0; index < .length; index++) {
+          //   const element = array[index];
+            
+          // }
         }   
       }   
     }
@@ -228,7 +232,6 @@ export class SubirArchivosComponent implements OnInit {
       this.archivosCargados = [];
       this.width = this.width + Math.round(100 / this.tiposArchivos.length);
       this.tiposArchivosSelected.push(this.tipoArchivo);
-
 
       for (let index = 0; index < this.archivo.base64.length; index++) {
         var obj = {
@@ -255,8 +258,9 @@ export class SubirArchivosComponent implements OnInit {
 
     this.tipoArchivo = '';
     this.disabledSelect = false;
-    this.disabledCargar = false;
     this.cantidadArchivos = 0;
+    this.disabledCargar = true;
+    this.disabledVer = false;
 
     Swal.fire({
       icon: 'success',
@@ -264,7 +268,6 @@ export class SubirArchivosComponent implements OnInit {
       text: 'Archivos Cargados',
       timer: 2500
     });
-
     console.log(this.tiposArchivosSelected);
   }
 

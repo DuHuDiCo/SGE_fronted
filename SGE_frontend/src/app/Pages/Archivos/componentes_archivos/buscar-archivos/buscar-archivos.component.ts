@@ -20,6 +20,7 @@ export class BuscarArchivosComponent implements OnInit {
   url: string = ''
   dataUri: string = 'data:image/jpg;base64'
   base64Pdf: string = ''
+  numeroObligacionRecibida: String = '';
   cards: boolean = false
   tabla: boolean = false
   filtro: boolean = false
@@ -56,6 +57,14 @@ export class BuscarArchivosComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllTipo()
+    setTimeout(() => {
+      this.subirService.currentData.subscribe(data => {
+        if (data) {
+          this.numeroObligacionRecibida = data;
+          console.log('obligacion recibida:', this.numeroObligacionRecibida);
+        }
+      });
+    }, 300);
   }
 
   @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
@@ -127,7 +136,6 @@ isEmpty(obligacion: string) {
   );
 }
 
-  
   getAllTipo() {
     this.tipoArchivoService.getAll().subscribe(
       (data: any) => {
@@ -141,8 +149,11 @@ isEmpty(obligacion: string) {
     )
   }
 
-  saveOne() {
+  saveArchivos(){
+    this.router.navigate(['/dashboard-archivos/subir-archivos'])
+  }
 
+  saveOne() {
     this.buscarService.saveOne(this.subirArchivo).subscribe(
       (data: any) => {
         Swal.fire('Datos Guardados', 'Archivo Guardado Con éxito', 'success')
@@ -290,6 +301,4 @@ isEmpty(obligacion: string) {
       return null;
     }
   })
-
-
 }

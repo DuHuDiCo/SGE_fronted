@@ -29,12 +29,14 @@
         </div>
       </div>
     </div>
-    <div class="col-md-8 mt-3" *ngIf="tabla">
+    <div class="col-md-8 mt-3">
       <div class="card">
         <div class="card-body card-custom">
           <h5 class="fw-bold" *ngIf="obligacion.length > 0">Seleccione una Obligación</h5>
           <div class="mt-2 mb-2">
-            <h5 class="fw-bold" *ngIf="obligacion.length == 0">Sin Obligaciónes</h5>
+            <div *ngIf="obligacion.length == 0">
+              <h5 class="text-center mt-4">Sin Obligaciones</h5>
+            </div>
             <div class="table-responsive" *ngIf="obligacion.length > 0">
               <table class="table table-hover text-center mt-3">
                 <thead>
@@ -111,7 +113,7 @@
               </div>
               <div class="col-md-4 text-start">
                 <button class="btn btn-lg btn-reintentar" data-bs-toggle="modal" data-bs-target="#verArchivosModal"
-                  [disabled]="disabledCargar">Ver archivos</button>
+                [disabled]="disabledVer">Ver archivos</button>
               </div>
             </div>
 
@@ -140,15 +142,16 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-
-        <div *ngFor="let archivo of archivosCargados; let i = index;">
-          <span *ngIf="archivo.base64 != '' && archivosCargados.length > 0">
-            <h6> TIPO ARCHIVO: {{ archivo.tipoArchivo }}</h6>
-            <embed type="application/pdf" [src]="archivo.base64" height="300px" style="width: 100%;">
-              <div class="col-md-12 text-center">
-                <button (click)="eliminarArchivos(archivo.tipoArchivo)" class="boton">eliminar</button>
+        <div *ngFor="let archivo of archivosCargados; let i = index;" class="mb-3">
+          <div class="card">
+            <div class="card-body">
+              <h6>TIPO ARCHIVO: {{ archivo.tipoArchivo }}</h6>
+              <embed type="application/pdf" [src]="archivo.base64" height="300px" style="width: 100%;">
+                <div class="text-center mt-3">
+                <button (click)="eliminarArchivos(archivo.tipoArchivo)" class="btn btn-danger">Eliminar</button>
               </div>
-          </span>
+            </div>
+          </div>
         </div>
         <span *ngIf="archivosCargados.length == 0">
           <h5 class="text-center">No hay archivos cargados.</h5>
