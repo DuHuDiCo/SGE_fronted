@@ -194,7 +194,7 @@ export type Filtros = {
   fechaCompromisoFin: string | null,
   isActive: boolean,
   clasificacionGestion: any | null,
-  sinAsesor: number | null
+  sinAsesor: number
 }
 
 export type Notificacion = {

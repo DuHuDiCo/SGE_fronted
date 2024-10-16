@@ -337,7 +337,7 @@ export class HomeCarteraComponent implements OnInit {
     fechaCompromisoFin: null,
     isActive: false,
     clasificacionGestion: null,
-    sinAsesor: null
+    sinAsesor: 0
   }
 
   limpiarFiltro: boolean = false
@@ -3468,7 +3468,7 @@ export class HomeCarteraComponent implements OnInit {
       (this.filtros.fechaGestionInicio == null || this.filtros.fechaGestionInicio == '') &&
       (this.filtros.fechaGestionFin == null || this.filtros.fechaGestionFin == '') &&
       (this.filtros.fechaCompromisoInicio == null || this.filtros.fechaCompromisoInicio == '') &&
-      (this.filtros.fechaCompromisoFin == null) && this.filtros.clasificacionGestion == null && this.filtros.sinAsesor == null
+      (this.filtros.fechaCompromisoFin == null) && this.filtros.clasificacionGestion == null && this.filtros.sinAsesor == 0
     ) {
       Swal.fire({
         icon: 'error',
@@ -3567,7 +3567,7 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionInicio != null) ||
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
-          (this.filtros.fechaCompromisoFin != null) || (this.filtros.clasificacionGestion != null) || (this.filtros.sinAsesor != null)) {
+          (this.filtros.fechaCompromisoFin != null) || (this.filtros.clasificacionGestion != null) || (this.filtros.sinAsesor > 0)) {
           setTimeout(() => {
             if (this.filtros.clasificacionGestion != 'Acuerdo de pago') {
               for (let i = 0; i < this.size; i++) {
@@ -3659,7 +3659,7 @@ export class HomeCarteraComponent implements OnInit {
       (this.filtros.fechaGestionInicio == null) &&
       (this.filtros.fechaGestionFin == null) &&
       (this.filtros.fechaCompromisoInicio == null) &&
-      (this.filtros.fechaCompromisoFin == null) && (this.filtros.clasificacionGestion == null)
+      (this.filtros.fechaCompromisoFin == null) && (this.filtros.clasificacionGestion == null) && (this.filtros.sinAsesor == 0)
     ) {
 
 
@@ -3722,7 +3722,7 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionInicio != null) ||
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
-          (this.filtros.fechaCompromisoFin != null) || (this.filtros.clasificacionGestion != null)) {
+          (this.filtros.fechaCompromisoFin != null) || (this.filtros.clasificacionGestion != null) || (this.filtros.sinAsesor > 0)) {
           setTimeout(() => {
             for (let i = 0; i < this.size; i++) {
               td = document.getElementById(`td_${i}`)
@@ -3785,7 +3785,7 @@ export class HomeCarteraComponent implements OnInit {
       fechaCompromisoFin: null,
       isActive: false,
       clasificacionGestion: [],
-      sinAsesor: null
+      sinAsesor: 0
     }
 
     this.bancosArray = []
@@ -3877,10 +3877,10 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   asignarAsesor() {
-    if (this.filtros.sinAsesor == null) {
+    if (this.filtros.sinAsesor == 0) {
       this.filtros.sinAsesor = asesor
     } else {
-      this.filtros.sinAsesor = null
+      this.filtros.sinAsesor = 0
     }
     console.log(this.filtros);
   }
@@ -3926,7 +3926,7 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionInicio != null) ||
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
-          (this.filtros.fechaCompromisoFin != null)) {
+          (this.filtros.fechaCompromisoFin != null) || (this.filtros.sinAsesor > 0)) {
           setTimeout(() => {
             for (let i = 0; i < this.size; i++) {
               td = document.getElementById(`td_${i}`)
