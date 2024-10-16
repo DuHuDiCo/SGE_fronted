@@ -1809,10 +1809,21 @@
 
                         <!-- SIN ASESOR -->
                         <div class="col-md-12 mb-3">
-                            <input class="form-check-input" type="checkbox" value="Normal" #variableCol>
-                            <label class="form-check-label">
-                                <cite title="Source Title">&nbsp;SIN ASESOR</cite>
-                            </label>
+                            <figure>
+                                <blockquote class="blockquote">
+                                    <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseAsesor"
+                                        style="cursor: pointer;">Filtro Sin Asesor &nbsp;<i
+                                            class="fa-solid fa-caret-down"></i>
+                                    </h6>
+                                </blockquote>
+                                <div class="collapse" id="collapseAsesor">
+                                    <input class="form-check-input" type="checkbox" value="Normal" #variableCol
+                                        (click)="asignarAsesor()">
+                                    <label class="form-check-label">
+                                        <cite title="Source Title">&nbsp;SIN ASESOR</cite>
+                                    </label>
+                                </div>
+                            </figure>
                         </div>
 
 
@@ -2004,8 +2015,8 @@
                                 </td>
                                 <td>{{ cc.sede.sede }}</td>
                                 <!-- <td>{{ cc.clasificacionJuridica }}</td> -->
-                                <td>{{ cc.asesorCarteraResponse.usuario.nombres }}
-                                    {{
+                                <td>{{ cc.asesorCarteraResponse.idAsesorCartera ==
+                                    22 ? 'SIN ASESOR' : cc.asesorCarteraResponse.usuario.nombres + ' ' +
                                     cc.asesorCarteraResponse.usuario.apellidos }}</td>
                                 <td>{{ cc.clientes[0].tipoGarante.tipoGarante }}</td>
                             </tr>

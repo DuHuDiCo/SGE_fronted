@@ -12,6 +12,7 @@ import { CuentaCobrarCalculate, CuentasCobrarResponse } from 'src/app/Types/Cart
 import { ClasificacionGestion, CuotaList, CuotasRequest, Filtros, Gestion, Gestiones, Notificacion, Pagos, PagosRequest, Permisos, ReciboPago, Roles, TIPOACUERDO, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
 
 import { CLASIFICACION_JURIDICA, ROLES, ROLESCARTERA } from 'src/app/Types/Roles';
+import { asesor } from 'src/app/utils/helper';
 
 import Swal from 'sweetalert2';
 
@@ -3467,7 +3468,7 @@ export class HomeCarteraComponent implements OnInit {
       (this.filtros.fechaGestionInicio == null || this.filtros.fechaGestionInicio == '') &&
       (this.filtros.fechaGestionFin == null || this.filtros.fechaGestionFin == '') &&
       (this.filtros.fechaCompromisoInicio == null || this.filtros.fechaCompromisoInicio == '') &&
-      (this.filtros.fechaCompromisoFin == null) && this.filtros.clasificacionGestion == null
+      (this.filtros.fechaCompromisoFin == null) && this.filtros.clasificacionGestion == null && this.filtros.sinAsesor == null
     ) {
       Swal.fire({
         icon: 'error',
@@ -3566,7 +3567,7 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionInicio != null) ||
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
-          (this.filtros.fechaCompromisoFin != null) || (this.filtros.clasificacionGestion != null)) {
+          (this.filtros.fechaCompromisoFin != null) || (this.filtros.clasificacionGestion != null) || (this.filtros.sinAsesor != null)) {
           setTimeout(() => {
             if (this.filtros.clasificacionGestion != 'Acuerdo de pago') {
               for (let i = 0; i < this.size; i++) {
@@ -3873,6 +3874,15 @@ export class HomeCarteraComponent implements OnInit {
 
     this.clasGesArray = objeto
 
+  }
+
+  asignarAsesor() {
+    if (this.filtros.sinAsesor == null) {
+      this.filtros.sinAsesor = asesor
+    } else {
+      this.filtros.sinAsesor = null
+    }
+    console.log(this.filtros);
   }
 
   getByDato() {
