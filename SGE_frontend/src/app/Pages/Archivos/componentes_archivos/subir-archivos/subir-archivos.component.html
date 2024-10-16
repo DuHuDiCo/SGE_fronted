@@ -140,9 +140,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <span *ngIf="archivo.base64.length == 0">
-          <h5 class="text-center">No hay archivos cargados.</h5>
-        </span>
 
         <div *ngFor="let archivo of archivosCargados; let i = index;">
           <span *ngIf="archivo.base64 != '' && archivosCargados.length > 0">
@@ -153,6 +150,9 @@
               </div>
           </span>
         </div>
+        <span *ngIf="archivosCargados.length == 0">
+          <h5 class="text-center">No hay archivos cargados.</h5>
+        </span>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

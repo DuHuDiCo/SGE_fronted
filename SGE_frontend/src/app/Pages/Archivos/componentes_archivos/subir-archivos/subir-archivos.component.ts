@@ -217,8 +217,7 @@ export class SubirArchivosComponent implements OnInit {
           this.archivosCargados.splice(index, 1);
   
           console.log(tipoArchivo);
-          console.log(this.archivosCargados.tipoArchivo);
-          
+          console.log(this.archivosCargados.tipoArchivo);  
         }   
       }   
     }
