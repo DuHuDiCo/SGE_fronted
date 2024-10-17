@@ -53,6 +53,7 @@ export class BuscarArchivosComponent implements OnInit {
     tipoArchivo: '',
     nombreArchivo: ''
   }
+
   constructor(private buscarService: SubirArchivoService, private router: Router, private subirService: SubirArchivoService, private authService: AuthenticationService, private tipoArchivoService: TipoArchivoService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
@@ -141,44 +142,74 @@ export class BuscarArchivosComponent implements OnInit {
     )
   }
 
-  saveOne() {
-    this.buscarService.saveOne(this.subirArchivo).subscribe(
-      (data: any) => {
-        Swal.fire('Datos Guardados', 'Archivo Guardado Con éxito', 'success')
-        setTimeout(() => {
-          window.location.reload()
-        }, 2000);
-
-      }, (error: any) => {
-        Swal.fire('Error', 'Erro al Guardar El Archivo', 'error')
-        console.log(error);
-      }
-    )
-  }
-
-  //LLENAR LAS CARDS
-  llenarCards(position: number, obligacion: string) {
-
-    this.subirArchivo.numeroObligacion = obligacion
-    var user = this.authService.getUsername()
-
-    if (user == null || user == undefined) {
-      return
-    }
-    this.subirArchivo.username = user
-
-    this.isEmpty(obligacion)
-
-    this.archivos = this.datos[position].archivos
-    console.log(this.tiposArchivos);
-
-  }
-
   //LLENAR LOS MODALES CON SU PDF
   pdf(base64: string) {
     const embed = this.pdfEmbed.nativeElement;
     embed.src = base64;
   }
+
+// Método para obtener el archivo y convertirlo a base64
+obtenerFile(event: any) {  
+  const archivo = event.target.files[0];
+
+  if (!archivo) {
+    console.error('No se ha seleccionado ningun archivo.');
+    return;
+  }
+
+  if (archivo.size > 1048576) {
+    Swal.fire('Error', 'El archivo es demasiado pesado', 'error');
+    return;
+  }
+
+  this.extraerBase64(archivo).then((file: any) => {
+    const base64SinP = file.base; 
+
+    const obj = {
+      base46: [base64SinP],
+      nombreArchivo: archivo.name,
+      tipoArchivo: this.base64.tipoArchivo 
+    };
+    
+    this.subirArchivo.base64.push(obj);
+    console.log(obj);
+
+  }).catch(error => {
+    console.error('Error al extraer el archivo base64:', error);
+  });
+}
+
+saveOne() {
+  console.log(this.subirArchivo);
+  
+  this.buscarService.saveOne(this.subirArchivo).subscribe(
+    (data: any) => {
+      Swal.fire('Datos Guardados', 'Archivo Guardado Con éxito', 'success');
+    }, 
+    (error: any) => {
+      Swal.fire('Error', 'Error al Guardar El Archivo', 'error');
+      console.log(error);
+    }
+  );
+}
+
+// Método para extraer base64
+extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
+  try {
+    const reader = new FileReader();
+    reader.readAsDataURL($event);
+    reader.onload = () => {
+      resolve({
+        base: reader.result 
+      });
+    };
+    reader.onerror = error => {
+      reject(error);
+    };
+  } catch (e) {
+    reject(e);
+  }
+});
 
   //ABRIR EL MODAL PARA EDITAR
   abrirModal(id: number) {
@@ -202,9 +233,6 @@ export class BuscarArchivosComponent implements OnInit {
     this.buscarService.update(this.modal).subscribe(
       (data: any) => {
         Swal.fire('Datos Guardados', 'Archivo Actualizado Con éxito', 'success')
-        setTimeout(() => {
-          window.location.reload()
-        }, 2000);
       }, (error: any) => {
         Swal.fire('Error', 'Erro al Actualizar El Archivo', 'error')
         console.log(error);
@@ -244,46 +272,21 @@ export class BuscarArchivosComponent implements OnInit {
     })
   }
 
-  //METODOS PARA CONVERTIR EN BASE64
-  public obtenerFile(event: any) {
-    var archivo = event.target.files[0];
+  //LLENAR LAS CARDS
+  llenarCards(position: number, obligacion: string) {
 
-    if (archivo.size > 1048576) {
-      Swal.fire('Error', 'El Archivo Es Demasiado Pesado', 'error')
-      this.modal.base64 = ''
+    this.subirArchivo.numeroObligacion = obligacion
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
       return
     }
+    this.subirArchivo.username = user
 
-    if (archivo.size > 1048576) {
-      Swal.fire('Error', 'El Archivo Es Demasiado Pesado', 'error')
-      this.base64.base46 = []
-      return
-    }
+    this.isEmpty(obligacion)
 
-    this.extraerBase64(archivo).then((file: any) => {
-      this.modal.base64 = file.base;
-      this.base64.base46 = file.base;
-      this.modal.nombreOriginal = archivo.name
-      this.subirArchivo.base64.push(this.base64)
-    })
+    this.archivos = this.datos[position].archivos
+    console.log(this.tiposArchivos);
+
   }
-
-  public extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
-    try {
-      const unsafeImg = window.URL.createObjectURL($event);
-      const image = this.sanitizer.bypassSecurityTrustUrl(unsafeImg);
-      const reader = new FileReader();
-      reader.readAsDataURL($event);
-      reader.onload = () => {
-        resolve({
-          base: reader.result
-        });
-      };
-      reader.onerror = error => {
-        reject(error);
-      };
-    } catch (e) {
-      reject(e);
-    }
-  });
 }

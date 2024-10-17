@@ -125,7 +125,7 @@
       <div class="modal-body">
         <div class="col-md-12 col-12">
           <div class="input-group mb-3">
-            <input (change)="obtenerFile($event)" type="file" class="form-control" accept=".pdf" max="1048576">
+            <input (change)="obtenerFile($event)" type="file" class="form-control" accept=".pdf">
           </div>
         </div>
       </div>
@@ -158,8 +158,7 @@
           </div>
 
           <div class="input-group mb-3">
-            <input [(ngModel)]="base64.base46" (change)="obtenerFile($event)" type="file" class="form-control"
-              accept=".pdf" max="1048576">
+            <input (change)="obtenerFile($event)" type="file" class="form-control" accept=".pdf" max="1048576">
           </div>
         </div>
       </div>
