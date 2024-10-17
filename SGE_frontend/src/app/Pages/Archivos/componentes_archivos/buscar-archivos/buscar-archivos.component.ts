@@ -21,6 +21,7 @@ export class BuscarArchivosComponent implements OnInit {
   dataUri: string = 'data:image/jpg;base64'
   base64Pdf: string = ''
   numeroObligacionRecibida: String = '';
+  tipoArchivo: string = ''
   cards: boolean = false
   tabla: boolean = false
   filtro: boolean = false
@@ -149,7 +150,7 @@ export class BuscarArchivosComponent implements OnInit {
   }
 
 // Método para obtener el archivo y convertirlo a base64
-obtenerFile(event: any) {  
+obtenerFile(event: any, accion: string) {  
   const archivo = event.target.files[0];
 
   if (!archivo) {
@@ -174,6 +175,22 @@ obtenerFile(event: any) {
     this.subirArchivo.base64.push(obj);
     console.log(obj);
 
+
+    if (accion == 'guardar') {
+      const obj = {
+        base46: [base64SinP],
+        nombreArchivo: archivo.name,
+        tipoArchivo: this.base64.tipoArchivo 
+      };
+      
+      this.subirArchivo.base64 = [];
+
+      this.subirArchivo.base64.push(obj);
+      console.log(obj);
+  
+    }else{
+      this.modal.base64 = base64SinP;
+    }
   }).catch(error => {
     console.error('Error al extraer el archivo base64:', error);
   });
@@ -181,6 +198,17 @@ obtenerFile(event: any) {
 
 saveOne() {
   console.log(this.subirArchivo);
+
+  const obj = {
+    base64: [],
+    tipoArchivo: ''
+  }
+
+  // for (let i = 0; i < this.tiposArchivos.length; i++) {
+  //   if (this.tiposArchivos[i] == this.tipoArchivo) {
+      
+  //   }
+  // }
   
   this.buscarService.saveOne(this.subirArchivo).subscribe(
     (data: any) => {
@@ -215,6 +243,7 @@ extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
   abrirModal(id: number) {
     var archivo = this.archivos.find((a: any) => a.idArchivo == id)
     if (archivo != null || archivo != undefined) {
+
       this.modal.idArchivo = archivo.idArchivo
       this.modal.nombreOriginal = archivo.nombreOriginal
       this.modal.tipoArchivo = archivo.tipoArchivo.tipoArchivo
@@ -223,6 +252,8 @@ extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
 
   //EDITAR UN ARCHIVO
   editar() {
+    console.log(this.modal);
+    
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {

@@ -73,26 +73,47 @@
     border: none;
 }
 
-.custom-card .card-image {
-    height: 150px;
-    background-size: cover;
-    overflow: hidden;
-    margin: 0 8px;
-    margin-top: 8px;
-    background-color: white;
-    background-position: center;
+.custom-card {
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
 }
 
-.c:hover .footer {
-    display: block;
-    transform: scale(0.95);
-    background-color: rgb(230, 231, 232);
+.custom-card:hover {
+  transform: translateY(-5px);
 }
 
-.c:hover .custom-card {
-    transform: scale(0.95);
-    background-color: rgb(230, 231, 232);
-    border-bottom: none;
+.card-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.card-body p {
+  margin: 0.5rem 0;
+}
+
+.button-group button {
+  transition: background-color 0.3s ease;
+}
+
+.button-group button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.btn-danger:hover {
+  background-color: #e60000 !important;
+  border-color: #e60000 !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.btn i {
+  font-size: 1.2rem;
 }
 
 .footer .button-container {

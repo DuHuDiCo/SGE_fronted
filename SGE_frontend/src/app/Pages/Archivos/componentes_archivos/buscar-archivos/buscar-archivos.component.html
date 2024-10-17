@@ -125,7 +125,7 @@
       <div class="modal-body">
         <div class="col-md-12 col-12">
           <div class="input-group mb-3">
-            <input (change)="obtenerFile($event)" type="file" class="form-control" accept=".pdf">
+            <input (change)="obtenerFile($event, 'editar')" type="file" class="form-control" accept=".pdf">
           </div>
         </div>
       </div>
@@ -157,8 +157,10 @@
             </select>
           </div>
 
-          <div class="input-group mb-3">
-            <input (change)="obtenerFile($event)" type="file" class="form-control" accept=".pdf" max="1048576">
+          <div class="usuario">
+            <div class="input-group mb-3">
+              <input (change)="obtenerFile($event, 'guardar')" type="file" class="form-control" accept=".pdf" max="1048576">
+            </div>
           </div>
         </div>
       </div>
