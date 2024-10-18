@@ -156,7 +156,8 @@ export class CuadreDiarioComponent implements OnInit {
     for (var i = 0; i < this.ingresosDiario.length; i++) {
       var arrayingresosDiario: string[] = [];
       const fecha = new Date(this.ingresosDiario[i].fechaIngreso);
-      const formattedDate = fecha.toLocaleString('es-CO');
+      fecha.setDate(fecha.getDate() + 1);
+      const formattedDate = fecha.toLocaleDateString('es-CO');
       arrayingresosDiario.push(formattedDate);
 
       arrayingresosDiario.push(formatCurrency(this.ingresosDiario[i].valorIngreso));
