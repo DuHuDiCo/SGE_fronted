@@ -79,6 +79,8 @@ export class BuscarArchivosComponent implements OnInit {
     this.buscarService.filter(this.cedula).subscribe(
       (data: any) => {
         this.datos = data
+        console.log(this.datos);
+        
         data.forEach((element: any) => {
           this.obligacion.push(element.cuentaPorCobrar)
           this.numeroArc = element.archivos.length
@@ -109,6 +111,7 @@ export class BuscarArchivosComponent implements OnInit {
       (data: any) => {
         if (data) {
           Swal.fire('Error', 'Esta Obligacion No Contiene Archivos, Puede Subirlos A continuación', 'error')
+          console.log(data);
           setTimeout(() => {
             this.subirService.send(obligacion);
             console.log('obligacion enviada:', obligacion);
@@ -117,10 +120,12 @@ export class BuscarArchivosComponent implements OnInit {
         } else {
           Swal.fire({
             icon: 'success',
-            title: 'Datos Guardados',
+            title: 'Datos Guardados Anteriormente',
             text: 'Estos Son Los Archivos Encontrados',
             timer: 2500
           });
+          console.log(data);
+          
           this.cards = true;
           this.tabla = false;
         }
@@ -197,22 +202,22 @@ obtenerFile(event: any, accion: string) {
 }
 
 saveOne() {
-  console.log(this.subirArchivo);
+  // if (this.modal.base64.trim() == '' || this.modal.base64.trim() == null) {
+  //   Swal.fire('Error', 'Seleccione algun archivo.', 'error')
+  //   return
+  // }
 
-  const obj = {
-    base64: [],
-    tipoArchivo: ''
+  if (this.modal.tipoArchivo.trim() == '' || this.modal.tipoArchivo.trim() == null) {
+    Swal.fire('Error', 'Seleccione el tipo de archivo.', 'error')
+    return
   }
 
-  // for (let i = 0; i < this.tiposArchivos.length; i++) {
-  //   if (this.tiposArchivos[i] == this.tipoArchivo) {
-      
-  //   }
-  // }
-  
   this.buscarService.saveOne(this.subirArchivo).subscribe(
     (data: any) => {
       Swal.fire('Datos Guardados', 'Archivo Guardado Con éxito', 'success');
+      console.log(data);
+      this.archivos.push(data[0]);
+      this.eliminarTiposArchivos()
     }, 
     (error: any) => {
       Swal.fire('Error', 'Error al Guardar El Archivo', 'error');
@@ -251,19 +256,23 @@ extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
   }
 
   //EDITAR UN ARCHIVO
-  editar() {
-    console.log(this.modal);
-    
+  editar() {    
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
       return
     }
-    this.modal.username = user
+    this.modal.username = user;
+
+    if (this.modal.base64.trim() == '' || this.modal.base64.trim() == null) {
+      Swal.fire('Error', 'Seleccione algun archivo.', 'error')
+      return
+    }
 
     this.buscarService.update(this.modal).subscribe(
       (data: any) => {
         Swal.fire('Datos Guardados', 'Archivo Actualizado Con éxito', 'success')
+        this.archivos.push(data[0]);
       }, (error: any) => {
         Swal.fire('Error', 'Erro al Actualizar El Archivo', 'error')
         console.log(error);
@@ -317,7 +326,21 @@ extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
     this.isEmpty(obligacion)
 
     this.archivos = this.datos[position].archivos
-    console.log(this.tiposArchivos);
 
+    this.eliminarTiposArchivos()
+  }
+
+  eliminarTiposArchivos(){
+    for (let i = 0; i < this.archivos.length; i++) {
+      const tiposArchivosExistentes = this.archivos[i].tipoArchivo.tipoArchivo;
+
+    for (let x = 0; x < this.tiposArchivos.length; x++) {
+      const tiposArchivosTodos = this.tiposArchivos[x].tipoArchivo;
+      if (tiposArchivosTodos === tiposArchivosExistentes) {
+        this.tiposArchivos.splice(x, 1);
+        console.log(this.tiposArchivos);
+      }
+    }
+  }
   }
 }

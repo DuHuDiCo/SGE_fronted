@@ -75,6 +75,27 @@ export class SubirArchivosComponent implements OnInit {
     }, 300);
   }
 
+  isEmpty(obligacion: string, accion: string) {
+    this.subirService.isEmpty(obligacion).subscribe(
+      (data: any) => {
+        console.log(data);
+        if (data) {
+          Swal.fire('Error', 'Esta Obligacion No Contiene Archivos, Puede Subirlos A continuación', 'error')
+          this.cambiarInputs(accion)
+          console.log(data);
+        } else {
+          Swal.fire('Error', 'Esta Obligacion Ya Contiene Archivos, Puedes visualizarlos A continuación', 'error')
+          console.log(data);
+          setTimeout(() => {
+            this.router.navigate(['/dashboard-archivos/buscar-archivos'])
+          }, 3000);
+        }
+      }, (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
   cambiarInputs(accion: string) {
     switch (accion) {
       case 'COMENZAR':
@@ -110,6 +131,7 @@ export class SubirArchivosComponent implements OnInit {
         break;
     }
   }
+
 
   getObligacionByCedula() {
     const cedula = this.cedula.trim()
@@ -175,7 +197,6 @@ export class SubirArchivosComponent implements OnInit {
       this.botonComenzar = false
       this.botonCedula = false
     }
-    console.log(this.archivo);
   }
 
   selectArchivos(event: any) {
@@ -248,6 +269,8 @@ export class SubirArchivosComponent implements OnInit {
           break;
         }
       }
+
+      console.log(this.archivo);
     }
 
     console.log(this.archivosCargados);
@@ -266,7 +289,6 @@ export class SubirArchivosComponent implements OnInit {
     });
     console.log(this.tiposArchivosSelected);
   }
-
 
   obtenerFile(event: any) {
     const archivo = event.target as HTMLInputElement;
@@ -299,7 +321,6 @@ export class SubirArchivosComponent implements OnInit {
       }
 
       this.disabledSelect = true
-      console.log(this.archivo);
     } else {
       Swal.fire({
         icon: 'error',
@@ -351,23 +372,6 @@ export class SubirArchivosComponent implements OnInit {
           text: 'Error Al Guardar Los Archivos',
           timer: 2500
         })
-        console.log(error);
-      }
-    )
-  }
-
-  isEmpty(obligacion: string, accion: string) {
-    this.subirService.isEmpty(obligacion).subscribe(
-      (data: any) => {
-        if (data) {
-          this.cambiarInputs(accion)
-        } else {
-          Swal.fire('Error', 'Esta Obligacion Ya Contiene Archivos, Puedes visualizarlos A continuación', 'error')
-          setTimeout(() => {
-            this.router.navigate(['/dashboard-archivos/buscar-archivos'])
-          }, 3000);
-        }
-      }, (error: any) => {
         console.log(error);
       }
     )
