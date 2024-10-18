@@ -59,6 +59,19 @@ export class BuscarArchivosComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllTipo()
+    setTimeout(() => {
+      this.subirService.arch.subscribe(data => {
+        console.log(data);
+        
+        if (data.length > 0) {
+          this.archivos = data;
+          this.subirArchivo.numeroObligacion = this.archivos[0].numeroObligacion
+          this.cards = true
+          console.log(this.archivos);
+          console.log(this.subirArchivo.numeroObligacion);
+        }
+      });
+    }, 300);
   }
 
   @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
@@ -109,6 +122,8 @@ export class BuscarArchivosComponent implements OnInit {
   isEmpty(obligacion: string) {
     this.subirService.isEmpty(obligacion).subscribe(
       (data: any) => {
+        console.log(data);
+        
         if (data) {
           Swal.fire('Error', 'Esta Obligacion No Contiene Archivos, Puede Subirlos A continuación', 'error')
           console.log(data);
@@ -125,7 +140,7 @@ export class BuscarArchivosComponent implements OnInit {
             timer: 2500
           });
           console.log(data);
-          
+
           this.cards = true;
           this.tabla = false;
         }
@@ -154,7 +169,6 @@ export class BuscarArchivosComponent implements OnInit {
     embed.src = base64;
   }
 
-// Método para obtener el archivo y convertirlo a base64
 obtenerFile(event: any, accion: string) {  
   const archivo = event.target.files[0];
 
@@ -171,15 +185,7 @@ obtenerFile(event: any, accion: string) {
   this.extraerBase64(archivo).then((file: any) => {
     const base64SinP = file.base; 
 
-    const obj = {
-      base46: [base64SinP],
-      nombreArchivo: archivo.name,
-      tipoArchivo: this.base64.tipoArchivo 
-    };
-    
-    this.subirArchivo.base64.push(obj);
-    console.log(obj);
-
+    this.subirArchivo.base64 = [];
 
     if (accion == 'guardar') {
       const obj = {
@@ -188,10 +194,8 @@ obtenerFile(event: any, accion: string) {
         tipoArchivo: this.base64.tipoArchivo 
       };
       
-      this.subirArchivo.base64 = [];
-
       this.subirArchivo.base64.push(obj);
-      console.log(obj);
+      console.log(this.subirArchivo);
   
     }else{
       this.modal.base64 = base64SinP;
@@ -202,13 +206,13 @@ obtenerFile(event: any, accion: string) {
 }
 
 saveOne() {
-  // if (this.modal.base64.trim() == '' || this.modal.base64.trim() == null) {
-  //   Swal.fire('Error', 'Seleccione algun archivo.', 'error')
-  //   return
-  // }
-
-  if (this.modal.tipoArchivo.trim() == '' || this.modal.tipoArchivo.trim() == null) {
+  if (this.base64.tipoArchivo.trim() == '' || this.base64.tipoArchivo.trim() == null) {
     Swal.fire('Error', 'Seleccione el tipo de archivo.', 'error')
+    return
+  }
+
+  if (this.subirArchivo.base64[0].base46.length == 0) {
+    Swal.fire('Error', 'Seleccione algun archivo.', 'error')
     return
   }
 
@@ -313,9 +317,10 @@ extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
   }
 
   //LLENAR LAS CARDS
-  llenarCards(position: number, obligacion: string) {
+  llenarCards(position: number, obligacion: any) {
 
     this.subirArchivo.numeroObligacion = obligacion
+
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {

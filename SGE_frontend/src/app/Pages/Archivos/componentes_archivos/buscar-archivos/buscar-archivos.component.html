@@ -65,8 +65,8 @@
           (click)="pdf(a.dataUir + ',' + a.ruta)" data-bs-toggle="modal" data-bs-target="#modalImagen"></div>
         <div class="card-body">
           <p class="card-text fw-bold">{{ a.tipoArchivo.tipoArchivo }}</p>
-          <p class="card-text">{{ obligacion[obligacion.length-1].cliente.nombres }} {{
-            obligacion[obligacion.length-1].cliente.apellidos }}</p>
+          <!-- <p class="card-text">{{ obligacion[obligacion.length-1].cliente.nombres }} {{
+            obligacion[obligacion.length-1].cliente.apellidos }}</p> -->
           <p class="card-text">{{ obligacion[obligacion.length-1].numeroObligacion }}</p>
 
           <div *appRolesPerfiles="rolesArray[2].toUpperCase()" class="mb-3">

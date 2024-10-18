@@ -35,10 +35,11 @@ export class SubirArchivosComponent implements OnInit {
   numeroObligacion: string = ''
 
   // ARRAYS
-  obligacion: Obligacion[] = []
+  archivos:any[] = []
+  obligacion: any = []
   tiposArchivos: string[] = []
   tiposArchivosSelected: string[] = []
-  numeroObligacionRecibida: String = '';
+  numeroObligacionRecibida: string | null = null;
 
   // OBJETOS
   archivo: Archivo = {
@@ -60,7 +61,7 @@ export class SubirArchivosComponent implements OnInit {
     }
   ];
 
-  constructor(private ingresarService: IngresarService, private subirService: SubirArchivoService, private authService: AuthenticationService, private tipoArchivoService: TipoArchivoService, private router: Router, private sanitizer: DomSanitizer) { }
+  constructor(private ingresarService: IngresarService, private buscarService: SubirArchivoService, private subirService: SubirArchivoService, private authService: AuthenticationService, private tipoArchivoService: TipoArchivoService, private router: Router, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.getAllTipoArchivo()
@@ -68,7 +69,7 @@ export class SubirArchivosComponent implements OnInit {
       this.subirService.currentData.subscribe(data => {
         if (data) {
           this.numeroObligacionRecibida = data;
-          this.numeroO(this.numeroObligacion, '');
+          this.numeroO(this.numeroObligacion, '', 0);
           console.log('obligacion recibida:', this.numeroObligacionRecibida);
         }
       });
@@ -78,7 +79,6 @@ export class SubirArchivosComponent implements OnInit {
   isEmpty(obligacion: string, accion: string) {
     this.subirService.isEmpty(obligacion).subscribe(
       (data: any) => {
-        console.log(data);
         if (data) {
           Swal.fire('Error', 'Esta Obligacion No Contiene Archivos, Puede Subirlos A continuación', 'error')
           this.cambiarInputs(accion)
@@ -86,7 +86,13 @@ export class SubirArchivosComponent implements OnInit {
         } else {
           Swal.fire('Error', 'Esta Obligacion Ya Contiene Archivos, Puedes visualizarlos A continuación', 'error')
           console.log(data);
+
           setTimeout(() => {
+            console.log(this.archivos);
+            
+            
+            this.subirService.sendFiles(this.archivos);
+            console.log('obligacion enviada:', obligacion);
             this.router.navigate(['/dashboard-archivos/buscar-archivos'])
           }, 3000);
         }
@@ -140,9 +146,11 @@ export class SubirArchivosComponent implements OnInit {
       return
     }
 
-    this.ingresarService.getObligacionByCedula(this.cedula).subscribe(
+    this.buscarService.filter(this.cedula).subscribe(
       (data: any) => {
-        this.obligacion = data
+          this.obligacion = data
+        console.log(data);
+        
         if (this.obligacion.length > 0) {
           Swal.fire({
             icon: 'success',
@@ -175,8 +183,11 @@ export class SubirArchivosComponent implements OnInit {
     )
   }
 
-  numeroO(obligacion: string, accion: string) {
+  numeroO(obligacion: string, accion: string, pos: number) {
     this.display = 'block'
+    this.archivos = this.obligacion[pos].archivos
+    console.log(this.obligacion[pos]);
+    
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
@@ -191,6 +202,7 @@ export class SubirArchivosComponent implements OnInit {
 
     this.archivo.numeroObligacion = obligacion
     this.archivo.username = user
+    
     if (this.numeroObligacionRecibida == null) {
       this.isEmpty(obligacion, accion)
     } else {

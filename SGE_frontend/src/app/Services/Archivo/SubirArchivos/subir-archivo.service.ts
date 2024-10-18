@@ -15,8 +15,15 @@ export class SubirArchivoService {
   private numeroObligacion = new BehaviorSubject<any>(null);
   currentData = this.numeroObligacion.asObservable();
 
+  private archivos = new BehaviorSubject<any[]>([]);
+  arch = this.archivos.asObservable();
+
   send(date:any){
     this.numeroObligacion.next(date);
+  }
+
+  sendFiles(archivos: any[]){
+    this.archivos.next(archivos)
   }
 
   save(archivo: Archivo) {
