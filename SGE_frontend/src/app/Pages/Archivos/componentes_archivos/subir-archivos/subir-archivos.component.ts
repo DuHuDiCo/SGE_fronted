@@ -89,8 +89,6 @@ export class SubirArchivosComponent implements OnInit {
 
           setTimeout(() => {
             console.log(this.archivos);
-            
-            
             this.subirService.sendFiles(this.archivos);
             console.log('obligacion enviada:', obligacion);
             this.router.navigate(['/dashboard-archivos/buscar-archivos'])
@@ -176,6 +174,7 @@ export class SubirArchivosComponent implements OnInit {
       (data: any) => {
         data.forEach((element: TipoArchivo) => {
           this.tiposArchivos.push(element.tipoArchivo)
+          
         });
       }, (error: any) => {
         console.log(error);
@@ -186,7 +185,6 @@ export class SubirArchivosComponent implements OnInit {
   numeroO(obligacion: string, accion: string, pos: number) {
     this.display = 'block'
     this.archivos = this.obligacion[pos].archivos
-    console.log(this.obligacion[pos]);
     
     var user = this.authService.getUsername()
 
@@ -283,6 +281,8 @@ export class SubirArchivosComponent implements OnInit {
       }
 
       console.log(this.archivo);
+      console.log(this.archivosCargados);
+      
     }
 
     console.log(this.archivosCargados);
@@ -369,6 +369,11 @@ export class SubirArchivosComponent implements OnInit {
   save() {
     console.log(this.archivo);
 
+    if (this.tiposArchivosSelected.length == 0) {
+      Swal.fire('Error', 'Debe cargar al menos un archivo con un tipo de archivo selecionado.', 'error');
+      return;
+    }
+    
     this.subirService.save(this.archivo).subscribe(
       (data: any) => {
         Swal.fire({
@@ -377,6 +382,11 @@ export class SubirArchivosComponent implements OnInit {
           text: 'Archivos Guardados Exitosamente',
           timer: 2500
         })
+
+        setTimeout(() => {
+          window.location.reload()
+        }, 2500);
+
       }, (error: any) => {
         Swal.fire({
           icon: 'error',

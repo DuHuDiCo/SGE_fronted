@@ -29,6 +29,7 @@
                 <thead>
                   <tr>
                     <th scope="col"># Obligación</th>
+                    <th scope="col">Cedula</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Valor Obligación</th>
                     <th scope="col">Fecha Obligación</th>
@@ -40,6 +41,7 @@
                   <tr *ngFor="let o of obligacion; let i = index" (click)="llenarCards(i, o.numeroObligacion)"
                     style="cursor: pointer;">
                     <td>{{ o.numeroObligacion }}</td>
+                    <td>{{ o.cliente.numeroDocumento }}</td>
                     <td>{{ o.cliente.nombres }} {{ o.cliente.apellidos }}</td>
                     <td>{{ o.capital }}</td>
                     <td>{{ o.fechaObligacion | date:'short' }}</td>
@@ -65,10 +67,7 @@
           (click)="pdf(a.dataUir + ',' + a.ruta)" data-bs-toggle="modal" data-bs-target="#modalImagen"></div>
         <div class="card-body">
           <p class="card-text fw-bold">{{ a.tipoArchivo.tipoArchivo }}</p>
-          <!-- <p class="card-text">{{ obligacion[obligacion.length-1].cliente.nombres }} {{
-            obligacion[obligacion.length-1].cliente.apellidos }}</p> -->
-          <p class="card-text">{{ obligacion[obligacion.length-1].numeroObligacion }}</p>
-
+          <p class="card-text">{{ a.numeroObligacion }}</p>
           <div *appRolesPerfiles="rolesArray[2].toUpperCase()" class="mb-3">
             <button *appArchivos="permisos[0]" (click)="abrirModal(a.idArchivo)" class="btn btn-primary me-2 mt-3"
               data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -126,7 +125,7 @@
       <div class="modal-body">
         <div class="col-md-12 col-12">
           <div class="input-group mb-3">
-            <input (change)="obtenerFile($event, 'editar')" type="file" class="form-control" accept=".pdf">
+            <input #fileInput (change)="obtenerFile($event, 'editar')" type="file" class="form-control" accept=".pdf">
           </div>
         </div>
       </div>
@@ -151,18 +150,18 @@
       <div class="modal-body">
         <div class="col-md-12 col-12">
           <div class="usuario">
-            <select [(ngModel)]="base64.tipoArchivo" name="tipoArchivo" class="form-select" required
-              aria-label="select example">
-              <option value="0">Elija El Tipo De Archivo</option>
-              <option *ngFor="let t of tiposArchivos" value="{{ t.tipoArchivo }}">{{ t.tipoArchivo }}</option>
-            </select>
+              <select [(ngModel)]="base64.tipoArchivo" name="tipoArchivo" class="form-select" id="tipoArchivo" required aria-label="select example">
+                <option *ngFor="let t of tiposArchivos" value="{{ t.tipoArchivo }}">{{ t.tipoArchivo }}</option>
+              </select>
           </div>
+        
           <div class="usuario">
             <div class="input-group mb-3">
-              <input (change)="obtenerFile($event, 'guardar')" type="file" class="form-control" accept=".pdf" max="1048576">
+              <input #fileInput (change)="obtenerFile($event, 'guardar')" type="file" class="form-control" accept=".pdf" max="1048576">
             </div>
           </div>
         </div>
+        
       </div>
       <div class="modal-footer">
         <button (click)="saveOne()" type="button" class="btn btn-danger"

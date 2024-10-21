@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { data } from 'jquery';
 import { SubirArchivoService } from 'src/app/Services/Archivo/SubirArchivos/subir-archivo.service';
 import { TipoArchivoService } from 'src/app/Services/Archivo/TipoArchivo/tipo-archivo.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
@@ -15,6 +16,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./buscar-archivos.component.css']
 })
 export class BuscarArchivosComponent implements OnInit {
+  @ViewChild('fileInput') fileInput: any;
 
   cedula: string = ''
   url: string = ''
@@ -69,6 +71,7 @@ export class BuscarArchivosComponent implements OnInit {
           this.cards = true
           console.log(this.archivos);
           console.log(this.subirArchivo.numeroObligacion);
+          this.eliminarTiposArchivos()
         }
       });
     }, 300);
@@ -169,84 +172,87 @@ export class BuscarArchivosComponent implements OnInit {
     embed.src = base64;
   }
 
-obtenerFile(event: any, accion: string) {  
-  const archivo = event.target.files[0];
+  obtenerFile(event: any, accion: string) {  
+    const archivo = event.target.files[0];
 
-  if (!archivo) {
-    console.error('No se ha seleccionado ningun archivo.');
-    return;
+    if (!archivo) {
+      console.error('No se ha seleccionado ningun archivo.');
+      return;
+    }
+
+    if (archivo.size > 1048576) {
+      Swal.fire('Error', 'El archivo es demasiado pesado', 'error');
+      return;
+    }
+
+    this.extraerBase64(archivo).then((file: any) => {
+      const base64SinP = file.base; 
+
+      this.subirArchivo.base64 = [];
+
+      if (accion == 'guardar') {
+        const obj = {
+          base46: [base64SinP],
+          nombreArchivo: archivo.name,
+          tipoArchivo: this.base64.tipoArchivo 
+        };
+        
+        this.subirArchivo.base64.push(obj);
+        console.log(this.subirArchivo);
+    
+      }else{
+        this.modal.base64 = base64SinP;
+      }
+    }).catch(error => {
+      console.error('Error al extraer el archivo base64:', error);
+    });
   }
 
-  if (archivo.size > 1048576) {
-    Swal.fire('Error', 'El archivo es demasiado pesado', 'error');
-    return;
-  }
-
-  this.extraerBase64(archivo).then((file: any) => {
-    const base64SinP = file.base; 
-
-    this.subirArchivo.base64 = [];
-
-    if (accion == 'guardar') {
-      const obj = {
-        base46: [base64SinP],
-        nombreArchivo: archivo.name,
-        tipoArchivo: this.base64.tipoArchivo 
-      };
-      
-      this.subirArchivo.base64.push(obj);
-      console.log(this.subirArchivo);
+  saveOne() {
+    if (!this.base64 || !this.base64.tipoArchivo || this.base64.tipoArchivo.trim() === '') {
+      Swal.fire('Error', 'Seleccione el tipo de archivo.', 'error');
+      return;
+    }
   
-    }else{
-      this.modal.base64 = base64SinP;
+    if (!this.subirArchivo || !this.subirArchivo.base64 || this.subirArchivo.base64.length === 0 || !this.subirArchivo.base64[0].base46) {
+      Swal.fire('Error', 'Seleccione algún archivo.', 'error');
+      return;
     }
-  }).catch(error => {
-    console.error('Error al extraer el archivo base64:', error);
+  
+    this.buscarService.saveOne(this.subirArchivo).subscribe(
+      (data: any) => {
+        Swal.fire('Datos Guardados', 'Archivo Guardado Con éxito', 'success');
+        console.log(data);
+        this.archivos.push(data[0]);
+        this.eliminarTiposArchivos();
+  
+        this.fileInput.nativeElement.value = '';
+
+      },
+      (error: any) => {
+        Swal.fire('Error', 'Error al Guardar El Archivo', 'error');
+        console.log(error);
+      }
+    );
+  }
+  
+  // Método para extraer base64
+  extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
+    try {
+      const reader = new FileReader();
+      reader.readAsDataURL($event);
+      reader.onload = () => {
+        resolve({
+          base: reader.result 
+        });
+      };
+      reader.onerror = error => {
+        reject(error);
+      };
+    } catch (e) {
+      reject(e);
+    }
   });
-}
-
-saveOne() {
-  if (this.base64.tipoArchivo.trim() == '' || this.base64.tipoArchivo.trim() == null) {
-    Swal.fire('Error', 'Seleccione el tipo de archivo.', 'error')
-    return
-  }
-
-  if (this.subirArchivo.base64[0].base46.length == 0) {
-    Swal.fire('Error', 'Seleccione algun archivo.', 'error')
-    return
-  }
-
-  this.buscarService.saveOne(this.subirArchivo).subscribe(
-    (data: any) => {
-      Swal.fire('Datos Guardados', 'Archivo Guardado Con éxito', 'success');
-      console.log(data);
-      this.archivos.push(data[0]);
-      this.eliminarTiposArchivos()
-    }, 
-    (error: any) => {
-      Swal.fire('Error', 'Error al Guardar El Archivo', 'error');
-      console.log(error);
-    }
-  );
-}
-
-// Método para extraer base64
-extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
-  try {
-    const reader = new FileReader();
-    reader.readAsDataURL($event);
-    reader.onload = () => {
-      resolve({
-        base: reader.result 
-      });
-    };
-    reader.onerror = error => {
-      reject(error);
-    };
-  } catch (e) {
-    reject(e);
-  }
-});
 
   //ABRIR EL MODAL PARA EDITAR
   abrirModal(id: number) {
@@ -272,13 +278,18 @@ extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
       Swal.fire('Error', 'Seleccione algun archivo.', 'error')
       return
     }
-
+    console.log(this.modal);
+  
     this.buscarService.update(this.modal).subscribe(
       (data: any) => {
+        const position2 = this.archivos.findIndex((a: any) => a.idArchivo == this.modal.idArchivo)
+        this.archivos[position2] = data;
+
         Swal.fire('Datos Guardados', 'Archivo Actualizado Con éxito', 'success')
-        this.archivos.push(data[0]);
+        this.fileInput.nativeElement.value = '';
+        console.log(data);
       }, (error: any) => {
-        Swal.fire('Error', 'Erro al Actualizar El Archivo', 'error')
+        Swal.fire('Error', 'Error al Actualizar El Archivo', 'error')
         console.log(error);
       }
     )
@@ -301,10 +312,6 @@ extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
           this.buscarService.delete(id).subscribe(
             (data: any) => {
               this.archivos = this.archivos.filter((archivos: any) => archivos.idArchivo != id);
-              Swal.fire('Archivo Eliminado', 'El Archivo ha sido Eliminado Exitosamente', 'success')
-              setTimeout(() => {
-                window.location.reload()
-              }, 2000);
             },
             (error: any) => {
               Swal.fire('Error', 'Error al Eliminar El Archivo', 'error')
