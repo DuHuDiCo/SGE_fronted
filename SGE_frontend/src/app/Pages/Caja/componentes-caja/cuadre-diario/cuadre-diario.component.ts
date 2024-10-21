@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import jsPDF from 'jspdf';
 
-import autoTable from 'jspdf-autotable'
+import autoTable from 'jspdf-autotable';
 import { catchError, of, switchMap, tap } from 'rxjs';
 import { CajaService } from 'src/app/Services/Caja/caja.service';
 import { CuadreDiario, IngresosDiariosArray } from 'src/app/Types/Caja/CuadreDiario';
@@ -320,7 +320,12 @@ export class CuadreDiarioComponent implements OnInit {
       },
     });
 
-    doc.save('reporte.pdf')
+    const pdfBase64 = doc.output('datauristring');
+    const cleanedBase64 = pdfBase64.replace(/;filename=.*;base64/, ';base64');
 
+    console.log(pdfBase64);
+    console.log(cleanedBase64);
+    
+    doc.save('reporte.pdf') 
   }
 }
