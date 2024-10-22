@@ -50,7 +50,11 @@
                                 <td>{{ resultado.valorGastos | currency:'$':'symbol':'1.0-0' }}</td>
                                 <td>{{ resultado.valorBancolombia | currency:'$':'symbol':'1.0-0' }}</td>
                                 <td>{{ resultado.valorTotalCuadre | currency:'$':'symbol':'1.0-0' }}</td>
-                                <td></td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalPdf">
+                                      <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                  </td>                                  
                             </tr>
                         </tbody>
                     </table>
@@ -166,6 +170,18 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn btn-danger" (click)="abrirModalBuscar()">Buscar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalPdf" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
