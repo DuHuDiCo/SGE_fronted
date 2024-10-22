@@ -101,12 +101,8 @@ import { AsesoresComponent } from './Pages/Consignaciones/pages/componentesConsi
 import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/rankings/rankings/rankings.component';
 import { HomeCarteraComponent } from './Pages/Cartera/pages/componentesCartera/home-cartera/home-cartera.component';
 import { ClasificacionComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion/clasificacion.component';
-
-
 import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/uploads-files/uploads-files.component';
-
 import { TipoVencimientoComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/tipo-vencimiento/tipo-vencimiento.component';
-
 import { HomeCajaComponent } from './Pages/Cartera/pages/componentesCartera/home-caja/home-caja.component';
 import { ClasificacionJuridicaComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion-juridica/clasificacion-juridica.component';
 import { CondicionEspecialComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/condicion-especial/condicion-especial.component';
@@ -121,25 +117,11 @@ import { IngresosDiariosComponent } from './Pages/Caja/componentes-caja/ingresos
 import { TipoIngresoComponent } from './Pages/Caja/componentes-caja/tipo-ingreso/tipo-ingreso.component';
 import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-mensual/cuadre-mensual.component';
 
-
-
-
-
-
-
-
-
-
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     OpcionesComponent,
-
-
     NavbarComponent,
     PerfilUsuarioComponent,
     GestionComponent,
@@ -151,8 +133,6 @@ import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-men
     RolesUsuarioComponent,
     AsignarRolesComponent,
     IncapacidadGComponent,
-
-
     RolesPerfilesDirective,
     IncapacidadArlComponent,
     AccidentesComponent,
@@ -161,8 +141,6 @@ import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-men
     EvidenciasComponent,
     CoEvidenciaComponent,
     Evalucion1Component,
-
-
     SidebarComponent,
     SidebarCarteraComponent,
     SidebarConsignacionesComponent,
@@ -170,7 +148,6 @@ import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-men
     SidebarSstComponent,
     SidebarCreditoComponent,
     SidebarVentasComponent,
-
     EstadisticasDashboardComponent,
     DashboardComponent,
     DashboardCreditosComponent,
@@ -178,8 +155,6 @@ import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-men
     DashboardSSTComponent,
     DashboardAdminComponent,
     DashboardCajaComponent,
-
-
     CrearCreditoComponent,
     VerCreditosComponent,
     CreditosCreadosComponent,
@@ -199,24 +174,18 @@ import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-men
     SidebarAdminGeneralComponent,
     SystemRolesComponent,
     SystemPermisosComponent,
-
     AgregarVariosClientesComponent,
-
     BuscarClientesComponent,
     BotonGeneralComponent,
-
     SidebarCajaComponent,
-
     RolesUsuariosGuardarComponent,
     RolesUsuariosComponent,
-
     CreateUsuarioComponent,
     SidebarPerfilComponent,
     DashboardPerfilComponent,
     ConfiguracionPerfilComponent,
     DatosPerfilComponent,
     BuscarUsuariosComponent,
-
     BancosComponent,
     EstadosComponent,
     SucursalesComponent,
@@ -233,25 +202,19 @@ import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-men
     RankingsComponent,
     HomeCarteraComponent,
     ClasificacionComponent,
-
-
     UploadsFilesComponent,
-
     TipoVencimientoComponent,
-
     HomeCajaComponent,
     ClasificacionJuridicaComponent,
     CondicionEspecialComponent,
     FirmasComponent,
     DateFormatPipe,
     FormatoMonedaDirective,
-
     FormatoMonedaDirective,
-      CuadreDiarioComponent,
-      IngresosDiariosComponent,
-      TipoIngresoComponent,
-      CuadreMensualComponent
-
+    CuadreDiarioComponent,
+    IngresosDiariosComponent,
+    TipoIngresoComponent,
+    CuadreMensualComponent
   ],
 
 
