@@ -323,9 +323,17 @@ export class CuadreDiarioComponent implements OnInit {
     const pdfBase64 = doc.output('datauristring');
     const cleanedBase64 = pdfBase64.replace(/;filename=.*;base64/, ';base64');
 
-    console.log(pdfBase64);
     console.log(cleanedBase64);
-    
+
+    // this.cuadreDiarioService.crearBase64(cleanedBase64).pipe(
+    //   tap((response) => {
+    //     console.log('base64 enviado exitosamente al backend', response);
+    //   }), catchError((error: Error) => {
+    //     console.log("Error al enviar el base64 al backend:", error);
+    //     return of([]);
+    //   }) 
+    // );
+
     doc.save('reporte.pdf') 
   }
 }

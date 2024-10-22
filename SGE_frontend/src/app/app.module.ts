@@ -116,6 +116,7 @@ import { CuadreDiarioComponent } from './Pages/Caja/componentes-caja/cuadre-diar
 import { IngresosDiariosComponent } from './Pages/Caja/componentes-caja/ingresos-diarios/ingresos-diarios.component';
 import { TipoIngresoComponent } from './Pages/Caja/componentes-caja/tipo-ingreso/tipo-ingreso.component';
 import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-mensual/cuadre-mensual.component';
+import { TipoReporteComponent } from './Pages/Caja/componentes-caja/tipo-reporte/tipo-reporte.component';
 
 @NgModule({
   declarations: [
@@ -214,7 +215,8 @@ import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-men
     CuadreDiarioComponent,
     IngresosDiariosComponent,
     TipoIngresoComponent,
-    CuadreMensualComponent
+    CuadreMensualComponent,
+    TipoReporteComponent
   ],
 
 

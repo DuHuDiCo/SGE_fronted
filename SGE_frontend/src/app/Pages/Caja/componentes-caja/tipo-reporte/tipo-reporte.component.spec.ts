@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VerPdfsComponent } from './ver-pdfs.component';
+import { TipoReporteComponent } from './tipo-reporte.component';
 
-describe('VerPdfsComponent', () => {
-  let component: VerPdfsComponent;
-  let fixture: ComponentFixture<VerPdfsComponent>;
+describe('TipoReporteComponent', () => {
+  let component: TipoReporteComponent;
+  let fixture: ComponentFixture<TipoReporteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VerPdfsComponent ]
+      declarations: [ TipoReporteComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(VerPdfsComponent);
+    fixture = TestBed.createComponent(TipoReporteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
