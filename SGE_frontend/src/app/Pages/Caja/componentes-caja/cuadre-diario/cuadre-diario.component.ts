@@ -47,6 +47,11 @@ export class CuadreDiarioComponent implements OnInit {
     this.setMaxFechaCuadre()
   }
 
+  pdf(base64: string, ) {
+    // const embed = this.pdfEmbed.nativeElement;
+    // embed.src = base64;
+  }
+
   // Agregar un cuadre diario
   crearCuadreDiario() {
     if (this.fechaCuadre == null || this.fechaCuadre.trim() == '') {
