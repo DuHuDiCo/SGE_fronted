@@ -42,9 +42,10 @@ export class CajaService {
     return this.http.get<any[]>(`http://192.168.1.241:8009/api/v1/cuadreDiario/getByMes?fechaInicial=${fechaInicial}&fechaFinal=${fechaFinal}`);
   }
 
-  createCuadreDiario(obj: { fechaCuadre: Date }) {
+  createCuadreDiario(obj: { fechaCuadre: Date}) {
     return this.http.post('http://192.168.1.241:8009/api/v1/cuadreDiario/save', obj);
-  }
+  }  
+
 
   //Cuadres mensuales
   createCuadreMensual(obj: { fecha: string }) {
@@ -62,5 +63,9 @@ export class CajaService {
 
   crearTipoDeReporte(tipoReporte: any){
     return this.http.post(`http://192.168.1.241:8009/api/v1/tipoReporte/saveTipoReporte`, tipoReporte);
+  }
+
+  crearReporte(reporte: any){
+    return this.http.post(`http://192.168.1.241:8009/api/v1/reporte/saveReporte`, reporte);
   }
 }

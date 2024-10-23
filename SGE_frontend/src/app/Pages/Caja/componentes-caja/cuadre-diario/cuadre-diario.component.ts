@@ -18,6 +18,7 @@ export class CuadreDiarioComponent implements OnInit {
   //variables
   modoCreacion: boolean = false;
   fechaCuadre: string = '';
+
   ingresosDiario: IngresosDiariosArray[] = [];
   cuadreDiario: CuadreDiario | null = null;
 
@@ -29,6 +30,12 @@ export class CuadreDiarioComponent implements OnInit {
   // ARRAYS PDF
   ingresosDiarioPDF: string[][] = [];
   cuadreDiarioPDF: string[][] = [];
+
+  tiposReportes: any = {
+    idCuadre: 0,
+    base64: '',
+    tipoReporte: ''
+   }
 
   setMaxFechaCuadre() {
     const today = new Date();
@@ -55,10 +62,13 @@ export class CuadreDiarioComponent implements OnInit {
         if (this.ingresosDiario.length > 0) {
           const [year, month, day] = this.fechaCuadre.split('-').map(Number);
           const date = new Date(year, month - 1, day);
-          var obj = { fechaCuadre: date };
 
-          return this.cuadreDiarioService.createCuadreDiario(obj).pipe(
+          const obj = { 
+            fechaCuadre: date,};
+
+          return this.cuadreDiarioService.createCuadreDiario(obj).pipe(            
             tap((data: any) => {
+              console.log(obj);
               this.cuadreDiario = data;
               this.modoCreacion = true;
               Swal.fire({
@@ -66,6 +76,7 @@ export class CuadreDiarioComponent implements OnInit {
                 title: 'Cuadre Diario Creado',
                 text: 'Descargando...',
               })
+   
               this.convertirArray()
               this.generarPDF()
               console.log(data);
@@ -232,7 +243,7 @@ export class CuadreDiarioComponent implements OnInit {
     doc.setFont('helvetica', 'bold'); // Títulos en negrita
     doc.text('Almacén:', 140, 20);
     doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreDiario!.usuario.sede, 165, 20);
+    doc.text('Amiguito', 165, 20);
 
     // Fecha
     const fecha = new Date(this.cuadreDiario!.fechaCreacion);
@@ -323,17 +334,29 @@ export class CuadreDiarioComponent implements OnInit {
     const pdfBase64 = doc.output('datauristring');
     const cleanedBase64 = pdfBase64.replace(/;filename=.*;base64/, ';base64');
 
+    const obj = {
+      idCuadre: this.cuadreDiario?.idCuadreDiario,
+      base64: cleanedBase64,
+    }
+    
+    console.log(obj);
+
+    this.cuadreDiarioService.crearReporte(obj).subscribe(
+      (data: any) =>{
+        console.log(obj); 
+        console.log(data);
+        
+      }, catchError((error: Error) => {
+        console.log("Error al obtener los datos:", error);
+        return of([]);
+      }) 
+
+    )
+
     console.log(cleanedBase64);
 
-    // this.cuadreDiarioService.crearBase64(cleanedBase64).pipe(
-    //   tap((response) => {
-    //     console.log('base64 enviado exitosamente al backend', response);
-    //   }), catchError((error: Error) => {
-    //     console.log("Error al enviar el base64 al backend:", error);
-    //     return of([]);
-    //   }) 
-    // );
-
     doc.save('reporte.pdf') 
+
+    return cleanedBase64;
   }
 }
