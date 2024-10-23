@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import jsPDF from 'jspdf';
 
 import autoTable from 'jspdf-autotable';
@@ -37,6 +37,9 @@ export class CuadreDiarioComponent implements OnInit {
     tipoReporte: ''
    }
 
+   @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
+
+
   setMaxFechaCuadre() {
     const today = new Date();
     this.maxFechaCuadre = today.toISOString().split('T')[0];
@@ -47,9 +50,12 @@ export class CuadreDiarioComponent implements OnInit {
     this.setMaxFechaCuadre()
   }
 
-  pdf(base64: string, ) {
-    // const embed = this.pdfEmbed.nativeElement;
-    // embed.src = base64;
+  pdf(dataUir: String, ruta: String) {
+    const pdfUrl = `${dataUir},${ruta}`;
+    const embed = this.pdfEmbed.nativeElement;
+    embed.src = pdfUrl;
+    
+    console.log(pdfUrl);
   }
 
   // Agregar un cuadre diario
@@ -68,8 +74,15 @@ export class CuadreDiarioComponent implements OnInit {
           const [year, month, day] = this.fechaCuadre.split('-').map(Number);
           const date = new Date(year, month - 1, day);
 
+          // const cleanedBase64 = this.generarPDF()
+
           const obj = { 
-            fechaCuadre: date,};
+            fechaCuadre: date,
+            // archivo: {
+            //   base64: cleanedBase64,
+            //   tipoReporte: 'DIARIO'
+            // }
+           };
 
           return this.cuadreDiarioService.createCuadreDiario(obj).pipe(            
             tap((data: any) => {
@@ -158,44 +171,44 @@ export class CuadreDiarioComponent implements OnInit {
     );
   }
 
-  // PREPARAR ARRAYS
-  convertirArray() {
-    const formatCurrency = (value: number) => {
-      return new Intl.NumberFormat('es-CO', {
-        style: 'currency',
-        currency: 'COP',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      }).format(value);
-    };
+// PREPARAR ARRAYS
+convertirArray() {
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(value);
+  };
 
-    for (var i = 0; i < this.ingresosDiario.length; i++) {
-      var arrayingresosDiario: string[] = [];
-      const fecha = new Date(this.ingresosDiario[i].fechaIngreso);
-      const formattedDate = fecha.toLocaleString('es-CO');
-      arrayingresosDiario.push(formattedDate);
-
-      arrayingresosDiario.push(formatCurrency(this.ingresosDiario[i].valorIngreso));
-      arrayingresosDiario.push(this.ingresosDiario[i].tipoIngreso.nombre);
-      this.ingresosDiarioPDF.push(arrayingresosDiario);
-    }
-    console.log(this.ingresosDiarioPDF);
-
-    var arrayCuadreDiario: string[] = [];
-
-    const fecha = new Date(this.cuadreDiario!.fechaCreacion);
+  for (var i = 0; i < this.ingresosDiario.length; i++) {
+    var arrayingresosDiario: string[] = [];
+    const fecha = new Date(this.ingresosDiario[i].fechaIngreso);
+    fecha.setDate(fecha.getDate() + 1);
     const formattedDate = fecha.toLocaleDateString('es-CO');
-    arrayCuadreDiario.push(formattedDate);
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorCartera));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorIniciales));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorContado));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorGastos));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorBancolombia));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorTotalCuadre));
-    this.cuadreDiarioPDF.push(arrayCuadreDiario);
-    console.log(this.cuadreDiarioPDF);
-  }
+    arrayingresosDiario.push(formattedDate);
 
+    arrayingresosDiario.push(formatCurrency(this.ingresosDiario[i].valorIngreso));
+    arrayingresosDiario.push(this.ingresosDiario[i].tipoIngreso.nombre);
+    this.ingresosDiarioPDF.push(arrayingresosDiario);
+  }
+  console.log(this.ingresosDiarioPDF);
+
+  var arrayCuadreDiario: string[] = [];
+
+  const fecha = new Date(this.cuadreDiario!.fechaCreacion);
+  const formattedDate = fecha.toLocaleDateString('es-CO');
+  arrayCuadreDiario.push(formattedDate);
+  arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorCartera));
+  arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorIniciales));
+  arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorContado));
+  arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorGastos));
+  arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorBancolombia));
+  arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorTotalCuadre));
+  this.cuadreDiarioPDF.push(arrayCuadreDiario);
+  console.log(this.cuadreDiarioPDF);
+}
   //Buscar un cuadre diario modal
   abrirModalBuscar() {
     //validaciones
@@ -248,7 +261,7 @@ export class CuadreDiarioComponent implements OnInit {
     doc.setFont('helvetica', 'bold'); // Títulos en negrita
     doc.text('Almacén:', 140, 20);
     doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text('Amiguito', 165, 20);
+    doc.text(this.cuadreDiario!.usuario.sede, 165, 20);
 
     // Fecha
     const fecha = new Date(this.cuadreDiario!.fechaCreacion);
@@ -342,13 +355,14 @@ export class CuadreDiarioComponent implements OnInit {
     const obj = {
       idCuadre: this.cuadreDiario?.idCuadreDiario,
       base64: cleanedBase64,
+      tipoReporte: 'DIARIO'
     }
     
     console.log(obj);
 
     this.cuadreDiarioService.crearReporte(obj).subscribe(
       (data: any) =>{
-        console.log(obj); 
+        console.log(obj);
         console.log(data);
         
       }, catchError((error: Error) => {

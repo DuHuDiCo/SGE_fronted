@@ -17,8 +17,8 @@
         <div class="row mt-3">
             <div class="col-md-12" *ngIf="modoCreacion === false && resultadosBusqueda.length > 0">
                 <h5>Cuadres Diarios</h5>
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle text-center">
+                <div class="table-responsive table-wrapper">
+                    <table class="table table-bordered align-middle text-center fixed-header">
                         <thead>
                             <tr>
                                 <th>Fecha</th>
@@ -32,16 +32,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngIf="cuadreDiario">
-                                <td>{{ cuadreDiario.fechaCuadre | date:'dd/MM/yyyy' }}</td>
-                                <td>{{ cuadreDiario.valorCartera | currency:'$':'symbol':'1.0-0' }}</td>
-                                <td>{{ cuadreDiario.valorIniciales | currency:'$':'symbol':'1.0-0' }}</td>
-                                <td>{{ cuadreDiario.valorContado | currency:'$':'symbol':'1.0-0' }}</td>
-                                <td>{{ cuadreDiario.valorGastos | currency:'$':'symbol':'1.0-0' }}</td>
-                                <td>{{ cuadreDiario.valorBancolombia | currency:'$':'symbol':'1.0-0' }}</td>
-                                <td>{{ cuadreDiario.valorTotalCuadre | currency:'$':'symbol':'1.0-0' }}</td>
-                            </tr>
-
                             <tr *ngFor="let resultado of resultadosBusqueda">
                                 <td>{{ resultado.fechaCuadre | date:'dd/MM/yyyy' }}</td>
                                 <td>{{ resultado.valorCartera | currency:'$':'symbol':'1.0-0' }}</td>
@@ -51,7 +41,7 @@
                                 <td>{{ resultado.valorBancolombia | currency:'$':'symbol':'1.0-0' }}</td>
                                 <td>{{ resultado.valorTotalCuadre | currency:'$':'symbol':'1.0-0' }}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalPdf">
+                                    <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalPdf" (click)="pdf(resultado.reporte.dataUir, resultado.reporte.ruta)">
                                       <i class="fa-solid fa-eye"></i>
                                     </button>
                                   </td>                                  
@@ -63,8 +53,8 @@
 
             <div class="col-md-6" *ngIf="modoCreacion === true">
                 <h5>Ingresos Diarios</h5>
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle text-center">
+                <div class="table-responsive table-wrapper">
+                    <table class="table table-bordered align-middle text-center fixed-header">
                         <thead>
                             <tr>
                                 <th>Fecha</th>
@@ -91,8 +81,8 @@
 
             <div class="col-md-6" *ngIf="modoCreacion === true">
                 <h5>Cuadres Diarios</h5>
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle text-center">
+                <div class="table-responsive table-wrapper">
+                    <table class="table table-bordered align-middle text-center fixed-header">
                         <thead>
                             <tr>
                                 <th>Fecha</th>
@@ -174,6 +164,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="ModalPdf" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">

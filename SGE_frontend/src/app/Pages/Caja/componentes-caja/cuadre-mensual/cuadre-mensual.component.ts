@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { catchError, forkJoin, of, switchMap, tap } from 'rxjs';
@@ -27,6 +27,7 @@ export class CuadreMensualComponent {
   cuadreMensualPDF: string[][] = [];
 
   constructor(private cuadreMensualService: CajaService) { }
+  @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
 
   //Metodo de fecha inicial y fecha final
   setFechasParaCuadre() {
@@ -46,6 +47,12 @@ export class CuadreMensualComponent {
 
     console.log(this.fechaInicial);
     console.log(this.fechaFinal);
+  }
+  
+  pdf(dataUir: String, ruta: String) {
+    const pdfUrl = `${dataUir},${ruta}`;
+    const embed = this.pdfEmbed.nativeElement;
+    embed.src = pdfUrl;    
   }
 
   // Agregar un cuadre diario
@@ -69,6 +76,7 @@ export class CuadreMensualComponent {
         this.cuadreMensualService.createCuadreMensual(obj).pipe(
           tap((data: any) => {
             this.cuadreMensual = data;
+            console.log(data);
             this.convertirArray();
             this.generarPDF();
             console.log(data);
@@ -181,18 +189,28 @@ export class CuadreMensualComponent {
   }
 
   convertirArray() {
+    const formatCurrency = (value: number) => {
+      return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(value);
+    };
+
     for (var i = 0; i < this.cuadresDiario.length; i++) {
       var arrayCuadreDiario: string[] = [];
       const fecha = new Date(this.cuadresDiario[i].fechaCuadre);
+      fecha.setDate(fecha.getDate() + 1);
       const formattedDate = fecha.toLocaleDateString('es-CO');
       arrayCuadreDiario.push(formattedDate);
 
-      arrayCuadreDiario.push(this.cuadresDiario[i].valorCartera.toString());
-      arrayCuadreDiario.push(this.cuadresDiario[i].valorIniciales.toString());
-      arrayCuadreDiario.push(this.cuadresDiario[i].valorContado.toString());
-      arrayCuadreDiario.push(this.cuadresDiario[i].valorGastos.toString());
-      arrayCuadreDiario.push(this.cuadresDiario[i].valorBancolombia.toString());
-      arrayCuadreDiario.push(this.cuadresDiario[i].valorTotalCuadre.toString());
+      arrayCuadreDiario.push(formatCurrency(this.cuadresDiario[i].valorCartera));
+      arrayCuadreDiario.push(formatCurrency(this.cuadresDiario[i].valorIniciales));
+      arrayCuadreDiario.push(formatCurrency(this.cuadresDiario[i].valorContado));
+      arrayCuadreDiario.push(formatCurrency(this.cuadresDiario[i].valorGastos));
+      arrayCuadreDiario.push(formatCurrency(this.cuadresDiario[i].valorBancolombia));
+      arrayCuadreDiario.push(formatCurrency(this.cuadresDiario[i].valorTotalCuadre));
       this.cuadreDiarioPDF.push(arrayCuadreDiario);
       console.log(this.cuadreDiarioPDF);
     }
@@ -306,27 +324,32 @@ export class CuadreMensualComponent {
       },
     });
 
-    // Generar la segunda tabla
-    // autoTable(doc, {
-    //   head: [['Año', 'Mes', 'Cartera', 'Contado', 'Iniciales', 'Gastos', 'Total']],
-    //   body: this.cuadreMensualPDF,
-    //   startY: 20,
-    //   theme: 'grid',
-    //   headStyles: {
-    //     fillColor: [150, 0, 16],
-    //     textColor: [255, 255, 255],
-    //   },
-    //   bodyStyles: {
-    //     fillColor: [240, 240, 240],
-    //     textColor: [0, 0, 0],
-    //   },
-    //   alternateRowStyles: {
-    //     fillColor: [255, 255, 255],
-    //   },
-    // });
+    const pdfBase64 = doc.output('datauristring');
+    const cleanedBase64 = pdfBase64.replace(/;filename=.*;base64/, ';base64');
 
-    // Guardar el PDF
+    const obj = {
+      idCuadre: this.cuadreMensual?.idCuadreMensual,
+      base64: cleanedBase64,
+      tipoReporte: 'MENSUAL' 
+    }
+    
+    console.log(obj);
+
+    this.cuadreMensualService.crearReporte(obj).subscribe(
+      (data: any) =>{
+        console.log(obj); 
+        console.log(data);
+        
+      }, catchError((error: Error) => {
+        console.log("Error al obtener los datos:", error);
+        return of([]);
+      }) 
+
+    )
+
+    console.log(cleanedBase64);
+
     doc.save('reporte.pdf');
-  }
 
+  }
 }

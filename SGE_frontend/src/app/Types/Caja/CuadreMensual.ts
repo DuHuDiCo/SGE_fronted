@@ -1,3 +1,4 @@
+import { TiposReportes } from "./TipoReportes";
 
 export type CuadreMensual = {
     idCuadreMensual: number,
@@ -24,4 +25,13 @@ export type CuadreMensual = {
         fecha_creacion: Date,
         status: boolean,
     }
+
+    reporte : {
+        idReporte: number;
+        fechaReporte: string;
+        dataUir: string;
+        ruta: string;
+        idUsuario: number;
+        tipoReporte: TiposReportes;
+      };
 }

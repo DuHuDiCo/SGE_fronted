@@ -1,3 +1,5 @@
+import { TiposReportes } from "./TipoReportes"
+
 export type IngresosDiariosArray = {
     idIngresosDiarios: number,
     valorIngreso: number,
@@ -36,6 +38,15 @@ export type CuadreDiario = {
         fecha_creacion: Date,
         status: boolean,
     }
+
+    reporte : {
+        idReporte: number;
+        fechaReporte: string;
+        dataUir: string;
+        ruta: string;
+        idUsuario: number;
+        tipoReporte: TiposReportes;
+      }
 }
 
 
