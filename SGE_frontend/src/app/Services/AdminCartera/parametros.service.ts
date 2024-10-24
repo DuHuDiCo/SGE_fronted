@@ -36,9 +36,13 @@ export class ParametrosService {
     return this.http.delete(`${this.url}/cuentas/`)
   }
 
+  asignarcuentas(){
+    
+  }
+
   // ASESORES
-  getAsesores() {
-    return this.http.get(`${this.url}/asesores/`)
+  getAsesores(idRol:number, idPermiso:number) {
+    return this.http.get(`${this.url}/asesores/?idRol=${idRol}&idPermiso=${idPermiso}`)
   }
 
 }

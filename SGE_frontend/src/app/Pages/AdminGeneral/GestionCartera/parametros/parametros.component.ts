@@ -703,12 +703,15 @@ export class ParametrosComponent implements OnInit {
 
   // ASESORES
   getAsesores() {
-    this.parametrosService.getAsesores().subscribe(
+    this.parametrosService.getAsesores(23,58).subscribe(
       (data: any) => {
         this.asesoresArray = data
-        var admin = this.asesoresArray.find((a: any) => a.usuario.nombres == 'admin')
+        var admin = this.asesoresArray.find((a: any) => a.nombres == 'admin')
         var pos = this.asesoresArray.indexOf(admin)
         this.asesoresArray.splice(pos, 1)
+
+        console.log(this.asesoresArray);
+        
       }, (error: any) => {
         console.log(error);
       }
