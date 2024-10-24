@@ -635,6 +635,14 @@ export class ParametrosComponent implements OnInit {
     }
   }
 
+
+  isAsignacion(){
+    if(this.campaignObj.isAsignacion){
+      this.createCampaingAsignacion()
+    }else{
+      this.createCampaign()
+    }
+  }
   // CREAR CAMPAÑA
   createCampaign() {
     if (this.campaignObj.asesoresId.length == 0) {
@@ -646,6 +654,8 @@ export class ParametrosComponent implements OnInit {
       })
       return
     }
+
+    
 
     if (this.campaignObj.isAsignacion) {
       if (this.campaignObj.asesoresId.length > 1) {
@@ -700,6 +710,46 @@ export class ParametrosComponent implements OnInit {
       }
     )
   }
+
+  createCampaingAsignacion(){
+    var asignacion = {
+      namesViews: this.campaignObj.namesViews,
+      asesoresId: this.campaignObj.asesoresId
+    }
+
+    this.parametrosService.asignarcuentas(1,asignacion).subscribe(
+      (data: any) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Datos Guardados',
+          text: 'Campaña Creada Con Éxito',
+          timer: 3000
+        })
+        console.log(data);
+        this.campaignObj = {
+          nombreCampania: '',
+          parametros: [],
+          namesViews: [],
+          asesoresId: [],
+          parametroOrdenamientoDTOs: [],
+          isAsignacion: false
+        }
+        this.viewsArray = []
+        this.clientesFiltro = 0
+      }, (error: any) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al crear la campaña',
+          timer: 3000
+        })
+        console.log(error);
+        return
+      }
+    ) 
+  }
+
+
 
   // ASESORES
   getAsesores() {
