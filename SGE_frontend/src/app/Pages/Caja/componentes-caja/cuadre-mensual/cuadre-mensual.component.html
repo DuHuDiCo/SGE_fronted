@@ -31,7 +31,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngIf="cuadreMensual">
+                        <tr *ngIf="resultadosBusqueda.length <= 0 && cuadreMensual">
                             <td>{{ cuadreMensual.anio}}</td>
                             <td>{{ cuadreMensual.mes}}</td>
                             <td>{{ cuadreMensual.valorTotalCartera | currency:'$':'symbol':'1.0-0' }}</td>
@@ -61,7 +61,7 @@
             </div>
         </div>
 
-            <div *ngIf="cuadresDiario.length > 0 || cuadreMensual != null">
+            <div *ngIf="cuadresDiario.length > 0">
                 <h5>Cuadres Diarios</h5>
                 <div class="table-responsive table-wrapper">
                     <table class="table table-bordered align-middle text-center fixed-header">

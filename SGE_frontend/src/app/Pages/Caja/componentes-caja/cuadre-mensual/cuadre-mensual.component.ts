@@ -124,6 +124,7 @@ export class CuadreMensualComponent {
 
   //buscar los cuadres mensuales
   getCuadreMensual(fecha: string) {
+    
     return forkJoin({
       cuadreMensual: this.cuadreMensualService.getCuadreMensual(fecha).pipe(
         tap((data: any) => {
@@ -152,6 +153,8 @@ export class CuadreMensualComponent {
           } else {
             console.log("No se encontraron registros de cuadres diarios.");
           }
+          console.log(this.cuadreMensual);
+          console.log(this.resultadosBusqueda);
         }),
         catchError((error: Error) => {
           console.log("Error al obtener los cuadres diarios:", error);
@@ -175,16 +178,16 @@ export class CuadreMensualComponent {
     this.setFechasParaCuadre();
 
     this.getCuadreMensual(this.fechaCuadre).subscribe(({ cuadreMensual, cuadresDiarios }) => {
-      this.cuadreMensual = cuadreMensual;
+      this.resultadosBusqueda = cuadreMensual;
       this.cuadresDiario = cuadresDiarios;
-      console.log("Resultados de la búsqueda: Cuadre mensual:", this.cuadreMensual);
-      console.log("Resultados de la búsqueda: Cuadres diarios:", this.cuadresDiario);
+      console.log("Resultados de la busqueda cuadre mensual:", this.cuadreMensual);
+      console.log("Resultados de la busqueda cuadres diarios:", this.cuadresDiario);
 
-      if (Array.isArray(this.cuadreMensual)) {
-        this.resultadosBusqueda = this.cuadreMensual;
-      } else {
-        this.resultadosBusqueda = [this.cuadreMensual];
+      if (this.resultadosBusqueda.length <= 0) {
+        this.cuadreMensual = null
+        this.resultadosBusqueda = []
       }
+
     });
   }
 

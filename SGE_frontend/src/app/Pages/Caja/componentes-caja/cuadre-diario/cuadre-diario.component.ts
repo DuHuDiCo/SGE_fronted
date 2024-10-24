@@ -239,6 +239,11 @@ convertirArray() {
       this.cuadreDiario = data;
       console.log("Resultados de la busqueda cuadre diario:", data);
 
+      if (this.cuadreDiario.length <= 0) {
+        this.cuadreDiario = null
+        this.resultadosBusqueda = []
+      }
+
     });
   }
 
