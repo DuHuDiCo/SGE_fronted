@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 export class CuadreMensualComponent {
   //variables
   fechaCuadre: string = '';
+  fechaCuadreBuscar: string = '';
   cuadresDiario: CuadreDiario[] = [];
   cuadreMensual: CuadreMensual | null = null;
   fechaInicial: string = '';
@@ -80,6 +81,7 @@ export class CuadreMensualComponent {
             this.convertirArray();
             this.generarPDF();
             console.log(data);
+            this.fechaCuadre = '';
           }),
           catchError((error: any) => {
             console.log(error);
@@ -147,7 +149,7 @@ export class CuadreMensualComponent {
         tap((data: any) => {
           if (data && data.length > 0) {
             this.cuadresDiario = data.map((diario: any) => {
-              diario.fechaCuadre = diario.fechaCuadre.split('T')[0]; 
+              diario.fechaCuadreBuscar = diario.fechaCuadreBuscar.split('T')[0]; 
             console.log("Cuadres diarios obtenidos:", diario);
           });
           } else {
@@ -166,7 +168,7 @@ export class CuadreMensualComponent {
 
   //buscar los cuadres mensuales modal
   abrirModalBuscar() {
-    if (!this.fechaCuadre) {
+    if (!this.fechaCuadreBuscar) {
       Swal.fire({
         icon: 'error',
         title: 'Campos vacios',
@@ -177,7 +179,7 @@ export class CuadreMensualComponent {
 
     this.setFechasParaCuadre();
 
-    this.getCuadreMensual(this.fechaCuadre).subscribe(({ cuadreMensual, cuadresDiarios }) => {
+    this.getCuadreMensual(this.fechaCuadreBuscar).subscribe(({ cuadreMensual, cuadresDiarios }) => {
       this.resultadosBusqueda = cuadreMensual;
       this.cuadresDiario = cuadresDiarios;
       console.log("Resultados de la busqueda cuadre mensual:", this.cuadreMensual);
@@ -187,6 +189,8 @@ export class CuadreMensualComponent {
         this.cuadreMensual = null
         this.resultadosBusqueda = []
       }
+
+      this.fechaCuadreBuscar = '';
 
     });
   }

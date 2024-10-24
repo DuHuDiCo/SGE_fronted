@@ -74,14 +74,8 @@ export class CuadreDiarioComponent implements OnInit {
           const [year, month, day] = this.fechaCuadre.split('-').map(Number);
           const date = new Date(year, month - 1, day);
 
-          // const cleanedBase64 = this.generarPDF()
-
           const obj = { 
             fechaCuadre: date,
-            // archivo: {
-            //   base64: cleanedBase64,
-            //   tipoReporte: 'DIARIO'
-            // }
            };
 
           return this.cuadreDiarioService.createCuadreDiario(obj).pipe(            
@@ -98,6 +92,7 @@ export class CuadreDiarioComponent implements OnInit {
               this.convertirArray()
               this.generarPDF()
               console.log(data);
+              this.fechaCuadre = '';
             }),
             catchError((error: any) => {
               Swal.fire({
@@ -238,6 +233,9 @@ convertirArray() {
     this.getCuadreDiario(this.fechaInicial, this.fechaFinal).subscribe((data: CuadreDiario) => {
       this.cuadreDiario = data;
       console.log("Resultados de la busqueda cuadre diario:", data);
+
+      this.fechaInicial = '';
+      this.fechaFinal = '';
 
       if (this.cuadreDiario.length <= 0) {
         this.cuadreDiario = null

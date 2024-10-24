@@ -10,6 +10,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./ingresos-diarios.component.css']
 })
 export class IngresosDiariosComponent implements OnInit{
+  myItem: string | null | undefined;
+  Key: string  = 'ultima_fecha';
     //variables
     isEditing: boolean = false;
     idIngreso: number = 0;
@@ -27,6 +29,29 @@ export class IngresosDiariosComponent implements OnInit{
     }
   
   constructor(private cajaService: CajaService) { }
+
+  ngOnInit(): void {
+    this.setMaxFechaIngreso();
+    
+    const storedDate = localStorage.getItem(this.Key);
+    if (storedDate) {
+      this.ingresosDiarios.fechaIngreso = storedDate;
+    } else {
+      this.ingresosDiarios.fechaIngreso = new Date().toISOString().split('T')[0];
+    }
+   
+    // Cargar tipos de ingresos del servicio 
+    this.cajaService.getTiposDeIngresos().pipe(
+      tap((data: any) => {
+        this.tipoIngreso = data;
+        console.log("Datos tipo ingresos cargados");
+      }),
+      catchError((error: Error) => {
+        console.log(error);
+        return of([]);
+      })
+    ).subscribe();
+  }
 
   setMaxFechaIngreso() {
     const today = new Date();
@@ -59,24 +84,6 @@ export class IngresosDiariosComponent implements OnInit{
     console.log(this.ingresosDiarios);
   }
   
-  ngOnInit(): void {
-    this.setMaxFechaIngreso()
-    //obtener todos los tipos de ingresos
-    this.cajaService.getTiposDeIngresos().pipe(
-      tap((data: any)=>{
-        this.tipoIngreso = data;
-        console.log(this.tipoIngreso);
-        
-        console.log(data);
-        console.log("Datos tipo ingresos cargados");
-        
-      }),catchError((error: Error) => {
-        console.log(error);
-        return of([])
-      })
-    ).subscribe()
-  }
-
   //buscar todos los ingresos diarios
 getIngresosDiarios() {
   if (this.fechaIngreso == null || this.fechaIngreso.trim() == '') {
@@ -145,9 +152,6 @@ createIngresosDiarios() {
     return;
   }
 
-  const [year, month, day] = this.ingresosDiarios.fechaIngreso.split('-').map(Number);
-  const fechaFormateada = new Date(year, month - 1, day);  
-
   const fechaInicial = this.ingresosDiarios.fechaIngreso;
   const fechaFinal = this.ingresosDiarios.fechaIngreso;
 
@@ -163,7 +167,7 @@ createIngresosDiarios() {
         });
         return;
       }
-      this.ingresosDiarios.fechaIngreso = fechaFormateada;
+      // this.ingresosDiarios.fechaIngreso = fechaFormateada;
       this.crearIngresoDiario()
     }), catchError((error: Error) => {
       console.log(error);
@@ -174,8 +178,21 @@ createIngresosDiarios() {
 
 crearIngresoDiario(){
   console.log(this.ingresosDiarios);
+
+  const [year, month, day] = this.ingresosDiarios.fechaIngreso.split('-').map(Number);
+  const fechaFormateada = new Date(year, month - 1, day);  
+
+  const fechaIngresoFormateadaEnviar = new Date(this.ingresosDiarios.fechaIngreso).toISOString();
+  const fechaIngresoFormateada = new Date(this.ingresosDiarios.fechaIngreso).toISOString();
+
+  const obj: any = {
+    fechaIngreso : fechaFormateada,
+    valorIngreso: this.ingresosDiarios.valorIngreso,
+    tipoIngreso: this.ingresosDiarios.tipoIngreso
+  }
+
   
-  this.cajaService.createIngresosDiarios(this.ingresosDiarios).pipe(
+  this.cajaService.createIngresosDiarios(obj).pipe(
     tap((data: any) => {
       Swal.fire({
         icon: 'success',
@@ -183,21 +200,17 @@ crearIngresoDiario(){
         text: 'Ingresos diarios creado con exito',
       });
       console.log(data);
-      console.log(this.ingresosDiarios.fechaIngreso);
-
-      const fechaIngresoFormateadaEnviar = new Date(this.ingresosDiarios.fechaIngreso).toISOString();
-      const fechaIngresoFormateada = new Date(this.ingresosDiarios.fechaIngreso).toISOString();
 
       if (fechaIngresoFormateadaEnviar != fechaIngresoFormateada) {
         console.log("No pertenece");
       } else {
         this.ingresosDiariosArray.push(data);
       }
-
       console.log('Datos a enviar:', this.ingresosDiarios);
+
       this.ingresosDiarios = {
         valorIngreso: 0,
-        fechaIngreso: '',
+        fechaIngreso: this.ingresosDiarios.fechaIngreso,
         tipoIngreso: ''
       };
     }), catchError((error: Error) => {
@@ -207,9 +220,12 @@ crearIngresoDiario(){
   ).subscribe();
 }
 
+guardarFecha() {
+  localStorage.setItem(this.Key, this.ingresosDiarios.fechaIngreso);
+  console.log('Fecha guardada en localStorage:', this.ingresosDiarios.fechaIngreso);
+}
 
-  //actualizar un ingreso diario
-  updateIngresosDiarios(ingreso: IngresosDiariosArray) {
+updateIngresosDiarios(ingreso: IngresosDiariosArray) {
     if (this.ingresosDiarios.valorIngreso <= 0) {
       Swal.fire({
         icon: 'error',
