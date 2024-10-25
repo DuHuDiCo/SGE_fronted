@@ -66,7 +66,7 @@ export class IngresosDiariosComponent implements OnInit {
 
   setMinFechaIngreso() {
     const today = new Date();
-    today.setDate(today.getDate() - 3);
+    today.setDate(today.getDate() - 1);
     this.minFechaIngreso = today.toISOString().split('T')[0];
   }
 
