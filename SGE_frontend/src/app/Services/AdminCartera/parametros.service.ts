@@ -37,7 +37,7 @@ export class ParametrosService {
   }
 
   asignarcuentas(idTipoAsignacion:number, asignacion: any) {
-    return this.http.put(`${this.url}/cuentas/asignacion/?idTipoAsignacion=${idTipoAsignacion}`, asignacion)
+    return this.http.put(`${this.url}/cuentas/asignacion?idTipoAsignacion=${idTipoAsignacion}`, asignacion)
     
   }
 
