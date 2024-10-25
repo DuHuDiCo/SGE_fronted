@@ -19,6 +19,7 @@ export class IngresosDiariosComponent implements OnInit {
   ingresosDiariosArray: IngresosDiariosArray[] = [];
   tipoIngreso: any = [];
   maxFechaIngreso: string | undefined;
+  minFechaIngreso: string | undefined;
   fechaInicial: string = '';
   fechaFinal: string = '';
 
@@ -32,6 +33,7 @@ export class IngresosDiariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.setMaxFechaIngreso();
+    this.setMinFechaIngreso();
 
     const storedDate = localStorage.getItem(this.Key);
     console.log(storedDate);
@@ -59,6 +61,12 @@ export class IngresosDiariosComponent implements OnInit {
   setMaxFechaIngreso() {
     const today = new Date();
     this.maxFechaIngreso = today.toISOString().split('T')[0];
+  }
+
+  setMinFechaIngreso() {
+    const today = new Date();
+    today.setDate(today.getDate() - 3);
+    this.minFechaIngreso = today.toISOString().split('T')[0];
   }
 
   //Modal crear ingresos diarios
