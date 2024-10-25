@@ -78,7 +78,7 @@
           <div class="col-md-10 input-group mb-3">
             <span class="input-group-text fw-bold same-width">Fecha Ingreso</span>
             <input type="date" class="form-control input-larger" [(ngModel)]="ingresosDiarios.fechaIngreso"
-              [max]="maxFechaIngreso" (ngModelChange)="guardarFecha()" required>
+              [max]="maxFechaIngreso" [min]="minFechaIngreso" (ngModelChange)="guardarFecha()" required>
           </div>
         </div>
 
