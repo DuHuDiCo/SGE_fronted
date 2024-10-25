@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import jsPDF from 'jspdf';
 
-import autoTable from 'jspdf-autotable'
+import autoTable from 'jspdf-autotable';
 import { catchError, of, switchMap, tap } from 'rxjs';
 import { CajaService } from 'src/app/Services/Caja/caja.service';
 import { CuadreDiario, IngresosDiariosArray } from 'src/app/Types/Caja/CuadreDiario';
@@ -18,6 +18,7 @@ export class CuadreDiarioComponent implements OnInit {
   //variables
   modoCreacion: boolean = false;
   fechaCuadre: string = '';
+
   ingresosDiario: IngresosDiariosArray[] = [];
   cuadreDiario: CuadreDiario | null = null;
 
@@ -30,6 +31,15 @@ export class CuadreDiarioComponent implements OnInit {
   ingresosDiarioPDF: string[][] = [];
   cuadreDiarioPDF: string[][] = [];
 
+  tiposReportes: any = {
+    idCuadre: 0,
+    base64: '',
+    tipoReporte: ''
+   }
+
+   @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
+
+
   setMaxFechaCuadre() {
     const today = new Date();
     this.maxFechaCuadre = today.toISOString().split('T')[0];
@@ -38,6 +48,14 @@ export class CuadreDiarioComponent implements OnInit {
   constructor(private cuadreDiarioService: CajaService) { }
   ngOnInit(): void {
     this.setMaxFechaCuadre()
+  }
+
+  pdf(dataUir: String, ruta: String) {
+    const pdfUrl = `${dataUir},${ruta}`;
+    const embed = this.pdfEmbed.nativeElement;
+    embed.src = pdfUrl;
+    
+    console.log(pdfUrl);
   }
 
   // Agregar un cuadre diario
@@ -55,10 +73,14 @@ export class CuadreDiarioComponent implements OnInit {
         if (this.ingresosDiario.length > 0) {
           const [year, month, day] = this.fechaCuadre.split('-').map(Number);
           const date = new Date(year, month - 1, day);
-          var obj = { fechaCuadre: date };
 
-          return this.cuadreDiarioService.createCuadreDiario(obj).pipe(
+          const obj = { 
+            fechaCuadre: date,
+           };
+
+          return this.cuadreDiarioService.createCuadreDiario(obj).pipe(            
             tap((data: any) => {
+              console.log(obj);
               this.cuadreDiario = data;
               this.modoCreacion = true;
               Swal.fire({
@@ -66,9 +88,11 @@ export class CuadreDiarioComponent implements OnInit {
                 title: 'Cuadre Diario Creado',
                 text: 'Descargando...',
               })
+   
               this.convertirArray()
               this.generarPDF()
               console.log(data);
+              this.fechaCuadre = '';
             }),
             catchError((error: any) => {
               Swal.fire({
@@ -142,44 +166,44 @@ export class CuadreDiarioComponent implements OnInit {
     );
   }
 
-  // PREPARAR ARRAYS
-  convertirArray() {
-    const formatCurrency = (value: number) => {
-      return new Intl.NumberFormat('es-CO', {
-        style: 'currency',
-        currency: 'COP',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      }).format(value);
-    };
+// PREPARAR ARRAYS
+convertirArray() {
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(value);
+  };
 
-    for (var i = 0; i < this.ingresosDiario.length; i++) {
-      var arrayingresosDiario: string[] = [];
-      const fecha = new Date(this.ingresosDiario[i].fechaIngreso);
-      const formattedDate = fecha.toLocaleString('es-CO');
-      arrayingresosDiario.push(formattedDate);
-
-      arrayingresosDiario.push(formatCurrency(this.ingresosDiario[i].valorIngreso));
-      arrayingresosDiario.push(this.ingresosDiario[i].tipoIngreso.nombre);
-      this.ingresosDiarioPDF.push(arrayingresosDiario);
-    }
-    console.log(this.ingresosDiarioPDF);
-
-    var arrayCuadreDiario: string[] = [];
-
-    const fecha = new Date(this.cuadreDiario!.fechaCreacion);
+  for (var i = 0; i < this.ingresosDiario.length; i++) {
+    var arrayingresosDiario: string[] = [];
+    const fecha = new Date(this.ingresosDiario[i].fechaIngreso);
+    fecha.setDate(fecha.getDate() + 1);
     const formattedDate = fecha.toLocaleDateString('es-CO');
-    arrayCuadreDiario.push(formattedDate);
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorCartera));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorIniciales));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorContado));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorGastos));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorBancolombia));
-    arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorTotalCuadre));
-    this.cuadreDiarioPDF.push(arrayCuadreDiario);
-    console.log(this.cuadreDiarioPDF);
-  }
+    arrayingresosDiario.push(formattedDate);
 
+    arrayingresosDiario.push(formatCurrency(this.ingresosDiario[i].valorIngreso));
+    arrayingresosDiario.push(this.ingresosDiario[i].tipoIngreso.nombre);
+    this.ingresosDiarioPDF.push(arrayingresosDiario);
+  }
+  console.log(this.ingresosDiarioPDF);
+
+  var arrayCuadreDiario: string[] = [];
+
+  const fecha = new Date(this.cuadreDiario!.fechaCreacion);
+  const formattedDate = fecha.toLocaleDateString('es-CO');
+  arrayCuadreDiario.push(formattedDate);
+  arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorCartera));
+  arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorIniciales));
+  arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorContado));
+  arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorGastos));
+  arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorBancolombia));
+  arrayCuadreDiario.push(formatCurrency(this.cuadreDiario!.valorTotalCuadre));
+  this.cuadreDiarioPDF.push(arrayCuadreDiario);
+  console.log(this.cuadreDiarioPDF);
+}
   //Buscar un cuadre diario modal
   abrirModalBuscar() {
     //validaciones
@@ -209,6 +233,14 @@ export class CuadreDiarioComponent implements OnInit {
     this.getCuadreDiario(this.fechaInicial, this.fechaFinal).subscribe((data: CuadreDiario) => {
       this.cuadreDiario = data;
       console.log("Resultados de la busqueda cuadre diario:", data);
+
+      this.fechaInicial = '';
+      this.fechaFinal = '';
+
+      if (this.cuadreDiario.length <= 0) {
+        this.cuadreDiario = null
+        this.resultadosBusqueda = []
+      }
 
     });
   }
@@ -320,7 +352,33 @@ export class CuadreDiarioComponent implements OnInit {
       },
     });
 
-    doc.save('reporte.pdf')
+    const pdfBase64 = doc.output('datauristring');
+    const cleanedBase64 = pdfBase64.replace(/;filename=.*;base64/, ';base64');
 
+    const obj = {
+      idCuadre: this.cuadreDiario?.idCuadreDiario,
+      base64: cleanedBase64,
+      tipoReporte: 'DIARIO'
+    }
+    
+    console.log(obj);
+
+    this.cuadreDiarioService.crearReporte(obj).subscribe(
+      (data: any) =>{
+        console.log(obj);
+        console.log(data);
+        
+      }, catchError((error: Error) => {
+        console.log("Error al obtener los datos:", error);
+        return of([]);
+      }) 
+
+    )
+
+    console.log(cleanedBase64);
+
+    doc.save('reporte.pdf') 
+
+    return cleanedBase64;
   }
 }
