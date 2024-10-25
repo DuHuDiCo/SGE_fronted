@@ -24,7 +24,7 @@ export class IngresosDiariosComponent implements OnInit {
 
   ingresosDiarios: any = {
     valorIngreso: 0,
-    fechaIngreso: new Date(),
+    fechaIngreso: '',
     tipoIngreso: ''
   }
 
@@ -35,14 +35,15 @@ export class IngresosDiariosComponent implements OnInit {
 
     const storedDate = localStorage.getItem(this.Key);
     console.log(storedDate);
-    
-    this.ingresosDiarios.fechaIngreso = storedDate;
-    // if (storedDate) {
-    // } else {
-    //   this.ingresosDiarios.fechaIngreso = new Date().toISOString().split('T')[0];
-    // }
 
-    console.log('Fecha cargada en el input:', this.ingresosDiarios.fechaIngreso);
+    if (storedDate != null) {
+      this.ingresosDiarios.fechaIngreso = storedDate;
+    } else {
+      const fechaActual = new Date();
+      this.ingresosDiarios.fechaIngreso = fechaActual.toISOString().split('T')[0];
+    }
+
+    console.log('Fecha cargada en el input:', this.ingresosDiarios);
     // Cargar tipos de ingresos del servicio 
     this.cajaService.getTiposDeIngresos().pipe(
       tap((data: any) => {
@@ -64,7 +65,6 @@ export class IngresosDiariosComponent implements OnInit {
   //Modal crear ingresos diarios
   ModalCrear() {
     this.isEditing = false;
-    this.ingresosDiarios = { valorIngreso: 0, fechaIngreso: '', tipoIngreso: '' };
   }
 
   //Modal editar ingresos diarios
