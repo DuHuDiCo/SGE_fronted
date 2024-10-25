@@ -54,9 +54,6 @@ export class CajaService {
   getCuadreMensual(fecha: string) {
     return this.http.get(`${baseUrl}/cuadreMensual/getByMes?fecha=${fecha}`);
   }
-  getCuadreMensual(fecha: string) {
-    return this.http.get(`${baseUrl}/cuadreMensual/getByMes?fecha=${fecha}`);
-  }
 
   //Tipo reporte
   getTipoDeReporte() {
