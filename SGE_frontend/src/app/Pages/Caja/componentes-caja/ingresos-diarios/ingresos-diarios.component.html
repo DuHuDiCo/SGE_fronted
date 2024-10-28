@@ -4,12 +4,23 @@
     <div class="row">
       <div class="col-md-4">
         <div class="form-floating mb-3">
-          <input type="date" [(ngModel)]="fechaIngreso" class="form-control" placeholder="Fecha Cuadre" [attr.max]="maxFechaIngreso">
+          <input
+            type="date"
+            [(ngModel)]="fechaIngreso"
+            class="form-control"
+            placeholder="Fecha Cuadre"
+            [attr.max]="maxFechaIngreso"
+          />
           <label>Fecha ingreso</label>
         </div>
       </div>
       <div class="col-md-8 text-start">
-        <button class="btn btn-lg btn-color align-middle" (click)="getIngresosDiarios()">Buscar</button>
+        <button
+          class="btn btn-lg btn-color align-middle"
+          (click)="getIngresosDiarios()"
+        >
+          Buscar
+        </button>
       </div>
     </div>
 
@@ -28,16 +39,31 @@
           </thead>
           <tbody>
             <tr *ngFor="let ingreso of ingresosDiariosArray">
-              <td>{{ ingreso.fechaIngreso | date:'dd/MM/yyyy'}}</td>
+              <td>{{ ingreso.fechaIngreso | date : "dd/MM/yyyy" }}</td>
               <td>{{ ingreso.tipoIngreso.nombre }}</td>
-              <td>{{ ingreso.valorIngreso | currency:'$':'symbol':'1.0-0' }}</td>
-              <td>{{ ingreso.descripcion === null ? "Sin descripcion" : ingreso.descripcion}}</td>
               <td>
-                <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#Modal"
-                  (click)="ModalEditar(ingreso)">
+                {{ ingreso.valorIngreso | currency : "$" : "symbol" : "1.0-0" }}
+              </td>
+              <td>
+                {{
+                  ingreso.descripcion === null
+                    ? "Sin descripcion"
+                    : ingreso.descripcion
+                }}
+              </td>
+              <td>
+                <button
+                  class="btn btn-sm btn-primary me-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#Modal"
+                  (click)="ModalEditar(ingreso)"
+                >
                   <i class="fa-solid fa-pen-to-square"></i>
                 </button>
-                <button class="btn btn-sm btn-danger" (click)="deleteIngresosDiarios(ingreso.idIngresosDiarios)">
+                <button
+                  class="btn btn-sm btn-danger"
+                  (click)="deleteIngresosDiarios(ingreso.idIngresosDiarios)"
+                >
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </td>
@@ -49,11 +75,16 @@
   </div>
 
   <div class="floating-button-container">
-    <button class="floating-button fadeInFromBottom" data-bs-toggle="modal" data-bs-target="#Modal"
-      (click)="ModalCrear()">
+    <button
+      class="floating-button fadeInFromBottom"
+      data-bs-toggle="modal"
+      data-bs-target="#Modal"
+      (click)="ModalCrear()"
+    >
       <div class="icon-container">
         <i class="fa-solid fa-plus"></i>
-      </div><br>
+      </div>
+      <br />
       <div class="text-container">
         <span class="text">Agregar</span>
       </div>
@@ -62,54 +93,121 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="Modal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">{{ isEditing ? 'Editar Ingreso Diario' : 'Crear Ingreso Diario' }}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          {{
+            isEditing
+              ? "Editar Ingreso Diario"
+              : "Crear Ingreso
+          Diario"
+          }}
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
 
       <div class="modal-body">
         <div class="row justify-content-center text-center">
           <div class="col-md-10 input-group mb-3">
-            <span class="input-group-text fw-bold same-width">Fecha Ingreso</span>
-            <input type="date" class="form-control input-larger" [(ngModel)]="ingresosDiarios.fechaIngreso" [attr.max]="maxFechaIngreso" required>
+            <span class="input-group-text fw-bold same-width"
+              >Fecha Ingreso</span
+            >
+            <input
+              type="date"
+              class="form-control input-larger"
+              [(ngModel)]="ingresosDiarios.fechaIngreso"
+              [max]="maxFechaIngreso"
+              [min]="minFechaIngreso"
+              (ngModelChange)="guardarFecha()"
+              required
+            />
           </div>
         </div>
 
         <div class="row justify-content-center text-center">
           <div class="col-md-10 input-group mb-3">
-            <span class="input-group-text fw-bold same-width">Valor Ingreso</span>
-            <input type="number" class="form-control input-larger" placeholder="Valor ingreso diario" [(ngModel)]="ingresosDiarios.valorIngreso" required>
+            <span class="input-group-text fw-bold same-width"
+              >Valor Ingreso</span
+            >
+            <input
+              type="number"
+              class="form-control input-larger"
+              placeholder="Valor ingreso diario"
+              [(ngModel)]="ingresosDiarios.valorIngreso"
+              required
+            />
           </div>
         </div>
 
         <div class="row justify-content-center text-center">
           <div class="col-md-10 input-group mb-3">
-            <span class="input-group-text fw-bold same-width">Tipo Ingreso</span>
-            <select [(ngModel)]="ingresosDiarios.tipoIngreso" name="tipoIngreso" class="form-control input-larger" required>
-              <option value="" disabled selected>Seleccione un tipo de ingreso</option>
-              <option *ngFor="let t of tipoIngreso" [value]="t.nombre">{{ t.nombre }}</option>
+            <span class="input-group-text fw-bold same-width"
+              >Tipo Ingreso</span
+            >
+            <select
+              [(ngModel)]="ingresosDiarios.tipoIngreso"
+              name="tipoIngreso"
+              class="form-control input-larger"
+              required
+            >
+              <option value="" disabled selected>
+                Seleccione un tipo de ingreso
+              </option>
+              <option *ngFor="let t of tipoIngreso" [value]="t.nombre">
+                {{ t.nombre }}
+              </option>
             </select>
           </div>
         </div>
 
-        <div class="row justify-content-center text-center" *ngIf="ingresosDiarios.tipoIngreso === 'GASTOS'">
+        <div
+          class="row justify-content-center text-center"
+          *ngIf="ingresosDiarios.tipoIngreso === 'GASTOS'"
+        >
           <div class="col-md-10 input-group mb-3">
             <span class="input-group-text fw-bold same-width">Descripción</span>
-            <input type="textarea" class="form-control input-larger" placeholder="Descripción de los gastos" [(ngModel)]="ingresosDiarios.descripcion">
+            <input
+              type="textarea"
+              class="form-control input-larger"
+              placeholder="Descripción de los gastos"
+              [(ngModel)]="ingresosDiarios.descripcion"
+            />
           </div>
         </div>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger" (click)="isEditing ? updateIngresosDiarios(ingresosDiarios) : createIngresosDiarios()">
-          {{ isEditing ? 'Actualizar' : 'Crear' }}
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="
+            isEditing
+              ? updateIngresosDiarios(ingresosDiarios)
+              : createIngresosDiarios()
+          "
+        >
+          {{ isEditing ? "Actualizar" : "Crear" }}
         </button>
       </div>
     </div>
+      
   </div>
 </div>

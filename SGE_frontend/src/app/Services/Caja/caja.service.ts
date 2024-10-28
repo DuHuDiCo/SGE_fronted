@@ -6,52 +6,81 @@ import { IngresosDiariosArray } from 'src/app/Types/Caja/CuadreDiario';
 import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CajaService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-//Ingresos diarios
+  //Ingresos diarios
   getIngresosByFecha(fecha: string) {
-    return this.http.get(`${baseUrl}/ingresosDiarios/getByFecha?fecha=${fecha}`);
+    return this.http.get(
+      `${baseUrl}/ingresosDiarios/getByFecha?fecha=${fecha}`
+    );
   }
 
   createIngresosDiarios(ingresoDiario: IngresosDiariosArray) {
     return this.http.post(`${baseUrl}/ingresosDiarios/save`, ingresoDiario);
   }
-  
-  updateIngresosDiarios(ingresosDiarios: IngresosDiariosArray, idIngreso: number){
-    return this.http.put(`${baseUrl}/ingresosDiarios/update?idIngreso=${idIngreso}`, ingresosDiarios);
+
+  updateIngresosDiarios(
+    ingresosDiarios: IngresosDiariosArray,
+    idIngreso: number
+  ) {
+    return this.http.put(
+      `${baseUrl}/ingresosDiarios/update?idIngreso=${idIngreso}`,
+      ingresosDiarios
+    );
   }
 
-  deleteIngresosDiarios(idIngreso: number){
+  deleteIngresosDiarios(idIngreso: number) {
     return this.http.delete(`${baseUrl}/ingresosDiarios/delete/${idIngreso}`);
   }
 
   //Tipos de ingresos
-  getTiposDeIngresos(){
+  getTiposDeIngresos() {
     return this.http.get(`${baseUrl}/tipoIngresos/`);
   }
 
-  createTipoDeIngreso(tipoIngreso: any){
-    return this.http.post(`${baseUrl}/tipoIngresos/saveTipoIngreso`, tipoIngreso);
+  createTipoDeIngreso(tipoIngreso: any) {
+    return this.http.post(
+      `${baseUrl}/tipoIngresos/saveTipoIngreso`,
+      tipoIngreso
+    );
   }
 
-// Métodos de servicio
-getCuadreDiario(fechaInicial: string, fechaFinal: string): Observable<any[]> {
-  return this.http.get<any[]>(`${baseUrl}/cuadreDiario/getByMes?fechaInicial=${fechaInicial}&fechaFinal=${fechaFinal}`);
-}
+  // Cuadres diarios
+  getCuadreDiario(fechaInicial: string, fechaFinal: string): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${baseUrl}/cuadreDiario/getByMes?fechaInicial=${fechaInicial}&fechaFinal=${fechaFinal}`
+    );
+  }
 
-createCuadreDiario(obj: { fechaCuadre: Date }) {
-  return this.http.post(`${baseUrl}/cuadreDiario/save`, obj);
-}
+  createCuadreDiario(obj: { fechaCuadre: Date }) {
+    return this.http.post(`${baseUrl}/cuadreDiario/save`, obj);
+  }
 
-createCuadreMensual(obj: { fecha: string }) {
-  return this.http.post(`${baseUrl}/cuadreMensual/save`, obj);
-}
+  //Cuadres mensuales
+  createCuadreMensual(obj: { fecha: string }) {
+    return this.http.post(`${baseUrl}/cuadreMensual/save`, obj);
+  }
 
-getCuadreMensual(fecha: string) {
-  return this.http.get(`${baseUrl}/cuadreMensual/getByMes?fecha=${fecha}`);
-}
+  getCuadreMensual(fecha: string) {
+    return this.http.get(`${baseUrl}/cuadreMensual/getByMes?fecha=${fecha}`);
+  }
+
+  //Tipo reporte
+  getTipoDeReporte() {
+    return this.http.get(`${baseUrl}/tipoReporte/`);
+  }
+
+  crearTipoDeReporte(tipoReporte: any) {
+    return this.http.post(
+      `${baseUrl}/tipoReporte/saveTipoReporte`,
+      tipoReporte
+    );
+  }
+
+  crearReporte(reporte: any) {
+    return this.http.post(`${baseUrl}/reporte/saveReporte`, reporte);
+  }
 }
