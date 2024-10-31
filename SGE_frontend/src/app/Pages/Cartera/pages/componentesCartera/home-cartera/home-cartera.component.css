@@ -6,6 +6,10 @@
   color: #960010;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .card-c {
   color: #000;
   position: relative;

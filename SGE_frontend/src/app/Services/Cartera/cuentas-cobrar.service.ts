@@ -55,9 +55,11 @@ export class CuentasCobrarService {
   //FILTRO
 
   filtro(page: number, size: number, fechaCreacion: string, dto: Filtros,) {
-
-
     return this.http.post(`${baseUrl}/cuentas/filtrosCuentas?page=${page}&size=${size}&fechaCreacion=${fechaCreacion}`, dto)
+  }
+
+  getCuentasSinGestionar(username: string, page: number, size: number) {
+    return this.http.get(`${baseUrl}/gestiones/obtenerCuentasSinGestion?username=${username}&page=${page}&size=${size}`)
   }
 
   getItems(username: string) {

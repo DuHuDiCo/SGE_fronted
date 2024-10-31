@@ -70,7 +70,8 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="alert alert-danger text-center" role="alert">
+                                <div class="alert alert-danger text-center cursor-pointer" role="alert"
+                                    (click)="getCuentasSinGestionar()">
                                     <strong>Sin Ges: </strong>
                                     {{alertasGestionesObject.cuentasSinGestion}}
                                 </div>

@@ -30,8 +30,8 @@ export class HomeCarteraComponent implements OnInit {
   @ViewChild('telefono')
   mySelect!: ElementRef<HTMLSelectElement>;
 
-  private proSubscriptionNext!: Subscription;
-  private proSubscriptionBack!: Subscription;
+  private proSubscriptionNext?: Subscription;
+  private proSubscriptionBack?: Subscription;
 
   constructor(private cuentasCobrar: CuentasCobrarService, private authService: AuthenticationService, private router: Router, private renderer: Renderer2, private elementRef: ElementRef) {
     this.listaDeAnios = this.obtenerListaDeAnios()
@@ -472,6 +472,7 @@ export class HomeCarteraComponent implements OnInit {
   isConReal: boolean = false
 
   changeHonorarios: boolean = false
+  sinAsesor: boolean = false
 
   @ViewChildren('variableCol') colcheck!: QueryList<ElementRef>;
 
@@ -558,6 +559,7 @@ export class HomeCarteraComponent implements OnInit {
     const anioActual = new Date().getFullYear()
 
     this.filtrando = false
+    this.sinAsesor = false
     var admin = this.authService.getRolesByName(ROLES.Administration);
 
     var cartera = this.authService.getRolesByName(ROLES.Cartera);
@@ -654,14 +656,25 @@ export class HomeCarteraComponent implements OnInit {
   back() {
     if (!this.first) {
       this.page--
-      if (this.filtrando) {
+      if (this.sinAsesor) {
+        this.spinner = true
+        this.getCuentasSinGestionar()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont - this.size
+            this.proSubscriptionBack!.unsubscribe()
+            this.spinner = false
+          }
+        );
+      } else if (this.filtrando) {
         this.spinner = true
         this.filtro()
         this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
           (con: boolean) => {
             this.isCon = con;
             this.cont = this.cont - this.size
-            this.proSubscriptionBack.unsubscribe()
+            this.proSubscriptionBack!.unsubscribe()
             this.spinner = false
           }
         );
@@ -672,7 +685,7 @@ export class HomeCarteraComponent implements OnInit {
           (con: boolean) => {
             this.isCon = con;
             this.cont = this.cont - this.size
-            this.proSubscriptionBack.unsubscribe()
+            this.proSubscriptionBack!.unsubscribe()
             this.spinner = false
           }
         );
@@ -682,16 +695,27 @@ export class HomeCarteraComponent implements OnInit {
 
   // SIGUIENTE PAGINA
   next() {
+    console.log(this.sinAsesor);
+
     if (!this.last) {
       this.spinner = true
       this.page++
-      if (this.filtrando) {
+      if (this.sinAsesor) {
+        this.getCuentasSinGestionar()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont + this.size
+            this.spinner = false
+          }
+        );
+      } else if (this.filtrando) {
         this.filtro()
         this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
           (con: boolean) => {
             this.isCon = con;
             this.cont = this.cont + this.size
-            this.proSubscriptionNext.unsubscribe()
+            this.proSubscriptionNext!.unsubscribe()
             this.spinner = false
           }
         );
@@ -702,7 +726,7 @@ export class HomeCarteraComponent implements OnInit {
           (con: boolean) => {
             this.isCon = con;
             this.cont = this.cont + this.size
-            this.proSubscriptionNext.unsubscribe()
+            this.proSubscriptionNext!.unsubscribe()
           }
         );
       }
@@ -712,14 +736,24 @@ export class HomeCarteraComponent implements OnInit {
   //IR A UNA PAGINA ESPECIFICA
   goToPage(page: number) {
     this.page = page
-    if (this.filtrando) {
+    if (this.sinAsesor) {
+      this.spinner = true
+      this.getCuentasSinGestionar()
+      this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.size);
+          this.spinner = false
+        }
+      );
+    } else if (this.filtrando) {
       this.spinner = true
       this.filtro()
       this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
         (con: boolean) => {
           this.isCon = con;
           this.cont = this.initialCon + (this.page * this.size);
-          this.proSubscriptionNext.unsubscribe()
+          this.proSubscriptionNext!.unsubscribe()
           this.spinner = false
         }
       );
@@ -730,7 +764,7 @@ export class HomeCarteraComponent implements OnInit {
         (con: boolean) => {
           this.isCon = con;
           this.cont = this.initialCon + (this.page * this.size);
-          this.proSubscriptionNext.unsubscribe()
+          this.proSubscriptionNext!.unsubscribe()
         }
       );
     }
@@ -3548,6 +3582,7 @@ export class HomeCarteraComponent implements OnInit {
         this.botonFiltro = false
         this.filtrando = true
         this.filtroAgain = true
+        this.sinAsesor = false
         this.paginas = new Array(data.totalPages)
         this.cuentasCobrarArray = data.content
         console.log(this.cuentasCobrarArray);
@@ -3769,6 +3804,36 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
+  getCuentasSinGestionar() {
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+
+    if (!this.sinAsesor) {
+      this.sinAsesor = true
+      this.page = 0
+    }
+
+    this.cuentasCobrar.getCuentasSinGestionar(user, this.page, this.size).subscribe(
+      (data: any) => {
+        this.paginas = new Array(data.totalPages)
+        this.cuentasCobrarArray = data.content
+        this.last = data.last
+        this.first = data.first
+        this.numeroPages = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+        console.log(this.cuentasCobrar.proSubject);
+
+        console.log(data);
+        console.log(this.numeroPages);
+      }, (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
   reiniciarFiltros(accion: string) {
     this.filtros = {
       banco: [],
@@ -3912,6 +3977,7 @@ export class HomeCarteraComponent implements OnInit {
       (data: any) => {
         this.botonFiltrarObligacion = false
         this.cuentasCobrarBuscar = data
+        this.sinAsesor = false
         console.log(this.cuentasCobrarBuscar);
 
         this.filtradoBuscar = true
@@ -5144,7 +5210,7 @@ export class HomeCarteraComponent implements OnInit {
           (con: boolean) => {
             this.isConAll = con;
             this.contAll = this.contAll - this.sizeAll
-            this.proSubscriptionBack.unsubscribe()
+            this.proSubscriptionBack!.unsubscribe()
           }
         );
       } else {
@@ -5153,7 +5219,7 @@ export class HomeCarteraComponent implements OnInit {
           (con: boolean) => {
             this.isConAll = con;
             this.contAll = this.contAll - this.sizeAll
-            this.proSubscriptionBack.unsubscribe()
+            this.proSubscriptionBack!.unsubscribe()
           }
         );
       }
@@ -5169,7 +5235,7 @@ export class HomeCarteraComponent implements OnInit {
           (con: boolean) => {
             this.isConAll = con;
             this.contAll = this.contAll + this.sizeAll
-            this.proSubscriptionNext.unsubscribe()
+            this.proSubscriptionNext!.unsubscribe()
           }
         );
       } else {
@@ -5178,7 +5244,7 @@ export class HomeCarteraComponent implements OnInit {
           (con: boolean) => {
             this.isConAll = con;
             this.contAll = this.contAll + this.sizeAll
-            this.proSubscriptionNext.unsubscribe()
+            this.proSubscriptionNext!.unsubscribe()
           }
         );
       }
@@ -5193,7 +5259,7 @@ export class HomeCarteraComponent implements OnInit {
         (con: boolean) => {
           this.isConAll = con;
           this.contAll = this.initialConAll + (this.pageAll * this.sizeAll);
-          this.proSubscriptionNext.unsubscribe()
+          this.proSubscriptionNext!.unsubscribe()
         }
       );
     } else {
@@ -5202,7 +5268,7 @@ export class HomeCarteraComponent implements OnInit {
         (con: boolean) => {
           this.isConAll = con;
           this.contAll = this.initialConAll + (this.pageAll * this.sizeAll);
-          this.proSubscriptionNext.unsubscribe()
+          this.proSubscriptionNext!.unsubscribe()
         }
       );
     }
@@ -5219,7 +5285,7 @@ export class HomeCarteraComponent implements OnInit {
           (con: boolean) => {
             this.isConVen = con;
             this.contVen = this.contVen - this.sizeVen
-            this.proSubscriptionBack.unsubscribe()
+            this.proSubscriptionBack!.unsubscribe()
           }
         );
       } else {
@@ -5228,7 +5294,7 @@ export class HomeCarteraComponent implements OnInit {
           (con: boolean) => {
             this.isConVen = con;
             this.contVen = this.contVen - this.sizeVen
-            this.proSubscriptionBack.unsubscribe()
+            this.proSubscriptionBack!.unsubscribe()
           }
         );
       }
@@ -5244,7 +5310,7 @@ export class HomeCarteraComponent implements OnInit {
           (con: boolean) => {
             this.isConVen = con;
             this.contVen = this.contVen + this.sizeVen
-            this.proSubscriptionNext.unsubscribe()
+            this.proSubscriptionNext!.unsubscribe()
           }
         );
       } else {
@@ -5253,7 +5319,7 @@ export class HomeCarteraComponent implements OnInit {
           (con: boolean) => {
             this.isConVen = con;
             this.contVen = this.contVen + this.sizeVen
-            this.proSubscriptionNext.unsubscribe()
+            this.proSubscriptionNext!.unsubscribe()
           }
         );
       }
@@ -5268,7 +5334,7 @@ export class HomeCarteraComponent implements OnInit {
         (con: boolean) => {
           this.isConVen = con;
           this.contVen = this.initialConVen + (this.pageVen * this.sizeVen);
-          this.proSubscriptionNext.unsubscribe()
+          this.proSubscriptionNext!.unsubscribe()
         }
       );
     } else {
@@ -5277,7 +5343,7 @@ export class HomeCarteraComponent implements OnInit {
         (con: boolean) => {
           this.isConVen = con;
           this.contVen = this.initialConVen + (this.pageVen * this.sizeVen);
-          this.proSubscriptionNext.unsubscribe()
+          this.proSubscriptionNext!.unsubscribe()
         }
       );
     }
