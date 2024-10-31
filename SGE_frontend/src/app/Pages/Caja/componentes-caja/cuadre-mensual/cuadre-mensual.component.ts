@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { catchError, forkJoin, of, switchMap, tap } from 'rxjs';
@@ -10,11 +10,12 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-cuadre-mensual',
   templateUrl: './cuadre-mensual.component.html',
-  styleUrls: ['./cuadre-mensual.component.css']
+  styleUrls: ['./cuadre-mensual.component.css'],
 })
 export class CuadreMensualComponent {
   //variables
   fechaCuadre: string = '';
+  fechaCuadreBuscar: string = '';
   cuadresDiario: CuadreDiario[] = [];
   cuadreMensual: CuadreMensual | null = null;
   fechaInicial: string = '';
@@ -26,16 +27,19 @@ export class CuadreMensualComponent {
   cuadreDiarioPDF: string[][] = [];
   cuadreMensualPDF: string[][] = [];
 
-  constructor(private cuadreMensualService: CajaService) { }
+  constructor(private cuadreMensualService: CajaService) {}
+  @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
 
   //Metodo de fecha inicial y fecha final
   setFechasParaCuadre() {
-
-    var fechaCuadre = (this.fechaCuadre + "-01").split("-")
+    var fechaCuadre = (this.fechaCuadre + '-01').split('-');
     console.log(this.fechaCuadre);
 
-
-    const fechaSeleccionada = new Date(Number(fechaCuadre[0]), Number(fechaCuadre[1]) - 1, 1)
+    const fechaSeleccionada = new Date(
+      Number(fechaCuadre[0]),
+      Number(fechaCuadre[1]) - 1,
+      1
+    );
     console.log(fechaSeleccionada);
 
     const mes = fechaSeleccionada.getMonth();
@@ -48,6 +52,12 @@ export class CuadreMensualComponent {
     console.log(this.fechaFinal);
   }
 
+  pdf(dataUir: String, ruta: String) {
+    const pdfUrl = `${dataUir},${ruta}`;
+    const embed = this.pdfEmbed.nativeElement;
+    embed.src = pdfUrl;
+  }
+
   // Agregar un cuadre diario
   crearCuadreMensual() {
     if (this.fechaCuadre == null || this.fechaCuadre.trim() == '') {
@@ -55,8 +65,8 @@ export class CuadreMensualComponent {
         icon: 'error',
         title: 'Fecha cuadre mensual vacia',
         text: 'Seleccione una fecha para poder crear el cuadre mensual',
-      })
-      return
+      });
+      return;
     }
 
     this.setFechasParaCuadre();
@@ -66,52 +76,59 @@ export class CuadreMensualComponent {
         const fechaCuadre = new Date(this.fechaCuadre).toISOString();
         const obj = { fecha: fechaCuadre };
 
-        this.cuadreMensualService.createCuadreMensual(obj).pipe(
-          tap((data: any) => {
-            this.cuadreMensual = data;
-            this.convertirArray();
-            this.generarPDF();
-            console.log(data);
-          }),
-          catchError((error: any) => {
-            console.log(error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error al Crear el Cuadre Mensual',
-              text: error.error.message,
+        this.cuadreMensualService
+          .createCuadreMensual(obj)
+          .pipe(
+            tap((data: any) => {
+              this.cuadreMensual = data;
+              console.log(data);
+              this.convertirArray();
+              this.generarPDF();
+              console.log(data);
+              this.fechaCuadre = '';
+            }),
+            catchError((error: any) => {
+              console.log(error);
+              Swal.fire({
+                icon: 'error',
+                title: 'Error al Crear el Cuadre Mensual',
+                text: error.error.message,
+              });
+              this.cuadresDiario = [];
+              this.cuadreMensual = null;
+              this.modoCreacion = false;
+              return of([]);
             })
-            this.cuadresDiario = []
-            this.cuadreMensual = null;
-            this.modoCreacion = false;
-            return of([]);
-          })
-        ).subscribe();
+          )
+          .subscribe();
       } else {
         Swal.fire({
           icon: 'error',
           title: 'No hay cuadres diarios',
           text: 'No hay cuadres diarios para crear el cuadre mensual.',
-        })
+        });
       }
     });
   }
 
   // Obtener los cuadres diarios
   getCuadresDiarios(fechaInicial: string, fechaFinal: string) {
-    console.log("Fecha enviada para cuadres:", this.fechaCuadre);
-    return this.cuadreMensualService.getCuadreDiario(fechaInicial, fechaFinal).pipe(
-      tap((data: any) => {
-        this.cuadresDiario = data.map((diario: any) => {
-          diario.fechaCuadre = diario.fechaCuadre.split('T')[0]; 
-          return diario;
-        });
-        console.log(this.cuadresDiario);
-      }),
-      catchError((error: Error) => {
-        console.log("Error al obtener los cuadres diarios:", error);
-        return of([]);
-      })
-    );
+    console.log('Fecha enviada para cuadres:', this.fechaCuadre);
+    return this.cuadreMensualService
+      .getCuadreDiario(fechaInicial, fechaFinal)
+      .pipe(
+        tap((data: any) => {
+          this.cuadresDiario = data.map((diario: any) => {
+            diario.fechaCuadre = diario.fechaCuadre.split('T')[0];
+            return diario;
+          });
+          console.log(this.cuadresDiario);
+        }),
+        catchError((error: Error) => {
+          console.log('Error al obtener los cuadres diarios:', error);
+          return of([]);
+        })
+      );
   }
 
   //buscar los cuadres mensuales
@@ -120,42 +137,47 @@ export class CuadreMensualComponent {
       cuadreMensual: this.cuadreMensualService.getCuadreMensual(fecha).pipe(
         tap((data: any) => {
           if (data && data.length > 0) {
-            console.log("Cuadre mensual obtenido:", data);
+            console.log('Cuadre mensual obtenido:', data);
           } else {
             Swal.fire({
               icon: 'error',
               title: 'No se encontraron cuadres mensuales',
               text: 'No hay cuadres mensuales en la fecha seleccionada.',
-            })
+            });
           }
         }),
         catchError((error: Error) => {
-          console.log("Error al obtener el cuadre mensual:", error);
+          console.log('Error al obtener el cuadre mensual:', error);
           return of([]);
         })
       ),
-      cuadresDiarios: this.cuadreMensualService.getCuadreDiario(this.fechaInicial, this.fechaFinal).pipe(
-        tap((data: any) => {
-          if (data && data.length > 0) {
-            this.cuadresDiario = data.map((diario: any) => {
-              diario.fechaCuadre = diario.fechaCuadre.split('T')[0]; 
-            console.log("Cuadres diarios obtenidos:", diario);
-          });
-          } else {
-            console.log("No se encontraron registros de cuadres diarios.");
-          }
-        }),
-        catchError((error: Error) => {
-          console.log("Error al obtener los cuadres diarios:", error);
-          return of([]);
-        })
-      )
+      cuadresDiarios: this.cuadreMensualService
+        .getCuadreDiario(this.fechaInicial, this.fechaFinal)
+        .pipe(
+          tap((data: any) => {
+            if (data && data.length > 0) {
+              this.cuadresDiario = data.map((diario: any) => {
+                diario.fechaCuadreBuscar =
+                  diario.fechaCuadreBuscar.split('T')[0];
+                console.log('Cuadres diarios obtenidos:', diario);
+              });
+            } else {
+              console.log('No se encontraron registros de cuadres diarios.');
+            }
+            console.log(this.cuadreMensual);
+            console.log(this.resultadosBusqueda);
+          }),
+          catchError((error: Error) => {
+            console.log('Error al obtener los cuadres diarios:', error);
+            return of([]);
+          })
+        ),
     });
   }
 
   //buscar los cuadres mensuales modal
   abrirModalBuscar() {
-    if (!this.fechaCuadre) {
+    if (!this.fechaCuadreBuscar) {
       Swal.fire({
         icon: 'error',
         title: 'Campos vacios',
@@ -166,33 +188,62 @@ export class CuadreMensualComponent {
 
     this.setFechasParaCuadre();
 
-    this.getCuadreMensual(this.fechaCuadre).subscribe(({ cuadreMensual, cuadresDiarios }) => {
-      this.cuadreMensual = cuadreMensual;
-      this.cuadresDiario = cuadresDiarios;
-      console.log("Resultados de la búsqueda: Cuadre mensual:", this.cuadreMensual);
-      console.log("Resultados de la búsqueda: Cuadres diarios:", this.cuadresDiario);
+    this.getCuadreMensual(this.fechaCuadreBuscar).subscribe(
+      ({ cuadreMensual, cuadresDiarios }) => {
+        this.resultadosBusqueda = cuadreMensual;
+        this.cuadresDiario = cuadresDiarios;
+        console.log(
+          'Resultados de la busqueda cuadre mensual:',
+          this.cuadreMensual
+        );
+        console.log(
+          'Resultados de la busqueda cuadres diarios:',
+          this.cuadresDiario
+        );
 
-      if (Array.isArray(this.cuadreMensual)) {
-        this.resultadosBusqueda = this.cuadreMensual;
-      } else {
-        this.resultadosBusqueda = [this.cuadreMensual];
+        if (this.resultadosBusqueda.length <= 0) {
+          this.cuadreMensual = null;
+          this.resultadosBusqueda = [];
+        }
+
+        this.fechaCuadreBuscar = '';
       }
-    });
+    );
   }
 
   convertirArray() {
+    const formatCurrency = (value: number) => {
+      return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(value);
+    };
+
     for (var i = 0; i < this.cuadresDiario.length; i++) {
       var arrayCuadreDiario: string[] = [];
       const fecha = new Date(this.cuadresDiario[i].fechaCuadre);
+      fecha.setDate(fecha.getDate() + 1);
       const formattedDate = fecha.toLocaleDateString('es-CO');
       arrayCuadreDiario.push(formattedDate);
 
-      arrayCuadreDiario.push(this.cuadresDiario[i].valorCartera.toString());
-      arrayCuadreDiario.push(this.cuadresDiario[i].valorIniciales.toString());
-      arrayCuadreDiario.push(this.cuadresDiario[i].valorContado.toString());
-      arrayCuadreDiario.push(this.cuadresDiario[i].valorGastos.toString());
-      arrayCuadreDiario.push(this.cuadresDiario[i].valorBancolombia.toString());
-      arrayCuadreDiario.push(this.cuadresDiario[i].valorTotalCuadre.toString());
+      arrayCuadreDiario.push(
+        formatCurrency(this.cuadresDiario[i].valorCartera)
+      );
+      arrayCuadreDiario.push(
+        formatCurrency(this.cuadresDiario[i].valorIniciales)
+      );
+      arrayCuadreDiario.push(
+        formatCurrency(this.cuadresDiario[i].valorContado)
+      );
+      arrayCuadreDiario.push(formatCurrency(this.cuadresDiario[i].valorGastos));
+      arrayCuadreDiario.push(
+        formatCurrency(this.cuadresDiario[i].valorBancolombia)
+      );
+      arrayCuadreDiario.push(
+        formatCurrency(this.cuadresDiario[i].valorTotalCuadre)
+      );
       this.cuadreDiarioPDF.push(arrayCuadreDiario);
       console.log(this.cuadreDiarioPDF);
     }
@@ -223,7 +274,13 @@ export class CuadreMensualComponent {
     doc.setFont('helvetica', 'bold'); // Títulos en negrita
     doc.text('Nombre Usuario:', 10, 20);
     doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreMensual!.usuario.nombres + ' ' + this.cuadreMensual!.usuario.apellidos, 50, 20);
+    doc.text(
+      this.cuadreMensual!.usuario.nombres +
+        ' ' +
+        this.cuadreMensual!.usuario.apellidos,
+      50,
+      20
+    );
 
     doc.setFont('helvetica', 'bold'); // Títulos en negrita
     doc.text('Almacén:', 140, 20);
@@ -258,27 +315,47 @@ export class CuadreMensualComponent {
     doc.setFont('helvetica', 'bold'); // Título en negrita
     doc.text('Total Cartera:', 120, 60);
     doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreMensual!.valorTotalCartera.toLocaleString('es-CO') + ' COP', 165, 60);
+    doc.text(
+      this.cuadreMensual!.valorTotalCartera.toLocaleString('es-CO') + ' COP',
+      165,
+      60
+    );
 
     doc.setFont('helvetica', 'bold'); // Títulos en negrita
     doc.text('Total Iniciales:', 10, 70); // Ajustado a 70
     doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreMensual!.valorTotalIniciales.toLocaleString('es-CO') + ' COP', 50, 70);
+    doc.text(
+      this.cuadreMensual!.valorTotalIniciales.toLocaleString('es-CO') + ' COP',
+      50,
+      70
+    );
 
     doc.setFont('helvetica', 'bold'); // Títulos en negrita
     doc.text('Total Contado:', 120, 70);
     doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreMensual!.valorTotalContado.toLocaleString('es-CO') + ' COP', 165, 70);
+    doc.text(
+      this.cuadreMensual!.valorTotalContado.toLocaleString('es-CO') + ' COP',
+      165,
+      70
+    );
 
     doc.setFont('helvetica', 'bold'); // Títulos en negrita
     doc.text('Total Gastos:', 10, 80); // Ajustado a 80
     doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreMensual!.valorTotalGastos.toLocaleString('es-CO') + ' COP', 50, 80);
+    doc.text(
+      this.cuadreMensual!.valorTotalGastos.toLocaleString('es-CO') + ' COP',
+      50,
+      80
+    );
 
     doc.setFont('helvetica', 'bold'); // Títulos en negrita
     doc.text('Total Mes:', 10, 90); // Ajustado a 90
     doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
-    doc.text(this.cuadreMensual!.valorTotalMes.toLocaleString('es-CO') + ' COP', 50, 90);
+    doc.text(
+      this.cuadreMensual!.valorTotalMes.toLocaleString('es-CO') + ' COP',
+      50,
+      90
+    );
 
     // Más espacio entre el resumen y el título de ingresos
     doc.setFontSize(14);
@@ -287,46 +364,59 @@ export class CuadreMensualComponent {
 
     // Generar la primera tabla
     autoTable(doc, {
-      head: [['Fecha', 'Cartera', 'Iniciales', 'Contado', 'Gastos', 'Bancolombia', 'Total']],
+      head: [
+        [
+          'Fecha',
+          'Cartera',
+          'Iniciales',
+          'Contado',
+          'Gastos',
+          'Bancolombia',
+          'Total',
+        ],
+      ],
       body: this.cuadreDiarioPDF,
       startY: 110,
       theme: 'grid',
       headStyles: {
         fillColor: [150, 0, 16],
         textColor: [255, 255, 255],
-        halign: 'center'
+        halign: 'center',
       },
       bodyStyles: {
         fillColor: [240, 240, 240],
         textColor: [0, 0, 0],
-        halign: 'center'
+        halign: 'center',
       },
       alternateRowStyles: {
         fillColor: [255, 255, 255],
       },
     });
 
-    // Generar la segunda tabla
-    // autoTable(doc, {
-    //   head: [['Año', 'Mes', 'Cartera', 'Contado', 'Iniciales', 'Gastos', 'Total']],
-    //   body: this.cuadreMensualPDF,
-    //   startY: 20,
-    //   theme: 'grid',
-    //   headStyles: {
-    //     fillColor: [150, 0, 16],
-    //     textColor: [255, 255, 255],
-    //   },
-    //   bodyStyles: {
-    //     fillColor: [240, 240, 240],
-    //     textColor: [0, 0, 0],
-    //   },
-    //   alternateRowStyles: {
-    //     fillColor: [255, 255, 255],
-    //   },
-    // });
+    const pdfBase64 = doc.output('datauristring');
+    const cleanedBase64 = pdfBase64.replace(/;filename=.*;base64/, ';base64');
 
-    // Guardar el PDF
+    const obj = {
+      idCuadre: this.cuadreMensual?.idCuadreMensual,
+      base64: cleanedBase64,
+      tipoReporte: 'MENSUAL',
+    };
+
+    console.log(obj);
+
+    this.cuadreMensualService.crearReporte(obj).subscribe(
+      (data: any) => {
+        console.log(obj);
+        console.log(data);
+      },
+      catchError((error: Error) => {
+        console.log('Error al obtener los datos:', error);
+        return of([]);
+      })
+    );
+
+    console.log(cleanedBase64);
+
     doc.save('reporte.pdf');
   }
-
 }

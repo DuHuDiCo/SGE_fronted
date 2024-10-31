@@ -22,6 +22,16 @@
   border-color: #d40000;
 }
 
+.table .btn {
+  border-radius: 50px;
+  padding: 5px 10px;
+}
+
+.table .btn-primary {
+  background-color: rgb(0, 183, 255);
+  border: none;
+}
+
 /* Ajustar la misma anchura para el span */
 .same-width {
   flex-basis: 30%;
@@ -58,150 +68,150 @@
   border: none;
   outline: none;
 }
+
 /* BOTON FLOTANTE */
 .floating-button {
-    position: fixed;
-    bottom: 30px;
-    left: 20px;
-    background-color: #960010;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-  }
-  
-  .floating-button:hover {
-    background-color: #c50e0e;
-  }
+  position: fixed;
+  bottom: 30px;
+  left: 20px;
+  background-color: #960010;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+}
 
-  .floating-button:hover {
-    background-color: #c50e0e;
-  }
-  
-  @keyframes fadeInFromBottom {
-    0% {
-      transform: translateY(50px);
-      opacity: 0;
-    }
-  
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  
-  .floating-button {
-    animation: fadeInFromBottom 1s ease forwards;
-  }
-  
-  /* Ajustar el tamaño del icono y centrarlo en el contenedor */
-  .floating-button .icon-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
-  }
-  
-  .floating-button .icon-container i {
-    font-size: 40px;
-  }
-  
-  /* Nueva animación para el hover del icono */
-  @keyframes iconShrink {
-    0% {
-      transform: scale(1);
-    }
-  
-    100% {
-      transform: scale(0.7);
-    }
-  }
-  
-  /* Aplicar la animación al icono en el hover */
-  .floating-button:hover .icon-container {
-    animation: iconShrink 0.3s ease forwards;
-    padding-bottom: 30px;
-  }
-  
-  /* Estilos para el texto que aparece en el hover */
-  .floating-button .text-container {
-    text-align: center;
+.floating-button:hover {
+  background-color: #c50e0e;
+}
+
+.floating-button:hover {
+  background-color: #c50e0e;
+}
+
+@keyframes fadeInFromBottom {
+  0% {
+    transform: translateY(50px);
     opacity: 0;
-    transition: opacity 0.3s ease;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
-  
-  /* Mostramos el texto cuando el botón está en hover */
-  .floating-button:hover .text-container {
-    opacity: 1;
-    padding-bottom: 15px;
-    font-size: 1.1em;
   }
 
-  .table {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
-  
-  .table th,
-  .table td {
-    vertical-align: middle;
-    padding: 12px;
-    border: none;
+}
+
+.floating-button {
+  animation: fadeInFromBottom 1s ease forwards;
+}
+
+/* Ajustar el tamaño del icono y centrarlo en el contenedor */
+.floating-button .icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+}
+
+.floating-button .icon-container i {
+  font-size: 40px;
+}
+
+/* Nueva animación para el hover del icono */
+@keyframes iconShrink {
+  0% {
+    transform: scale(1);
   }
-  
-  .table thead {
-    background-color: #dddada;
-    color: rgb(0, 0, 0);
-    text-transform: uppercase;
+
+  100% {
+    transform: scale(0.7);
   }
-  
-  .table tbody tr {
-    transition: background-color 0.3s ease;
-  }
-  
-  .table tbody tr:hover {
-    background-color: #dddada;
-  }
-  
-  .table-wrapper {
-    max-height: 400px; 
-    overflow-y: auto;
+}
+
+/* Aplicar la animación al icono en el hover */
+.floating-button:hover .icon-container {
+  animation: iconShrink 0.3s ease forwards;
+  padding-bottom: 30px;
+}
+
+/* Estilos para el texto que aparece en el hover */
+.floating-button .text-container {
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Mostramos el texto cuando el botón está en hover */
+.floating-button:hover .text-container {
+  opacity: 1;
+  padding-bottom: 15px;
+  font-size: 1.1em;
+}
+
+.table {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+  padding: 12px;
+  border: none;
+}
+
+.table thead {
+  background-color: #dddada;
+  color: rgb(0, 0, 0);
+  text-transform: uppercase;
+}
+
+.table tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #dddada;
+}
+
+.table-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .fixed-header thead {
-    position: sticky;
-    top: 0;
-    background-color:  #dddada;
-    z-index: 100;
+  position: sticky;
+  top: 0;
+  background-color: #dddada;
+  z-index: 100;
 }
 
 .fixed-header th {
-    background-color: #dddada; 
-    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); 
+  background-color: #dddada;
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
 }
 
-  /* Botón de buscar */
+/* Botón de buscar */
 .btn-color {
-  background-color: darkred; 
-  color: white; 
+  background-color: darkred;
+  color: white;
   border-radius: 25px;
   padding: 10px 20px;
   transition: background-color 0.3s ease;
 }
 
 .btn-color:hover {
-  background-color: #c50e0e; 
+  background-color: #c50e0e;
 }
-
