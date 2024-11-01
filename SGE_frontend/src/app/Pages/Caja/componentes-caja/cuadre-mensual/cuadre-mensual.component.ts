@@ -27,13 +27,13 @@ export class CuadreMensualComponent {
   cuadreDiarioPDF: string[][] = [];
   cuadreMensualPDF: string[][] = [];
 
-  constructor(private cuadreMensualService: CajaService) {}
+  constructor(private cuadreMensualService: CajaService) { }
   @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
 
   //Metodo de fecha inicial y fecha final
   setFechasParaCuadre() {
-    var fechaCuadre = (this.fechaCuadre + '-01').split('-');
-    console.log(this.fechaCuadre);
+    var fechaCuadre = (this.fechaCuadreBuscar + '-01').split('-');
+    console.log(fechaCuadre);
 
     const fechaSeleccionada = new Date(
       Number(fechaCuadre[0]),
@@ -58,6 +58,24 @@ export class CuadreMensualComponent {
     embed.src = pdfUrl;
   }
 
+  setFechaCuadreCrear() {
+    var fechaCuadreCrear = (this.fechaCuadre + '-01').split('-');
+    console.log(fechaCuadreCrear);
+
+    const fechaSeleccionada = new Date(
+      Number(fechaCuadreCrear[0]),
+      Number(fechaCuadreCrear[1]) - 1,
+      1
+    );
+    console.log(fechaSeleccionada);
+
+    const mes = fechaSeleccionada.getMonth();
+    const año = fechaSeleccionada.getFullYear();
+
+    this.fechaInicial = new Date(año, mes, 1).toISOString().split('T')[0];
+    this.fechaFinal = new Date(año, mes + 1, 0).toISOString().split('T')[0];
+  }
+
   // Agregar un cuadre diario
   crearCuadreMensual() {
     if (this.fechaCuadre == null || this.fechaCuadre.trim() == '') {
@@ -69,7 +87,7 @@ export class CuadreMensualComponent {
       return;
     }
 
-    this.setFechasParaCuadre();
+    this.setFechaCuadreCrear();
 
     this.getCuadresDiarios(this.fechaInicial, this.fechaFinal).subscribe(() => {
       if (this.cuadresDiario.length > 0) {
@@ -157,9 +175,9 @@ export class CuadreMensualComponent {
           tap((data: any) => {
             if (data && data.length > 0) {
               this.cuadresDiario = data.map((diario: any) => {
-                diario.fechaCuadreBuscar =
-                  diario.fechaCuadreBuscar.split('T')[0];
                 console.log('Cuadres diarios obtenidos:', diario);
+                diario.fechaCuadreBuscar =
+                  diario.fechaCuadre.split('T')[0];
               });
             } else {
               console.log('No se encontraron registros de cuadres diarios.');
@@ -196,10 +214,13 @@ export class CuadreMensualComponent {
           'Resultados de la busqueda cuadre mensual:',
           this.cuadreMensual
         );
+        console.log(this.resultadosBusqueda);
+
         console.log(
           'Resultados de la busqueda cuadres diarios:',
           this.cuadresDiario
         );
+
 
         if (this.resultadosBusqueda.length <= 0) {
           this.cuadreMensual = null;
@@ -276,8 +297,8 @@ export class CuadreMensualComponent {
     doc.setFont('helvetica', 'normal'); // Regresar a normal para los valores
     doc.text(
       this.cuadreMensual!.usuario.nombres +
-        ' ' +
-        this.cuadreMensual!.usuario.apellidos,
+      ' ' +
+      this.cuadreMensual!.usuario.apellidos,
       50,
       20
     );

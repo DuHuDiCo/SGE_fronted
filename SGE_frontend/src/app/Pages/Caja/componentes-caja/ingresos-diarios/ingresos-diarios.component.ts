@@ -32,7 +32,7 @@ export class IngresosDiariosComponent implements OnInit {
     tipoIngreso: '',
   };
 
-  constructor(private cajaService: CajaService) {}
+  constructor(private cajaService: CajaService) { }
 
   ngOnInit(): void {
     this.setMaxFechaIngreso();
@@ -367,5 +367,16 @@ export class IngresosDiariosComponent implements OnInit {
           .subscribe();
       }
     });
+  }
+
+  cerrarModal() {
+    this.ingresosDiarios = {
+      fechaIngreso: this.ingresosDiarios.fechaIngreso,
+      valorIngreso: 0,
+      tipoIngreso: '',
+    }
+
+    console.log(this.ingresosDiarios);
+
   }
 }
