@@ -40,6 +40,8 @@ export class ModoGestionComponent implements OnInit {
     $(document).ready(function () {
       $('[data-toggle="tooltip"]').tooltip();
     });
+
+    this.obtenerCuentaByAsesor()
   }
 
   openCards(name: string) {
@@ -62,6 +64,15 @@ export class ModoGestionComponent implements OnInit {
       tipo: tipo,
       boton: boton
     }
+  }
+
+
+  obtenerCuentaByAsesor(){
+    this.panelCarteraService.cuentasByAsesor("FILTRADO").subscribe(res => {
+      console.log(res)
+    },(err) => {
+      console.log(err)
+    })
   }
 
 }

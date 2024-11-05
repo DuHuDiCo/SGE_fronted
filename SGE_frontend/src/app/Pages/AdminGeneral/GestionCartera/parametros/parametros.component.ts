@@ -73,7 +73,8 @@ export class ParametrosComponent implements OnInit {
     namesViews: [],
     asesoresId: [],
     parametroOrdenamientoDTOs: [],
-    isAsignacion: false
+    isAsignacion: false,
+    tipoCampania: ''
   }
 
   // VARIABLES
@@ -679,6 +680,8 @@ export class ParametrosComponent implements OnInit {
       return
     }
 
+    this.campaignObj.tipoCampania ="FILTRADO"
+
     this.parametrosService.createCampaign(this.campaignObj).subscribe(
       (data: any) => {
         Swal.fire({
@@ -690,6 +693,7 @@ export class ParametrosComponent implements OnInit {
         console.log(data);
         this.campaignObj = {
           nombreCampania: '',
+          tipoCampania:'',
           parametros: [],
           namesViews: [],
           asesoresId: [],
@@ -712,12 +716,9 @@ export class ParametrosComponent implements OnInit {
   }
 
   createCampaingAsignacion(){
-    var asignacion = {
-      namesViews: this.campaignObj.namesViews,
-      asesoresId: this.campaignObj.asesoresId
-    }
+   this.campaignObj.tipoCampania ="ASIGNACION"
 
-    this.parametrosService.asignarcuentas(1,asignacion).subscribe(
+    this.parametrosService.asignarcuentas(1,this.campaignObj).subscribe(
       (data: any) => {
         Swal.fire({
           icon: 'success',
@@ -728,6 +729,7 @@ export class ParametrosComponent implements OnInit {
         console.log(data);
         this.campaignObj = {
           nombreCampania: '',
+          tipoCampania:'',
           parametros: [],
           namesViews: [],
           asesoresId: [],

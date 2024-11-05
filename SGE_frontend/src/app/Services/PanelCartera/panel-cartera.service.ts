@@ -39,4 +39,8 @@ export class PanelCarteraService {
     this.datosConfirmArraySubject.next(array);
   }
 
+  cuentasByAsesor(campania: string) {
+    return this.http.get(`${this.url}/cuentas/?campania=${campania}`)
+  }
+
 }
