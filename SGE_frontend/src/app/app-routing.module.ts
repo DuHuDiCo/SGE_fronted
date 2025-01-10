@@ -89,6 +89,9 @@ import { IngresosDiariosComponent } from './Pages/Caja/componentes-caja/ingresos
 import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-mensual/cuadre-mensual.component';
 import { TipoIngresoComponent } from './Pages/Caja/componentes-caja/tipo-ingreso/tipo-ingreso.component';
 import { TipoReporteComponent } from './Pages/Caja/componentes-caja/tipo-reporte/tipo-reporte.component';
+import { DashboardA2ConfiguracionesComponent } from './Pages/A2Configuraciones/dashboard-a2-configuraciones/dashboard-a2-configuraciones.component';
+import { CrearProductosComponent } from './Pages/A2Configuraciones/crear-productos/crear-productos.component';
+import { CrearVendedoresComponent } from './Pages/A2Configuraciones/crear-vendedores/crear-vendedores.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -294,6 +297,28 @@ const routes: Routes = [
         component: RolesUsuariosGuardarComponent,
       },
     ],
+  },
+
+  {
+    path: 'a2-configuraciones',
+    redirectTo: 'dashboard-a2configuraciones',
+    pathMatch: 'full'
+  },
+
+  {
+    path: 'dashboard-a2configuraciones',
+    component: DashboardA2ConfiguracionesComponent,
+    canActivate: [AuthenticationGuard],
+    children: [
+      {
+        path: 'crear-verdedores',
+        component: CrearVendedoresComponent,
+      },
+      {
+        path: 'crear-productos',
+        component: CrearProductosComponent,
+      },
+    ]
   },
 
   { path: 'sst', redirectTo: 'dashboard-sst', pathMatch: 'full' },

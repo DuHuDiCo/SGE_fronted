@@ -120,6 +120,9 @@ import { IngresosDiariosComponent } from './Pages/Caja/componentes-caja/ingresos
 import { TipoIngresoComponent } from './Pages/Caja/componentes-caja/tipo-ingreso/tipo-ingreso.component';
 import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-mensual/cuadre-mensual.component';
 import { TipoReporteComponent } from './Pages/Caja/componentes-caja/tipo-reporte/tipo-reporte.component';
+import { DashboardA2ConfiguracionesComponent } from './Pages/A2Configuraciones/dashboard-a2-configuraciones/dashboard-a2-configuraciones.component';
+import { CrearProductosComponent } from './Pages/A2Configuraciones/crear-productos/crear-productos.component';
+import { CrearVendedoresComponent } from './Pages/A2Configuraciones/crear-vendedores/crear-vendedores.component';
 
 @NgModule({
   declarations: [
@@ -220,6 +223,9 @@ import { TipoReporteComponent } from './Pages/Caja/componentes-caja/tipo-reporte
     IngresosDiariosComponent,
     TipoIngresoComponent,
     CuadreMensualComponent,
+    DashboardA2ConfiguracionesComponent,
+    CrearProductosComponent,
+    CrearVendedoresComponent,
   ],
 
   imports: [

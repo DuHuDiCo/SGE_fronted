@@ -26,12 +26,8 @@
     "crypto-js": "^4.1.1",
     "date-fns": "^2.30.0",
     "jquery": "^3.6.1",
-    "jspdf": "^2.5.2",
-    "jspdf-autotable": "^3.8.3",
     "ngx-pagination": "^6.0.3",
-    "ngx-ui-loader": "^13.0.0",
     "rxjs": "~7.5.0",
-    "sge-frontend": "file:",
     "sweetalert2": "^11.6.4",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
