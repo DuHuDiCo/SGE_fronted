@@ -12,6 +12,7 @@ export type CuentasCobrarResponse = {
   nombre_usuario: string,
   clasificacion: string,
   vendedor: string,
+  isLast: boolean,
   clasificacionJuridica: string,
   detalle: string,
   sede: {
@@ -60,7 +61,7 @@ export type CuentasCobrarResponse = {
       accountNonLocked: boolean
     }
   },
-  clientes: Clientes []
+  clientes: Clientes[]
 }
 
 export type CuentaCobrarCalculate = {
@@ -96,7 +97,7 @@ export type Gestion = {
   }
 }
 
-export type ClasificacionGestion={
+export type ClasificacionGestion = {
   clasificacion: string
   cuotasList: CoutasList[],
   detalle: string,
@@ -106,26 +107,26 @@ export type ClasificacionGestion={
   idClasifiacionGestion: number,
   isActive: boolean,
   isCumpliendo: boolean,
-  nombresClasificacion : {
-    idNombreClasificacion :number,
-    nombre:string,
-    tipo:string
+  nombresClasificacion: {
+    idNombreClasificacion: number,
+    nombre: string,
+    tipo: string
   },
   tipoAcuerdo: string,
-  valorCuotaMensual:number,
-  valorInteresMora:number,
-  valorTotalAcuerdo:number
+  valorCuotaMensual: number,
+  valorInteresMora: number,
+  valorTotalAcuerdo: number
 }
 
-export type CoutasList={
+export type CoutasList = {
   capitalCuota: number,
-  cumplio:boolean,
-  fechaVencimiento:string,
+  cumplio: boolean,
+  fechaVencimiento: string,
   idCuota: number,
-  interesCuota:number,
-  numeroCuota:number,
-  valorCuota:number,
-  honorarios:number
+  interesCuota: number,
+  numeroCuota: number,
+  valorCuota: number,
+  honorarios: number
 }
 
 export type Roles = {
