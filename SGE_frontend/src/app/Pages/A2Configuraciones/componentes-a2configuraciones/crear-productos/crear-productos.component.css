@@ -1,0 +1,34 @@
+.inputStyle {
+  border-radius: 25px;
+  background: #ecf0f3ea;
+  box-shadow: inset 2px 2px 5px #6d7072, inset -8px -8px 20px #ffffff;
+}
+
+input {
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 15px;
+  margin: 10px 10px;
+  border-bottom: 20px;
+}
+
+input[type="text"]:focus {
+  border-bottom: 2px solid #eb3535;
+}
+
+input[type="text"]:placeholder {
+  color: #cccccc;
+}
+
+.b {
+  color: white;
+  background-color: #960010;
+  border-color: #960010;
+}
+
+.b:hover {
+  background: #d40000;
+  border-color: #d40000;
+  cursor: pointer;
+}

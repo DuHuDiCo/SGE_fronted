@@ -1,1 +1,39 @@
-<p>crear-vendedores works!</p>
+<div class="container d-flex flex-column justify-content-center w-50">
+  <h2 class="text-center text-bold">Crear vendedor</h2>
+
+  <form class="d-flex flex-column gap-2 w-75 mx-auto" (ngSubmit)="onFormSubmit()">
+    <div class="inputStyle d-flex flex-column">
+      <input type="text" class="fadeIn second mx-2" placeholder="Nombre del vendedor" />
+    </div>
+
+    <div class="inputStyle">
+      <input type="text" class="fadeIn third mx-2" placeholder="Código" />
+    </div>
+
+    <div class="inputStyle">
+      <input
+        type="text"
+        class="fadeIn third mx-2"
+        placeholder="Número de documento"
+      />
+    </div>
+
+    <div class="inputStyle">
+      <input type="text" class="fadeIn third mx-2" placeholder="Sede" />
+    </div>
+
+    <div class="inputStyle">
+      <input type="text" class="fadeIn third mx-2" placeholder="Opción 5" />
+    </div>
+
+    <div class="inputStyle">
+      <input type="text" class="fadeIn third mx-2" placeholder="Opción 6" />
+    </div>
+
+    <div class="inputStyle">
+      <input type="text" class="fadeIn third mx-2" placeholder="Opción 7" />
+    </div>
+
+    <button type="submit" class="btn mx-auto w-25 btn-dark rounded-pill b">Crear</button>
+  </form>
+</div>
