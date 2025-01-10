@@ -13,7 +13,7 @@ export class SidebarA2configuracionesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  logout(){
+  onLogout(){
     this.authenticationService.logout()
     window.location.reload()
   }

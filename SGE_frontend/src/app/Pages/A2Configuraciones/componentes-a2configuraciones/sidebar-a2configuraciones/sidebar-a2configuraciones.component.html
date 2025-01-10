@@ -21,7 +21,7 @@
     style="color: white; font-size: 1.2em; font-weight: bold"
     class="text-center"
   >
-    Departamento De Caja
+    Departamento De A2
   </h2>
   <hr style="color: white" />
   <ul class="nav flex-column">
@@ -32,7 +32,7 @@
         data-bs-target="#getting-started-collapse"
         aria-expanded="false"
       >
-        <i class="fas fa-sort-down"></i>&nbsp; Archivos Caja
+        <i class="fas fa-sort-down"></i>&nbsp; Archivos A2Config
       </button>
 
       <div
@@ -45,81 +45,9 @@
             <button
               class="nav-link active"
               aria-current="page"
-              routerLink="/dashboard-caja/tipo-ingreso"
+              routerLink="/dashboard-a2configuraciones"
             >
-              <i class="fas fa-file-alt"></i>&nbsp; Tipo ingresos
-            </button>
-          </li>
-        </ul>
-      </div>
-
-      <div
-        class="collapse"
-        id="getting-started-collapse"
-        data-bs-dismiss="offcanvas"
-      >
-        <ul class="list-unstyled fw-normal pb-1 small">
-          <li>
-            <button
-              class="nav-link active"
-              aria-current="page"
-              routerLink="/dashboard-caja/tipo-reporte"
-            >
-              <i class="fas fa-file-alt"></i>&nbsp; Tipo reportes
-            </button>
-          </li>
-        </ul>
-      </div>
-
-      <div
-        class="collapse"
-        id="getting-started-collapse"
-        data-bs-dismiss="offcanvas"
-      >
-        <ul class="list-unstyled fw-normal pb-1 small">
-          <li>
-            <button
-              class="nav-link active"
-              aria-current="page"
-              routerLink="/dashboard-caja/ingresos-diarios"
-            >
-              <i class="fas fa-file-alt"></i>&nbsp; Ingresos diarios
-            </button>
-          </li>
-        </ul>
-      </div>
-
-      <div
-        class="collapse"
-        id="getting-started-collapse"
-        data-bs-dismiss="offcanvas"
-      >
-        <ul class="list-unstyled fw-normal pb-1 small">
-          <li>
-            <button
-              class="nav-link active"
-              aria-current="page"
-              routerLink="/dashboard-caja/cuadre-diario"
-            >
-              <i class="fas fa-file-alt"></i>&nbsp; Cuadres diarios
-            </button>
-          </li>
-        </ul>
-      </div>
-
-      <div
-        class="collapse"
-        id="getting-started-collapse"
-        data-bs-dismiss="offcanvas"
-      >
-        <ul class="list-unstyled fw-normal pb-1 small">
-          <li>
-            <button
-              class="nav-link active"
-              aria-current="page"
-              routerLink="/dashboard-caja/cuadre-mensual"
-            >
-              <i class="fas fa-file-alt"></i>&nbsp; Cuadres mensuales
+              <i class="fas fa-file-alt"></i>&nbsp; Opción
             </button>
           </li>
         </ul>
@@ -128,8 +56,8 @@
     <hr style="color: white" />
     <ul class="nav flex-column">
       <li class="nav-item">
-        <button (click)="logout()" class="nav-link active" aria-current="page">
-          <i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout
+        <button (click)="onLogout()" class="nav-link active" aria-current="page">
+          <i class="fa-solid fa-right-from-bracket"></i>&nbsp; Salir
         </button>
       </li>
     </ul>
