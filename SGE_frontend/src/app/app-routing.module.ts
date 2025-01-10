@@ -92,6 +92,7 @@ import { TipoReporteComponent } from './Pages/Caja/componentes-caja/tipo-reporte
 import { DashboardA2ConfiguracionesComponent } from './Pages/A2Configuraciones/dashboard-a2-configuraciones/dashboard-a2-configuraciones.component';
 import { CrearProductosComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/crear-productos/crear-productos.component';
 import { CrearVendedoresComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/crear-vendedores/crear-vendedores.component';
+import { HomeA2configuracionesComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/home-a2configuraciones/home-a2configuraciones.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -465,7 +466,7 @@ const routes: Routes = [
 
   {
     path: 'a2-configuraciones',
-    redirectTo: 'dashboard-a2configuraciones',
+    redirectTo: 'dashboard-a2configuraciones/inicio',
     pathMatch: 'full',
   },
 
@@ -474,6 +475,11 @@ const routes: Routes = [
     component: DashboardA2ConfiguracionesComponent,
     canActivate: [AuthenticationGuard],
     children: [
+      {
+        path: 'inicio',
+        component: HomeA2configuracionesComponent,
+        canActivate: [GuardAsesoraGuard],
+      },
       {
         path: 'crear-verdedores',
         component: CrearVendedoresComponent,

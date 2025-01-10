@@ -124,6 +124,7 @@ import { DashboardA2ConfiguracionesComponent } from './Pages/A2Configuraciones/d
 import { CrearProductosComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/crear-productos/crear-productos.component';
 import { CrearVendedoresComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/crear-vendedores/crear-vendedores.component';
 import { SidebarA2configuracionesComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/sidebar-a2configuraciones/sidebar-a2configuraciones.component';
+import { HomeA2configuracionesComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/home-a2configuraciones/home-a2configuraciones.component';
 
 @NgModule({
   declarations: [
@@ -228,6 +229,7 @@ import { SidebarA2configuracionesComponent } from './Pages/A2Configuraciones/com
     CrearProductosComponent,
     CrearVendedoresComponent,
     SidebarA2configuracionesComponent,
+    HomeA2configuracionesComponent,
   ],
 
   imports: [
