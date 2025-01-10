@@ -90,8 +90,8 @@ import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-men
 import { TipoIngresoComponent } from './Pages/Caja/componentes-caja/tipo-ingreso/tipo-ingreso.component';
 import { TipoReporteComponent } from './Pages/Caja/componentes-caja/tipo-reporte/tipo-reporte.component';
 import { DashboardA2ConfiguracionesComponent } from './Pages/A2Configuraciones/dashboard-a2-configuraciones/dashboard-a2-configuraciones.component';
-import { CrearProductosComponent } from './Pages/A2Configuraciones/crear-productos/crear-productos.component';
-import { CrearVendedoresComponent } from './Pages/A2Configuraciones/crear-vendedores/crear-vendedores.component';
+import { CrearProductosComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/crear-productos/crear-productos.component';
+import { CrearVendedoresComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/crear-vendedores/crear-vendedores.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -299,28 +299,6 @@ const routes: Routes = [
     ],
   },
 
-  {
-    path: 'a2-configuraciones',
-    redirectTo: 'dashboard-a2configuraciones',
-    pathMatch: 'full'
-  },
-
-  {
-    path: 'dashboard-a2configuraciones',
-    component: DashboardA2ConfiguracionesComponent,
-    canActivate: [AuthenticationGuard],
-    children: [
-      {
-        path: 'crear-verdedores',
-        component: CrearVendedoresComponent,
-      },
-      {
-        path: 'crear-productos',
-        component: CrearProductosComponent,
-      },
-    ]
-  },
-
   { path: 'sst', redirectTo: 'dashboard-sst', pathMatch: 'full' },
   {
     path: 'dashboard-sst',
@@ -481,6 +459,28 @@ const routes: Routes = [
       {
         path: 'roles-usuario',
         component: RolesUsuariosComponent,
+      },
+    ],
+  },
+
+  {
+    path: 'a2-configuraciones',
+    redirectTo: 'dashboard-a2configuraciones',
+    pathMatch: 'full',
+  },
+
+  {
+    path: 'dashboard-a2configuraciones',
+    component: DashboardA2ConfiguracionesComponent,
+    canActivate: [AuthenticationGuard],
+    children: [
+      {
+        path: 'crear-verdedores',
+        component: CrearVendedoresComponent,
+      },
+      {
+        path: 'crear-productos',
+        component: CrearProductosComponent,
       },
     ],
   },
