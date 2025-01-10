@@ -32,3 +32,11 @@ input[type="text"]:placeholder {
   border-color: #d40000;
   cursor: pointer;
 }
+
+.cardStyle {
+  color: #000;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #f2f3f5;
+  box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
+}

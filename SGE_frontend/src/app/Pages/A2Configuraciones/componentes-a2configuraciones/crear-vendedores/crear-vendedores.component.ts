@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -7,7 +8,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./crear-vendedores.component.css'],
 })
 export class CrearVendedoresComponent implements OnInit {
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -18,5 +19,11 @@ export class CrearVendedoresComponent implements OnInit {
       showConfirmButton: false,
       timer: 1000,
     });
+
+    this.router.navigate(['dashboard-a2configuraciones/inicio']);
+  }
+
+  onVolver() {  
+    this.router.navigate(['dashboard-a2configuraciones/inicio']);
   }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -7,16 +8,22 @@ import Swal from 'sweetalert2';
   styleUrls: ['./crear-productos.component.css'],
 })
 export class CrearProductosComponent implements OnInit {
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
   onFormSubmit() {
     Swal.fire({
       icon: 'success',
-      title: 'Producto Creado',
+      title: 'Producto creado',
       showConfirmButton: false,
       timer: 1000,
     });
+
+    this.router.navigate(['dashboard-a2configuraciones/inicio']);
+  }
+
+  onVolver() {  
+    this.router.navigate(['dashboard-a2configuraciones/inicio']);
   }
 }
