@@ -8,26 +8,26 @@
     class="d-flex flex-column gap-2 w-75 mx-auto"
     (ngSubmit)="onFormSubmit()"
   >
-    <div class="row align-items-center mb-5 gap-3">
+    <div class="row align-items-center">
       <div class="col-md-12 col-12">
-        <div class="inputStyle d-flex flex-column">
-          <input type="text" placeholder="Nombre del producto" />
+        <div class=" d-flex flex-column">
+          <input [(ngModel)]="producto.nombreProducto" name="nombreProducto" class="form-control text-center" type="text" placeholder="Nombre del producto" />
         </div>
       </div>
 
       <div class="col-md-12 col-12">
-        <div class="inputStyle d-flex flex-column">
-          <input type="text" placeholder="Referencia" />
+        <div class=" d-flex flex-column">
+          <input [(ngModel)]="producto.referencia" name="referencia" class="form-control text-center" type="text" placeholder="Referencia" />
         </div>
       </div>
 
       <div class="col-md-12 col-12 d-flex justify-content-between">
-        <div class="inputStyle">
-          <input type="text" placeholder="Marca" />
+        <div class="">
+          <input [(ngModel)]="producto.marca" name="marca" class="form-control text-center" type="text" placeholder="Marca" />
         </div>
 
-        <div class="inputStyle">
-          <input type="text" placeholder="Opción 4" />
+        <div class="">
+          <input [(ngModel)]="producto.opcion4" name="opcion4" class="form-control text-center" type="text" placeholder="Opción 4" />
         </div>
       </div>
     </div>

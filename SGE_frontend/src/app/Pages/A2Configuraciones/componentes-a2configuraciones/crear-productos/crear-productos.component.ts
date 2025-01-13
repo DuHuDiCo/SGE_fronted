@@ -8,11 +8,39 @@ import Swal from 'sweetalert2';
   styleUrls: ['./crear-productos.component.css'],
 })
 export class CrearProductosComponent implements OnInit {
+  public producto = {
+    nombreProducto: '',
+    referencia: '',
+    marca: '',
+    opcion4: '',
+  };
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
   onFormSubmit() {
+    if (
+      this.producto.nombreProducto == '' ||
+      this.producto.nombreProducto == null
+    ) {
+      Swal.fire('Error', 'El nombre del producto es requerido', 'error');
+      return;
+    }
+    if (this.producto.referencia == '' || this.producto.referencia == null) {
+      Swal.fire('Error', 'La referencia es requerida', 'error');
+      return;
+    }
+    if (this.producto.marca == '' || this.producto.marca == null) {
+      Swal.fire('Error', 'La marca es requerida', 'error');
+      return;
+    }
+    if (this.producto.opcion4 == '' || this.producto.opcion4 == null) {
+      Swal.fire('Error', 'Opción requerida', 'error');
+      return;
+    }
+
+    // Notificacion añadir producto
     Swal.fire({
       icon: 'success',
       title: 'Producto creado',
@@ -23,7 +51,7 @@ export class CrearProductosComponent implements OnInit {
     this.router.navigate(['dashboard-a2configuraciones/inicio']);
   }
 
-  onVolver() {  
+  onVolver() {
     this.router.navigate(['dashboard-a2configuraciones/inicio']);
   }
 }

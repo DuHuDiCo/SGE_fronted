@@ -8,36 +8,72 @@
     class="d-flex flex-column gap-2 w-75 mx-auto"
     (ngSubmit)="onFormSubmit()"
   >
-    <div class="row align-items-center mb-5 gap-3">
+    <div class="row align-items-center">
       <div class="col-md-12 col-12">
-        <div class="inputStyle d-flex flex-column">
-          <input type="text" placeholder="Nombre del vendedor" />
+        <div class="d-flex flex-column">
+          <input
+            [(ngModel)]="vendedor.nombreVendedor"
+            name="nombreVendedor"
+            class="form-control text-center"
+            type="text"
+            placeholder="Nombre del vendedor"
+          />
         </div>
       </div>
 
       <div class="col-md-12 col-12 d-flex justify-content-between">
-        <div class="inputStyle">
-          <input type="text" placeholder="Código" />
+        <div class="">
+          <input
+            [(ngModel)]="vendedor.codigo"
+            name="codigo"
+            class="form-control text-center"
+            type="text"
+            placeholder="Código"
+          />
         </div>
 
-        <div class="inputStyle">
-          <input type="text" placeholder="Número de documento" />
+        <div class="">
+          <input
+            [(ngModel)]="vendedor.documento"
+            name="documento"
+            class="form-control text-center"
+            type="text"
+            placeholder="Número de documento"
+          />
         </div>
       </div>
 
       <div class="col-md-12 col-12">
-        <div class="inputStyle d-flex flex-column">
-          <input type="text" placeholder="Sede" />
+        <div class="d-flex flex-column">
+          <input
+            [(ngModel)]="vendedor.sede"
+            name="sede"
+            class="form-control text-center"
+            type="text"
+            placeholder="Sede"
+          />
         </div>
       </div>
 
       <div class="col-md-12 col-12 d-flex justify-content-between">
-        <div class="inputStyle">
-          <input type="text" placeholder="Opción 5" />
+        <div class="">
+          <input
+            [(ngModel)]="vendedor.opcion5"
+            name="opcion5"
+            class="form-control text-center"
+            type="text"
+            placeholder="Opción 5"
+          />
         </div>
 
-        <div class="inputStyle">
-          <input type="text" placeholder="Opción 6" />
+        <div class="">
+          <input
+            [(ngModel)]="vendedor.opcion6"
+            name="opcion6"
+            class="form-control text-center"
+            type="text"
+            placeholder="Opción 6"
+          />
         </div>
       </div>
     </div>
