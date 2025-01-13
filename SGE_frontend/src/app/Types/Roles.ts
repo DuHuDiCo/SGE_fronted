@@ -46,3 +46,14 @@ export enum ROLES{
     Ventas = "Ventas",
     Archivos = "Archivos"
 }
+
+export enum ROLESCARTERA{
+    VER_TODOS= "VER TODOS"
+}
+
+export enum CLASIFICACION_JURIDICA{
+    Normal = "NORMAL",
+    Prejuridico = "PREJURIDICO",
+    Administrativo = "ADMINISTRATIVO",
+    
+}

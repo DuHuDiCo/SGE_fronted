@@ -1,0 +1,48 @@
+<div
+  class="cardStyle container d-flex flex-column justify-content-center w-50 px-5 py-3 mb-5"
+>
+  <h2 class="text-center">Agregar producto</h2>
+  <hr class="border-4" />
+
+  <form
+    class="d-flex flex-column gap-2 w-75 mx-auto"
+    (ngSubmit)="onFormSubmit()"
+  >
+    <div class="row align-items-center">
+      <div class="col-md-12 col-12">
+        <div class=" d-flex flex-column">
+          <input [(ngModel)]="producto.nombreProducto" name="nombreProducto" class="form-control text-center" type="text" placeholder="Nombre del producto" />
+        </div>
+      </div>
+
+      <div class="col-md-12 col-12">
+        <div class=" d-flex flex-column">
+          <input [(ngModel)]="producto.referencia" name="referencia" class="form-control text-center" type="text" placeholder="Referencia" />
+        </div>
+      </div>
+
+      <div class="col-md-12 col-12 d-flex justify-content-between">
+        <div class="">
+          <input [(ngModel)]="producto.marca" name="marca" class="form-control text-center" type="text" placeholder="Marca" />
+        </div>
+
+        <div class="">
+          <input [(ngModel)]="producto.opcion4" name="opcion4" class="form-control text-center" type="text" placeholder="Opción 4" />
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex">
+      <button
+        class="btn mx-auto w-25 btn-dark rounded-pill b"
+        (click)="onVolver()"
+      >
+        Cancelar
+      </button>
+
+      <button type="submit" class="btn mx-auto w-25 btn-dark rounded-pill b">
+        Crear
+      </button>
+    </div>
+  </form>
+</div>

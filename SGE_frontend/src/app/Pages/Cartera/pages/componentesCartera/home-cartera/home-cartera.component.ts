@@ -1,17 +1,18 @@
 import { Component, ElementRef, HostListener, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
-import { addMonths, format, isLeapYear, lastDayOfMonth, parse, parseISO } from 'date-fns';
+import { isLeapYear } from 'date-fns';
 
-import { Subscription } from 'rxjs';
+import { catchError, of, Subscription, tap } from 'rxjs';
 import { CuentasCobrarService } from 'src/app/Services/Cartera/cuentas-cobrar.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Tarea } from 'src/app/Types/Cartera/Clasificacion-Tarea/Tarea';
 import { clasificacion } from 'src/app/Types/Cartera/Clasificacion/Clasificacion';
 import { CuentaCobrarCalculate, CuentasCobrarResponse } from 'src/app/Types/Cartera/CuentasPorCobrarResponse';
 
-import { ClasificacionGestion, CuotaList, CuotasRequest, Filtros, Gestion, GestionArray, Gestiones, Notificacion, Pagos, PagosRequest, ReciboPago, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
+import { ClasificacionGestion, CuotaList, CuotasRequest, Filtros, Gestion, Gestiones, Notificacion, Pagos, PagosRequest, Permisos, ReciboPago, Roles, TIPOACUERDO, TipoVencimiento } from 'src/app/Types/Cartera/Gestion/Gestion';
 
-import { ROLES } from 'src/app/Types/Roles';
+import { CLASIFICACION_JURIDICA, ROLES, ROLESCARTERA } from 'src/app/Types/Roles';
+import { asesor } from 'src/app/utils/helper';
 
 import Swal from 'sweetalert2';
 
@@ -29,11 +30,11 @@ export class HomeCarteraComponent implements OnInit {
   @ViewChild('telefono')
   mySelect!: ElementRef<HTMLSelectElement>;
 
-  private proSubscriptionNext!: Subscription;
-  private proSubscriptionBack!: Subscription;
+  private proSubscriptionNext?: Subscription;
+  private proSubscriptionBack?: Subscription;
 
   constructor(private cuentasCobrar: CuentasCobrarService, private authService: AuthenticationService, private router: Router, private renderer: Renderer2, private elementRef: ElementRef) {
-    this.listaDeAnios = this.obtenerListaDeAnios()    
+    this.listaDeAnios = this.obtenerListaDeAnios()
   }
 
   // ARRAY CUENTAS POR COBRAR
@@ -43,17 +44,23 @@ export class HomeCarteraComponent implements OnInit {
   // ARRAYS
   codeudores: any[] = []
   codeudoresSelected: any[] = []
-  gestiones: any[] = []
+  gestiones: any | null[] = []
   ClasificacionArray: clasificacion[] = []
   Columnas: string[] = []
+  clasificacionesJuridicas: string[] = ['NORMAL', 'PREJURIDICO', 'ADMINSTRATIVO']
   clasificacionesT: Tarea[] = []
   tiposVen: TipoVencimiento[] = []
-  disableds!: Array<boolean>
+  disableds: boolean[] = []
   mostrarAgregarPago: boolean = false
   ocultarAgregarPago: boolean = false
   detalleRevision: string = ""
   mostrarCrearRevision: boolean = false
   ocultarCrearRevision: boolean = false
+
+  interesesModifides: boolean = false;
+
+  totalNotiVen: any[] = []
+
   pago: any = {
     valor: 0,
     detalle: '',
@@ -103,7 +110,6 @@ export class HomeCarteraComponent implements OnInit {
   cuotasSelected: any[] = []
   notiArray: Notificacion[] = []
   notiArrayVencidas: Notificacion[] = []
-  notiArrayRealizadas: Notificacion[] = []
   spinnerCrearNota: boolean = false
   // OBJETOS
 
@@ -115,7 +121,8 @@ export class HomeCarteraComponent implements OnInit {
     acuerdosDePagosRealizados: 0,
     acuerdosDePagosActivos: 0,
     acuerdoPagoDia: 0,
-    gestionesDia: 0
+    gestionesDia: 0,
+    cuentasTotales: 0
   }
 
   cuentaCobrarSelected: any = {
@@ -197,8 +204,8 @@ export class HomeCarteraComponent implements OnInit {
     clasificacionId: null
   }
 
-  notiId:number | null = null
-  clasifiNotiId:number | null = null
+  notiId: number | null = null
+  clasifiNotiId: number | null = null
 
   gestionSelected: any = {
     numeroObligacion: '',
@@ -288,8 +295,8 @@ export class HomeCarteraComponent implements OnInit {
   reporte: any = {
     numeroObligacion: "",
     numeroAlterno: "",
-    cedula: "",
-    cedulaArchivo: "",
+    cedula: null,
+    cedulaArchivo: null,
     username: ""
   }
 
@@ -303,7 +310,7 @@ export class HomeCarteraComponent implements OnInit {
     nombreTitular: ''
   }
 
-  notiObj:any = {
+  notiObj: any = {
     idNotificacion: 0,
     fechaCreacion: new Date(),
     idClasificacion: 0,
@@ -329,7 +336,8 @@ export class HomeCarteraComponent implements OnInit {
     fechaCompromisoInicio: null,
     fechaCompromisoFin: null,
     isActive: false,
-    clasificacionGestion: []
+    clasificacionGestion: null,
+    sinAsesor: 0
   }
 
   limpiarFiltro: boolean = false
@@ -338,18 +346,23 @@ export class HomeCarteraComponent implements OnInit {
   edadVenArray: string[] = []
   sedesArray: string[] = []
   clasJurArray: string[] = []
-  clasGesArray: string[] = []
+  clasGesArray: any | null = null;
   asesores: any[] = []
 
   //VARIABLES
   mensaje: string = ''
   base64: string = ''
+  bgcolorTotales: string = 'none'
+  bgcolorSaldosCapital: string = 'none'
+  bgcolorSaldosIntereses: string = 'none'
+  bgcolorSaldosHonorarios: string = 'none'
+  username: string | null = ''
 
   // PARAMETROS PARA EL SERVICE
   //TODO:CAMBIAR A 0 CUANDO CORRIJAN EL ARCHIVO
   page: number = 0;
   size: number = 10
-  fechaCreacion: string = 'fecha_creacion'
+  fechaCreacion: string = 'dias_vencidos'
 
   // SPINNER DE LA TABLA
   spinner: boolean = true
@@ -393,7 +406,7 @@ export class HomeCarteraComponent implements OnInit {
   desactivarAcu: boolean = false
   botonFiltro: boolean = false
   filtrando: boolean = false
-  filtroAgain:boolean = false
+  filtroAgain: boolean = false
 
   botonPdf: boolean = false
   pageGestion: number = 1;
@@ -401,23 +414,65 @@ export class HomeCarteraComponent implements OnInit {
   ingresarTel: boolean = true
   botonGuardarGes: boolean = false
 
-  mostrarCuentaCobrar:boolean = false
+  mostrarCuentaCobrar: boolean = false
 
   // VARIABLE PARA FILTRAR OBLIGACION
   buscarObligacion: string = ''
   botonFiltrarObligacion: boolean = false
-  filtradoBuscar:boolean = false
+  filtradoBuscar: boolean = false
   variableLimpiar: boolean = false
-  
+
   //FILTRO NOTIFICACIONES
-  filtroVen:string = ''
-  tipoVen:string = ''
+  filtroVen: string = ''
+  tipoVen: string = ''
 
-  filtroAll:string = ''
-  tipoAll:string = ''
+  filtroAll: string = ''
+  tipoAll: string = ''
 
-  filtroRealizada:string = ''
-  tipoReal:string = ''
+  filtroRealizada: string = ''
+  tipoReal: string = ''
+
+  //PAGINACION NOTIFICACIONES
+  filtrandoNoti: boolean = false
+
+  initialConAll: number = 1;
+  initialConVen: number = 1;
+  initialConReal: number = 1;
+
+  pageAll: number = 0
+  pageVen: number = 0
+  pageReal: number = 0
+
+  sizeAll: number = 20
+  sizeVen: number = 20
+  sizeReal: number = 20
+
+  paginasAll!: Array<number>
+  paginasVen!: Array<number>
+  paginasReal!: Array<number>
+
+  lastAll: boolean = false
+  lastVen: boolean = false
+  lastReal: boolean = false
+
+  firtsAll: boolean = false
+  firtsVen: boolean = false
+  firtsReal: boolean = false
+
+  numeroPagesAll: number = 0
+  numeroPagesVen: number = 0
+  numeroPagesReal: number = 0
+
+  contAll: number = 1
+  contVen: number = 1
+  contReal: number = 1
+
+  isConAll: boolean = false
+  isConVen: boolean = false
+  isConReal: boolean = false
+
+  changeHonorarios: boolean = false
+  sinAsesor: boolean = false
 
   @ViewChildren('variableCol') colcheck!: QueryList<ElementRef>;
 
@@ -427,10 +482,33 @@ export class HomeCarteraComponent implements OnInit {
     this.getTipoVen()
     this.getSedes()
     this.getAsesores()
-    this.getNotificaciones()
+    this.alertasGestiones()
     this.fechaActual = new Date()
     this.fechaCorte = this.obtenerFechaActual()
-    this.alertasGestiones()
+    this.username = this.authService.getUsername()
+
+
+    var admin = this.authService.getRolesByName(ROLES.Administration)
+    if (admin.length == 0) {
+      var cartera = this.authService.getRolesByName(ROLES.Cartera)
+
+      if (cartera.length > 0) {
+        var permiso = this.validarPermisoEnRolCartera(ROLESCARTERA.VER_TODOS, cartera)
+
+
+        if (permiso != undefined || permiso != null) {
+          if (permiso.length == 0) {
+            this.getItems()
+          }
+        }
+
+
+      }
+
+
+    }
+
+
   }
 
   getTipoVen() {
@@ -472,7 +550,7 @@ export class HomeCarteraComponent implements OnInit {
   // TRAER CUENTAS POR COBRAR
   getCuentasCobrar() {
     var td
-    var contenido:any
+    var contenido: any
     var partesMes
     var mesTd
     var anioTd
@@ -480,8 +558,8 @@ export class HomeCarteraComponent implements OnInit {
     const mesActual = new Date().getMonth() + 1
     const anioActual = new Date().getFullYear()
 
-    this.alertasGestiones()
     this.filtrando = false
+    this.sinAsesor = false
     var admin = this.authService.getRolesByName(ROLES.Administration);
 
     var cartera = this.authService.getRolesByName(ROLES.Cartera);
@@ -506,15 +584,16 @@ export class HomeCarteraComponent implements OnInit {
               for (let i = 0; i < this.size; i++) {
                 td = document.getElementById(`td_${i}`)
 
-                if(td != null && td != undefined){
+                if (td != null && td != undefined) {
                   contenido = td.textContent;
 
                   partesMes = contenido.split('/')
 
                   mesTd = parseInt(partesMes[1], 10)
                   anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
+
+
+                  if (mesTd == mesActual && anioTd == anioActual) {
                     td.classList.add("gestionado")
                   }
                 }
@@ -551,15 +630,15 @@ export class HomeCarteraComponent implements OnInit {
               for (let i = 0; i < this.size; i++) {
                 td = document.getElementById(`td_${i}`)
 
-                if(td != null && td != undefined){
+                if (td != null && td != undefined) {
                   contenido = td.textContent;
 
                   partesMes = contenido.split('/')
 
                   mesTd = parseInt(partesMes[1], 10)
                   anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
+
+                  if (mesTd == mesActual && anioTd == anioActual) {
                     td.classList.add("gestionado")
                   }
                 }
@@ -577,14 +656,25 @@ export class HomeCarteraComponent implements OnInit {
   back() {
     if (!this.first) {
       this.page--
-      if (this.filtrando) {
+      if (this.sinAsesor) {
+        this.spinner = true
+        this.getCuentasSinGestionar()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont - this.size
+            this.proSubscriptionBack!.unsubscribe()
+            this.spinner = false
+          }
+        );
+      } else if (this.filtrando) {
         this.spinner = true
         this.filtro()
         this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
           (con: boolean) => {
             this.isCon = con;
             this.cont = this.cont - this.size
-            this.proSubscriptionBack.unsubscribe()
+            this.proSubscriptionBack!.unsubscribe()
             this.spinner = false
           }
         );
@@ -595,7 +685,7 @@ export class HomeCarteraComponent implements OnInit {
           (con: boolean) => {
             this.isCon = con;
             this.cont = this.cont - this.size
-            this.proSubscriptionBack.unsubscribe()
+            this.proSubscriptionBack!.unsubscribe()
             this.spinner = false
           }
         );
@@ -605,16 +695,27 @@ export class HomeCarteraComponent implements OnInit {
 
   // SIGUIENTE PAGINA
   next() {
+    console.log(this.sinAsesor);
+
     if (!this.last) {
       this.spinner = true
       this.page++
-      if (this.filtrando) {
+      if (this.sinAsesor) {
+        this.getCuentasSinGestionar()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.cont + this.size
+            this.spinner = false
+          }
+        );
+      } else if (this.filtrando) {
         this.filtro()
         this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
           (con: boolean) => {
             this.isCon = con;
             this.cont = this.cont + this.size
-            this.proSubscriptionNext.unsubscribe()
+            this.proSubscriptionNext!.unsubscribe()
             this.spinner = false
           }
         );
@@ -625,7 +726,7 @@ export class HomeCarteraComponent implements OnInit {
           (con: boolean) => {
             this.isCon = con;
             this.cont = this.cont + this.size
-            this.proSubscriptionNext.unsubscribe()
+            this.proSubscriptionNext!.unsubscribe()
           }
         );
       }
@@ -635,14 +736,24 @@ export class HomeCarteraComponent implements OnInit {
   //IR A UNA PAGINA ESPECIFICA
   goToPage(page: number) {
     this.page = page
-    if (this.filtrando) {
+    if (this.sinAsesor) {
+      this.spinner = true
+      this.getCuentasSinGestionar()
+      this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.size);
+          this.spinner = false
+        }
+      );
+    } else if (this.filtrando) {
       this.spinner = true
       this.filtro()
       this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
         (con: boolean) => {
           this.isCon = con;
           this.cont = this.initialCon + (this.page * this.size);
-          this.proSubscriptionNext.unsubscribe()
+          this.proSubscriptionNext!.unsubscribe()
           this.spinner = false
         }
       );
@@ -653,7 +764,7 @@ export class HomeCarteraComponent implements OnInit {
         (con: boolean) => {
           this.isCon = con;
           this.cont = this.initialCon + (this.page * this.size);
-          this.proSubscriptionNext.unsubscribe()
+          this.proSubscriptionNext!.unsubscribe()
         }
       );
     }
@@ -667,7 +778,234 @@ export class HomeCarteraComponent implements OnInit {
       return
     } else {
       this.spinnerSidebar = true
-      
+
+      this.cuentaCobrarSelected = {
+        idCuentasPorCobrar: 0,
+        numeroObligacion: '',
+        cliente: '',
+        documentoCliente: '',
+        fechaCuentaCobrar: '',
+        fechaVencimiento: '',
+        tipo: '',
+        valorNotaDebito: 0,
+        valorCuota: 0,
+        valorPagos: 0,
+        nombre_usuario: '',
+        clasificacion: '',
+        vendedor: '',
+        clasificacionJuridica: '',
+        detalle: '',
+        sede: {
+          idSede: 0,
+          sede: ''
+        },
+        banco: {
+          idBanco: 0,
+          banco: ''
+        },
+        diasVencidos: 0,
+        gestion: [],
+        edadVencimiento: '',
+        condicionEspecial: '',
+        numeroCreditos: 0,
+        pagare: '',
+        moraObligatoria: 0,
+        totalObligatoria: 0,
+        cuotasMora: 0,
+        cuotas: 0,
+        asesorCarteraResponse: {
+          idAsesorCartera: 0,
+          usuario: {
+            idUsuario: 0,
+            username: '',
+            email: '',
+            nombres: '',
+            apellidos: '',
+            sede: '',
+            tipo_documento: '',
+            numero_documento: '',
+            celular: '',
+            fecha_nacimiento: new Date,
+            fecha_creacion: new Date,
+            status: false,
+            roles: [],
+            enabled: false,
+            authorities: [],
+            accountNonLocked: false,
+            accountNonExpired: false,
+            credentialsNonExpired: false,
+            password: ''
+          }
+        },
+        clientes: []
+      }
+
+      this.acuerdo = {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: new Date,
+        cuotasList: [],
+        username: ''
+      }
+
+      this.newGestion = {
+        numeroObligacion: '',
+        clasificacion: {
+          tipoClasificacion: null,
+          tarea: null,
+          nota: null,
+          acuerdoPago: null,
+          nombreClasificacion: ''
+        },
+        contact: false,
+        detallesAdicionales: '',
+        usernameToSetNotificacion: '',
+        userNotifying: '',
+        notificacionId: null,
+        clasificacionId: null
+      }
+
+      this.acuerdo = {
+        detalle: '',
+        valorCuotaMensual: 0,
+        tipoAcuerdo: '',
+        valorTotalAcuerdo: 0,
+        valorInteresesMora: 0,
+        honoriarioAcuerdo: 0,
+        fechaCompromiso: '',
+        cuotasList: [],
+        username: ''
+      }
+
+      this.nota = {
+        detalle: ''
+      }
+
+      this.tarea = {
+        detalleTarea: '',
+        fechaFinTarea: '',
+        isPartOfRecaudo: false
+      }
+
+      this.codeudoresSelected = []
+      $('#modalObligacion').modal('hide');
+      setTimeout(() => {
+        this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
+          (data: any) => {
+            this.clasifiNotiId = null
+            this.notiId = null
+            this.cuentaCobrarSelected = data
+            console.log(this.cuentaCobrarSelected);
+            this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
+            this.moraObligatoriaFirst = data.moraObligatoria
+            this.calcularFirst()
+            this.codeudores = data.clientes
+            this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
+            this.getGestiones(numeroObligacion);
+            this.cuentasCalcular.numeroObligacion = numeroObligacion
+            console.log(this.notiId);
+            console.log(this.clasifiNotiId);
+            this.newGestion = {
+              numeroObligacion: this.newGestion.numeroObligacion,
+              clasificacion: {
+                tipoClasificacion: '',
+                tarea: null,
+                nota: null,
+                acuerdoPago: null,
+                nombreClasificacion: ''
+              },
+              contact: false,
+              detallesAdicionales: this.newGestion.detallesAdicionales,
+              usernameToSetNotificacion: '',
+              userNotifying: '',
+              notificacionId: null,
+              clasificacionId: null
+            }
+
+            if (this.cuentaCobrarSelected.documentoCliente != '') {
+              this.spinnerSidebar = false
+            }
+
+          }, (error: any) => {
+            if (this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Cliente Sin Saldo En El Sistema',
+                timer: 3000
+              })
+              $('#offcanvasRight').offcanvas('hide');
+            }
+            console.log(error);
+          }
+        )
+      }, 2000);
+    }
+
+  }
+
+  findCodeudores(event: any) {
+    this.codeudoresSelected = this.codeudores.filter((c: any) => c.numeroDocumento == event.target.value)
+    console.log(this.codeudoresSelected);
+  }
+
+  // GESTIONES
+  getGestiones(numeroObligacion: string) {
+    this.alertasGestiones()
+    this.gestiones = []
+    this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
+      (data: any) => {
+        console.log(data);
+        this.newGestion.numeroObligacion = numeroObligacion
+        this.getLastDato(numeroObligacion)
+        this.ordenarGestiones(data)
+        var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
+        if (gestion != null || gestion != undefined) {
+          this.idGestion = gestion.idGestion
+        }
+        if (this.gestiones.length == 0) {
+          this.gestiones = [
+            true
+          ]
+        }
+        console.log(this.gestiones);
+      }, (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  getGestionesNoti(numeroObligacion: string, idGestion: number, fechaCreacion: Date, tipoGestion: string, idNotifi: number) {
+    this.mostrarCuentaCobrar = true
+
+    if (this.newGestion.numeroObligacion == numeroObligacion) {
+      this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
+      return
+    } else {
+      this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
+        (data: any) => {
+          this.newGestion.numeroObligacion = numeroObligacion
+          this.gestiones = data
+          this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
+          console.log(this.gestiones);
+        }, (error: any) => {
+          console.log(error);
+        }
+      )
+    }
+
+
+    this.notiId = idNotifi
+    if (this.newGestion.numeroObligacion == numeroObligacion) {
+      $('#modalObligacion').modal('hide');
+      return
+    } else {
+      this.spinnerSidebar = true
+
       this.cuentaCobrarSelected = {
         idCuentasPorCobrar: 0,
         numeroObligacion: '',
@@ -786,13 +1124,11 @@ export class HomeCarteraComponent implements OnInit {
         this.cuentasCobrar.getCuentaByObligacion(numeroObligacion).subscribe(
           (data: any) => {
             this.cuentaCobrarSelected = data
-            console.log(this.cuentaCobrarSelected);
             this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
             this.moraObligatoriaFirst = data.moraObligatoria
             this.calcularFirst()
             this.codeudores = data.clientes
             this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
-            this.getGestiones(numeroObligacion);
             this.cuentasCalcular.numeroObligacion = numeroObligacion
             this.newGestion = {
               numeroObligacion: this.newGestion.numeroObligacion,
@@ -815,7 +1151,7 @@ export class HomeCarteraComponent implements OnInit {
               this.spinnerSidebar = false
             }
           }, (error: any) => {
-            if(this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0){
+            if (this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0) {
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -832,116 +1168,110 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
-  findCodeudores(event: any) {
-    this.codeudoresSelected = this.codeudores.filter((c: any) => c.numeroDocumento == event.target.value)
-    console.log(this.codeudoresSelected);
-  }
-
-  // GESTIONES
-  getGestiones(numeroObligacion: string) {
-    this.alertasGestiones()
-    this.gestiones = []
-    this.notiId = 0
-    this.cuentasCobrar.getGestiones(numeroObligacion).subscribe(
-      (data: any) => {
-        console.log(data);
-        this.newGestion.numeroObligacion = numeroObligacion
-        this.getLastDato(numeroObligacion)
-        this.ordenarGestiones(data)
-        var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == 'ACUERDO DE PAGO' && g.clasificacion.isActive)
-        console.log(gestion);
-        if (gestion != null || gestion != undefined) {
-          this.idGestion = gestion.idGestion
-        }
-      }, (error: any) => {
-        console.log(error);
-      }
-    )
-  }
-
-  getGestionesNoti(numeroObligacion:string, idGestion:number, fechaCreacion:Date, tipoGestion:string, idNotifi:number){
-    this.mostrarCuentaCobrar = true
-    this.getGestiones(numeroObligacion)
-    this.findCuentaCobrar(numeroObligacion)
-    this.notiId = idNotifi
-    setTimeout(() => {
-      if(this.gestiones.length > 0){
-        this.getOneGestionNoti(idGestion, fechaCreacion, tipoGestion)
-      } else {
-        console.log('GESTIONES VACIO');
-      }
-    }, 1500);
-  }
-
-  mostrarCpc(){
+  mostrarCpc() {
     this.mostrarCuentaCobrar = false
     $('#modalGestionCom').modal('hide');
   }
 
-  getOneGestionNoti(id: number, fechaCreacion:Date, tipoGestion:string) {
-    this.gestionSelected = {
-      numeroObligacion: '',
-      clasificacion: {
-        nombreClasificacion: '',
-        tipoClasificacion: '',
-        tarea: {
-          detalleTarea: '',
-          fechaFinTarea: '',
-          isPartOfRecaudo: false
-        },
-        nota: {
-          detalle: ''
-        },
-        acuerdoPago: {
-          detalle: '',
-          valorCuotaMensual: 0,
-          tipoAcuerdo: '',
-          valorTotalAcuerdo: 0,
-          valorInteresesMora: 0,
-          honoriarioAcuerdo: 0,
-          fechaCompromiso: new Date(),
-          cuotasList: [],
-          username: ''
-        }
-      },
-      gestion: '',
-      contact: false,
-      detallesAdicionales: ''
-    }
+  getOneGestionNoti(id: number, fechaCreacion: Date, tipoGestion: string) {
 
     this.coutasRequest = []
     this.recibosPago = []
 
-    if(tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA'){
+    if (tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA') {
       this.notiId = null
       this.clasifiNotiId = null
     }
 
-    if(id != null){
+    if (id != null) {
       console.log(id);
-      
+
       var gestion = this.gestiones.find((g: any) => g.clasificacion.idClasificacionGestion == id)
 
       this.positionGestionSelected = this.gestiones.indexOf(gestion)
-  
+
       this.obtenerGestionSelected()
 
     } else {
       var gestion = this.gestiones.find((g: any) => g.clasificacion.clasificacion == tipoGestion && g.fechaGestion == fechaCreacion)
       console.log(gestion);
-      
+
       this.positionGestionSelected = this.gestiones.indexOf(gestion)
-  
+
       this.obtenerGestionSelected()
     }
   }
 
-  completarGestion(){
+  completarGestion() {
     $('#modalGestion').modal('show');
     $('#modalGestionCom').modal('hide');
     this.newGestion.notificacionId = this.notiId
     this.newGestion.clasificacionId = this.clasifiNotiId
   }
+
+  desactivateGestion() {
+    console.log(this.gestionSelected.idGestion);
+
+    Swal.fire({
+      title: 'Desactivar Gestión',
+      text: '¿Está Seguro De Desactivar Esta Gestión?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Desactivar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cuentasCobrar.desactivateGestion(this.gestionSelected.idGestion).subscribe(
+          (data: any) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Datos Guardados',
+              text: 'Gestión Desactivada Con Éxito',
+              timer: 3000
+            })
+            if (!this.filtroAgain) {
+              this.getNotificaciones()
+            } else {
+              this.getNotiAllBySede()
+              this.getNotiVenBySede()
+            }
+
+            this.gestionButton = false
+            this.newGestion = {
+              numeroObligacion: this.newGestion.numeroObligacion,
+              clasificacion: {
+                tipoClasificacion: null,
+                tarea: null,
+                nota: null,
+                acuerdoPago: null,
+                nombreClasificacion: ''
+              },
+              contact: false,
+              detallesAdicionales: this.newGestion.detallesAdicionales,
+              usernameToSetNotificacion: '',
+              userNotifying: '',
+              notificacionId: null,
+              clasificacionId: null
+            }
+            $('#modalGestionCom').modal('hide');
+            $('#offcanvasRight').offcanvas('hide');
+          }, (error: any) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error Al Desactivar La Gestión',
+              timer: 3000
+            })
+            console.log(error);
+          }
+        )
+
+      }
+    })
+  }
+
 
   getLastDato(numeroDocumento: string) {
     this.cuentasCobrar.getLastDatoAdicional(numeroDocumento).subscribe(
@@ -1017,7 +1347,6 @@ export class HomeCarteraComponent implements OnInit {
 
         console.log(this.newGestion);
 
-
         Swal.fire({
           title: 'Guardar Gestión',
           text: '¿Está Seguro De Crear Esta Gestión?',
@@ -1032,7 +1361,14 @@ export class HomeCarteraComponent implements OnInit {
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
-                this.afterSave()
+                this.getGestiones(this.newGestion.numeroObligacion)
+                if (!this.filtroAgain) {
+                  this.getNotificaciones()
+                } else {
+                  this.getNotiAllBySede()
+                  this.getNotiVenBySede()
+                }
+                this.desbloquearCuenta(this.cuentaCobrarSelected.idCuentasPorCobrar);
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
@@ -1095,7 +1431,6 @@ export class HomeCarteraComponent implements OnInit {
 
         console.log(this.newGestion);
 
-
         Swal.fire({
           title: 'Guardar Gestión',
           text: '¿Está Seguro De Crear Esta Gestión?',
@@ -1110,13 +1445,21 @@ export class HomeCarteraComponent implements OnInit {
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
-                this.afterSave()
                 Swal.fire({
                   icon: 'success',
                   title: 'Datos Guardados',
                   text: 'Gestión Guardada Exitosamente',
                   timer: 3000
                 })
+
+                this.getGestiones(this.newGestion.numeroObligacion)
+                this.getNotificaciones()
+                if (!this.filtroAgain) {
+                  this.getCuentasCobrar()
+                } else {
+                  this.filtro()
+                }
+                this.desbloquearCuenta(this.cuentaCobrarSelected.idCuentasPorCobrar);
                 this.gestionButton = false
                 this.newGestion = {
                   numeroObligacion: this.newGestion.numeroObligacion,
@@ -1198,9 +1541,16 @@ export class HomeCarteraComponent implements OnInit {
         }
 
         this.newGestion.clasificacion.acuerdoPago = this.acuerdo
-        this.cuotas.forEach(element => {
+        this.cuotas.forEach((element: any, i: number) => {
           this.newGestion.clasificacion.acuerdoPago?.cuotasList.push(element)
+
         });
+
+        this.newGestion.clasificacion.acuerdoPago?.cuotasList.forEach((element: any, i: number) => {
+          element.fechaVencimiento = this.fechasIncrementadas[i]
+        });
+
+        console.log(this.newGestion.clasificacion.acuerdoPago?.cuotasList);
 
         var user = this.authService.getUsername()
 
@@ -1215,9 +1565,6 @@ export class HomeCarteraComponent implements OnInit {
         $('#modalDetalle').modal('show');
       }
     }
-
-
-
   }
 
   ingresarTelefono() {
@@ -1267,7 +1614,6 @@ export class HomeCarteraComponent implements OnInit {
       sumaComprobacion = sumaComprobacion + this.cuotas[i].valorCuota
     }
     console.log(this.newGestion);
-    
 
     Swal.fire({
       title: 'Guardar Gestión',
@@ -1283,7 +1629,15 @@ export class HomeCarteraComponent implements OnInit {
         this.botonGuardarGes = true
         this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
           (data: any) => {
-            this.afterSave()
+            this.getGestiones(this.newGestion.numeroObligacion)
+            this.getNotificaciones()
+            this.mostrarReporte()
+            if (!this.filtroAgain) {
+              this.getCuentasCobrar()
+            } else {
+              this.filtro()
+            }
+            this.desbloquearCuenta(this.cuentaCobrarSelected.idCuentasPorCobrar);
             this.botonGuardarGes = false
             this.newGestion = {
               numeroObligacion: this.newGestion.numeroObligacion,
@@ -1336,17 +1690,6 @@ export class HomeCarteraComponent implements OnInit {
     })
   }
 
-  afterSave(){
-    this.getGestiones(this.newGestion.numeroObligacion)
-    this.getNotificaciones()
-    this.mostrarReporte()
-    if(!this.filtroAgain){
-      this.getCuentasCobrar()
-    } else {
-      this.filtro()
-    }
-  }
-
   desactivarAcuerdo() {
     Swal.fire({
       title: 'Desactivar Acuerdo',
@@ -1369,6 +1712,12 @@ export class HomeCarteraComponent implements OnInit {
             })
             this.newGestion.contact = true
             this.getGestiones(this.newGestion.numeroObligacion)
+            if (!this.filtroAgain) {
+              this.getNotificaciones()
+            } else {
+              this.getNotiAllBySede()
+              this.getNotiVenBySede()
+            }
             setTimeout(() => {
               $('#modalGestion').modal('show');
               $('#modalGestionCom').modal('hide');
@@ -1479,7 +1828,7 @@ export class HomeCarteraComponent implements OnInit {
     this.recibosPago = []
 
     var gestion = this.gestiones.find((g: any) => g.idGestion == id)
-    
+
     this.positionGestionSelected = this.gestiones.indexOf(gestion)
 
     this.obtenerGestionSelected()
@@ -1524,12 +1873,20 @@ export class HomeCarteraComponent implements OnInit {
       this.cuotasList.push(c)
     });
 
+    console.log(this.gestionSelected.clasificacion.cuotasList);
+
+    console.log(this.cuotasList);
+
     this.cuotasList.forEach((c: CuotaList) => {
 
+
+
+
+
       this.totalCuotasAcuerdo = this.totalCuotasAcuerdo + c.valorCuota
-      this.totalCapital = this.totalCapital + c.capitalCuota
-      this.totalHonorarios = this.totalHonorarios + c.honorarios
-      this.totalIntereses = this.totalIntereses + c.interesCuota
+      this.totalCapital = this.totalCapital + c.saldoCapitalCuota
+      this.totalHonorarios = this.totalHonorarios + c.saldoHonorarios
+      this.totalIntereses = this.totalIntereses + c.salodInteresCuota
       if (c.pagos != null || c.pagos != undefined) {
 
         if (c.pagos.reciboPago != null || c.pagos.reciboPago != undefined) {
@@ -1544,9 +1901,9 @@ export class HomeCarteraComponent implements OnInit {
 
         }
 
-        this.saldoInteresesAcuerdo = this.totalIntereses + c.interesCuota
-        this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo + c.honorarios
-        this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo + c.capitalCuota
+        this.saldoInteresesAcuerdo = this.totalIntereses + c.salodInteresCuota
+        this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo + c.saldoHonorarios
+        this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo + c.saldoCapitalCuota
 
 
       } else {
@@ -1570,7 +1927,10 @@ export class HomeCarteraComponent implements OnInit {
         pago: false,
         interesCuota: c.interesCuota,
         pagosDto: null,
-        idCuota: c.idCuota
+        idCuota: c.idCuota,
+        saldoCapital: 0,
+        saldoHonorario: 0,
+        saldoIntereses: 0
       }
 
       if (c.pagos != null || c.pagos != undefined) {
@@ -1578,15 +1938,23 @@ export class HomeCarteraComponent implements OnInit {
           valorPago: c.pagos.valorPago,
           fechaPago: c.pagos.fechaPago,
 
-          saldoCuota: c.pagos.saldoCuota
+          saldoCuota: c.pagos.saldoCuota,
+          capital: 0,
+          intereses: 0,
+          honorarios: 0,
+          existed: c.pagos.saldoCuota > 0 ? false : true,
+          idPago: 0
         }
         couta.pagosDto = pagos
         if (c.pagos!.valorPago == 0) {
           c.pagos!.saldoCuota = c.valorCuota
         }
+
       }
-      this.coutasRequest.push(couta)
+      this.coutasRequest.push({ ...couta })
     })
+
+    console.log(this.cuotasList);
 
     this.recibosPago = this.recibosPagoSinFiltrar.filter((r: ReciboPago, i: number, array) => array.findIndex(obj => JSON.stringify(obj) === JSON.stringify(r)) === i)
   }
@@ -1675,7 +2043,7 @@ export class HomeCarteraComponent implements OnInit {
     this.reporte.cedula = this.cuentaCobrarSelected.clientes[0].numeroDocumento
     this.reporte.cedulaArchivo = event.target.value
     console.log(this.reporte);
-    
+
 
     if (this.reporte.cedula == null || this.reporte.cedula == '') {
       this.renderer.setAttribute(this.mySelect.nativeElement, 'disabled', 'true')
@@ -1696,7 +2064,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     console.log(this.reporte);
-    
+
   }
 
   mostrarBase64() {
@@ -1714,7 +2082,7 @@ export class HomeCarteraComponent implements OnInit {
     })
   }
 
-  cerrarCuenta(){
+  cerrarCuenta() {
     $('#offcanvasRight').offcanvas('hide');
     Swal.fire({
       icon: 'success',
@@ -1784,20 +2152,11 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-    if (this.acuerdo.valorCuotaMensual == 0 || this.acuerdo.valorCuotaMensual == null) {
+    if (this.acuerdo.valorCuotaMensual <= 0 || this.acuerdo.valorCuotaMensual == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Digite Un Valor De Cuota Mensual',
-        timer: 3000
-      })
-      return
-    }
-    if (this.acuerdo.tipoAcuerdo.trim() == '' || this.acuerdo.tipoAcuerdo.trim() == null) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Elija Un Tipo de Acuerdo',
+        text: 'Digite Un Valor De Cuota Mensual Valido',
         timer: 3000
       })
       return
@@ -1807,36 +2166,17 @@ export class HomeCarteraComponent implements OnInit {
       this.calcularIntMora()
     }
 
-    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+    if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico && !this.interesesModifides) {
       this.calcularHonorarios()
     }
 
     this.calcularByTipoAcuerdo()
 
-    if (this.acuerdo.valorCuotaMensual > this.acuerdoCal.valorTotalAcuerdo) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No Puede Ingresar Un Valor Mayor al Valor del Acuerdo',
-        timer: 3000
-      })
-      return
-    }
 
-    var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
-
-    if (this.acuerdo.valorCuotaMensual < valorMinimo) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: `El Valor Mínimo De La Cuota debe de ser de: ${valorMinimo}`,
-        timer: 3000
-      })
-      return
-    }
 
     this.disabledFecha = true
     this.calcular()
+
   }
 
   mostrarModalGestion() {
@@ -1883,15 +2223,10 @@ export class HomeCarteraComponent implements OnInit {
     this.acuerdoCal.valorCuotaMensual = this.acuerdo.valorCuotaMensual
     this.cuentasCalcular.username = user
 
-    this.calcularCuotas()
 
-    this.disableds = new Array(this.cuotas.length)
-    this.disableds.forEach(element => {
-      this.disableds.push(false)
-    });
 
-    this.disableds[0] = true
-    this.disableds[this.cuotas.length - 1] = true
+    this.calcularCuotasGeneral()
+
 
     this.col = false
 
@@ -1910,80 +2245,35 @@ export class HomeCarteraComponent implements OnInit {
   calcularHonorarios() {
     var cal = (this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
 
+
     var res = cal.toFixed(0)
     this.acuerdoCal.honoriarioAcuerdo = res
     this.acuerdo.honoriarioAcuerdo = this.acuerdoCal.honoriarioAcuerdo
+
   }
 
   calcularByTipoAcuerdo() {
-    if (this.acuerdo.tipoAcuerdo == 'MORA') {
-      this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
-      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-        if (this.calculating == true) {
-          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.honoriarioAcuerdo)
-        } else {
-          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
-        }
+
+
+    this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
+    if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
+      if (this.calculating == true) {
+        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal
       } else {
-        if (this.calculating == true) {
-          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria
-        } else {
-          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.moraObligatoria + parseInt(this.acuerdoCal.valorInteresesMora)
-        }
+        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      }
+    } else {
+      if (this.calculating == true) {
+        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal
+      } else {
+        this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora)
       }
     }
 
-    if (this.acuerdo.tipoAcuerdo == 'TOTAL') {
-      this.acuerdoCal.tipoAcuerdo = this.acuerdo.tipoAcuerdo
-      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-        if (this.calculating == true) {
-          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal
-        } else {
-          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
-        }
-      } else {
-        if (this.calculating == true) {
-          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal
-        } else {
-          this.acuerdoCal.valorTotalAcuerdo = this.cuentasCalcular.valorTotal + parseInt(this.acuerdoCal.valorInteresesMora)
-        }
-      }
-    }
+
     this.acuerdo.valorTotalAcuerdo = this.acuerdoCal.valorTotalAcuerdo
   }
 
-  metodosCalculos() {
-
-    for (let i = 0; i < this.cuotas.length; i++) {
-      //CAPITAL CUOTA
-
-      var porcentaje = this.cuotas[i].valorCuota / this.acuerdoCal.valorTotalAcuerdo
-      var cap = 0
-      if (this.acuerdoCal.tipoAcuerdo == "MORA") {
-        cap = porcentaje * this.cuentaCobrarSelected.moraObligatoria
-      }
-      if (this.acuerdoCal.tipoAcuerdo == "TOTAL") {
-        cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
-      }
-      this.cuotas[i].capitalCuota = parseInt(cap.toFixed(0))
-
-      // HONORARIOS POR CUOTA
-      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-        var hon = porcentaje * this.acuerdoCal.honoriarioAcuerdo
-        this.cuotas[i].honorarios = parseInt(hon.toFixed(0))
-      } else {
-        this.cuotas[i].honorarios = 0
-      }
-
-      // INTERESES CUOTA
-      var int = porcentaje * this.acuerdoCal.valorInteresesMora
-      this.cuotas[i].interesCuota = parseInt(int.toFixed(0))
-
-    }
-
-
-
-  }
 
   //METODOS CALCULADORA OFFCANVAS INFERIOR
 
@@ -2002,31 +2292,31 @@ export class HomeCarteraComponent implements OnInit {
     this.acuerdoCal.valorInteresesMora = resIntMora.toFixed(0)
 
     //HONORARIOS
-    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+    if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
       var resHonorarios = (parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
       this.acuerdoCal.honoriarioAcuerdo = resHonorarios.toFixed(0)
     }
 
     //MORA Y TOTAL
-    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+    if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
       this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
     } else {
       this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
     }
 
-    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-      this.acuerdoCal.saldoAcuerdo = parseInt(this.cuentaCobrarSelected.clientes[0].saldoActual) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+    if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
+      this.acuerdoCal.saldoAcuerdo = parseInt(this.cuentaCobrarSelected.totalObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
     } else {
-      this.acuerdoCal.saldoAcuerdo = parseInt(this.cuentaCobrarSelected.clientes[0].saldoActual) + parseInt(this.acuerdoCal.valorInteresesMora)
+      this.acuerdoCal.saldoAcuerdo = parseInt(this.cuentaCobrarSelected.totalObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
     }
 
 
   }
 
   calculadora(event: any) {
-    console.log(this.cuentaCobrarSelected.clientes[0].saldoActual);
+    console.log(this.cuentaCobrarSelected.totalObligatoria);
 
-    if (this.cuentaCobrarSelected.clientes[0].saldoActual <= 0 || this.cuentaCobrarSelected.clientes[0].saldoActual == null) {
+    if (this.cuentaCobrarSelected.totalObligatoria <= 0 || this.cuentaCobrarSelected.totalObligatoria == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -2035,7 +2325,7 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
-    if (this.cuentaCobrarSelected.clientes[0].saldoActual < this.cuentaCobrarSelected.moraObligatoria) {
+    if (this.cuentaCobrarSelected.totalObligatoria < this.cuentaCobrarSelected.moraObligatoria) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -2053,7 +2343,7 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     }
-    if (this.cuentaCobrarSelected.clientes[0].saldoActual > this.saldoCapitalTotalFirst) {
+    if (this.cuentaCobrarSelected.totalObligatoria > this.saldoCapitalTotalFirst) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -2065,7 +2355,7 @@ export class HomeCarteraComponent implements OnInit {
 
     this.calculadoraIntereses()
 
-    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+    if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
       this.calculadoraHonorarios()
     }
 
@@ -2074,10 +2364,12 @@ export class HomeCarteraComponent implements OnInit {
     this.deshabilitarInputs = true
     this.isCalculate = false
     this.calculating = true
+    this.col = true
 
   }
 
   confirmarDatos() {
+
     if (this.isCalculate == false) {
       Swal.fire({
         icon: 'error',
@@ -2099,6 +2391,7 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   habilitar() {
+
     this.deshabilitarInputs = false
     this.isCalculate = false
   }
@@ -2145,13 +2438,13 @@ export class HomeCarteraComponent implements OnInit {
     var valorTotal = boton_saldo_total.value
 
 
-    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+    if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
       this.acuerdoCal.valorTotalMora = parseInt(moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
     } else {
       this.acuerdoCal.valorTotalMora = parseInt(moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
     }
 
-    if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+    if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
       this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
     } else {
       this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
@@ -2190,18 +2483,18 @@ export class HomeCarteraComponent implements OnInit {
         var res = parseInt(this.cuentaCobrarSelected.moraObligatoria) * (this.constanteHonorarios / 366) * this.cuentaCobrarSelected.diasVencidos
         this.acuerdoCal.valorInteresesMora = res.toFixed(0)
 
-        if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+        if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
           var res = (parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
           this.acuerdoCal.honoriarioAcuerdo = res.toFixed(0)
         }
 
-        if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+        if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
           this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
         } else {
           this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
         }
 
-        if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+        if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
           this.acuerdoCal.valorTotalAcuerdo = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
         } else {
           this.acuerdoCal.valorTotalAcuerdo = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
@@ -2225,7 +2518,17 @@ export class HomeCarteraComponent implements OnInit {
       })
       return
     } else {
-      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
+      //HONORARIOS
+      if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
+        if (this.changeHonorarios == false) {
+
+          var resHonorarios = (parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+
+          this.acuerdoCal.honoriarioAcuerdo = resHonorarios.toFixed(0)
+
+        }
+      }
+      if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
         this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
         this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
       } else {
@@ -2236,14 +2539,69 @@ export class HomeCarteraComponent implements OnInit {
 
       this.isCalculate = true
       this.calculating = true
+      this.col = true
     }
 
+
+    this.interesesModifides = true
   }
 
-  // CUOTAS
+  excluirHonorarios() {
+    var event
+    if (this.acuerdoCal.honoriarioAcuerdo != 0) {
+      var boton_saldo_total = document.getElementById('boton_saldo_total') as HTMLInputElement;
+      var valorTotal = boton_saldo_total.value
+
+      this.acuerdoCal.honoriarioAcuerdo = 0
+
+      this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+      this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+
+      this.isCalculate = true
+      this.calculating = true
+      this.col = true
+      this.changeHonorarios = true
+    } else {
+      var boton_saldo_total = document.getElementById('boton_saldo_total') as HTMLInputElement;
+      var valorTotal = boton_saldo_total.value
+
+      if (this.acuerdoCal.valorInteresesMora < 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Digite Un Valor Válido',
+          timer: 3000
+        })
+        return
+      } else {
+
+        //HONORARIOS
+        if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
+          var resHonorarios = (parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)) * 0.20
+
+          this.acuerdoCal.honoriarioAcuerdo = resHonorarios.toFixed(0)
+        }
+
+        if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
+          this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+          this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora) + parseInt(this.acuerdoCal.honoriarioAcuerdo)
+        } else {
+          this.acuerdoCal.saldoAcuerdo = parseInt(valorTotal) + parseInt(this.acuerdoCal.valorInteresesMora)
+          this.acuerdoCal.valorTotalMora = parseInt(this.cuentaCobrarSelected.moraObligatoria) + parseInt(this.acuerdoCal.valorInteresesMora)
+        }
+        console.log(this.acuerdoCal);
+
+        this.isCalculate = true
+        this.calculating = true
+        this.col = true
+        this.changeHonorarios = false
+      }
+    }
+  }
 
   // CALCULAR LAS FECHAS DE LAS CUOTAS
   generarFechas() {
+    this.fechasIncrementadas = []
     var fechaString = this.fechaInicial.toISOString()
 
 
@@ -2258,6 +2616,7 @@ export class HomeCarteraComponent implements OnInit {
     console.log(this.cantidadFechas);
 
     for (let i = 0; i < this.cantidadFechas; i++) {
+
       var fechaString = `${year}-${mes}-${dia}`
 
       var fechaDate = new Date(fechaString)
@@ -2300,339 +2659,626 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
-  // CACULAR COUTAS
-  calcularCuotas() {
-    if (this.acuerdoCal.valorCuotaMensual < 0) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No se perminten valores negativos',
-        timer: 3000,
-      });
 
-      return
-    }
 
-    if (this.acuerdoCal.valorCuotaMensual === this.acuerdoCal.valorTotalAcuerdo) {
+  calcularCuotasGeneral() {
 
-      var fechaForm = this.acuerdo.fechaCompromiso.split('-')
-      var dia = parseInt(fechaForm[2])
-      var mes = parseInt(fechaForm[1])
-      var anio = parseInt(fechaForm[0])
 
-      var fechaS = `${dia}/${mes}/${anio}`
-
-      var cuotaList1 = {
-        numeroCuota: 1,
-        fechaVencimiento: fechaS,
-        valorCuota: this.acuerdoCal.valorTotalAcuerdo,
-        capitalCuota: 0,
-        interesCuota: 0,
-        honorarios: 0,
-        cumplio: false
-      }
-      this.cuotas.push(cuotaList1)
-      this.metodosCalculos()
-
-      var totalCuotas = this.acuerdoCal.valorTotalAcuerdo / this.acuerdoCal.valorCuotaMensual
-      var res = Math.ceil(totalCuotas);
-      this.totalCuotas = res
-      this.cantidadFechas = this.totalCuotas;
-
-      this.generarFechas()
-      return
-    }
-
-    var totalCuotas = this.acuerdoCal.valorTotalAcuerdo / this.acuerdoCal.valorCuotaMensual
-    var res = Math.ceil(totalCuotas);
-    this.totalCuotas = res
-    this.cantidadFechas = this.totalCuotas;
+    var valorCuotaAnterior = this.cuentaCobrarSelected.valorCuota
+    var valorCuotaMensual = this.acuerdo.valorCuotaMensual
+    var moraOlbigatoria = this.cuentaCobrarSelected.moraObligatoria
+    var valorTotalMora = this.acuerdoCal.valorTotalMora
+    var totalObligatoria = this.cuentaCobrarSelected.totalObligatoria
+    var valorTotalAcuerdo = this.acuerdoCal.saldoAcuerdo
+    var valorIntereses = this.acuerdoCal.valorInteresesMora
+    var valorHonorarios = this.acuerdoCal.honoriarioAcuerdo
 
 
 
-    this.generarFechas()
+    //cuando el cliente esta al dia
+    if (moraOlbigatoria == 0) {
 
 
 
-    var porAcu = 0
+      if (valorCuotaMensual <= valorTotalAcuerdo) {
 
-    for (let i = 0; i < totalCuotas; i++) {
+        if (valorCuotaMensual <= valorCuotaAnterior) {
+          this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.ABONO
+          this.acuerdo.tipoAcuerdo = TIPOACUERDO.ABONO
+          this.calcularUnaCuota(valorCuotaMensual, valorCuotaMensual)
 
-      var cuotaList = {
-        numeroCuota: 0,
-        fechaVencimiento: '',
-        valorCuota: 0,
-        capitalCuota: 0,
-        interesCuota: 0,
-        honorarios: 0,
-        cumplio: false
-      }
-      // CUOTA MENSUAL
-      cuotaList.valorCuota = this.acuerdoCal.valorCuotaMensual
-      cuotaList.fechaVencimiento = this.fechasIncrementadas[i]
-      cuotaList.numeroCuota = i + 1
-
-      // CAPITAL CUOTA
-      var porcentaje = cuotaList.valorCuota / this.acuerdoCal.valorTotalAcuerdo
-      var cap = 0
-      if (this.acuerdoCal.tipoAcuerdo == "MORA") {
-        cap = porcentaje * this.cuentaCobrarSelected.moraObligatoria
-      }
-      if (this.acuerdoCal.tipoAcuerdo == "TOTAL") {
-        cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
-      }
-
-      cuotaList.capitalCuota = parseInt(cap.toFixed(0))
-
-      // HONORARIOS POR CUOTA
-      if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-        var hon = porcentaje * this.acuerdoCal.honoriarioAcuerdo
-        cuotaList.honorarios = parseInt(hon.toFixed(0))
-      } else {
-        cuotaList.honorarios = 0
-      }
-
-      // INTERESES CUOTA
-      var int = porcentaje * this.acuerdoCal.valorInteresesMora
-      cuotaList.interesCuota = parseInt(int.toFixed(0))
-
-
-      // ULTIMA CUOTA
-      if (this.cuotas.length == this.totalCuotas - 1) {
-        var cuotaListUltima = {
-          numeroCuota: 0,
-          fechaVencimiento: '',
-          valorCuota: 0,
-          capitalCuota: 0,
-          interesCuota: 0,
-          honorarios: 0,
-          cumplio: false
-        }
-        var decimalesCuota = totalCuotas % 1
-        if (decimalesCuota == 0) {
-          cuotaListUltima.valorCuota = this.acuerdoCal.valorCuotaMensual
         } else {
-          var ultimaCuota = this.acuerdoCal.valorCuotaMensual * decimalesCuota
-          cuotaListUltima.valorCuota = parseInt(ultimaCuota.toFixed(0))
-        }
-
-        cuotaListUltima.fechaVencimiento = this.fechasIncrementadas[i]
-        cuotaListUltima.numeroCuota = i + 1
-        // CAPITAL CUOTA
-        var porcentaje = cuotaListUltima.valorCuota / this.acuerdoCal.valorTotalAcuerdo
-        var cap = 0
-        if (this.acuerdoCal.tipoAcuerdo == "MORA") {
-          cap = porcentaje * this.cuentaCobrarSelected.moraObligatoria
-        }
-        if (this.acuerdoCal.tipoAcuerdo == "TOTAL") {
-          cap = porcentaje * this.cuentaCobrarSelected.totalObligatoria
-        }
-        cuotaListUltima.capitalCuota = parseInt(cap.toFixed(0))
-
-        // HONORARIOS POR CUOTA
-        if (this.cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico') {
-          var hon = porcentaje * this.acuerdoCal.honoriarioAcuerdo
-          cuotaListUltima.honorarios = parseInt(hon.toFixed(0))
-        } else {
-          cuotaListUltima.honorarios = 0
-        }
-
-        // INTERESES CUOTA
-        var int = porcentaje * this.acuerdoCal.valorInteresesMora
-        cuotaListUltima.interesCuota = parseInt(int.toFixed(0))
-
-        this.cuotas.push(cuotaListUltima)
-      } else {
-        this.cuotas.push(cuotaList)
-      }
-      
-
-    }
-    console.log(this.cuotas);
-    
-
-  }
-
-  // RECALCULAR
-  recalcularValores(position: number, event: any) {
-    if (event.target.value < 0) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No se perminten valores negativos',
-        timer: 3000,
-      });
-      event.target.value = this.cuotas[position].valorCuota
-      return
-
-    }
-    var nuevoValor = event.target.value - this.cuotas[position].valorCuota
-    if (event.target.value > this.cuotas[position].valorCuota) {
-      var sumaCoutasAnteriores = 0
-      for (let i = this.cuotas.length - 1; i > position; i--) {
+          if ((valorTotalAcuerdo / valorCuotaMensual) <= 20) {
 
 
-        if (nuevoValor > this.cuotas[i].valorCuota) {
-          for (let j = 0; j < position; j++) {
-            sumaCoutasAnteriores = sumaCoutasAnteriores + parseInt(this.cuotas[j].valorCuota)
-          }
-          var totalCuotaSumadas = sumaCoutasAnteriores + parseInt(event.target.value)
-          if (totalCuotaSumadas > this.acuerdoCal.valorTotalAcuerdo) {
-            var ultimaCuota = this.acuerdoCal.valorTotalAcuerdo - sumaCoutasAnteriores
-            for (let k = position; k < this.cuotas.length - 1; k++) {
-              this.cuotas.splice(k + 1)
-              i = this.cuotas.length - 1
-            }
-            this.cuotas[this.cuotas.length - 1].valorCuota = ultimaCuota
-            this.disableds[this.cuotas.length - 1] = true
+            const swalWithBootstrapButtons = Swal.mixin({
+              customClass: {
+                confirmButton: "btn btn-primary",
+                cancelButton: "btn btn-secondary"
+              },
+              buttonsStyling: false
+            });
+            swalWithBootstrapButtons.fire({
+              title: "Desea realizar un abono  o un refinanciacion?",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Abono",
+              cancelButtonText: "Refinanciacion",
+              reverseButtons: false,
+              buttonsStyling: false, // Deshabilita los estilos de botones predeterminados
+              customClass: {
+                confirmButton: "me-2 btn btn-info",
+                cancelButton: "btn btn-secondary "
+
+              }
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.ABONO
+                this.acuerdo.tipoAcuerdo = TIPOACUERDO.ABONO
+                this.calcularUnaCuota(valorCuotaMensual, valorCuotaMensual)
+              } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+              ) {
+                this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.TOTAL
+                this.acuerdo.tipoAcuerdo = TIPOACUERDO.TOTAL
+                this.todasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
+              }
+            });
+
+
+
           } else {
-            nuevoValor = nuevoValor - this.cuotas[i].valorCuota
-            this.cuotas.splice(i)
-          }
-        } else {
-          nuevoValor = nuevoValor - this.cuotas[i].valorCuota
-          if (nuevoValor <= 0) {
-            this.cuotas[i].valorCuota = (nuevoValor) * -1
-            this.cuotas[position].valorCuota = parseInt(event.target.value)
-            this.totalCuotas = this.cuotas.length
-            break
+            if (this.validarPermisoDado(Permisos.REFINANCIACION, Roles.CARTERA) || this.validarPermisoDado("", Roles.ADMINISTRATION)) {
+
+              Swal.fire({
+                title: 'Refinanciacion de Pagare',
+                text: 'La cuota ingresada es menor a la cuota actual de credito, ¿Está Seguro de Continuar?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirmar',
+                cancelButtonText: 'Cancelar'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.TOTAL
+                  this.acuerdo.tipoAcuerdo = TIPOACUERDO.TOTAL
+                  this.todasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
+                }
+              })
+
+            } else {
+              var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
+              this.col = true
+              Swal.fire({
+                icon: 'error',
+                title: 'Accion Denegada',
+                text: 'No tienes permisos para realizar esta accion, el valor minimo de cuota es: ' + valorMinimo + '. Contacta al coordinador de cartera',
+                timer: 5000,
+              });
+            }
           }
         }
+      } else {
+        this.col = true
+        Swal.fire({
+          icon: 'error',
+          title: 'Accion Denegada',
+          text: 'Valor Mayor al permitido',
+          timer: 5000,
+        });
       }
-    }
-    //RECALCULAR PARA SUMAR CUOTAS
-    var nuevoValorSumarCuotas = this.cuotas[position].valorCuota - event.target.value
-    if (event.target.value < this.cuotas[position].valorCuota) {
-      for (let i = position; i < this.cuotas.length; i++) {
-        //nuevo valor menor ultima cuota
-        if (nuevoValorSumarCuotas < this.cuotas[this.cuotas.length - 1].valorCuota) {
-          var cuotamenos = this.cuotas[this.cuotas.length - 1].valorCuota + nuevoValorSumarCuotas
-          if (cuotamenos > this.acuerdoCal.valorCuotaMensual) {
-            var couta = this.cuotas[this.cuotas.length - 1].valorCuota + nuevoValorSumarCuotas
-            if (couta > this.acuerdoCal.valorCuotaMensual) {
-              var excedentePrinciapl = couta - this.acuerdoCal.valorCuotaMensual
-              var excedenteParaCuouta = nuevoValorSumarCuotas - excedentePrinciapl
-              this.cuotas[this.cuotas.length - 1].valorCuota = this.cuotas[this.cuotas.length - 1].valorCuota + excedenteParaCuouta
-              if (excedentePrinciapl > 0) {
-                var cuoUl = {
-                  idCuota: 0,
-                  numeroCuota: 0,
-                  fechaVencimiento: '',
-                  valorCuota: excedentePrinciapl,
-                  capitalCuota: 0,
-                  interesCuota: 0,
-                  honorarios: 0,
-                  cumplio: false
-                }
-                this.cuotas.push(cuoUl)
-                this.cuotas[position].valorCuota = parseInt(event.target.value)
-                excedentePrinciapl = 0
-                break;
-              }
-            } else {
-              this.cuotas[this.cuotas.length - 1].valorCuota = couta
-              this.cuotas[position].valorCuota = parseInt(event.target.value)
-            }
-          } else {
-            this.cuotas[this.cuotas.length - 1].valorCuota = cuotamenos
-            this.cuotas[position].valorCuota = parseInt(event.target.value)
-            break
+
+    } else {
+      //cuando el cliente no esta al dia
+
+
+      if (valorCuotaMensual <= valorTotalAcuerdo) {
+
+
+        const swalWithBootstrapButtons = Swal.mixin({
+          customClass: {
+            confirmButton: "btn btn-primary",
+            cancelButton: "btn btn-secondary"
+          },
+          buttonsStyling: false
+        });
+        swalWithBootstrapButtons.fire({
+          title: "¿Abono de cuota único? o ¿saldar a cuotas el restante del credito?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Abono",
+          cancelButtonText: "Cuotas",
+          reverseButtons: false,
+          buttonsStyling: false, // Deshabilita los estilos de botones predeterminados
+          customClass: {
+            confirmButton: "me-2 btn btn-info",
+            cancelButton: "btn btn-secondary "
+
           }
-        }
-        //nuevo valor mayor ultima cuota
-        if (nuevoValorSumarCuotas > this.cuotas[this.cuotas.length - 1].valorCuota) {
-          if (nuevoValorSumarCuotas <= this.acuerdoCal.valorCuotaMensual) {
-            var couta = this.cuotas[this.cuotas.length - 1].valorCuota + nuevoValorSumarCuotas
-            if (couta > this.acuerdoCal.valorCuotaMensual) {
-              var excedentePrinciapl = couta - this.acuerdoCal.valorCuotaMensual
-              var excedenteParaCuouta = nuevoValorSumarCuotas - excedentePrinciapl
-              this.cuotas[this.cuotas.length - 1].valorCuota = this.cuotas[this.cuotas.length - 1].valorCuota + excedenteParaCuouta
-              if (excedentePrinciapl > 0) {
-                var cuoUl = {
-                  idCuota: 0,
-                  numeroCuota: 0,
-                  fechaVencimiento: '',
-                  valorCuota: excedentePrinciapl,
-                  capitalCuota: 0,
-                  interesCuota: 0,
-                  honorarios: 0,
-                  cumplio: false
-                }
-                this.cuotas.push(cuoUl)
-                this.cuotas[position].valorCuota = parseInt(event.target.value)
-                excedentePrinciapl = 0
-                break;
-              }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.ABONO
+            this.acuerdo.tipoAcuerdo = TIPOACUERDO.ABONO
+            var capital = valorCuotaMensual - valorIntereses - valorHonorarios
+            var otrosValores = parseInt(valorIntereses) + parseInt(valorHonorarios)
+
+            if (otrosValores > valorCuotaMensual) {
+              this.col = true
+              Swal.fire({
+                icon: 'error',
+                title: 'Accion Denegada',
+                text: 'No es posible Realizar esta accion, otros valores mayor a la cuota ingresada',
+                timer: 5000,
+              });
+
             } else {
-              this.cuotas[this.cuotas.length - 1].valorCuota = couta
-              this.cuotas[position].valorCuota = parseInt(event.target.value)
-              break;
-            }
-          }
-          if (nuevoValorSumarCuotas >= this.acuerdoCal.valorCuotaMensual) {
-            var coutaCambio = this.acuerdoCal.valorCuotaMensual - this.cuotas[this.cuotas.length - 1].valorCuota
-            this.cuotas[this.cuotas.length - 1].valorCuota = this.acuerdoCal.valorCuotaMensual
-            nuevoValorSumarCuotas = nuevoValorSumarCuotas - coutaCambio
-            if (nuevoValorSumarCuotas > 0 && nuevoValorSumarCuotas < this.acuerdoCal.valorCuotaMensual) {
-              var cuoUl = {
-                idCuota: 0,
-                numeroCuota: 0,
-                fechaVencimiento: '',
-                valorCuota: nuevoValorSumarCuotas,
-                capitalCuota: 0,
-                interesCuota: 0,
-                honorarios: 0,
-                cumplio: false
-              }
-              this.cuotas.push(cuoUl)
-              this.cuotas[position].valorCuota = parseInt(event.target.value)
-              break;
-            } else {
-              var excedentePrinciapl = nuevoValorSumarCuotas - this.acuerdoCal.valorCuotaMensual
-              var excedenteParaCuouta = nuevoValorSumarCuotas - excedentePrinciapl
-              if (excedenteParaCuouta > 0 && excedenteParaCuouta >= this.acuerdoCal.valorCuotaMensual) {
-                var cuoUll = {
-                  idCuota: 0,
-                  numeroCuota: 0,
-                  fechaVencimiento: '',
-                  valorCuota: excedenteParaCuouta,
-                  capitalCuota: 0,
-                  interesCuota: 0,
-                  honorarios: 0,
-                  cumplio: false
-                }
-                this.cuotas.push(cuoUll)
-                nuevoValorSumarCuotas = nuevoValorSumarCuotas - excedenteParaCuouta
+              var capital = (valorCuotaMensual - valorIntereses - valorHonorarios)
+
+              if (capital < 1000) {
+                this.col = true
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Accion Denegada',
+                  text: 'No es posible Realizar esta accion, el interes y honorarios son mayores al abono permitido',
+                  timer: 5000,
+                });
               } else {
-                var cuoUll = {
-                  idCuota: 0,
-                  numeroCuota: 0,
-                  fechaVencimiento: '',
-                  valorCuota: excedentePrinciapl,
-                  capitalCuota: 0,
-                  interesCuota: 0,
-                  honorarios: 0,
-                  cumplio: false
-                }
-                this.cuotas.push(cuoUll)
-                nuevoValorSumarCuotas = excedentePrinciapl
+
+
+                //calcularUnAbono(valorCuot: number, capitalCuota: number, interes:number, honorarios:number) {
+                this.calcularUnAbono(valorCuotaMensual, capital, valorIntereses, valorHonorarios)
               }
             }
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+
+            var capitalRestante = totalObligatoria - moraOlbigatoria
+
+            var cuotasReales = 0;
+            if (capitalRestante > 0) {
+              cuotasReales = capitalRestante / valorCuotaAnterior
+            }
+
+
+
+            if ((valorTotalAcuerdo / valorCuotaMensual) <= cuotasReales) {
+
+
+              if (valorCuotaMensual >= valorTotalMora) {
+
+
+                this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.MORA
+                this.acuerdo.tipoAcuerdo = TIPOACUERDO.MORA
+                //calcula la primera cuota con interes y el valor de cuota ingresado y el restante con las cuotas anteriores sin interes
+                this.unaCoutaMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios)
+
+
+              } else {
+
+                this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.MORA
+                this.acuerdo.tipoAcuerdo = TIPOACUERDO.MORA
+                //variasCuotasMora(valorInteres: number, valorCuotaMensual: number, moraObligatoria: number, valorCuotaAnterior: number, valorTotalObligatoria: number, valorHonorarios: number, valorTotalMora: number)
+                this.variasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
+              }
+
+            } else {
+
+              if ((valorTotalAcuerdo / valorCuotaMensual) <= 20) {
+
+
+                Swal.fire({
+                  title: 'Refinanciacion de Pagare',
+                  text: 'El actual acuerdo ha superado la fecha máxima de vencimiento, por lo tanto, se requiere refinanciar el pagaré, ¿Está Seguro de Continuar?',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Confirmar',
+                  cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.TOTAL
+                    this.acuerdo.tipoAcuerdo = TIPOACUERDO.TOTAL
+
+                    if (totalObligatoria == moraOlbigatoria) {
+                      this.todasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
+                    } else {
+                      this.todasCuotasMora(valorIntereses, valorCuotaMensual, totalObligatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
+                    }
+
+
+                  }
+                })
+              } else {
+
+                //preguntar si tiene el permiso para refianciacion
+                if (this.validarPermisoDado(Permisos.REFINANCIACION, Roles.CARTERA) || this.validarPermisoDado("", Roles.ADMINISTRATION)) {
+
+                  Swal.fire({
+                    title: 'Refinanciacion de Pagare',
+                    text: 'El acuerdo ha excedido la fecha límite y supera las 20 cuotas permitidas. Se requiere refinanciar el pagaré. ¿Continuar?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Confirmar',
+                    cancelButtonText: 'Cancelar'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      this.acuerdoCal.tipoAcuerdo = TIPOACUERDO.TOTAL
+                      this.acuerdo.tipoAcuerdo = TIPOACUERDO.TOTAL
+
+
+
+
+                      this.todasCuotasMora(valorIntereses, valorCuotaMensual, moraOlbigatoria, valorCuotaAnterior, totalObligatoria, valorHonorarios, valorTotalMora)
+                    }
+                  })
+
+                } else {
+                  var valorMinimo = this.acuerdoCal.valorTotalAcuerdo / 20
+                  this.col = true
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Accion Denegada',
+                    text: 'No tienes permisos para realizar esta accion, el valor minimo de cuota es: ' + valorMinimo + '. Contacta al coordinador de cartera',
+                    timer: 5000,
+                  });
+                }
+
+              }
+
+
+
+
+
+            }
+
           }
+        });
+
+
+
+
+
+      } else {
+        this.col = true
+        //el valor de la cuota sera el valor total de la obligacion
+        Swal.fire({
+          icon: 'error',
+          title: 'Accion Denegada',
+          text: 'Valor Mayor al permitido',
+          timer: 5000,
+        });
+      }
+
+
+    }
+
+    console.log(this.cuotas.length);
+
+
+    for (let i = 0; i < this.cuotas.length; i++) {
+      this.disableds.push(true)
+
+    }
+    console.log(this.disableds);
+
+  }
+
+
+  calcularUnaCuota(valorCuot: number, capitalCuota: number) {
+    this.acuerdoCal.valorTotalAcuerdo = valorCuot
+    var cuotaList = {
+      numeroCuota: 1,
+      fechaVencimiento: '',
+      valorCuota: valorCuot,
+      capitalCuota: parseInt(capitalCuota.toFixed(0)),
+      interesCuota: 0,
+      honorarios: 0,
+      cumplio: false
+    }
+
+    this.cuotas.push(cuotaList)
+    this.cantidadFechas++
+    this.disableds[this.cuotas.length - 1] = true
+    this.generarFechas()
+  }
+
+
+  calcularUnAbono(valorCuot: number, capitalCuota: number, interes: number, honorarios: number) {
+    this.acuerdoCal.valorTotalAcuerdo = valorCuot
+    var cuotaList = {
+      numeroCuota: 1,
+      fechaVencimiento: '',
+      valorCuota: valorCuot,
+      capitalCuota: Math.ceil(capitalCuota),
+      interesCuota: Math.ceil(interes),
+      honorarios: Math.ceil(honorarios),
+      cumplio: false
+    }
+
+    this.cuotas.push(cuotaList)
+    this.cantidadFechas++
+    this.disableds[this.cuotas.length - 1] = true
+    this.generarFechas()
+  }
+
+
+  unaCoutaMora(valorInteres: number, valorCuotaMensual: number, moraObligatoria: number, valorCuotaAnterior: number, valorTotalObligatoria: number, valorHonorarios: number) {
+
+    //se envia el valor de los interese por que el valorCuotaMensual el mayor a la mora
+    // es decir que este valor de couta mensual cubre toda la mora
+    // var datos = this.generarParticipacionCuotas(valorCuotaMensual, valorParticipacion)
+
+
+    // alert("datos.capital "+datos.capital)
+
+    var nuevoTotalObligatorio = valorTotalObligatoria - (valorCuotaMensual - valorInteres - valorHonorarios)
+
+    //total cuotas con el valor de la cuota anterior
+    var totalCuotas = this.obtenerTotalCuotas(nuevoTotalObligatorio, valorCuotaAnterior)
+
+
+
+    var capital = valorCuotaMensual - valorInteres - valorHonorarios;
+    var intereses: number = valorInteres;
+    var honorarios = valorHonorarios;
+
+
+
+    var saldoCapital = valorTotalObligatoria
+
+
+    for (let i = 0; i < totalCuotas + 1; i++) {
+      if (i == 0) {
+        //generar primer cuota con interes
+
+        this.generarCuota(i + 1, valorCuotaMensual, capital, intereses, honorarios);
+        saldoCapital = saldoCapital - capital
+
+      } else {
+        if (saldoCapital > valorCuotaAnterior) {
+
+          this.generarCuota(i + 1, valorCuotaAnterior, valorCuotaAnterior, 0, 0);
+          saldoCapital = saldoCapital - valorCuotaAnterior
+
+        } else {
+          this.generarCuota(i + 1, saldoCapital, valorCuotaAnterior, 0, 0);
+          console.log(saldoCapital);
+
+          saldoCapital = 0
         }
+
+      }
+
+
+
+
+
+    }
+
+
+
+  }
+
+
+
+
+  variasCuotasMora(valorInteres: number, valorCuotaMensual: number, moraObligatoria: number, valorCuotaAnterior: number, valorTotalObligatoria: number, valorHonorarios: number, valorTotalMora: number) {
+
+    var saldoTotal = this.acuerdoCal.saldoAcuerdo
+
+    var numeroCuotasMoraConDecimal = valorTotalMora / valorCuotaMensual;
+    var numeroCuotasMoraMayor = Math.ceil(numeroCuotasMoraConDecimal)
+    var numeroCuotaMoraSinDecimal = parseInt((numeroCuotasMoraConDecimal).toFixed(0))
+
+    var nuevoTotalObligatorio = saldoTotal - valorTotalMora
+
+    var totalCuotas = this.obtenerTotalCuotas(nuevoTotalObligatorio, valorCuotaAnterior)
+
+    var capitalMora = moraObligatoria;
+    var saldoCapitalTotalSinIntereses = valorTotalObligatoria
+    var saldoMoraTotal = valorTotalMora
+
+    var honorariosMora = valorHonorarios;
+    var interesesMora = valorInteres;
+
+
+    var participacionCuota = this.generarParticipacionCuotas(valorCuotaMensual, valorTotalMora, capitalMora, interesesMora, honorariosMora)
+
+    for (let i = 0; i < (totalCuotas + numeroCuotasMoraMayor) + 1; i++) {
+
+      if (i < numeroCuotaMoraSinDecimal) {
+
+        this.generarCuota(i + 1, valorCuotaMensual, participacionCuota.capital, participacionCuota.interes, participacionCuota.honorarios)
+        capitalMora = capitalMora - participacionCuota.capital
+        interesesMora = interesesMora - participacionCuota.interes
+        honorariosMora = honorariosMora - participacionCuota.honorarios
+
+
+        saldoCapitalTotalSinIntereses = saldoCapitalTotalSinIntereses - participacionCuota.capital
+
+
+      } else if (i < numeroCuotasMoraMayor) {
+
+        capitalMora = valorCuotaMensual - interesesMora - honorariosMora
+        saldoCapitalTotalSinIntereses = saldoCapitalTotalSinIntereses - capitalMora
+
+
+
+        this.generarCuota(i + 1, valorCuotaMensual, capitalMora, interesesMora, honorariosMora)
+
+
+      } else {
+
+        if (saldoCapitalTotalSinIntereses > valorCuotaAnterior) {
+
+          this.generarCuota(i + 1, valorCuotaAnterior, valorCuotaAnterior, 0, 0)
+
+          saldoCapitalTotalSinIntereses = saldoCapitalTotalSinIntereses - valorCuotaAnterior
+
+
+        } else {
+          if (saldoCapitalTotalSinIntereses < 20000) {
+            this.cuotas[this.cuotas.length - 1].valorCuota = this.cuotas[this.cuotas.length - 1].valorCuota + saldoCapitalTotalSinIntereses
+            this.cuotas[this.cuotas.length - 1].capitalCuota = this.cuotas[this.cuotas.length - 1].capitalCuota + saldoCapitalTotalSinIntereses
+            saldoCapitalTotalSinIntereses = 0
+            break;
+          } else {
+            this.generarCuota(i + 1, saldoCapitalTotalSinIntereses, saldoCapitalTotalSinIntereses, 0, 0)
+
+            saldoCapitalTotalSinIntereses = 0
+            break;
+          }
+
+        }
+
+
       }
     }
-    this.disableds = []
-    this.disableds = new Array(this.cuotas.length)
-    this.disableds.forEach(element => {
-      this.disableds.push(false)
-    });
 
-    this.disableds[0] = true
-    this.disableds[this.cuotas.length - 1] = true
-    this.metodosCalculos()
-    this.validarCuotasVacias()
   }
+
+
+  todasCuotasMora(valorInteres: number, valorCuotaMensual: number, moraObligatoria: number, valorCuotaAnterior: number, valorTotalObligatoria: number, valorHonorarios: number, valorTotalMora: number) {
+
+    var saldoTotal = this.acuerdoCal.saldoAcuerdo
+
+
+
+
+
+    //total cuotas con el valor de la cuota anterior
+    var totalCuotas = this.obtenerTotalCuotas(saldoTotal, valorCuotaMensual)
+
+    var totalCuotasSinDecimal = parseInt(totalCuotas.toFixed(0))
+
+
+    var participacionCuota = this.generarParticipacionCuotas(valorCuotaMensual, saldoTotal, valorTotalObligatoria, valorInteres, valorHonorarios)
+
+
+
+    totalCuotas = saldoTotal / valorCuotaMensual
+
+
+    var saldoCapitalTotalConIntereses = saldoTotal
+
+    var capitalMora = moraObligatoria
+    var interesesMora = valorInteres
+    var honorariosMora = valorHonorarios
+
+    for (let i = 0; i < totalCuotas + 1; i++) {
+
+
+      if (saldoCapitalTotalConIntereses > valorCuotaMensual) {
+        //crear las primeras cuotas con mora
+        //generarCuota(numeroCuota: number, cuotaValor: number, cuotaCapital: number, cuotaInteres: number, cuotaHonorario: number)
+
+
+
+        this.generarCuota(i + 1, valorCuotaMensual, participacionCuota.capital, participacionCuota.interes, participacionCuota.honorarios)
+        capitalMora = capitalMora - participacionCuota.capital
+        interesesMora = interesesMora - participacionCuota.interes
+        honorariosMora = honorariosMora - participacionCuota.honorarios
+
+
+        saldoCapitalTotalConIntereses = saldoCapitalTotalConIntereses - valorCuotaMensual
+
+
+      } else {
+
+        if (saldoCapitalTotalConIntereses < 20000) {
+
+          participacionCuota.capital = capitalMora
+          participacionCuota.interes = interesesMora
+          participacionCuota.honorarios = honorariosMora
+          this.cuotas[this.cuotas.length - 1].valorCuota = this.cuotas[this.cuotas.length - 1].valorCuota + saldoCapitalTotalConIntereses
+          this.cuotas[this.cuotas.length - 1].capitalCuota = this.cuotas[this.cuotas.length - 1].capitalCuota + participacionCuota.capital
+          this.cuotas[this.cuotas.length - 1].interesCuota = this.cuotas[this.cuotas.length - 1].interesCuota + participacionCuota.interes
+          this.cuotas[this.cuotas.length - 1].honorariosCuota = this.cuotas[this.cuotas.length - 1].honorariosCuota + participacionCuota.honorarios
+
+
+
+          var capitalMora = 0
+          var interesesMora = 0
+          var honorariosMora = 0
+          saldoCapitalTotalConIntereses = 0
+          break;
+        } else {
+          var participacionCuota = this.generarParticipacionCuotas(saldoCapitalTotalConIntereses, saldoTotal, valorTotalObligatoria, valorInteres, valorHonorarios)
+
+
+          this.generarCuota(i + 1, saldoCapitalTotalConIntereses, participacionCuota.capital, participacionCuota.interes, participacionCuota.honorarios)
+          saldoCapitalTotalConIntereses = 0
+          break;
+        }
+
+
+      }
+    }
+
+
+  }
+
+
+  obtenerTotalCuotas(totalObligacion: number, valorCuota: number): number {
+    var totalCuotas = totalObligacion / valorCuota
+
+    if (totalCuotas <= 1) {
+      return 1;
+    }
+    return Math.ceil(totalCuotas);
+  }
+
+
+  generarCuota(numeroCuota: number, cuotaValor: number, cuotaCapital: number, cuotaInteres: number, cuotaHonorario: number) {
+
+    var cuotaList = {
+      numeroCuota: numeroCuota,
+      fechaVencimiento: '',
+      valorCuota: parseInt(cuotaValor.toFixed(0)),
+      capitalCuota: Math.ceil(cuotaCapital),
+      interesCuota: Math.ceil(cuotaInteres),
+      honorarios: Math.ceil(cuotaHonorario),
+      cumplio: false
+    }
+
+    this.cuotas.push(cuotaList)
+    this.disableds[numeroCuota - 1] = true
+    this.cantidadFechas++
+    this.generarFechas()
+  }
+
+
+
+
+
+  generarParticipacionCuotas(valorCuota: number, total: number, capital: number, intereses: number, honorarios: number) {
+    var participacionCuotaMora = valorCuota / total
+    var capitalCuotaMora = capital * participacionCuotaMora
+    var interesCuotaMora = intereses * participacionCuotaMora
+    var honorariosCuota = 0
+    if (this.cuentaCobrarSelected.clasificacionJuridica == CLASIFICACION_JURIDICA.Prejuridico) {
+      honorariosCuota = honorarios * participacionCuotaMora
+    }
+
+    var datos = {
+      capital: parseInt(capitalCuotaMora.toFixed(0)),
+      interes: parseInt(interesCuotaMora.toFixed(0)),
+      honorarios: parseInt(honorariosCuota.toFixed(0)),
+    }
+    return datos
+  }
+  //----------------------------------------------------------------------
+
+
+
+
 
   // CLASIFICACION
   getClasificacion() {
@@ -2643,18 +3289,6 @@ export class HomeCarteraComponent implements OnInit {
         console.log(error);
       }
     )
-  }
-
-  validarCuotasVacias() {
-    for (let i = 0; i < this.cuotas.length; i++) {
-      if (this.cuotas[i].valorCuota <= 0) {
-        this.cuotas.splice(i, 1)
-        this.disableds[this.cuotas.length - 1] = true
-      }
-
-    }
-
-
   }
 
   cancelarGestion() {
@@ -2676,6 +3310,7 @@ export class HomeCarteraComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.desbloquearCuenta(this.cuentaCobrarSelected.idCuentasPorCobrar);
         this.newGestion = {
           numeroObligacion: this.newGestion.numeroObligacion,
           clasificacion: {
@@ -2831,8 +3466,9 @@ export class HomeCarteraComponent implements OnInit {
 
   //FILTROS
   filtroFirst() {
+
     var td
-    var contenido:any
+    var contenido: any
     var partesMes
     var mesTd
     var anioTd
@@ -2851,9 +3487,8 @@ export class HomeCarteraComponent implements OnInit {
     this.filtros.sede = this.sedesArray
     this.filtros.edadVencimiento = this.edadVenArray
     this.filtros.clasificacionGestion = this.clasGesArray
-
     console.log(this.filtros);
-    
+
 
     if (
       (this.filtros.banco.length == 0) &&
@@ -2862,15 +3497,15 @@ export class HomeCarteraComponent implements OnInit {
       (this.filtros.edadVencimiento.length == 0) &&
       (this.filtros.sede.length == 0) &&
       (this.filtros.clasiJuridica.length == 0) &&
-      (this.filtros.clasificacionGestion.length == 0) &&
+      (this.filtros.clasificacionGestion == null) &&
       (this.filtros.saldoCapitalInicio == 0 || this.filtros.saldoCapitalInicio == null) &&
       (this.filtros.saldoCapitalFin == 0 || this.filtros.saldoCapitalFin == null) &&
       (this.filtros.fechaCpcInicio == null) &&
       (this.filtros.fechaCpcFin == null) &&
-      (this.filtros.fechaGestionInicio == null) &&
-      (this.filtros.fechaGestionFin == null) &&
-      (this.filtros.fechaCompromisoInicio == null) &&
-      (this.filtros.fechaCompromisoFin == null)
+      (this.filtros.fechaGestionInicio == null || this.filtros.fechaGestionInicio == '') &&
+      (this.filtros.fechaGestionFin == null || this.filtros.fechaGestionFin == '') &&
+      (this.filtros.fechaCompromisoInicio == null || this.filtros.fechaCompromisoInicio == '') &&
+      (this.filtros.fechaCompromisoFin == null) && this.filtros.clasificacionGestion == null && this.filtros.sinAsesor == 0
     ) {
       Swal.fire({
         icon: 'error',
@@ -2879,6 +3514,52 @@ export class HomeCarteraComponent implements OnInit {
         timer: 3000,
       });
       return;
+    }
+
+    // if (this.filtros.clasificacionGestion != null && (this.filtros.fechaGestionFin == null && this.filtros.fechaGestionInicio == null)) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Error',
+    //     text: 'Debes seleccionar una fecha de gestion de inicio y fin ',
+    //     timer: 3000,
+    //   });
+    //   return
+    // }
+
+    if ((this.filtros.fechaGestionInicio != null && this.filtros.fechaGestionInicio != '') && (this.filtros.fechaGestionFin == null || this.filtros.fechaGestionFin == '')) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe de Seleccionar La fecha de finalización',
+        timer: 3000,
+      });
+      return;
+    }
+
+    if ((this.filtros.fechaGestionFin != null && this.filtros.fechaGestionFin != '') && (this.filtros.fechaGestionInicio == null || this.filtros.fechaGestionInicio == '')) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe de Seleccionar La fecha de Inicio',
+        timer: 3000,
+      });
+      return;
+    }
+
+    console.log(this.filtros);
+
+
+    // FORMATEAR FECHA FIN DE GESTIÓN
+    if ((this.filtros.fechaGestionFin != null && this.filtros.fechaGestionInicio != null) && (this.filtros.fechaGestionFin != '' && this.filtros.fechaGestionInicio != '')) {
+      const fechaActual = new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' });
+
+      const fechaObj = new Date(fechaActual);
+
+      fechaObj.setHours(23, 59, 0, 0);
+
+      this.filtros.fechaGestionFin = fechaObj;
+
+      console.log(this.filtros.fechaGestionFin);
     }
 
     var admin = this.authService.getRolesByName(ROLES.Administration);
@@ -2896,9 +3577,12 @@ export class HomeCarteraComponent implements OnInit {
     console.log(this.filtros);
     this.cuentasCobrar.filtro(this.page, this.size, this.fechaCreacion, this.filtros).subscribe(
       (data: any) => {
+        console.log(data);
+
         this.botonFiltro = false
         this.filtrando = true
         this.filtroAgain = true
+        this.sinAsesor = false
         this.paginas = new Array(data.totalPages)
         this.cuentasCobrarArray = data.content
         console.log(this.cuentasCobrarArray);
@@ -2906,6 +3590,7 @@ export class HomeCarteraComponent implements OnInit {
         this.first = data.first
         this.numeroPages = data.totalPages
         this.cuentasCobrar.proSubject.next(true);
+
 
         if (this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
           (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
@@ -2920,31 +3605,40 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionInicio != null) ||
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
-          (this.filtros.fechaCompromisoFin != null)) {
-            setTimeout(() => {
+          (this.filtros.fechaCompromisoFin != null) || (this.filtros.clasificacionGestion != null) || (this.filtros.sinAsesor > 0)) {
+          setTimeout(() => {
+            if (this.filtros.clasificacionGestion != 'Acuerdo de pago') {
               for (let i = 0; i < this.size; i++) {
                 td = document.getElementById(`td_${i}`)
-  
-                if(td != null && td != undefined){
+
+                if (td != null && td != undefined) {
                   contenido = td.textContent;
-  
-                  partesMes = contenido.split('/')
-  
-                  mesTd = parseInt(partesMes[1], 10)
-                  anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
+
+                  if (this.cuentasCobrarArray[i].isLast) {
                     td.classList.add("gestionado")
                   }
                 }
               }
-            }, 100);
+            } else {
+              for (let i = 0; i < this.size; i++) {
+                td = document.getElementById(`td_${i}`)
+
+                if (td != null && td != undefined) {
+                  contenido = td.textContent;
+
+                  if (this.cuentasCobrarArray[i].isLast) {
+                    td.classList.add("gestionado")
+                  }
+                }
+              }
+            }
+          }, 100);
           this.variableLimpiar = true
         } else {
           this.variableLimpiar = false
         }
         console.log(this.cuentasCobrarArray);
-        
+
         if (this.cuentasCobrarArray.length == 0) {
           Swal.fire({
             icon: 'error',
@@ -2965,7 +3659,7 @@ export class HomeCarteraComponent implements OnInit {
 
   filtro() {
     var td
-    var contenido:any
+    var contenido: any
     var partesMes
     var mesTd
     var anioTd
@@ -2986,7 +3680,7 @@ export class HomeCarteraComponent implements OnInit {
     this.filtros.clasificacionGestion = this.clasGesArray
 
     console.log(this.filtros);
-    
+
 
     if (
       (this.filtros.banco.length == 0) &&
@@ -2995,7 +3689,7 @@ export class HomeCarteraComponent implements OnInit {
       (this.filtros.edadVencimiento.length == 0) &&
       (this.filtros.sede.length == 0) &&
       (this.filtros.clasiJuridica.length == 0) &&
-      (this.filtros.clasificacionGestion.length == 0) &&
+      (this.filtros.clasificacionGestion == null) &&
       (this.filtros.saldoCapitalInicio == 0 || this.filtros.saldoCapitalInicio == null) &&
       (this.filtros.saldoCapitalFin == 0 || this.filtros.saldoCapitalFin == null) &&
       (this.filtros.fechaCpcInicio == null) &&
@@ -3003,8 +3697,10 @@ export class HomeCarteraComponent implements OnInit {
       (this.filtros.fechaGestionInicio == null) &&
       (this.filtros.fechaGestionFin == null) &&
       (this.filtros.fechaCompromisoInicio == null) &&
-      (this.filtros.fechaCompromisoFin == null)
+      (this.filtros.fechaCompromisoFin == null) && (this.filtros.clasificacionGestion == null) && (this.filtros.sinAsesor == 0)
     ) {
+
+
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -3012,7 +3708,18 @@ export class HomeCarteraComponent implements OnInit {
         timer: 3000,
       });
       return;
+
     }
+
+
+    // if (this.filtros.clasificacionGestion != null && (this.filtros.fechaGestionInicio == null && this.filtros.fechaGestionFin == null)) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Error',
+    //     text: 'Debes seleccionar una fecha de gestion de inicio y fin ',
+    //     timer: 3000,
+    //   });
+    // }
 
     var admin = this.authService.getRolesByName(ROLES.Administration);
 
@@ -3028,6 +3735,7 @@ export class HomeCarteraComponent implements OnInit {
     console.log(this.filtros);
     this.cuentasCobrar.filtro(this.page, this.size, this.fechaCreacion, this.filtros).subscribe(
       (data: any) => {
+
         this.botonFiltro = false
         this.filtrando = true
         this.filtroAgain = true
@@ -3052,31 +3760,32 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionInicio != null) ||
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
-          (this.filtros.fechaCompromisoFin != null)) {
-            setTimeout(() => {
-              for (let i = 0; i < this.size; i++) {
-                td = document.getElementById(`td_${i}`)
-  
-                if(td != null && td != undefined){
-                  contenido = td.textContent;
-  
-                  partesMes = contenido.split('/')
-  
-                  mesTd = parseInt(partesMes[1], 10)
-                  anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
-                    td.classList.add("gestionado")
-                  }
+          (this.filtros.fechaCompromisoFin != null) || (this.filtros.clasificacionGestion != null) || (this.filtros.sinAsesor > 0)) {
+          setTimeout(() => {
+            for (let i = 0; i < this.size; i++) {
+              td = document.getElementById(`td_${i}`)
+
+              if (td != null && td != undefined) {
+                contenido = td.textContent;
+
+                partesMes = contenido.split('/')
+
+                mesTd = parseInt(partesMes[1], 10)
+                anioTd = parseInt(partesMes[2], 10)
+
+                if (mesTd == mesActual && anioTd == anioActual) {
+                  td.classList.add("gestionado")
                 }
               }
-            }, 100);
+            }
+          }, 100);
           this.variableLimpiar = true
         } else {
           this.variableLimpiar = false
         }
         console.log(this.cuentasCobrarArray);
-        
+
+
         if (this.cuentasCobrarArray.length == 0) {
           Swal.fire({
             icon: 'error',
@@ -3090,6 +3799,36 @@ export class HomeCarteraComponent implements OnInit {
         $('#offcanvasFilter').offcanvas('hide');
       }, (error: any) => {
         this.botonFiltro = false
+        console.log(error);
+      }
+    )
+  }
+
+  getCuentasSinGestionar() {
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+
+    if (!this.sinAsesor) {
+      this.sinAsesor = true
+      this.page = 0
+    }
+
+    this.cuentasCobrar.getCuentasSinGestionar(user, this.page, this.size).subscribe(
+      (data: any) => {
+        this.paginas = new Array(data.totalPages)
+        this.cuentasCobrarArray = data.content
+        this.last = data.last
+        this.first = data.first
+        this.numeroPages = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+        console.log(this.cuentasCobrar.proSubject);
+
+        console.log(data);
+        console.log(this.numeroPages);
+      }, (error: any) => {
         console.log(error);
       }
     )
@@ -3113,14 +3852,15 @@ export class HomeCarteraComponent implements OnInit {
       fechaCompromisoInicio: null,
       fechaCompromisoFin: null,
       isActive: false,
-      clasificacionGestion: []
+      clasificacionGestion: [],
+      sinAsesor: 0
     }
 
     this.bancosArray = []
     this.edadVenArray = []
     this.sedesArray = []
     this.clasJurArray = []
-    this.clasGesArray = []
+    this.clasGesArray = null
 
     if (accion == 'LIMPIAR') {
       this.buscarObligacion = ''
@@ -3193,29 +3933,29 @@ export class HomeCarteraComponent implements OnInit {
     }
   }
 
-  metodoClasGestion(tipo:string, clas: string) {
+  metodoClasGestion(tipo: string, clas: number) {
 
-    var objeto:any = {
+    var objeto: any = {
       tipoClasificacion: tipo,
-      nombreClasificacion: clas
+      id: clas
     }
-    
-    const index = this.clasGesArray.findIndex((element: any) => {
-      return element.tipoClasificacion === tipo && element.nombreClasificacion === clas;
-    });
 
-    if (index !== -1) {
-        this.clasGesArray.splice(index, 1);
+    this.clasGesArray = objeto
+
+  }
+
+  asignarAsesor() {
+    if (this.filtros.sinAsesor == 0) {
+      this.filtros.sinAsesor = asesor
     } else {
-        this.clasGesArray.push(objeto);
+      this.filtros.sinAsesor = 0
     }
-
-    console.log(this.clasGesArray);
+    console.log(this.filtros);
   }
 
   getByDato() {
     var td
-    var contenido:any
+    var contenido: any
     var partesMes
     var mesTd
     var anioTd
@@ -3237,12 +3977,10 @@ export class HomeCarteraComponent implements OnInit {
       (data: any) => {
         this.botonFiltrarObligacion = false
         this.cuentasCobrarBuscar = data
+        this.sinAsesor = false
+        console.log(this.cuentasCobrarBuscar);
+
         this.filtradoBuscar = true
-        this.numeroPages = 1
-        this.cuentasCobrar.proSubject.next(true);
-        for (const i of this.colcheck.toArray()) {
-          i.nativeElement.checked = false
-        }
 
         if (this.buscarObligacion != '' || (this.filtros.banco.length != 0) ||
           (this.filtros.diasVencidosInicio != 0 && this.filtros.diasVencidosInicio != null) ||
@@ -3257,31 +3995,31 @@ export class HomeCarteraComponent implements OnInit {
           (this.filtros.fechaGestionInicio != null) ||
           (this.filtros.fechaGestionFin != null) ||
           (this.filtros.fechaCompromisoInicio != null) ||
-          (this.filtros.fechaCompromisoFin != null)) {
-            setTimeout(() => {
-              for (let i = 0; i < this.size; i++) {
-                td = document.getElementById(`td_${i}`)
-  
-                if(td != null && td != undefined){
-                  contenido = td.textContent;
-  
-                  partesMes = contenido.split('/')
-  
-                  mesTd = parseInt(partesMes[1], 10)
-                  anioTd = parseInt(partesMes[2], 10)
-                  
-                  if(mesTd == mesActual && anioTd == anioActual){
-                    td.classList.add("gestionado")
-                  }
+          (this.filtros.fechaCompromisoFin != null) || (this.filtros.sinAsesor > 0)) {
+          setTimeout(() => {
+            for (let i = 0; i < this.size; i++) {
+              td = document.getElementById(`td_${i}`)
+
+              if (td != null && td != undefined) {
+                contenido = td.textContent;
+
+                partesMes = contenido.split('/')
+
+                mesTd = parseInt(partesMes[1], 10)
+                anioTd = parseInt(partesMes[2], 10)
+
+                if (mesTd == mesActual && anioTd == anioActual) {
+                  td.classList.add("gestionado")
                 }
               }
-            }, 100);
+            }
+          }, 100);
           this.variableLimpiar = true
         } else {
           this.variableLimpiar = false
         }
 
-        if (this.cuentasCobrarArray == null || this.cuentasCobrarArray.length == 0) {
+        if (this.cuentasCobrarBuscar == null || this.cuentasCobrarBuscar.length == 0) {
           this.spinner = true
           Swal.fire({
             icon: 'error',
@@ -3299,39 +4037,40 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   ordenarGestiones(gestiones: any[]) {
+
     var gesTrue = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'ACUERDO DE PAGO' && ges.clasificacion.isActive)
+
     gesTrue.forEach((ges: any) => {
       this.gestiones.push(ges)
+      var pos = this.gestiones.findIndex((gestion: any) => gestion == ges)
+      this.gestiones.splice(pos, 1)
     });
 
-    var tareas = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && ges.clasificacion.isActive)
+    var tareas = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && ges.clasificacion.isActive == true)
     if (tareas != null || tareas != undefined) {
       tareas.forEach((ges: any) => {
         this.gestiones.push(ges)
+        var pos = this.gestiones.findIndex((gestion: any) => gestion == ges)
+        this.gestiones.splice(pos, 1)
       });
     }
 
-    var notas = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'NOTA')
-    if (notas != null || notas != undefined) {
-      notas.forEach((ges: any) => {
-        this.gestiones.push(ges)
-      });
+    const objetosOrdenados: any[] = [...gestiones].sort((a, b) => {
+      return new Date(b.fechaGestion).getTime() - new Date(a.fechaGestion).getTime();
+    });
 
+    for (let obj of objetosOrdenados) {
+      this.gestiones.push(obj)
     }
 
-    var acuerdosFalse = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'ACUERDO DE PAGO' && !ges.clasificacion.isActive)
-    acuerdosFalse.forEach((ges: any) => {
-      this.gestiones.push(ges)
-    });
+    console.log(this.gestiones);
 
-    var tareaFalse = gestiones.filter((ges: any) => ges.clasificacion.clasificacion == 'TAREA' && !ges.clasificacion.isActive)
-    tareaFalse.forEach((ges: any) => {
-      this.gestiones.push(ges)
-    });
   }
 
-  agregarPagoACuotas() {
 
+
+
+  agregarPagoACuotas() {
     this.mostrarAgregarPago = true
     this.ocultarAgregarPago = false
     if (this.pago.detalle.trim() == '' || this.pago.detalle.trim() == null || this.pago.detalle.trim() == undefined) {
@@ -3391,10 +4130,28 @@ export class HomeCarteraComponent implements OnInit {
 
 
     if (this.pago.valor >= this.totalCuotasAcuerdo) {
-      valorTotal = this.totalCuotasAcuerdo;
-      this.saldoAcuerdoPago = this.totalCuotasAcuerdo
-      this.valorTotalIngresado = this.valorTotalIngresado + parseInt(valorTotal)
+
+
+      Swal.fire({
+        title: "El valor ingresado es mayor al valor del acuerdo",
+        text: "El valor de la cuota sera: " + this.saldoAcuerdoPago,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, continuar",
+        cancelButtonText: "No, cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          valorTotal = this.totalCuotasAcuerdo;
+          this.saldoAcuerdoPago = this.totalCuotasAcuerdo
+          this.valorTotalIngresado = this.valorTotalIngresado + parseInt(valorTotal)
+        }
+      });
+
+
     }
+
 
 
 
@@ -3402,25 +4159,220 @@ export class HomeCarteraComponent implements OnInit {
       this.cuotasList.forEach((c: CuotaList, i: number) => {
 
 
-
         if (c.pagos != null || c.pagos != undefined) {
           if (c.pagos.saldoCuota > 0) {
 
-            valorTotal = valorTotal - c.pagos.saldoCuota
 
 
-            this.coutasRequest[i].capitalCuota = this.coutasRequest[i].capitalCuota - this.coutasRequest[i].pagosDto!.saldoCuota
-            this.cuotasList[i].capitalCuota = this.cuotasList[i].capitalCuota - this.cuotasList[i].pagos!.saldoCuota
+            var saldoCuota = c.pagos.saldoCuota
+            if (saldoCuota > 0) {
 
-            this.coutasRequest[i].pagosDto!.saldoCuota = 0
-            this.cuotasList[i].pagos!.saldoCuota = 0
+              if (valorTotal <= c.pagos.saldoCuota) {
 
-            this.coutasRequest[i].pagosDto!.valorPago = c.valorCuota
-            this.cuotasList[i].pagos!.valorPago = this.coutasRequest[i].pagosDto!.valorPago
+
+                var restante = valorTotal
+
+                this.coutasRequest[i].pagosDto!.valorPago = valorTotal
+                this.cuotasList[i].pagos!.valorPago = this.coutasRequest[i].pagosDto!.valorPago
+
+
+
+
+
+
+                //HONORARIOS
+                if (this.cuotasList[i].saldoHonorarios > 0) {
+
+
+                  if (restante > 0 && restante >= this.cuotasList[i].saldoHonorarios) {
+                    restante = restante - this.cuotasList[i].saldoHonorarios
+
+
+                    this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.cuotasList[i].saldoHonorarios
+                    this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.cuotasList[i].saldoHonorarios
+
+                    this.coutasRequest[i].pagosDto!.honorarios = this.cuotasList[i].saldoHonorarios
+                    this.cuotasList[i].pagos!.valorHonorarios = this.cuotasList[i].saldoHonorarios
+                    saldoCuota = saldoCuota - this.cuotasList[i].saldoHonorarios
+
+
+
+                    this.coutasRequest[i].pagosDto!.saldoCuota = this.coutasRequest[i].pagosDto!.saldoCuota - this.cuotasList[i].saldoHonorarios
+
+                    this.cuotasList[i].pagos!.saldoCuota = this.cuotasList[i].pagos!.saldoCuota - this.cuotasList[i].saldoHonorarios
+                    this.cuotasList[i].saldoHonorarios = 0
+                    this.coutasRequest[i].saldoHonorario = 0
+
+
+                  } else {
+                    restante = 0
+
+                    var saldoHororario = this.cuotasList[i].saldoHonorarios - valorTotal
+
+
+                    this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - valorTotal
+                    this.saldoAcuerdoPago = this.saldoAcuerdoPago - valorTotal
+                    this.coutasRequest[i].pagosDto!.honorarios = valorTotal
+                    this.cuotasList[i].pagos!.valorHonorarios = valorTotal
+                    saldoCuota = saldoCuota - valorTotal
+                    this.coutasRequest[i].saldoHonorario = saldoHororario
+                    this.cuotasList[i].saldoHonorarios = saldoHororario
+
+                    this.coutasRequest[i].pagosDto!.saldoCuota = this.coutasRequest[i].pagosDto!.saldoCuota - valorTotal
+
+                    this.cuotasList[i].pagos!.saldoCuota = this.cuotasList[i].pagos!.saldoCuota - valorTotal
+                  }
+
+
+                }
+
+                //INTERESES
+                if (restante > 0 && this.cuotasList[i].salodInteresCuota > 0) {
+                  if (this.cuotasList[i].salodInteresCuota > 0 && restante > this.cuotasList[i].salodInteresCuota) {
+
+                    restante = restante - this.cuotasList[i].salodInteresCuota
+
+                    this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.cuotasList[i].salodInteresCuota
+                    this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.cuotasList[i].salodInteresCuota
+
+                    this.coutasRequest[i].pagosDto!.intereses = this.cuotasList[i].salodInteresCuota
+                    this.cuotasList[i].pagos!.valorIntereses = this.cuotasList[i].salodInteresCuota
+
+                    saldoCuota = saldoCuota - this.cuotasList[i].salodInteresCuota
+
+                    this.coutasRequest[i].pagosDto!.saldoCuota = this.coutasRequest[i].pagosDto!.saldoCuota - this.cuotasList[i].salodInteresCuota
+                    this.cuotasList[i].pagos!.saldoCuota = this.cuotasList[i].pagos!.saldoCuota - this.cuotasList[i].salodInteresCuota
+
+
+                    this.coutasRequest[i].saldoIntereses = 0
+                    this.cuotasList[i].salodInteresCuota = 0
+
+
+
+                  } else {
+                    restante = 0
+
+                    var saldoInteres = this.cuotasList[i].salodInteresCuota - valorTotal
+
+                    this.coutasRequest[i].saldoIntereses = saldoInteres
+                    this.cuotasList[i].salodInteresCuota = saldoInteres
+                    this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - valorTotal
+                    this.saldoAcuerdoPago = this.saldoAcuerdoPago - valorTotal
+
+                    this.coutasRequest[i].pagosDto!.intereses = valorTotal
+                    this.cuotasList[i].pagos!.valorIntereses = valorTotal
+
+                    saldoCuota = saldoCuota - valorTotal
+
+                    this.coutasRequest[i].pagosDto!.saldoCuota = this.coutasRequest[i].pagosDto!.saldoCuota - valorTotal
+                    this.cuotasList[i].pagos!.saldoCuota = this.cuotasList[i].pagos!.saldoCuota - valorTotal
+
+
+
+
+                  }
+
+                }
+                //CAPITAL
+                if (restante > 0) {
+
+                  this.coutasRequest[i].saldoCapital = this.cuotasList[i].saldoCapitalCuota - restante
+                  this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].saldoCapitalCuota - restante
+                  this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - restante
+                  this.saldoAcuerdoPago = this.saldoAcuerdoPago - restante
+
+                  this.coutasRequest[i].pagosDto!.capital = restante
+                  this.cuotasList[i].pagos!.valorCapital = restante
+
+                  this.coutasRequest[i].pagosDto!.saldoCuota = this.coutasRequest[i].pagosDto!.saldoCuota - restante
+                  this.cuotasList[i].pagos!.saldoCuota = this.cuotasList[i].pagos!.saldoCuota - restante
+
+
+
+                  restante = 0
+
+                } else {
+
+                  this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].capitalCuota
+                  this.coutasRequest[i].saldoCapital = this.cuotasList[i].capitalCuota
+                  this.coutasRequest[i].pagosDto!.saldoCuota = 0
+                }
+                valorTotal = 0
+              } else {
+
+                valorTotal = valorTotal - c.pagos.saldoCuota
+
+                this.coutasRequest[i].pagosDto!.valorPago = c.valorCuota
+                this.cuotasList[i].pagos!.valorPago = this.coutasRequest[i].pagosDto!.valorPago
+
+                this.coutasRequest[i].pagosDto!.capital = c.capitalCuota
+                this.cuotasList[i].pagos!.valorCapital = c.capitalCuota
+
+                this.coutasRequest[i].pagosDto!.intereses = c.interesCuota
+                this.cuotasList[i].pagos!.valorIntereses = c.interesCuota
+
+                this.coutasRequest[i].pagosDto!.honorarios = c.honorarios
+                this.cuotasList[i].pagos!.valorHonorarios = c.honorarios
+
+
+
+
+                saldoCuota = saldoCuota - this.cuotasList[i].salodInteresCuota
+                if (c.salodInteresCuota == c.interesCuota) {
+                  this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - c.interesCuota
+                  this.saldoAcuerdoPago = this.saldoAcuerdoPago - c.interesCuota
+                } else {
+                  this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - c.salodInteresCuota
+                  this.saldoAcuerdoPago = this.saldoAcuerdoPago - c.salodInteresCuota
+                }
+                this.cuotasList[i].salodInteresCuota = 0
+                this.coutasRequest[i].saldoIntereses = 0
+
+
+                saldoCuota = saldoCuota - this.cuotasList[i].saldoHonorarios
+                if (c.saldoHonorarios == c.honorarios) {
+                  this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - c.honorarios
+                  this.saldoAcuerdoPago = this.saldoAcuerdoPago - c.honorarios
+                } else {
+                  this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - c.saldoHonorarios
+                  this.saldoAcuerdoPago = this.saldoAcuerdoPago - c.saldoHonorarios
+                }
+                this.cuotasList[i].saldoHonorarios = 0
+                this.coutasRequest[i].saldoIntereses = 0
+
+                saldoCuota = saldoCuota - this.cuotasList[i].saldoCapitalCuota
+                if (c.saldoCapitalCuota == c.capitalCuota) {
+                  this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - c.capitalCuota
+                  this.saldoAcuerdoPago = this.saldoAcuerdoPago - c.capitalCuota
+                } else {
+                  this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - c.saldoCapitalCuota
+                  this.saldoAcuerdoPago = this.saldoAcuerdoPago - c.saldoCapitalCuota
+                }
+
+                this.coutasRequest[i].saldoCapital = 0
+                this.cuotasList[i].saldoCapitalCuota = 0
+
+                this.coutasRequest[i].pagosDto!.saldoCuota = saldoCuota
+                this.cuotasList[i].pagos!.saldoCuota = saldoCuota
+
+
+              }
+
+
+
+
+            }
+
+
+
+          } else {
+            this.coutasRequest[i].pagosDto!.idPago = c.pagos.idPago
           }
         }
 
-        if (c.pagos == null || c.pagos == undefined && valorTotal > 0) {
+        if ((c.pagos == null || c.pagos == undefined) && valorTotal > 0) {
+
+
 
           if (valorTotal > 0 && valorTotal >= c.valorCuota) {
 
@@ -3430,7 +4382,12 @@ export class HomeCarteraComponent implements OnInit {
               valorPago: c.valorCuota,
               fechaPago: date,
 
-              saldoCuota: 0
+              saldoCuota: 0,
+              capital: c.capitalCuota,
+              intereses: c.interesCuota,
+              honorarios: c.honorarios,
+              existed: false,
+              idPago: 0
             }
 
             var pagosOriginal: Pagos = {
@@ -3439,7 +4396,10 @@ export class HomeCarteraComponent implements OnInit {
               fechaPago: pagos.fechaPago,
               usuarioId: 0,
               saldoCuota: pagos.saldoCuota,
-              reciboPago: null
+              reciboPago: null,
+              valorCapital: c.capitalCuota,
+              valorIntereses: c.interesCuota,
+              valorHonorarios: c.honorarios
             }
 
             if (valorTotal > c.valorCuota) {
@@ -3453,19 +4413,22 @@ export class HomeCarteraComponent implements OnInit {
               this.coutasRequest[i].pagosDto = pagos
               this.cuotasList[i].pagos = pagosOriginal
 
+
+
               this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - this.coutasRequest[i].capitalCuota
               this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
               this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.coutasRequest[i].interesCuota
+              this.saldoAcuerdoPago = this.saldoAcuerdoPago - c.valorCuota
 
 
-              this.coutasRequest[i].capitalCuota = 0
-              this.coutasRequest[i].honorarios = 0
-              this.coutasRequest[i].interesCuota = 0
+              this.coutasRequest[i].saldoCapital = 0
+              this.coutasRequest[i].saldoHonorario = 0
+              this.coutasRequest[i].saldoIntereses = 0
 
 
-              this.cuotasList[i].capitalCuota = 0
-              this.cuotasList[i].honorarios = 0
-              this.cuotasList[i].interesCuota = 0
+              this.cuotasList[i].saldoCapitalCuota = 0
+              this.cuotasList[i].saldoHonorarios = 0
+              this.cuotasList[i].salodInteresCuota = 0
             }
 
 
@@ -3476,27 +4439,32 @@ export class HomeCarteraComponent implements OnInit {
               if (this.coutasRequest[i].honorarios > 0) {
                 if (difere > 0) {
                   difere = difere - this.coutasRequest[i].honorarios
-                  this.coutasRequest[i].honorarios = 0
-                  this.cuotasList[i].honorarios = 0
+                  this.coutasRequest[i].saldoHonorario = 0
+                  this.cuotasList[i].saldoHonorarios = 0
                   this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
+                  this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.coutasRequest[i].honorarios
                 }
               }
 
               if (difere > 0) {
-                if (this.coutasRequest[i].interesCuota <= difere) {
+                if (this.coutasRequest[i].interesCuota > 0) {
                   difere = difere - this.coutasRequest[i].interesCuota
-                  this.coutasRequest[i].interesCuota = 0
-                  this.cuotasList[i].interesCuota = 0
+                  this.coutasRequest[i].saldoIntereses = 0
+                  this.cuotasList[i].salodInteresCuota = 0
                   this.saldoInteresesAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].interesCuota
+                  this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.coutasRequest[i].interesCuota
                 }
               }
 
               if (difere > 0) {
-                this.coutasRequest[i].capitalCuota = this.coutasRequest[i].capitalCuota - difere
-                this.cuotasList[i].capitalCuota = this.cuotasList[i].capitalCuota - difere
+                this.coutasRequest[i].saldoCapital = this.coutasRequest[i].capitalCuota - difere
+                this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].capitalCuota - difere
                 this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - difere
-
+                this.saldoAcuerdoPago = this.saldoAcuerdoPago - difere
               }
+
+              valorTotal = 0
+
 
             }
 
@@ -3507,82 +4475,156 @@ export class HomeCarteraComponent implements OnInit {
               this.coutasRequest[i].pagosDto = pagos
               this.cuotasList[i].pagos = pagosOriginal
 
-              this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
-              this.coutasRequest[i].honorarios = 0
-              this.cuotasList[i].honorarios = 0
+              this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.cuotasList[i].honorarios
+              this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.cuotasList[i].honorarios
+              this.coutasRequest[i].saldoHonorario = 0
+              this.cuotasList[i].saldoHonorarios = 0
 
 
-              this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.coutasRequest[i].interesCuota
-              this.coutasRequest[i].interesCuota = 0
-              this.cuotasList[i].interesCuota = 0
+              this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.cuotasList[i].interesCuota
+              this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.cuotasList[i].interesCuota
+              this.coutasRequest[i].saldoIntereses = 0
+              this.cuotasList[i].salodInteresCuota = 0
 
-              this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - this.coutasRequest[i].capitalCuota
-              this.coutasRequest[i].capitalCuota = 0
-              this.cuotasList[i].capitalCuota = 0
+              this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - this.cuotasList[i].capitalCuota
+              this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.cuotasList[i].capitalCuota
+              this.coutasRequest[i].saldoCapital = 0
+              this.cuotasList[i].saldoCapitalCuota = 0
+
+
 
             }
+
+
           } else {
-            if (valorTotal == 0) {
-              i = 0
+            if (valorTotal > 0 && valorTotal < c.valorCuota) {
 
-              return;
-            }
+              if (valorTotal == 0) {
+                i = 0
 
-            var pagos: PagosRequest = {
-              valorPago: valorTotal,
-              fechaPago: date,
+                return;
+              }
 
-              saldoCuota: c.valorCuota - valorTotal
-            }
-            var pagosOriginal: Pagos = {
-              idPago: 0,
-              valorPago: pagos.valorPago,
-              fechaPago: pagos.fechaPago,
-              usuarioId: 0,
-              saldoCuota: pagos.saldoCuota,
-              reciboPago: null
-            }
+              var pagos: PagosRequest = {
+                valorPago: valorTotal,
+                fechaPago: date,
+
+                saldoCuota: 0,
+                capital: 0,
+                intereses: 0,
+                honorarios: 0,
+                existed: false,
+                idPago: 0
+              }
+              var pagosOriginal: Pagos = {
+                idPago: 0,
+                valorPago: 0,
+                fechaPago: pagos.fechaPago,
+                usuarioId: 0,
+                saldoCuota: 0,
+                reciboPago: null,
+                valorCapital: 0,
+                valorIntereses: 0,
+                valorHonorarios: 0
+              }
 
 
-            var difere = valorTotal
+              var difere = valorTotal
 
 
-            if (this.coutasRequest[i].honorarios > 0) {
-              if (difere > 0) {
-                difere = difere - this.coutasRequest[i].honorarios
-                this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.coutasRequest[i].honorarios
-                this.coutasRequest[i].honorarios = 0
-                this.cuotasList[i].honorarios = 0
+
+
+              if (difere > this.cuotasList[i].saldoHonorarios) {
+                difere = difere - this.cuotasList[i].saldoHonorarios
+                valorTotal = difere
+
+                pagos.honorarios = this.cuotasList[i].saldoHonorarios
+                pagosOriginal.valorHonorarios = this.cuotasList[i].saldoHonorarios
+                this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - this.cuotasList[i].saldoHonorarios
+                this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.cuotasList[i].saldoHonorarios
+                this.coutasRequest[i].saldoHonorario = 0
+                this.cuotasList[i].saldoHonorarios = 0
+              } else {
+                if (difere > 0) {
+                  this.saldoHonoriariosAcuerdo = this.saldoHonoriariosAcuerdo - difere
+                  this.saldoAcuerdoPago = this.saldoAcuerdoPago - difere
+                  this.coutasRequest[i].saldoHonorario = this.cuotasList[i].saldoHonorarios - difere
+                  this.cuotasList[i].saldoHonorarios = this.cuotasList[i].saldoHonorarios - difere
+                  pagos.honorarios = difere
+                  pagosOriginal.valorHonorarios = difere
+                  difere = 0
+                  valorTotal = difere
+                }
+              }
+
+
+
+
+
+              if (difere > this.cuotasList[i].salodInteresCuota) {
+                difere = difere - this.cuotasList[i].salodInteresCuota
+                valorTotal = difere
+                pagos.intereses = this.cuotasList[i].salodInteresCuota
+                pagosOriginal.valorIntereses = this.cuotasList[i].salodInteresCuota
+                this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.cuotasList[i].salodInteresCuota
+                this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.cuotasList[i].salodInteresCuota
+                this.coutasRequest[i].saldoIntereses = 0
+                this.cuotasList[i].salodInteresCuota = 0
+              } else {
+
+                if (difere > 0) {
+
+                  this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - difere
+                  this.saldoAcuerdoPago = this.saldoAcuerdoPago - difere
+                  this.coutasRequest[i].saldoIntereses = this.cuotasList[i].salodInteresCuota - difere
+                  this.cuotasList[i].salodInteresCuota = this.cuotasList[i].salodInteresCuota - difere
+                  pagos.intereses = difere
+                  pagosOriginal.valorIntereses = difere
+                  difere = 0
+                  valorTotal = difere
+                }
+              }
+
+
+
+
+              if (difere > this.cuotasList[i].saldoCapitalCuota) {
+                difere = difere - this.cuotasList[i].saldoCapitalCuota
+
+                pagos.capital = this.cuotasList[i].saldoCapitalCuota
+                pagosOriginal.valorCapital = this.cuotasList[i].saldoCapitalCuota
+                this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - difere
+                this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.cuotasList[i].saldoCapitalCuota
+                this.coutasRequest[i].saldoCapital = this.cuotasList[i].saldoCapitalCuota - difere
+                this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].saldoCapitalCuota - difere
+
+              } else {
+                if (difere > 0) {
+                  this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - difere
+                  this.saldoAcuerdoPago = this.saldoAcuerdoPago - difere
+                  this.coutasRequest[i].saldoCapital = this.cuotasList[i].saldoCapitalCuota - difere
+                  this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].saldoCapitalCuota - difere
+                  pagos.capital = difere
+                  pagosOriginal.valorCapital = difere
+                  difere = 0
+                  valorTotal = difere
+                } else {
+                  this.coutasRequest[i].saldoCapital = this.cuotasList[i].capitalCuota
+                  this.cuotasList[i].saldoCapitalCuota = this.cuotasList[i].capitalCuota
+                }
+              }
+
+
+              if (this.cuotasList[i].saldoCapitalCuota > 0) {
+                pagos.saldoCuota = this.cuotasList[i].saldoCapitalCuota + this.cuotasList[i].saldoHonorarios + this.cuotasList[i].salodInteresCuota
+                pagosOriginal.saldoCuota = this.cuotasList[i].saldoCapitalCuota + this.cuotasList[i].saldoHonorarios + this.cuotasList[i].salodInteresCuota
 
               }
-            }
-
-            if (difere > 0) {
-              if (this.coutasRequest[i].interesCuota <= difere) {
-                difere = difere - this.coutasRequest[i].interesCuota
-                this.saldoInteresesAcuerdo = this.saldoInteresesAcuerdo - this.coutasRequest[i].interesCuota
-                this.coutasRequest[i].interesCuota = 0
-                this.cuotasList[i].interesCuota = 0
-
-              }
-            }
-
-            if (difere > 0) {
-              this.saldoCapitalAcuerdo = this.saldoCapitalAcuerdo - difere
-              this.coutasRequest[i].capitalCuota = this.coutasRequest[i].capitalCuota - difere
-              this.cuotasList[i].capitalCuota = this.cuotasList[i].capitalCuota - difere
 
 
-            }
+              this.coutasRequest[i].pagosDto = pagos
+              this.cuotasList[i].pagos = pagosOriginal
 
-
-            valorTotal = valorTotal - valorTotal
-            this.coutasRequest[i].pagosDto = pagos
-            this.cuotasList[i].pagos = pagosOriginal
-
-            if (this.gestionSelected.clasificacion.coutasList[i].capitalCuota > 0) {
-              this.cuotasList[i].pagos.saldoCuota = this.cuotasList[i].capitalCuota
-              this.coutasRequest[i].pagosDto!.saldoCuota = this.cuotasList[i].capitalCuota
             }
           }
 
@@ -3590,44 +4632,51 @@ export class HomeCarteraComponent implements OnInit {
 
         }
 
-        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) < new Date()) {
+        if (c.pagos != null || c.pagos != undefined) {
 
-          this.coutasRequest[i].cumplio = false
-          this.cuotasList[i].cumplio = false
-          this.pago.cumpliendo = false
+          if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) <= new Date()) {
+
+            this.coutasRequest[i].cumplio = false
+            this.cuotasList[i].cumplio = false
+            this.pago.cumpliendo = false
+          }
+
+
+          if (c.pagos.saldoCuota > 0 && new Date(c.fechaVencimiento) > new Date()) {
+
+            this.coutasRequest[i].cumplio = false
+            this.cuotasList[i].cumplio = false
+            this.pago.cumpliendo = false
+
+
+          }
+
+          if (c.pagos.saldoCuota == 0) {
+            this.coutasRequest[i].cumplio = true
+            this.cuotasList[i].cumplio = true
+            this.pago.cumpliendo = true
+          }
+
+
         }
-
-
-        if (c.pagos!.saldoCuota > 0 && new Date(c.fechaVencimiento) >= new Date()) {
-
-          this.coutasRequest[i].cumplio = true
-          this.cuotasList[i].cumplio = true
-          this.pago.cumpliendo = true
-
-        }
-
-        if (c.pagos!.saldoCuota == 0) {
-          this.coutasRequest[i].cumplio = true
-          this.cuotasList[i].cumplio = true
-          this.pago.cumpliendo = true
-        }
-
 
         this.coutasRequest[i].pago = c.pago
+
+
+
+
+
 
       })
 
 
-      if (this.saldoAcuerdoPago < this.pago.valor) {
-        this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.saldoAcuerdoPago
-      } else {
-        this.saldoAcuerdoPago = this.saldoAcuerdoPago - this.pago.valor
-      }
+
       this.pago.valor = 0
       this.activarGuardarPago = true
       this.ocultarCrearRevision = false
-
     }
+
+
   }
 
   crearNotaRevision() {
@@ -3661,7 +4710,16 @@ export class HomeCarteraComponent implements OnInit {
           text: 'Nota Guardada Con Éxito',
           timer: 3000
         })
+        this.detalleRevision = ''
         this.spinnerCrearNota = false
+        this.ocultarCrearRevision = false
+
+        if (!this.filtroAgain) {
+          this.getCuentasCobrar()
+        } else {
+          this.filtro()
+        }
+        this.desbloquearCuenta(this.cuentaCobrarSelected.idCuentasPorCobrar);
       }, (error: any) => {
         Swal.fire({
           icon: 'error',
@@ -3677,7 +4735,17 @@ export class HomeCarteraComponent implements OnInit {
 
   }
 
+  cancelNota() {
+    this.detalleRevision = ''
+    this.spinnerCrearNota = false
+    this.ocultarCrearRevision = false
+    this.ocultarAgregarPago = false
+  }
+
   generarRecibo() {
+
+
+
 
     var coutasFiltradas = this.coutasRequest.filter((c: CuotasRequest) => !c.pago && c.pagosDto != null)
 
@@ -3687,21 +4755,26 @@ export class HomeCarteraComponent implements OnInit {
 
 
 
+
     var recibo = {
       numeroObligacion: this.cuentaCobrarSelected.numeroObligacion,
       numeroRecibo: this.pago.numeroRecibo,
       cuotasDto: coutasFiltradas,
-      valorTotal: this.valorTotalIngresado,
+      valorTotal: Number(this.valorTotalIngresado),
       acuerdoTotal: this.saldoAcuerdoPago,
-      capitalTotal: this.saldoCapitalAcuerdo,
-      honorariosTotal: this.saldoHonoriariosAcuerdo,
-      interesesTotal: this.saldoInteresesAcuerdo,
+      capitalTotal: 0,
+      honorariosTotal: 0,
+      interesesTotal: 0,
       detalle: this.pago.detalle,
       metodoPago: this.pago.medioPago,
       cumpliendo: this.pago.cumpliendo,
       username: '',
-      nombreClasificacion: "Acuerdo de pago/Recaudo"
+      nombreClasificacion: "Acuerdo de pago/Recaudo",
+      saldoCapital: this.saldoCapitalAcuerdo,
+      saldoInteresesMora: this.saldoInteresesAcuerdo,
+      saldoHonorarios: this.saldoHonoriariosAcuerdo
     }
+
 
 
     console.log(recibo);
@@ -3716,7 +4789,7 @@ export class HomeCarteraComponent implements OnInit {
 
           this.mostrarReciboPago(data.base64)
           this.getGestiones(this.cuentaCobrarSelected.numeroObligacion)
-
+          this.desbloquearCuenta(this.cuentaCobrarSelected.idCuentasPorCobrar);
           this.activarGuardarPago = false
           this.savePago = false
           this.coutasRequest = []
@@ -3739,7 +4812,7 @@ export class HomeCarteraComponent implements OnInit {
     }
 
     $('#modalGestionCom').modal('hide');
-
+    this.valorTotalIngresado = 0
 
   }
 
@@ -3764,6 +4837,42 @@ export class HomeCarteraComponent implements OnInit {
     $('#reciboPago').modal('show');
   }
 
+  getItems() {
+
+    var user = this.authService.getUsername();
+
+    if (user != null) {
+      this.cuentasCobrar.getItems(user).subscribe(
+        (data: any) => {
+
+          this.sedes = []
+          data.sedes.forEach((s: any) => {
+            var sede = {
+              'sede': s
+            }
+            this.sedes.push(sede)
+          });
+
+          this.tiposVen = []
+          data.vencimientos.forEach((tv: any) => {
+            var tipos: TipoVencimiento = {
+              'tipoVencimiento': tv,
+              idTipoVencimiento: 0
+            }
+            this.tiposVen.push(tipos)
+          });
+
+          this.clasificacionesJuridicas = []
+          this.clasificacionesJuridicas = data.clasificacionJuridica
+
+          console.log(data);
+        }, (error: any) => {
+          console.log(error);
+        }
+      )
+    }
+  }
+
   // NOTIFICACIONES
   getNotificaciones() {
     var user = this.authService.getUsername()
@@ -3772,31 +4881,29 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-    this.cuentasCobrar.getNotificacionesVencidas(user).subscribe(
+    this.cuentasCobrar.getNotificacionesVencidas(user, this.pageVen, this.sizeVen).subscribe(
       (data: any) => {
-        this.notiArrayVencidas = data
+        this.paginasVen = new Array(data.totalPages)
+        this.notiArrayVencidas = data.content
+        this.totalNotiVen = data.totalElements
+        this.lastVen = data.last
+        this.firtsVen = data.first
+        this.numeroPagesVen = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
         console.log(this.notiArrayVencidas);
-        
+
         if (user == null || user == undefined) {
           return
         }
-        this.cuentasCobrar.getAllNotificaciones(user).subscribe(
+        this.cuentasCobrar.getAllNotificaciones(user, this.pageAll, this.sizeAll).subscribe(
           (data: any) => {
-            this.notiArray = data
+            this.paginasAll = new Array(data.totalPages)
+            this.notiArray = data.content
+            this.lastAll = data.last
+            this.firtsAll = data.first
+            this.numeroPagesAll = data.totalPages
+            this.cuentasCobrar.proSubject.next(true);
             console.log(this.notiArray);
-            
-            if (user == null || user == undefined) {
-              return
-            }
-
-            this.cuentasCobrar.getNotificacionesRealizadas(user).subscribe(
-              (data: any) => {
-                this.notiArrayRealizadas = data
-                console.log(this.notiArrayRealizadas);
-                
-              }
-            )
-
           }, (error: any) => {
             console.log(error);
           }
@@ -3807,90 +4914,451 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
-  getNotiVenBySede(){
+  getNotiVen() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
       return
     }
 
-    if(this.filtroVen == '' || this.filtroVen == null){
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Seleccione Un Filtro',
-        timer: 3000
-      })
-      return
-    }
-
-    this.cuentasCobrar.getVencidasBySede(this.filtroVen, user, this.tipoVen).subscribe(
-      (data:any) => {
-        this.notiArrayVencidas = data
+    this.cuentasCobrar.getNotificacionesVencidas(user, this.pageVen, this.sizeVen).subscribe(
+      (data: any) => {
+        this.paginasVen = new Array(data.totalPages)
+        this.notiArrayVencidas = data.content
+        this.lastVen = data.last
+        this.firtsVen = data.first
+        this.numeroPagesVen = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
         console.log(this.notiArrayVencidas);
-        if(this.notiArrayVencidas.length == 0){
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No Hay Notificaciones Con Este Filtro',
-            timer: 3000
-          })
-          setTimeout(() => {
-            this.getNotificaciones()
-          }, 3000);
-        }
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  getNotiAllBySede(){
+  getNotiAll() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
       return
     }
 
-    if(this.filtroAll == '' || this.filtroAll == null){
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Seleccione Un Filtro',
-        timer: 3000
-      })
-      return
-    }
-
-    this.cuentasCobrar.getAllBySede(this.filtroAll, user, this.tipoAll).subscribe(
-      (data:any) => {
-        this.notiArray = data
+    this.cuentasCobrar.getAllNotificaciones(user, this.pageAll, this.sizeAll).subscribe(
+      (data: any) => {
+        this.paginasAll = new Array(data.totalPages)
+        this.notiArray = data.content
+        this.lastAll = data.last
+        this.firtsAll = data.first
+        this.numeroPagesAll = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
         console.log(this.notiArray);
-        if(this.notiArray.length == 0){
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No Hay Notificaciones Con Este Filtro',
-            timer: 3000
-          })
-          setTimeout(() => {
-            this.getNotificaciones()
-          }, 3000);
-        }
-      }, (error:any) => {
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  getNotiRealizadasBySede(){
+  openGestion(obligacion: string, idGestion: number, idNotifi: number, tipoGestion: string) {
+    this.spinnerSidebar = true
+    this.cuentaCobrarSelected = {
+      idCuentasPorCobrar: 0,
+      numeroObligacion: '',
+      cliente: '',
+      documentoCliente: '',
+      fechaCuentaCobrar: '',
+      fechaVencimiento: '',
+      tipo: '',
+      valorNotaDebito: 0,
+      valorCuota: 0,
+      valorPagos: 0,
+      nombre_usuario: '',
+      clasificacion: '',
+      vendedor: '',
+      clasificacionJuridica: '',
+      detalle: '',
+      sede: {
+        idSede: 0,
+        sede: ''
+      },
+      banco: {
+        idBanco: 0,
+        banco: ''
+      },
+      diasVencidos: 0,
+      gestion: [],
+      edadVencimiento: '',
+      condicionEspecial: '',
+      numeroCreditos: 0,
+      pagare: '',
+      moraObligatoria: 0,
+      totalObligatoria: 0,
+      cuotasMora: 0,
+      cuotas: 0,
+      asesorCarteraResponse: {
+        idAsesorCartera: 0,
+        usuario: {
+          idUsuario: 0,
+          username: '',
+          email: '',
+          nombres: '',
+          apellidos: '',
+          sede: '',
+          tipo_documento: '',
+          numero_documento: '',
+          celular: '',
+          fecha_nacimiento: new Date,
+          fecha_creacion: new Date,
+          status: false,
+          roles: [],
+          enabled: false,
+          authorities: [],
+          accountNonLocked: false,
+          accountNonExpired: false,
+          credentialsNonExpired: false,
+          password: ''
+        }
+      },
+      clientes: []
+    }
+
+    this.acuerdo = {
+      detalle: '',
+      valorCuotaMensual: 0,
+      tipoAcuerdo: '',
+      valorTotalAcuerdo: 0,
+      valorInteresesMora: 0,
+      honoriarioAcuerdo: 0,
+      fechaCompromiso: new Date,
+      cuotasList: [],
+      username: ''
+    }
+
+    this.newGestion = {
+      numeroObligacion: '',
+      clasificacion: {
+        tipoClasificacion: null,
+        tarea: null,
+        nota: null,
+        acuerdoPago: null,
+        nombreClasificacion: ''
+      },
+      contact: false,
+      detallesAdicionales: '',
+      usernameToSetNotificacion: '',
+      userNotifying: '',
+      notificacionId: null,
+      clasificacionId: null
+    }
+
+    this.acuerdo = {
+      detalle: '',
+      valorCuotaMensual: 0,
+      tipoAcuerdo: '',
+      valorTotalAcuerdo: 0,
+      valorInteresesMora: 0,
+      honoriarioAcuerdo: 0,
+      fechaCompromiso: '',
+      cuotasList: [],
+      username: ''
+    }
+
+    this.nota = {
+      detalle: ''
+    }
+
+    this.tarea = {
+      detalleTarea: '',
+      fechaFinTarea: '',
+      isPartOfRecaudo: false
+    }
+
+    this.codeudoresSelected = []
+    $('#modalObligacion').modal('hide');
+
+    this.getGestiones(obligacion);
+
+    setTimeout(() => {
+      this.cuentasCobrar.getCuentaByObligacion(obligacion).subscribe(
+        (data: any) => {
+          this.cuentaCobrarSelected = data
+          console.log(this.cuentaCobrarSelected);
+          this.saldoCapitalTotalFirst = data.clientes[0].saldoActual
+          this.moraObligatoriaFirst = data.moraObligatoria
+          this.calcularFirst()
+          this.codeudores = data.clientes
+          this.codeudores = this.codeudores.filter((c: any) => c.tipoGarante.tipoGarante != 'TITULAR')
+          this.cuentasCalcular.numeroObligacion = obligacion
+          this.newGestion = {
+            numeroObligacion: this.newGestion.numeroObligacion,
+            clasificacion: {
+              tipoClasificacion: '',
+              tarea: null,
+              nota: null,
+              acuerdoPago: null,
+              nombreClasificacion: ''
+            },
+            contact: false,
+            detallesAdicionales: this.newGestion.detallesAdicionales,
+            usernameToSetNotificacion: '',
+            userNotifying: '',
+            notificacionId: null,
+            clasificacionId: null
+          }
+
+          if (this.cuentaCobrarSelected.documentoCliente != '') {
+            this.spinnerSidebar = false
+          }
+
+          this.notiId = idNotifi
+
+          if (tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA') {
+            this.notiId = null
+            this.clasifiNotiId = null
+          }
+
+
+          setTimeout(() => {
+            $('#modalGestionCom').modal('show');
+            var gestion = this.gestiones.find((g: any) => g.clasificacion.idClasificacionGestion == idGestion)
+
+            this.positionGestionSelected = this.gestiones.indexOf(gestion)
+
+            this.obtenerGestionSelected()
+            console.log(this.notiId);
+            console.log(this.clasifiNotiId);
+
+          }, 1000);
+
+        }, (error: any) => {
+          if (this.cuentaCobrarSelected.clientes.length == 0 || this.cuentaCobrarSelected.totalObligatoria == 0) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Cliente Sin Saldo En El Sistema',
+              timer: 3000
+            })
+            $('#offcanvasRight').offcanvas('hide');
+
+            this.notiId = idNotifi
+
+            if (tipoGestion == 'ACUERDO DE PAGO' || tipoGestion == 'NOTA') {
+              this.notiId = null
+              this.clasifiNotiId = null
+            }
+
+            setTimeout(() => {
+              $('#modalGestionCom').modal('show');
+              var gestion = this.gestiones.find((g: any) => g.clasificacion.idClasificacionGestion == idGestion)
+
+              this.positionGestionSelected = this.gestiones.indexOf(gestion)
+
+              this.obtenerGestionSelected()
+              console.log(this.notiId);
+              console.log(this.clasifiNotiId);
+
+            }, 3000);
+          }
+          console.log(error);
+        }
+      )
+    }, 2000);
+
+  }
+
+  validateCuenta(idCuenta: number) {
+    this.cuentasCobrar.getCuentaBlocked(idCuenta).pipe(
+      tap((data: any) => {
+        if (data != null && data != undefined) {
+          $('#modalGestion').modal('show');
+        }
+        console.log(data);
+      }), catchError((error: any) => {
+        if (error.status == 400) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Esta cuenta ya fue tomada por un asesor',
+            timer: 3000
+          })
+        }
+        console.log(error);
+        return of([])
+      })
+    ).subscribe()
+  }
+
+  desbloquearCuenta(idCuenta: number) {
+    this.cuentasCobrar.getCuentaChangeBlocked(idCuenta).pipe(
+      tap((data: any) => {
+        console.log(data);
+      }), catchError((error: any) => {
+        console.log(error);
+        return of([])
+      })
+    ).subscribe()
+  }
+
+  //PAGINACION NOTIFICACIONES
+
+  //TODAS
+  backAll() {
+    if (!this.firtsAll) {
+      this.pageAll--
+      if (this.filtrandoNoti) {
+        this.getNotiAllBySede()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConAll = con;
+            this.contAll = this.contAll - this.sizeAll
+            this.proSubscriptionBack!.unsubscribe()
+          }
+        );
+      } else {
+        this.getNotiAll()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConAll = con;
+            this.contAll = this.contAll - this.sizeAll
+            this.proSubscriptionBack!.unsubscribe()
+          }
+        );
+      }
+    }
+  }
+
+  nextAll() {
+    if (!this.lastAll) {
+      this.pageAll++
+      if (this.filtrandoNoti) {
+        this.getNotiAllBySede()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConAll = con;
+            this.contAll = this.contAll + this.sizeAll
+            this.proSubscriptionNext!.unsubscribe()
+          }
+        );
+      } else {
+        this.getNotiAll()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConAll = con;
+            this.contAll = this.contAll + this.sizeAll
+            this.proSubscriptionNext!.unsubscribe()
+          }
+        );
+      }
+    }
+  }
+
+  goToPageAll(page: number) {
+    this.pageAll = page
+    if (this.filtrandoNoti) {
+      this.getNotiAllBySede()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isConAll = con;
+          this.contAll = this.initialConAll + (this.pageAll * this.sizeAll);
+          this.proSubscriptionNext!.unsubscribe()
+        }
+      );
+    } else {
+      this.getNotiAll()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isConAll = con;
+          this.contAll = this.initialConAll + (this.pageAll * this.sizeAll);
+          this.proSubscriptionNext!.unsubscribe()
+        }
+      );
+    }
+
+  }
+
+  //VENCIDAS
+  backVen() {
+    if (!this.firtsVen) {
+      this.pageVen--
+      if (this.filtrandoNoti) {
+        this.getNotiVenBySede()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConVen = con;
+            this.contVen = this.contVen - this.sizeVen
+            this.proSubscriptionBack!.unsubscribe()
+          }
+        );
+      } else {
+        this.getNotiVen()
+        this.proSubscriptionBack = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConVen = con;
+            this.contVen = this.contVen - this.sizeVen
+            this.proSubscriptionBack!.unsubscribe()
+          }
+        );
+      }
+    }
+  }
+
+  nextVen() {
+    if (!this.lastVen) {
+      this.pageVen++
+      if (this.filtrandoNoti) {
+        this.getNotiVenBySede()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConVen = con;
+            this.contVen = this.contVen + this.sizeVen
+            this.proSubscriptionNext!.unsubscribe()
+          }
+        );
+      } else {
+        this.getNotiVen()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isConVen = con;
+            this.contVen = this.contVen + this.sizeVen
+            this.proSubscriptionNext!.unsubscribe()
+          }
+        );
+      }
+    }
+  }
+
+  goToPageVen(page: number) {
+    this.pageVen = page
+    if (this.filtrandoNoti) {
+      this.getNotiVenBySede()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isConVen = con;
+          this.contVen = this.initialConVen + (this.pageVen * this.sizeVen);
+          this.proSubscriptionNext!.unsubscribe()
+        }
+      );
+    } else {
+      this.getNotiVen()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isConVen = con;
+          this.contVen = this.initialConVen + (this.pageVen * this.sizeVen);
+          this.proSubscriptionNext!.unsubscribe()
+        }
+      );
+    }
+
+  }
+
+
+  getNotiVenBySede() {
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
       return
     }
 
-    if(this.filtroRealizada == '' || this.filtroRealizada == null){
+    if (this.filtroVen == '' || this.filtroVen == null) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -3900,11 +5368,18 @@ export class HomeCarteraComponent implements OnInit {
       return
     }
 
-    this.cuentasCobrar.getRealizadasBySede(this.filtroRealizada, user, this.tipoReal).subscribe(
-      (data:any) => {
-        this.notiArrayRealizadas = data
-        console.log(this.notiArrayRealizadas);
-        if(this.notiArrayRealizadas.length == 0){
+    this.cuentasCobrar.getVencidasBySede(this.filtroVen, user, this.tipoVen, this.pageVen, this.sizeVen).subscribe(
+
+      (data: any) => {
+        this.notiArrayVencidas = data.content
+        this.filtrandoNoti = true
+        this.paginasVen = new Array(data.totalPages)
+        this.lastVen = data.last
+        this.firtsVen = data.first
+        this.numeroPagesVen = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+        console.log(this.notiArrayVencidas);
+        if (this.notiArrayVencidas.length == 0) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -3912,21 +5387,85 @@ export class HomeCarteraComponent implements OnInit {
             timer: 3000
           })
           setTimeout(() => {
-            this.getNotificaciones()
+            this.getNotiVen()
           }, 3000);
         }
-      }, (error:any) => {
+
+      }, (error: any) => {
         console.log(error);
       }
     )
   }
 
-  desactivarNoti(id: number, fecha:Date, idClas:number, obligacion:string) {
+  getNotiAllBySede() {
+    var user = this.authService.getUsername()
+
+    if (user == null || user == undefined) {
+      return
+    }
+
+    if (this.filtroAll == '' || this.filtroAll == null) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Seleccione Un Filtro',
+        timer: 3000
+      })
+      return
+    }
+
+    this.cuentasCobrar.getAllBySede(this.filtroAll, user, this.tipoAll, this.pageAll, this.sizeAll).subscribe(
+      (data: any) => {
+        this.notiArray = data.content
+        this.filtrandoNoti = true
+        this.paginasAll = new Array(data.totalPages)
+        this.lastAll = data.last
+        this.firtsAll = data.first
+        this.numeroPagesAll = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+        console.log(this.notiArray);
+        if (this.notiArray.length == 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No Hay Notificaciones Con Este Filtro',
+            timer: 3000
+          })
+          setTimeout(() => {
+            this.getNotiAll()
+          }, 3000);
+        }
+      }, (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  limpiarNoti(tipo: string) {
+    switch (tipo) {
+      case 'ALL':
+        this.tipoAll = ''
+        this.filtroAll = ''
+        this.getNotiAll()
+        break;
+      case 'VEN':
+        this.tipoVen = ''
+        this.filtroVen = ''
+        this.getNotiVen()
+        break;
+      case 'REAL':
+        this.tipoReal = ''
+        this.filtroRealizada = ''
+        break;
+    }
+  }
+
+  desactivarNoti(id: number, fecha: Date, idClas: number, obligacion: string) {
     this.notiObj.idNotificacion = id
     this.notiObj.fechaCreacion = fecha
     this.notiObj.idClasificacion = idClas
     this.notiObj.numeroObligacion = obligacion
-    
+
     Swal.fire({
       title: 'Confirmar Notificación',
       text: '¿Desea Confirmar La Notificación?',
@@ -3947,7 +5486,7 @@ export class HomeCarteraComponent implements OnInit {
               timer: 3000
             })
             this.getNotificaciones()
-            if(!this.filtroAgain){
+            if (!this.filtroAgain) {
               this.getCuentasCobrar()
             } else {
               this.filtro()
@@ -4034,7 +5573,7 @@ export class HomeCarteraComponent implements OnInit {
     if (usuario != null || usuario != undefined) {
       this.cuentasCobrar.alertasGestiones(usuario, fecha.toISOString()).subscribe(
         (data: any) => {
-          this.alertasGestionesObject = data; 
+          this.alertasGestionesObject = data;
         }, (error: any) => {
           console.log(error)
         }
@@ -4042,4 +5581,33 @@ export class HomeCarteraComponent implements OnInit {
     }
   }
 
+  validarPermisoDado(permiso: string, rol: string): boolean {
+    var rolesObtenido = this.authService.getRolesByName(rol);
+
+
+    if (rol == Roles.CARTERA && rolesObtenido != null && rolesObtenido != undefined && rolesObtenido.length > 0) {
+
+      var cartera = rolesObtenido[0]
+
+      var permisos = cartera.permisos.filter((p: any) => p.permiso == permiso)
+
+      if (permisos != null && permisos != undefined && permisos.length > 0) {
+        return true;
+      }
+      return false
+    }
+
+    if (rol == Roles.ADMINISTRATION && rolesObtenido != null && rolesObtenido != undefined && rolesObtenido.length > 0) {
+
+      return true
+    }
+
+    return false
+  }
+
+
+
 }
+
+
+

@@ -1,0 +1,94 @@
+<div
+  class="cardStyle container d-flex flex-column justify-content-center w-50 px-5 py-3 mb-5"
+>
+  <h2 class="text-center">Crear vendedor</h2>
+  <hr class="border-4" />
+
+  <form
+    class="d-flex flex-column gap-2 w-75 mx-auto"
+    (ngSubmit)="onFormSubmit()"
+  >
+    <div class="row align-items-center">
+      <div class="col-md-12 col-12">
+        <div class="d-flex flex-column">
+          <input
+            [(ngModel)]="vendedor.nombreVendedor"
+            name="nombreVendedor"
+            class="form-control text-center"
+            type="text"
+            placeholder="Nombre del vendedor"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-12 col-12 d-flex justify-content-between">
+        <div class="">
+          <input
+            [(ngModel)]="vendedor.codigo"
+            name="codigo"
+            class="form-control text-center"
+            type="text"
+            placeholder="Código"
+          />
+        </div>
+
+        <div class="">
+          <input
+            [(ngModel)]="vendedor.documento"
+            name="documento"
+            class="form-control text-center"
+            type="text"
+            placeholder="Número de documento"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-12 col-12">
+        <div class="d-flex flex-column">
+          <input
+            [(ngModel)]="vendedor.sede"
+            name="sede"
+            class="form-control text-center"
+            type="text"
+            placeholder="Sede"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-12 col-12 d-flex justify-content-between">
+        <div class="">
+          <input
+            [(ngModel)]="vendedor.opcion5"
+            name="opcion5"
+            class="form-control text-center"
+            type="text"
+            placeholder="Opción 5"
+          />
+        </div>
+
+        <div class="">
+          <input
+            [(ngModel)]="vendedor.opcion6"
+            name="opcion6"
+            class="form-control text-center"
+            type="text"
+            placeholder="Opción 6"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex">
+      <button
+        class="btn mx-auto w-25 btn-dark rounded-pill b"
+        (click)="onVolver()"
+      >
+        Cancelar
+      </button>
+
+      <button type="submit" class="btn mx-auto w-25 btn-dark rounded-pill b">
+        Crear
+      </button>
+    </div>
+  </form>
+</div>

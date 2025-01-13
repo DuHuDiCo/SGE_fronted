@@ -102,7 +102,6 @@ import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsi
 import { HomeCarteraComponent } from './Pages/Cartera/pages/componentesCartera/home-cartera/home-cartera.component';
 import { ClasificacionComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/clasificacion/clasificacion.component';
 
-
 import { UploadsFilesComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/uploads-files/uploads-files.component';
 
 import { TipoVencimientoComponent } from './Pages/Cartera/pages/componentesCartera/Configuraciones/tipo-vencimiento/tipo-vencimiento.component';
@@ -114,26 +113,24 @@ import { FirmasComponent } from './Pages/Cartera/pages/componentesCartera/Config
 import { DateFormatPipe } from './Pipes/date-format.pipe';
 import { FormatoMonedaDirective } from './directivas/DirectivaFormatCurrency/formato-moneda.directive';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-
-
-
-
-
-
-
-
-
-
-
-
+import { NgxUiLoaderHttpModule, NgxUiLoaderModule } from 'ngx-ui-loader';
+import { ngxUiLoaderConfig } from './utils/loaderConfig';
+import { CuadreDiarioComponent } from './Pages/Caja/componentes-caja/cuadre-diario/cuadre-diario.component';
+import { IngresosDiariosComponent } from './Pages/Caja/componentes-caja/ingresos-diarios/ingresos-diarios.component';
+import { TipoIngresoComponent } from './Pages/Caja/componentes-caja/tipo-ingreso/tipo-ingreso.component';
+import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-mensual/cuadre-mensual.component';
+import { TipoReporteComponent } from './Pages/Caja/componentes-caja/tipo-reporte/tipo-reporte.component';
+import { DashboardA2ConfiguracionesComponent } from './Pages/A2Configuraciones/dashboard-a2configuraciones/dashboard-a2configuraciones.component';
+import { CrearProductosComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/crear-productos/crear-productos.component';
+import { CrearVendedoresComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/crear-vendedores/crear-vendedores.component';
+import { SidebarA2configuracionesComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/sidebar-a2configuraciones/sidebar-a2configuraciones.component';
+import { HomeA2configuracionesComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/home-a2configuraciones/home-a2configuraciones.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     OpcionesComponent,
-
-
     NavbarComponent,
     PerfilUsuarioComponent,
     GestionComponent,
@@ -145,8 +142,6 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
     RolesUsuarioComponent,
     AsignarRolesComponent,
     IncapacidadGComponent,
-
-
     RolesPerfilesDirective,
     IncapacidadArlComponent,
     AccidentesComponent,
@@ -155,8 +150,6 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
     EvidenciasComponent,
     CoEvidenciaComponent,
     Evalucion1Component,
-
-
     SidebarComponent,
     SidebarCarteraComponent,
     SidebarConsignacionesComponent,
@@ -164,7 +157,6 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
     SidebarSstComponent,
     SidebarCreditoComponent,
     SidebarVentasComponent,
-
     EstadisticasDashboardComponent,
     DashboardComponent,
     DashboardCreditosComponent,
@@ -172,8 +164,6 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
     DashboardSSTComponent,
     DashboardAdminComponent,
     DashboardCajaComponent,
-
-
     CrearCreditoComponent,
     VerCreditosComponent,
     CreditosCreadosComponent,
@@ -193,24 +183,18 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
     SidebarAdminGeneralComponent,
     SystemRolesComponent,
     SystemPermisosComponent,
-
     AgregarVariosClientesComponent,
-
     BuscarClientesComponent,
     BotonGeneralComponent,
-
     SidebarCajaComponent,
-
     RolesUsuariosGuardarComponent,
     RolesUsuariosComponent,
-
     CreateUsuarioComponent,
     SidebarPerfilComponent,
     DashboardPerfilComponent,
     ConfiguracionPerfilComponent,
     DatosPerfilComponent,
     BuscarUsuariosComponent,
-
     BancosComponent,
     EstadosComponent,
     SucursalesComponent,
@@ -227,23 +211,26 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
     RankingsComponent,
     HomeCarteraComponent,
     ClasificacionComponent,
-
-
+    TipoReporteComponent,
     UploadsFilesComponent,
-
     TipoVencimientoComponent,
-
     HomeCajaComponent,
     ClasificacionJuridicaComponent,
     CondicionEspecialComponent,
     FirmasComponent,
     DateFormatPipe,
     FormatoMonedaDirective,
-
-    FormatoMonedaDirective
-
+    FormatoMonedaDirective,
+    CuadreDiarioComponent,
+    IngresosDiariosComponent,
+    TipoIngresoComponent,
+    CuadreMensualComponent,
+    DashboardA2ConfiguracionesComponent,
+    CrearProductosComponent,
+    CrearVendedoresComponent,
+    SidebarA2configuracionesComponent,
+    HomeA2configuracionesComponent,
   ],
-
 
   imports: [
     BrowserModule,
@@ -252,12 +239,14 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
     HttpClientModule,
     AgregarClienteModule,
     NgxPaginationModule,
-    CommonModule
-
+    CommonModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    NgxUiLoaderHttpModule.forRoot({
+      showForeground: true,
+    }),
   ],
 
-
   providers: [authInterceptorProviders, CurrencyPipe],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
