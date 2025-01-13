@@ -67,23 +67,23 @@ export class RolesUsuariosComponent implements OnInit {
     // }
 
     var user = this.userService.getUsuarioGeneral();
-    
-    
-    if(Object.keys(user).length != 0){
-      
-     
+
+
+    if (Object.keys(user).length != 0) {
+
+
       this.obtenerRolesYPermisos(user);
     }
-    
+
 
     this.userAgService.listarRoles().subscribe(
       (data: any) => {
         this.IterarRol = data;
-        
-        
+
+
       },
       (error) => {
-        
+
       }
     )
 
@@ -91,7 +91,8 @@ export class RolesUsuariosComponent implements OnInit {
   }
 
   activarRol(rol: number) {
-  
+    console.log(this.selectedRole);
+
     if (this.selectedRole.includes(rol)) {
       var position = this.selectedRole.indexOf(rol)
       this.selectedRole.splice(position, 1)
@@ -100,6 +101,9 @@ export class RolesUsuariosComponent implements OnInit {
       this.check = []
       this.selectedRole.push(rol)
     }
+
+
+
   }
 
   seleccionarAllRoles(rol: number) {
@@ -118,7 +122,7 @@ export class RolesUsuariosComponent implements OnInit {
           }
         });
 
-        
+
 
         if (newPermisos.length == role.permissions.length) {
           newPermisos.forEach((x: any) => {
@@ -176,7 +180,7 @@ export class RolesUsuariosComponent implements OnInit {
               }
             })
 
-            
+
 
             this.usuario.roles.forEach((r: any) => {
 
@@ -244,7 +248,7 @@ export class RolesUsuariosComponent implements OnInit {
       }
     }
 
-    
+
   }
 
   selecionarPermiso(permiso: number, rol: number) {
@@ -273,7 +277,7 @@ export class RolesUsuariosComponent implements OnInit {
 
         } else {
           this.selectedPermisos.push(permiso)
-          
+
 
           this.usuario.roles.forEach((r: any) => {
 
@@ -320,7 +324,7 @@ export class RolesUsuariosComponent implements OnInit {
           });
 
           this.usuario.roles.push(rolDto)
-          
+
           this.check.push(permiso)
         }
 
@@ -333,8 +337,9 @@ export class RolesUsuariosComponent implements OnInit {
     let username = this.authService.getUsername();
 
     if (username != null || username != undefined) {
-      
-      
+
+     
+
 
       this.userAgService.crearUsuario(this.usuario, username).subscribe(
         (data: any) => {
@@ -342,11 +347,11 @@ export class RolesUsuariosComponent implements OnInit {
           setTimeout(() => {
             this.router.navigate(['/dashboard-admin-general/buscar-usuario'])
           }, 2000);
-          
+
 
         },
         (error: any) => {
-          
+
           Swal.fire('ERROR', 'Error Guardar Usuario', 'error')
         }
       )
@@ -359,33 +364,35 @@ export class RolesUsuariosComponent implements OnInit {
   }
 
 
-  obtenerRolesYPermisos(user:any) {
-   
-    this.usuario.usuario = user
-    
+  obtenerRolesYPermisos(user: any) {
 
-    var rolDto: any = {
-      "id": "",
-      "permisos": []
-    }
+    this.usuario.usuario = user
+
+
+
 
     user.roles.forEach((r: any) => {
+      var rolDto: any = {
+        "id": "",
+        "permisos": []
+      }
       
-      
+
       this.selectedRole.push(r.rolId)
       rolDto.id = r.rolId
       r.permisos.forEach((p: any) => {
         this.selectedPermisos.push(p.permiso)
         rolDto.permisos.push(p.permiso)
       });
+      this.usuario.roles.push(rolDto)
     });
 
 
-    this.usuario.roles.push(rolDto)
-   
-    
-    
-   
+
+
+
+
+
 
   }
 }
