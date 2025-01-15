@@ -21,59 +21,12 @@
         </div>
       </div>
 
-      <div class="col-md-12 col-12 d-flex justify-content-between">
-        <div class="">
-          <input
-            [(ngModel)]="vendedor.codigo"
-            name="codigo"
-            class="form-control text-center"
-            type="text"
-            placeholder="Código"
-          />
-        </div>
-
-        <div class="">
-          <input
-            [(ngModel)]="vendedor.documento"
-            name="documento"
-            class="form-control text-center"
-            type="text"
-            placeholder="Número de documento"
-          />
-        </div>
-      </div>
-
       <div class="col-md-12 col-12">
         <div class="d-flex flex-column">
-          <input
-            [(ngModel)]="vendedor.sede"
-            name="sede"
-            class="form-control text-center"
-            type="text"
-            placeholder="Sede"
-          />
-        </div>
-      </div>
-
-      <div class="col-md-12 col-12 d-flex justify-content-between">
-        <div class="">
-          <input
-            [(ngModel)]="vendedor.opcion5"
-            name="opcion5"
-            class="form-control text-center"
-            type="text"
-            placeholder="Opción 5"
-          />
-        </div>
-
-        <div class="">
-          <input
-            [(ngModel)]="vendedor.opcion6"
-            name="opcion6"
-            class="form-control text-center"
-            type="text"
-            placeholder="Opción 6"
-          />
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Selecione una zona</option>
+            <option *ngFor="let zona of vendedor.nombreZona" value="{{zona}}">{{zona}}</option>
+          </select>
         </div>
       </div>
     </div>
