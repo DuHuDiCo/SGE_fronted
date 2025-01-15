@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { VendedorService } from 'src/app/Services/A2Configuraciones/Vendedor/vendedor.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -8,37 +9,36 @@ import Swal from 'sweetalert2';
   styleUrls: ['./crear-vendedores.component.css'],
 })
 export class CrearVendedoresComponent implements OnInit {
-  public vendedor = {
+  zonas: { idZona: number; nombreZona: string }[] = [
+    { idZona: 1, nombreZona: 'Boyaca Medellin' },
+    { idZona: 2, nombreZona: 'ElectroHogar Colombia' },
+    { idZona: 3, nombreZona: 'ElectroHogar Itagui' },
+    { idZona: 4, nombreZona: 'ElectroHogar Rionegro' },
+    { idZona: 5, nombreZona: 'ElectroHogar La Ceja' },
+    { idZona: 6, nombreZona: 'ElectroHogar Guarne' },
+    { idZona: 7, nombreZona: 'ElectroHogar Marinilla' },
+    { idZona: 8, nombreZona: 'ElectroHogar Puerto Boyaca' },
+    { idZona: 9, nombreZona: 'ElectroMagdalena Puerto Berrio' },
+    { idZona: 10, nombreZona: 'Creditos SurOeste Medellin' },
+    { idZona: 11, nombreZona: 'Creditos SurOeste Amaga' },
+    { idZona: 12, nombreZona: 'Creditos SurOeste Fredonia' },
+    { idZona: 13, nombreZona: 'Electrohogar Caldas' },
+    { idZona: 14, nombreZona: 'Electrohogar Tamesis' },
+  ];
+
+  public vendedor: { nombreVendedor: string; idZona: number } = {
     nombreVendedor: '',
-    nombreZona: [
-      'Boyaca Medellin',
-      'ElectroHogar Colombia',
-      'ElectroHogar Itagui',
-      'ElectroHogar Rionegro',
-      'ElectroHogar La Ceja',
-      'ElectroHogar Guarne',
-      'ElectroHogar Marinilla',
-      'ElectroHogar Puerto Boyaca',
-      'ElectroMagdalena Puerto Berrio',
-      'Creditos SurOeste Medellin',
-      'Creditos SurOeste Amaga',
-      'Creditos SurOeste Fredonia',
-      'Electrohogar Caldas',
-      'Electrohogar Tamesis',
-    ],
+    idZona: 0,
   };
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private vendedorService: VendedorService
+  ) {}
 
   ngOnInit(): void {}
 
-  mostrarConsola() {
-    console.log(this.vendedor.nombreZona.length);
-  }
-
   onFormSubmit() {
-    this.mostrarConsola();
-
     if (
       this.vendedor.nombreVendedor == '' ||
       this.vendedor.nombreVendedor == null
@@ -46,20 +46,28 @@ export class CrearVendedoresComponent implements OnInit {
       Swal.fire('Error', 'El nombre de vendedor es requerido', 'error');
       return;
     }
-    // if (this.vendedor.nombreZona == '' || this.vendedor.nombreZona == null) {
-    //   Swal.fire('Error', 'Seleccione una zona', 'error');
-    //   return;
-    // }
+    if (this.vendedor.idZona == 0 || this.vendedor.idZona == null) {
+      Swal.fire('Error', 'Seleccione una zona', 'error');
+      return;
+    }
 
-    // Notificacion añadir vendedor
-    Swal.fire({
-      icon: 'success',
-      title: 'Producto creado',
-      showConfirmButton: false,
-      timer: 1000,
-    });
+    this.vendedorService?.añadirVendedor(this.vendedor)?.subscribe(
+      (data: any) => {
+        // console.log(data);
 
-    this.router.navigate(['dashboard-a2configuraciones/inicio']);
+        // Notificacion añadir vendedor
+        Swal.fire({
+          icon: 'success',
+          title: 'Producto creado',
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        this.router.navigate(['dashboard-a2configuraciones/inicio']);
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
   }
 
   onVolver() {

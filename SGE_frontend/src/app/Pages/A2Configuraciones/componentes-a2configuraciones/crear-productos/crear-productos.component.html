@@ -10,24 +10,56 @@
   >
     <div class="row align-items-center">
       <div class="col-md-12 col-12">
-        <div class=" d-flex flex-column">
-          <input [(ngModel)]="producto.nombreProducto" name="nombreProducto" class="form-control text-center" type="text" placeholder="Nombre del producto" />
+        <div class="d-flex flex-column">
+          <input
+            [(ngModel)]="producto.nombreProducto"
+            name="nombreProducto"
+            class="form-control text-center"
+            type="text"
+            placeholder="Nombre del producto"
+          />
         </div>
       </div>
 
       <div class="col-md-12 col-12">
-        <div class=" d-flex flex-column">
-          <input [(ngModel)]="producto.referencia" name="referencia" class="form-control text-center" type="text" placeholder="Referencia" />
+        <div class="d-flex flex-column">
+          <textarea
+            [(ngModel)]="producto.descripcion"
+            placeholder="Descripción del producto"
+            class="form-control text-center"
+            type="text"
+            rows="4"
+            name="descripcion"
+          ></textarea>
         </div>
       </div>
 
-      <div class="col-md-12 col-12 d-flex justify-content-between">
+      <div class="col-md-12 col-12 gap-3 d-flex justify-content-between">
         <div class="">
-          <input [(ngModel)]="producto.marca" name="marca" class="form-control text-center" type="text" placeholder="Marca" />
+          <input
+            [(ngModel)]="producto.codigo"
+            name="marca"
+            class="form-control text-center"
+            type="text"
+            placeholder="Código"
+          />
         </div>
 
         <div class="">
-          <input [(ngModel)]="producto.opcion4" name="opcion4" class="form-control text-center" type="text" placeholder="Opción 4" />
+          <select
+            name="idCategoriaProducto"
+            [(ngModel)]="producto.idCategoriaProducto"
+            class="form-control"
+            aria-placeholder="Seleccione una opción"
+          >
+            <option disabled value="0">Seleccione una categoria</option>
+            <option
+              *ngFor="let cProducto of categoriaProducto"
+              [value]="cProducto.idProducto"
+            >
+              {{ cProducto.descripcionProducto }}
+            </option>
+          </select>
         </div>
       </div>
     </div>

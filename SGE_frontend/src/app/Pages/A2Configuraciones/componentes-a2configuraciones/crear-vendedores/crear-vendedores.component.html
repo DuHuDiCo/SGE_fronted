@@ -23,9 +23,16 @@
 
       <div class="col-md-12 col-12">
         <div class="d-flex flex-column">
-          <select class="form-select" aria-label="Default select example">
-            <option selected>Selecione una zona</option>
-            <option *ngFor="let zona of vendedor.nombreZona" value="{{zona}}">{{zona}}</option>
+          <select
+            name="idZona"
+            [(ngModel)]="vendedor.idZona"
+            class="form-select form-control"
+            required
+          >
+            <option disabled value="0">Seleccione una opción</option>
+            <option *ngFor="let zona of zonas" [value]="zona.idZona">
+              {{ zona.nombreZona }}
+            </option>
           </select>
         </div>
       </div>
