@@ -44,6 +44,8 @@ export class LoginComponent implements OnInit {
       setTimeout(() => {
         this.authentication.authentication(login).subscribe(
           (data: any) => {
+            // console.log(data);
+            
             Swal.fire({
               position: 'top-end',
               icon: 'success',

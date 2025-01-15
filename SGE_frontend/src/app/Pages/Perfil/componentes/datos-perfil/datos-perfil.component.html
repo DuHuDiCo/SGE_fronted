@@ -1,8 +1,59 @@
-<div class="container">
+<div class="container mt-0">
   <div class="imagen-portada">
-      <img src="../../../../../assets/H_electro.svg" alt="">
+    <img src="../../../../../assets/H_electro.svg" alt="" />
   </div>
   <div class="titulo">Perfil Usuario</div>
-  <div class="subtitulo">Datos del Perfil</div>
 
+  <div class="subtitulo">Datos del Perfil</div>
+  <hr class="border-4 w-75 mx-auto mb-2" />
+
+  <div class="d-flex justify-content-center gap-3 col-md-12 mt-3">
+    <div>
+      <div class="subtitulo">Nombre de Usuario</div>
+      <h2
+        class="form-control w-100"
+        *ngIf="
+          authenticationService.getToken() &&
+          authenticationService.getUsername() != ''
+        "
+      >
+        <strong> {{ authenticationService.getUsername() }}</strong>
+      </h2>
+    </div>
+
+    <div class="d-flex flex-column">
+      <div class="subtitulo">Rol</div>
+      <div *ngFor="let rol of authenticationService.getRoles()">
+        <h2 class="form-control w-100">
+          <strong>{{ rol.rol }}</strong>
+        </h2>
+      </div>
+    </div>
+
+    <div>
+      <div class="subtitulo">Sede</div>
+      <h2 class="form-control w-100">
+        <strong>
+          {{ authenticationService.getSede() }}
+        </strong>
+      </h2>
+    </div>
+
+    <div>
+      <div class="subtitulo">Fecha de Inicio de Sesion</div>
+      <h2 class="form-control w-100">
+        <strong>
+          {{ authenticationService.getFecha()?.toLocaleDateString("es-Es") }}
+        </strong>
+      </h2>
+    </div>
+  </div>
+
+  <hr class="border-4 w-75 mx-auto" />
+
+  <div class="d-flex justify-content-center gap-3 col-md-12 mb-4">
+    <button class="btn btn-secondary rounded-pill">Editar Datos</button>
+
+    <button class="btn btn-dark rounded-pill">Cerrar Sesion</button>
+  </div>
 </div>

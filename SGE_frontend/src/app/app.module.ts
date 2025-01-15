@@ -125,6 +125,7 @@ import { CrearProductosComponent } from './Pages/A2Configuraciones/componentes-a
 import { CrearVendedoresComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/crear-vendedores/crear-vendedores.component';
 import { SidebarA2configuracionesComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/sidebar-a2configuraciones/sidebar-a2configuraciones.component';
 import { HomeA2configuracionesComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/home-a2configuraciones/home-a2configuraciones.component';
+import { EditarPerfilComponent } from './Pages/Perfil/componentes/editar-perfil/editar-perfil.component';
 
 @NgModule({
   declarations: [
@@ -230,6 +231,7 @@ import { HomeA2configuracionesComponent } from './Pages/A2Configuraciones/compon
     CrearVendedoresComponent,
     SidebarA2configuracionesComponent,
     HomeA2configuracionesComponent,
+    EditarPerfilComponent,
   ],
 
   imports: [
