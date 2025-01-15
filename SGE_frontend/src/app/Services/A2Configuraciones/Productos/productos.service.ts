@@ -8,8 +8,13 @@ import baseUrl from 'src/app/utils/helper';
 export class ProductosService {
   constructor(private httClient: HttpClient) {}
 
-  public añadirProducto(producto: { nombreProducto: string; descripcion: string; codigo: string; idCategoriaProducto: number }) {
-    if (producto.nombreProducto == '' || producto.nombreProducto == null) {
+  public añadirProducto(producto: {
+    descripcion: string;
+    codigo: string;
+    idCategoriaProducto: number;
+    vendedorFijo: string;
+  }) {
+    if (producto.descripcion == '' || producto.descripcion == null) {
       console.log('Error');
       return this.httClient.post(`${baseUrl}/vendedor`, producto);
     } else {

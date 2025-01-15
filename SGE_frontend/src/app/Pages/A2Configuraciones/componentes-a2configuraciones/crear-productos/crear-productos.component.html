@@ -11,18 +11,6 @@
     <div class="row align-items-center">
       <div class="col-md-12 col-12">
         <div class="d-flex flex-column">
-          <input
-            [(ngModel)]="producto.nombreProducto"
-            name="nombreProducto"
-            class="form-control text-center"
-            type="text"
-            placeholder="Nombre del producto"
-          />
-        </div>
-      </div>
-
-      <div class="col-md-12 col-12">
-        <div class="d-flex flex-column">
           <textarea
             [(ngModel)]="producto.descripcion"
             placeholder="Descripción del producto"
@@ -50,7 +38,6 @@
             name="idCategoriaProducto"
             [(ngModel)]="producto.idCategoriaProducto"
             class="form-control"
-            aria-placeholder="Seleccione una opción"
           >
             <option disabled value="0">Seleccione una categoria</option>
             <option
@@ -58,6 +45,24 @@
               [value]="cProducto.idProducto"
             >
               {{ cProducto.descripcionProducto }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-12 col-12">
+        <div class="d-flex flex-column">
+          <select
+            name="vendedorFijo"
+            [(ngModel)]="producto.vendedorFijo"
+            class="form-control"
+          >
+            <option disabled value="">Seleccione un vendedor</option>
+            <option
+              *ngFor="let vendedores of vendedoresFijos"
+              [value]="vendedores.idVendedor"
+            >
+              {{ vendedores.nombreVendedor }}
             </option>
           </select>
         </div>

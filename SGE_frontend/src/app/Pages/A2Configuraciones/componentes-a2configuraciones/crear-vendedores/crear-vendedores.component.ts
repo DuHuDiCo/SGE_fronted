@@ -51,26 +51,46 @@ export class CrearVendedoresComponent implements OnInit {
       return;
     }
 
-    this.vendedorService?.añadirVendedor(this.vendedor)?.subscribe(
-      (data: any) => {
-        // console.log(data);
+    // validacion provisional 
+    if (
+      this.vendedor.nombreVendedor == '' ||
+      this.vendedor.nombreVendedor == null
+    ) {
+      this.vendedorService?.añadirVendedor(this.vendedor)?.subscribe(
+        (data: any) => {
+          // console.log(data);
 
-        // Notificacion añadir vendedor
-        Swal.fire({
-          icon: 'success',
-          title: 'Producto creado',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-        this.router.navigate(['dashboard-a2configuraciones/inicio']);
-      },
-      (error: any) => {
-        console.log(error);
-      }
-    );
+          // Notificacion añadir vendedor
+          Swal.fire({
+            icon: 'success',
+            title: 'Producto creado',
+            showConfirmButton: false,
+            timer: 1000,
+          });
+          this.router.navigate(['dashboard-a2configuraciones/inicio']);
+          this.limpiarFormulario();
+        },
+        (error: any) => {
+          console.log(error);
+          this.limpiarFormulario();
+        }
+      );
+    }
+
+    // Limpiar formulario provisional
+    this.limpiarFormulario();
   }
 
+  // regresar a elegir formualrio de vendedor o producto
   onVolver() {
     this.router.navigate(['dashboard-a2configuraciones/inicio']);
+  }
+
+  // Limpiar formulario
+  limpiarFormulario() {
+    this.vendedor = {
+      nombreVendedor: '',
+      idZona: 0,
+    };
   }
 }

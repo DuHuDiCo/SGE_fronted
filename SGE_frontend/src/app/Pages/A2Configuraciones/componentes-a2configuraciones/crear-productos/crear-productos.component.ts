@@ -95,16 +95,24 @@ export class CrearProductosComponent implements OnInit {
     { idProducto: 83, descripcionProducto: 'SERVICIOS' },
   ];
 
+  vendedoresFijos: { idVendedor: number; nombreVendedor: string }[] = [
+    { idVendedor: 1, nombreVendedor: 'Marlon Vivas' },
+    { idVendedor: 2, nombreVendedor: 'Juan Perez' },
+    { idVendedor: 3, nombreVendedor: 'Carlos Perez' },
+    { idVendedor: 4, nombreVendedor: 'Maria Perez' },
+    { idVendedor: 5, nombreVendedor: 'Pedro Perez' },
+  ];
+
   public producto: {
-    nombreProducto: string;
     descripcion: string;
     codigo: string;
     idCategoriaProducto: number;
+    vendedorFijo: string;
   } = {
-    nombreProducto: '',
     descripcion: '',
     codigo: '',
     idCategoriaProducto: 0,
+    vendedorFijo: '',
   };
 
   constructor(
@@ -115,13 +123,6 @@ export class CrearProductosComponent implements OnInit {
   ngOnInit(): void {}
 
   onFormSubmit() {
-    if (
-      this.producto.nombreProducto == '' ||
-      this.producto.nombreProducto == null
-    ) {
-      Swal.fire('Error', 'El nombre del producto es requerido', 'error');
-      return;
-    }
     if (this.producto.descripcion == '' || this.producto.descripcion == null) {
       Swal.fire('Error', 'La descripción es requerida', 'error');
       return;
@@ -137,27 +138,53 @@ export class CrearProductosComponent implements OnInit {
       Swal.fire('Error', 'Categoria requerida', 'error');
       return;
     }
+    if (
+      this.producto.vendedorFijo == '' ||
+      this.producto.vendedorFijo == null
+    ) {
+      Swal.fire('Error', 'Elija un vendedor', 'error');
+      return;
+    }
 
-    this.productoService?.añadirProducto(this.producto)?.subscribe(
-      (data: any) => {
-        // console.log(data);
+    // validacion provisional
+    if (this.producto.descripcion == '' || this.producto.descripcion == null) {
+      this.productoService?.añadirProducto(this.producto)?.subscribe(
+        (data: any) => {
+          // console.log(data);
 
-        // Notificacion añadir vendedor
-        Swal.fire({
-          icon: 'success',
-          title: 'Producto creado',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-        this.router.navigate(['dashboard-a2configuraciones/inicio']);
-      },
-      (error: any) => {
-        console.log(error);
-      }
-    );
+          // Notificacion añadir vendedor
+          Swal.fire({
+            icon: 'success',
+            title: 'Producto creado',
+            showConfirmButton: false,
+            timer: 1000,
+          });
+          this.router.navigate(['dashboard-a2configuraciones/inicio']);
+          this.limpiarFormulario();
+        },
+        (error: any) => {
+          console.log(error);
+          this.limpiarFormulario();
+        }
+      );
+    }
+
+    // Limpiar formulario provisional
+    this.limpiarFormulario();
   }
 
+  // regresar a elegir formualrio de producto o vendedor
   onVolver() {
     this.router.navigate(['dashboard-a2configuraciones/inicio']);
+  }
+
+  // Limpiar formulario
+  limpiarFormulario() {
+    this.producto = {
+      descripcion: '',
+      codigo: '',
+      idCategoriaProducto: 0,
+      vendedorFijo: '',
+    };
   }
 }
