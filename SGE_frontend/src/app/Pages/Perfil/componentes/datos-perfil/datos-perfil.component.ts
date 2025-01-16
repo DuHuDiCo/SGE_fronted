@@ -1,39 +1,37 @@
 import { Component, OnInit } from '@angular/core';
+import { map } from 'jquery';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 
 @Component({
   selector: 'app-datos-perfil',
   templateUrl: './datos-perfil.component.html',
-  styleUrls: ['./datos-perfil.component.css']
+  styleUrls: ['./datos-perfil.component.css'],
 })
 export class DatosPerfilComponent implements OnInit {
+  public rolesPermisos: { rol: string; permisos: string[] }[] = [];
 
-
-  constructor(public authenticationService:AuthenticationService) { }
+  constructor(public authenticationService: AuthenticationService) {}
 
   ngOnInit(): void {
-    console.log("Datos de inicio de sesion ", this.authenticationService.getRoles())
-
-    // opcional
-    console.log("Datos de inicio de sesion ", this.authenticationService.getRolesP().rol)
-
-    console.log("Datos de inicio de sesion ", this.authenticationService.getSede())
-
-    
-
-    console.log("Datos de inicio de sesion ", this.authenticationService.getFecha())
-
-    console.log("Datos de inicio de sesion ", this.authenticationService.getUsername())
-
-    console.log("Datos de inicio de sesion ", this.authenticationService.getToken())
-
-    const sede = this.authenticationService.getSede() || '';
-    console.log("Datos de inicio de sesion ", this.authenticationService.setSede(sede))
-    
+    this.obtenerRolesPermisos();
   }
 
-  public formatoFecha(fecha:Date){
-    return fecha.toLocaleDateString('es-ES')
+  obtenerRolesPermisos() {
+    let arrays = this.authenticationService.getRoles();
+    this.rolesPermisos = arrays.map(
+      (item: { rol: string; permisos: { permiso: string }[] }) => {
+        return {
+          rol: item.rol,
+          permisos: item.permisos.map(
+            (permiso: { permiso: string }) => permiso.permiso
+          ), // Extraemos los permisos
+        };
+      }
+    );
   }
 
+  logout(): void {
+    this.authenticationService.logout();
+    window.location.reload();
+  }
 }

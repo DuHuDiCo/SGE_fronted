@@ -93,6 +93,7 @@ import { DashboardA2ConfiguracionesComponent } from './Pages/A2Configuraciones/d
 import { CrearProductosComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/crear-productos/crear-productos.component';
 import { CrearVendedoresComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/crear-vendedores/crear-vendedores.component';
 import { HomeA2configuracionesComponent } from './Pages/A2Configuraciones/componentes-a2configuraciones/home-a2configuraciones/home-a2configuraciones.component';
+import { EditarPerfilComponent } from './Pages/Perfil/componentes/editar-perfil/editar-perfil.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -214,6 +215,10 @@ const routes: Routes = [
       {
         path: 'datos',
         component: DatosPerfilComponent,
+      },
+      {
+        path: 'editar',
+        component: EditarPerfilComponent,
       },
     ],
   },
