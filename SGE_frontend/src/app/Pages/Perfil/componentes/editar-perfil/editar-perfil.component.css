@@ -1,0 +1,61 @@
+.container {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin: 40px auto;
+  margin-top: 50px;
+  border-radius: 40px;
+  background: #dfe2e5;
+  box-shadow: 5px 5px 5px #707274, -14px -9px 5px 5px #ffffff;
+}
+
+.titulo {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding-top: 24px;
+}
+
+.subtitulo {
+  text-align: end;
+  font-size: 15px;
+  margin-top: 7px;
+  letter-spacing: 3px;
+}
+
+.form-control {
+  border-radius: 25px;
+  text-align: center;
+  margin: 15px auto;
+  box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
+}
+
+label {
+  font-size: 0.9rem; /* Ajusta el tamaño del texto */
+  color: #010d18; /* Cambia el color del texto */
+}
+
+input:focus + label {
+  color: #495057; /* Cambia el color del label al enfocar */
+  font-weight: bold;
+}
+
+.b {
+  color: white;
+  background-color: #960010;
+  border-color: #960010;
+}
+
+.b:hover {
+  background: #d40000;
+  border-color: #d40000;
+  cursor: pointer;
+}
+
+/* Media query for mobile-sized screens */
+@media (max-width: 576px) {
+  .container {
+    width: 400px;
+  }
+}

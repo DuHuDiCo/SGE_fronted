@@ -27,7 +27,6 @@
   font-size: 28px;
   font-weight: 700;
   letter-spacing: 0.5px;
-  padding-top: 24px;
 }
 
 .subtitulo {
@@ -58,37 +57,22 @@
   padding: 13px;
   box-shadow: inset 2px 7px 20px 9px #adb5bd, inset 1px -6px 20px #adb5bd;
 }
-input {
-  text-align: center;
-  border: none;
-  outline: none;
-  background: none;
-  font-size: 15px;
-  margin: 13px 10px;
-  border-bottom: 10px;
+
+.b {
+  color: white;
+  background-color: #960010;
+  border-color: #960010;
+}
+
+.b:hover {
+  background: #d40000;
+  border-color: #d40000;
+  cursor: pointer;
 }
 
 svg {
   height: 15px;
   /* margin: 2px 15px -5px 15px; */
-}
-
-.btn-guardar {
-  display: block;
-  object-fit: cover;
-  margin-top: 25px;
-  overflow: hidden;
-  color: #fff;
-  background: #9c1717;
-  cursor: pointer;
-  outline: none;
-  border: #cbced1;
-  border-radius: 18px;
-  box-shadow: 10px 10px 20px #707274, -2px 0px 10px 4px #707274;
-}
-
-.btn-guardar:hover {
-  background: #d60303;
 }
 
 .dropdown {

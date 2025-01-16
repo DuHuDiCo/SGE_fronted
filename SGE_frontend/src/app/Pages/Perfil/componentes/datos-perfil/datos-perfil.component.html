@@ -4,84 +4,72 @@
   </div>
   <div class="titulo">Perfil Usuario</div>
 
-  <div class="subtitulo text-center">Datos del Perfil</div>
+  <div class="subtitulo text-center">Datos usuario</div>
   <hr class="border-4 w-50 mx-auto mb-2" />
 
   <div class="d-flex flex-column mx-auto gap-3 mt-3 w-50">
     <div class="d-flex justify-content-between gap-3 col-md-12">
-      <div class="subtitulo w-auto">Nombre de Usuario</div>
-      <h2
-        class="subtitulo w-25 ml-auto"
-        *ngIf="
-          authenticationService.getToken() &&
-          authenticationService.getUsername() != ''
-        "
-      >
-        <strong> {{ authenticationService.getUsername() }}</strong>
+      <div class="subtitulo w-auto">Nombre</div>
+      <h2 class="subtitulo ml-auto">
+        <strong>{{ usuario.nombres }}</strong>
       </h2>
     </div>
 
     <div class="d-flex justify-content-between">
-      <div class="subtitulo w-auto my-auto">Rol</div>
+      <div class="subtitulo w-auto my-auto">Apellido</div>
 
       <div class="d-flex flex-column">
-        <div class="" *ngFor="let rol of authenticationService.getRoles()">
+        <div class="">
           <h2 class="subtitulo w-auto">
-            <strong>{{ rol.rol }}</strong>
+            <strong>{{ usuario.apellidos }}</strong>
           </h2>
         </div>
       </div>
     </div>
 
-    <div
-      class="d-flex justify-content-between"
-      *ngFor="let rol of rolesPermisos"
-    >
-      <div class="subtitulo w-50 my-auto text-start">
-        Permisos de rol: <strong>{{ rol.rol }}</strong>
-      </div>
-
-      <div class="dropdown">
-        <button
-          class="btn btn-guardar dropdown-toggle"
-          type="button"
-          id="dropdownMenuButton{{ rol.rol }}"
-          data-bs-toggle="dropdown"
-          data-bs-display="static"
-          aria-expanded="false"
-        >
-          <strong> Ver permisos </strong>
-        </button>
-        <ul
-          class="dropdown-menu dropdown-menu-expand pb-5"
-          [attr.aria-labelledby]="'dropdownMenuButton' + rol.rol"
-        >
-          <li
-            *ngFor="let permiso of rol.permisos; let j = index"
-            class="dropdown-item"
-          >
-            {{ j + 1 }}. {{ permiso }}
-          </li>
-        </ul>
-      </div>
-    </div>
-
     <div class="d-flex justify-content-between gap-3 col-md-12">
-      <div class="subtitulo">Sede</div>
-      <h2 class="subtitulo w-25">
-        <strong>
-          {{ authenticationService.getSede() }}
-        </strong>
+      <div class="subtitulo">Correo electrónico</div>
+      <h2 class="subtitulo w-auto">
+        <strong>{{ usuario.email }}</strong>
       </h2>
     </div>
 
     <div class="d-flex justify-content-between gap-3 col-md-12">
-      <div class="subtitulo">Fecha de Inicio de Sesion</div>
-      <h2 class="subtitulo w-25">
-        <strong>
-          {{ authenticationService.getFecha()?.toLocaleDateString("es-Es") }}
-        </strong>
+      <div class="subtitulo w-auto">Tipo de documento</div>
+      <h2 class="subtitulo w-auto ml-auto">
+        <strong>{{ usuario.tipo_documento }}</strong>
       </h2>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <div class="subtitulo w-auto my-auto">Número de documento</div>
+
+      <div class="d-flex flex-column">
+        <div class="">
+          <h2 class="subtitulo w-auto">
+            <strong>{{ usuario.numero_documento }}</strong>
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between gap-3 col-md-12">
+      <div class="subtitulo w-auto">Celular</div>
+      <h2 class="subtitulo ml-auto">
+        <strong>{{ usuario.celular }}</strong>
+      </h2>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <div class="subtitulo w-auto my-auto">Fecha de nacimiento</div>
+
+      <div class="d-flex flex-column">
+        <div class="">
+          <h2 class="subtitulo w-auto">
+            <strong>{{ usuario.fecha_nacimiento }}</strong>
+          </h2>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -89,12 +77,137 @@
 
   <div class="d-flex justify-content-center gap-3 col-md-12 mb-4">
     <button
-      class="btn btn-secondary rounded-pill"
-      routerLink="/dashboard-perfil/editar"
+      class="btn rounded-pill b"
+      [routerLink]="'/dashboard-perfil/editar'"
     >
-      Editar Datos
+      Editar datos
     </button>
 
-    <button class="btn btn-dark rounded-pill" (click)="logout()">Cerrar Sesion</button>
+    <button
+      class="btn rounded-pill b"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+    >
+      Ver datos de usuario
+    </button>
+
+    <button class="btn rounded-pill b" (click)="logout()">Cerrar Sesion</button>
+  </div>
+
+  <!--Modal datos de perfil -->
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Datos de usuario</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="d-flex flex-column mx-auto gap-3 mt-3 w-75">
+            <div class="d-flex justify-content-between gap-3 col-md-12">
+              <div class="subtitulo w-auto">Nombre de usuario</div>
+              <h2
+                class="subtitulo ml-auto"
+                *ngIf="
+                  authenticationService.getToken() &&
+                  authenticationService.getUsername() != ''
+                "
+              >
+                <strong> {{ usuario.nombres }}</strong>
+              </h2>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <div class="subtitulo w-auto my-auto">Rol</div>
+
+              <div class="d-flex flex-column">
+                <div
+                  class=""
+                  *ngFor="let rol of authenticationService.getRoles()"
+                >
+                  <h2 class="subtitulo w-auto">
+                    <strong class="w-100">{{ rol.rol }}</strong>
+                  </h2>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="d-flex justify-content-between"
+              *ngFor="let rol of rolesPermisos"
+            >
+              <div class="subtitulo my-auto text-start">
+                Permisos de rol:
+                <br /><strong>{{ rol.rol }}</strong>
+              </div>
+
+              <div class="dropdown">
+                <button
+                  class="btn rounded-pill b dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton{{ rol.rol }}"
+                  data-bs-toggle="dropdown"
+                  data-bs-display="static"
+                  aria-expanded="false"
+                >
+                  <strong> Ver permisos </strong>
+                </button>
+                <ul
+                  class="dropdown-menu dropdown-menu-expand"
+                  [attr.aria-labelledby]="'dropdownMenuButton' + rol.rol"
+                >
+                  <li
+                    *ngFor="let permiso of rol.permisos; let j = index"
+                    class="dropdown-item"
+                  >
+                    {{ j + 1 }}. {{ permiso }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between gap-3 col-md-12">
+              <div class="subtitulo">Sede</div>
+              <h2 class="subtitulo w-25">
+                <strong>
+                  {{ usuario.sede }}
+                </strong>
+              </h2>
+            </div>
+
+            <div class="d-flex justify-content-between gap-3 col-md-12">
+              <div class="subtitulo">Fecha de inicio de sesion</div>
+              <h2 class="subtitulo w-25">
+                <strong>
+                  {{ usuario.fecha_nacimiento }}
+                </strong>
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer d-flex justify-content-center">
+          <button
+            type="button"
+            class="btn rounded-pill b w-25"
+            data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

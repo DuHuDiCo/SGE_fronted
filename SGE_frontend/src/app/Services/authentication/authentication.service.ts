@@ -18,8 +18,8 @@ export class AuthenticationService {
   }
 
 
-  public getUser(){
-    return this.http.get(`${baseUrl}/users/getUser/dudico`);
+  public getUser(username: string){
+    return this.http.get(`${baseUrl}/users/getUser/${username}`);
   }
 
   public setTokenLocalStorage(token:string):void{
