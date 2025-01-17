@@ -21,7 +21,6 @@ export class EditarPerfilComponent implements OnInit {
     tipo_documento: '',
     numero_documento: '',
     celular: '',
-    fecha_nacimiento: new Date(),
     sede: '',
     roles: [],
     idUsuario: 0,
@@ -30,7 +29,6 @@ export class EditarPerfilComponent implements OnInit {
   users: any = {
     idUsuario: 0,
     username: '',
-    fechaNac: new Date(),
     nombres: '',
     apellidos: '',
     sede: '',
@@ -92,13 +90,6 @@ export class EditarPerfilComponent implements OnInit {
       return;
     }
     if (
-      this.usuario.fecha_nacimiento instanceof Date ||
-      this.usuario.fecha_nacimiento == ''
-    ) {
-      Swal.fire('Error', 'Debe ingresar la Fecha de Nacimiento', 'error');
-      return;
-    }
-    if (
       this.usuario.apellidos.trim() == '' ||
       this.usuario.apellidos.trim() == null
     ) {
@@ -141,7 +132,6 @@ export class EditarPerfilComponent implements OnInit {
     this.users.numeroDocumento = this.usuario.numero_documento;
     this.users.correo = this.usuario.email;
     this.users.telefono = this.usuario.celular;
-    this.users.fechaNac = this.usuario.fecha_nacimiento;
     this.users.sede = this.usuario.sede;
 
     this.buscarUsuariosService.updateUser(this.users).subscribe(

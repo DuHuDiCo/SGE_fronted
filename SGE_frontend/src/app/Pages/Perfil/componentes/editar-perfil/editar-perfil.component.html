@@ -1,36 +1,48 @@
-<div class="container container-lg">
+<div
+  class="cardStyle container d-flex flex-column justify-content-center w-50 px-5 py-3 mb-5"
+>
   <div class="titulo mt-2">Editar datos de usuario</div>
-  <div class="titulo mt-2">
-    <form *ngIf="usuario" (ngSubmit)="onActualizarDatosUsuario()">
-      <div class="d-flex flex-column mx-auto gap-3 mt-3 w-50">
+  <div class="titulo pt-0">
+    <form
+      class="w-100 mx-auto"
+      *ngIf="usuario"
+      (ngSubmit)="onActualizarDatosUsuario()"
+    >
+      <div class="d-flex flex-column gap-2 mx-auto gap-3 mt-3">
         <div class="d-flex justify-content-between px-5 mx-3">
           <div class="d-flex">
             <div class="d-flex flex-column">
               <label for="nombreValue" class="text-muted"> Nombre </label>
-              <input
-                [(ngModel)]="usuario.nombres"
-                type="text"
-                name="nombres"
-                class="form-control my-0"
-                id="nombreValue"
-                placeholder="Nombre"
-                value="{{ usuario.nombres }}"
-              />
+              <div class="form-control d-flex justify-content-center">
+                <i class="fa-solid fa-signature my-auto"></i>
+                <input
+                  [(ngModel)]="usuario.nombres"
+                  type="text"
+                  name="nombres"
+                  class="w-75 text-center"
+                  id="nombreValue"
+                  placeholder="Nombre"
+                  value="{{ usuario.nombres }}"
+                />
+              </div>
             </div>
           </div>
 
           <div class="d-flex">
             <div class="d-flex flex-column">
               <label for="apellidoValue" class="text-muted"> Apellido </label>
-              <input
-                [(ngModel)]="usuario.apellidos"
-                type="text"
-                name="apellidos"
-                class="form-control my-0"
-                id="apellidoValue"
-                placeholder="Apellido"
-                value="{{ usuario.apellidos }}"
-              />
+              <div class="form-control d-flex justify-content-center">
+                <i class="fa-solid fa-signature my-auto"></i>
+                <input
+                  [(ngModel)]="usuario.apellidos"
+                  type="text"
+                  name="apellidos"
+                  class="w-75 text-center"
+                  id="apellidoValue"
+                  placeholder="Apellido"
+                  value="{{ usuario.apellidos }}"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -41,65 +53,58 @@
               <label for="tipoDocumentoValue" class="text-muted">
                 Tipo de documento
               </label>
-              <input
-                [(ngModel)]="usuario.tipo_documento"
-                type="text"
-                name="tipo_documento"
-                class="form-control my-0"
-                id="tipoDocumentoValue"
-                placeholder="Tipo de documento"
-                value="{{ usuario.tipo_documento }}"
-              />
+              <div class="form-control d-flex justify-content-center px-5">
+                <i class="fa-solid fa-address-card my-auto"></i>
+                <select
+                  name="tipo_documento"
+                  id="tipoDocumentoValue"
+                  class="text-center align-items-center"
+                  [(ngModel)]="usuario.tipo_documento"
+                >
+                  <option class="rounded-pill" value="Seleccionar" disabled>
+                    Seleccionar
+                  </option>
+                  <option class="rounded-pill" value="C.C.">C.C</option>
+                  <option class="rounded-pill" value="C.E.">C.E</option>
+                </select>
+              </div>
             </div>
           </div>
 
           <div class="d-flex">
             <div class="d-flex flex-column">
               <label for="documentoValue" class="text-muted">
-                Número de documento
+                N° de documento
               </label>
-              <input
-                [(ngModel)]="usuario.numero_documento"
-                type="text"
-                name="numero_documento"
-                class="form-control my-0"
-                id="documentoValue"
-                placeholder="Número de documento"
-                value="{{ usuario.numero_documento }}"
-              />
+              <div class="form-control d-flex justify-content-center">
+                <i class="fa-solid fa-address-card my-auto"></i>
+                <input
+                  [(ngModel)]="usuario.numero_documento"
+                  type="text"
+                  name="numero_documento"
+                  class="w-75 text-center"
+                  id="documentoValue"
+                  placeholder="Número de documento"
+                  value="{{ usuario.numero_documento }}"
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="d-flex justify-content-between px-5 mx-3">
-          <div class="d-flex">
-            <div class="d-flex flex-column">
-              <label for="celularValue" class="text-muted"> Celular </label>
+        <div class="d-flex justify-content-center px-5 mx-3">
+          <div class="d-flex flex-column w-100">
+            <label for="celularValue" class="text-muted"> Celular </label>
+            <div class="form-control d-flex justify-content-center">
+              <i class="fa-solid fa-square-phone my-auto"></i>
               <input
                 [(ngModel)]="usuario.celular"
-                type="text"
+                type="tel"
                 name="celular"
-                class="form-control my-0"
+                class="w-50 text-center"
                 id="celularValue"
-                placeholder="Celular"
+                placeholder="Correo electrónico"
                 value="{{ usuario.celular }}"
-              />
-            </div>
-          </div>
-
-          <div class="d-flex">
-            <div class="d-flex flex-column">
-              <label for="fechaNacimientoValue" class="text-muted">
-                Fecha de nacimiento
-              </label>
-              <input
-                [(ngModel)]="usuario.fecha_nacimiento"
-                type="text"
-                name="fecha_nacimiento"
-                class="form-control my-0"
-                id="fechaNacimientoValue"
-                placeholder="Fecha de nacimiento"
-                value="{{ usuario.fecha_nacimiento }}"
               />
             </div>
           </div>
@@ -110,15 +115,18 @@
             <label for="emailValue" class="text-muted">
               Correo electrónico
             </label>
-            <input
-              [(ngModel)]="usuario.email"
-              type="email"
-              name="email"
-              class="form-control my-0 w-100"
-              id="emailValue"
-              placeholder="Correo electrónico"
-              value="{{ usuario.email }}"
-            />
+            <div class="form-control d-flex justify-content-center">
+              <i class="fa-solid fa-envelope my-auto"></i>
+              <input
+                [(ngModel)]="usuario.email"
+                type="email"
+                name="email"
+                class="w-50 text-center"
+                id="emailValue"
+                placeholder="Correo electrónico"
+                value="{{ usuario.email }}"
+              />
+            </div>
           </div>
         </div>
       </div>

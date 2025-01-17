@@ -1,5 +1,5 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { map } from 'jquery';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { BuscarUsuariosService } from 'src/app/Services/BuscarUsuarios/buscar-usuarios.service';
 import Swal from 'sweetalert2';
@@ -16,7 +16,8 @@ export class DatosPerfilComponent implements OnInit {
 
   constructor(
     public authenticationService: AuthenticationService,
-    private buscarUsuariosService: BuscarUsuariosService
+    private buscarUsuariosService: BuscarUsuariosService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -50,6 +51,11 @@ export class DatosPerfilComponent implements OnInit {
           this.buscarUsuariosService.getUserById(this.idUser).subscribe(
             (data: any) => {
               this.usuario = data;
+              console.log(this.usuario.ultimaSesion);
+
+              this.usuario.ultimaSesion = new Date(
+                this.usuario.ultimaSesion
+              ).toLocaleDateString('es-CO'); // Convertir la fecha a string
             },
             (error: any) => {
               console.log(error);
@@ -63,6 +69,10 @@ export class DatosPerfilComponent implements OnInit {
     } else {
       console.log('User is null');
     }
+  }
+
+  volverPaginaAnterior() {
+    this.location.back();
   }
 
   logout(): void {
