@@ -1,6 +1,6 @@
+import { VendedorService } from 'src/app/Services/A2Configuraciones/Vendedor/vendedor.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { VendedorService } from 'src/app/Services/A2Configuraciones/Vendedor/vendedor.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./crear-vendedores.component.css'],
 })
 export class CrearVendedoresComponent implements OnInit {
+  // Lista de zonas para elegir la ubicación del vendedor
   zonas: { idZona: number; nombreZona: string }[] = [
     { idZona: 1, nombreZona: 'Boyaca Medellin' },
     { idZona: 2, nombreZona: 'ElectroHogar Colombia' },
@@ -26,6 +27,7 @@ export class CrearVendedoresComponent implements OnInit {
     { idZona: 14, nombreZona: 'Electrohogar Tamesis' },
   ];
 
+  // Objeto que almacena los datos del vendedor
   public vendedor: { nombreVendedor: string; idZona: number } = {
     nombreVendedor: '',
     idZona: 0,
@@ -33,60 +35,52 @@ export class CrearVendedoresComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private vendedorService: VendedorService
+    private vendedorService: VendedorService // Inyecta el servicio VendedorService para manejar los datos del vendedor
   ) {}
 
   ngOnInit(): void {}
 
+  // Método que se ejecuta al enviar el formulario
   onFormSubmit() {
+    // Verifica si el nombre del vendedor está vacío o nulo
     if (
       this.vendedor.nombreVendedor == '' ||
       this.vendedor.nombreVendedor == null
     ) {
-      Swal.fire('Error', 'El nombre de vendedor es requerido', 'error');
-      return;
+      Swal.fire('Error', 'El nombre de vendedor es requerido', 'error'); // Muestra una alerta si el nombre está vacío
+      return; // Sale de la función si el nombre es inválido
     }
+    // Verifica si la zona no ha sido seleccionada
     if (this.vendedor.idZona == 0 || this.vendedor.idZona == null) {
-      Swal.fire('Error', 'Seleccione una zona', 'error');
-      return;
+      Swal.fire('Error', 'Seleccione una zona', 'error'); // Muestra una alerta si la zona no está seleccionada
+      return; // Sale de la función si la zona es inválida
     }
 
-    // validacion provisional 
-    if (
-      this.vendedor.nombreVendedor == '' ||
-      this.vendedor.nombreVendedor == null
-    ) {
-      this.vendedorService?.añadirVendedor(this.vendedor)?.subscribe(
-        (data: any) => {
-          // console.log(data);
-
-          // Notificacion añadir vendedor
-          Swal.fire({
-            icon: 'success',
-            title: 'Producto creado',
-            showConfirmButton: false,
-            timer: 1000,
-          });
-          this.router.navigate(['dashboard-a2configuraciones/inicio']);
-          this.limpiarFormulario();
-        },
-        (error: any) => {
-          console.log(error);
-          this.limpiarFormulario();
-        }
-      );
-    }
-
-    // Limpiar formulario provisional
-    this.limpiarFormulario();
+    // Llama al servicio para agregar un nuevo vendedor
+    this.vendedorService?.añadirVendedor(this.vendedor)?.subscribe(
+      (data: any) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Producto creado',
+          showConfirmButton: false,
+          timer: 1000,
+        }); // Si la adición es exitosa, muestra una notificación de éxito
+        this.router.navigate(['dashboard-a2configuraciones/inicio']); // Redirige al usuario a la página de inicio
+        this.limpiarFormulario(); // Limpia los datos del formulario
+      },
+      (error: any) => {
+        console.log(error); // Muestra el error en consola si la adición falla
+        this.limpiarFormulario(); // Limpia el formulario en caso de error
+      }
+    );
   }
 
-  // regresar a elegir formualrio de vendedor o producto
+  // Método para regresar a la página de inicio sin realizar ninguna acción
   onVolver() {
     this.router.navigate(['dashboard-a2configuraciones/inicio']);
   }
 
-  // Limpiar formulario
+  // Método para limpiar el formulario
   limpiarFormulario() {
     this.vendedor = {
       nombreVendedor: '',

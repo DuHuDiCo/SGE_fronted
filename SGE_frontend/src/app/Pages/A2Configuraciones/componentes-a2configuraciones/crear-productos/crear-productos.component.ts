@@ -1,6 +1,6 @@
+import { ProductosService } from 'src/app/Services/A2Configuraciones/Productos/productos.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProductosService } from 'src/app/Services/A2Configuraciones/Productos/productos.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./crear-productos.component.css'],
 })
 export class CrearProductosComponent implements OnInit {
+  // Lista de categorías de productos disponibles
   categoriaProducto: { idProducto: number; descripcionProducto: string }[] = [
     { idProducto: 1, descripcionProducto: 'COMPUTADOR' },
     { idProducto: 2, descripcionProducto: 'DISPENSADOR' },
@@ -95,6 +96,7 @@ export class CrearProductosComponent implements OnInit {
     { idProducto: 83, descripcionProducto: 'SERVICIOS' },
   ];
 
+  // Lista de vendedores fijos disponibles
   vendedoresFijos: { idVendedor: number; nombreVendedor: string }[] = [
     { idVendedor: 1, nombreVendedor: 'Marlon Vivas' },
     { idVendedor: 2, nombreVendedor: 'Juan Perez' },
@@ -103,6 +105,7 @@ export class CrearProductosComponent implements OnInit {
     { idVendedor: 5, nombreVendedor: 'Pedro Perez' },
   ];
 
+  // Objeto que almacena los datos del nuevo producto
   public producto: {
     descripcion: string;
     codigo: string;
@@ -117,74 +120,71 @@ export class CrearProductosComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private productoService: ProductosService
+    private productoService: ProductosService // Inyecta el servicio ProductosService para manejar operaciones con productos
   ) {}
 
   ngOnInit(): void {}
 
+  // Método que se ejecuta al enviar el formulario
   onFormSubmit() {
+    // Verifica si la descripción del producto está vacía o es nula
     if (this.producto.descripcion == '' || this.producto.descripcion == null) {
       Swal.fire('Error', 'La descripción es requerida', 'error');
-      return;
+      return; // Sale de la función si la descripción es inválida
     }
+    // Verifica si el código del producto está vacío o es nulo
     if (this.producto.codigo == '' || this.producto.codigo == null) {
       Swal.fire('Error', 'El código es requerido', 'error');
-      return;
+      return; // Sale de la función si el código es inválido
     }
+    // Verifica si la categoría del producto está seleccionada
     if (
       this.producto.idCategoriaProducto == 0 ||
       this.producto.idCategoriaProducto == null
     ) {
       Swal.fire('Error', 'Categoria requerida', 'error');
-      return;
+      return; // Sale de la función si la categoría es inválida
     }
+    // Verifica si un vendedor fijo ha sido seleccionado
     if (
       this.producto.vendedorFijo == '' ||
       this.producto.vendedorFijo == null
     ) {
       Swal.fire('Error', 'Elija un vendedor', 'error');
-      return;
+      return; // Sale de la función si no hay vendedor seleccionado
     }
 
-    // validacion provisional
-    if (this.producto.descripcion == '' || this.producto.descripcion == null) {
-      this.productoService?.añadirProducto(this.producto)?.subscribe(
-        (data: any) => {
-          // console.log(data);
-
-          // Notificacion añadir vendedor
-          Swal.fire({
-            icon: 'success',
-            title: 'Producto creado',
-            showConfirmButton: false,
-            timer: 1000,
-          });
-          this.router.navigate(['dashboard-a2configuraciones/inicio']);
-          this.limpiarFormulario();
-        },
-        (error: any) => {
-          console.log(error);
-          this.limpiarFormulario();
-        }
-      );
-    }
-
-    // Limpiar formulario provisional
-    this.limpiarFormulario();
+    // Llama al servicio para agregar un nuevo producto
+    this.productoService?.añadirProducto(this.producto)?.subscribe(
+      (data: any) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Producto creado',
+          showConfirmButton: false,
+          timer: 1000,
+        }); // Si la adición es exitosa, muestra una notificación de éxito
+        this.router.navigate(['dashboard-a2configuraciones/inicio']); // Redirige al usuario a la página de inicio
+        this.limpiarFormulario(); // Limpia los datos del formulario
+      },
+      (error: any) => {
+        console.log(error); // Muestra el error en consola si la adición falla
+        this.limpiarFormulario(); // Limpia el formulario en caso de error
+      }
+    );
   }
 
-  // regresar a elegir formualrio de producto o vendedor
+  // Método para regresar a la página de inicio sin realizar ninguna acción
   onVolver() {
-    this.router.navigate(['dashboard-a2configuraciones/inicio']);
+    this.router.navigate(['dashboard-a2configuraciones/inicio']); // Redirige al usuario a la página de inicio
   }
 
-  // Limpiar formulario
+  // Método para limpiar el formulario
   limpiarFormulario() {
     this.producto = {
-      descripcion: '',
-      codigo: '',
-      idCategoriaProducto: 0,
-      vendedorFijo: '',
+      descripcion: '', // Resetea la descripción
+      codigo: '', // Resetea el código
+      idCategoriaProducto: 0, // Resetea la categoría
+      vendedorFijo: '', // Resetea el vendedor
     };
   }
 }

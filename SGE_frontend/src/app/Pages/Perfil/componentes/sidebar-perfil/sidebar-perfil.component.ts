@@ -13,6 +13,7 @@ export class SidebarPerfilComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // Función para cerrar sesion del usuario
   logout(){
     this.authService.logout()
     window.location.reload()

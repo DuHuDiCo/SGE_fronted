@@ -37,8 +37,8 @@
           />
         </div>
 
-        <div class="form-control w-50 d-flex justify-content-center">
-          <i class="fa-solid fa-rotate-270 fa-tag my-auto"></i>
+        <div class="form-control d-flex justify-content-center">
+          <i class="fa-solid fa-briefcase my-auto"></i>
           <select
             name="idCategoriaProducto"
             [(ngModel)]="producto.idCategoriaProducto"
@@ -48,7 +48,7 @@
             "
           >
             <option class="text-secondary text-center" disabled value="0">
-              Seleccionar
+              Seleccionar producto
             </option>
             <option
               *ngFor="let cProducto of categoriaProducto"
@@ -62,7 +62,7 @@
 
       <div class="col-md-12 col-12">
         <div class="form-control d-flex justify-content-center">
-          <i class="fa-solid fa-rotate-270 fa-tag my-auto"></i>
+          <i class="fa-solid fa-person my-auto"></i>
           <select
             name="vendedorFijo"
             [(ngModel)]="producto.vendedorFijo"
@@ -72,7 +72,7 @@
             "
           >
             <option class="text-secondary text-center" disabled value="">
-              Seleccione un vendedor
+              Seleccionar vendedor
             </option>
             <option
               *ngFor="let vendedores of vendedoresFijos"

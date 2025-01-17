@@ -32,7 +32,9 @@
             [ngClass]="vendedor.idZona == 0 ? 'text-secondary' : 'text-dark'"
             required
           >
-            <option class="text-secondary" disabled value="0">Seleccione un almacen</option>
+            <option class="text-secondary" disabled value="0">
+              Seleccione un almacen
+            </option>
             <option *ngFor="let zona of zonas" [value]="zona.idZona">
               {{ zona.nombreZona }}
             </option>
