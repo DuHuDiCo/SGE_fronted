@@ -2,16 +2,14 @@
   border-radius: 25px;
   text-align: center;
   margin: 15px auto;
-  padding: 10px;
   box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 
-input {
+input, textarea, select {
   border: none;
   outline: none;
   background: none;
   font-size: 15px;
-  margin: 10px 10px;
   border-bottom: 20px;
 }
 

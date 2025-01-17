@@ -10,36 +10,46 @@
   >
     <div class="row align-items-center">
       <div class="col-md-12 col-12">
-        <div class="d-flex flex-column">
+        <div
+          class="form-control d-flex justify-content-center align-items-center"
+        >
+          <i class="fa-solid fa-pen"></i>
           <textarea
             [(ngModel)]="producto.descripcion"
             placeholder="Descripción del producto"
-            class="form-control text-center"
+            class="text-center w-75"
             type="text"
-            rows="4"
+            rows="1"
             name="descripcion"
           ></textarea>
         </div>
       </div>
 
       <div class="col-md-12 col-12 gap-3 d-flex justify-content-between">
-        <div class="">
+        <div class="form-control d-flex justify-content-center w-50">
+          <i class="fa-solid fa-rotate-270 fa-tag my-auto"></i>
           <input
             [(ngModel)]="producto.codigo"
             name="marca"
-            class="form-control text-center"
+            class="w-50 text-center"
             type="text"
             placeholder="Código"
           />
         </div>
 
-        <div class="">
+        <div class="form-control w-50 d-flex justify-content-center">
+          <i class="fa-solid fa-rotate-270 fa-tag my-auto"></i>
           <select
             name="idCategoriaProducto"
             [(ngModel)]="producto.idCategoriaProducto"
-            class="form-control"
+            class="w-75 text-center text-secondary"
+            [ngClass]="
+              producto.idCategoriaProducto == 0 ? 'text-secondary' : 'text-dark'
+            "
           >
-            <option disabled value="0">Seleccione una categoria</option>
+            <option class="text-secondary text-center" disabled value="0">
+              Seleccionar
+            </option>
             <option
               *ngFor="let cProducto of categoriaProducto"
               [value]="cProducto.idProducto"
@@ -51,13 +61,19 @@
       </div>
 
       <div class="col-md-12 col-12">
-        <div class="d-flex flex-column">
+        <div class="form-control d-flex justify-content-center">
+          <i class="fa-solid fa-rotate-270 fa-tag my-auto"></i>
           <select
             name="vendedorFijo"
             [(ngModel)]="producto.vendedorFijo"
-            class="form-control"
+            class="w-75 text-center text-secondary"
+            [ngClass]="
+              +producto.vendedorFijo == 0 ? 'text-secondary' : 'text-dark'
+            "
           >
-            <option disabled value="">Seleccione un vendedor</option>
+            <option class="text-secondary text-center" disabled value="">
+              Seleccione un vendedor
+            </option>
             <option
               *ngFor="let vendedores of vendedoresFijos"
               [value]="vendedores.idVendedor"

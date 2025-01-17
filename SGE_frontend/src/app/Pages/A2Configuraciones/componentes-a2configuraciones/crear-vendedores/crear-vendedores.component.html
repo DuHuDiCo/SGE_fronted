@@ -10,11 +10,12 @@
   >
     <div class="row align-items-center">
       <div class="col-md-12 col-12">
-        <div class="d-flex flex-column">
+        <div class="d-flex form-control justify-content-center">
+          <i class="fa-solid fa-user my-auto"></i>
           <input
             [(ngModel)]="vendedor.nombreVendedor"
             name="nombreVendedor"
-            class="form-control text-center"
+            class="text-center w-75"
             type="text"
             placeholder="Nombre del vendedor"
           />
@@ -22,14 +23,16 @@
       </div>
 
       <div class="col-md-12 col-12">
-        <div class="d-flex flex-column">
+        <div class="d-flex form-control justify-content-center">
+          <i class="fa-solid fa-briefcase my-auto"></i>
           <select
             name="idZona"
             [(ngModel)]="vendedor.idZona"
-            class="form-select form-control"
+            class="w-75 text-center text-secondary"
+            [ngClass]="vendedor.idZona == 0 ? 'text-secondary' : 'text-dark'"
             required
           >
-            <option disabled value="0">Seleccione una opción</option>
+            <option class="text-secondary" disabled value="0">Seleccione un almacen</option>
             <option *ngFor="let zona of zonas" [value]="zona.idZona">
               {{ zona.nombreZona }}
             </option>
