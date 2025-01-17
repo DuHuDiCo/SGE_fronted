@@ -32,7 +32,7 @@
         data-bs-target="#getting-started-collapse"
         aria-expanded="false"
       >
-        <i class="fas fa-sort-down"></i>&nbsp; Archivos A2Config
+        <i class="fas fa-sort-down"></i>&nbsp; Opciones de A2Config
       </button>
 
       <div
@@ -43,11 +43,21 @@
         <ul class="list-unstyled fw-normal pb-1 small">
           <li>
             <button
-              class="nav-link active"
+              class="nav-link active rounded-4 outline-none"
               aria-current="page"
-              routerLink="/dashboard-a2configuraciones/inicio"
+              routerLink="/dashboard-a2configuraciones/crear-vendedores"
             >
-              <i class="fas fa-file-alt"></i>&nbsp; Opción
+            <i class="fas fa-user-plus"></i>&nbsp; Crear vendedor
+            </button>
+          </li>
+
+          <li>
+            <button
+              class="nav-link active rounded-4 outline-none"
+              aria-current="page"
+              routerLink="/dashboard-a2configuraciones/crear-productos"
+            >
+              <i class="fas fa-file-alt"></i>&nbsp; Crear producto
             </button>
           </li>
         </ul>
@@ -56,7 +66,7 @@
     <hr style="color: white" />
     <ul class="nav flex-column">
       <li class="nav-item">
-        <button (click)="onLogout()" class="nav-link active" aria-current="page">
+        <button (click)="onLogout()" class="nav-link active rounded-4">
           <i class="fa-solid fa-right-from-bracket"></i>&nbsp; Salir
         </button>
       </li>
