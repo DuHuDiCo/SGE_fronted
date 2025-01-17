@@ -217,7 +217,7 @@ const routes: Routes = [
         component: DatosPerfilComponent,
       },
       {
-        path: 'editar',
+        path: 'editar-perfil',
         component: EditarPerfilComponent,
       },
     ],

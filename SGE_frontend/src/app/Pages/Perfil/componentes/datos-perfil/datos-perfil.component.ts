@@ -1,8 +1,9 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { BuscarUsuariosService } from 'src/app/Services/BuscarUsuarios/buscar-usuarios.service';
-import Swal from 'sweetalert2';
+import { HistorialRutasService } from 'src/app/Services/perfil/historial-rutas.service';
+import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-datos-perfil',
@@ -17,7 +18,9 @@ export class DatosPerfilComponent implements OnInit {
   constructor(
     public authenticationService: AuthenticationService,
     private buscarUsuariosService: BuscarUsuariosService,
-    private location: Location
+    private historialRutasService: HistorialRutasService,
+    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +54,6 @@ export class DatosPerfilComponent implements OnInit {
           this.buscarUsuariosService.getUserById(this.idUser).subscribe(
             (data: any) => {
               this.usuario = data;
-              console.log(this.usuario.ultimaSesion);
 
               this.usuario.ultimaSesion = new Date(
                 this.usuario.ultimaSesion
@@ -71,8 +73,20 @@ export class DatosPerfilComponent implements OnInit {
     }
   }
 
+  editarPerfil() {
+    this.router.navigate(['/dashboard-perfil/editar-perfil'], {
+      replaceUrl: true,
+    });
+  }
+
   volverPaginaAnterior() {
-    this.location.back();
+    let ultimaRuta = this.historialRutasService.obtenerUltimaRuta();
+
+    if (ultimaRuta == '/dashboard-perfil/editar-perfil') {
+      this.historialRutasService.obtenerUltimaRuta();
+    } else {
+      this.location.back();
+    }
   }
 
   logout(): void {

@@ -142,12 +142,20 @@ export class EditarPerfilComponent implements OnInit {
           'success'
         ).then(() => {
           this.users = null;
-          this.route.navigate(['/dashboard-perfil/datos']);
+          this.route.navigate(['/dashboard-perfil/datos'], {
+            replaceUrl: true,
+          });
         });
       },
       (error: any) => {
         console.log(error);
       }
     );
+  }
+
+  volverPerfil() {
+    this.route.navigate(['/dashboard-perfil/datos'], {
+      replaceUrl: true,
+    });
   }
 }
