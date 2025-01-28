@@ -35,7 +35,7 @@ export class SubirArchivosComponent implements OnInit {
   numeroObligacion: string = ''
 
   // ARRAYS
-  archivos:any[] = []
+  archivos: any[] = []
   obligacion: any = []
   tiposArchivos: string[] = []
   tiposArchivosSelected: string[] = []
@@ -136,7 +136,6 @@ export class SubirArchivosComponent implements OnInit {
     }
   }
 
-
   getObligacionByCedula() {
     const cedula = this.cedula.trim()
     if (this.cedula.trim() == '' || isNaN(parseInt(cedula))) {
@@ -146,9 +145,9 @@ export class SubirArchivosComponent implements OnInit {
 
     this.buscarService.filter(this.cedula).subscribe(
       (data: any) => {
-          this.obligacion = data
+        this.obligacion = data
         console.log(data);
-        
+
         if (this.obligacion.length > 0) {
           Swal.fire({
             icon: 'success',
@@ -174,7 +173,7 @@ export class SubirArchivosComponent implements OnInit {
       (data: any) => {
         data.forEach((element: TipoArchivo) => {
           this.tiposArchivos.push(element.tipoArchivo)
-          
+
         });
       }, (error: any) => {
         console.log(error);
@@ -185,7 +184,7 @@ export class SubirArchivosComponent implements OnInit {
   numeroO(obligacion: string, accion: string, pos: number) {
     this.display = 'block'
     this.archivos = this.obligacion[pos].archivos
-    
+
     var user = this.authService.getUsername()
 
     if (user == null || user == undefined) {
@@ -200,7 +199,7 @@ export class SubirArchivosComponent implements OnInit {
 
     this.archivo.numeroObligacion = obligacion
     this.archivo.username = user
-    
+
     if (this.numeroObligacionRecibida == null) {
       this.isEmpty(obligacion, accion)
     } else {
@@ -282,7 +281,7 @@ export class SubirArchivosComponent implements OnInit {
 
       console.log(this.archivo);
       console.log(this.archivosCargados);
-      
+
     }
 
     console.log(this.archivosCargados);
@@ -373,7 +372,7 @@ export class SubirArchivosComponent implements OnInit {
       Swal.fire('Error', 'Debe cargar al menos un archivo con un tipo de archivo selecionado.', 'error');
       return;
     }
-    
+
     this.subirService.save(this.archivo).subscribe(
       (data: any) => {
         Swal.fire({
