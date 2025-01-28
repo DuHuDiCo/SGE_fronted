@@ -1,77 +1,97 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { data } from 'jquery';
 import { SubirArchivoService } from 'src/app/Services/Archivo/SubirArchivos/subir-archivo.service';
 import { TipoArchivoService } from 'src/app/Services/Archivo/TipoArchivo/tipo-archivo.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { Archivo, Base64, EditarArchivo } from 'src/app/Types/Archivo/Archivos';
 import { TipoArchivo } from 'src/app/Types/Archivo/TipoArchivo';
-import { Obligacion } from 'src/app/Types/Consignaciones';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-buscar-archivos',
   templateUrl: './buscar-archivos.component.html',
-  styleUrls: ['./buscar-archivos.component.css']
+  styleUrls: ['./buscar-archivos.component.css'],
 })
 export class BuscarArchivosComponent implements OnInit {
   @ViewChild('fileInput') fileInput: any;
 
-  cedula: string = ''
-  url: string = ''
-  dataUri: string = 'data:image/jpg;base64'
-  base64Pdf: string = ''
+  cedula: string = '';
+  url: string = '';
+  dataUri: string = 'data:image/jpg;base64';
+  base64Pdf: string = '';
   numeroObligacionRecibida: String = '';
-  tipoArchivo: string = ''
-  cards: boolean = false
-  tabla: boolean = false
-  filtro: boolean = false
-  tipoArc: number = 0
-  numeroArc: number = 0
+  tipoArchivo: string = '';
+  cards: boolean = false;
+  tabla: boolean = false;
+  filtro: boolean = false;
+  tipoArc: number = 0;
+  numeroArc: number = 0;
 
-  obligacion: any[] = []
-  archivos: any[] = []
-  datos: any[] = []
-  tiposArchivos: TipoArchivo[] = []
-  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
-  permisos: string[] = ['ELIMINAR ARCHIVOS', 'EDITAR ARCHIVOS', 'SUBIR UN ARCHIVO', 'SUBIR ARCHIVOS', 'CREAR TIPOS ARCHIVO', 'EDITAR TIPOS ARCHIVO']
+  obligacion: any[] = [];
+  archivos: any[] = [];
+  datos: any[] = [];
+  tiposArchivos: TipoArchivo[] = [];
+  rolesArray: string[] = [
+    'Cartera',
+    'Caja',
+    'Archivos',
+    'Ventas',
+    'Servicios',
+    'Consignaciones',
+    'SUPERADMINISTRADOR',
+    'SST',
+  ];
+  permisos: string[] = [
+    'ELIMINAR ARCHIVOS',
+    'EDITAR ARCHIVOS',
+    'SUBIR UN ARCHIVO',
+    'SUBIR ARCHIVOS',
+    'CREAR TIPOS ARCHIVO',
+    'EDITAR TIPOS ARCHIVO',
+  ];
 
   modal: EditarArchivo = {
     idArchivo: 0,
     base64: '',
     username: '',
     tipoArchivo: '',
-    nombreOriginal: ''
-  }
+    nombreOriginal: '',
+  };
 
   subirArchivo: Archivo = {
     numeroObligacion: '',
     base64: [],
-    username: ''
-  }
+    username: '',
+  };
 
   base64: Base64 = {
     base46: [],
     tipoArchivo: '',
-    nombreArchivo: ''
-  }
+    nombreArchivo: '',
+  };
 
-  constructor(private buscarService: SubirArchivoService, private router: Router, private subirService: SubirArchivoService, private authService: AuthenticationService, private tipoArchivoService: TipoArchivoService, private sanitizer: DomSanitizer) { }
+  constructor(
+    private buscarService: SubirArchivoService,
+    private router: Router,
+    private subirService: SubirArchivoService,
+    private authService: AuthenticationService,
+    private tipoArchivoService: TipoArchivoService
+  ) {}
 
   ngOnInit(): void {
-    this.getAllTipo()
+    this.getAllTipo();
     setTimeout(() => {
-      this.subirService.arch.subscribe(data => {
-        console.log(data);
-        
+      this.subirService.arch.subscribe((data) => {
+        // console.log(data);
+
         if (data.length > 0) {
           this.archivos = data;
-          this.subirArchivo.numeroObligacion = this.archivos[0].numeroObligacion
-          this.cards = true
-          console.log(this.archivos);
-          console.log(this.subirArchivo.numeroObligacion);
-          this.eliminarTiposArchivos()
+          this.subirArchivo.numeroObligacion =
+            this.archivos[0].numeroObligacion;
+          this.cards = true;
+          // console.log(this.archivos);
+          // console.log(this.subirArchivo.numeroObligacion);
+          this.eliminarTiposArchivos();
         }
       });
     }, 300);
@@ -85,69 +105,104 @@ export class BuscarArchivosComponent implements OnInit {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Digite Una Cédula',
-        timer: 2500
-      })
-      return
+        text: 'Digite una cédula',
+        timer: 2500,
+      });
+      Swal.fire({
+        title: 'Error',
+        text: 'Digite una cédula',
+        icon: 'error',
+        timer: 2500,
+        confirmButtonColor: '#d40000',
+        customClass: {
+          popup: 'rounded-4', // Clase para redondear el modal
+          confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+        },
+      });
+      return;
     }
-    this.filtro = true
-    this.obligacion = []
+    this.filtro = true;
+    this.obligacion = [];
     this.buscarService.filter(this.cedula).subscribe(
       (data: any) => {
-        this.datos = data
-        console.log(this.datos);
-        
+        this.datos = data;
+        // console.log(this.datos);
+
         data.forEach((element: any) => {
-          this.obligacion.push(element.cuentaPorCobrar)
-          this.numeroArc = element.archivos.length
+          this.obligacion.push(element.cuentaPorCobrar);
+          this.numeroArc = element.archivos.length;
         });
-        this.tabla = true
-        this.filtro = false
+        this.tabla = true;
+        this.filtro = false;
         Swal.fire({
           icon: 'info',
-          title: 'Estas Son Las Obligaciones Encontradas',
-          text: 'Elija Una Obligación',
-          timer: 2500
-        })
-      }, (error: any) => {
+          title: 'Estas son las obligaciones encontradas',
+          text: 'Elija una obligación',
+          timer: 2500,
+          confirmButtonColor: '#d40000',
+          customClass: {
+            popup: 'rounded-4', // Clase para redondear el modal
+            confirmButton: 'btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
+          },
+        });
+        // this.cedula = '';
+      },
+      (error: any) => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Error Al Buscar Los Archivos',
-          timer: 2500
-        })
-        this.filtro = false
+          text: 'Error al buscar los archivos',
+          timer: 2500,
+        confirmButtonColor: '#d40000',
+        customClass: {
+          popup: 'rounded-4', // Clase para redondear el modal
+          confirmButton: 'btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
+        },
+        });
+        this.filtro = false;
         console.log(error);
+
+        this.cedula = '';
       }
-    )
+    );
   }
 
   isEmpty(obligacion: string) {
     this.subirService.isEmpty(obligacion).subscribe(
       (data: any) => {
-        console.log(data);
-        
+        // console.log(data);
+
         if (data) {
-          Swal.fire('Error', 'Esta Obligacion No Contiene Archivos, Puede Subirlos A continuación', 'error')
-          console.log(data);
+          Swal.fire(
+            'Error',
+            'Esta obligacion no contiene archivos, puede subirlos a continuación',
+            'error'
+          );
+          // console.log(data);
           setTimeout(() => {
             this.subirService.send(obligacion);
-            console.log('obligacion enviada:', obligacion);
+            // console.log('obligacion enviada:', obligacion);
             this.router.navigate(['/dashboard-archivos/subir-archivos']);
           }, 3000);
         } else {
           Swal.fire({
             icon: 'success',
-            title: 'Datos Guardados Anteriormente',
+            title: 'Datos guardados anteriormente',
             text: 'Estos Son Los Archivos Encontrados',
-            timer: 2500
+            timer: 2500,
+            confirmButtonColor: '#d40000',
+            customClass: {
+              popup: 'rounded-4', // Clase para redondear el modal
+              confirmButton: 'btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
+            },
           });
-          console.log(data);
+          // console.log(data);
 
           this.cards = true;
           this.tabla = false;
         }
-      }, (error: any) => {
+      },
+      (error: any) => {
         console.log(error);
       }
     );
@@ -156,14 +211,14 @@ export class BuscarArchivosComponent implements OnInit {
   getAllTipo() {
     this.tipoArchivoService.getAll().subscribe(
       (data: any) => {
-        this.tiposArchivos = data
-        this.tipoArc = data.length
-        console.log(data);
-
-      }, (error: any) => {
+        this.tiposArchivos = data;
+        this.tipoArc = data.length;
+        // console.log(data);
+      },
+      (error: any) => {
         console.log(error);
       }
-    )
+    );
   }
 
   //LLENAR LOS MODALES CON SU PDF
@@ -172,7 +227,7 @@ export class BuscarArchivosComponent implements OnInit {
     embed.src = base64;
   }
 
-  obtenerFile(event: any, accion: string) {  
+  obtenerFile(event: any, accion: string) {
     const archivo = event.target.files[0];
 
     if (!archivo) {
@@ -185,174 +240,225 @@ export class BuscarArchivosComponent implements OnInit {
       return;
     }
 
-    this.extraerBase64(archivo).then((file: any) => {
-      const base64SinP = file.base; 
+    this.extraerBase64(archivo)
+      .then((file: any) => {
+        const base64SinP = file.base;
 
-      this.subirArchivo.base64 = [];
+        this.subirArchivo.base64 = [];
 
-      if (accion == 'guardar') {
-        const obj = {
-          base46: [base64SinP],
-          nombreArchivo: archivo.name,
-          tipoArchivo: this.base64.tipoArchivo 
-        };
-        
-        this.subirArchivo.base64.push(obj);
-        console.log(this.subirArchivo);
-    
-      }else{
-        this.modal.base64 = base64SinP;
-      }
-    }).catch(error => {
-      console.error('Error al extraer el archivo base64:', error);
-    });
+        if (accion == 'guardar') {
+          const obj = {
+            base46: [base64SinP],
+            nombreArchivo: archivo.name,
+            tipoArchivo: this.base64.tipoArchivo,
+          };
+
+          this.subirArchivo.base64.push(obj);
+          // console.log(this.subirArchivo);
+        } else {
+          this.modal.base64 = base64SinP;
+        }
+      })
+      .catch((error) => {
+        console.error('Error al extraer el archivo base64:', error);
+      });
   }
 
+  // Modal guardar uno
   saveOne() {
-    if (!this.base64 || !this.base64.tipoArchivo || this.base64.tipoArchivo.trim() === '') {
+    if (
+      !this.base64 ||
+      !this.base64.tipoArchivo ||
+      this.base64.tipoArchivo.trim() === ''
+    ) {
       Swal.fire('Error', 'Seleccione el tipo de archivo.', 'error');
       return;
     }
-  
-    if (!this.subirArchivo || !this.subirArchivo.base64 || this.subirArchivo.base64.length === 0 || !this.subirArchivo.base64[0].base46) {
-      Swal.fire('Error', 'Seleccione algún archivo.', 'error');
+
+    if (
+      !this.subirArchivo ||
+      !this.subirArchivo.base64 ||
+      this.subirArchivo.base64.length === 0 ||
+      !this.subirArchivo.base64[0].base46
+    ) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Seleccione algún archivo.',
+        confirmButtonColor: '#d40000',
+        customClass: {
+          popup: 'rounded-4', // Clase para redondear el modal
+          confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+        },
+      });
       return;
     }
-  
+
     this.buscarService.saveOne(this.subirArchivo).subscribe(
       (data: any) => {
-        Swal.fire('Datos Guardados', 'Archivo Guardado Con éxito', 'success');
-        console.log(data);
+        Swal.fire('Datos Guardados', 'Archivo guardado con éxito', 'success');
+        // console.log(data);
         this.archivos.push(data[0]);
         this.eliminarTiposArchivos();
-  
+
         this.fileInput.nativeElement.value = '';
 
+        // Cierra el modal
+        const button = document.getElementById(
+          'myButtonSaveOne'
+        ) as HTMLButtonElement;
+        if (button) {
+          button.click();
+        }
       },
       (error: any) => {
-        Swal.fire('Error', 'Error al Guardar El Archivo', 'error');
+        Swal.fire('Error', 'Error al guardar el archivo', 'error');
         console.log(error);
       }
     );
   }
-  
+
+  onVolver() {
+    this.cards = false; // Cambiar el estado para ocultar el detalle
+  }
+
   // Método para extraer base64
-  extraerBase64 = async ($event: any) => new Promise((resolve, reject): any => {
-    try {
-      const reader = new FileReader();
-      reader.readAsDataURL($event);
-      reader.onload = () => {
-        resolve({
-          base: reader.result 
-        });
-      };
-      reader.onerror = error => {
-        reject(error);
-      };
-    } catch (e) {
-      reject(e);
-    }
-  });
+  extraerBase64 = async ($event: any) =>
+    new Promise((resolve, reject): any => {
+      try {
+        const reader = new FileReader();
+        reader.readAsDataURL($event);
+        reader.onload = () => {
+          resolve({
+            base: reader.result,
+          });
+        };
+        reader.onerror = (error) => {
+          reject(error);
+        };
+      } catch (e) {
+        reject(e);
+      }
+    });
 
   //ABRIR EL MODAL PARA EDITAR
   abrirModal(id: number) {
-    var archivo = this.archivos.find((a: any) => a.idArchivo == id)
+    var archivo = this.archivos.find((a: any) => a.idArchivo == id);
     if (archivo != null || archivo != undefined) {
-
-      this.modal.idArchivo = archivo.idArchivo
-      this.modal.nombreOriginal = archivo.nombreOriginal
-      this.modal.tipoArchivo = archivo.tipoArchivo.tipoArchivo
+      this.modal.idArchivo = archivo.idArchivo;
+      this.modal.nombreOriginal = archivo.nombreOriginal;
+      this.modal.tipoArchivo = archivo.tipoArchivo.tipoArchivo;
     }
   }
 
   //EDITAR UN ARCHIVO
-  editar() {    
-    var user = this.authService.getUsername()
+  editar() {
+    var user = this.authService.getUsername();
 
     if (user == null || user == undefined) {
-      return
+      return;
     }
     this.modal.username = user;
 
     if (this.modal.base64.trim() == '' || this.modal.base64.trim() == null) {
-      Swal.fire('Error', 'Seleccione algun archivo.', 'error')
-      return
+      Swal.fire('Error', 'Seleccione algun archivo.', 'error');
+      return;
     }
     console.log(this.modal);
-  
+
     this.buscarService.update(this.modal).subscribe(
       (data: any) => {
-        const position2 = this.archivos.findIndex((a: any) => a.idArchivo == this.modal.idArchivo)
+        const position2 = this.archivos.findIndex(
+          (a: any) => a.idArchivo == this.modal.idArchivo
+        );
         this.archivos[position2] = data;
 
-        Swal.fire('Datos Guardados', 'Archivo Actualizado Con éxito', 'success')
+        Swal.fire(
+          'Datos guardados',
+          'Archivo actualizado con éxito',
+          'success'
+        );
         this.fileInput.nativeElement.value = '';
-        console.log(data);
-      }, (error: any) => {
-        Swal.fire('Error', 'Error al Actualizar El Archivo', 'error')
+        // console.log(data);
+
+        // Cierra el modal
+        const button = document.getElementById(
+          'myButtonEditar'
+        ) as HTMLButtonElement;
+        if (button) {
+          button.click();
+        }
+      },
+      (error: any) => {
+        Swal.fire('Error', 'Error al actualizar el archivo', 'error');
         console.log(error);
       }
-    )
+    );
   }
 
   //ELIMINAR UN ARCHIVO
   eliminar(id: number) {
     Swal.fire({
-      title: 'Eliminar El Archivo',
-      text: '¿Estas seguro de Este Archivo?',
+      title: 'Eliminar el archivo',
+      text: '¿Estás seguro de eliminar este archivo?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
       confirmButtonText: 'Eliminar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
+      customClass: {
+        popup: 'rounded-4', // Clase para redondear el modal
+        confirmButton: 'btn boton rounded-pill', // Botón rojo para Eliminar
+        cancelButton: 'btn btn-secondary rounded-pill', // Botón secundario para Cancelar
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         setTimeout(() => {
           this.buscarService.delete(id).subscribe(
             (data: any) => {
-              this.archivos = this.archivos.filter((archivos: any) => archivos.idArchivo != id);
+              this.archivos = this.archivos.filter(
+                (archivos: any) => archivos.idArchivo != id
+              );
             },
             (error: any) => {
-              Swal.fire('Error', 'Error al Eliminar El Archivo', 'error')
+              Swal.fire('Error', 'Error al eliminar el archivo', 'error');
+
               console.log(error);
             }
-          )
+          );
         }, 2000);
       }
-    })
+    });
   }
 
   //LLENAR LAS CARDS
   llenarCards(position: number, obligacion: any) {
+    this.subirArchivo.numeroObligacion = obligacion;
 
-    this.subirArchivo.numeroObligacion = obligacion
-
-    var user = this.authService.getUsername()
+    var user = this.authService.getUsername();
 
     if (user == null || user == undefined) {
-      return
+      return;
     }
-    this.subirArchivo.username = user
+    this.subirArchivo.username = user;
 
-    this.isEmpty(obligacion)
+    this.isEmpty(obligacion);
 
-    this.archivos = this.datos[position].archivos
+    this.archivos = this.datos[position].archivos;
 
-    this.eliminarTiposArchivos()
+    this.eliminarTiposArchivos();
   }
 
-  eliminarTiposArchivos(){
+  eliminarTiposArchivos() {
     for (let i = 0; i < this.archivos.length; i++) {
       const tiposArchivosExistentes = this.archivos[i].tipoArchivo.tipoArchivo;
 
-    for (let x = 0; x < this.tiposArchivos.length; x++) {
-      const tiposArchivosTodos = this.tiposArchivos[x].tipoArchivo;
-      if (tiposArchivosTodos === tiposArchivosExistentes) {
-        this.tiposArchivos.splice(x, 1);
-        console.log(this.tiposArchivos);
+      for (let x = 0; x < this.tiposArchivos.length; x++) {
+        const tiposArchivosTodos = this.tiposArchivos[x].tipoArchivo;
+        if (tiposArchivosTodos === tiposArchivosExistentes) {
+          this.tiposArchivos.splice(x, 1);
+          // console.log(this.tiposArchivos);
+        }
       }
     }
-  }
   }
 }

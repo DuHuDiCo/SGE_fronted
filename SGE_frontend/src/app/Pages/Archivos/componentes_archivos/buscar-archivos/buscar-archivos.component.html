@@ -1,50 +1,79 @@
-   <div class="container-fluid mt-3" *ngIf="!cards">
-  <div class="row">
+<div class="container-fluid mt-3" *ngIf="!cards">
+  <div class="row mx-5">
     <div class="col-md-4">
-      <div class="card card-search">
-        <div class="card-body">
+      <div class="card card-search rounded-4">
+        <div class="card-body d-flex flex-column px-5">
           <h5 class="mt-3 fw-bold text-center">Buscar Archivos</h5>
-          <h6 class="mt-4 text-center">Digite La Cédula Del Cliente</h6>
-          <div class="usuario mt-4">
-            <input [(ngModel)]="cedula" name="cedula" type="text" class="input-usuario" placeholder="Número De Cédula">
+          <h6 class="mt-4 mb-0 text-center">Digite la cédula del cliente</h6>
+          <div class="usuario w-100">
+            <input
+              [(ngModel)]="cedula"
+              name="cedula"
+              type="text"
+              class="input-usuario"
+              placeholder="Número de cédula"
+            />
           </div>
-          <button *ngIf="!filtro" (click)="filter()" class="boton">Buscar</button>
-          <button *ngIf="filtro" type="button" class="boton mb-4"
-            style="background-color: #960010;border-color: #960010;">
-            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+
+          <button
+            type="button"
+            *ngIf="!filtro"
+            (click)="filter()"
+            class="btn rounded-pill b mx-auto w-50"
+          >
+            Buscar
+          </button>
+
+          <button
+            *ngIf="filtro"
+            type="button"
+            class="b mb-4"
+            style="background-color: #960010; border-color: #960010"
+          >
+            <span
+              class="spinner-border spinner-border-sm float-right"
+              role="status"
+              aria-hidden="true"
+            ></span>
           </button>
         </div>
       </div>
     </div>
-    <div class="col-md-8 mt-3">
-      <div class="card">
-        <div class="card-body card-search">
-          <h5 class="mt-3 fw-bold text-center" *ngIf="obligacion.length > 0">Seleccione una Obligación</h5>
-          <div class="mt-2 mb-2">
+
+    <div class="col-md-8 rounded-4">
+      <div class="card rounded-4">
+        <div class="card-body card-search rounded-4">
+          <h5 class="fw-bold text-center mt-3" *ngIf="obligacion.length > 0">
+            Seleccione una obligación
+          </h5>
+          <div class="mt-2 mb-3">
             <div *ngIf="obligacion.length == 0">
-              <h5 class="text-center mt-4">Sin Obligaciones</h5>
+              <h5 class="text-center mt-3">Sin obligaciones</h5>
             </div>
-            <div class="table-responsive" *ngIf="obligacion.length > 0">
+            <div class="table-responsive h-auto" *ngIf="obligacion.length > 0">
               <table class="table table-bordered table-hover text-center mt-3">
                 <thead>
                   <tr>
                     <th scope="col"># Obligación</th>
-                    <th scope="col">Cedula</th>
+                    <th scope="col">Cédula</th>
                     <th scope="col">Nombre</th>
-                    <th scope="col">Valor Obligación</th>
-                    <th scope="col">Fecha Obligación</th>
+                    <th scope="col">Valor obligación</th>
+                    <th scope="col">Fecha obligación</th>
                     <th scope="col">Sede</th>
                     <th scope="col">Archivos</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let o of obligacion; let i = index" (click)="llenarCards(i, o.numeroObligacion)"
-                    style="cursor: pointer;">
+                  <tr
+                    *ngFor="let o of obligacion; let i = index"
+                    (click)="llenarCards(i, o.numeroObligacion)"
+                    style="cursor: pointer"
+                  >
                     <td>{{ o.numeroObligacion }}</td>
                     <td>{{ o.cliente.numeroDocumento }}</td>
                     <td>{{ o.cliente.nombres }} {{ o.cliente.apellidos }}</td>
                     <td>{{ o.capital }}</td>
-                    <td>{{ o.fechaObligacion | date:'short' }}</td>
+                    <td>{{ o.fechaObligacion | date : "short" }}</td>
                     <td>{{ o.sede.nombreSede }}</td>
                     <td>{{ numeroArc }}/{{ tipoArc }}</td>
                   </tr>
@@ -58,31 +87,58 @@
   </div>
 </div>
 
-
 <div *ngIf="cards" class="container">
-  <div class="row">
-    <div *ngFor="let a of archivos; let i = index" class="col-md-4 c">
+  <div class="row d-flex justify-content-evenly">
+    <div *ngFor="let a of archivos; let i = index" class="col-md-4 c h-100">
       <div class="custom-card text-center mb-3">
-        <div class="card-image" [style.background-image]="'url(' + dataUri + ',' + a.rutaMiniatura + ')'"
-          (click)="pdf(a.dataUir + ',' + a.ruta)" data-bs-toggle="modal" data-bs-target="#modalImagen"></div>
+        <div
+          class="card-image"
+          [style.background-image]="
+            'url(' + dataUri + ',' + a.rutaMiniatura + ')'
+          "
+          (click)="pdf(a.dataUir + ',' + a.ruta)"
+          data-bs-toggle="modal"
+          data-bs-target="#modalImagen"
+        ></div>
         <div class="card-body">
-          <p class="card-text fw-bold">{{ a.tipoArchivo.tipoArchivo }}</p>
-          <p class="card-text">{{ a.numeroObligacion }}</p>
+          <p class="card-text fw-bold mb-0">{{ a.tipoArchivo.tipoArchivo }}</p>
+          <p class="card-text mt-0">{{ a.numeroObligacion }}</p>
           <div *appRolesPerfiles="rolesArray[2].toUpperCase()" class="mb-3">
-            <button *appArchivos="permisos[0]" (click)="abrirModal(a.idArchivo)" class="btn btn-primary me-2 mt-3"
-              data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-solid fa-pen-to-square"></i></button>
-            <button *appRolesPerfiles="rolesArray[6]" (click)="eliminar(a.idArchivo)" class="btn btn-danger mt-3"
-              style="background-color: #960010; border-color: #960010;"><i class="fa-solid fa-trash"></i></button>
+            <button
+              *appArchivos="permisos[0]"
+              (click)="abrirModal(a.idArchivo)"
+              class="btn btn-primary me-2 mt-2 rounded-pill px-4"
+              data-bs-toggle="modal"
+              data-bs-target="#modalEditar"
+            >
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button
+              *appRolesPerfiles="rolesArray[6]"
+              (click)="eliminar(a.idArchivo)"
+              class="btn btn-danger mt-2 rounded-pill px-4"
+              style="background-color: #960010; border-color: #960010"
+            >
+              <i class="fa-solid fa-trash"></i>
+            </button>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div *appArchivos="permisos[2]" class="custom-card border-none h-100 text-center d-flex align-items-center">
-        <div class="card-body custom-body">
-          <div class="row text-center align-middle h-100">
+
+    <div *ngIf="archivos.length < 7" class="col-md-4 h-100">
+      <div
+        *appArchivos="permisos[2]"
+        class="custom-card border-none h-100 text-center d-flex align-items-center"
+      >
+        <div class="card-body custom-body h-100 my-5 py-5">
+          <div class="row text-center align-middle h-100 my-5">
             <div class="col-md-12">
-              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSubir">
+              <button
+                class="btn btn-primary rounded-pill px-4"
+                data-bs-toggle="modal"
+                data-bs-target="#modalSubir"
+              >
                 <i class="fa-solid fa-plus"></i>
               </button>
             </div>
@@ -91,82 +147,189 @@
       </div>
     </div>
   </div>
+
+  <div class="mt-3 mb-5 w-25 mx-auto d-flex">
+    <button (click)="onVolver()" class="btn rounded-pill b mx-auto w-50">
+      Regresar
+    </button>
+  </div>
 </div>
 
 <!-- Modal Imagen -->
-<div class="modal fade" id="modalImagen" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="modalImagen"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Archivo</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header d-flex">
+        <h1 class="modal-title fs-5 mx-auto ps-3" id="staticBackdropLabel">
+          Archivo
+        </h1>
+        <button
+          type="button"
+          class="btn-close ms-0"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-        <embed type="application/pdf" #pdfEmbed class="embed-responsive" style="width: 100%; height: 80vh;">
+        <embed
+          type="application/pdf"
+          #pdfEmbed
+          class="embed-responsive"
+          style="width: 100%; height: 80vh"
+        />
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <div class="modal-footer d-flex justify-content-center">
+        <button
+          type="button"
+          class="btn btn-secondary rounded-pill"
+          data-bs-dismiss="modal"
+        >
+          Cerrar
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-
 <!-- Modal Editar -->
-<div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div
+  class="modal fade"
+  id="modalEditar"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Archivo</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header d-flex">
+        <h1 class="modal-title fs-5 mx-auto ps-3" id="staticBackdropLabel">
+          Editar archivo
+        </h1>
+        <button
+          type="button"
+          class="btn-close ms-0"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <div class="col-md-12 col-12">
           <div class="input-group mb-3">
-            <input #fileInput (change)="obtenerFile($event, 'editar')" type="file" class="form-control" accept=".pdf">
+            <input
+              #fileInput
+              (change)="obtenerFile($event, 'editar')"
+              type="file"
+              class="form-control"
+              accept=".pdf"
+            />
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button (click)="editar()" type="button" class="btn btn-danger"
-          style="background-color: #960010; border-color: #960010;">Editar</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <div class="modal-footer d-flex justify-content-center">
+        <button
+          (click)="editar()"
+          type="button"
+          class="btn btn-danger rounded-pill"
+          style="background-color: #960010; border-color: #960010"
+        >
+          Editar
+        </button>
+        <button
+          id="myButtonEditar"
+          class="btn btn-secondary rounded-pill"
+          data-bs-dismiss="modal"
+        >
+          Cerrar
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal Crear Uno -->
-<div class="modal fade" id="modalSubir" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<!-- Modal crear uno -->
+<div
+  class="modal fade"
+  id="modalSubir"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Subir Un Archivo</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header d-flex">
+        <h1 class="modal-title fs-5 mx-auto ps-3" id="staticBackdropLabel">
+          Subir un archivo
+        </h1>
+        <button
+          type="button"
+          class="btn-close ms-0"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <div class="col-md-12 col-12">
           <div class="usuario">
-              <select [(ngModel)]="base64.tipoArchivo" name="tipoArchivo" class="form-select" id="tipoArchivo" required aria-label="select example">
-                <option *ngFor="let t of tiposArchivos" value="{{ t.tipoArchivo }}">{{ t.tipoArchivo }}</option>
-              </select>
+            <select
+              [(ngModel)]="base64.tipoArchivo"
+              name="tipoArchivo"
+              class="form-select"
+              id="tipoArchivo"
+              required
+              aria-label="select example"
+            >
+              <option
+                *ngFor="let t of tiposArchivos"
+                value="{{ t.tipoArchivo }}"
+              >
+                {{ t.tipoArchivo }}
+              </option>
+            </select>
           </div>
-        
+
           <div class="usuario">
             <div class="input-group mb-3">
-              <input #fileInput (change)="obtenerFile($event, 'guardar')" type="file" class="form-control" accept=".pdf" max="1048576">
+              <input
+                #fileInput
+                (change)="obtenerFile($event, 'guardar')"
+                type="file"
+                class="form-control"
+                accept=".pdf"
+                max="1048576"
+              />
             </div>
           </div>
         </div>
-        
       </div>
-      <div class="modal-footer">
-        <button (click)="saveOne()" type="button" class="btn btn-danger"
-          style="background-color: #960010; border-color: #960010;">Subir</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <div class="modal-footer d-flex justify-content-center">
+        <button
+          (click)="saveOne()"
+          type="button"
+          class="btn btn-danger rounded-pill"
+          style="background-color: #960010; border-color: #960010"
+        >
+          Subir
+        </button>
+        <button
+          id="myButtonSaveOne"
+          type="button"
+          class="btn btn-secondary rounded-pill"
+          data-bs-dismiss="modal"
+        >
+          Cerrar
+        </button>
       </div>
     </div>
   </div>
