@@ -103,12 +103,6 @@ export class BuscarArchivosComponent implements OnInit {
   filter() {
     if (this.cedula.trim() == '' || this.cedula.trim() == null) {
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Digite una cédula',
-        timer: 2500,
-      });
-      Swal.fire({
         title: 'Error',
         text: 'Digite una cédula',
         icon: 'error',
@@ -153,11 +147,11 @@ export class BuscarArchivosComponent implements OnInit {
           title: 'Error',
           text: 'Error al buscar los archivos',
           timer: 2500,
-        confirmButtonColor: '#d40000',
-        customClass: {
-          popup: 'rounded-4', // Clase para redondear el modal
-          confirmButton: 'btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
-        },
+          confirmButtonColor: '#d40000',
+          customClass: {
+            popup: 'rounded-4', // Clase para redondear el modal
+            confirmButton: 'btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
+          },
         });
         this.filtro = false;
         console.log(error);
@@ -173,11 +167,16 @@ export class BuscarArchivosComponent implements OnInit {
         // console.log(data);
 
         if (data) {
-          Swal.fire(
-            'Error',
-            'Esta obligacion no contiene archivos, puede subirlos a continuación',
-            'error'
-          );
+          Swal.fire({
+            title: 'Error',
+            text: 'Esta obligacion no contiene archivos, puede subirlos a continuación',
+            icon: 'error',
+            confirmButtonColor: '#d40000',
+            customClass: {
+              popup: 'rounded-4', // Clase para redondear el modal
+              confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+            },
+          });
           // console.log(data);
           setTimeout(() => {
             this.subirService.send(obligacion);
@@ -188,7 +187,7 @@ export class BuscarArchivosComponent implements OnInit {
           Swal.fire({
             icon: 'success',
             title: 'Datos guardados anteriormente',
-            text: 'Estos Son Los Archivos Encontrados',
+            text: 'Estos son los archivos encontrados',
             timer: 2500,
             confirmButtonColor: '#d40000',
             customClass: {
@@ -236,7 +235,16 @@ export class BuscarArchivosComponent implements OnInit {
     }
 
     if (archivo.size > 1048576) {
-      Swal.fire('Error', 'El archivo es demasiado pesado', 'error');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'El archivo es demasiado pesado',
+        confirmButtonColor: '#d40000',
+        customClass: {
+          popup: 'rounded-4', // Clase para redondear el modal
+          confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+        },
+      });
       return;
     }
 
@@ -271,7 +279,16 @@ export class BuscarArchivosComponent implements OnInit {
       !this.base64.tipoArchivo ||
       this.base64.tipoArchivo.trim() === ''
     ) {
-      Swal.fire('Error', 'Seleccione el tipo de archivo.', 'error');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Seleccione el tipo de archivo.',
+        confirmButtonColor: '#d40000',
+        customClass: {
+          popup: 'rounded-4', // Clase para redondear el modal
+          confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+        },
+      });
       return;
     }
 
@@ -296,7 +313,16 @@ export class BuscarArchivosComponent implements OnInit {
 
     this.buscarService.saveOne(this.subirArchivo).subscribe(
       (data: any) => {
-        Swal.fire('Datos Guardados', 'Archivo guardado con éxito', 'success');
+        Swal.fire({
+          title: 'Datos Guardados',
+          text: 'Archivo guardado con éxito',
+          icon: 'success',
+          confirmButtonColor: '#d40000',
+          customClass: {
+            popup: 'rounded-4', // Clase para redondear el modal
+            confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+          },
+        });
         // console.log(data);
         this.archivos.push(data[0]);
         this.eliminarTiposArchivos();
@@ -312,7 +338,16 @@ export class BuscarArchivosComponent implements OnInit {
         }
       },
       (error: any) => {
-        Swal.fire('Error', 'Error al guardar el archivo', 'error');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al guardar el archivo',
+          confirmButtonColor: '#d40000',
+          customClass: {
+            popup: 'rounded-4', // Clase para redondear el modal
+            confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+          },
+        });
         console.log(error);
       }
     );
@@ -361,7 +396,16 @@ export class BuscarArchivosComponent implements OnInit {
     this.modal.username = user;
 
     if (this.modal.base64.trim() == '' || this.modal.base64.trim() == null) {
-      Swal.fire('Error', 'Seleccione algun archivo.', 'error');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Seleccione algun archivo.',
+        confirmButtonColor: '#d40000',
+        customClass: {
+          popup: 'rounded-4', // Clase para redondear el modal
+          confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+        },
+      });
       return;
     }
     console.log(this.modal);
@@ -373,11 +417,16 @@ export class BuscarArchivosComponent implements OnInit {
         );
         this.archivos[position2] = data;
 
-        Swal.fire(
-          'Datos guardados',
-          'Archivo actualizado con éxito',
-          'success'
-        );
+        Swal.fire({
+          title: 'Datos guardados',
+          text: 'Archivo actualizado con éxito',
+          icon: 'success',
+          confirmButtonColor: '#d40000',
+          customClass: {
+            popup: 'rounded-4', // Clase para redondear el modal
+            confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+          },
+        });
         this.fileInput.nativeElement.value = '';
         // console.log(data);
 
@@ -390,7 +439,16 @@ export class BuscarArchivosComponent implements OnInit {
         }
       },
       (error: any) => {
-        Swal.fire('Error', 'Error al actualizar el archivo', 'error');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al actualizar el archivo',
+          confirmButtonColor: '#d40000',
+          customClass: {
+            popup: 'rounded-4', // Clase para redondear el modal
+            confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+          },
+        });
         console.log(error);
       }
     );
@@ -405,9 +463,10 @@ export class BuscarArchivosComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Eliminar',
       cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d40000',
       customClass: {
         popup: 'rounded-4', // Clase para redondear el modal
-        confirmButton: 'btn boton rounded-pill', // Botón rojo para Eliminar
+        confirmButton: 'btn b rounded-pill', // Botón rojo para Eliminar
         cancelButton: 'btn btn-secondary rounded-pill', // Botón secundario para Cancelar
       },
     }).then((result) => {
@@ -420,7 +479,16 @@ export class BuscarArchivosComponent implements OnInit {
               );
             },
             (error: any) => {
-              Swal.fire('Error', 'Error al eliminar el archivo', 'error');
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error al eliminar el archivo',
+                confirmButtonColor: '#d40000',
+                customClass: {
+                  popup: 'rounded-4', // Clase para redondear el modal
+                  confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+                }
+              });
 
               console.log(error);
             }
