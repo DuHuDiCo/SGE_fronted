@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { ObtenerCedulaService } from 'src/app/Services/Archivo/ObtenerCedula/obtener-cedula.service';
 import { SubirArchivoService } from 'src/app/Services/Archivo/SubirArchivos/subir-archivo.service';
 import { TipoArchivoService } from 'src/app/Services/Archivo/TipoArchivo/tipo-archivo.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
@@ -75,7 +76,8 @@ export class BuscarArchivosComponent implements OnInit {
     private router: Router,
     private subirService: SubirArchivoService,
     private authService: AuthenticationService,
-    private tipoArchivoService: TipoArchivoService
+    private tipoArchivoService: TipoArchivoService,
+    private obtenerCedulaService: ObtenerCedulaService
   ) {}
 
   ngOnInit(): void {
@@ -100,7 +102,7 @@ export class BuscarArchivosComponent implements OnInit {
   @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
 
   //BUSCAR POR CÉDULA
-  filter() {
+  onfilter() {
     if (this.cedula.trim() == '' || this.cedula.trim() == null) {
       Swal.fire({
         title: 'Error',
@@ -129,7 +131,7 @@ export class BuscarArchivosComponent implements OnInit {
         this.tabla = true;
         this.filtro = false;
         Swal.fire({
-          icon: 'info',
+          icon: 'success',
           title: 'Estas son las obligaciones encontradas',
           text: 'Elija una obligación',
           timer: 2500,
@@ -145,7 +147,7 @@ export class BuscarArchivosComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Error al buscar los archivos',
+          text: 'Error al buscar los archivos, cedula no encontrada.',
           timer: 2500,
           confirmButtonColor: '#d40000',
           customClass: {
@@ -168,9 +170,10 @@ export class BuscarArchivosComponent implements OnInit {
 
         if (data) {
           Swal.fire({
-            title: 'Error',
-            text: 'Esta obligacion no contiene archivos, puede subirlos a continuación',
-            icon: 'error',
+            title: 'Información',
+            text: 'Esta obligacion no contiene archivos, puede subirlos a continuación.',
+            icon: 'info',
+            timer: 2000,
             confirmButtonColor: '#d40000',
             customClass: {
               popup: 'rounded-4', // Clase para redondear el modal
@@ -181,12 +184,15 @@ export class BuscarArchivosComponent implements OnInit {
           setTimeout(() => {
             this.subirService.send(obligacion);
             // console.log('obligacion enviada:', obligacion);
+          
+            this.obtenerCedulaService.setCedula(this.cedula);
+            this.obtenerCedulaService.setObligacion(obligacion);
             this.router.navigate(['/dashboard-archivos/subir-archivos']);
-          }, 3000);
+          }, 2000);
         } else {
           Swal.fire({
             icon: 'success',
-            title: 'Datos guardados anteriormente',
+            title: 'Archivos cargados',
             text: 'Estos son los archivos encontrados',
             timer: 2500,
             confirmButtonColor: '#d40000',
@@ -315,8 +321,9 @@ export class BuscarArchivosComponent implements OnInit {
       (data: any) => {
         Swal.fire({
           title: 'Datos Guardados',
-          text: 'Archivo guardado con éxito',
+          text: 'Archivo guardado con éxito.',
           icon: 'success',
+          timer: 2000,
           confirmButtonColor: '#d40000',
           customClass: {
             popup: 'rounded-4', // Clase para redondear el modal
@@ -487,7 +494,7 @@ export class BuscarArchivosComponent implements OnInit {
                 customClass: {
                   popup: 'rounded-4', // Clase para redondear el modal
                   confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
-                }
+                },
               });
 
               console.log(error);
