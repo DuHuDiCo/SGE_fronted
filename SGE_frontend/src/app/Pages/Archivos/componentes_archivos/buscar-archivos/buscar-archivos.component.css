@@ -139,7 +139,3 @@
   border-radius: #d40000;
   cursor: pointer;
 }
-
-.swal2-icon.swal2-error {
-  color: #d40000 !important;
-}

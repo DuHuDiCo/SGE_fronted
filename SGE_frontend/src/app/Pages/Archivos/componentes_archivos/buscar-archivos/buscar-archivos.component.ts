@@ -108,7 +108,7 @@ export class BuscarArchivosComponent implements OnInit {
         title: 'Error',
         text: 'Digite una cédula',
         icon: 'error',
-        timer: 2500,
+        timer: 2000,
         confirmButtonColor: '#d40000',
         customClass: {
           popup: 'rounded-4', // Clase para redondear el modal
@@ -134,7 +134,7 @@ export class BuscarArchivosComponent implements OnInit {
           icon: 'success',
           title: 'Estas son las obligaciones encontradas',
           text: 'Elija una obligación',
-          timer: 2500,
+          timer: 2000,
           confirmButtonColor: '#d40000',
           customClass: {
             popup: 'rounded-4', // Clase para redondear el modal
@@ -148,7 +148,7 @@ export class BuscarArchivosComponent implements OnInit {
           icon: 'error',
           title: 'Error',
           text: 'Error al buscar los archivos, cedula no encontrada.',
-          timer: 2500,
+          timer: 2000,
           confirmButtonColor: '#d40000',
           customClass: {
             popup: 'rounded-4', // Clase para redondear el modal
@@ -184,7 +184,7 @@ export class BuscarArchivosComponent implements OnInit {
           setTimeout(() => {
             this.subirService.send(obligacion);
             // console.log('obligacion enviada:', obligacion);
-          
+
             this.obtenerCedulaService.setCedula(this.cedula);
             this.obtenerCedulaService.setObligacion(obligacion);
             this.router.navigate(['/dashboard-archivos/subir-archivos']);
@@ -194,11 +194,11 @@ export class BuscarArchivosComponent implements OnInit {
             icon: 'success',
             title: 'Archivos cargados',
             text: 'Estos son los archivos encontrados',
-            timer: 2500,
+            timer: 2000,
             confirmButtonColor: '#d40000',
             customClass: {
               popup: 'rounded-4', // Clase para redondear el modal
-              confirmButton: 'btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
+              confirmButton: 'btn border-0 rounded-pill px-5',
             },
           });
           // console.log(data);

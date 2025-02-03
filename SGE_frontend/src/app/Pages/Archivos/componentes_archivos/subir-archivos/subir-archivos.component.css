@@ -99,3 +99,21 @@
   border-radius: #d40000;
   cursor: pointer;
 }
+
+.border-dotted {
+  border-style: dashed !important;
+  cursor: pointer;
+}
+
+.drop-zone {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.drop-zone.dragover {
+  border-color:#007bff;
+  background-color: #f0f8ff;
+}
