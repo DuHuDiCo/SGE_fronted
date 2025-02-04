@@ -104,41 +104,12 @@ export class SubirArchivosComponent implements OnInit {
     event.preventDefault();
     this.isDragging = false;
 
+    // Verifica si hay archivos en el evento de arrastrar y soltar
     if (event.dataTransfer?.files) {
-      let input = event.dataTransfer?.files;
-      let file = event.dataTransfer.files[0];
+      const files = event.dataTransfer.files; // Obtiene todos los archivos
 
-      if (file && file.size > 1048576) {
-        Swal.fire({
-          title: 'Error',
-          text: 'El archivo es demasiado pesado (más de 1MB).',
-          icon: 'error',
-          timer: 2000,
-          confirmButtonColor: '#d40000',
-          customClass: {
-            popup: 'rounded-4',
-            confirmButton: 'btn border-0 rounded-pill px-4',
-          },
-        });
-        return;
-      }
-
-      if (this.tipoArchivo !== '') {
-        // Convierte el archivo a base64
-        this.convertFileToBase64(file).then((base64) => {
-          // Asigna el base64 al objeto Archivo
-          this.base64 = {
-            base46: [base64 as string],
-            tipoArchivo: this.tipoArchivo,
-            nombreArchivo: file.name,
-          };
-
-          this.cantidadArchivos = input.length;
-          if (this.cantidadArchivos > 0) {
-            this.disabledCargar = false;
-          }
-        });
-      } else {
+      // Verifica si se seleccionó un tipo de archivo
+      if (this.tipoArchivo === '') {
         Swal.fire({
           title: 'Seleccione un tipo de archivo',
           icon: 'error',
@@ -150,46 +121,90 @@ export class SubirArchivosComponent implements OnInit {
             confirmButton: 'btn border-0 rounded-pill px-4',
           },
         });
-        (input as unknown as HTMLInputElement).value = ''; // Limpia el input de archivo arrastrado
         return;
       }
+
+      // Array para almacenar las promesas de conversión a base64
+      const base64Promises: Promise<string>[] = [];
+
+      // Itera sobre todos los archivos
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
+        // Valida el tamaño del archivo (1MB máximo)
+        if (file.size > 1048576) {
+          Swal.fire({
+            title: 'Error',
+            text: `El archivo "${file.name}" es demasiado pesado (más de 1MB).`,
+            icon: 'error',
+            timer: 2000,
+            confirmButtonColor: '#d40000',
+            customClass: {
+              popup: 'rounded-4',
+              confirmButton: 'btn border-0 rounded-pill px-4',
+            },
+          });
+          continue; // Salta este archivo y continúa con los demás
+        }
+
+        // Convierte el archivo a base64 y agrega la promesa al array
+        base64Promises.push(this.convertFileToBase64(file));
+      }
+
+      // Si no hay archivos válidos, termina la función
+      if (base64Promises.length === 0) {
+        return;
+      }
+
+      // Espera a que todas las conversiones se completen
+      Promise.all(base64Promises).then((base64Results) => {
+        // Asigna los base64 al objeto base64
+        this.base64 = {
+          base46: base64Results,
+          tipoArchivo: this.tipoArchivo,
+          nombreArchivo: files[0]?.name ?? '', // Puedes ajustar esto si necesitas nombres de archivos múltiples
+        };
+
+        // Actualiza la cantidad de archivos y habilita el botón de carga
+        this.cantidadArchivos = base64Results.length;
+        if (this.cantidadArchivos > 0) {
+          this.disabledCargar = false;
+        }
+      });
     }
   }
 
   obtenerFile(event: Event) {
     let input = event.target as HTMLInputElement;
-    let file = input.files?.[0];
-
-    if (file && file.size > 1048576) {
-      Swal.fire({
-        title: 'Error',
-        text: 'El archivo es demasiado pesado (mayor de 1MB).',
-        icon: 'error',
-        timer: 2000,
-        confirmButtonColor: '#d40000',
-        customClass: {
-          popup: 'rounded-4',
-          confirmButton: 'btn border-0 rounded-pill px-4',
-        },
-      });
-      return;
-    }
 
     if (this.tipoArchivo !== '') {
-      // Convierte el archivo a base64
-      this.convertFileToBase64(file).then((base64) => {
-        // Asigna el base64 al objeto a base64
-        this.base64 = {
-          base46: [base64 as string],
-          tipoArchivo: this.tipoArchivo,
-          nombreArchivo: file?.name ?? '',
-        };
+      // Verifica si hay archivos seleccionados
+      if (input.files && input.files.length > 0) {
+        // Array para almacenar las promesas de conversión a base64
+        const base64Promises: Promise<string>[] = [];
 
-        this.cantidadArchivos = input.files?.length ?? 0;
-        if (this.cantidadArchivos > 0) {
-          this.disabledCargar = false;
+        // Itera sobre los archivos seleccionados
+        for (let i = 0; i < input.files.length; i++) {
+          const file = input.files[i];
+          // Convierte cada archivo a base64 y agrega la promesa al array
+          base64Promises.push(this.convertFileToBase64(file));
         }
-      });
+
+        // Espera a que todas las conversiones se completen
+        Promise.all(base64Promises).then((base64Results) => {
+          // Asigna los base64 al objeto base64
+          this.base64 = {
+            base46: base64Results,
+            tipoArchivo: this.tipoArchivo,
+            nombreArchivo: input.files ? input.files[0]?.name ?? '' : '', // Puedes ajustar esto si necesitas nombres de archivos múltiples
+          };
+
+          this.cantidadArchivos = input.files ? input.files.length : 0;
+          if (this.cantidadArchivos > 0) {
+            this.disabledCargar = false;
+          }
+        });
+      }
     } else {
       Swal.fire({
         title: 'Seleccione un tipo de archivo',
@@ -208,7 +223,7 @@ export class SubirArchivosComponent implements OnInit {
   }
 
   // Convertir archivo a base64
-  convertFileToBase64 = async ($event: any): Promise<SafeResourceUrl> => {
+  convertFileToBase64 = async ($event: any): Promise<string> => {
     return new Promise((resolve) => {
       try {
         const reader = new FileReader();
@@ -249,20 +264,34 @@ export class SubirArchivosComponent implements OnInit {
       this.tiposArchivosSelected.push(this.tipoArchivo);
 
       // Procesa los archivos cargados de manera segura
-      let objetoBase64 = {
-        base46: [this.base64.base46[0]],
+      let objetoBase64: {
+        base46: string[];
+        tipoArchivo: string;
+        nombreArchivo: string;
+      } = {
+        base46: [],
         tipoArchivo: this.base64.tipoArchivo,
         nombreArchivo: this.base64.nombreArchivo,
       };
-      this.archivosCargados.push(objetoBase64);
 
-      let objetoMiniatura = {
-        base64: [
-          this.sanitizer.bypassSecurityTrustResourceUrl(this.base64.base46[0]),
-        ],
+      let objetoMiniatura: {
+        base46: SafeResourceUrl[];
+        tipoArchivo: string;
+        nombreArchivo: string;
+      } = {
+        base46: [],
         tipoArchivo: this.base64.tipoArchivo,
         nombreArchivo: this.base64.nombreArchivo,
       };
+
+      // insertar a cantidad de archivos cargados al array de base64.base46
+      for (let i = 0; i < this.base64.base46.length; i++) {
+        objetoBase64.base46.push(this.base64.base46[i]);
+        objetoMiniatura.base46.push(
+          this.sanitizer.bypassSecurityTrustResourceUrl(this.base64.base46[i])
+        );
+      }
+      this.archivosCargados.push(objetoBase64);
       this.miniaturaVerArchivos.push(objetoMiniatura);
 
       // Filtra los tipos de archivo disponibles
@@ -321,9 +350,6 @@ export class SubirArchivosComponent implements OnInit {
     this.archivo.base64 = this.archivosCargados;
     this.archivo.numeroObligacion = this.obligacion;
     this.archivo.username = this.authService.getUsername() ?? '';
-    console.log(this.archivosCargados);
-
-    console.log(this.archivo);
 
     this.subirService.save(this.archivo).subscribe(
       () => {
@@ -373,48 +399,69 @@ export class SubirArchivosComponent implements OnInit {
   }
 
   // Eliminar archivos
-  eliminarArchivos(tipoArchivo: string): void {
-    if ((this.miniaturaVerArchivos = [])) {
-      this.disabledVer = true;
-    }
-
-    // Eliminar el archivo de la lista de miniaturas
-    this.miniaturaVerArchivos = this.miniaturaVerArchivos.filter(
-      (archivoMiniatura: any) => archivoMiniatura.tipoArchivo !== tipoArchivo
-    );
-    // Limpiar el base64 de la miniatura del archivo eliminado
-    for (let i = 0; i < this.miniaturaVerArchivos.length; i++) {
-      this.miniaturaVerArchivos[i].base64 = this.miniaturaVerArchivos[
-        i
-      ].base64.map((archivo: Base64) =>
-        archivo.tipoArchivo === tipoArchivo
-          ? { ...archivo, base46: [] }
-          : archivo
-      );
-    }
-
-    // Eliminar el archivo de la lista de archivos cargados
-    this.archivosCargados = this.archivosCargados.filter(
-      (archivo: any) => archivo.tipoArchivo !== tipoArchivo
+  eliminarArchivos(tipoArchivo: string, index: number): void {
+    // Eliminar el archivo específico de la lista de miniaturas
+    const archivoIndex = this.miniaturaVerArchivos.findIndex(
+      (archivoMiniatura: any) => archivoMiniatura.tipoArchivo === tipoArchivo
     );
 
-    // Limpiar el base64 del archivo eliminado
-    this.archivo.base64 = this.archivo.base64.map((archivo: Base64) =>
-      archivo.tipoArchivo === tipoArchivo ? { ...archivo, base46: [] } : archivo
-    );
-    // Eliminar el tipo de archivo de la lista de seleccionados
-    this.tiposArchivosSelected = this.tiposArchivosSelected.filter(
-      (tipo) => tipo !== tipoArchivo
-    );
-    // Ajustar el progreso
-    if (this.widthProgress > 0) {
-      this.widthProgress -= 100 / this.arrProgress; // Disminuye el progreso
-      if (this.widthProgress < 0) {
-        this.widthProgress = 0; // Asegura que no sea menor que 0%
+    if (archivoIndex !== -1) {
+      this.miniaturaVerArchivos[archivoIndex].base46.splice(index, 1);
+
+      // Si no quedan archivos en base46, eliminar el objeto completo
+      if (this.miniaturaVerArchivos[archivoIndex].base46.length === 0) {
+        this.miniaturaVerArchivos.splice(archivoIndex, 1);
+
+        // Eliminar el tipo de archivo de la lista de seleccionados
+        this.tiposArchivosSelected = this.tiposArchivosSelected.filter(
+          (tipo) => tipo !== tipoArchivo
+        );
+
+        // Ajustar el progreso
+        if (this.widthProgress > 0) {
+          this.widthProgress -= 100 / this.arrProgress; // Disminuye el progreso
+          if (this.widthProgress < 0) {
+            this.widthProgress = 0; // Asegura que no sea menor que 0%
+          }
+        }
+
+        // Agregar el tipo de archivo de nuevo a la lista de tipos disponibles
+        this.tiposArchivos.unshift(tipoArchivo);
       }
     }
-    // Agregar el tipo de archivo de nuevo a la lista de tipos disponibles
-    this.tiposArchivos.unshift(tipoArchivo);
+
+    // Eliminar el archivo específico de la lista de archivos cargados
+    const archivoCargadoIndex = this.archivosCargados.findIndex(
+      (archivo: any) => archivo.tipoArchivo === tipoArchivo
+    );
+
+    if (archivoCargadoIndex !== -1) {
+      this.archivosCargados[archivoCargadoIndex].base46.splice(index, 1);
+
+      // Si no quedan archivos en base46, eliminar el objeto completo
+      if (this.archivosCargados[archivoCargadoIndex].base46.length === 0) {
+        this.archivosCargados.splice(archivoCargadoIndex, 1);
+      }
+    }
+
+    // Limpiar el base64 del archivo eliminado en this.archivo.base64
+    const archivoBase64Index = this.archivo.base64.findIndex(
+      (archivo: Base64) => archivo.tipoArchivo === tipoArchivo
+    );
+
+    if (archivoBase64Index !== -1) {
+      this.archivo.base64[archivoBase64Index].base46.splice(index, 1);
+
+      // Si no quedan archivos en base46, eliminar el objeto completo
+      if (this.archivo.base64[archivoBase64Index].base46.length === 0) {
+        this.archivo.base64.splice(archivoBase64Index, 1);
+      }
+    }
+
+    // Desactivar disabledVer si no hay más objetos en miniaturaVerArchivos
+    if (this.miniaturaVerArchivos.length === 0) {
+      this.disabledVer = true;
+    }
   }
 
   // Cancelar y volver

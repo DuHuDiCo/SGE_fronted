@@ -92,6 +92,7 @@
                   id="fileInput"
                   class="d-none"
                   (change)="obtenerFile($event)"
+                  multiple
                 />
                 <input
                   #fileInput
@@ -100,6 +101,7 @@
                   id="fileInput"
                   class="d-none"
                   (change)="obtenerFile($event)"
+                  multiple
                 />
                 <h6 class="fw-bold mt-3" *ngIf="cantidadArchivos > 0">
                   {{ base64.nombreArchivo }}
@@ -150,7 +152,10 @@
     <!-- Botones de guardar y volver -->
     <div class="row mb-3 mt-2">
       <div class="col-md-12 text-center d-flex justify-content-center gap-4">
-        <button (click)="onCancelarVolver()" class="btn rounded-pill btn-secondary px-4">
+        <button
+          (click)="onCancelarVolver()"
+          class="btn rounded-pill btn-secondary px-4"
+        >
           Volver
         </button>
         <button (click)="onGuardar()" class="btn rounded-pill b px-4">
@@ -181,23 +186,40 @@
           data-bs-dismiss="modal"
         ></button>
       </div>
-      <div class="modal-body px-5 mx-3">
+
+      <div
+        class="modal-body px-5 mx-3 d-flex flex-nowrap justify-content-evenly gap-3 w-100"
+      >
         <div
           *ngFor="let archivoMiniatura of miniaturaVerArchivos; let i = index"
-          class="mb-3"
+          class="mb-3 d-flex gap-3 w-auto"
         >
-          <div class="card rounded-4">
+          <div
+            *ngFor="
+              let archiMiniatura of archivoMiniatura.base46;
+              let iMini = index
+            "
+            class="card d-flex rounded-4 mb-3"
+          >
             <div class="card-body rounded-4">
-              <h6>TIPO ARCHIVO: {{ archivoMiniatura.tipoArchivo }}</h6>
+              <h6 *ngIf="archivoMiniatura.base46.length > 1">
+                TIPO ARCHIVO: {{ archivoMiniatura.tipoArchivo }}
+                <strong class="text-red">({{ iMini + 1 }})</strong>
+              </h6>
+              <h6 *ngIf="archivoMiniatura.base46.length == 1">
+                TIPO ARCHIVO: {{ archivoMiniatura.tipoArchivo }}
+              </h6>
               <embed
-                *ngIf="archivoMiniatura.base64[0]"
-                [src]="archivoMiniatura.base64[0]"
-                height="200px"
+                *ngIf="archivoMiniatura.base46[iMini]"
+                [src]="archivoMiniatura.base46[iMini]"
+                height="100px"
                 class="w-100"
               />
-              <div class="text-center mt-3">
+              <div class="text-center">
                 <button
-                  (click)="eliminarArchivos(archivoMiniatura.tipoArchivo)"
+                  (click)="
+                    eliminarArchivos(archivoMiniatura.tipoArchivo, iMini)
+                  "
                   class="btn b rounded-pill px-4"
                 >
                   Eliminar
@@ -211,7 +233,11 @@
         </span>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn rounded-pill px-4 me-5 btn-secondary" data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn rounded-pill px-4 me-5 btn-secondary"
+          data-bs-dismiss="modal"
+        >
           Cerrar
         </button>
       </div>

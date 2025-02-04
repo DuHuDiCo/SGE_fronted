@@ -85,6 +85,9 @@ export class BuscarArchivosComponent implements OnInit {
     setTimeout(() => {
       this.subirService.arch.subscribe((data) => {
         // console.log(data);
+        console.log(data);
+        console.log(this.archivos);
+        
 
         if (data.length > 0) {
           this.archivos = data;
@@ -94,6 +97,8 @@ export class BuscarArchivosComponent implements OnInit {
           // console.log(this.archivos);
           // console.log(this.subirArchivo.numeroObligacion);
           this.eliminarTiposArchivos();
+          console.log(this.archivos);
+          
         }
       });
     }, 300);
@@ -122,7 +127,7 @@ export class BuscarArchivosComponent implements OnInit {
     this.buscarService.filter(this.cedula).subscribe(
       (data: any) => {
         this.datos = data;
-        // console.log(this.datos);
+        console.log(this.datos);
 
         data.forEach((element: any) => {
           this.obligacion.push(element.cuentaPorCobrar);
@@ -166,7 +171,8 @@ export class BuscarArchivosComponent implements OnInit {
   isEmpty(obligacion: string) {
     this.subirService.isEmpty(obligacion).subscribe(
       (data: any) => {
-        // console.log(data);
+        console.log(data);
+        console.log(this.archivos);
 
         if (data) {
           Swal.fire({
@@ -519,6 +525,8 @@ export class BuscarArchivosComponent implements OnInit {
     this.isEmpty(obligacion);
 
     this.archivos = this.datos[position].archivos;
+    console.log(this.archivos);
+    
 
     this.eliminarTiposArchivos();
   }
