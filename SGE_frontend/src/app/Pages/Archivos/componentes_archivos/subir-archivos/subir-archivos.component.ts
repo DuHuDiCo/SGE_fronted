@@ -3,7 +3,14 @@ import { TipoArchivoService } from 'src/app/Services/Archivo/TipoArchivo/tipo-ar
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { ObtenerCedulaService } from 'src/app/Services/Archivo/ObtenerCedula/obtener-cedula.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Archivo, Base64 } from 'src/app/Types/Archivo/Archivos';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -18,6 +25,7 @@ export class SubirArchivosComponent implements OnInit {
 
   // VARIABLES
   confirmarComenzar: boolean = false;
+  isMediumScreen: boolean = false;
   disabledCargar: boolean = true;
   disabledVer: boolean = true;
   isDragging: boolean = false;
@@ -55,11 +63,18 @@ export class SubirArchivosComponent implements OnInit {
     private authService: AuthenticationService,
     private subirService: SubirArchivoService,
     private sanitizer: DomSanitizer,
-    private router: Router
+    private router: Router,
+    private changeDetertorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.getAllTipoArchivo();
+    this.checkScreenWidth();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenWidth(); // Verificar el ancho de la pantalla al redimensionar la ventana
   }
 
   // Obtener tipos de archivo
@@ -400,72 +415,158 @@ export class SubirArchivosComponent implements OnInit {
 
   // Eliminar archivos
   eliminarArchivos(tipoArchivo: string, index: number): void {
-    // Eliminar el archivo específico de la lista de miniaturas
-    const archivoIndex = this.miniaturaVerArchivos.findIndex(
-      (archivoMiniatura: any) => archivoMiniatura.tipoArchivo === tipoArchivo
-    );
-
-    if (archivoIndex !== -1) {
-      this.miniaturaVerArchivos[archivoIndex].base46.splice(index, 1);
-
-      // Si no quedan archivos en base46, eliminar el objeto completo
-      if (this.miniaturaVerArchivos[archivoIndex].base46.length === 0) {
-        this.miniaturaVerArchivos.splice(archivoIndex, 1);
-
-        // Eliminar el tipo de archivo de la lista de seleccionados
-        this.tiposArchivosSelected = this.tiposArchivosSelected.filter(
-          (tipo) => tipo !== tipoArchivo
+    Swal.fire({
+      title: 'Quieres eliminar este archivo: ',
+      text: tipoArchivo + ' (' + (index + 1) + ')',
+      showDenyButton: true,
+      confirmButtonText: 'Si, confirmo',
+      denyButtonText: `Cancelar`,
+      confirmButtonColor: '#d40000',
+      denyButtonColor: 'gray',
+      customClass: {
+        popup: 'rounded-4',
+        confirmButton: 'btn b rounded-pill',
+        denyButton: 'btn btn-secondary rounded-pill',
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Eliminar el archivo específico de la lista de miniaturas
+        const archivoIndex = this.miniaturaVerArchivos.findIndex(
+          (archivoMiniatura: any) =>
+            archivoMiniatura.tipoArchivo === tipoArchivo
         );
 
-        // Ajustar el progreso
-        if (this.widthProgress > 0) {
-          this.widthProgress -= 100 / this.arrProgress; // Disminuye el progreso
-          if (this.widthProgress < 0) {
-            this.widthProgress = 0; // Asegura que no sea menor que 0%
+        if (archivoIndex !== -1) {
+          this.miniaturaVerArchivos[archivoIndex].base46.splice(index, 1);
+
+          // Si no quedan archivos en base46, eliminar el objeto completo
+          if (this.miniaturaVerArchivos[archivoIndex].base46.length === 0) {
+            this.miniaturaVerArchivos.splice(archivoIndex, 1);
+
+            // Eliminar el tipo de archivo de la lista de seleccionados
+            this.tiposArchivosSelected = this.tiposArchivosSelected.filter(
+              (tipo) => tipo !== tipoArchivo
+            );
+
+            // Ajustar el progreso
+            if (this.widthProgress > 0) {
+              this.widthProgress -= 100 / this.arrProgress; // Disminuye el progreso
+              if (this.widthProgress < 0) {
+                this.widthProgress = 0; // Asegura que no sea menor que 0%
+              }
+            }
+
+            // Agregar el tipo de archivo de nuevo a la lista de tipos disponibles
+            this.tiposArchivos.unshift(tipoArchivo);
           }
         }
 
-        // Agregar el tipo de archivo de nuevo a la lista de tipos disponibles
-        this.tiposArchivos.unshift(tipoArchivo);
+        // Eliminar el archivo específico de la lista de archivos cargados
+        const archivoCargadoIndex = this.archivosCargados.findIndex(
+          (archivo: any) => archivo.tipoArchivo === tipoArchivo
+        );
+
+        if (archivoCargadoIndex !== -1) {
+          this.archivosCargados[archivoCargadoIndex].base46.splice(index, 1);
+
+          // Si no quedan archivos en base46, eliminar el objeto completo
+          if (this.archivosCargados[archivoCargadoIndex].base46.length === 0) {
+            this.archivosCargados.splice(archivoCargadoIndex, 1);
+          }
+        }
+
+        // Limpiar el base64 del archivo eliminado en this.archivo.base64
+        const archivoBase64Index = this.archivo.base64.findIndex(
+          (archivo: Base64) => archivo.tipoArchivo === tipoArchivo
+        );
+
+        if (archivoBase64Index !== -1) {
+          this.archivo.base64[archivoBase64Index].base46.splice(index, 1);
+
+          // Si no quedan archivos en base46, eliminar el objeto completo
+          if (this.archivo.base64[archivoBase64Index].base46.length === 0) {
+            this.archivo.base64.splice(archivoBase64Index, 1);
+          }
+        }
+
+        // Desactivar disabledVer si no hay más objetos en miniaturaVerArchivos
+        if (this.miniaturaVerArchivos.length === 0) {
+          this.disabledVer = true;
+        }
+
+        // Forzar la actualización del carrusel
+        this.changeDetertorRef.detectChanges();
+        // Reiniciar el carrusel para que el primer elemento esté activo
+        this.reiniciarCarrusel();
+
+        Swal.fire({
+          title: 'Eliminado',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1000,
+          customClass: {
+            popup: 'rounded-4',
+          },
+        });
+      } else if (result.isDenied) {
+        Swal.fire({
+          title: 'Cancelado',
+          showConfirmButton: false,
+          icon: 'info',
+          timer: 1000,
+          customClass: {
+            popup: 'rounded-4 py-5',
+          },
+        });
+        return;
       }
-    }
-
-    // Eliminar el archivo específico de la lista de archivos cargados
-    const archivoCargadoIndex = this.archivosCargados.findIndex(
-      (archivo: any) => archivo.tipoArchivo === tipoArchivo
-    );
-
-    if (archivoCargadoIndex !== -1) {
-      this.archivosCargados[archivoCargadoIndex].base46.splice(index, 1);
-
-      // Si no quedan archivos en base46, eliminar el objeto completo
-      if (this.archivosCargados[archivoCargadoIndex].base46.length === 0) {
-        this.archivosCargados.splice(archivoCargadoIndex, 1);
-      }
-    }
-
-    // Limpiar el base64 del archivo eliminado en this.archivo.base64
-    const archivoBase64Index = this.archivo.base64.findIndex(
-      (archivo: Base64) => archivo.tipoArchivo === tipoArchivo
-    );
-
-    if (archivoBase64Index !== -1) {
-      this.archivo.base64[archivoBase64Index].base46.splice(index, 1);
-
-      // Si no quedan archivos en base46, eliminar el objeto completo
-      if (this.archivo.base64[archivoBase64Index].base46.length === 0) {
-        this.archivo.base64.splice(archivoBase64Index, 1);
-      }
-    }
-
-    // Desactivar disabledVer si no hay más objetos en miniaturaVerArchivos
-    if (this.miniaturaVerArchivos.length === 0) {
-      this.disabledVer = true;
-    }
+    });
   }
 
   // Cancelar y volver
   onCancelarVolver(): void {
     this.router.navigate(['/dashboard-archivos/buscar-archivos']);
+  }
+
+  // activar desactivar carrusel
+  isActive(miniaturaIndex: number, base46Index: number): boolean {
+    return miniaturaIndex === 0 && base46Index === 0;
+  }
+
+  reiniciarCarrusel() {
+    const carruselItems = document.querySelectorAll('.carousel-item');
+    if (carruselItems.length > 0) {
+      // Eliminar la clase 'active' de todos los elementos
+      carruselItems.forEach((item) => item.classList.remove('active'));
+
+      // Agregar la clase 'active' al primer elemento visible
+      carruselItems[0].classList.add('active');
+    }
+  }
+
+  anteriorSlide() {
+    const carruselItems = document.querySelectorAll('.carousel-item');
+    const activeItem = document.querySelector('.carousel-item.active');
+    if (activeItem) {
+      activeItem.classList.remove('active');
+      const prevItem =
+        activeItem.previousElementSibling ||
+        carruselItems[carruselItems.length - 1];
+      prevItem.classList.add('active');
+    }
+  }
+
+  siguienteSlide() {
+    const carruselItems = document.querySelectorAll('.carousel-item');
+    const activeItem = document.querySelector('.carousel-item.active');
+    if (activeItem) {
+      activeItem.classList.remove('active');
+      const nextItem = activeItem.nextElementSibling || carruselItems[0];
+      nextItem.classList.add('active');
+    }
+  }
+
+  checkScreenWidth() {
+    this.isMediumScreen = window.innerWidth >= 768; // 768px es el breakpoint "md" de Bootstrap
   }
 }

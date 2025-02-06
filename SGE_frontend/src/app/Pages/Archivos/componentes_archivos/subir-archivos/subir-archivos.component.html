@@ -24,10 +24,10 @@
   </div>
 
   <!-- progreso y carga de archivos -->
-  <div class="row d-flex flex-column" *ngIf="confirmarComenzar">
+  <div class="row d-flex flex-column w-50 w-xs-75 w-sm-75 mx-auto mt-4" *ngIf="confirmarComenzar">
     <!--Proggres-->
     <div
-      class="progress mt-2 mb-4 w-50 mx-auto px-0"
+      class="progress mb-4 w-xl-100 w-sm-75 mx-auto px-0"
       role="progressbar"
       [attr.aria-valuenow]="widthProgress"
       aria-valuemin="0"
@@ -45,7 +45,7 @@
     </div>
 
     <!-- Seleccion de archivos  -->
-    <div class="col-md-6 mb-2 mx-auto px-0 rounded-4">
+    <div class="col-12 mb-2 mx-auto px-0 rounded-4">
       <div class="card card-custom rounded-4">
         <div class="card-body">
           <div class="col-md-12 col-12">
@@ -53,11 +53,16 @@
             <select
               [(ngModel)]="tipoArchivo"
               name="tipoArchivo"
-              class="form-select w-50 mt-1"
+              class="form-select w-75 w-md-50 mt-1"
             >
-              <option value="" disabled selected>
+              <option *ngIf="isMediumScreen" value="" disabled selected>
                 Seleccionar el tipo de archivo
               </option>
+
+              <option *ngIf="!isMediumScreen" value="" disabled selected>
+                Seleccionar
+              </option>
+
               <option
                 *ngFor="let tipoArc of tiposArchivos"
                 value="{{ tipoArc }}"
@@ -69,7 +74,7 @@
             <div class="row text-center d-flex justify-content-center">
               <!-- Botón para seleccionar archivos // arrastrar y soltar -->
               <div
-                class="drop-zone col-md-6 w-50 border-danger-subtle border-2 p-3 my-2 rounded-4"
+                class="drop-zone col-12 col-md-6 w-50 border-danger-subtle border-2 p-3 my-2 rounded-4"
                 [ngClass]="{
                   'w-75': cantidadArchivos > 0,
                   'col-6': cantidadArchivos == 0,
@@ -112,134 +117,165 @@
             </div>
 
             <!-- Botones de acciones -->
-            <div class="row mt-3 mb-1 d-flex justify-content-center">
-              <div class="d-flex w-25 px-0">
+            <div class="row mb-3 mt-2">
+              <div
+                class="col-md-12 text-center d-flex justify-content-center gap-2 gap-md-2 flex-wrap"
+              >
                 <button
-                  class="btn btn-secondary rounded-pill w-75 px-0 mx-auto"
                   (click)="onCancelarCargarArchivos()"
+                  class="btn rounded-pill btn-secondary px-4 mb-2 mb-md-0"
                   [disabled]="disabledCargar"
                 >
-                  Cancelar
+                  <p class="mb-0">Cancelar</p>
                 </button>
-              </div>
 
-              <div class="d-flex w-25 px-0">
                 <button
-                  class="btn btn-reintentar rounded-pill w-75 px-0 mx-auto"
+                  class="btn rounded-pill b px-4 mb-2 mb-md-0"
                   data-bs-toggle="modal"
                   data-bs-target="#verArchivosModal"
                   [disabled]="disabledVer"
                 >
-                  Ver archivos
+                  <p *ngIf="isMediumScreen" class="mb-0">Ver archivos</p>
+                  <p *ngIf="!isMediumScreen" class="mb-0">Archivos</p>
                 </button>
-              </div>
 
-              <div class="w-25 px-0 d-flex">
                 <button
-                  class="btn btn-consultar rounded-pill w-75 px-0 mx-auto"
                   (click)="cargarArchivos()"
+                  class="btn rounded-pill b px-4 mb-2 mb-md-0"
                   [disabled]="disabledCargar"
                 >
-                  Cargar archivo
+                  <p *ngIf="isMediumScreen" class="mb-0">Subir archivo</p>
+                  <p *ngIf="!isMediumScreen" class="mb-0">Subir</p>
                 </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Botones de guardar y volver -->
-    <div class="row mb-3 mt-2">
-      <div class="col-md-12 text-center d-flex justify-content-center gap-4">
-        <button
-          (click)="onCancelarVolver()"
-          class="btn rounded-pill btn-secondary px-4"
+      <!-- Botones de guardar y volver -->
+      <div class="row mb-3 mt-2">
+        <div
+          class="col-md-12 text-center d-flex justify-content-center gap-4 gap-md-4 flex-wrap"
         >
-          Volver
-        </button>
-        <button (click)="onGuardar()" class="btn rounded-pill b px-4">
-          Guardar
-        </button>
+          <button
+            (click)="onCancelarVolver()"
+            class="btn rounded-pill btn-secondary px-4 mb-2 mb-md-0"
+          >
+            Volver
+          </button>
+          <button
+            (click)="onGuardar()"
+            class="btn rounded-pill b px-4 mb-2 mb-md-0"
+          >
+            Guardar
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Modal para ver archivos -->
-<div
-  class="modal fade"
-  id="verArchivosModal"
-  tabindex="-1"
-  aria-labelledby="verArchivosModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content rounded-5">
-      <div class="modal-header mb-3">
-        <h5 class="modal-title" id="verArchivosModalLabel">
-          Archivos Seleccionados
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-        ></button>
-      </div>
+  <!-- Modal para ver archivos -->
+  <div
+    class="modal fade"
+    id="verArchivosModal"
+    tabindex="-1"
+    aria-labelledby="verArchivosModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content rounded-5">
+        <div class="modal-header mb-3 d-flex">
+          <h5 class="modal-title mx-auto" id="verArchivosModalLabel">
+            Archivos Seleccionados
+          </h5>
+          <button
+            type="button"
+            class="btn-close ms-0 ps-0 pe-2"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
 
-      <div
-        class="modal-body px-5 mx-3 d-flex flex-wrap justify-content-evenly gap-3 w-100"
-      >
-        <div
-          *ngFor="let archivoMiniatura of miniaturaVerArchivos; let i = index"
-          class="mb-3 d-flex gap-3 w-auto"
-        >
-          <div
-            *ngFor="
-              let archiMiniatura of archivoMiniatura.base46;
-              let iMini = index
-            "
-            class="card d-flex rounded-4 mb-3"
-          >
-            <div class="card-body rounded-4">
-              <h6 *ngIf="archivoMiniatura.base46.length > 1">
-                TIPO ARCHIVO: {{ archivoMiniatura.tipoArchivo }}
-                <strong class="text-red">({{ iMini + 1 }})</strong>
-              </h6>
-              <h6 *ngIf="archivoMiniatura.base46.length == 1">
-                TIPO ARCHIVO: {{ archivoMiniatura.tipoArchivo }}
-              </h6>
-              <embed
-                *ngIf="archivoMiniatura.base46[iMini]"
-                [src]="archivoMiniatura.base46[iMini]"
-                height="100px"
-                class="w-100"
-              />
-              <div class="text-center">
-                <button
-                  (click)="
-                    eliminarArchivos(archivoMiniatura.tipoArchivo, iMini)
+        <div *ngIf="miniaturaVerArchivos?.length > 0; else noArchivos">
+          <div id="carouselExampleIndicators" class="carousel slide">
+            <div class="carousel-inner">
+              <div
+                *ngFor="
+                  let archivoMiniatura of miniaturaVerArchivos;
+                  let i = index
+                "
+              >
+                <div
+                  *ngFor="
+                    let archiMiniatura of archivoMiniatura.base46;
+                    let iMini = index
                   "
-                  class="btn b rounded-pill px-4"
+                  class="carousel-item"
+                  [ngClass]="{ active: isActive(i, iMini) }"
                 >
-                  Eliminar
-                </button>
+                  <div class="px-3 pb-2">
+                    <p *ngIf="archivoMiniatura.base46.length > 1">
+                      TIPO ARCHIVO: {{ archivoMiniatura.tipoArchivo }}
+                      <strong class="text-red">({{ iMini + 1 }})</strong>
+                    </p>
+                    <p *ngIf="archivoMiniatura.base46.length == 1">
+                      TIPO ARCHIVO: {{ archivoMiniatura.tipoArchivo }}
+                    </p>
+                  </div>
+                  <embed
+                    *ngIf="archivoMiniatura.base46[iMini]"
+                    [src]="archivoMiniatura.base46[iMini]"
+                    height="300"
+                    class="w-100 d-block"
+                  />
+                  <div class="text-center w-100 mt-2">
+                    <button
+                      (click)="
+                        eliminarArchivos(archivoMiniatura.tipoArchivo, iMini)
+                      "
+                      class="btn b rounded-pill px-4"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
               </div>
+            </div>
+
+            <div class="d-flex w-100 text-center my-3 gap-3">
+              <button
+                class="btn b rounded-pill py-0 d-flex ms-auto"
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev"
+              >
+                <span
+                  class="carousel-control-prev-icon my-auto"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden d-none">Previous</span>
+              </button>
+              <button
+                class="btn b rounded-pill me-auto py-0 d-flex"
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next"
+              >
+                <span
+                  class="carousel-control-next-icon my-auto"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Next</span>
+              </button>
             </div>
           </div>
         </div>
-        <span *ngIf="archivosCargados?.length === 0">
-          <h5 class="text-center">No hay archivos cargados.</h5>
-        </span>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn rounded-pill px-4 me-5 btn-secondary"
-          data-bs-dismiss="modal"
-        >
-          Cerrar
-        </button>
+
+        <ng-template #noArchivos>
+          <span class="mb-3">
+            <h5 class="text-center">No hay archivos cargados.</h5>
+          </span>
+        </ng-template>
       </div>
     </div>
   </div>

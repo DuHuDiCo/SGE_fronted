@@ -84,21 +84,12 @@ export class BuscarArchivosComponent implements OnInit {
     this.getAllTipo();
     setTimeout(() => {
       this.subirService.arch.subscribe((data) => {
-        // console.log(data);
-        console.log(data);
-        console.log(this.archivos);
-        
-
         if (data.length > 0) {
           this.archivos = data;
           this.subirArchivo.numeroObligacion =
             this.archivos[0].numeroObligacion;
           this.cards = true;
-          // console.log(this.archivos);
-          // console.log(this.subirArchivo.numeroObligacion);
           this.eliminarTiposArchivos();
-          console.log(this.archivos);
-          
         }
       });
     }, 300);
@@ -127,7 +118,6 @@ export class BuscarArchivosComponent implements OnInit {
     this.buscarService.filter(this.cedula).subscribe(
       (data: any) => {
         this.datos = data;
-        console.log(this.datos);
 
         data.forEach((element: any) => {
           this.obligacion.push(element.cuentaPorCobrar);
@@ -171,9 +161,6 @@ export class BuscarArchivosComponent implements OnInit {
   isEmpty(obligacion: string) {
     this.subirService.isEmpty(obligacion).subscribe(
       (data: any) => {
-        console.log(data);
-        console.log(this.archivos);
-
         if (data) {
           Swal.fire({
             title: 'Información',
@@ -186,10 +173,8 @@ export class BuscarArchivosComponent implements OnInit {
               confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
             },
           });
-          // console.log(data);
           setTimeout(() => {
             this.subirService.send(obligacion);
-            // console.log('obligacion enviada:', obligacion);
 
             this.obtenerCedulaService.setCedula(this.cedula);
             this.obtenerCedulaService.setObligacion(obligacion);
@@ -207,7 +192,6 @@ export class BuscarArchivosComponent implements OnInit {
               confirmButton: 'btn border-0 rounded-pill px-5',
             },
           });
-          // console.log(data);
 
           this.cards = true;
           this.tabla = false;
@@ -224,7 +208,6 @@ export class BuscarArchivosComponent implements OnInit {
       (data: any) => {
         this.tiposArchivos = data;
         this.tipoArc = data.length;
-        // console.log(data);
       },
       (error: any) => {
         console.log(error);
@@ -274,7 +257,6 @@ export class BuscarArchivosComponent implements OnInit {
           };
 
           this.subirArchivo.base64.push(obj);
-          // console.log(this.subirArchivo);
         } else {
           this.modal.base64 = base64SinP;
         }
@@ -336,7 +318,6 @@ export class BuscarArchivosComponent implements OnInit {
             confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
           },
         });
-        // console.log(data);
         this.archivos.push(data[0]);
         this.eliminarTiposArchivos();
 
@@ -421,7 +402,6 @@ export class BuscarArchivosComponent implements OnInit {
       });
       return;
     }
-    console.log(this.modal);
 
     this.buscarService.update(this.modal).subscribe(
       (data: any) => {
@@ -441,7 +421,6 @@ export class BuscarArchivosComponent implements OnInit {
           },
         });
         this.fileInput.nativeElement.value = '';
-        // console.log(data);
 
         // Cierra el modal
         const button = document.getElementById(
@@ -525,9 +504,6 @@ export class BuscarArchivosComponent implements OnInit {
     this.isEmpty(obligacion);
 
     this.archivos = this.datos[position].archivos;
-    console.log(this.archivos);
-    
-
     this.eliminarTiposArchivos();
   }
 
@@ -539,7 +515,6 @@ export class BuscarArchivosComponent implements OnInit {
         const tiposArchivosTodos = this.tiposArchivos[x].tipoArchivo;
         if (tiposArchivosTodos === tiposArchivosExistentes) {
           this.tiposArchivos.splice(x, 1);
-          // console.log(this.tiposArchivos);
         }
       }
     }
