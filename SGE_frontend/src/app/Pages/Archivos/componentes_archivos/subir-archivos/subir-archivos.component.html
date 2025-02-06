@@ -1,4 +1,4 @@
-<div class="container-fluid mt-1 d-flex flex-column">
+<div class="container-fluid  d-flex flex-column">
   <!-- CONFIRMACIÓN  -->
   <div
     class="row d-flex justify-content-center text-center mt-4"
@@ -24,7 +24,7 @@
   </div>
 
   <!-- progreso y carga de archivos -->
-  <div class="row d-flex flex-column w-50 w-xs-75 w-sm-75 mx-auto mt-4" *ngIf="confirmarComenzar">
+  <div class="row d-flex flex-column w-50 w-xs-75 w-sm-75 mx-auto mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xll-5" *ngIf="confirmarComenzar">
     <!--Proggres-->
     <div
       class="progress mb-4 w-xl-100 w-sm-75 mx-auto px-0"
@@ -156,7 +156,7 @@
       <!-- Botones de guardar y volver -->
       <div class="row mb-3 mt-2">
         <div
-          class="col-md-12 text-center d-flex justify-content-center gap-4 gap-md-4 flex-wrap"
+          class="col-md-12 text-center d-flex justify-content-center gap-1 gap-sm-4 gap-md-4 flex-wrap"
         >
           <button
             (click)="onCancelarVolver()"
