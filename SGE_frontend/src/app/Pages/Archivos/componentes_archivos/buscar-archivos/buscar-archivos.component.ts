@@ -108,7 +108,7 @@ export class BuscarArchivosComponent implements OnInit {
         confirmButtonColor: '#d40000',
         customClass: {
           popup: 'rounded-4', // Clase para redondear el modal
-          confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+          confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
         },
       });
       return;
@@ -133,7 +133,7 @@ export class BuscarArchivosComponent implements OnInit {
           confirmButtonColor: '#d40000',
           customClass: {
             popup: 'rounded-4', // Clase para redondear el modal
-            confirmButton: 'btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
+            confirmButton: 'text-white btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
           },
         });
         // this.cedula = '';
@@ -147,7 +147,7 @@ export class BuscarArchivosComponent implements OnInit {
           confirmButtonColor: '#d40000',
           customClass: {
             popup: 'rounded-4', // Clase para redondear el modal
-            confirmButton: 'btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
+            confirmButton: 'text-white btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
           },
         });
         this.filtro = false;
@@ -170,7 +170,7 @@ export class BuscarArchivosComponent implements OnInit {
             confirmButtonColor: '#d40000',
             customClass: {
               popup: 'rounded-4', // Clase para redondear el modal
-              confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+              confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
             },
           });
           setTimeout(() => {
@@ -189,7 +189,7 @@ export class BuscarArchivosComponent implements OnInit {
             confirmButtonColor: '#d40000',
             customClass: {
               popup: 'rounded-4', // Clase para redondear el modal
-              confirmButton: 'btn border-0 rounded-pill px-5',
+              confirmButton: 'text-white btn border-0 rounded-pill px-5',
             },
           });
 
@@ -237,7 +237,7 @@ export class BuscarArchivosComponent implements OnInit {
         confirmButtonColor: '#d40000',
         customClass: {
           popup: 'rounded-4', // Clase para redondear el modal
-          confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+          confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
         },
       });
       return;
@@ -280,7 +280,7 @@ export class BuscarArchivosComponent implements OnInit {
         confirmButtonColor: '#d40000',
         customClass: {
           popup: 'rounded-4', // Clase para redondear el modal
-          confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+          confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
         },
       });
       return;
@@ -299,7 +299,7 @@ export class BuscarArchivosComponent implements OnInit {
         confirmButtonColor: '#d40000',
         customClass: {
           popup: 'rounded-4', // Clase para redondear el modal
-          confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+          confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
         },
       });
       return;
@@ -315,7 +315,7 @@ export class BuscarArchivosComponent implements OnInit {
           confirmButtonColor: '#d40000',
           customClass: {
             popup: 'rounded-4', // Clase para redondear el modal
-            confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+            confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
           },
         });
         this.archivos.push(data[0]);
@@ -339,7 +339,7 @@ export class BuscarArchivosComponent implements OnInit {
           confirmButtonColor: '#d40000',
           customClass: {
             popup: 'rounded-4', // Clase para redondear el modal
-            confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+            confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
           },
         });
         console.log(error);
@@ -397,7 +397,7 @@ export class BuscarArchivosComponent implements OnInit {
         confirmButtonColor: '#d40000',
         customClass: {
           popup: 'rounded-4', // Clase para redondear el modal
-          confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+          confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
         },
       });
       return;
@@ -417,7 +417,7 @@ export class BuscarArchivosComponent implements OnInit {
           confirmButtonColor: '#d40000',
           customClass: {
             popup: 'rounded-4', // Clase para redondear el modal
-            confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+            confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
           },
         });
         this.fileInput.nativeElement.value = '';
@@ -438,7 +438,7 @@ export class BuscarArchivosComponent implements OnInit {
           confirmButtonColor: '#d40000',
           customClass: {
             popup: 'rounded-4', // Clase para redondear el modal
-            confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+            confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
           },
         });
         console.log(error);
@@ -458,7 +458,7 @@ export class BuscarArchivosComponent implements OnInit {
       confirmButtonColor: '#d40000',
       customClass: {
         popup: 'rounded-4', // Clase para redondear el modal
-        confirmButton: 'btn b rounded-pill', // Botón rojo para Eliminar
+        confirmButton: 'text-white btn b rounded-pill', // Botón rojo para Eliminar
         cancelButton: 'btn btn-secondary rounded-pill', // Botón secundario para Cancelar
       },
     }).then((result) => {
@@ -478,7 +478,7 @@ export class BuscarArchivosComponent implements OnInit {
                 confirmButtonColor: '#d40000',
                 customClass: {
                   popup: 'rounded-4', // Clase para redondear el modal
-                  confirmButton: 'btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+                  confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
                 },
               });
 

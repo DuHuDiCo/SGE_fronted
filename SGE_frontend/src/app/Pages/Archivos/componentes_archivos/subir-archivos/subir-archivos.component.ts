@@ -133,7 +133,7 @@ export class SubirArchivosComponent implements OnInit {
           confirmButtonColor: '#d40000',
           customClass: {
             popup: 'rounded-4',
-            confirmButton: 'btn border-0 rounded-pill px-4',
+            confirmButton: 'text-white btn border-0 rounded-pill px-4',
           },
         });
         return;
@@ -156,7 +156,7 @@ export class SubirArchivosComponent implements OnInit {
             confirmButtonColor: '#d40000',
             customClass: {
               popup: 'rounded-4',
-              confirmButton: 'btn border-0 rounded-pill px-4',
+              confirmButton: 'text-white btn border-0 rounded-pill px-4',
             },
           });
           continue; // Salta este archivo y continúa con los demás
@@ -229,7 +229,7 @@ export class SubirArchivosComponent implements OnInit {
         confirmButtonColor: '#d40000',
         customClass: {
           popup: 'rounded-4',
-          confirmButton: 'btn border-0 rounded-pill px-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
         },
       });
       input.value = ''; // Limpia el input de archivo cargado
@@ -326,7 +326,7 @@ export class SubirArchivosComponent implements OnInit {
         confirmButtonColor: '#d40000',
         customClass: {
           popup: 'rounded-4',
-          confirmButton: 'btn border-0 rounded-pill px-5',
+          confirmButton: 'text-white btn border-0 rounded-pill px-5',
         },
       });
     } else {
@@ -339,7 +339,7 @@ export class SubirArchivosComponent implements OnInit {
         confirmButtonColor: '#d40000',
         customClass: {
           popup: 'rounded-4',
-          confirmButton: 'btn border-0 rounded-pill px-5',
+          confirmButton: 'text-white btn border-0 rounded-pill px-5',
         },
       });
     }
@@ -356,7 +356,7 @@ export class SubirArchivosComponent implements OnInit {
         confirmButtonColor: '#d40000',
         customClass: {
           popup: 'rounded-4',
-          confirmButton: 'btn border-0 rounded-pill px-5',
+          confirmButton: 'text-white btn border-0 rounded-pill px-5',
         },
       });
       return;
@@ -376,7 +376,7 @@ export class SubirArchivosComponent implements OnInit {
           confirmButtonColor: '#d40000',
           customClass: {
             popup: 'rounded-4',
-            confirmButton: 'btn border-0 rounded-pill px-5',
+            confirmButton: 'text-white btn border-0 rounded-pill px-5',
           },
         });
         this.router.navigate(['/dashboard-archivos/buscar-archivos']);
@@ -390,7 +390,7 @@ export class SubirArchivosComponent implements OnInit {
           confirmButtonColor: '#d40000',
           customClass: {
             popup: 'rounded-4', // Clase para redondear el modal
-            confirmButton: 'btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
+            confirmButton: 'text-white btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
           },
         });
         console.error(error);
@@ -425,7 +425,7 @@ export class SubirArchivosComponent implements OnInit {
       denyButtonColor: 'gray',
       customClass: {
         popup: 'rounded-4',
-        confirmButton: 'btn b rounded-pill',
+        confirmButton: 'text-white btn b rounded-pill',
         denyButton: 'btn btn-secondary rounded-pill',
       },
     }).then((result) => {
