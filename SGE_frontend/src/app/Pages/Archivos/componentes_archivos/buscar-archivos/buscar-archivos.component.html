@@ -19,7 +19,7 @@
             type="button"
             *ngIf="!filtro"
             (click)="onfilter()"
-            class="btn rounded-pill b mx-auto w-auto"
+            class="btn rounded-pill b mx-auto w-auto py-1"
           >
             Buscar
           </button>
@@ -27,8 +27,7 @@
           <button
             *ngIf="filtro"
             type="button"
-            class="b mb-4"
-            style="background-color: #960010; border-color: #960010"
+            class="b btn rounded-pill b mx-auto w-25 px-4 py-1"
           >
             <span
               class="spinner-border spinner-border-sm float-right"
@@ -149,7 +148,7 @@
   </div>
 
   <div class="mt-3 mb-5 mx-auto d-flex">
-    <button (click)="onVolver()" class="btn rounded-pill b mx-auto w-auto">
+    <button (click)="onVolver()" class="btn rounded-pill b mx-auto w-auto py-1">
       Regresar
     </button>
   </div>
