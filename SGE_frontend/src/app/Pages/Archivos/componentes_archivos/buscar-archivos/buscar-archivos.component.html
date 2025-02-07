@@ -102,16 +102,10 @@
         <div class="card-body">
           <p class="card-text fw-bold mb-0">{{ a.tipoArchivo.tipoArchivo }}</p>
           <p class="card-text mt-0">{{ a.numeroObligacion }}</p>
-          <div *appRolesPerfiles="rolesArray[2].toUpperCase()" class="mb-3">
-            <button
-              *appArchivos="permisos[0]"
-              (click)="abrirModal(a.idArchivo)"
-              class="btn btn-primary me-2 mt-2 rounded-pill px-4"
-              data-bs-toggle="modal"
-              data-bs-target="#modalEditar"
-            >
-              <i class="fa-solid fa-pen-to-square"></i>
-            </button>
+          <div
+            *appRolesPerfiles="rolesArray[2].toUpperCase()"
+            class="mb-3 gap-2 d-flex justify-content-center"
+          >
             <button
               *appRolesPerfiles="rolesArray[6]"
               (click)="eliminar(a.idArchivo)"
@@ -120,12 +114,33 @@
             >
               <i class="fa-solid fa-trash"></i>
             </button>
+
+            <button
+              *appArchivos="permisos[0]"
+              (click)="abrirModal(a.idArchivo)"
+              class="btn btn-primary mt-2 rounded-pill px-4"
+              data-bs-toggle="modal"
+              data-bs-target="#modalEditar"
+            >
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+
+            <button
+              (click)="onDescargarArchivo(a.idArchivo)"
+              *appArchivos="permisos[6]"
+              class="btn btn-dark mt-2 rounded-pill px-4"
+            >
+              <i class="fa-solid fa-download"></i>
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <div *ngIf="archivos.length < 7 && archivos.length > 0" class="col-md-4 h-100">
+    <div
+      *ngIf="archivos.length < 7 && archivos.length > 0"
+      class="col-md-4 h-100"
+    >
       <div
         *appArchivos="permisos[2]"
         class="custom-card border-none h-100 text-center d-flex align-items-center"

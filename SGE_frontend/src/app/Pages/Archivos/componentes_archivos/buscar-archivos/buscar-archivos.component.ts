@@ -117,12 +117,14 @@ export class BuscarArchivosComponent implements OnInit {
     this.obligacion = [];
     this.buscarService.filter(this.cedula).subscribe(
       (data: any) => {
+
         this.datos = data;
 
         data.forEach((element: any) => {
           this.obligacion.push(element.cuentaPorCobrar);
           this.numeroArc = element.archivos.length;
         });
+
         this.tabla = true;
         this.filtro = false;
         Swal.fire({
@@ -133,7 +135,7 @@ export class BuscarArchivosComponent implements OnInit {
           confirmButtonColor: '#d40000',
           customClass: {
             popup: 'rounded-4', // Clase para redondear el modal
-            confirmButton: 'text-white btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
+            confirmButton: 'text-white btn border-0 rounded-pill px-5', // Botón rojo
           },
         });
         // this.cedula = '';
@@ -446,6 +448,37 @@ export class BuscarArchivosComponent implements OnInit {
     );
   }
 
+  onDescargarArchivo(id: number) {
+    // Buscar el archivo en la lista por ID
+    let archivoDescargar = this.archivos.find((arch) => arch.idArchivo === id);
+
+    if (!archivoDescargar) {
+      console.error('Archivo no encontrado');
+      return;
+    }
+
+    // Obtener la extensión y los datos Base64
+    let base64Data = archivoDescargar.ruta;
+
+    // Crear un enlace de descarga con data URI
+    const byteCharacters = atob(base64Data); // Decodifica Base64
+    const byteNumbers = new Array(byteCharacters.length)
+      .fill(0)
+      .map((_, i) => byteCharacters.charCodeAt(i));
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+    // Crear URL del Blob y forzar la descarga
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = archivoDescargar.tipoArchivo.tipoArchivo;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   //ELIMINAR UN ARCHIVO
   eliminar(id: number) {
     Swal.fire({
@@ -485,7 +518,7 @@ export class BuscarArchivosComponent implements OnInit {
               console.log(error);
             }
           );
-        }, 2000);
+        }, 1000);
       }
     });
   }
