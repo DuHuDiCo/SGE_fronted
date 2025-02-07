@@ -1,4 +1,4 @@
-<div class="container-fluid  d-flex flex-column">
+<div class="container-fluid d-flex flex-column">
   <!-- CONFIRMACIÓN  -->
   <div
     class="row d-flex justify-content-center text-center mt-4"
@@ -24,7 +24,10 @@
   </div>
 
   <!-- progreso y carga de archivos -->
-  <div class="row d-flex flex-column w-50 w-xs-75 w-sm-75 mx-auto mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xll-5" *ngIf="confirmarComenzar">
+  <div
+    class="row d-flex flex-column w-50 w-xs-75 w-sm-75 mx-auto mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xll-5"
+    *ngIf="confirmarComenzar"
+  >
     <!--Proggres-->
     <div
       class="progress mb-4 w-xl-100 w-sm-75 mx-auto px-0"
@@ -54,6 +57,7 @@
               [(ngModel)]="tipoArchivo"
               name="tipoArchivo"
               class="form-select w-75 w-md-50 mt-1"
+              [disabled]="archivosSubidos.length > 0"
             >
               <option *ngIf="isMediumScreen" value="" disabled selected>
                 Seleccionar el tipo de archivo
@@ -91,6 +95,7 @@
                   <i class="fa-solid fa-folder-open custom-icon"></i>
                 </span>
                 <input
+                  *ngIf="archivosSubidos.length == 0"
                   #fileInput
                   type="file"
                   accept="application/pdf"
@@ -100,6 +105,7 @@
                   multiple
                 />
                 <input
+                  *ngIf="archivosSubidos.length == 0"
                   #fileInput
                   type="file"
                   accept="image/*"
@@ -108,8 +114,23 @@
                   (change)="obtenerFile($event)"
                   multiple
                 />
-                <h6 class="fw-bold mt-3" *ngIf="cantidadArchivos > 0">
-                  {{ base64.nombreArchivo }}
+                <h6 class="fw-bold mt-3" *ngIf="archivosSubidos.length > 0">
+                  <strong
+                    *ngFor="let archivoSub of archivosSubidos; let i = index"
+                  >
+                    {{ archivoSub.tituloArchivo }}
+                    <i
+                      *ngIf="archivoSub.subidoBoolean"
+                      class="fa-solid fa-check text-success"
+                    ></i
+                    ><i
+                      *ngIf="!archivoSub.subidoBoolean"
+                      class="fa-solid fa-xmark fa-beat"
+                      [style]="{ color: background_color }"
+                    ></i
+                    ><br
+                  /></strong>
+
                   <hr class="w-50 mx-auto" />
                   {{ cantidadArchivos }} Archivo(s) seleccionado(s)
                 </h6>
@@ -124,7 +145,7 @@
                 <button
                   (click)="onCancelarCargarArchivos()"
                   class="btn rounded-pill btn-secondary px-4 mb-2 mb-md-0"
-                  [disabled]="disabledCargar"
+                  [disabled]="archivosSubidos.length == 0"
                 >
                   <p class="mb-0">Cancelar</p>
                 </button>
@@ -198,7 +219,7 @@
 
         <div *ngIf="miniaturaVerArchivos?.length > 0; else noArchivos">
           <div id="carouselExampleIndicators" class="carousel slide">
-            <div class="carousel-inner">
+            <div class="carousel-inner px-4">
               <div
                 *ngFor="
                   let archivoMiniatura of miniaturaVerArchivos;

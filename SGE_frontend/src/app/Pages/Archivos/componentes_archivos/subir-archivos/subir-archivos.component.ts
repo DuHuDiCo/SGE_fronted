@@ -57,6 +57,8 @@ export class SubirArchivosComponent implements OnInit {
     nombreArchivo: '',
   };
 
+  archivosSubidos: { tituloArchivo: string; subidoBoolean: boolean }[] = [];
+
   constructor(
     private obtenerCedulaService: ObtenerCedulaService,
     private tipoArchivoService: TipoArchivoService,
@@ -98,6 +100,10 @@ export class SubirArchivosComponent implements OnInit {
 
   // Selecionar archivo automatico al dale click al icono
   ontriggerFileInput(input: string): void {
+    if (this.archivosSubidos.length > 0) {
+      // console.log('no se puede hacer click');
+      return;
+    }
     const fileInput = document.getElementById(input) as HTMLInputElement;
     fileInput.click();
   }
@@ -105,18 +111,27 @@ export class SubirArchivosComponent implements OnInit {
   // Se activa cuando se arrastra el archivo
   onDragOver(event: DragEvent) {
     event.preventDefault();
+    if (this.archivosSubidos.length > 0) {
+      return;
+    }
     this.isDragging = true;
   }
 
   // Se activa cuando se deja de arrastrar el archivo
   onDragLeave(event: DragEvent) {
     event.preventDefault();
+    if (this.archivosSubidos.length > 0) {
+      return;
+    }
     this.isDragging = false;
   }
 
   // Se activa cuando se suelta el archivo
   onDrop(event: DragEvent) {
     event.preventDefault();
+    if (this.archivosSubidos.length > 0) {
+      return;
+    }
     this.isDragging = false;
 
     // Verifica si hay archivos en el evento de arrastrar y soltar
@@ -142,50 +157,85 @@ export class SubirArchivosComponent implements OnInit {
       // Array para almacenar las promesas de conversión a base64
       const base64Promises: Promise<string>[] = [];
 
-      // Itera sobre todos los archivos
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-
-        // Valida el tamaño del archivo (1MB máximo)
-        if (file.size > 1048576) {
-          Swal.fire({
-            title: 'Error',
-            text: `El archivo "${file.name}" es demasiado pesado (más de 1MB).`,
-            icon: 'error',
-            timer: 2000,
-            confirmButtonColor: '#d40000',
-            customClass: {
-              popup: 'rounded-4',
-              confirmButton: 'text-white btn border-0 rounded-pill px-4',
-            },
-          });
-          continue; // Salta este archivo y continúa con los demás
-        }
-
-        // Convierte el archivo a base64 y agrega la promesa al array
-        base64Promises.push(this.convertFileToBase64(file));
-      }
-
-      // Si no hay archivos válidos, termina la función
-      if (base64Promises.length === 0) {
+      if (files.length > 2) {
+        Swal.fire({
+          title: 'Error',
+          text: `Solo se pueden subir 2 archivos a la vez.`,
+          icon: 'error',
+          timer: 2000,
+          confirmButtonColor: '#d40000',
+          customClass: {
+            popup: 'rounded-4',
+            confirmButton: 'text-white btn border-0 rounded-pill px-4',
+          },
+        });
         return;
-      }
+      } else {
+        // Itera sobre todos los archivos
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
 
-      // Espera a que todas las conversiones se completen
-      Promise.all(base64Promises).then((base64Results) => {
-        // Asigna los base64 al objeto base64
-        this.base64 = {
-          base46: base64Results,
-          tipoArchivo: this.tipoArchivo,
-          nombreArchivo: files[0]?.name ?? '', // Puedes ajustar esto si necesitas nombres de archivos múltiples
-        };
-
-        // Actualiza la cantidad de archivos y habilita el botón de carga
-        this.cantidadArchivos = base64Results.length;
-        if (this.cantidadArchivos > 0) {
-          this.disabledCargar = false;
+          if (file.type !== 'application/pdf') {
+            Swal.fire({
+              title: 'Error',
+              text: `Solo se admiten archivos pdf.`,
+              icon: 'error',
+              confirmButtonColor: '#d40000',
+              customClass: {
+                popup: 'rounded-4',
+                confirmButton: 'text-white btn border-0 rounded-pill px-4',
+              },
+            });
+            return;
+          } else {
+            // Valida el tamaño del archivo (2MB máximo)
+            if (file.size > 2248576) {
+              Swal.fire({
+                title: 'Error',
+                text: `El archivo "${file.name}" es demasiado pesado (más de 2MB).`,
+                icon: 'error',
+                confirmButtonColor: '#d40000',
+                customClass: {
+                  popup: 'rounded-4',
+                  confirmButton: 'text-white btn border-0 rounded-pill px-4',
+                },
+              });
+              this.archivosSubidos.push({
+                tituloArchivo: file.name,
+                subidoBoolean: false,
+              });
+            } else {
+              this.archivosSubidos.push({
+                tituloArchivo: file.name,
+                subidoBoolean: true,
+              });
+              // Convierte el archivo a base64 y agrega la promesa al array
+              base64Promises.push(this.convertFileToBase64(file));
+            }
+          }
         }
-      });
+
+        // Si no hay archivos válidos, termina la función
+        if (base64Promises.length === 0) {
+          return;
+        }
+
+        // Espera a que todas las conversiones se completen
+        Promise.all(base64Promises).then((base64Results) => {
+          // Asigna los base64 al objeto base64
+          this.base64 = {
+            base46: base64Results,
+            tipoArchivo: this.tipoArchivo,
+            nombreArchivo: files[0]?.name ?? '', // Puedes ajustar esto si necesitas nombres de archivos múltiples
+          };
+
+          // Actualiza la cantidad de archivos y habilita el botón de carga
+          this.cantidadArchivos = base64Results.length;
+          if (this.cantidadArchivos > 0 && this.archivosSubidos.length > 0) {
+            this.disabledCargar = false;
+          }
+        });
+      }
     }
   }
 
@@ -198,27 +248,77 @@ export class SubirArchivosComponent implements OnInit {
         // Array para almacenar las promesas de conversión a base64
         const base64Promises: Promise<string>[] = [];
 
-        // Itera sobre los archivos seleccionados
-        for (let i = 0; i < input.files.length; i++) {
-          const file = input.files[i];
-          // Convierte cada archivo a base64 y agrega la promesa al array
-          base64Promises.push(this.convertFileToBase64(file));
-        }
+        if (input.files.length > 2) {
+          Swal.fire({
+            title: 'Error',
+            text: `Solo se pueden subir 2 archivos a la vez.`,
+            icon: 'error',
+            timer: 2000,
+            confirmButtonColor: '#d40000',
+            customClass: {
+              popup: 'rounded-4',
+              confirmButton: 'text-white btn border-0 rounded-pill px-4',
+            },
+          });
+          return;
+        } else {
+          for (let i = 0; i < input.files.length; i++) {
+            const file = input.files[i];
 
-        // Espera a que todas las conversiones se completen
-        Promise.all(base64Promises).then((base64Results) => {
-          // Asigna los base64 al objeto base64
-          this.base64 = {
-            base46: base64Results,
-            tipoArchivo: this.tipoArchivo,
-            nombreArchivo: input.files ? input.files[0]?.name ?? '' : '', // Puedes ajustar esto si necesitas nombres de archivos múltiples
-          };
-
-          this.cantidadArchivos = input.files ? input.files.length : 0;
-          if (this.cantidadArchivos > 0) {
-            this.disabledCargar = false;
+            // Verifica que el archivo sea solo PDF
+            if (file.type !== 'application/pdf') {
+              Swal.fire({
+                title: 'Error',
+                text: `Solo se admiten archivos pdf.`,
+                icon: 'error',
+                confirmButtonColor: '#d40000',
+                customClass: {
+                  popup: 'rounded-4',
+                  confirmButton: 'text-white btn border-0 rounded-pill px-4',
+                },
+              });
+              return;
+            } else {
+              // Valida el tamaño del archivo (2MB máximo)
+              if (file.size > 2248576) {
+                Swal.fire({
+                  title: 'Error',
+                  text: `El archivo "${file.name}" es demasiado pesado (más de 2MB).`,
+                  icon: 'error',
+                  confirmButtonColor: '#d40000',
+                  customClass: {
+                    popup: 'rounded-4',
+                    confirmButton: 'text-white btn border-0 rounded-pill px-4',
+                  },
+                });
+                this.archivosSubidos.push({
+                  tituloArchivo: file.name,
+                  subidoBoolean: false,
+                });
+              } else {
+                this.archivosSubidos.push({
+                  tituloArchivo: file.name,
+                  subidoBoolean: true,
+                });
+                base64Promises.push(this.convertFileToBase64(file));
+              }
+            }
           }
-        });
+
+          Promise.all(base64Promises).then((base64Results) => {
+            // Asigna los base64 al objeto base64
+            this.base64 = {
+              base46: base64Results,
+              tipoArchivo: this.tipoArchivo,
+              nombreArchivo: input.files ? input.files[0]?.name ?? '' : '', // Puedes ajustar esto si necesitas nombres de archivos múltiples
+            };
+
+            this.cantidadArchivos = input.files ? this.base64.base46.length : 0;
+            if (this.cantidadArchivos > 0 && this.archivosSubidos.length > 0) {
+              this.disabledCargar = false;
+            }
+          });
+        }
       }
     } else {
       Swal.fire({
@@ -404,10 +504,11 @@ export class SubirArchivosComponent implements OnInit {
     this.cantidadArchivos = 0;
     this.disabledCargar = true;
     this.disabledVer = false;
-    this.fileInput.nativeElement.value = '';
+    this.archivosSubidos = [];
   }
 
   onCancelarCargarArchivos() {
+    this.archivosSubidos = [];
     this.cantidadArchivos = 0;
     this.disabledCargar = true;
     this.tipoArchivo = '';
