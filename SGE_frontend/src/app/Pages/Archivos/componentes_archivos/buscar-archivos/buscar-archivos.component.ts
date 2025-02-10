@@ -1,5 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { set } from 'date-fns';
+import jsPDF from 'jspdf';
+import Login from 'src/app/Models/Login';
 import { ObtenerCedulaService } from 'src/app/Services/Archivo/ObtenerCedula/obtener-cedula.service';
 import { SubirArchivoService } from 'src/app/Services/Archivo/SubirArchivos/subir-archivo.service';
 import { TipoArchivoService } from 'src/app/Services/Archivo/TipoArchivo/tipo-archivo.service';
@@ -27,10 +30,11 @@ export class BuscarArchivosComponent implements OnInit {
   filtro: boolean = false;
   tipoArc: number = 0;
   numeroArc: number = 0;
+  validacionContrasena: boolean = false;
 
   obligacion: any[] = [];
   archivos: any[] = [];
-  datos: any[] = [];
+  datos: any = {};
   tiposArchivos: TipoArchivo[] = [];
   rolesArray: string[] = [
     'Cartera',
@@ -75,12 +79,13 @@ export class BuscarArchivosComponent implements OnInit {
     private buscarService: SubirArchivoService,
     private router: Router,
     private subirService: SubirArchivoService,
-    private authService: AuthenticationService,
+    private authenticationService: AuthenticationService,
     private tipoArchivoService: TipoArchivoService,
     private obtenerCedulaService: ObtenerCedulaService
   ) {}
 
   ngOnInit(): void {
+    this.validacionContrasena = false;
     this.getAllTipo();
     setTimeout(() => {
       this.subirService.arch.subscribe((data) => {
@@ -99,65 +104,130 @@ export class BuscarArchivosComponent implements OnInit {
 
   //BUSCAR POR CÉDULA
   onfilter() {
-    if (this.cedula.trim() == '' || this.cedula.trim() == null) {
+    const traerNombreUsuario = this.authenticationService.getUsername();
+
+    if (this.validacionContrasena == false) {
+      if (this.cedula.trim() == '' || this.cedula.trim() == null) {
+        Swal.fire({
+          title: 'Error',
+          text: 'Digite una cédula',
+          icon: 'error',
+          timer: 2000,
+          confirmButtonColor: '#d40000',
+          customClass: {
+            popup: 'rounded-4', // Clase para redondear el modal
+            confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+          },
+        });
+        return;
+      }
+
+      this.filtro = true;
+      this.obligacion = [];
+      this.buscarService.filter(this.cedula).subscribe(
+        (data: any) => {
+          Swal.fire({
+            title: `Ingrese la contraseña de ${traerNombreUsuario}:`,
+            showClass: {
+              popup: `animate__animated animate__fadeInUp animate__faster rounded-4`,
+            },
+            hideClass: {
+              popup: `animate__animated animate__fadeOutDown animate__faster`,
+            },
+            input: 'password',
+            inputAttributes: {
+              autocapitalize: 'off',
+            },
+            confirmButtonText: 'Aceptar',
+            showLoaderOnConfirm: true,
+            showCancelButton: true,
+            confirmButtonColor: '#d40000',
+            customClass: {
+              confirmButton: 'rounded-pill py-1 mt-0',
+              cancelButton: 'rounded-pill py-1 mt-0',
+              input: 'rounded-pill w-75 mx-auto bg-transparent mb-0',
+            },
+            willClose: () => {
+              this.filtro = false;
+              this.cedula = '';
+            },
+            preConfirm: (jwtRequest) => {
+              return new Promise((resolve, reject) => {
+                if (traerNombreUsuario) {
+                  const login = new Login(traerNombreUsuario, jwtRequest);
+                  this.authenticationService.authentication(login).subscribe(
+                    (response: any) => {
+                      Swal.fire({
+                        icon: 'success',
+                        title: `Autenticado como ${traerNombreUsuario}`,
+                        showConfirmButton: false,
+                        timer: 2000,
+                      });
+                      this.validacionContrasena = true;
+                      resolve(true);
+                    },
+                    (error: any) => {
+                      Swal.fire({
+                        icon: 'error',
+                        title: `Contraseña incorrecta`,
+                        showConfirmButton: false,
+                        timer: 2000,
+                      });
+                      console.log(error);
+                      this.filtro = false;
+                      this.cedula = '';
+                      reject(false);
+                    }
+                  );
+                } else {
+                  reject(false);
+                }
+              });
+            },
+          }).then((result) => {
+            if (result.isConfirmed && this.validacionContrasena) {
+              this.datos = data;
+              data.forEach((element: any) => {
+                this.obligacion.push(element.cuentaPorCobrar);
+                this.numeroArc = element.archivos.length;
+              });
+
+              this.tabla = true;
+              this.filtro = false;
+              this.cedula = '';
+            }
+          });
+        },
+        (error: any) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al buscar los archivos, cedula no encontrada.',
+            timer: 2000,
+            confirmButtonColor: '#d40000',
+            customClass: {
+              popup: 'rounded-4',
+              confirmButton: 'text-white btn border-0 rounded-pill px-5',
+            },
+          });
+          this.filtro = false;
+          console.log(error);
+          this.cedula = '';
+        }
+      );
+    } else {
       Swal.fire({
-        title: 'Error',
-        text: 'Digite una cédula',
-        icon: 'error',
-        timer: 2000,
+        icon: 'info',
+        title: 'Información',
+        text: 'Obligaciones encontradas',
         confirmButtonColor: '#d40000',
+        timer: 1500,
         customClass: {
-          popup: 'rounded-4', // Clase para redondear el modal
-          confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
         },
       });
-      return;
     }
-    this.filtro = true;
-    this.obligacion = [];
-    this.buscarService.filter(this.cedula).subscribe(
-      (data: any) => {
-
-        this.datos = data;
-
-        data.forEach((element: any) => {
-          this.obligacion.push(element.cuentaPorCobrar);
-          this.numeroArc = element.archivos.length;
-        });
-
-        this.tabla = true;
-        this.filtro = false;
-        Swal.fire({
-          icon: 'success',
-          title: 'Estas son las obligaciones encontradas',
-          text: 'Elija una obligación',
-          timer: 2000,
-          confirmButtonColor: '#d40000',
-          customClass: {
-            popup: 'rounded-4', // Clase para redondear el modal
-            confirmButton: 'text-white btn border-0 rounded-pill px-5', // Botón rojo
-          },
-        });
-        // this.cedula = '';
-      },
-      (error: any) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Error al buscar los archivos, cedula no encontrada.',
-          timer: 2000,
-          confirmButtonColor: '#d40000',
-          customClass: {
-            popup: 'rounded-4', // Clase para redondear el modal
-            confirmButton: 'text-white btn border-0 rounded-pill px-5', // Botón rojo para Eliminar
-          },
-        });
-        this.filtro = false;
-        console.log(error);
-
-        this.cedula = '';
-      }
-    );
   }
 
   isEmpty(obligacion: string) {
@@ -171,8 +241,8 @@ export class BuscarArchivosComponent implements OnInit {
             timer: 2000,
             confirmButtonColor: '#d40000',
             customClass: {
-              popup: 'rounded-4', // Clase para redondear el modal
-              confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+              popup: 'rounded-4',
+              confirmButton: 'text-white btn border-0 rounded-pill px-4',
             },
           });
           setTimeout(() => {
@@ -384,7 +454,7 @@ export class BuscarArchivosComponent implements OnInit {
 
   //EDITAR UN ARCHIVO
   editar() {
-    var user = this.authService.getUsername();
+    var user = this.authenticationService.getUsername();
 
     if (user == null || user == undefined) {
       return;
@@ -449,6 +519,8 @@ export class BuscarArchivosComponent implements OnInit {
   }
 
   onDescargarArchivo(id: number) {
+    console.log(this.cedula);
+
     // Buscar el archivo en la lista por ID
     let archivoDescargar = this.archivos.find((arch) => arch.idArchivo === id);
 
@@ -459,8 +531,6 @@ export class BuscarArchivosComponent implements OnInit {
 
     // Obtener la extensión y los datos Base64
     let base64Data = archivoDescargar.ruta;
-
-    // Crear un enlace de descarga con data URI
     const byteCharacters = atob(base64Data); // Decodifica Base64
     const byteNumbers = new Array(byteCharacters.length)
       .fill(0)
@@ -468,15 +538,27 @@ export class BuscarArchivosComponent implements OnInit {
     const byteArray = new Uint8Array(byteNumbers);
     const blob = new Blob([byteArray], { type: 'application/pdf' });
 
-    // Crear URL del Blob y forzar la descarga
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = archivoDescargar.tipoArchivo.tipoArchivo;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    // Leer el archivo PDF y aplicar contraseña
+    const reader = new FileReader();
+    reader.onload = () => {
+      const pdfData = reader.result as string; // Convertir a base64 para jsPDF
+
+      // Crear un nuevo PDF con contraseña
+      const doc = new jsPDF({
+        encryption: {
+          userPassword: 'user123', // Contraseña para abrir el PDF
+          ownerPassword: this.cedula, // Contraseña del propietario
+          userPermissions: ['print', 'modify', 'copy', 'annot-forms'], // Permisos del usuario
+        },
+      });
+
+      doc.addImage(pdfData, 'JPEG', 10, 10, 190, 280); // Agregar contenido del PDF como imagen
+
+      // Descargar el PDF con contraseña
+      doc.save(archivoDescargar.tipoArchivo.tipoArchivo);
+    };
+
+    reader.readAsDataURL(blob); // Convertir el Blob a Base64
   }
 
   //ELIMINAR UN ARCHIVO
@@ -496,29 +578,27 @@ export class BuscarArchivosComponent implements OnInit {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        setTimeout(() => {
-          this.buscarService.delete(id).subscribe(
-            (data: any) => {
-              this.archivos = this.archivos.filter(
-                (archivos: any) => archivos.idArchivo != id
-              );
-            },
-            (error: any) => {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error al eliminar el archivo',
-                confirmButtonColor: '#d40000',
-                customClass: {
-                  popup: 'rounded-4', // Clase para redondear el modal
-                  confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
-                },
-              });
+        this.buscarService.delete(id).subscribe(
+          (data: any) => {
+            this.archivos = this.archivos.filter(
+              (archivos: any) => archivos.idArchivo != id
+            );
+          },
+          (error: any) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error al eliminar el archivo',
+              confirmButtonColor: '#d40000',
+              customClass: {
+                popup: 'rounded-4', // Clase para redondear el modal
+                confirmButton: 'text-white btn border-0 rounded-pill px-4', // Botón rojo para Eliminar
+              },
+            });
 
-              console.log(error);
-            }
-          );
-        }, 1000);
+            console.log(error);
+          }
+        );
       }
     });
   }
@@ -527,7 +607,7 @@ export class BuscarArchivosComponent implements OnInit {
   llenarCards(position: number, obligacion: any) {
     this.subirArchivo.numeroObligacion = obligacion;
 
-    var user = this.authService.getUsername();
+    var user = this.authenticationService.getUsername();
 
     if (user == null || user == undefined) {
       return;
@@ -552,4 +632,58 @@ export class BuscarArchivosComponent implements OnInit {
       }
     }
   }
+
+  // addPasswordToPDF(
+  //   file: File,
+  //   userPassword = 'user123',
+  //   ownerPassword = 'owner123'
+  // ) {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+
+  //     reader.onload = (event) => {
+  //       const existingPdfData = event.target?.result;
+
+  //       // Crear un nuevo documento jsPDF con encriptación
+  //       const doc = new jsPDF({
+  //         encryption: {
+  //           userPassword: userPassword,
+  //           ownerPassword: ownerPassword,
+  //           userPermissions: ['print', 'modify', 'copy', 'annot-forms'],
+  //         },
+  //       });
+
+  //       // Agregar el contenido del PDF original como imagen (workaround)
+  //       if (typeof existingPdfData === 'string') {
+  //         doc.addImage(existingPdfData, 'JPEG', 0, 0, 210, 297); // Ajusta dimensiones según el PDF
+  //       } else {
+  //         reject('Invalid PDF data');
+  //       }
+
+  //       // Convertir a Blob
+  //       const pdfBlob = doc.output('blob');
+
+  //       // Convertir a Base64
+  //       const readerBase64 = new FileReader();
+  //       readerBase64.readAsDataURL(pdfBlob);
+  //       readerBase64.onloadend = () =>
+  //         resolve((readerBase64.result as string)?.split(',')[1] ?? ''); // Solo la parte base64
+  //     };
+
+  //     reader.onerror = reject;
+  //     reader.readAsDataURL(file);
+  //   });
+  // }
+
+  // // Uso en tu código antes de enviarlo
+  // async processAndSendFile(file: File, ) {
+  //   try {
+  //     const base64WithPassword: string = (await this.addPasswordToPDF(
+  //       file
+  //     )) as string;
+  //     this.base64Promises.push(Promise.resolve(base64WithPassword));
+  //   } catch (error) {
+  //     console.error('Error al agregar contraseña al PDF:', error);
+  //   }
+  // }
 }
