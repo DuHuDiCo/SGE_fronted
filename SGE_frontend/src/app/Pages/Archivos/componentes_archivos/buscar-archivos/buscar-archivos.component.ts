@@ -101,6 +101,7 @@ export class BuscarArchivosComponent implements OnInit {
   }
 
   @ViewChild('pdfEmbed') pdfEmbed!: ElementRef;
+  @ViewChild('cedulaInput') cedulaInput!: ElementRef;
 
   //BUSCAR POR CÉDULA
   onfilter() {
@@ -194,7 +195,11 @@ export class BuscarArchivosComponent implements OnInit {
 
               this.tabla = true;
               this.filtro = false;
-              this.cedula = '';
+              setTimeout(() => {
+                if (this.cedulaInput) {
+                  this.cedulaInput.nativeElement.value = '';
+                }
+              }, 0);
             }
           });
         },
@@ -519,8 +524,6 @@ export class BuscarArchivosComponent implements OnInit {
   }
 
   onDescargarArchivo(id: number) {
-    console.log(this.cedula);
-
     // Buscar el archivo en la lista por ID
     let archivoDescargar = this.archivos.find((arch) => arch.idArchivo === id);
 
@@ -544,6 +547,8 @@ export class BuscarArchivosComponent implements OnInit {
       const pdfData = reader.result as string; // Convertir a base64 para jsPDF
 
       // Crear un nuevo PDF con contraseña
+      console.log(this.cedula);
+
       const doc = new jsPDF({
         encryption: {
           userPassword: 'user123', // Contraseña para abrir el PDF
