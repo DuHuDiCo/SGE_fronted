@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { set } from 'date-fns';
-import jsPDF from 'jspdf';
+// import jsPDF from 'jspdf'; // Implementar cuando la encriptacion este lista desde el backend
 import Login from 'src/app/Models/Login';
 import { ObtenerCedulaService } from 'src/app/Services/Archivo/ObtenerCedula/obtener-cedula.service';
 import { SubirArchivoService } from 'src/app/Services/Archivo/SubirArchivos/subir-archivo.service';
@@ -523,47 +522,48 @@ export class BuscarArchivosComponent implements OnInit {
     );
   }
 
-  onDescargarArchivo(id: number) {
-    // Buscar el archivo en la lista por ID
-    let archivoDescargar = this.archivos.find((arch) => arch.idArchivo === id);
+  // Implementar descarga de archivos encriptados cuando la encriptación esté lista desde el backend
+  // onDescargarArchivo(id: number) {
+  //   // Buscar el archivo en la lista por ID
+  //   let archivoDescargar = this.archivos.find((arch) => arch.idArchivo === id);
 
-    if (!archivoDescargar) {
-      console.error('Archivo no encontrado');
-      return;
-    }
+  //   if (!archivoDescargar) {
+  //     console.error('Archivo no encontrado');
+  //     return;
+  //   }
 
-    // Obtener la extensión y los datos Base64
-    let base64Data = archivoDescargar.ruta;
-    const byteCharacters = atob(base64Data); // Decodifica Base64
-    const byteNumbers = new Array(byteCharacters.length)
-      .fill(0)
-      .map((_, i) => byteCharacters.charCodeAt(i));
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'application/pdf' });
+  //   // Obtener la extensión y los datos Base64
+  //   let base64Data = archivoDescargar.ruta;
+  //   const byteCharacters = atob(base64Data); // Decodifica Base64
+  //   const byteNumbers = new Array(byteCharacters.length)
+  //     .fill(0)
+  //     .map((_, i) => byteCharacters.charCodeAt(i));
+  //   const byteArray = new Uint8Array(byteNumbers);
+  //   const blob = new Blob([byteArray], { type: 'application/pdf' });
 
-    // Leer el archivo PDF y aplicar contraseña
-    const reader = new FileReader();
-    reader.onload = () => {
-      const pdfData = reader.result as string; // Convertir a base64 para jsPDF
+  //   // Leer el archivo PDF y aplicar contraseña
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     const pdfData = reader.result as string; // Convertir a base64 para jsPDF
 
-      // Crear un nuevo PDF con contraseña
+  //     // Crear un nuevo PDF con contraseña
 
-      const doc = new jsPDF({
-        encryption: {
-          userPassword: 'user123', // Contraseña para abrir el PDF
-          ownerPassword: this.cedula, // Contraseña del propietario
-          userPermissions: ['print', 'modify', 'copy', 'annot-forms'], // Permisos del usuario
-        },
-      });
+  //     const doc = new jsPDF({
+  //       encryption: {
+  //         userPassword: 'user123', // Contraseña para abrir el PDF
+  //         ownerPassword: this.cedula, // Contraseña del propietario
+  //         userPermissions: ['print', 'modify', 'copy', 'annot-forms'], // Permisos del usuario
+  //       },
+  //     });
 
-      doc.addImage(pdfData, 'JPEG', 10, 10, 190, 280); // Agregar contenido del PDF como imagen
+  //     doc.addImage(pdfData, 'JPEG', 10, 10, 190, 280); // Agregar contenido del PDF como imagen
 
-      // Descargar el PDF con contraseña
-      doc.save(archivoDescargar.tipoArchivo.tipoArchivo);
-    };
+  //     // Descargar el PDF con contraseña
+  //     doc.save(archivoDescargar.tipoArchivo.tipoArchivo);
+  //   };
 
-    reader.readAsDataURL(blob); // Convertir el Blob a Base64
-  }
+  //   reader.readAsDataURL(blob); // Convertir el Blob a Base64
+  // }
 
   //ELIMINAR UN ARCHIVO
   eliminar(id: number) {
