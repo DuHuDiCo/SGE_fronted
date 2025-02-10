@@ -547,7 +547,6 @@ export class BuscarArchivosComponent implements OnInit {
       const pdfData = reader.result as string; // Convertir a base64 para jsPDF
 
       // Crear un nuevo PDF con contraseña
-      console.log(this.cedula);
 
       const doc = new jsPDF({
         encryption: {
@@ -637,58 +636,4 @@ export class BuscarArchivosComponent implements OnInit {
       }
     }
   }
-
-  // addPasswordToPDF(
-  //   file: File,
-  //   userPassword = 'user123',
-  //   ownerPassword = 'owner123'
-  // ) {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-
-  //     reader.onload = (event) => {
-  //       const existingPdfData = event.target?.result;
-
-  //       // Crear un nuevo documento jsPDF con encriptación
-  //       const doc = new jsPDF({
-  //         encryption: {
-  //           userPassword: userPassword,
-  //           ownerPassword: ownerPassword,
-  //           userPermissions: ['print', 'modify', 'copy', 'annot-forms'],
-  //         },
-  //       });
-
-  //       // Agregar el contenido del PDF original como imagen (workaround)
-  //       if (typeof existingPdfData === 'string') {
-  //         doc.addImage(existingPdfData, 'JPEG', 0, 0, 210, 297); // Ajusta dimensiones según el PDF
-  //       } else {
-  //         reject('Invalid PDF data');
-  //       }
-
-  //       // Convertir a Blob
-  //       const pdfBlob = doc.output('blob');
-
-  //       // Convertir a Base64
-  //       const readerBase64 = new FileReader();
-  //       readerBase64.readAsDataURL(pdfBlob);
-  //       readerBase64.onloadend = () =>
-  //         resolve((readerBase64.result as string)?.split(',')[1] ?? ''); // Solo la parte base64
-  //     };
-
-  //     reader.onerror = reject;
-  //     reader.readAsDataURL(file);
-  //   });
-  // }
-
-  // // Uso en tu código antes de enviarlo
-  // async processAndSendFile(file: File, ) {
-  //   try {
-  //     const base64WithPassword: string = (await this.addPasswordToPDF(
-  //       file
-  //     )) as string;
-  //     this.base64Promises.push(Promise.resolve(base64WithPassword));
-  //   } catch (error) {
-  //     console.error('Error al agregar contraseña al PDF:', error);
-  //   }
-  // }
 }
