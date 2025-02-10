@@ -50,8 +50,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let o of obligacion; let i = index" (click)="numeroO(o.cuentaPorCobrar.numeroObligacion, 'CEDULA', i)"
-                    style="cursor: pointer;">
+                  <tr *ngFor="let o of obligacion; let i = index"
+                    (click)="numeroO(o.cuentaPorCobrar.numeroObligacion, 'CEDULA', i)" style="cursor: pointer;">
                     <td>{{ o.cuentaPorCobrar.numeroObligacion }}</td>
                     <td>{{ o.cuentaPorCobrar.cliente.numeroDocumento }}</td>
                     <td>{{ o.cuentaPorCobrar.cliente.nombres }} {{ o.cuentaPorCobrar.cliente.apellidos }}</td>
