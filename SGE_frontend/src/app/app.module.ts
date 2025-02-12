@@ -274,7 +274,6 @@ import { ModalConfirmacionNovedadComponent } from './Pages/PanelGestionCartera/E
 
   ],
 
-
   providers: [authInterceptorProviders, CurrencyPipe],
   bootstrap: [AppComponent]
 })
