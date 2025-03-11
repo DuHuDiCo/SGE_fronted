@@ -549,7 +549,8 @@ export class HomeCarteraComponent implements OnInit {
 
   // TRAER CUENTAS POR COBRAR
   getCuentasCobrar() {
-    var td
+    var tr
+    var td: HTMLElement | null
     var contenido: any
     var partesMes
     var mesTd
@@ -582,10 +583,12 @@ export class HomeCarteraComponent implements OnInit {
             this.spinner = false
             setTimeout(() => {
               for (let i = 0; i < this.size; i++) {
+                tr = document.getElementById(`tr_${i}`)
                 td = document.getElementById(`td_${i}`)
 
-                if (td != null && td != undefined) {
-                  contenido = td.textContent;
+                if (tr != null && tr != undefined || td != null && td != undefined) {
+                  contenido = tr!.textContent;
+                  contenido = td!.textContent;
 
                   partesMes = contenido.split('/')
 
@@ -594,7 +597,8 @@ export class HomeCarteraComponent implements OnInit {
 
 
                   if (mesTd == mesActual && anioTd == anioActual) {
-                    td.classList.add("gestionado")
+                    tr!.classList.add("gestionado")
+                    td!.classList.add("gestionadoLetra")
                   }
                 }
               }
@@ -628,10 +632,12 @@ export class HomeCarteraComponent implements OnInit {
             this.spinner = false
             setTimeout(() => {
               for (let i = 0; i < this.size; i++) {
+                tr = document.getElementById(`tr_${i}`)
                 td = document.getElementById(`td_${i}`)
 
-                if (td != null && td != undefined) {
-                  contenido = td.textContent;
+                if (tr != null && tr != undefined || td != null && td != undefined) {
+                  contenido = tr!.textContent;
+                  contenido = td!.textContent;
 
                   partesMes = contenido.split('/')
 
@@ -639,7 +645,8 @@ export class HomeCarteraComponent implements OnInit {
                   anioTd = parseInt(partesMes[2], 10)
 
                   if (mesTd == mesActual && anioTd == anioActual) {
-                    td.classList.add("gestionado")
+                    tr!.classList.add("gestionado")
+                    td!.classList.add("gestionadoLetra")
                   }
                 }
               }
@@ -651,6 +658,7 @@ export class HomeCarteraComponent implements OnInit {
       )
     }
   }
+
 
   //PAGINA ANTERIOR
   back() {

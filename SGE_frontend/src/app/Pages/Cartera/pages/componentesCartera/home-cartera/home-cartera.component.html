@@ -842,9 +842,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let cc of cuentasCobrarArray; let i = index" class="align-middle" id="td0"
-                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style="cursor: pointer;"
-                                (click)="findCuentaCobrar(cc.numeroObligacion)">
+                            <tr id="tr_{{i}}" *ngFor="let cc of cuentasCobrarArray; let i = index" class="align-middle"
+                                id="td0" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                                style="cursor: pointer;" (click)="findCuentaCobrar(cc.numeroObligacion)">
                                 <td *ngIf="!Columnas.includes('CLIENTE')">{{ cc.cliente }}</td>
                                 <td *ngIf="!Columnas.includes('BANCO')">{{ cc.banco.banco }}</td>
                                 <td *ngIf="!Columnas.includes('DIAS VENC')">{{ cc.diasVencidos }}</td>

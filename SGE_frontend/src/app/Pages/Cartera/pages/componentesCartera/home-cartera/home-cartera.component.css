@@ -3,7 +3,13 @@
 }
 
 .gestionado {
-  color: #960010;
+  background-color: #fde1e6;
+  color: #000000;
+}
+
+.gestionadoLetra {
+  background-color: #fde1e6;
+  color: #b72e3b;
 }
 
 .cursor-pointer {
