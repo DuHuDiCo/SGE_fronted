@@ -1405,6 +1405,7 @@ export class HomeCarteraComponent implements OnInit {
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
+                this.getCuentasCobrar();
                 this.getGestiones(this.newGestion.numeroObligacion)
                 if (!this.filtroAgain) {
                   this.getNotificaciones()
