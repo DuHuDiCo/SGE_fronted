@@ -457,7 +457,7 @@
                                                                 class="form-control" disabled>
                                                         </div>
                                                     </div>
-                                                    <div *ngIf="cuentaCobrarSelected.clientes[0].saldoActual <= cuentaCobrarSelected.moraObligatoria"
+                                                    <div *ngIf="cuentaCobrarSelected.clientes[0].saldoActual < cuentaCobrarSelected.moraObligatoria"
                                                         class="col-md-8">
                                                         <p class="alert alert-danger mt-3 text-center">CREDITO VENCIDO
                                                             EN SU TOTALIDAD</p>
