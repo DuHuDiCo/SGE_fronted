@@ -3474,8 +3474,8 @@ export class HomeCarteraComponent implements OnInit {
 
   //FILTROS
   filtroFirst() {
-
     var td
+    var tr
     var contenido: any
     var partesMes
     var mesTd
@@ -3618,24 +3618,31 @@ export class HomeCarteraComponent implements OnInit {
             if (this.filtros.clasificacionGestion != 'Acuerdo de pago') {
               for (let i = 0; i < this.size; i++) {
                 td = document.getElementById(`td_${i}`)
+                tr = document.getElementById(`tr_${i}`)
 
-                if (td != null && td != undefined) {
-                  contenido = td.textContent;
+                if (td != null && td != undefined || tr != null && tr != undefined) {
+                  contenido = td!.textContent;
+                  contenido = tr!.textContent;
 
                   if (this.cuentasCobrarArray[i].isLast) {
-                    td.classList.add("gestionado")
+                    td!.classList.add("gestionadoLetra")
+                    tr!.classList.add("gestionado")
                   }
                 }
               }
             } else {
               for (let i = 0; i < this.size; i++) {
                 td = document.getElementById(`td_${i}`)
+                tr = document.getElementById(`tr_${i}`)
 
-                if (td != null && td != undefined) {
-                  contenido = td.textContent;
+                if (td != null && td != undefined || tr != null && tr != undefined) {
+                  contenido = td!.textContent;
+                  contenido = tr!.textContent;
 
                   if (this.cuentasCobrarArray[i].isLast) {
-                    td.classList.add("gestionado")
+                    td!.classList.add("gestionadoLetra")
+                    tr!.classList.add("gestionado")
+
                   }
                 }
               }
@@ -3667,6 +3674,7 @@ export class HomeCarteraComponent implements OnInit {
 
   filtro() {
     var td
+    var tr
     var contenido: any
     var partesMes
     var mesTd
@@ -3772,9 +3780,11 @@ export class HomeCarteraComponent implements OnInit {
           setTimeout(() => {
             for (let i = 0; i < this.size; i++) {
               td = document.getElementById(`td_${i}`)
+              tr = document.getElementById(`tr_${i}`)
 
-              if (td != null && td != undefined) {
-                contenido = td.textContent;
+              if (td != null && td != undefined || tr != null && tr != undefined) {
+                contenido = td!.textContent;
+                contenido = tr!.textContent;
 
                 partesMes = contenido.split('/')
 
@@ -3782,7 +3792,8 @@ export class HomeCarteraComponent implements OnInit {
                 anioTd = parseInt(partesMes[2], 10)
 
                 if (mesTd == mesActual && anioTd == anioActual) {
-                  td.classList.add("gestionado")
+                  td!.classList.add("gestionadoLetra")
+                  tr!.classList.add("gestionado")
                 }
               }
             }
