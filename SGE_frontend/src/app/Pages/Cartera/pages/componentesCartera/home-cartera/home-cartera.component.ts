@@ -122,7 +122,8 @@ export class HomeCarteraComponent implements OnInit {
     acuerdosDePagosActivos: 0,
     acuerdoPagoDia: 0,
     gestionesDia: 0,
-    cuentasTotales: 0
+    cuentasTotales: 0,
+    acuerdosPagoVencidos: 0
   }
 
   cuentaCobrarSelected: any = {
@@ -473,6 +474,7 @@ export class HomeCarteraComponent implements OnInit {
 
   changeHonorarios: boolean = false
   sinAsesor: boolean = false
+  acuerdosVencidos: boolean = false
 
   @ViewChildren('variableCol') colcheck!: QueryList<ElementRef>;
 
@@ -686,6 +688,17 @@ export class HomeCarteraComponent implements OnInit {
             this.spinner = false
           }
         );
+      } else if (this.acuerdosVencidos) {
+        this.spinner = true
+        this.getAcuerdosPagosVencidos()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.initialCon + (this.page * this.size);
+            this.proSubscriptionNext!.unsubscribe()
+            this.spinner = false
+          }
+        );
       } else {
         this.spinner = true
         this.getCuentasCobrar()
@@ -727,7 +740,19 @@ export class HomeCarteraComponent implements OnInit {
             this.spinner = false
           }
         );
-      } else {
+      } else if (this.acuerdosVencidos) {
+        this.spinner = true
+        this.getAcuerdosPagosVencidos()
+        this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+          (con: boolean) => {
+            this.isCon = con;
+            this.cont = this.initialCon + (this.page * this.size);
+            this.proSubscriptionNext!.unsubscribe()
+            this.spinner = false
+          }
+        );
+      }
+      else {
         this.spinner = true
         this.getCuentasCobrar()
         this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
@@ -765,7 +790,19 @@ export class HomeCarteraComponent implements OnInit {
           this.spinner = false
         }
       );
-    } else {
+    } else if (this.acuerdosVencidos) {
+      this.spinner = true
+      this.getAcuerdosPagosVencidos()
+      this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.initialCon + (this.page * this.size);
+          this.proSubscriptionNext!.unsubscribe()
+          this.spinner = false
+        }
+      );
+    }
+    else {
       this.spinner = true
       this.getCuentasCobrar()
       this.proSubscriptionNext = this.cuentasCobrar.proSubject.subscribe(
@@ -1279,7 +1316,6 @@ export class HomeCarteraComponent implements OnInit {
       }
     })
   }
-
 
   getLastDato(numeroDocumento: string) {
     this.cuentasCobrar.getLastDatoAdicional(numeroDocumento).subscribe(
@@ -3823,6 +3859,38 @@ export class HomeCarteraComponent implements OnInit {
     )
   }
 
+  getAcuerdosPagosVencidos() {
+    var user = this.authService.getUsername()
+    if (user == null || user == undefined) {
+      return
+    }
+
+    if (!this.acuerdosVencidos) {
+      this.acuerdosVencidos = true
+      this.page = 0
+    }
+
+    console.log(user, this.page, this.size);
+
+
+    this.cuentasCobrar.getAcuerdosPagosActivosVencidos(user, this.page, this.size).subscribe(
+      (data: any) => {
+        this.paginas = new Array(data.totalPages)
+        this.cuentasCobrarArray = data.content
+        this.last = data.last
+        this.first = data.first
+        this.numeroPages = data.totalPages
+        this.cuentasCobrar.proSubject.next(true);
+        console.log(this.cuentasCobrar.proSubject);
+
+        console.log(data);
+        console.log(this.numeroPages);
+      }, (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
   getCuentasSinGestionar() {
     var user = this.authService.getUsername()
 
@@ -3834,6 +3902,8 @@ export class HomeCarteraComponent implements OnInit {
       this.sinAsesor = true
       this.page = 0
     }
+
+    console.log(user, this.page, this.size);
 
     this.cuentasCobrar.getCuentasSinGestionar(user, this.page, this.size).subscribe(
       (data: any) => {

@@ -82,6 +82,13 @@
                     <div class="col-md-6">
                         <div class="row justify-content-end">
                             <div class="col-md-3">
+                                <div class="alert alert-danger text-center cursor-pointer" role="alert"
+                                    (click)="getAcuerdosPagosVencidos()">
+                                    <strong>A.P Vdos: </strong>
+                                    {{ alertasGestionesObject.acuerdosPagoVencidos }}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="alert alert-danger text-center" role="alert">
                                     <strong>A. Mes: </strong> {{alertasGestionesObject.acuerdosDePagosRealizados}}
                                 </div>
@@ -91,7 +98,7 @@
                                     <strong>A. Dia: </strong> {{alertasGestionesObject.acuerdoPagoDia}}
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="alert alert-danger text-center" role="alert">
                                     <strong>A. Activos: </strong> {{alertasGestionesObject.acuerdosDePagosActivos}}
                                 </div>
@@ -102,7 +109,6 @@
                 </div>
             </div>
         </div>
-
         <!-- OCULTAR COLUMNAS -->
         <div class="accordion" id="accordionExample" *ngIf="!spinner">
             <div class="accordion-item">

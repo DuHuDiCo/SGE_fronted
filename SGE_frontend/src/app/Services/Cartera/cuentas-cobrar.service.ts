@@ -66,6 +66,11 @@ export class CuentasCobrarService {
     return this.http.get(`${baseUrl}/items/?username=${username}`)
   }
 
+  getAcuerdosPagosActivosVencidos(username: string, page: number, size: number) {
+    return this.http.get(`${baseUrl}/gestiones/obtenerAcuerdosPagoActivosVencidos?username=${username}&page=${page}&size=${size}`)
+  }
+
+
   // CLASIFICACIONES
 
   getClasificacion() {
