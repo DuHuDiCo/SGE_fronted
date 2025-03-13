@@ -1406,6 +1406,7 @@ export class HomeCarteraComponent implements OnInit {
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
                 this.getCuentasCobrar();
+                this.goToPage(this.page);
                 this.getGestiones(this.newGestion.numeroObligacion)
                 if (!this.filtroAgain) {
                   this.getNotificaciones()
