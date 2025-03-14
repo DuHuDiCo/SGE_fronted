@@ -1405,13 +1405,12 @@ export class HomeCarteraComponent implements OnInit {
             this.gestionButton = true
             this.cuentasCobrar.saveGestion(this.newGestion).subscribe(
               (data: any) => {
-                this.getCuentasCobrar();
-                this.goToPage(this.page);
-
                 this.getGestiones(this.newGestion.numeroObligacion)
+                this.goToPage(this.page);
                 if (!this.filtroAgain) {
                   this.getNotificaciones()
                 } else {
+                  this.filtro()
                   this.getNotiAllBySede()
                   this.getNotiVenBySede()
                 }
@@ -1500,6 +1499,7 @@ export class HomeCarteraComponent implements OnInit {
                 })
 
                 this.getGestiones(this.newGestion.numeroObligacion)
+                this.goToPage(this.page);
                 this.getNotificaciones()
                 if (!this.filtroAgain) {
                   this.getCuentasCobrar()
