@@ -47,12 +47,32 @@ export class CrearVendedoresComponent implements OnInit {
       this.vendedor.nombreVendedor == '' ||
       this.vendedor.nombreVendedor == null
     ) {
-      Swal.fire('Error', 'El nombre de vendedor es requerido', 'error'); // Muestra una alerta si el nombre está vacío
+      Swal.fire({
+        title: 'Error',
+        text: 'El nombre de vendedor es requerido',
+        icon: 'error',
+        iconColor: '#960010',
+        confirmButtonColor: '#960010',
+        customClass: {
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
+        },
+      }); // Muestra una alerta si el nombre está vacío
       return; // Sale de la función si el nombre es inválido
     }
     // Verifica si la zona no ha sido seleccionada
     if (this.vendedor.idZona == 0 || this.vendedor.idZona == null) {
-      Swal.fire('Error', 'Seleccione una zona', 'error'); // Muestra una alerta si la zona no está seleccionada
+      Swal.fire({
+        title: 'Error',
+        text: 'Seleccione una zona',
+        icon: 'error',
+        iconColor: '#960010',
+        confirmButtonColor: '#960010',
+        customClass: {
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
+        },
+      }); // Muestra una alerta si la zona no está seleccionada
       return; // Sale de la función si la zona es inválida
     }
 
@@ -64,6 +84,11 @@ export class CrearVendedoresComponent implements OnInit {
           title: 'Producto creado',
           showConfirmButton: false,
           timer: 1000,
+          confirmButtonColor: '#960010',
+          customClass: {
+            popup: 'rounded-4',
+            confirmButton: 'text-white btn border-0 rounded-pill px-4',
+          },
         }); // Si la adición es exitosa, muestra una notificación de éxito
         this.router.navigate(['dashboard-a2configuraciones/inicio']); // Redirige al usuario a la página de inicio
         this.limpiarFormulario(); // Limpia los datos del formulario

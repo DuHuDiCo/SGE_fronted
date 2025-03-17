@@ -129,12 +129,32 @@ export class CrearProductosComponent implements OnInit {
   onFormSubmit() {
     // Verifica si la descripción del producto está vacía o es nula
     if (this.producto.descripcion == '' || this.producto.descripcion == null) {
-      Swal.fire('Error', 'La descripción es requerida', 'error');
+      Swal.fire({
+        title: 'Error',
+        text: 'La descripción es requerida',
+        icon: 'error',
+        iconColor: '#960010',
+        confirmButtonColor: '#960010',
+        customClass: {
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
+        },
+      });
       return; // Sale de la función si la descripción es inválida
     }
     // Verifica si el código del producto está vacío o es nulo
     if (this.producto.codigo == '' || this.producto.codigo == null) {
-      Swal.fire('Error', 'El código es requerido', 'error');
+      Swal.fire({
+        title: 'Error',
+        text: 'El código es requerido',
+        icon: 'error',
+        iconColor: '#960010',
+        confirmButtonColor: '#960010',
+        customClass: {
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
+        },
+      });
       return; // Sale de la función si el código es inválido
     }
     // Verifica si la categoría del producto está seleccionada
@@ -142,7 +162,17 @@ export class CrearProductosComponent implements OnInit {
       this.producto.idCategoriaProducto == 0 ||
       this.producto.idCategoriaProducto == null
     ) {
-      Swal.fire('Error', 'Categoria requerida', 'error');
+      Swal.fire({
+        title: 'Error',
+        text: 'Categoria requerida',
+        icon: 'error',
+        iconColor: '#960010',
+        confirmButtonColor: '#960010',
+        customClass: {
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
+        },
+      });
       return; // Sale de la función si la categoría es inválida
     }
     // Verifica si un vendedor fijo ha sido seleccionado
@@ -150,7 +180,17 @@ export class CrearProductosComponent implements OnInit {
       this.producto.vendedorFijo == '' ||
       this.producto.vendedorFijo == null
     ) {
-      Swal.fire('Error', 'Elija un vendedor', 'error');
+      Swal.fire({
+        title: 'Error',
+        text: 'Elija un vendedor',
+        icon: 'error',
+        iconColor: '#960010',
+        confirmButtonColor: '#960010',
+        customClass: {
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
+        },
+      });
       return; // Sale de la función si no hay vendedor seleccionado
     }
 
@@ -162,6 +202,11 @@ export class CrearProductosComponent implements OnInit {
           title: 'Producto creado',
           showConfirmButton: false,
           timer: 1000,
+          confirmButtonColor: '#960010',
+          customClass: {
+            popup: 'rounded-4',
+            confirmButton: 'text-white btn border-0 rounded-pill px-4',
+          },
         }); // Si la adición es exitosa, muestra una notificación de éxito
         this.router.navigate(['dashboard-a2configuraciones/inicio']); // Redirige al usuario a la página de inicio
         this.limpiarFormulario(); // Limpia los datos del formulario
