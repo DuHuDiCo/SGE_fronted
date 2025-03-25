@@ -162,6 +162,11 @@ export class BuscarArchivosComponent implements OnInit {
                         title: `Autenticado como ${traerNombreUsuario}`,
                         showConfirmButton: false,
                         timer: 2000,
+                        customClass: {
+                          popup: 'rounded-4',
+                          confirmButton:
+                            'text-white btn border-0 rounded-pill px-4',
+                        },
                       });
                       this.validacionContrasena = true;
                       resolve(true);
@@ -172,6 +177,11 @@ export class BuscarArchivosComponent implements OnInit {
                         title: `Contraseña incorrecta`,
                         showConfirmButton: false,
                         timer: 2000,
+                        customClass: {
+                          popup: 'rounded-4',
+                          confirmButton:
+                            'text-white btn border-0 rounded-pill px-4',
+                        },
                       });
                       console.log(error);
                       this.filtro = false;
@@ -265,7 +275,7 @@ export class BuscarArchivosComponent implements OnInit {
             confirmButtonColor: '#d40000',
             customClass: {
               popup: 'rounded-4', // Clase para redondear el modal
-              confirmButton: 'text-white btn border-0 rounded-pill px-5',
+              confirmButton: 'text-white btn border-0 rounded-pill px-4',
             },
           });
 

@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { BuscarClientesService } from 'src/app/Services/clientes/BuscarClientes/buscar-clientes.service';
@@ -11,10 +17,9 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-buscar-clientes',
   templateUrl: './buscar-clientes.component.html',
-  styleUrls: ['./buscar-clientes.component.css']
+  styleUrls: ['./buscar-clientes.component.css'],
 })
 export class BuscarClientesComponent implements OnInit {
-
   @ViewChild('mySelect')
   mySelect!: ElementRef<HTMLSelectElement>;
   private proSubscription!: Subscription;
@@ -22,66 +27,78 @@ export class BuscarClientesComponent implements OnInit {
   pageDireccion: number = 1;
   pageCorreo: number = 1;
 
-  cont: number = 1
-  last: boolean = false
-  first: boolean = false
+  cont: number = 1;
+  last: boolean = false;
+  first: boolean = false;
 
-  cliente: Cliente[] = []
+  cliente: Cliente[] = [];
 
-  datosPersonales:any = {
+  datosPersonales: any = {
     fechaNacimiento: '',
     lugarNacimiento: '',
     fechaExpedicionDocumento: '',
-    lugarExpedicionDocumento: ''
-  }
+    lugarExpedicionDocumento: '',
+  };
 
-  isCon: boolean = false
+  isCon: boolean = false;
   initialCon: number = 1;
-  pages: number = 0
-  sizes: number = 200
-  numeroPages: number = 0
-  page: number = 0
-  size: number = 10
-  order: string = 'idReporte'
-  paginas!: Array<number>
+  pages: number = 0;
+  sizes: number = 200;
+  numeroPages: number = 0;
+  page: number = 0;
+  size: number = 10;
+  order: string = 'idReporte';
+  paginas!: Array<number>;
 
-  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
+  rolesArray: string[] = [
+    'Cartera',
+    'Caja',
+    'Archivos',
+    'Ventas',
+    'Servicios',
+    'Consignaciones',
+    'SUPERADMINISTRADOR',
+    'SST',
+  ];
 
-  cedula: string = ''
+  cedula: string = '';
 
-  telefono: boolean = false
-  direccion: boolean = false
-  correo: boolean = false
+  telefono: boolean = false;
+  direccion: boolean = false;
+  correo: boolean = false;
 
-  datos:DatosContacto = {
+  datos: DatosContacto = {
     cedulaCliente: this.cedula,
     telefonos: [],
     direcciones: [],
-    correos: []
-  }
+    correos: [],
+  };
 
-  telefonos:any[] = []
-  direcciones:any[] = []
-  correos:any[] = []
+  telefonos: any[] = [];
+  direcciones: any[] = [];
+  correos: any[] = [];
 
-  idDep:number = 0
+  idDep: number = 0;
 
-  ciudades:Ciudad[] = []
+  ciudades: Ciudad[] = [];
 
-  department:Departamento[] = []
+  department: Departamento[] = [];
 
-  newTelefono:string = ''
-  newDireccion:Direccion = {
-    "direccion": "",
-    "ciudad": "",
-    "departamento": "",
-    "pais": ""
-  }
-  newCorreo:string = ''
+  newTelefono: string = '';
+  newDireccion: Direccion = {
+    direccion: '',
+    ciudad: '',
+    departamento: '',
+    pais: '',
+  };
+  newCorreo: string = '';
 
-
-
-  constructor(private clienteService: BuscarClientesService, private authService: AuthenticationService, private renderer: Renderer2, private elementRef: ElementRef ) { }
+  constructor(
+    private clienteService: BuscarClientesService,
+    private authService: AuthenticationService,
+    private renderer: Renderer2,
+    private elementRef: ElementRef
+  ) {}
 
   ngOnInit(): void {
     this.listarClientes();
@@ -91,14 +108,22 @@ export class BuscarClientesComponent implements OnInit {
     this.clienteService.listarClientes(this.page, this.size).subscribe(
       (data: any) => {
         this.cliente = data.content;
-        this.telefonos = data.telefonos
-        this.direcciones = data.direcciones
-        this.correos = data.correosElectronicos
-        
+        this.telefonos = data.telefonos;
+        this.direcciones = data.direcciones;
+        this.correos = data.correosElectronicos;
       },
       (error) => {
-        
-        Swal.fire('Error', 'Error al cargar los clientes', 'error');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al cargar los clientes',
+          confirmButtonColor: '#d40000',
+          iconColor: '#d40000',
+          customClass: {
+            popup: 'rounded-4',
+            confirmButton: 'text-white btn border-0 rounded-pill px-4',
+          },
+        });
       }
     );
   }
@@ -109,11 +134,19 @@ export class BuscarClientesComponent implements OnInit {
       this.clienteService.filtrarClientes(this.cedula).subscribe(
         (data: any) => {
           this.cliente.push(data);
-          
         },
         (error) => {
-          
-          Swal.fire('Error', 'Error al filtrar los Clientes', 'error');
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al filtrar los clientes',
+            confirmButtonColor: '#d40000',
+            iconColor: '#d40000',
+            customClass: {
+              popup: 'rounded-4',
+              confirmButton: 'text-white btn border-0 rounded-pill px-4',
+            },
+          });
         }
       );
     } else {
@@ -122,259 +155,297 @@ export class BuscarClientesComponent implements OnInit {
   }
 
   public eliminarCliente(idCliente: Number) {
-
-    let username = this.authService.getUsername()
+    let username = this.authService.getUsername();
 
     Swal.fire({
-      title: 'Eliminar El Cliente',
-      text: '¿Estas seguro de eliminar el Cliente?',
+      title: 'Eliminar el cliente',
+      text: '¿Estas seguro de eliminar el cliente?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Eliminar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
+      customClass: {
+        popup: 'rounded-4',
+        confirmButton: 'text-white btn b rounded-pill',
+        cancelButton: 'btn btn-secondary rounded-pill',
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         this.clienteService.eliminarCliente(idCliente, username).subscribe(
           (data: any) => {
-            this.cliente = this.cliente.filter((cliente: Cliente) => cliente.idCliente != idCliente);
-            Swal.fire('Cliente Eliminado', 'El Cliente ha sido Eliminado Exitosamente', 'success')
+            this.cliente = this.cliente.filter(
+              (cliente: Cliente) => cliente.idCliente != idCliente
+            );
+            Swal.fire({
+              icon: 'success',
+              title: 'Cliente eliminado',
+              text: 'El cliente ha sido eliminado exitosamente',
+              confirmButtonColor: '#d40000',
+              iconColor: '#d40000',
+              customClass: {
+                popup: 'rounded-4',
+                confirmButton: 'text-white btn border-0 rounded-pill px-4',
+              },
+            });
           },
           (error) => {
-            Swal.fire('Error', 'Error al Eliminar el Cliente', 'error')
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error al eliminar el cliente',
+              confirmButtonColor: '#d40000',
+              iconColor: '#d40000',
+              customClass: {
+                popup: 'rounded-4',
+                confirmButton: 'text-white btn border-0 rounded-pill px-4',
+              },
+            });
           }
-        )
+        );
       }
-    })
-
+    });
   }
 
   botones(accion: string) {
     switch (accion) {
-
-      case "abrirTelefono":
-        this.telefono = true
+      case 'abrirTelefono':
+        this.telefono = true;
         break;
 
-      case "abrirDireccion":
-        this.direccion = true
+      case 'abrirDireccion':
+        this.direccion = true;
         this.listarDep();
         break;
 
-      case "abrirCorreo":
-        this.correo = true
+      case 'abrirCorreo':
+        this.correo = true;
         break;
 
-      case "cerrarTelefono":
-        this.telefono = false
+      case 'cerrarTelefono':
+        this.telefono = false;
         break;
-      case "cerrarDireccion":
-        this.direccion = false
+      case 'cerrarDireccion':
+        this.direccion = false;
         break;
-      case "cerrarCorreo":
-        this.correo = false
+      case 'cerrarCorreo':
+        this.correo = false;
         break;
     }
   }
-  
 
-  guardarDatos(boton:string){
-
+  guardarDatos(boton: string) {
     this.datos.telefonos = [];
     this.datos.direcciones = [];
     this.datos.correos = [];
 
-    var depa = this.department.find((d:any) => d.id == this.idDep)
-    if(depa != null){
-      this.newDireccion.departamento = depa.name
+    var depa = this.department.find((d: any) => d.id == this.idDep);
+    if (depa != null) {
+      this.newDireccion.departamento = depa.name;
     }
 
-    this.validarCampos()
-
-    
+    this.validarCampos();
 
     this.clienteService.updateDatos(this.datos).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.limpiarCampos(boton);
         this.actualizarEnVista(data);
-      }, (error:any) => {
-        
-      }
-    )
+      },
+      (error: any) => {}
+    );
   }
 
-  validarCampos(){
-    if(this.telefono === true){
-      if(this.newTelefono == null || this.newTelefono == ''){
-        Swal.fire('Error', 'Si desea Agregar un Nuevo Teléfono debe de llenar el campo', 'error')
-        return
+  validarCampos() {
+    if (this.telefono === true) {
+      if (this.newTelefono == null || this.newTelefono == '') {
+        Swal.fire(
+          'Error',
+          'Si desea Agregar un Nuevo Teléfono debe de llenar el campo',
+          'error'
+        );
+        return;
       } else {
-        this.datos.telefonos.push(this.newTelefono)
-        Swal.fire('Datos Guardados', 'El Teléfono ha sido agregado con éxito', 'success')
+        this.datos.telefonos.push(this.newTelefono);
+        Swal.fire(
+          'Datos Guardados',
+          'El Teléfono ha sido agregado con éxito',
+          'success'
+        );
       }
     }
-    if(this.direccion === true){
-      if(this.newDireccion.pais == '' || this.newDireccion.pais == null){
-        Swal.fire('Error', 'Debe de llenar El Pais', 'error')
-        return
+    if (this.direccion === true) {
+      if (this.newDireccion.pais == '' || this.newDireccion.pais == null) {
+        Swal.fire('Error', 'Debe de llenar El Pais', 'error');
+        return;
       }
-      
-      if(this.newDireccion.departamento == '' || this.newDireccion.departamento == null){
-        Swal.fire('Error', 'Debe de llenar El Departamento', 'error')
-        return
+
+      if (
+        this.newDireccion.departamento == '' ||
+        this.newDireccion.departamento == null
+      ) {
+        Swal.fire('Error', 'Debe de llenar El Departamento', 'error');
+        return;
       }
-      if(this.newDireccion.ciudad == '' || this.newDireccion.ciudad == null){
-        Swal.fire('Error', 'Debe de llenar La Ciudad', 'error')
-        return
+      if (this.newDireccion.ciudad == '' || this.newDireccion.ciudad == null) {
+        Swal.fire('Error', 'Debe de llenar La Ciudad', 'error');
+        return;
       }
-      if(this.newDireccion.direccion == '' || this.newDireccion.direccion == null){
-        Swal.fire('Error', 'Debe de llenar la Direccion', 'error')
-        return
-      }
-      else {
-        this.datos.direcciones.push(this.newDireccion)
-        Swal.fire('Datos Guardados', 'La Nueva Direccion ha sido agregada con éxito', 'success')
+      if (
+        this.newDireccion.direccion == '' ||
+        this.newDireccion.direccion == null
+      ) {
+        Swal.fire('Error', 'Debe de llenar la Direccion', 'error');
+        return;
+      } else {
+        this.datos.direcciones.push(this.newDireccion);
+        Swal.fire(
+          'Datos Guardados',
+          'La Nueva Direccion ha sido agregada con éxito',
+          'success'
+        );
       }
     }
 
-
-    if(this.correo === true){
-      if(this.newCorreo == null || this.newCorreo == ''){
-        Swal.fire('Error', 'Si desea Agregar un Nuevo Correo debe de llenar el campo', 'error')
-        return
+    if (this.correo === true) {
+      if (this.newCorreo == null || this.newCorreo == '') {
+        Swal.fire(
+          'Error',
+          'Si desea Agregar un Nuevo Correo debe de llenar el campo',
+          'error'
+        );
+        return;
       } else {
-        this.datos.correos.push(this.newCorreo)
-        Swal.fire('Datos Guardados', 'El Correo ha sido agregado con éxito', 'success')
+        this.datos.correos.push(this.newCorreo);
+        Swal.fire(
+          'Datos Guardados',
+          'El Correo ha sido agregado con éxito',
+          'success'
+        );
       }
     }
   }
 
-  limpiarCampos(boton:string){
+  limpiarCampos(boton: string) {
     switch (boton) {
-      case "confirmarTel":
-        this.newTelefono  = ''
-        this.telefono = false
+      case 'confirmarTel':
+        this.newTelefono = '';
+        this.telefono = false;
         break;
 
-        case "confirmarDirec":
-          this.newDireccion = {
-            "direccion": "",
-            "ciudad": "",
-            "departamento": "",
-            "pais": ""
-          }
-          this.direccion = false
-          break;
+      case 'confirmarDirec':
+        this.newDireccion = {
+          direccion: '',
+          ciudad: '',
+          departamento: '',
+          pais: '',
+        };
+        this.direccion = false;
+        break;
 
-          case "confirmarCorreo":
-            this.newCorreo  = ''
-            this.correo = false
-            break;
+      case 'confirmarCorreo':
+        this.newCorreo = '';
+        this.correo = false;
+        break;
     }
   }
 
-  actualizarEnVista(data:any){
-    var clienteFound = this.cliente.find((c:any) => c.numeroDocumento == data.numeroDocumento)
-    if(clienteFound?.telefonos != undefined){
-      clienteFound.telefonos = data.telefonos
+  actualizarEnVista(data: any) {
+    var clienteFound = this.cliente.find(
+      (c: any) => c.numeroDocumento == data.numeroDocumento
+    );
+    if (clienteFound?.telefonos != undefined) {
+      clienteFound.telefonos = data.telefonos;
     }
 
-    if(clienteFound?.direcciones != undefined){
-      clienteFound.direcciones = data.direcciones
+    if (clienteFound?.direcciones != undefined) {
+      clienteFound.direcciones = data.direcciones;
     }
 
-    if(clienteFound?.correosElectronicos != undefined){
-      clienteFound.correosElectronicos = data.correosElectronicos
+    if (clienteFound?.correosElectronicos != undefined) {
+      clienteFound.correosElectronicos = data.correosElectronicos;
     }
   }
 
-  listarDep(){
+  listarDep() {
     this.clienteService.listarDepartamentos().subscribe(
-      (data:any) => {
-        this.department = data
-        
-      }, (error:any) => {
-        
+      (data: any) => {
+        this.department = data;
+      },
+      (error: any) => {
         Swal.fire('Error', 'Error al cargar los departamentos', 'error');
       }
-    )
+    );
   }
 
-  listarCiudadByDep(){
-    if(this.idDep > 0){
+  listarCiudadByDep() {
+    if (this.idDep > 0) {
       this.renderer.removeAttribute(this.mySelect.nativeElement, 'disabled');
     } else {
-      this.renderer.setAttribute(this.mySelect.nativeElement, 'disabled', 'true');
+      this.renderer.setAttribute(
+        this.mySelect.nativeElement,
+        'disabled',
+        'true'
+      );
     }
     this.clienteService.listarCiudadByDepartamento(this.idDep).subscribe(
-      (data:any) => {
-        this.ciudades = data
-      }, (error:any) => {
-        
-      }
-    )
+      (data: any) => {
+        this.ciudades = data;
+      },
+      (error: any) => {}
+    );
   }
 
-  metodo(cliente:Cliente){
-    this.datos.cedulaCliente = cliente.numeroDocumento
-    this.telefonos = cliente.telefonos
-    this.direcciones = cliente.direcciones
-    this.correos = cliente.correosElectronicos
-    this.datosPersonales.fechaNacimiento = cliente.fechaNacimiento
-    this.datosPersonales.lugarNacimiento = cliente.lugarNacimiento
-    this.datosPersonales.fechaExpedicionDocumento = cliente.fechaExpedicionDocumento
-    this.datosPersonales.lugarExpedicionDocumento = cliente.lugarExpedicionDocumento
-
+  metodo(cliente: Cliente) {
+    this.datos.cedulaCliente = cliente.numeroDocumento;
+    this.telefonos = cliente.telefonos;
+    this.direcciones = cliente.direcciones;
+    this.correos = cliente.correosElectronicos;
+    this.datosPersonales.fechaNacimiento = cliente.fechaNacimiento;
+    this.datosPersonales.lugarNacimiento = cliente.lugarNacimiento;
+    this.datosPersonales.fechaExpedicionDocumento =
+      cliente.fechaExpedicionDocumento;
+    this.datosPersonales.lugarExpedicionDocumento =
+      cliente.lugarExpedicionDocumento;
   }
-
 
   back() {
     if (!this.first) {
-      this.page--
+      this.page--;
       this.listarClientes();
-        this.proSubscription = this.clienteService.proSubject.subscribe(
-          (con: boolean) => {
-            this.isCon = con;
-            this.cont = this.cont - this.size;
-            this.proSubscription.unsubscribe()
-          }
-        );
+      this.proSubscription = this.clienteService.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.cont - this.size;
+          this.proSubscription.unsubscribe();
+        }
+      );
     }
   }
 
   goToPage(page: number) {
-    this.page = page
-    this.listarClientes()
-      this.proSubscription = this.clienteService.proSubject.subscribe(
-        (con: boolean) => {
-          this.isCon = con;
-          this.cont = this.initialCon + (this.page * this.size);
-          this.proSubscription.unsubscribe()
-        }
-      );
+    this.page = page;
+    this.listarClientes();
+    this.proSubscription = this.clienteService.proSubject.subscribe(
+      (con: boolean) => {
+        this.isCon = con;
+        this.cont = this.initialCon + this.page * this.size;
+        this.proSubscription.unsubscribe();
+      }
+    );
   }
-
 
   next() {
     if (!this.last) {
-      this.page++
-      this.listarClientes()
-        this.proSubscription = this.clienteService.proSubject.subscribe(
-          (con: boolean) => {
-            this.isCon = con;
-            this.cont = this.cont + this.size;
-            this.proSubscription.unsubscribe()
-          }
-        );
-      
+      this.page++;
+      this.listarClientes();
+      this.proSubscription = this.clienteService.proSubject.subscribe(
+        (con: boolean) => {
+          this.isCon = con;
+          this.cont = this.cont + this.size;
+          this.proSubscription.unsubscribe();
+        }
+      );
     }
   }
-
 }
-
-
-
-
-
-

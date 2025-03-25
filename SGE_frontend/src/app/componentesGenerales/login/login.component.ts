@@ -13,19 +13,22 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-
   jwtRequest: JwtRequest = {
     username: '',
-    password: ''
-  }
+    password: '',
+  };
 
   //VARIABLE DEL SPINNER
-  inicioSesion: boolean = false
+  inicioSesion: boolean = false;
 
-  constructor(private router: Router, private authentication: AuthenticationService, private opcionesService: OpcionesService) { }
+  constructor(
+    private router: Router,
+    private authentication: AuthenticationService,
+    private opcionesService: OpcionesService
+  ) {}
 
   ngOnInit(): void {
     anime({
@@ -37,38 +40,55 @@ export class LoginComponent implements OnInit {
 
   public iniciarSesion(): void {
     if (this.jwtRequest.username == '' || this.jwtRequest.password == '') {
-      Swal.fire("Error", "Error, Datos Incorrectos", "error");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Datos incorrectos!',
+        iconColor: '#d40000',
+        confirmButtonColor: '#d40000',
+        customClass: {
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
+        },
+      });
     } else {
-      const login = new Login(this.jwtRequest.username, this.jwtRequest.password);
-      this.inicioSesion = true
+      const login = new Login(
+        this.jwtRequest.username,
+        this.jwtRequest.password
+      );
+      this.inicioSesion = true;
       setTimeout(() => {
         this.authentication.authentication(login).subscribe(
           (data: any) => {
             Swal.fire({
               position: 'top-end',
               icon: 'success',
-              title: 'Inicio Sesion Exitoso',
+              title: 'Inicio sesion exitoso',
               showConfirmButton: false,
-              timer: 2000
-            })
-            this.authentication.setTokenLocalStorage(data.token)
-            this.authentication.setUsernameLocalStorage(data.username)
-            this.authentication.setRolesLocalStorage(data.roles)
-            this.authentication.setSede(data.sede)
-            this.opcionesService.setUpdate(data.isUpdateable)
-            this.authentication.setFecha(data.ultimaSesion)
-            this.router.navigate(['opciones'])
-            this.inicioSesion = false
+              timer: 2000,
+              customClass: {
+                popup: 'rounded-4',
+                confirmButton: 'text-white btn border-0 rounded-pill px-4',
+              },
+            });
+            this.authentication.setTokenLocalStorage(data.token);
+            this.authentication.setUsernameLocalStorage(data.username);
+            this.authentication.setRolesLocalStorage(data.roles);
+            this.authentication.setSede(data.sede);
+            this.opcionesService.setUpdate(data.isUpdateable);
+            this.authentication.setFecha(data.ultimaSesion);
+            this.router.navigate(['opciones']);
+            this.inicioSesion = false;
           },
           (error: any) => {
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
               text: 'Datos Incorrectos!',
-            })
-            this.inicioSesion = false
+            });
+            this.inicioSesion = false;
           }
-        )
+        );
       }, 2000);
     }
   }
