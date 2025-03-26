@@ -1490,8 +1490,12 @@ export class HomeCarteraComponent implements OnInit {
               (data: any) => {
                 this.getGestiones(this.newGestion.numeroObligacion);
                 this.goToPage(this.page);
-                if (!this.filtroAgain) {
+                if (this.acuerdosVencidos) {
+                  this.getAcuerdosPagosVencidos();
+
+                } else if (!this.filtroAgain) {
                   this.getNotificaciones();
+
                 } else {
                   this.filtro();
                   this.getNotiAllBySede();
@@ -1590,8 +1594,13 @@ export class HomeCarteraComponent implements OnInit {
                 this.getGestiones(this.newGestion.numeroObligacion);
                 this.goToPage(this.page);
                 this.getNotificaciones();
-                if (!this.filtroAgain) {
+
+                if (this.acuerdosVencidos) {
+                  this.getAcuerdosPagosVencidos();
+
+                } else if (!this.filtroAgain) {
                   this.getCuentasCobrar();
+
                 } else {
                   this.filtro();
                 }
@@ -2281,9 +2290,8 @@ export class HomeCarteraComponent implements OnInit {
     const day = fecha.getDate();
 
     // Formatea la fecha como YYYY-MM-DD
-    const fechaFormateada = `${year}-${month < 10 ? '0' : ''}${month}-${
-      day < 10 ? '0' : ''
-    }${day}`;
+    const fechaFormateada = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''
+      }${day}`;
 
     return fechaFormateada;
   }
@@ -2358,7 +2366,7 @@ export class HomeCarteraComponent implements OnInit {
 
     if (
       this.cuentaCobrarSelected.clasificacionJuridica ==
-        CLASIFICACION_JURIDICA.Prejuridico &&
+      CLASIFICACION_JURIDICA.Prejuridico &&
       !this.interesesModifides
     ) {
       this.calcularHonorarios();
@@ -3857,7 +3865,7 @@ export class HomeCarteraComponent implements OnInit {
           showConfirmButton: false,
         });
       })
-      .catch(function (err) {});
+      .catch(function (err) { });
   }
 
   validarPermisoEnRolCartera(permiso: string, rolesCartera: any) {
@@ -4275,6 +4283,16 @@ export class HomeCarteraComponent implements OnInit {
   }
 
   getAcuerdosPagosVencidos() {
+    var tr;
+    var td: HTMLElement | null;
+    var contenido: any;
+    var partesMes;
+    var mesTd;
+    var anioTd;
+
+    const mesActual = new Date().getMonth() + 1;
+    const anioActual = new Date().getFullYear();
+
     var user = this.authService.getUsername();
     if (user == null || user == undefined) {
       return;
@@ -4297,7 +4315,32 @@ export class HomeCarteraComponent implements OnInit {
           this.first = data.first;
           this.numeroPages = data.totalPages;
           this.cuentasCobrar.proSubject.next(true);
-          console.log(this.cuentasCobrar.proSubject);
+
+          if (this.cuentasCobrarArray.length == 0) {
+            this.spinner = true;
+          } else {
+            this.spinner = false;
+            setTimeout(() => {
+              for (let i = 0; i < this.size; i++) {
+                tr = document.getElementById(`tr_${i}`);
+                td = document.getElementById(`td_${i}`);
+
+                if ((tr != null && tr != undefined) || (td != null && td != undefined)) {
+                  contenido = td!.textContent;
+
+                  partesMes = contenido.split('/');
+
+                  mesTd = parseInt(partesMes[1], 10);
+                  anioTd = parseInt(partesMes[2], 10);
+
+                  if (mesTd == mesActual && anioTd == anioActual) {
+                    tr!.classList.add('gestionado');
+                    td!.classList.add('gestionadoLetra');
+                  }
+                }
+              }
+            }, 100);
+          }
 
           console.log(data);
           console.log(this.numeroPages);
@@ -6104,9 +6147,8 @@ export class HomeCarteraComponent implements OnInit {
   formatFechaDesdeBackend(fecha: Date): string {
     const date = new Date(fecha);
 
-    return `${date.getUTCDate()}/${date.getUTCMonth()}/${date.getUTCFullYear()} ${
-      date.getUTCHours() + 5
-    }:${date.getUTCMinutes()}:${date.getUTCSeconds()}`;
+    return `${date.getUTCDate()}/${date.getUTCMonth()}/${date.getUTCFullYear()} ${date.getUTCHours() + 5
+      }:${date.getUTCMinutes()}:${date.getUTCSeconds()}`;
   }
 
   abrirModalBuscar() {
