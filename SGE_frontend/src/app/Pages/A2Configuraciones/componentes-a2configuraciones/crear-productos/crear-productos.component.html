@@ -1,5 +1,5 @@
 <div
-  class="cardStyle container d-flex flex-column justify-content-center w-50 px-5 py-3 mb-5"
+  class="cardStyle container d-flex flex-column justify-content-center w-50 px-5 py-3 mb-5 mt-5"
 >
   <h2 class="text-center">Agregar producto</h2>
   <hr class="border-4" />
@@ -11,13 +11,13 @@
     <div class="row align-items-center">
       <div class="col-md-12 col-12">
         <div
-          class="form-control d-flex justify-content-center align-items-center"
+          class="form-control d-flex justify-content-center align-items-center mb-2"
         >
           <i class="fa-solid fa-pen"></i>
           <textarea
             [(ngModel)]="producto.descripcion"
             placeholder="Descripción del producto"
-            class="text-center w-75"
+            class="text-center w-75 py-2"
             type="text"
             rows="1"
             name="descripcion"
@@ -25,13 +25,13 @@
         </div>
       </div>
 
-      <div class="col-md-12 col-12 gap-3 d-flex justify-content-between">
+      <div class="col-md-12 col-12 gap-3 d-flex justify-content-between mb-2">
         <div class="form-control d-flex justify-content-center w-50">
           <i class="fa-solid fa-rotate-270 fa-tag my-auto"></i>
           <input
             [(ngModel)]="producto.codigo"
             name="marca"
-            class="w-50 text-center"
+            class="w-75 text-center py-2 my-auto"
             type="text"
             placeholder="Código"
           />
@@ -42,12 +42,17 @@
           <select
             name="idCategoriaProducto"
             [(ngModel)]="producto.idCategoriaProducto"
-            class="w-75 text-center text-secondary"
+            class="w-75 text-center text-secondary py-2 my-auto"
             [ngClass]="
               producto.idCategoriaProducto == 0 ? 'text-secondary' : 'text-dark'
             "
           >
-            <option class="text-secondary text-center" disabled value="0">
+            <option
+              class="text-secondary text-center"
+              disabled
+              selected
+              [value]=""
+            >
               Seleccionar producto
             </option>
             <option
@@ -60,18 +65,23 @@
         </div>
       </div>
 
-      <div class="col-md-12 col-12">
+      <div class="col-md-12 col-12 mb-2">
         <div class="form-control d-flex justify-content-center">
           <i class="fa-solid fa-person my-auto"></i>
           <select
             name="vendedorFijo"
             [(ngModel)]="producto.vendedorFijo"
-            class="w-75 text-center text-secondary"
+            class="w-75 text-center text-secondary py-2"
             [ngClass]="
-              +producto.vendedorFijo == 0 ? 'text-secondary' : 'text-dark'
+              +producto.vendedorFijo === 0 ? 'text-secondary' : 'text-dark'
             "
           >
-            <option class="text-secondary text-center" disabled value="">
+            <option
+              class="text-secondary text-center"
+              disabled
+              selected
+              value=""
+            >
               Seleccionar vendedor
             </option>
             <option
@@ -87,13 +97,16 @@
 
     <div class="d-flex">
       <button
-        class="btn mx-auto w-25 btn-dark rounded-pill b"
+        class="btn ms-auto me-2 w-auto btn-dark rounded-pill b"
         (click)="onVolver()"
       >
         Cancelar
       </button>
 
-      <button type="submit" class="btn mx-auto w-25 btn-dark rounded-pill b">
+      <button
+        type="submit"
+        class="btn me-auto ms-2 w-auto btn-dark rounded-pill b"
+      >
         Crear
       </button>
     </div>

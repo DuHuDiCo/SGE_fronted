@@ -1,5 +1,5 @@
 <div
-  class="cardStyle container d-flex flex-column justify-content-center w-50 px-5 py-3 mb-5"
+  class="cardStyle container d-flex flex-column justify-content-center w-50 px-5 py-3 mb-5 mt-5"
 >
   <h2 class="text-center">Crear vendedor</h2>
   <hr class="border-4" />
@@ -10,12 +10,12 @@
   >
     <div class="row align-items-center">
       <div class="col-md-12 col-12">
-        <div class="d-flex form-control justify-content-center">
+        <div class="d-flex form-control mb-3 justify-content-center">
           <i class="fa-solid fa-user my-auto"></i>
           <input
             [(ngModel)]="vendedor.nombreVendedor"
             name="nombreVendedor"
-            class="text-center w-75"
+            class="text-center w-75 py-2"
             type="text"
             placeholder="Nombre del vendedor"
           />
@@ -23,12 +23,12 @@
       </div>
 
       <div class="col-md-12 col-12">
-        <div class="d-flex form-control justify-content-center">
+        <div class="d-flex form-control mb-2 justify-content-center">
           <i class="fa-solid fa-briefcase my-auto"></i>
           <select
             name="idZona"
             [(ngModel)]="vendedor.idZona"
-            class="w-75 text-center text-secondary"
+            class="w-75 text-center text-secondary py-2"
             [ngClass]="vendedor.idZona == 0 ? 'text-secondary' : 'text-dark'"
             required
           >
@@ -43,15 +43,18 @@
       </div>
     </div>
 
-    <div class="d-flex">
+    <div class="d-flex mb-2">
       <button
-        class="btn mx-auto w-25 btn-dark rounded-pill b"
+        class="btn ms-auto me-2 w-auto btn-dark rounded-pill b"
         (click)="onVolver()"
       >
         Cancelar
       </button>
 
-      <button type="submit" class="btn mx-auto w-25 btn-dark rounded-pill b">
+      <button
+        type="submit"
+        class="btn me-auto w-auto ms-2 btn-dark rounded-pill b"
+      >
         Crear
       </button>
     </div>
