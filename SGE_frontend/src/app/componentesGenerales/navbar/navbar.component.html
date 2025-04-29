@@ -1,61 +1,83 @@
 <div class="row d-md-block">
-    <!-- Original Navbar (always visible) -->
-    <nav class="navbar navbar-expand-lg d nav">
-        <div class="container-fluid">
-            <div class="d-flex align-items-center"> <!-- Contenedor para elementos visibles en pantallas grandes -->
-                <button class="btn me-3" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasWithBackdrop" aria-controls="offcanvasWithBackdrop"><i
-                        class="fa-solid fa-bars" style="height: 40px;width: 30px;color: black;"></i></button>
-                <a [routerLink]="'/opciones'">
-                    <img src="../../../assets/H_electro.svg" alt="" srcset="" width="180px" height="170px"
-                        class="d-none d-lg-block ms-5 me-5">
-                    <!-- La imagen solo se muestra en pantallas grandes (lg o mayores) -->
+    <!-- Añadido mb-4 para margen inferior -->
+    <!-- Navbar mejorado -->
+    <nav class="navbar navbar-expand-lg nav-bar-custom shadow-sm border-bottom border-2 border-gray">
+        <div class="container-fluid d-flex align-items-center justify-content-between py-2">
+            <div class="d-flex align-items-center">
+                <!-- Botón de menú -->
+                <button class="btn btn-menu me-2 me-lg-3" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasWithBackdrop" aria-controls="offcanvasWithBackdrop"
+                    aria-label="Abrir menú">
+                    <i class="fas fa-bars fa-lg"></i>
+                </button>
+
+                <a routerLink="/opciones" class="d-none d-lg-block logo-link">
+                    <img src="../../../assets/H_electro.svg" alt="Logo" class="logo-img"
+                        style="height: 70px; width: auto" />
                 </a>
+            </div>
 
-                <form class="d-none d-md-flex ms-auto flex-grow-1"> <!-- Agregamos la clase flex-grow-1 -->
-                    <input type="search" class="search form-control me-5" placeholder="Buscar">
-                </form>
-
-                <!-- Notificaciones -->
-                <div class="dropdown ms-3 flex-shrink-0"> <!-- Agregamos la clase flex-shrink-0 -->
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <i class="fa-solid fa-bell noti" style="height: 40px; width: 20px;"></i>
+            <div class="d-flex align-items-center">
+                <!-- Notificaciones con icono rojo vino -->
+                <div class="dropdown notification-dropdown me-2 me-lg-3">
+                    <a class="nav-link dropdown-toggle notification-btn p-2 rounded-circle" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell fa-lg position-relative notification-icon">
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill notification-badge">
+                                3
+                            </span>
+                        </i>
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <ul class="dropdown-menu dropdown-menu-end notification-menu">
                         <li>
-                            <hr class="dropdown-divider">
+                            <h6 class="dropdown-header notification-header">
+                                Notificaciones (3)
+                            </h6>
                         </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li>
+                            <a class="dropdown-item notification-item" href="#">Nuevo mensaje recibido</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item notification-item" href="#">Actualización del sistema</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider" />
+                        </li>
+                        <li>
+                            <a class="dropdown-item notification-view-all" href="#">Ver todas</a>
+                        </li>
                     </ul>
                 </div>
 
                 <!-- Perfil -->
-                <div class="dropdown ms-3 flex-shrink-0"> <!-- Agregamos la clase flex-shrink-0 -->
-                    <a class="nav-link dropdown-toggle option " href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <i class="fas fa-user-alt" id="persona"></i>
+                <div class="dropdown profile-dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center p-2" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="avatar-circle me-2">
+                            <i class="fas fa-user-alt"></i>
+                        </div>
+                        <span class="d-none d-lg-inline username">Usuario</span>
                     </a>
-
-                    <ul class="dropdown-menu p-user ">
-                        <li><a class="dropdown-item hover-lista" [routerLink]="'/perfil'"><i
-                                    class="fa-regular fa-user"></i>&nbsp; Perfil</a></li>
-                        <li><a class="dropdown-item hover-lista"
-                                [routerLink]="'/dashboard-perfil/configuracion-perfil'"><i
-                                    class="fa-solid fa-lock"></i>&nbsp; Seguridad</a></li>
+                    <ul class="dropdown-menu dropdown-menu-end profile-menu">
                         <li>
-                            <hr class="dropdown-divider">
+                            <a class="dropdown-item" routerLink="/perfil">
+                                <i class="far fa-user me-2"></i> Perfil</a>
                         </li>
-
-
-                        <li><a class="dropdown-item hover-lista" (click)="logout()"><i
-                                    class="fa-solid fa-arrow-right-from-bracket"></i>&nbsp; Salir</a></li>
+                        <li>
+                            <a class="dropdown-item" routerLink="/dashboard-perfil/configuracion-perfil">
+                                <i class="fas fa-lock me-2"></i> Seguridad</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider" />
+                        </li>
+                        <li>
+                            <a class="dropdown-item cerrar-sesion" (click)="logout()">
+                                <i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
     </nav>
-    <br>
 </div>
