@@ -351,17 +351,13 @@ export class ConsultasComponent implements OnInit {
 
   //OBTENER EL ROL Y PERMISO DEL USUARIO
   getRoles() {
-
     var roles = this.authService.getRolesP()
-
-
     var permiso: any = {}
     permiso = roles.permisos.find((pe: any) => pe.permiso.startsWith('CONSULTAR'))
 
     var arrayP = permiso.permiso.split(" ")
     var p = arrayP[1].substring(0, arrayP[1].length - 1)
     this.estadoConsignacion = p
-
 
     this.getConsignaciones(p)
   }
@@ -404,9 +400,6 @@ export class ConsultasComponent implements OnInit {
               if (consi == null || consi == undefined) {
                 this.cambioArray.push(guardarArray)
               }
-
-
-
               setTimeout(() => {
                 if (e.isSelecetedEstado.startsWith('DEVUELTA')) {
                   this.cambiarDevolver(e.idConsignacion, index, 'DESACTIVAR', 'DEVOLVER CAJA')
@@ -419,8 +412,6 @@ export class ConsultasComponent implements OnInit {
                   this.cambios = false
                 }
               }, 100);
-
-
             }
           });
 
@@ -436,8 +427,6 @@ export class ConsultasComponent implements OnInit {
             Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
             return
           }
-
-
           this.botones = new Array<boolean>(this.con.length).fill(false)
         }, (error: any) => {
 
@@ -488,8 +477,6 @@ export class ConsultasComponent implements OnInit {
                   this.cambios = false
                 }
               }, 100);
-
-
             }
           });
 
@@ -2076,8 +2063,6 @@ export class ConsultasComponent implements OnInit {
 
   agregarArrayActualizacion(id: number) {
     var actu = this.idActualizaciones.find(idActu => idActu == id)
-
-
     if (actu == null || actu == undefined) {
       this.idActualizaciones.push(id)
     } else {
@@ -2087,8 +2072,6 @@ export class ConsultasComponent implements OnInit {
         this.idActualizaciones.splice(position, 1);
       }
     }
-
-
   }
 
   eliminarActualizaciones(idConsig: number) {
@@ -2149,5 +2132,4 @@ export class ConsultasComponent implements OnInit {
 
 
   }
-
 }
