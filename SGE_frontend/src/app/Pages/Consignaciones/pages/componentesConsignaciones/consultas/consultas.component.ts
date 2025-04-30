@@ -2136,8 +2136,6 @@ export class ConsultasComponent implements OnInit {
                 timer: 3000
               })
               window.location.reload()
-
-
             }, (error: any) => {
               console.log(error);
 
