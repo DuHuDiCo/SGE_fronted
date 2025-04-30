@@ -13,14 +13,15 @@
     color: #D60303;
 }
 
-.c{
+.c {
     border-radius: 25px;
     text-align: center;
     margin: 15px auto;
     padding: 10px;
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
-.was-validated{
+
+.was-validated {
     text-align: center;
     color: #000;
     width: 300px auto;
@@ -39,12 +40,13 @@
     justify-content: center;
 }
 
-#contenedor1.row{
+#contenedor1.row {
     margin: 0;
     padding: 0;
 }
 
-.usuario,.file{
+.usuario,
+.file {
     border-radius: 25px;
     text-align: center;
     width: 100%;
@@ -54,7 +56,7 @@
 
 }
 
-.file{
+.file {
     border-radius: 25px;
     text-align: center;
     width: 90%;
@@ -62,7 +64,7 @@
     background: #ecf0f3;
 }
 
-.form-select{
+.form-select {
     border-radius: 25px;
     text-align: center;
     margin: 15px auto;
@@ -70,7 +72,7 @@
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 
-.form-control{
+.form-control {
     border-radius: 25px;
     text-align: center;
     margin: 15px auto;
@@ -78,7 +80,7 @@
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
 }
 
-.input-usuario{
+.input-usuario {
     border: none;
     text-align: center;
     outline: none;
@@ -88,13 +90,13 @@
     border-bottom: 10px;
 }
 
-.form-select{
+.form-select {
     border: none;
     outline: none;
 
 }
 
-.guardar{
+.guardar {
     display: block;
     object-fit: cover;
     margin: 15px auto;
@@ -113,15 +115,15 @@
     box-shadow: 2px 2px 2px #707274, -2px 0px 2px 0px #707274;
 }
 
-.guardar:hover{
-    background: #D60303 ;
+.guardar:hover {
+    background: #D60303;
 }
 
 .input-usuario2 {
     color: #000000;
     padding: 8px 12px;
     border-radius: 4px;
-    
+
 }
 
 @media (max-width: 576px) {
