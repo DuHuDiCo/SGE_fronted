@@ -493,11 +493,7 @@ export class ConsultasComponent implements OnInit {
             Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
             return
           }
-
-
-        }, (error: any) => {
-
-        }
+        }, (error: any) => { }
       )
     }
 
