@@ -10,383 +10,346 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-roles-usuarios',
   templateUrl: './roles-usuarios.component.html',
-  styleUrls: ['./roles-usuarios.component.css']
+  styleUrls: ['./roles-usuarios.component.css'],
 })
 export class RolesUsuariosComponent implements OnInit {
-
-  constructor(private userAgService: UsuarioAgService, private authService: AuthenticationService, private router: Router, private userService: BuscarUsuariosService) { }
+  constructor(
+    private userAgService: UsuarioAgService,
+    private authService: AuthenticationService,
+    private router: Router,
+    private userService: BuscarUsuariosService
+  ) {}
 
   rolePermissionsVisibility: { [role: string]: boolean } = {};
   selectedRolePermissions: { [role: string]: string[] } = {};
 
-  selectedRole: number[] = []
-  selectedPermisos: number[] = []
+  selectedRole: number[] = [];
+  selectedPermisos: number[] = [];
 
   usuario: any = {
-    "usuario": {},
-    "roles": []
-  }
+    usuario: {},
+    roles: [],
+  };
 
-  check: any[] = []
+  check: any[] = [];
 
   permisosUsuarios = {
     idRole: '',
-    Permissions: ''
-  }
+    Permissions: '',
+  };
 
-  IterarRol: Roles[] = []
+  IterarRol: Roles[] = [];
 
   role: RolesUser = {
-    rol: "",
-    permisos: []
-  }
+    rol: '',
+    permisos: [],
+  };
 
   usuarios: Usuario = {
-    username: "",
-    email: "",
-    password: "",
-    nombres: "",
-    apellidos: "",
-    tipo_documento: "",
-    numero_documento: "",
-    celular: "",
+    username: '',
+    email: '',
+    password: '',
+    nombres: '',
+    apellidos: '',
+    tipo_documento: '',
+    numero_documento: '',
+    celular: '',
     fecha_nacimiento: new Date(),
-    sede: "",
-    roles: []
-  }
+    sede: '',
+    roles: [],
+  };
 
   roles: RolesUser = {
-    rol: "",
-    permisos: []
-  }
+    rol: '',
+    permisos: [],
+  };
 
   ngOnInit(): void {
-    this.usuario.usuario = this.userAgService.getUsuario()
+    this.usuario.usuario = this.userAgService.getUsuario();
     // if(this.usuario.usuario.username == null || this.usuario.usuario.username == ""){
     //   this.router.navigate(['/dashboard-admin-general/crear-usuario'])
     // }
 
     var user = this.userService.getUsuarioGeneral();
-    
-    
-    if(Object.keys(user).length != 0){
-      
-     
+
+    if (Object.keys(user).length != 0) {
       this.obtenerRolesYPermisos(user);
     }
-    
 
     this.userAgService.listarRoles().subscribe(
       (data: any) => {
         this.IterarRol = data;
-        
-        
       },
-      (error) => {
-        
-      }
-    )
-
-
+      (error) => {}
+    );
   }
 
   activarRol(rol: number) {
-  
+    console.log(this.selectedRole);
+
     if (this.selectedRole.includes(rol)) {
-      var position = this.selectedRole.indexOf(rol)
-      this.selectedRole.splice(position, 1)
-      this.usuario.roles = this.usuario.roles.filter((r: any) => r.id != rol)
+      var position = this.selectedRole.indexOf(rol);
+      this.selectedRole.splice(position, 1);
+      this.usuario.roles = this.usuario.roles.filter((r: any) => r.id != rol);
     } else {
-      this.check = []
-      this.selectedRole.push(rol)
+      this.check = [];
+      this.selectedRole.push(rol);
     }
   }
 
   seleccionarAllRoles(rol: number) {
-
-    const role = this.IterarRol.find((r: any) => r.idRole == rol)
+    const role = this.IterarRol.find((r: any) => r.idRole == rol);
     if (role != null) {
-
       if (this.selectedPermisos.length > 0) {
-
-        var newPermisos: any = []
+        var newPermisos: any = [];
 
         role.permissions.forEach((element: any) => {
-          var position = this.selectedPermisos.indexOf(element.idPermission)
+          var position = this.selectedPermisos.indexOf(element.idPermission);
           if (element.idPermission == this.selectedPermisos[position]) {
-            newPermisos.push(element.idPermission)
+            newPermisos.push(element.idPermission);
           }
         });
 
-        
-
         if (newPermisos.length == role.permissions.length) {
           newPermisos.forEach((x: any) => {
-            var position = this.selectedPermisos.indexOf(x)
-            this.selectedPermisos.splice(position, 1)
+            var position = this.selectedPermisos.indexOf(x);
+            this.selectedPermisos.splice(position, 1);
           });
 
           this.usuario.roles.forEach((r: any) => {
             if (r.id == rol) {
-              r.permisos = []
+              r.permisos = [];
             }
           });
 
-          var check = document.getElementById('check' + rol)
+          var check = document.getElementById('check' + rol);
 
-
-          check?.removeAttribute("checked")
+          check?.removeAttribute('checked');
         } else {
-
           if (this.usuario.roles.some((r: any) => r.id == rol)) {
+            var find = this.usuario.roles.find((r: any) => r.id == rol);
+            find.permisos = [];
 
-            var find = this.usuario.roles.find((r: any) => r.id == rol)
-            find.permisos = []
-
-            role.permissions.forEach(element => {
-
+            role.permissions.forEach((element) => {
               if (!this.selectedPermisos.includes(element.idPermission)) {
-                this.selectedPermisos.push(element.idPermission)
+                this.selectedPermisos.push(element.idPermission);
               }
-              find.permisos.push(element.idPermission)
+              find.permisos.push(element.idPermission);
             });
 
-            var check = document.getElementById('check' + rol)
+            var check = document.getElementById('check' + rol);
 
-            check?.setAttribute('checked', "true")
-
-
+            check?.setAttribute('checked', 'true');
           } else {
             var rDto = {
-              "id": rol,
-              "permisos": []
-            }
+              id: rol,
+              permisos: [],
+            };
 
-            this.usuario.roles.push(rDto)
-            var rolesNoinclu: any = []
+            this.usuario.roles.push(rDto);
+            var rolesNoinclu: any = [];
 
             role.permissions.forEach((p: any) => {
-
-
               if (!this.selectedPermisos.includes(p.idPermission)) {
-                this.selectedPermisos.push(p.idPermission)
+                this.selectedPermisos.push(p.idPermission);
 
-                rolesNoinclu.push(p.idPermission)
-
+                rolesNoinclu.push(p.idPermission);
               }
-            })
-
-            
+            });
 
             this.usuario.roles.forEach((r: any) => {
-
               if (r.id == rol) {
                 rolesNoinclu.forEach((p: any) => {
-                  r.permisos.push(p)
+                  r.permisos.push(p);
                 });
               }
             });
-            this.selectedPermisos.forEach(element => {
-              this.check.push(element)
+            this.selectedPermisos.forEach((element) => {
+              this.check.push(element);
             });
-            var check = document.getElementById('check' + rol)
+            var check = document.getElementById('check' + rol);
 
-            check?.setAttribute('checked', "true")
+            check?.setAttribute('checked', 'true');
           }
         }
       } else {
+        var check = document.getElementById('check' + rol);
 
-        var check = document.getElementById('check' + rol)
+        check?.setAttribute('checked', 'true');
 
-        check?.setAttribute('checked', "true")
-
-        var vali = this.usuario.roles.find((r: any) => r.id == rol)
+        var vali = this.usuario.roles.find((r: any) => r.id == rol);
 
         if (vali != null || vali != undefined) {
           if (vali.permisos.length > 0) {
-
             vali.permisos.forEach((p: any) => {
               if (this.selectedPermisos.includes(p)) {
-                var position = this.selectedPermisos.indexOf(p)
-                this.selectedPermisos.splice(position, 1)
+                var position = this.selectedPermisos.indexOf(p);
+                this.selectedPermisos.splice(position, 1);
               }
             });
 
-            vali.permisos = []
-
+            vali.permisos = [];
           } else {
-            role.permissions.forEach(element => {
-              this.selectedPermisos.push(element.idPermission)
-              this.check.push(element.idPermission)
+            role.permissions.forEach((element) => {
+              this.selectedPermisos.push(element.idPermission);
+              this.check.push(element.idPermission);
             });
 
-            vali.permisos = role.permissions
-
+            vali.permisos = role.permissions;
           }
         } else {
-
-          var roles: any = []
+          var roles: any = [];
 
           role.permissions.forEach((p: any) => {
-            this.selectedPermisos.push(p.idPermission)
-            roles.push(p.idPermission)
-            this.check.push(p.idPermission)
+            this.selectedPermisos.push(p.idPermission);
+            roles.push(p.idPermission);
+            this.check.push(p.idPermission);
           });
 
           var roleDto = {
-            "id": rol,
-            "permisos": roles
-          }
+            id: rol,
+            permisos: roles,
+          };
 
-          this.usuario.roles.push(roleDto)
-
+          this.usuario.roles.push(roleDto);
         }
       }
     }
-
-    
   }
 
   selecionarPermiso(permiso: number, rol: number) {
-    const role = this.IterarRol.find((r: any) => r.idRole == rol)
+    const role = this.IterarRol.find((r: any) => r.idRole == rol);
 
     if (role != null || role != undefined) {
-      const vali = this.usuario.roles.find((r: any) => r.id == rol)
+      const vali = this.usuario.roles.find((r: any) => r.id == rol);
 
       if (vali != null || vali != undefined) {
         if (this.selectedPermisos.includes(permiso)) {
-          var position = this.selectedPermisos.indexOf(permiso)
-          this.selectedPermisos.splice(position, 1)
+          var position = this.selectedPermisos.indexOf(permiso);
+          this.selectedPermisos.splice(position, 1);
 
           this.usuario.roles.forEach((r: any) => {
             if (r.id == rol) {
-              var position = r.permisos.indexOf(permiso)
-              r.permisos.splice(position, 1)
+              var position = r.permisos.indexOf(permiso);
+              r.permisos.splice(position, 1);
             }
 
             if (r.permisos.length != role.permissions.length) {
-
-              var check = document.getElementById('check' + rol)
-              check?.removeAttribute("checked")
+              var check = document.getElementById('check' + rol);
+              check?.removeAttribute('checked');
             }
           });
-
         } else {
-          this.selectedPermisos.push(permiso)
-          
+          this.selectedPermisos.push(permiso);
 
           this.usuario.roles.forEach((r: any) => {
-
             if (r.id == rol) {
-
-              r.permisos.push(permiso)
+              r.permisos.push(permiso);
             }
 
             if (r.permisos.length == role.permissions.length) {
-              var check = document.getElementById('check' + rol)
-              check?.setAttribute("checked", "true");
+              var check = document.getElementById('check' + rol);
+              check?.setAttribute('checked', 'true');
             }
           });
-          this.check.push(permiso)
+          this.check.push(permiso);
         }
       } else {
-
         if (this.selectedPermisos.includes(permiso)) {
-          var position = this.selectedPermisos.indexOf(permiso)
-          this.selectedPermisos.splice(position, 1)
-
+          var position = this.selectedPermisos.indexOf(permiso);
+          this.selectedPermisos.splice(position, 1);
         } else {
-          this.selectedPermisos.push(permiso)
+          this.selectedPermisos.push(permiso);
 
           var rolDto: any = {
-            "id": rol,
-            "permisos": []
-          }
+            id: rol,
+            permisos: [],
+          };
 
-          role.permissions.forEach(element => {
+          role.permissions.forEach((element) => {
             if (this.selectedPermisos.includes(element.idPermission)) {
-              rolDto.permisos.push(element.idPermission)
+              rolDto.permisos.push(element.idPermission);
             }
           });
 
           this.usuario.roles.forEach((r: any) => {
             if (r.id == rol) {
               if (r.permisos.length == role.permissions.length) {
-
-                var check = document.getElementById('check' + rol)
-                check?.setAttribute("checked", "true");
+                var check = document.getElementById('check' + rol);
+                check?.setAttribute('checked', 'true');
               }
             }
           });
 
-          this.usuario.roles.push(rolDto)
-          
-          this.check.push(permiso)
-        }
+          this.usuario.roles.push(rolDto);
 
+          this.check.push(permiso);
+        }
       }
     }
   }
 
   guardarUsuario() {
-
     let username = this.authService.getUsername();
 
     if (username != null || username != undefined) {
-      
-      
-
       this.userAgService.crearUsuario(this.usuario, username).subscribe(
         (data: any) => {
-          Swal.fire('GUARDADO', 'El usuario guardado', 'success');
+          Swal.fire({
+            icon: 'success',
+            title: 'Usuario creado',
+            text: 'El usuario ha sido creado exitosamente',
+            confirmButtonColor: '#960010',
+            customClass: {
+              popup: 'rounded-4',
+              confirmButton: 'text-white btn border-0 rounded-pill px-4',
+            },
+          });
           setTimeout(() => {
-            this.router.navigate(['/dashboard-admin-general/buscar-usuario'])
+            this.router.navigate(['/dashboard-admin-general/buscar-usuario']);
           }, 2000);
-          
-
         },
         (error: any) => {
-          
-          Swal.fire('ERROR', 'Error Guardar Usuario', 'error')
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al crear el usuario',
+            iconColor: '#960010',
+            confirmButtonColor: '#960010',
+            customClass: {
+              popup: 'rounded-4',
+              confirmButton: 'text-white btn border-0 rounded-pill px-4',
+            },
+          });
         }
-      )
+      );
     }
   }
 
-  contieneTodosValores(arrayPrincipal: any[], valoresAComprobar: any[]): boolean {
+  contieneTodosValores(
+    arrayPrincipal: any[],
+    valoresAComprobar: any[]
+  ): boolean {
     // Comprueba si cada valor en valoresAComprobar está presente en arrayPrincipal
-    return valoresAComprobar.every(valor => arrayPrincipal.some(valor));
+    return valoresAComprobar.every((valor) => arrayPrincipal.some(valor));
   }
 
-
-  obtenerRolesYPermisos(user:any) {
-   
-    this.usuario.usuario = user
-    
-
-    var rolDto: any = {
-      "id": "",
-      "permisos": []
-    }
+  obtenerRolesYPermisos(user: any) {
+    this.usuario.usuario = user;
 
     user.roles.forEach((r: any) => {
-      
-      
-      this.selectedRole.push(r.rolId)
-      rolDto.id = r.rolId
+      var rolDto: any = {
+        id: '',
+        permisos: [],
+      };
+
+      this.selectedRole.push(r.rolId);
+      rolDto.id = r.rolId;
       r.permisos.forEach((p: any) => {
-        this.selectedPermisos.push(p.permiso)
-        rolDto.permisos.push(p.permiso)
+        this.selectedPermisos.push(p.permiso);
+        rolDto.permisos.push(p.permiso);
       });
+      this.usuario.roles.push(rolDto);
     });
-
-
-    this.usuario.roles.push(rolDto)
-   
-    
-    
-   
-
   }
 }
-

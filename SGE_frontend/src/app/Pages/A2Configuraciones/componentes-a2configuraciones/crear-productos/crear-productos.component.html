@@ -1,0 +1,114 @@
+<div
+  class="cardStyle container d-flex flex-column justify-content-center w-50 px-5 py-3 mb-5 mt-5"
+>
+  <h2 class="text-center">Agregar producto</h2>
+  <hr class="border-4" />
+
+  <form
+    class="d-flex flex-column gap-2 w-75 mx-auto"
+    (ngSubmit)="onFormSubmit()"
+  >
+    <div class="row align-items-center">
+      <div class="col-md-12 col-12">
+        <div
+          class="form-control d-flex justify-content-center align-items-center mb-2"
+        >
+          <i class="fa-solid fa-pen"></i>
+          <textarea
+            [(ngModel)]="producto.descripcion"
+            placeholder="Descripción del producto"
+            class="text-center w-75 py-2"
+            type="text"
+            rows="1"
+            name="descripcion"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="col-md-12 col-12 gap-3 d-flex justify-content-between mb-2">
+        <div class="form-control d-flex justify-content-center w-50">
+          <i class="fa-solid fa-rotate-270 fa-tag my-auto"></i>
+          <input
+            [(ngModel)]="producto.codigo"
+            name="marca"
+            class="w-75 text-center py-2 my-auto"
+            type="text"
+            placeholder="Código"
+          />
+        </div>
+
+        <div class="form-control d-flex justify-content-center">
+          <i class="fa-solid fa-briefcase my-auto"></i>
+          <select
+            name="idCategoriaProducto"
+            [(ngModel)]="producto.idCategoriaProducto"
+            class="w-75 text-center text-secondary py-2 my-auto"
+            [ngClass]="
+              producto.idCategoriaProducto == 0 ? 'text-secondary' : 'text-dark'
+            "
+          >
+            <option
+              class="text-secondary text-center"
+              disabled
+              selected
+              [value]=""
+            >
+              Seleccionar producto
+            </option>
+            <option
+              *ngFor="let cProducto of categoriaProducto"
+              [value]="cProducto.idProducto"
+            >
+              {{ cProducto.descripcionProducto }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-12 col-12 mb-2">
+        <div class="form-control d-flex justify-content-center">
+          <i class="fa-solid fa-person my-auto"></i>
+          <select
+            name="vendedorFijo"
+            [(ngModel)]="producto.vendedorFijo"
+            class="w-75 text-center text-secondary py-2"
+            [ngClass]="
+              +producto.vendedorFijo === 0 ? 'text-secondary' : 'text-dark'
+            "
+          >
+            <option
+              class="text-secondary text-center"
+              disabled
+              selected
+              value=""
+            >
+              Seleccionar vendedor
+            </option>
+            <option
+              *ngFor="let vendedores of vendedoresFijos"
+              [value]="vendedores.idVendedor"
+            >
+              {{ vendedores.nombreVendedor }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex">
+      <button
+        class="btn ms-auto me-2 w-auto btn-dark rounded-pill b"
+        (click)="onVolver()"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        class="btn me-auto ms-2 w-auto btn-dark rounded-pill b"
+      >
+        Crear
+      </button>
+    </div>
+  </form>
+</div>

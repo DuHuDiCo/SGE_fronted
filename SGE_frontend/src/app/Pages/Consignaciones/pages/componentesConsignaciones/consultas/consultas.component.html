@@ -264,12 +264,11 @@
                   class="fa-solid fa-check"></i></button>
             </span>
             <span *appConsignacionesDirective="permisos[26]">
-              <button *ngIf="!botones[i]"
-                (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO', '')" class="b btn btn-sm ms-2"
-                id="btn_comprobar_consignaciones_x{{i}}" style="display: none;"><i
+              <button *ngIf="!botones[i]" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO', '')"
+                class="b btn btn-sm ms-2" id="btn_comprobar_consignaciones_x{{i}}" style="display: none;"><i
                   class="fa-solid fa-xmark"></i></button>
             </span>
-            
+
 
             <!-- APLICAR CONSIGNACIONES -->
             <span *appConsignacionesDirective="permisos[4]">
@@ -308,15 +307,14 @@
             <!-- CANCELAR CONSIGNACIONES -->
             <span *appConsignacionesDirective="permisos[26]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="cancelarConsignacion(c.idConsignacion, i, 'CANCELADO', '')"
-                class="btn btn-sm ms-2" id="btn_cancelar_{{i}}" style="background-color: #960010;">
+                (click)="cancelarConsignacion(c.idConsignacion, i, 'CANCELADO', '')" class="btn btn-sm ms-2"
+                id="btn_cancelar_{{i}}" style="background-color: #960010;">
                 <i class="fa-solid fa-rectangle-xmark" style="color: white;"></i></button>
             </span>
             <span *appConsignacionesDirective="permisos[26]">
               <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="cambiarDevolver(c.idConsignacion, i, 'ACTIVAR', '')"
-                class="b btn btn-sm ms-2" id="btn_cancelar_x{{i}}" style="display: none;"><i
-                  class="fa-solid fa-xmark"></i></button>
+                (click)="cambiarDevolver(c.idConsignacion, i, 'ACTIVAR', '')" class="b btn btn-sm ms-2"
+                id="btn_cancelar_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
             </span>
 
             <!-- DEVOLVER APLICADAS -->
@@ -338,7 +336,7 @@
       </tbody>
 
     </table>
-    
+
   </div>
   <nav aria-label="Page navigation example" *ngIf="numeroPages > 1" class="mt-2">
     <div class="row justify-content-center">
@@ -349,7 +347,7 @@
             <li class="page-item">
               <a class="page-link b" (click)="back()" style="cursor: pointer;">Anterior</a>
             </li>
-            
+
             <li class="page-item">
               <div class="btn-group">
                 <button type="button" class="page-link dropdown-toggle"
@@ -393,7 +391,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let a of actu.actualizaciones; let i = index">
-                <td *appRolesPerfiles="'ADMINSTRATION'"><input type="checkbox" class="form-check" *ngIf="a.estado.estado != 'PENDIENTE'" (click)="agregarArrayActualizacion(a.idActualizacion )"></td>
+                <td *appRolesPerfiles="'ADMINSTRATION'"><input type="checkbox" class="form-check"
+                    *ngIf="a.estado.estado != 'PENDIENTE'" (click)="agregarArrayActualizacion(a.idActualizacion )"></td>
                 <td scope="row">{{ i + 1 }}</td>
                 <td>{{ a.fechaActualizacion | date: 'dd/MM/yyyy' }} {{ a.fechaActualizacion | date: 'shortTime' }}</td>
                 <td>{{ a.estado.estado }}</td>
@@ -403,14 +402,17 @@
           </table>
         </div>
         <div class="modal-footer">
-          <span  *appRolesPerfiles="'ADMINSTRATION'">
-            <button  *ngIf="btnEliminar && !btnLoadingEliminar" (click)="eliminarActualizaciones(actu.idConsignacion)" class="btn btn-danger" style="background-color: #960010; border-color: #960010;"><i class="fas fa-trash"></i> Eliminar</button>
+          <span *appRolesPerfiles="'ADMINSTRATION'">
+            <button *ngIf="btnEliminar && !btnLoadingEliminar" (click)="eliminarActualizaciones(actu.idConsignacion)"
+              class="btn btn-danger" style="background-color: #960010; border-color: #960010;"><i
+                class="fas fa-trash"></i> Eliminar</button>
           </span>
           <button *ngIf="btnLoadingEliminar" type="button" class="btn btn-danger"
-          style="background-color: #960010;border-color: #960010;">
-          <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
-        </button>
-          <button type="button" (click)="idActualizaciones = []" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            style="background-color: #960010;border-color: #960010;">
+            <span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span>
+          </button>
+          <button type="button" (click)="idActualizaciones = []" class="btn btn-secondary"
+            data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
@@ -466,7 +468,7 @@
                 <th scope="col">Usuario</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="detalle.observaciones">
               <tr *ngFor="let d of detalle.observaciones; let i = index">
                 <th scope="row">{{ i + 1 }}</th>
                 <td>{{ d.detalle }}</td>
@@ -551,10 +553,10 @@
                           </label>
                         </div>
                       </td>
-                      <td>{{ cc.cliente.nombres }} {{ cc.cliente.apellidos }}</td>
+                      <td *ngIf="cc.cliente != null">{{ cc.cliente.nombres }} {{ cc.cliente.apellidos }}</td>
                       <td>{{ cc.capital }}</td>
                       <td>{{ cc.fechaObligacion | date: 'dd/MM/yyyy'}}</td>
-                      <td>{{ cc.sede.nombreSede }}</td>
+                      <td *ngIf="cc.sede != null">{{ cc.sede.nombreSede }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -572,8 +574,8 @@
               </div>
 
               <div class="usuario">
-                <select [(ngModel)]="modal.estado" name="estado"
-                  class="form-select" required aria-label="select example">
+                <select [(ngModel)]="modal.estado" name="estado" class="form-select" required
+                  aria-label="select example">
                   <option value="">Elija Un Estado</option>
                   <option value="PENDIENTE">PENDIENTE</option>
                   <option value="COMPROBADO">COMPROBADO</option>
@@ -615,8 +617,8 @@
             <span *appConsignacionesDirective="permisos[3]">
 
               <div class="usuario">
-                <select [(ngModel)]="cambiarEstado.estado" name="estado"
-                  class="form-select" required aria-label="select example">
+                <select [(ngModel)]="cambiarEstado.estado" name="estado" class="form-select" required
+                  aria-label="select example">
                   <option value="">Elija Un Estado</option>
                   <option value="DEVUELTA CONTABILIDAD">DEVUELTA CONTABILIDAD</option>
                   <option value="DEVUELTA CONCILIADO">DEVUELTA CONCILIADO</option>

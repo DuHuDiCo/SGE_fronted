@@ -9,68 +9,71 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-system-permisos',
   templateUrl: './system-permisos.component.html',
-  styleUrls: ['./system-permisos.component.css']
+  styleUrls: ['./system-permisos.component.css'],
 })
 export class SystemPermisosComponent implements OnInit {
-
   page: number = 1;
-  totalItems: number = 0
+  totalItems: number = 0;
 
-  permissions: Permission[] = []
+  permissions: Permission[] = [];
 
-  permisosAdded: string[] = []
+  permisosAdded: string[] = [];
   valid: boolean = false;
   rolesSaved: RolSystem[] = [];
-  roleId: number = 0
+  roleId: number = 0;
 
-
-  constructor(private permissionService: PermissionsSystemService, private systemRoles: RolesSystemService) { }
+  constructor(
+    private permissionService: PermissionsSystemService,
+    private systemRoles: RolesSystemService
+  ) {}
 
   ngOnInit(): void {
-    this.rolesSystem()
-    this.getAllPermissions()
-
+    this.rolesSystem();
+    this.getAllPermissions();
   }
 
   getAllPermissions() {
     this.permissionService.getAllPermissions().subscribe(
       (data: any) => {
         this.permissions = data.content;
-        
-
-      }, (error: any) => {
-        
-
-      }
-    )
+      },
+      (error: any) => {}
+    );
   }
 
   enviar(event: any): void {
-    var permiso = event.srcElement.value.toUpperCase()
+    var permiso = event.srcElement.value.toUpperCase();
 
     if (event.keyCode == 13) {
       if (permiso != '') {
         if (!this.permisosAdded.includes(permiso)) {
-          this.permisosAdded.push(permiso)
-          event.srcElement.value = ''
-          this.valid = false
+          this.permisosAdded.push(permiso);
+          event.srcElement.value = '';
+          this.valid = false;
         } else {
-          this.valid = true
+          this.valid = true;
         }
       }
-
     }
-
   }
 
   quitarPermiso(permiso: string) {
-    this.permisosAdded = this.permisosAdded.filter(p => p != permiso);
+    this.permisosAdded = this.permisosAdded.filter((p) => p != permiso);
   }
 
   eliminarPermiso(idPermission: number) {
-
     if (this.roleId == 0) {
-      Swal.fire('ERROR', 'Debe colocar un Rol', 'error');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe seleccionar un rol',
+        iconColor: '#960010',
+        confirmButtonColor: '#960010',
+        customClass: {
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
+        },
+      });
       return;
     }
 
@@ -82,22 +85,47 @@ export class SystemPermisosComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Eliminar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
+      customClass: {
+        popup: 'rounded-4',
+        confirmButton: 'text-white btn border-0 rounded-pill px-4',
+      },
     }).then((result) => {
       if (result.isConfirmed) {
-        var ids = []
-        ids.push(idPermission)
+        var ids = [];
+        ids.push(idPermission);
         this.permissionService.deletePermissions(this.roleId, ids).subscribe(
           (data) => {
-            this.permissions = this.permissions.filter((permissions) => permissions.idPermission != idPermission);
-            Swal.fire('Permiso Eliminado', 'El Permiso ha sido Eliminado Exitosamente', 'success')
+            this.permissions = this.permissions.filter(
+              (permissions) => permissions.idPermission != idPermission
+            );
+            Swal.fire({
+              icon: 'success',
+              title: 'Permiso Eliminado',
+              text: 'El Permiso ha sido eliminado exitosamente',
+              confirmButtonColor: '#960010',
+              customClass: {
+                popup: 'rounded-4',
+                confirmButton: 'text-white btn border-0 rounded-pill px-4',
+              },
+            });
           },
           (error) => {
-            Swal.fire('ERROR', 'Error al Eliminar el Permiso', 'error')
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error al eliminar el permiso',
+              iconColor: '#960010',
+              confirmButtonColor: '#960010',
+              customClass: {
+                popup: 'rounded-4',
+                confirmButton: 'text-white btn border-0 rounded-pill px-4',
+              },
+            });
           }
-        )
+        );
       }
-    })
+    });
   }
 
   rolesSystem() {
@@ -105,51 +133,51 @@ export class SystemPermisosComponent implements OnInit {
       (data: any) => {
         this.rolesSaved = data;
         // this.rolesSaved = this.rolesSaved.filter(r => r.rol != 'Administration')
-        
-
-      }, (error: any) => {
-        
-
-      }
-    )
+      },
+      (error: any) => {}
+    );
   }
 
   guardarPermisos() {
-
-    
-    
-
-
     if (this.permisosAdded.length == 0 && this.roleId == 0) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'Campos Vacios!',
-      })
-      return
+        iconColor: '#960010',
+        confirmButtonColor: '#960010',
+        customClass: {
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
+        },
+      });
+      return;
     }
 
-    this.permissionService.savePermissions(this.permisosAdded, this.roleId).subscribe(
-      (data: any) => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Permisos Guardados Exitosamente',
-          showConfirmButton: false,
-          timer: 2000
-        })
-        
-        window.location.reload()
+    this.permissionService
+      .savePermissions(this.permisosAdded, this.roleId)
+      .subscribe(
+        (data: any) => {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Permisos Guardados Exitosamente',
+            showConfirmButton: false,
+            timer: 2000,
+            confirmButtonColor: '#960010',
+            customClass: {
+              popup: 'rounded-4',
+              confirmButton: 'text-white btn border-0 rounded-pill px-4',
+            },
+          });
 
-      }, (error: any) => {
-        
-
-      }
-    )
+          window.location.reload();
+        },
+        (error: any) => {}
+      );
   }
 
   capturarIdRole(event: any) {
     this.roleId = event.target.value;
-
   }
 }

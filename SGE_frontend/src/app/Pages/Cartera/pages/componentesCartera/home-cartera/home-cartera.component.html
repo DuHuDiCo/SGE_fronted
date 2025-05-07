@@ -13,263 +13,6 @@
         <h6 class="text-center mt-1" style="font-size: 13px;">Filtros</h6>
     </button>
 
-    <!-- tarjetas notificaciones -->
-    <div class="dropstart noti">
-        <button class="btn b dropdown-toggle position-relative" type="button" id="dropdownMenuClickableInside"
-            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-            <i class="fa-solid fa-envelopes-bulk"></i>
-            <span class="position-absolute start-100 translate-middle badge rounded-pill bg-secondary">
-                {{ notiArray.length }}
-            </span>
-        </button>
-
-        <ul class="dropdown-menu scrollable-menu" style="background-color: rgb(201, 201, 201);">
-
-            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#todas"
-                        type="button" role="tab" aria-controls="home" aria-selected="true">Todas</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#vencidas"
-                        type="button" role="tab" aria-controls="profile" aria-selected="false">Vencidas</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#realizadas"
-                        type="button" role="tab" aria-controls="profile" aria-selected="false">Realizadas</button>
-                </li>
-
-            </ul>
-
-
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="todas" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="list-group" style="width: 300px;">
-
-
-                        <div *ngIf="notiArray.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
-                                <select [(ngModel)]="tipoAll" class="form-select" style="border: 1px black solid;">
-                                    <option>Seleccione Un Filtro</option>
-                                    <option value="SEDE">Filtrar Por Sede</option>
-                                    <option value="CEDULA">Filtrar Por Cédula</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div *ngIf="tipoAll == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
-
-                            <div class="col-md-8">
-                                <select [(ngModel)]="filtroAll" class="form-select" style="border: 1px black solid;">
-                                    <option>Seleccione Una Sede</option>
-                                    <option *ngFor="let s of sedes; let i = index" value="{{ s.sede }}">{{ s.sede }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn b" (click)="getNotiAllBySede()"><i
-                                        class="fa-solid fa-magnifying-glass"></i></button>
-                            </div>
-                        </div>
-
-                        <div *ngIf="tipoAll == 'CEDULA'" class="row justify-content-center mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
-                                <input [(ngModel)]="filtroAll" type="text" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn b" (click)="getNotiAllBySede()"><i
-                                        class="fa-solid fa-magnifying-glass"></i></button>
-                            </div>
-                        </div>
-
-                        <a *ngFor="let n of notiArray" class="list-group-item" aria-current="true"
-                            style="background-color: rgb(201, 201, 201);">
-                            <div class="row justify-content-center mb-2">
-                                <div *ngIf="n.tipoGestion == 'TAREA'" class="col-md-4">
-                                    <button
-                                        (click)="desactivarNoti(n.idNotificaciones, n.fechaCreacion, n.gestionId, n.numeroObligacion)"
-                                        class="btn btn-sm b"><i class="fa-solid fa-check"></i></button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button
-                                        (click)="getGestionesNoti(n.numeroObligacion, n.gestionId, n.fechaCreacion, n.tipoGestion, n.idNotificaciones)"
-                                        data-bs-toggle="modal" data-bs-target="#modalGestionCom"
-                                        style="cursor: pointer;" class="btn btn-sm btn-primary"><i
-                                            class="fa-solid fa-file-pen"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h6>
-                                <small>{{ n.fechaCreacion | dateFormat}}</small>
-                            </div>
-                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | dateFormat}}</p>
-                            <small><b>Cliente:</b> {{ n.cliente }}</small><br>
-                            <small *ngIf="n.tipoGestion == 'TAREA'"><b>Creado Por:</b> {{ n.designatedBy }}</small>
-                        </a>
-                    </div>
-                    <div *ngIf="notiArray.length == 0" class="list-group">
-                        <a class="list-group-item list-group-item-action" aria-current="true">
-                            <p class="mb-1">No Tiene Notificaciones Pendientes En El Momento.</p>
-                            <small>Vuelva Más Tarde.</small>
-                        </a>
-                    </div>
-                </div>
-
-
-                <div class="tab-pane fade" id="vencidas" role="tabpanel" aria-labelledby="profile-tab">
-                    <div class="list-group" style="width: 300px;">
-
-
-                        <div *ngIf="notiArrayVencidas.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
-                                <select [(ngModel)]="tipoVen" class="form-select" style="border: 1px black solid;">
-                                    <option>Seleccione Un Filtro</option>
-                                    <option value="SEDE">Filtrar Por Sede</option>
-                                    <option value="CEDULA">Filtrar Por Cédula</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div *ngIf="tipoVen == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
-
-                            <div class="col-md-8">
-                                <select [(ngModel)]="filtroVen" class="form-select" style="border: 1px black solid;">
-                                    <option>Seleccione Una Sede</option>
-                                    <option *ngFor="let s of sedes; let i = index" value="{{ s.sede }}">{{ s.sede }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn b" (click)="getNotiVenBySede()"><i
-                                        class="fa-solid fa-magnifying-glass"></i></button>
-                            </div>
-                        </div>
-
-                        <div *ngIf="tipoVen == 'CEDULA'" class="row justify-content-center mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
-                                <input [(ngModel)]="filtroVen" type="text" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn b" (click)="getNotiVenBySede()"><i
-                                        class="fa-solid fa-magnifying-glass"></i></button>
-                            </div>
-                        </div>
-
-                        <a *ngFor="let n of notiArrayVencidas" class="list-group-item" aria-current="true"
-                            style="background-color: rgb(201, 201, 201);">
-                            <div class="row justify-content-center mb-2">
-                                <div class="col-md-4">
-                                    <button *ngIf="n.tipoGestion == 'TAREA'"
-                                        (click)="desactivarNoti(n.idNotificaciones, n.fechaCreacion, n.gestionId, n.numeroObligacion)"
-                                        class="btn btn-sm b"><i class="fa-solid fa-check"></i></button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button
-                                        (click)="getGestionesNoti(n.numeroObligacion, n.gestionId, n.fechaCreacion, n.tipoGestion, n.idNotificaciones)"
-                                        data-bs-toggle="modal" data-bs-target="#modalGestionCom"
-                                        style="cursor: pointer;" class="btn btn-sm btn-primary"><i
-                                            class="fa-solid fa-file-pen"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h6>
-                                <small>{{ n.fechaCreacion | dateFormat}}</small>
-                            </div>
-                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | dateFormat }}</p>
-                            <small><b>Cliente:</b> {{ n.cliente }}</small><br>
-                            <small *ngIf="n.tipoGestion == 'TAREA'"><b>Creado Por:</b> {{ n.designatedBy }}</small>
-                        </a>
-                    </div>
-                    <div *ngIf="notiArrayVencidas.length == 0" class="list-group">
-                        <a class="list-group-item list-group-item-action" aria-current="true">
-                            <p class="mb-1">No Tiene Notificaciones Vencidas En El Momento.</p>
-                            <small>Vuelva Más Tarde.</small>
-                        </a>
-                    </div>
-                </div>
-
-
-
-                <div class="tab-pane fade" id="realizadas" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="list-group" style="width: 300px;">
-
-
-                        <div *ngIf="notiArrayRealizadas.length != 0" class="row justify-content-start mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
-                                <select [(ngModel)]="tipoReal" class="form-select" style="border: 1px black solid;">
-                                    <option>Seleccione Un Filtro</option>
-                                    <option value="SEDE">Filtrar Por Sede</option>
-                                    <option value="CEDULA">Filtrar Por Cédula</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div *ngIf="tipoReal == 'SEDE'" class="row justify-content-center mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
-                                <select [(ngModel)]="filtroRealizada" class="form-select"
-                                    style="border: 1px black solid;">
-                                    <option>Seleccione Una Sede</option>
-                                    <option *ngFor="let s of sedes; let i = index" value="{{ s.sede }}">{{ s.sede }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn b" (click)="getNotiRealizadasBySede()"><i
-                                        class="fa-solid fa-magnifying-glass"></i></button>
-                            </div>
-                        </div>
-
-                        <div *ngIf="tipoReal == 'CEDULA'" class="row justify-content-center mt-3 mb-3 ms-2">
-                            <div class="col-md-8">
-                                <input [(ngModel)]="filtroRealizada" type="text" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn b" (click)="getNotiRealizadasBySede()"><i
-                                        class="fa-solid fa-magnifying-glass"></i></button>
-                            </div>
-                        </div>
-
-                        <a *ngFor="let n of notiArrayRealizadas" class="list-group-item" aria-current="true"
-                            style="background-color: rgb(201, 201, 201);">
-                            <div class="row justify-content-center mb-2">
-                                <div class="col-md-4">
-                                    <button (click)="hideNotiRealizada(n.idNotificaciones)" class="btn btn-sm b"><i
-                                            class="fa-solid fa-circle-minus"></i></button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button (click)="findCuentaCobrar(n.numeroObligacion)" data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasRight" style="cursor: pointer;"
-                                        class="btn btn-sm btn-primary"><i class="fa-solid fa-file-pen"></i></button>
-                                </div>
-                            </div>
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1" style="margin-right: 20px;">{{ n.tipoGestion}}</h6>
-                                <small>{{ n.fechaCreacion | dateFormat}}</small>
-                            </div>
-                            <p class="mb-1"><b>Fin:</b> {{ n.fechaFinalizacion | dateFormat}}</p>
-                            <small><b>Cliente:</b> {{ n.cliente }}</small><br>
-                            <small *ngIf="n.tipoGestion == 'TAREA'"><b>Creado Por:</b> {{ n.designatedBy }}</small>
-                        </a>
-                    </div>
-                    <div *ngIf="notiArrayRealizadas.length == 0" class="list-group">
-                        <a class="list-group-item list-group-item-action" aria-current="true">
-                            <p class="mb-1">No Tiene Notificaciones Realizadas En El Momento.</p>
-                            <small>Vuelva Más Tarde.</small>
-                        </a>
-                    </div>
-                </div>
-
-
-
-            </div>
-
-
-
-
-        </ul>
-    </div>
     <div class="card-c">
         <div class="row">
             <div *ngIf="(buscarObligacion != '' && variableLimpiar)  || (this.filtros.banco.length != 0) ||
@@ -327,7 +70,8 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="alert alert-danger text-center" role="alert">
+                                <div class="alert alert-danger text-center cursor-pointer" role="alert"
+                                    (click)="getCuentasSinGestionar()">
                                     <strong>Sin Ges: </strong>
                                     {{alertasGestionesObject.cuentasSinGestion}}
                                 </div>
@@ -510,15 +254,26 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <!-- SIDEBAR -->
-                <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasRight"
-                    aria-labelledby="offcanvasRightLabel" style="height: 95%;">
+                <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasRight" data-bs-backdrop="true"
+                    style="height: 95%;">
                     <div *ngIf="!spinnerSidebar" class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasRightLabel">Datos Cliente</h5>
-                        <button *ngIf="deshabilitarInputs" class="btn btn-danger b" data-bs-toggle="modal"
-                            data-bs-target="#modalGestion">Nueva
+                        <button *ngIf="deshabilitarInputs" class="btn btn-danger b"
+                            (click)="validateCuenta(cuentaCobrarSelected.idCuentasPorCobrar)">Nueva
                             Gestion</button>
+
+                        <div class="d-flex align-items-center" *ngIf="gestiones.length == 0">
+                            <strong>Cargando Gestiones &nbsp;</strong>
+                            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                        </div>
+
+                        <div class="d-flex align-items-center" *ngIf="gestiones[0] == true">
+                            <strong>Sin Gestiones &nbsp;</strong>
+                        </div>
+
                         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalHistoricoG"
-                            (click)="cerrarGestiones()">Historico Gestiones</button>
+                            (click)="cerrarGestiones()" *ngIf="gestiones[0] != true && gestiones.length > 0">Historico
+                            Gestiones</button>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
@@ -573,7 +328,7 @@
                                                             <input (change)="calculadora($event)"
                                                                 id="boton_saldo_capital" type="text"
                                                                 [(ngModel)]="cuentaCobrarSelected.moraObligatoria"
-                                                                class="form-control" [disabled]="deshabilitarInputs">
+                                                                class="form-control" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -582,8 +337,8 @@
                                                                 Total</span>
                                                             <input (change)="calculadora($event)" id="boton_saldo_total"
                                                                 type="number"
-                                                                [(ngModel)]="cuentaCobrarSelected.clientes[0].saldoActual"
-                                                                class="form-control" [disabled]="deshabilitarInputs">
+                                                                [(ngModel)]="cuentaCobrarSelected.totalObligatoria"
+                                                                class="form-control" disabled>
                                                         </div>
 
                                                     </div>
@@ -598,13 +353,15 @@
                                                                 [disabled]="deshabilitarInputs">
                                                         </div>
                                                     </div>
-                                                    <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'"
-                                                        class="col-md-6">
+                                                    <div class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text fw-bold">Honorarios</span>
-                                                            <input [(ngModel)]="acuerdoCal.honoriarioAcuerdo"
-                                                                type="number" class="form-control"
-                                                                [disabled]="deshabilitarInputs">
+                                                            <span class="input-group-text fw-bold">Saldo Total</span>
+
+                                                            <span
+                                                                class="input-group-text ps-5 pe-5">{{acuerdoCal.saldoAcuerdo
+                                                                | number}}</span>
+
+
                                                         </div>
 
                                                     </div>
@@ -621,15 +378,22 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+
+                                                    <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'PREJURIDICO'"
+                                                        class="col-md-6">
                                                         <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text fw-bold">Saldo Total</span>
+                                                            <span class="input-group-text fw-bold">Honorarios</span>
+                                                            <input [(ngModel)]="acuerdoCal.honoriarioAcuerdo"
+                                                                type="number" class="form-control" disabled>
+                                                        </div>
 
-                                                            <span
-                                                                class="input-group-text ps-5 pe-5">{{acuerdoCal.saldoAcuerdo
-                                                                | number}}</span>
-
-
+                                                        <div class="form-check text-start">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                (click)="excluirHonorarios()"
+                                                                [disabled]="deshabilitarInputs">
+                                                            <label class="form-check-label" for="flexCheckDefault">
+                                                                Excluir Honorarios
+                                                            </label>
                                                         </div>
 
                                                     </div>
@@ -679,7 +443,7 @@
                                                             <input type="date" class="form-control"
                                                                 [(ngModel)]="cuentaCobrarSelected.fechaVencimiento"
                                                                 (change)="calcularDiasVencidos($event)"
-                                                                [disabled]="deshabilitarInputs">
+                                                                [disabled]="deshabilitarInputs" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -1087,8 +851,8 @@
                                 <td *ngIf="!Columnas.includes('EDAD VENC')">{{ cc.tiposVencimiento.tipoVencimiento }}
                                 </td>
                                 <td *ngIf="!Columnas.includes('SUCURSAL')">{{ cc.sede.sede }}</td>
-                                <td *ngIf="!Columnas.includes('ASESOR')">{{ cc.asesorCarteraResponse.usuario.nombres }}
-                                    {{
+                                <td *ngIf="!Columnas.includes('ASESOR')">{{ cc.asesorCarteraResponse.idAsesorCartera ==
+                                    22 ? 'SIN ASESOR' : cc.asesorCarteraResponse.usuario.nombres + ' ' +
                                     cc.asesorCarteraResponse.usuario.apellidos }}</td>
                                 <td *ngIf="!Columnas.includes('CLAS JURI')">{{ cc.clasificacionJuridica }}</td>
                                 <td *ngIf="!Columnas.includes('SALDO CAP')">{{ cc.totalObligatoria | number }}</td>
@@ -1097,19 +861,23 @@
                                     <p id="td_{{i}}">
                                         {{
                                         cc.gestion.length == 0
-                                        ? 'SIN GESTIÓN' :
+                                        ? '--/--/----' :
                                         cc.gestion[cc.gestion.length-1].fechaGestion | date:"d/M/yyyy" }}
                                     </p>
                                 </td>
-                                <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? 'SIN GESTIÓN' :
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
+                                <td *ngIf="!Columnas.includes('F COMPRO')">{{ cc.gestion.length == 0 ? '--/--/----' :
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion) ==
                                     'TAREA' ?
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaTarea | date:"d/M/yyyy")
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaFinTarea |
+                                    date:"d/M/yyyy")
                                     :
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion ==
-                                    'NOTA' ? 'NOTA' :
-                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso |
-                                    date:"d/M/yyyy")))}}
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion) ==
+                                    'NOTA' ? '--/--/----' :
+                                    (cc.gestion[cc.gestion.length-1].clasificacionGestion.clasificacion) ==
+                                    'ACUERDO DE PAGO'
+                                    ?(cc.gestion[cc.gestion.length-1].clasificacionGestion.fechaCompromiso |
+                                    date:"d/M/yyyy"):'--/--/----'
+                                    }}
                                 </td>
                                 <td *ngIf="!Columnas.includes('ULTIMA CLAS')">
                                     {{ cc.gestion.length == 0 ? 'SIN CLASIFICACIÓN' :
@@ -1133,7 +901,7 @@
                                         <button type="button" class="page-link dropdown-toggle"
                                             style="cursor: pointer; text-decoration: none; color: white;background-color: #960010;"
                                             data-bs-toggle="dropdown">{{page+1}}/{{numeroPages}}</button>
-                                        <ul class="dropdown-menu" style="overflow-y: auto; height: 400px;">
+                                        <ul class="dropdown-menu" style="overflow-y: auto; height: 300px;">
                                             <li *ngFor="let p of paginas;let i = index"><button class="dropdown-item"
                                                     (click)="goToPage(i)">{{i
                                                     + 1}}</button></li>
@@ -1181,12 +949,14 @@
     </div>
 
     <!-- Modal Nueva Gestión -->
-    <div class="modal fade" id="modalGestion" tabindex="-1" aria-labelledby="modalGestion" aria-hidden="true">
+    <div class="modal fade" id="modalGestion" tabindex="-1" aria-labelledby="modalGestion" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="modalGestion">Nueva Gestión</h1>
-                    <button type="button" data-bs-dismiss="modal" aria-label="Close" style="border: none"><i
+                    <button type="button" data-bs-dismiss="modal" aria-label="Close" style="border: none"
+                        (click)="desbloquearCuenta(cuentaCobrarSelected.idCuentasPorCobrar)"><i
                             class="fa-solid fa-arrow-left"></i></button>
                 </div>
                 <div class="modal-body">
@@ -1231,7 +1001,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row justify-content-center mt-3 mb-3">
+                                <!-- <div class="row justify-content-center mt-3 mb-3">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-check">
@@ -1252,7 +1022,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="row mt-3 mb-3 justify-content-center">
                                     <div class="col-md-2">
                                         <button class="btn btn-danger b" (click)="mostrarOffcanvas()">Calcular</button>
@@ -1352,7 +1122,7 @@
                                         <input [(ngModel)]="fechaCorte" type="date" class="form-control" readonly>
                                     </div>
                                 </div>
-                                <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'Prejuridico'"
+                                <div *ngIf="cuentaCobrarSelected.clasificacionJuridica == 'PREJURIDICO'"
                                     class="col-md-6">
                                     <div class="input-group input-group-sm mb-3">
                                         <span class="input-group-text fw-bold">Honorarios/Otros</span>
@@ -1381,8 +1151,7 @@
                                             <td>
                                                 <div class="input-group input-group-sm">
                                                     <input type="number" class="form-control text-center"
-                                                        value="{{c.valorCuota}}" (change)="recalcularValores(i, $event)"
-                                                        [disabled]="disableds[i]">
+                                                        value="{{c.valorCuota}}" [disabled]="disableds[i]">
                                                 </div>
                                             </td>
                                             <td>{{ c.capitalCuota | number }}</td>
@@ -1413,7 +1182,8 @@
     </div>
 
     <!-- Modal Historico Gestiones -->
-    <div class="modal fade" id="modalHistoricoG" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalHistoricoG" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-hidden="true" *ngIf="gestiones[0] != true && gestiones.length > 0">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1541,7 +1311,8 @@
     </div>
 
     <!-- Modal Gestion Completa -->
-    <div class="modal fade" id="modalGestionCom" tabindex="-1" data-bs-show="true" aria-hidden="true">
+    <div class="modal fade" id="modalGestionCom" tabindex="-1" data-bs-show="true" data-bs-backdrop="static"
+        data-bs-keyboard="false" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1658,6 +1429,9 @@
                                                 <button class="btn btn-primary" (click)="agregarPagoACuotas()"
                                                     style="background-color: #960010;border-color: #960010;">Agregar
                                                     Pago</button>
+                                                <button class="btn btn-secondary ms-2"
+                                                    (click)="cancelNota()">Cancelar</button>
+
                                             </div>
                                         </div>
                                     </div>
@@ -1688,6 +1462,8 @@
                                                 <span class="spinner-border spinner-border-sm float-right" role="status"
                                                     aria-hidden="true"></span>
                                             </button>
+                                            <button class="btn btn-secondary ms-2"
+                                                (click)="cancelNota()">Cancelar</button>
                                         </div>
                                     </div>
 
@@ -1714,8 +1490,11 @@
                                         <th scope="col">Fecha Venc</th>
                                         <th scope="col">Valor Cuota</th>
                                         <th scope="col">Capital Cuota</th>
-                                        <th scope="col">Honorarios</th>
+                                        <th scope="col">Saldo Capital</th>
                                         <th scope="col">Interes</th>
+                                        <th scope="col">Saldo Intereses</th>
+                                        <th scope="col">Honorarios</th>
+                                        <th scope="col">Saldo Honorarios</th>
                                         <th scope="col">Pago</th>
                                     </tr>
                                 </thead>
@@ -1725,9 +1504,25 @@
                                         <td>{{ g.numeroCuota }}</td>
                                         <td>{{ g.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
                                         <td>{{ g.valorCuota | number }}</td>
+
                                         <td>{{ g.capitalCuota | number }}</td>
-                                        <td>{{ g.honorarios | number }}</td>
+                                        <td *ngIf="g.saldoCapitalCuota == 0" style="background-color: gray;">
+                                            {{g.saldoCapitalCuota | number}}</td>
+                                        <td *ngIf="g.saldoCapitalCuota > 0" style="background-color: yellow;">
+                                            {{g.saldoCapitalCuota | number}}</td>
+
                                         <td>{{ g.interesCuota | number }}</td>
+
+                                        <td *ngIf="g.salodInteresCuota == 0" style="background-color: gray;">
+                                            {{g.salodInteresCuota | number}}</td>
+                                        <td *ngIf="g.salodInteresCuota > 0" style="background-color: yellow;">
+                                            {{g.salodInteresCuota | number}}</td>
+                                        <td>{{ g.honorarios | number }}</td>
+
+                                        <td *ngIf="g.saldoHonorarios > 0" style="background-color: yellow;">
+                                            {{g.saldoHonorarios| number}}</td>
+                                        <td *ngIf="g.saldoHonorarios == 0" style="background-color: gray;">
+                                            {{g.saldoHonorarios| number}}</td>
                                         <td class="justify-content-center">
                                             <div class="row justify-content-center">
                                                 <div class="col-md-6">
@@ -1853,7 +1648,14 @@
 
                     <span *ngIf="gestionSelected != null || gestionSelected != undefined">
                         <button
-                            *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA' && gestionSelected.clasificacion.isActive == true && notiId != null"
+                            *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA' && gestionSelected.clasificacion.isActive == true && notiId != null && clasifiNotiId != null"
+                            type="button" class="btn btn-danger b" (click)="desactivateGestion()">Desactivar
+                            Gestión</button>
+                    </span>
+
+                    <span *ngIf="gestionSelected != null || gestionSelected != undefined">
+                        <button
+                            *ngIf="gestionSelected.clasificacion.clasificacion == 'TAREA' && gestionSelected.clasificacion.isActive == true && notiId != null && clasifiNotiId != null"
                             type="button" class="btn btn-danger b" (click)="completarGestion()">Completar
                             Gestion</button>
                     </span>
@@ -1971,33 +1773,27 @@
                                     </h6>
                                 </blockquote>
                                 <div class="collapse" id="collapseJur">
-                                    <div class="form-check">
+                                    <div class="form-check" *ngFor="let clasi of clasificacionesJuridicas">
                                         <input class="form-check-input" type="checkbox" value="Normal"
-                                            (click)="metodoClas('NORMAL')" #variableCol>
+                                            (click)="metodoClas(clasi)" #variableCol>
                                         <label class="form-check-label">
-                                            <cite title="Source Title">Normal</cite>
+                                            <cite title="Source Title">{{clasi}}</cite>
                                         </label>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Prejuridico"
+                                    <div class="form-check" *ngIf="username == 'Blanca Mazo'">
+                                        <input class="form-check-input" type="checkbox"
                                             (click)="metodoClas('PREJURIDICO')" #variableCol>
                                         <label class="form-check-label">
-                                            <cite title="Source Title">Prejuridico</cite>
+                                            <cite title="Source Title">PREJURIDICO</cite>
                                         </label>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Juridico"
-                                            (click)="metodoClas('ADMINISTRATIVO')" #variableCol>
-                                        <label class="form-check-label">
-                                            <cite title="Source Title">Administrativo</cite>
-                                        </label>
-                                    </div>
+
                                 </div>
                             </figure>
                         </div>
 
                         <!-- FILTRO CLASIFICACION GESTION -->
-                        <!-- <div class="col-md-12 mb-3">
+                        <div class="col-md-12 mb-2">
                             <figure>
                                 <blockquote class="blockquote">
                                     <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseClas"
@@ -2006,25 +1802,54 @@
                                     </h6>
                                 </blockquote>
                                 <div class="collapse" id="collapseClas">
-                                    <div class="form-check" *ngFor="let c of ClasificacionArray">
-                                        <input value="{{ c.nombre }}" class="form-check-input" type="checkbox"
-                                            (click)="metodoClasGestion(c.tipo, c.nombre)" #variableCol>
-                                        <label class="form-check-label">
-                                            <cite title="Source Title">{{ c.nombre }}</cite>
-                                        </label>
+                                    <div class="form-check" *ngFor="let c of ClasificacionArray;let i = index;">
+
+                                        <div class="form-check form-check-inline">
+                                            <input #variableCol class="form-check-input"
+                                                (click)="metodoClasGestion(c.tipo, c.idNombreClasificacion)"
+                                                type="radio" name="i" id="i" value="{{ c.idNombreClasificacion }}">
+                                            <label class="form-check-label" for="i">{{ c.nombre }}</label>
+                                        </div>
+
                                     </div>
                                 </div>
                             </figure>
-                        </div> -->
+                        </div>
+
+                        <!-- SIN ASESOR -->
+                        <div class="col-md-12 mb-3">
+                            <figure>
+                                <blockquote class="blockquote">
+                                    <h6 class="fw-bold" data-bs-toggle="collapse" href="#collapseAsesor"
+                                        style="cursor: pointer;">Filtro Sin Asesor &nbsp;<i
+                                            class="fa-solid fa-caret-down"></i>
+                                    </h6>
+                                </blockquote>
+                                <div class="collapse" id="collapseAsesor">
+                                    <input class="form-check-input" type="checkbox" value="Normal" #variableCol
+                                        (click)="asignarAsesor()">
+                                    <label class="form-check-label">
+                                        <cite title="Source Title">&nbsp;SIN ASESOR</cite>
+                                    </label>
+                                </div>
+                            </figure>
+                        </div>
+
 
                         <figure>
                             <blockquote class="blockquote">
                                 <h6 class="fw-bold">Saldo</h6>
                             </blockquote>
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text fw-bold">Desde/Hasta</span>
+                            <div class="input-group input-group-sm mb-1">
+                                <span class="input-group-text fw-bold">Desde</span>
                                 <input type="number" [(ngModel)]="filtros.saldoCapitalInicio" class="form-control">
+
+                            </div>
+
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text fw-bold">Hasta</span>
                                 <input type="number" [(ngModel)]="filtros.saldoCapitalFin" class="form-control">
+
                             </div>
                         </figure>
 
@@ -2058,6 +1883,7 @@
                                 </div>
                             </figure>
                         </div>
+
                         <div class="col-md-12 mb-3">
                             <div class="col-md-12 mb-3">
                                 <figure>
@@ -2120,9 +1946,25 @@
                         <thead>
                             <tr>
                                 <th class="h">
+
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Titular
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+
                                     <div class="row justify-content-center">
                                         <div class="col-md-12">
                                             Cliente
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Obligacion
                                         </div>
                                     </div>
                                 </th>
@@ -2147,17 +1989,24 @@
                                         </div>
                                     </div>
                                 </th>
-                                <th class="h">
+                                <!-- <th class="h">
                                     <div class="row justify-content-center">
                                         <div class="col-md-12">
                                             Clas. Juridica
+                                        </div>
+                                    </div>
+                                </th> -->
+                                <th class="h">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            Asesor
                                         </div>
                                     </div>
                                 </th>
                                 <th class="h">
                                     <div class="row justify-content-center">
                                         <div class="col-md-12">
-                                            Asesor
+                                            Tipo Garante
                                         </div>
                                     </div>
                                 </th>
@@ -2168,14 +2017,17 @@
                                 data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style="cursor: pointer;"
                                 (click)="findCuentaCobrar(cc.numeroObligacion)">
                                 <td>{{ cc.cliente }}</td>
+                                <td>{{ cc.clientes[0].nombreTitular }}</td>
+                                <td>{{ cc.numeroObligacion }}</td>
                                 <td>{{ cc.banco.banco }}</td>
                                 <td>{{ cc.tiposVencimiento.tipoVencimiento }}
                                 </td>
                                 <td>{{ cc.sede.sede }}</td>
-                                <td>{{ cc.clasificacionJuridica }}</td>
-                                <td>{{ cc.asesorCarteraResponse.usuario.nombres }}
-                                    {{
+                                <!-- <td>{{ cc.clasificacionJuridica }}</td> -->
+                                <td>{{ cc.asesorCarteraResponse.idAsesorCartera ==
+                                    22 ? 'SIN ASESOR' : cc.asesorCarteraResponse.usuario.nombres + ' ' +
                                     cc.asesorCarteraResponse.usuario.apellidos }}</td>
+                                <td>{{ cc.clientes[0].tipoGarante.tipoGarante }}</td>
                             </tr>
                         </tbody>
                     </table>
