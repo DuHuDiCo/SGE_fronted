@@ -51,13 +51,13 @@
               class="text-secondary text-center"
               disabled
               selected
-              [value]=""
+              value="{{ 0 }}"
             >
               Seleccionar producto
             </option>
             <option
               *ngFor="let cProducto of categoriaProducto"
-              [value]="cProducto.idProducto"
+              value="{{ cProducto.idProducto }}"
             >
               {{ cProducto.descripcionProducto }}
             </option>
