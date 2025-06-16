@@ -6,6 +6,10 @@
   color: #960010;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .card-c {
   color: #000;
   position: relative;
@@ -343,8 +347,9 @@ label.btn.btn-outline-dark {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 998;
 }
+
 
 .filter {
   position: fixed;
@@ -363,7 +368,7 @@ label.btn.btn-outline-dark {
 
 .noti {
   position: fixed;
-  margin-right: 10px;
+  margin-right: 15px;
   margin-top: 200px;
   right: 0;
   border: none;
@@ -379,6 +384,7 @@ label.btn.btn-outline-dark {
 .pagination ::ng-deep .ngx-pagination .current {
   background: #960010
 }
+
 
 .scrollable-menu {
   max-height: 500px;

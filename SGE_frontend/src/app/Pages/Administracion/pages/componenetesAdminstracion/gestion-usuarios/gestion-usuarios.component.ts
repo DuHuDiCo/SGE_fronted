@@ -9,40 +9,59 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-gestion-usuarios',
   templateUrl: './gestion-usuarios.component.html',
-  styleUrls: ['./gestion-usuarios.component.css']
+  styleUrls: ['./gestion-usuarios.component.css'],
 })
 export class GestionUsuariosComponent implements OnInit {
-
   ngOnInit(): void {
     this.listarUsuarios();
   }
 
-  usuarios: users[] = []
+  usuarios: users[] = [];
 
-  page: number = 0
-  size: number = 10
+  page: number = 0;
+  size: number = 10;
 
-  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
+  rolesArray: string[] = [
+    'Cartera',
+    'Caja',
+    'Archivos',
+    'Ventas',
+    'Servicios',
+    'Consignaciones',
+    'SUPERADMINISTRADOR',
+    'SST',
+  ];
 
-  nombre: string = ''
+  nombre: string = '';
 
   datos: Datos = {
     username: '',
     passwordUser: '',
-    datoToDelete: ''
-  }
+    datoToDelete: '',
+  };
 
-  constructor(private usuariosService: BuscarUsuariosService, private authService: AuthenticationService) { }
+  constructor(
+    private usuariosService: BuscarUsuariosService,
+    private authService: AuthenticationService
+  ) {}
 
   private listarUsuarios() {
     this.usuariosService.listarUsuarios(this.page, this.size).subscribe(
       (data: any) => {
         this.usuarios = data;
-        
       },
       (error: any) => {
-        
-        Swal.fire('ERROR', 'Error al cargar los usuarios', 'error');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al cargar los usuarios',
+          iconColor: '#960010',
+          confirmButtonColor: '#960010',
+          customClass: {
+            popup: 'rounded-4',
+            confirmButton: 'text-white btn border-0 rounded-pill px-4',
+          },
+        });
       }
     );
   }
@@ -53,11 +72,19 @@ export class GestionUsuariosComponent implements OnInit {
       this.usuariosService.filtrarUsuarios(this.nombre).subscribe(
         (data: any) => {
           this.usuarios.push(data);
-          
         },
         (error: any) => {
-          
-          Swal.fire('ERROR', 'Error al filtrar los Usuarios', 'error');
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al filtrar los usuarios',
+            iconColor: '#960010',
+            confirmButtonColor: '#960010',
+            customClass: {
+              popup: 'rounded-4',
+              confirmButton: 'text-white btn border-0 rounded-pill px-4',
+            },
+          });
         }
       );
     } else {
@@ -66,19 +93,37 @@ export class GestionUsuariosComponent implements OnInit {
   }
 
   public desactivarUsuario() {
-
     let username = this.authService.getUsername();
 
     if (username === null) {
-      Swal.fire('ERROR', 'Error al Desactivar el Usuario', 'error');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe de ingresar el nombre de usuario',
+        iconColor: '#960010',
+        confirmButtonColor: '#960010',
+        customClass: {
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
+        },
+      });
       return;
     }
 
     this.datos.username = username;
 
-
     if (this.datos.passwordUser == '' || this.datos.passwordUser == null) {
-      Swal.fire('ERROR', 'Debe colocar la Contraseña', 'error');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe colocar la contraseña',
+        iconColor: '#960010',
+        confirmButtonColor: '#960010',
+        customClass: {
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
+        },
+      });
       return;
     }
 
@@ -91,21 +136,43 @@ export class GestionUsuariosComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Desactivar',
       cancelButtonText: 'Cancelar',
+      customClass: {
+        popup: 'rounded-4',
+        confirmButton: 'text-white btn border-0 rounded-pill px-4',
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         this.usuariosService.desactivarUsuario(this.datos).subscribe(
           (data: any) => {
-            Swal.fire('Usuario Desactivado', 'El Usuario ha sido Desactivado Exitosamente', 'success');
+            Swal.fire({
+              icon: 'success',
+              title: 'Usuario desactivado',
+              text: 'El usuario ha sido desactivado exitosamente',
+              confirmButtonColor: '#960010',
+              customClass: {
+                popup: 'rounded-4',
+                confirmButton: 'text-white btn border-0 rounded-pill px-4',
+              },
+            });
             this.datos = {
-              username: "",
-              passwordUser: "",
-              datoToDelete: ""
+              username: '',
+              passwordUser: '',
+              datoToDelete: '',
             };
-            window.location.reload()
+            window.location.reload();
           },
           (error: any) => {
-            
-            Swal.fire('ERROR', 'Error al Desactivar el Usuario', 'error');
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error al desactivar el usuario',
+              iconColor: '#960010',
+              confirmButtonColor: '#960010',
+              customClass: {
+                popup: 'rounded-4',
+                confirmButton: 'text-white btn border-0 rounded-pill px-4',
+              },
+            });
           }
         );
       }
@@ -113,19 +180,38 @@ export class GestionUsuariosComponent implements OnInit {
   }
 
   public activarUsuario() {
-
-    let username = this.authService.getUsername()
+    let username = this.authService.getUsername();
 
     if (username === null) {
-      Swal.fire('ERROR', 'Error al Desactivar el Usuario', 'error');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe de ingresar el nombre de usuario',
+        iconColor: '#960010',
+        confirmButtonColor: '#960010',
+        customClass: {
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
+        },
+      });
       return;
     }
 
-    this.datos.username = username
+    this.datos.username = username;
 
     if (this.datos.passwordUser == '' || this.datos.passwordUser == null) {
-      Swal.fire('ERROR', 'Debe colocar la Contraseña', 'error')
-      return
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debe colocar la contraseña',
+        iconColor: '#960010',
+        confirmButtonColor: '#960010',
+        customClass: {
+          popup: 'rounded-4',
+          confirmButton: 'text-white btn border-0 rounded-pill px-4',
+        },
+      });
+      return;
     }
 
     Swal.fire({
@@ -136,24 +222,47 @@ export class GestionUsuariosComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Activar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
+      customClass: {
+        popup: 'rounded-4',
+        confirmButton: 'text-white btn border-0 rounded-pill px-4',
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         this.usuariosService.activarUsuario(this.datos).subscribe(
           (data: any) => {
-            Swal.fire('Usuario Activado', 'El Usuario ha sido Activado Exitosamente', 'success');
+            Swal.fire({
+              icon: 'success',
+              title: 'Usuario activado',
+              text: 'El usuario ha sido activado exitosamente',
+              confirmButtonColor: '#960010',
+              customClass: {
+                popup: 'rounded-4',
+                confirmButton: 'text-white btn border-0 rounded-pill px-4',
+              },
+            });
             this.datos = {
-              username: "",
-              passwordUser: "",
-              datoToDelete: ""
+              username: '',
+              passwordUser: '',
+              datoToDelete: '',
             };
-            window.location.reload()
+            window.location.reload();
           },
           (error: any) => {
-            Swal.fire('ERROR', 'Error al Activar el Usuario', 'error')
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error al activar el usuario',
+              iconColor: '#960010',
+              confirmButtonColor: '#960010',
+              customClass: {
+                popup: 'rounded-4',
+                confirmButton: 'text-white btn border-0 rounded-pill px-4',
+              },
+            });
           }
-        )
+        );
       }
-    })
+    });
   }
 }

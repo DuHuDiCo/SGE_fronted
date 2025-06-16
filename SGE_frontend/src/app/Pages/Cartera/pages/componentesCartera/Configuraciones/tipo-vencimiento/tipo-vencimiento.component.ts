@@ -72,7 +72,13 @@ export class TipoVencimientoComponent implements OnInit {
             icon: 'error',
             title: 'Error',
             text: 'Error Al Guardar Los Cambios',
-            timer: 3000
+            timer: 3000,
+            iconColor: '#960010',
+            confirmButtonColor: '#960010',
+            customClass: {
+              popup: 'rounded-4',
+              confirmButton: 'text-white btn border-0 rounded-pill px-4',
+            },
           })
           return
         }

@@ -18,8 +18,8 @@ export class AuthenticationService {
   }
 
 
-  public getUser(){
-    return this.http.get(`${baseUrl}/users/getUser/dudico`);
+  public getUser(username: string){
+    return this.http.get(`${baseUrl}/users/getUser/${username}`);
   }
 
   public setTokenLocalStorage(token:string):void{
@@ -58,13 +58,14 @@ export class AuthenticationService {
 
   getRolesByName(name:string){
     var roles: string | null = localStorage.getItem("Roles")
-
+    
     var rolesToJson;
 
     if(roles != null){
       rolesToJson =  JSON.parse(roles);
 
       var cartera = rolesToJson.filter((r:any)=>r.rol == name)
+      
       
       if(cartera != null || cartera != undefined){
         return cartera

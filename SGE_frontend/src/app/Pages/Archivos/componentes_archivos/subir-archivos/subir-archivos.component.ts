@@ -67,7 +67,12 @@ export class SubirArchivosComponent implements OnInit {
           icon: 'success',
           title: 'El Proceso Ha Comenzado',
           text: 'Digite la Información Correspondiente',
-          timer: 2500
+          timer: 2500,
+          confirmButtonColor: '#960010',
+          customClass: {
+            popup: 'rounded-4',
+            confirmButton: 'text-white btn border-0 rounded-pill px-4',
+          },
         })
         break;
       case 'CEDULA':
@@ -78,12 +83,28 @@ export class SubirArchivosComponent implements OnInit {
           icon: 'info',
           title: 'Paso #1 Completado',
           text: 'Seleccione el Archivo Correspondiente',
-          timer: 2500
+          timer: 2500,
+          confirmButtonColor: '#960010',
+          customClass: {
+            popup: 'rounded-4',
+            confirmButton: 'text-white btn border-0 rounded-pill px-4',
+          },
         })
         break;
         case 'CREDITO':
         if (this.archivo.base64.length == 0) {
-          Swal.fire('Error', 'Seleccione El Crédito Correspondiente', 'error')
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Seleccione el archivo correspondiente',
+            timer: 2500,
+            iconColor: '#960010',
+            confirmButtonColor: '#960010',
+            customClass: {
+              popup: 'rounded-4',
+              confirmButton: 'text-white btn border-0 rounded-pill px-4',
+            },
+          })
           return
         } else {
           this.botonCredito = false
@@ -91,9 +112,14 @@ export class SubirArchivosComponent implements OnInit {
           this.width = this.width + Math.round(100 / this.tiposArchivos.length)
           Swal.fire({
             icon: 'info',
-            title: 'Paso #2 Completado',
-            text: 'Seleccione el Archivo Correspondiente',
-            timer: 2500
+            title: 'Paso #2 completado',
+            text: 'Seleccione el archivo correspondiente',
+            timer: 2500,
+            confirmButtonColor: '#960010',
+            customClass: {
+              popup: 'rounded-4',
+              confirmButton: 'text-white btn border-0 rounded-pill px-4',
+            },
           })
         }
         break;
@@ -105,7 +131,12 @@ export class SubirArchivosComponent implements OnInit {
             icon: 'info',
             title: 'Paso #3 Completado',
             text: 'Seleccione el Archivo Correspondiente',
-            timer: 2500
+            timer: 2500,
+            confirmButtonColor: '#960010',
+            customClass: {
+              popup: 'rounded-4',
+              confirmButton: 'text-white btn border-0 rounded-pill px-4',
+            },
           })
         break;
       
