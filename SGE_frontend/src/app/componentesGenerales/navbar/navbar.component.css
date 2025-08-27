@@ -1,124 +1,162 @@
-.nav{
-    height: 120px;
-    background: #ecf0f3ea;
-    box-shadow: inset 2px 2px 2px #adb5bd, -1px 3px 5px #6c757d;
-    width: 100%;
-}
-.btn{
-    margin-left: 30px;
-    height: 50px;
+/* Estilos mejorados para el navbar */
+.nav-bar-custom {
+  background-color: #f8f9fa;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 2px solid #dee2e6 !important;
+  margin-bottom: 40px;
 }
 
-.logo{
-    margin-left: 50px;
-    margin-top: -10px;
+.logo {
+  margin-left: 50px;
+  margin-top: -10px;
 }
 
-.input-wrapper{
-    position: relative;
+.btn-menu {
+  color: #495057;
+  border: none;
+  transition: all 0.3s ease;
+  padding: 0.5rem 0.75rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
 }
 
-/* .row{
-    background: #adb5bd;
-} */
-.search{
-    width: 250px;
-    height: 48px;
-    margin-left: 200px;
-    background: #ecf0f3ea;
-    box-shadow: inset 2px 2px 2px #adb5bd, -1px 2px 2px #6c757d;
-    border: 0px solid;
-    padding-left: 54px;
-    padding-right: 8px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    border-radius: 30px;
-
+.btn-menu:hover {
+  transform: scale(1.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
-.input-icon {
-    margin-left: 210px;
-    margin-top: 50px;
-	color: #191919;
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	left: 12px;
-	top: 22%;
-	transform: translateY(-50%);
+.logo-link {
+  transition: opacity 0.3s ease;
+  margin-left: 1.5rem;
 }
 
-.noti{
-    margin-left: 100px;
-    color: black;
-}
-svg#persona {
-    height: 30px;
-    color: #191919;
+.logo-link:hover {
+  opacity: 0.8;
 }
 
-.p-user{
-    cursor: pointer;
+.logo-img {
+  height: 100px;
+  width: auto;
+  transition: transform 0.3s ease;
 }
 
-.hover-lista:hover{
-    background-color: #960010;
-}
-
-.perfil{
-   margin-top: 60px; 
-   margin-left: 100px;
-   width: 80px auto;
-}
-.option{
-    color: #960010;
+.logo-img:hover {
+  transform: scale(1.05);
 }
 
 
+.notification-btn {
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
 
-/* Añade estas reglas CSS para centrar los elementos en la barra de navegación */
+.notification-badge {
+  background-color: #811919 !important;
+  color: white !important;
+  font-size: 0.65em;
+  padding: 0.35em 0.65em;
+  font-weight: 700;
+  border: 1px solid white;
+  animation: pulse 2s infinite;
+}
 
-/* Centrar la imagen y la barra de búsqueda en pantallas grandes y medianas */
-.d-md-flex.align-items-center {
-    justify-content: space-between; /* Alinea los elementos de forma equitativa */
+
+.notification-header {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+}
+
+.notification-item {
+  padding: 0.5rem 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.notification-item:hover {
+  color: #811919;
+}
+
+.notification-view-all {
+  font-weight: 500;
+  text-align: center;
+  background-color: #f8f9fa;
+}
+
+.notification-view-all:hover {
+  background-color: #811919 !important;
+  color: white !important;
+}
+
+.dropdown-divider {
+  border-color: rgba(129, 25, 25, 0.2);
+}
+
+.profile-dropdown .nav-link {
+  color: #495057;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+}
+
+.profile-dropdown .nav-link:hover {
+  color: #811919;
+  background-color: #e9ecef;
+}
+
+.avatar-circle {
+  width: 38px;
+  height: 38px;
+  background-color: #811919;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.profile-dropdown:hover .avatar-circle {
+  transform: scale(1.1);
+}
+
+.username {
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+
+.dropdown-item {
+  padding: 0.75rem 1.5rem;
+  transition: all 0.2s ease;
+  border-radius: 0.25rem;
+  margin: 0.15rem;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  padding-left: 1.5rem;
+  transform: translateX(5px);
+}
+
+@media (max-width: 992px) {
+  .logo-img {
+    height: 2rem;
   }
-  
-  /* Centrar el menú hamburguesa y la imagen en pantallas grandes y medianas */
-  .d-md-flex.align-items-center > div:first-child {
-    margin-right: auto; /* Empuja los elementos hacia la derecha */
-  }
-  
-  /* Centrar la barra de búsqueda en pantallas grandes y medianas */
-  .d-md-flex.align-items-center > form {
-    margin-left: auto; /* Empuja la barra de búsqueda hacia la derecha */
-  }
-  
-  /* Asegurar que el menú hamburguesa se mantenga fijo en su posición */
-  .d-md-flex.align-items-center > div:first-child button {
-    margin-left: 0; /* Elimina el margen izquierdo del botón del menú hamburguesa */
-  }
-  
-  /* Centrar los elementos del menú hamburguesa en pantallas pequeñas */
-  .navbar-expand-lg .navbar-collapse {
-    justify-content: center; /* Alinea los elementos del menú hacia el centro */
-  }
-  
-  @media (max-width: 767px) {
-    .noti {
-      margin-left: 400px; /* Adjust the margin for small screens */
-    }
-  
-    svg#persona {
-      height: 20px; /* Adjust the height for small screens */
-    }
+
+  .nav-bar-custom {
+    padding: 0.5rem 1rem;
   }
 
-  @media (max-width: 576px ) {
-    .noti {
-      margin-left: 50px; /* Adjust the margin for small screens */
-    }
-  
-    svg#persona {
-      height: 20px; /* Adjust the height for small screens */
-    }
+  .btn-menu {
+    padding: 0.4rem;
   }
+}
+
+.border-gray {
+  border-color: #ced4da !important;
+}
+
+.cerrar-sesion {
+  color: #811919 !important;
+  cursor: pointer;
+}
