@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
-import { PERMISOSCONSIGNACION } from 'src/app/Models/AllPermisos';
 import { BancoServiceService } from 'src/app/Services/Consignaciones/Bancos/banco-service.service';
 import { ConsultarService } from 'src/app/Services/Consignaciones/Consultar/consultar.service';
 import { EstadoServiceService } from 'src/app/Services/Consignaciones/Estado/estado-service.service';
 import { IngresarService } from 'src/app/Services/Consignaciones/IngresarConsignaciones/ingresar.service';
 import { ObligacionesService } from 'src/app/Services/Consignaciones/Obligaciones/obligaciones.service';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
-import { Plataforma } from 'src/app/Types/Banco';
-import { CambioEstado, Con, Consignacion, IsSelected, Obligacion, ObservacionDto } from 'src/app/Types/Consignaciones';
+import { CambioEstado, Con, IsSelected, ObservacionDto } from 'src/app/Types/Consignaciones';
 import { Estado } from 'src/app/Types/Estado';
 import { ROLES } from 'src/app/Types/Roles';
 import { Sede } from 'src/app/Types/Sede';
@@ -2146,10 +2144,46 @@ export class ConsultasComponent implements OnInit {
         }, 3000);
       }
     });
-
-
-
-
   }
+
+ subirArchivo(idConsignacion: number, index: number) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.pdf,.jpg,.jpeg,.png'; // lo que quieras permitir
+
+  input.onchange = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file); // convierte a Base64
+      reader.onload = () => {
+        const base64 = reader.result as string;
+        console.log('Archivo en Base64:', base64);
+        
+        Swal.fire('Comprobante guardado', 'Comprobante guardado con éxito', 'success')
+
+        // Aquí llamas tu servicio para guardar el archivo en tu backend
+        // this.miServicio.subirArchivo({
+        //   idConsignacion,
+        //   archivoBase64: base64,
+        //   nombre: file.name,
+        //   tipo: file.type
+        // }).subscribe({
+        //   next: (resp) => {
+        //     console.log('Archivo guardado correctamente:', resp);
+        //   },
+        //   error: (err) => {
+        //     console.error('Error al subir archivo:', err);
+        //   }
+        // });
+      };
+      reader.onerror = (error) => {
+        console.error('Error leyendo el archivo:', error);
+      };
+    }
+  };
+
+  input.click();
+}
 
 }

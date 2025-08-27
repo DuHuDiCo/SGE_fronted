@@ -1,4 +1,3 @@
-
 .titulo{
     text-align: center;
 }
@@ -280,4 +279,54 @@
         width: 220px; /* Ancho del input al 100% */
         text-align: center; /* Texto centrado */
     }
+}
+
+/* Estilo general del dropdown */
+.dropdown-menu {
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
+  min-width: 220px;
+}
+
+/* Ítems más bonitos */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f5f9;
+  transform: translateX(3px);
+}
+
+/* Íconos con colores */
+.dropdown-item i {
+  font-size: 16px;
+}
+
+.dropdown-item .fa-pen { color: #0d6efd; }          /* Azul Editar */
+.dropdown-item .fa-eye { color: #0dcaf0; }          /* Morado Observaciones */
+.dropdown-item .fa-image { color: #198754; }        /* Verde Comprobante */
+.dropdown-item .fa-circle-info { color: #7e8283; }  /* Celeste Info */
+.dropdown-item .fa-check { color: #20c997; }        /* Verde agua */
+.dropdown-item .fa-upload { color: #fd7e14; }       /* Naranja Upload */
+.dropdown-item .fa-backward { color: #ffc107; }     /* Amarillo */
+.dropdown-item .fa-rectangle-xmark { color: #dc3545; } /* Rojo Cancelar */
+
+td.acciones-col {
+  text-align: center;         /* Centra horizontal */
+  vertical-align: middle;     /* Centra vertical */
+}
+
+td.acciones-col .dropdown {
+  display: inline-flex;       /* Para centrar el botón */
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }

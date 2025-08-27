@@ -144,194 +144,244 @@
           <td>{{ c.sede }}</td>
           <td>{{ c.plataforma.bancos.nombreBanco }} - {{ c.plataforma.bancos.tipoPago.tipoPago }}</td>
 
-          <td class="d-flex align-middle">
-            <!-- EDITAR CONSIGNACION -->
-            <span *appConsignacionesDirective="permisos[5]">
-              <button *ngIf="c.actualizaciones[0].estado.estado != 'APLICADO'"
-                (click)="getConsignacionById(c.idConsignacion)" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                data-bs-target="#modalEditar" id="btn_editar_{{ i }}"><i class="fa-solid fa-pen"></i></button>
-            </span>
+          <td class="acciones-col">
+            <div class="dropdown">
+              <button class="btn btn-sm" type="button" id="dropdownMenuButton{{i}}"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-ellipsis"></i>
+              </button>
+              <ul class="dropdown-menu" [attr.aria-labelledby]="'dropdownMenuButton' + i">
+                <!-- EDITAR CONSIGNACION -->
+                <li *appConsignacionesDirective="permisos[5]">
+                  <button class="dropdown-item"
+                    *ngIf="c.actualizaciones[0].estado.estado != 'APLICADO'"
+                    (click)="getConsignacionById(c.idConsignacion)"
+                    data-bs-toggle="modal" data-bs-target="#modalEditar"
+                    id="btn_editar_{{ i }}">
+                    <i class="fa-solid fa-pen"></i> Editar
+                  </button>
+                </li>
 
-            <!-- VER OBSERVACIONES -->
-            <span *appConsignacionesDirective="permisos[13]">
-              <span *appConsignacionesDirective="permisos[3]">
-                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                  class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"
-                  id="btn_observaciones_{{ i }}"><i class="fa-regular fa-eye"></i></button>
-              </span>
-              <span *appConsignacionesDirective="permisos[4]">
-                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                  class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"
-                  id="btn_observaciones_{{ i }}"><i class="fa-regular fa-eye"></i></button>
-              </span>
-              <span *appConsignacionesDirective="permisos[0]">
-                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                  class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"
-                  id="btn_observaciones_{{ i+'a' }}"><i class="fa-regular fa-eye"></i></button>
-              </span>
-              <span *appConsignacionesDirective="permisos[25]">
-                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                  class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"
-                  id="btn_observaciones_{{ i+'a' }}"><i class="fa-regular fa-eye"></i></button>
-              </span>
-              <span *appConsignacionesDirective="permisos[26]">
-                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                  class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modalVer"
-                  id="btn_observaciones_{{ i }}"><i class="fa-regular fa-eye"></i></button>
-              </span>
+                <!-- VER OBSERVACIONES -->
+                <li *appConsignacionesDirective="permisos[13]">
+                  <span *appConsignacionesDirective="permisos[3]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="getConsignacionById(c.idConsignacion)"
+                      data-bs-toggle="modal" data-bs-target="#modalVer"
+                      id="btn_observaciones_{{ i }}">
+                      <i class="fa-regular fa-eye"></i> Ver Observaciones
+                    </button>
+                  </span>
+                  <span *appConsignacionesDirective="permisos[4]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="getConsignacionById(c.idConsignacion)"
+                      data-bs-toggle="modal" data-bs-target="#modalVer"
+                      id="btn_observaciones_{{ i }}">
+                      <i class="fa-regular fa-eye"></i> Ver Observaciones
+                    </button>
+                  </span>
+                  <span *appConsignacionesDirective="permisos[0]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="getConsignacionById(c.idConsignacion)"
+                      data-bs-toggle="modal" data-bs-target="#modalVer"
+                      id="btn_observaciones_{{ i+'a' }}">
+                      <i class="fa-regular fa-eye"></i> Ver Observaciones
+                    </button>
+                  </span>
+                  <span *appConsignacionesDirective="permisos[25]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="getConsignacionById(c.idConsignacion)"
+                      data-bs-toggle="modal" data-bs-target="#modalVer"
+                      id="btn_observaciones_{{ i+'a' }}">
+                      <i class="fa-regular fa-eye"></i> Ver Observaciones
+                    </button>
+                  </span>
+                  <span *appConsignacionesDirective="permisos[26]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="getConsignacionById(c.idConsignacion)"
+                      data-bs-toggle="modal" data-bs-target="#modalVer"
+                      id="btn_observaciones_{{ i }}">
+                      <i class="fa-regular fa-eye"></i> Ver Observaciones
+                    </button>
+                  </span>
+                </li>
 
-            </span>
+                <!-- VER COMPROBANTE -->
+                <li *appConsignacionesDirective="permisos[14]">
+                  <span *appConsignacionesDirective="permisos[3]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
+                      data-bs-toggle="modal" data-bs-target="#modalImage"
+                      id="btn_comprobante_{{i}}">
+                      <i class="fa-regular fa-image"></i> Ver Comprobante
+                    </button>
+                  </span>
+                  <span *appConsignacionesDirective="permisos[4]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
+                      data-bs-toggle="modal" data-bs-target="#modalImage"
+                      id="btn_comprobante_{{i}}">
+                      <i class="fa-regular fa-image"></i> Ver Comprobante
+                    </button>
+                  </span>
+                  <span *appConsignacionesDirective="permisos[0]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
+                      data-bs-toggle="modal" data-bs-target="#modalImage"
+                      id="btn_comprobante_{{i+'a'}}">
+                      <i class="fa-regular fa-image"></i> Ver Comprobante
+                    </button>
+                  </span>
+                  <span *appConsignacionesDirective="permisos[25]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
+                      data-bs-toggle="modal" data-bs-target="#modalImage"
+                      id="btn_comprobante_{{i+'a'}}">
+                      <i class="fa-regular fa-image"></i> Ver Comprobante
+                    </button>
+                  </span>
+                  <span *appConsignacionesDirective="permisos[26]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
+                      data-bs-toggle="modal" data-bs-target="#modalImage"
+                      id="btn_comprobante_{{i}}">
+                      <i class="fa-regular fa-image"></i> Ver Recibo
+                    </button>
+                  </span>
+                </li>
 
+                <!-- VER HISTORIAL -->
+                <li *appConsignacionesDirective="permisos[15]">
+                  <span *appConsignacionesDirective="permisos[3]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="getConsignacionById(c.idConsignacion)"
+                      data-bs-toggle="modal" data-bs-target="#modalInfo"
+                      id="btn_historial_{{i}}">
+                      <i class="fa-solid fa-circle-info"></i> Ver Historial
+                    </button>
+                  </span>
+                  <span *appConsignacionesDirective="permisos[4]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="getConsignacionById(c.idConsignacion)"
+                      data-bs-toggle="modal" data-bs-target="#modalInfo"
+                      id="btn_historial_{{i}}">
+                      <i class="fa-solid fa-circle-info"></i> Ver Historial
+                    </button>
+                  </span>
+                  <span *appConsignacionesDirective="permisos[0]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="getConsignacionById(c.idConsignacion)"
+                      data-bs-toggle="modal" data-bs-target="#modalInfo"
+                      id="btn_historial_{{i+'a'}}">
+                      <i class="fa-solid fa-circle-info"></i> Ver Historial
+                    </button>
+                  </span>
+                  <span *appConsignacionesDirective="permisos[25]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="getConsignacionById(c.idConsignacion)"
+                      data-bs-toggle="modal" data-bs-target="#modalInfo"
+                      id="btn_historial_{{i+'a'}}">
+                      <i class="fa-solid fa-circle-info"></i> Ver Historial
+                    </button>
+                  </span>
+                  <span *appConsignacionesDirective="permisos[26]">
+                    <button class="dropdown-item"
+                      *ngIf="!botones[i]"
+                      (click)="getConsignacionById(c.idConsignacion)"
+                      data-bs-toggle="modal" data-bs-target="#modalInfo"
+                      id="btn_historial_{{i}}">
+                      <i class="fa-solid fa-circle-info"></i> Ver Historial
+                    </button>
+                  </span>
+                </li>
 
-            <!-- VER COMPROBANTE -->
-            <span *appConsignacionesDirective="permisos[14]">
-              <span *appConsignacionesDirective="permisos[3]">
-                <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
-                  class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"
-                  id="btn_comprobante_{{i}}"><i class="fa-regular fa-image"></i></button>
-              </span>
+                <!-- COMPROBAR CONSIGNACIONES -->
+                <li *appConsignacionesDirective="permisos[3]">
+                  <button class="dropdown-item"
+                    *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+                    (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO', 'COMPROBADAS')"
+                    id="btn_comprobar_consignaciones_{{i}}">
+                    <i class="fa-solid fa-check"></i> Comprobar
+                  </button>
+                </li>
+                <li *appConsignacionesDirective="permisos[26]">
+                  <button class="dropdown-item"
+                    *ngIf="!botones[i]"
+                    (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO', 'COMPROBADAS')"
+                    id="btn_comprobar_consignaciones_{{i}}">
+                    <i class="fa-solid fa-check"></i> Comprobar
+                  </button>
+                </li>
 
-              <span *appConsignacionesDirective="permisos[4]">
-                <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
-                  class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"
-                  id="btn_comprobante_{{i}}"><i class="fa-regular fa-image"></i></button>
-              </span>
+                <!-- SUBIR ARCHIVO -->
+                <li *appConsignacionesDirective="permisos[4]">
+                  <button class="dropdown-item"
+                    *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado && c.sede == sedeUser"
+                    (click)="subirArchivo(c.idConsignacion, i)"
+                    id="btn_subir_archivo_{{i}}">
+                    <i class="fa-solid fa-upload"></i> Subir Comprobante
+                  </button>
+                </li>
 
-              <span *appConsignacionesDirective="permisos[0]">
-                <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
-                  class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"
-                  id="btn_comprobante_{{i+'a'}}"><i class="fa-regular fa-image"></i></button>
-              </span>
-              <span *appConsignacionesDirective="permisos[25]">
-                <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
-                  class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"
-                  id="btn_comprobante_{{i+'a'}}"><i class="fa-regular fa-image"></i></button>
-              </span>
-              <span *appConsignacionesDirective="permisos[26]">
-                <button *ngIf="!botones[i]" (click)="img(c.comprobantes.dataURI + ',' + c.comprobantes.rutaArchivo)"
-                  class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalImage"
-                  id="btn_comprobante_{{i}}"><i class="fa-regular fa-image"></i></button>
-              </span>
-            </span>
+                <!-- APLICAR CONSIGNACIONES -->
+                <li *appConsignacionesDirective="permisos[4]">
+                  <button class="dropdown-item"
+                    *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado && c.sede == sedeUser"
+                    (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO', 'APLICADAS')"
+                    id="btn_aplicar_consignaciones_{{i}}">
+                    <i class="fa-solid fa-check"></i> Aplicar
+                  </button>
+                </li>
 
-            <!-- VER HISTORIAL -->
-            <span *appConsignacionesDirective="permisos[15]">
-              <span *appConsignacionesDirective="permisos[3]">
-                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                  class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo"
-                  id="btn_historial_{{i}}"><i class="fa-solid fa-circle-info"></i></button>
-              </span>
+                <!-- DEVOLVER DE COMPROBADAS -->
+                <li *appConsignacionesDirective="permisos[3]">
+                  <button class="dropdown-item"
+                    *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+                    (click)="devolver(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD', 'COMPROBADAS')"
+                    data-bs-toggle="modal" data-bs-target="#modalObservacion"
+                    id="btn_devolver_comprobadas_{{i}}">
+                    <i class="fa-solid fa-backward"></i> Devolver Comprobadas
+                  </button>
+                </li>
 
-              <span *appConsignacionesDirective="permisos[4]">
-                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                  class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo"
-                  id="btn_historial_{{i}}"><i class="fa-solid fa-circle-info"></i></button>
-              </span>
-              <span *appConsignacionesDirective="permisos[0]">
-                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                  class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo"
-                  id="btn_historial_{{i+'a'}}"><i class="fa-solid fa-circle-info"></i></button>
-              </span>
-              <span *appConsignacionesDirective="permisos[25]">
-                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                  class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo"
-                  id="btn_historial_{{i+'a'}}"><i class="fa-solid fa-circle-info"></i></button>
-              </span>
-              <span *appConsignacionesDirective="permisos[26]">
-                <button *ngIf="!botones[i]" (click)="getConsignacionById(c.idConsignacion)"
-                  class="btn btn-sm btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalInfo"
-                  id="btn_historial_{{i}}"><i class="fa-solid fa-circle-info"></i></button>
-              </span>
-            </span>
+                <!-- CANCELAR CONSIGNACIONES -->
+                <li *appConsignacionesDirective="permisos[26]">
+                  <button class="dropdown-item"
+                    *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
+                    (click)="cancelarConsignacion(c.idConsignacion, i, 'CANCELADO', '')"
+                    id="btn_cancelar_{{i}}">
+                    <i class="fa-solid fa-rectangle-xmark"></i> Cancelar
+                  </button>
+                </li>
 
-            <!-- COMPROBAR CONSIGNACIONES -->
-            <span *appConsignacionesDirective="permisos[3]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO', 'COMPROBADAS')"
-                class="btn btn-sm btn-warning ms-2" id="btn_comprobar_consignaciones_{{i}}"><i
-                  class="fa-solid fa-check"></i></button>
-            </span>
-            <span *appConsignacionesDirective="permisos[3]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO', '')" class="b btn btn-sm ms-2"
-                id="btn_comprobar_consignaciones_x{{i}}" style="display: none;"><i
-                  class="fa-solid fa-xmark"></i></button>
-            </span>
-            <span *appConsignacionesDirective="permisos[26]">
-              <button *ngIf="!botones[i]"
-                (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO', 'COMPROBADAS')"
-                class="btn btn-sm btn-warning ms-2" id="btn_comprobar_consignaciones_{{i}}"><i
-                  class="fa-solid fa-check"></i></button>
-            </span>
-            <span *appConsignacionesDirective="permisos[26]">
-              <button *ngIf="!botones[i]" (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'COMPROBADO', '')"
-                class="b btn btn-sm ms-2" id="btn_comprobar_consignaciones_x{{i}}" style="display: none;"><i
-                  class="fa-solid fa-xmark"></i></button>
-            </span>
+                <!-- DEVOLVER APLICADAS -->
+                <li *appConsignacionesDirective="permisos[4]">
+                  <button class="dropdown-item"
+                    *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado && c.sede == sedeUser"
+                    (click)="devolver(c.idConsignacion, i, 'DEVUELTA CAJA', 'APLICADAS')"
+                    data-bs-toggle="modal" data-bs-target="#modalObservacion"
+                    id="btn_devolver_aplicadas_{{i}}">
+                    <i class="fa-solid fa-backward"></i> Devolver Aplicadas
+                  </button>
+                </li>
 
-
-            <!-- APLICAR CONSIGNACIONES -->
-            <span *appConsignacionesDirective="permisos[4]">
-              <button
-                *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado && c.sede == sedeUser"
-                (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO', 'APLICADAS')"
-                class="btn btn-sm btn-warning ms-2" id="btn_aplicar_consignaciones_{{i}}"><i
-                  class="fa-solid fa-check"></i></button>
-            </span>
-            <span *appConsignacionesDirective="permisos[4]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="cambiarConsignacionTemporal(c.idConsignacion, i, 'APLICADO', '')" class="b btn btn-sm ms-2"
-                id="btn_aplicar_consignaciones_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
-            </span>
-
-            <!-- DEVOLVER DE COMPROBADAS -->
-            <span *appConsignacionesDirective="permisos[3]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD', 'COMPROBADAS')"
-                class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion"
-                id="btn_devolver_comprobadas_{{i}}"><i class="fa-solid fa-backward"></i></button>
-            </span>
-            <span *appConsignacionesDirective="permisos[3]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="cambiarDevolver(c.idConsignacion, i, 'ACTIVAR', 'DEVUELTA CONTABILIDAD')"
-                class="b btn btn-sm ms-2" id="btn_devolver_comprobadas_x{{i}}" style="display: none;"><i
-                  class="fa-solid fa-xmark"></i></button>
-            </span>
-            <span *appConsignacionesDirective="permisos[26]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CONTABILIDAD', 'COMPROBADAS')"
-                class="btn btn-sm btn-warning ms-2 d-none" data-bs-toggle="modal" data-bs-target="#modalObservacion"
-                id="btn_devolver_comprobadas_{{i}}"><i class="fa-solid fa-backward"></i></button>
-            </span>
-
-            <!-- CANCELAR CONSIGNACIONES -->
-            <span *appConsignacionesDirective="permisos[26]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="cancelarConsignacion(c.idConsignacion, i, 'CANCELADO', '')" class="btn btn-sm ms-2"
-                id="btn_cancelar_{{i}}" style="background-color: #960010;">
-                <i class="fa-solid fa-rectangle-xmark" style="color: white;"></i></button>
-            </span>
-            <span *appConsignacionesDirective="permisos[26]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="cambiarDevolver(c.idConsignacion, i, 'ACTIVAR', '')" class="b btn btn-sm ms-2"
-                id="btn_cancelar_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
-            </span>
-
-            <!-- DEVOLVER APLICADAS -->
-            <span *appConsignacionesDirective="permisos[4]">
-              <button
-                *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado && c.sede == sedeUser"
-                (click)="devolver(c.idConsignacion, i, 'DEVUELTA CAJA', 'APLICADAS')"
-                class="btn btn-sm btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalObservacion"
-                id="btn_devolver_aplicadas_{{i}}"><i class="fa-solid fa-backward"></i></button>
-            </span>
-            <span *appConsignacionesDirective="permisos[4]">
-              <button *ngIf="!botones[i] && estadoConsignacion == c.actualizaciones[0].estado.estado"
-                (click)="cambiarDevolver(c.idConsignacion, i, 'ACTIVAR', 'DEVUELTA CAJA')" class="b btn btn-sm ms-2"
-                id="btn_devolver_aplicadas_x{{i}}" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
-            </span>
+              </ul>
+            </div>
           </td>
-
         </tr>
       </tbody>
 
