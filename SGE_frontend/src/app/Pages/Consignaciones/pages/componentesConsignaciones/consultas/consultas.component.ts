@@ -88,6 +88,10 @@ export class ConsultasComponent implements OnInit {
     // 26
     "CONSULTAR CONCILIADOS"
   ]
+
+  // COMPROBANTE CAJERA
+  verComprobante: boolean = false;
+
   idActualizaciones: number[] = []
   btnEliminar: boolean = true
   btnLoadingEliminar: boolean = false
@@ -721,10 +725,13 @@ export class ConsultasComponent implements OnInit {
     this.base64 = dataURI
   }
 
+  imgComprobanteCajera(dataURI: string) {
+    this.verComprobante = true
+    this.base64 = dataURI
+  }
+
   //OBTENER LA CONSIGNACION POR ID (PARA EDITAR Y OTRAS FUNCIONES)
   public getConsignacionById(id: number) {
-
-
     this.consultarService.getConsignacionById(id).subscribe(
       (data: any) => {
         this.cuentasPorCobrar.cuentasCobrar = []
@@ -2149,20 +2156,20 @@ export class ConsultasComponent implements OnInit {
  subirArchivo(idConsignacion: number, index: number) {
   const input = document.createElement('input');
   input.type = 'file';
-  input.accept = '.pdf,.jpg,.jpeg,.png'; // lo que quieras permitir
+  input.accept = '.pdf,.jpg,.jpeg,.png'; 
 
   input.onchange = (event: any) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.readAsDataURL(file); // convierte a Base64
+      reader.readAsDataURL(file); 
       reader.onload = () => {
         const base64 = reader.result as string;
         console.log('Archivo en Base64:', base64);
         
         Swal.fire('Comprobante guardado', 'Comprobante guardado con éxito', 'success')
 
-        // Aquí llamas tu servicio para guardar el archivo en tu backend
+        this.imgComprobanteCajera(base64);
         // this.miServicio.subirArchivo({
         //   idConsignacion,
         //   archivoBase64: base64,

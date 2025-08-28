@@ -318,6 +318,7 @@
 .dropdown-item .fa-upload { color: #fd7e14; }       /* Naranja Upload */
 .dropdown-item .fa-backward { color: #ffc107; }     /* Amarillo */
 .dropdown-item .fa-rectangle-xmark { color: #dc3545; } /* Rojo Cancelar */
+.dropdown-item .fa-receipt { color: #6f42c1; } /* Violeta Factura */
 
 td.acciones-col {
   text-align: center;         /* Centra horizontal */
