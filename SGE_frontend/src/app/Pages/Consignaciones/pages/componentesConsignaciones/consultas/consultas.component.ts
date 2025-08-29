@@ -289,29 +289,95 @@ export class ConsultasComponent implements OnInit {
   //VALIDACION DE LOS CAMPOS DE CONSIGNACION PARA EDITAR
   validateNewConsignacion() {
     if (this.modal.numeroRecibo.trim() == '' || this.modal.numeroRecibo.trim() == null) {
-      Swal.fire('Error', 'Digite un Número de Recibo', 'error')
+       Swal.fire({
+          title: 'Error!',
+          text: 'Digte el Número de Recibo',
+          icon: 'success',
+          iconColor: '#811919',
+          confirmButtonColor: '#811919',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
+        });
       return
     }
     if (this.modal.valor == 0 || this.modal.valor == null) {
-      Swal.fire('Error', 'Digite un Valor', 'error')
+      Swal.fire({
+          title: 'Error!',
+          text: 'Digite un Valor',
+          icon: 'success',
+          iconColor: '#811919',
+          confirmButtonColor: '#811919',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
+        });
       return
     }
     if (this.modal.fechaPago instanceof Date || this.modal.fechaPago == null) {
-      Swal.fire('Error', 'Seleccione Una Fecha de Pago', 'error')
+      Swal.fire({
+          title: 'Error!',
+          text: 'Seleccione Una Fecha de Pago',
+          icon: 'success',
+          iconColor: '#811919',
+          confirmButtonColor: '#811919',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
+        });
       return
     }
     if (this.modal.obligaciones.length <= 0 || this.modal.obligaciones == null) {
       if (this.cuentasPorCobrar.cuentasCobrar.length <= 0 || this.cuentasPorCobrar.cuentasCobrar == null) {
-        Swal.fire('Error', 'Debe de Tener al Menos Una Obligación Seleccionada', 'error')
+        Swal.fire({
+          title: 'Error!',
+          text: 'Debe de Tener al Menos Una Obligación Seleccionada',
+          icon: 'success',
+          iconColor: '#811919',
+          confirmButtonColor: '#811919',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
+        });
         return
       }
     }
     if (this.modal.idPlataforma == 0 || this.modal.idPlataforma == null) {
-      Swal.fire('Error', 'Seleccione Una Plataforma', 'error')
+      Swal.fire({
+          title: 'Error!',
+          text: 'Seleccione Una Plataforma',
+          icon: 'success',
+          iconColor: '#811919',
+          confirmButtonColor: '#811919',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
+        });
       return
     }
     if (this.modal.estado == '' || this.modal.estado == null) {
-      Swal.fire('Error', 'Seleccione Un Estado', 'error')
+      Swal.fire({
+          title: 'Error!',
+          text: 'Seleccione Un Estado',
+          icon: 'success',
+          iconColor: '#811919',
+          confirmButtonColor: '#811919',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
+        });
       return
     }
 
@@ -321,7 +387,18 @@ export class ConsultasComponent implements OnInit {
 
   editarConsignacion() {
     if (this.modal.observaciones == '' || this.modal.observaciones == null) {
-      Swal.fire('Error', 'Ingrese La Observación Correspondiente', 'error')
+      Swal.fire({
+          title: 'Error!',
+          text: 'Ingrese la Observación correspondiente',
+          icon: 'success',
+          iconColor: '#811919',
+          confirmButtonColor: '#811919',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
+        });
       return
     }
     this.editarCon = true
@@ -336,14 +413,36 @@ export class ConsultasComponent implements OnInit {
 
       this.consultarService.updateConsignacion(this.modal).subscribe(
         (data: any) => {
-          Swal.fire('Datos Guardados', 'Consignación Actualizada Con éxito', 'success')
+           Swal.fire({
+              title: 'Actualizada!',
+              text: 'Consignación Actualizada Con Éxito',
+              icon: 'success',
+              iconColor: '#28a745',
+              confirmButtonColor: '#28a745',
+              timer: 2000,
+              showConfirmButton: false,
+              customClass: {
+                popup: 'rounded-4'
+              }
+            });
           this.editarCon = false
           $('#modalObs').modal('hide');
           setTimeout(() => {
             window.location.reload()
           }, 3000);
         }, (error: any) => {
-          Swal.fire('Error', 'Error al Actualizar La Consignación', 'error')
+          Swal.fire({
+            title: 'Error!',
+            text: 'Error Al Actualizar La Consignación',
+            icon: 'success',
+            iconColor: '#811919',
+            confirmButtonColor: '#811919',
+            timer: 2000,
+            showConfirmButton: false,
+            customClass: {
+              popup: 'rounded-4'
+            }
+          });
           this.editarCon = false
 
         }
@@ -435,7 +534,18 @@ export class ConsultasComponent implements OnInit {
             c.actualizaciones = c.actualizaciones.filter((a: any) => a.isCurrent == true)
           })
           if (this.con.length <= 0) {
-            Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+            Swal.fire({
+              title: 'Error!',
+              text: 'No hay Consignaciones Disponibles',
+              icon: 'success',
+              iconColor: '#811919',
+              confirmButtonColor: '#811919',
+              timer: 2000,
+              showConfirmButton: false,
+              customClass: {
+                popup: 'rounded-4'
+              }
+            });
             return
           }
 
@@ -508,8 +618,6 @@ export class ConsultasComponent implements OnInit {
             Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
             return
           }
-
-
         }, (error: any) => {
 
         }
@@ -571,7 +679,18 @@ export class ConsultasComponent implements OnInit {
           this.botones = new Array<boolean>(this.con.length).fill(false)
 
           if (this.con.length <= 0) {
-            Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+            Swal.fire({
+              title: 'Error!',
+              text: 'No hay Consignaciones Disponibles',
+              icon: 'success',
+              iconColor: '#811919',
+              confirmButtonColor: '#811919',
+              timer: 2000,
+              showConfirmButton: false,
+              customClass: {
+                popup: 'rounded-4'
+              }
+            });
             return
           }
 
@@ -638,7 +757,18 @@ export class ConsultasComponent implements OnInit {
             this.botones = new Array<boolean>(this.con.length).fill(false)
 
             if (this.con.length <= 0) {
-              Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+              Swal.fire({
+                title: 'Error!',
+                text: 'No hay Consignaciones Disponibles',
+                icon: 'success',
+                iconColor: '#811919',
+                confirmButtonColor: '#811919',
+                timer: 2000,
+                showConfirmButton: false,
+                customClass: {
+                  popup: 'rounded-4'
+                }
+              });
               return
             }
 
@@ -703,7 +833,18 @@ export class ConsultasComponent implements OnInit {
             this.botones = new Array<boolean>(this.con.length).fill(false)
 
             if (this.con.length <= 0) {
-              Swal.fire('Error', 'No hay Consignaciones Disponibles', 'error')
+              Swal.fire({
+                title: 'Error!',
+                text: 'No hay Consignaciones Disponibles',
+                icon: 'success',
+                iconColor: '#811919',
+                confirmButtonColor: '#811919',
+                timer: 2000,
+                showConfirmButton: false,
+                customClass: {
+                  popup: 'rounded-4'
+                }
+              });
               return
             }
 
@@ -713,12 +854,7 @@ export class ConsultasComponent implements OnInit {
           }
         )
       }
-
-
     }
-
-
-
   }
 
   img(dataURI: string) {
@@ -784,7 +920,6 @@ export class ConsultasComponent implements OnInit {
 
   //BUSCAR UNA OBLIGACION SEGUN LA CEDULA DEL CLIENTE
   getObligacionByCedula() {
-
     const cedula = this.cedulaEditar.trim()
     if (cedula.trim() == '' || isNaN(parseInt(cedula))) {
       Swal.fire('Error', 'Debe de Ingresar una Cédula Válida', 'error')
@@ -805,7 +940,18 @@ export class ConsultasComponent implements OnInit {
           }
 
           if (this.cuentasPorCobrar.cuentasCobrar.length <= 0) {
-            Swal.fire('Error', 'La Cédula No Pertenece A un Cliente', 'error')
+            Swal.fire({
+              title: 'Error!',
+              text: 'La Cédula No Pertenece a Ningún Cliente ',
+              icon: 'success',
+              iconColor: '#811919',
+              confirmButtonColor: '#811919',
+              timer: 2000,
+              showConfirmButton: false,
+              customClass: {
+                popup: 'rounded-4'
+              }
+            });
             this.showCliente()
             this.getAllAsesores()
             this.buscarObli = false
@@ -814,7 +960,18 @@ export class ConsultasComponent implements OnInit {
           }
 
         }, (error: any) => {
-          Swal.fire('Error', 'Error Al Traer Las Obligaciones', 'error')
+          Swal.fire({
+            title: 'Error!',
+            text: 'Error Al Traer Las Obligaciones',
+            icon: 'success',
+            iconColor: '#811919',
+            confirmButtonColor: '#811919',
+            timer: 2000,
+            showConfirmButton: false,
+            customClass: {
+              popup: 'rounded-4'
+            }
+          });
           this.check = false
           this.buscarObli = false
           this.cedulaEditar = ''
@@ -822,8 +979,6 @@ export class ConsultasComponent implements OnInit {
         }
       )
     }, 2000);
-
-
   }
 
   showCliente() {
@@ -977,7 +1132,18 @@ export class ConsultasComponent implements OnInit {
   saveObservacion() {
 
     if (this.observacionDto.detalle.trim() == '' || this.observacionDto.detalle.trim() == null) {
-      Swal.fire('Error', 'Debe de Ingresar un Detalle', 'error')
+      Swal.fire({
+          title: 'Error!',
+          text: 'Debe de Ingresar un Detalle',
+          icon: 'success',
+          iconColor: '#811919',
+          confirmButtonColor: '#811919',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
+        });
       return
     }
 
@@ -993,7 +1159,18 @@ export class ConsultasComponent implements OnInit {
 
       this.consultarService.saveObservacion(this.observacionDto).subscribe(
         (data: any) => {
-          Swal.fire('Datos Guardados', 'Observacion Guardada Con Éxito', 'success')
+           Swal.fire({
+            title: 'Guardada!',
+            text: 'Observacion Guardada Con Éxito',
+            icon: 'success',
+            iconColor: '#28a745',
+            confirmButtonColor: '#28a745',
+            timer: 2000,
+            showConfirmButton: false,
+            customClass: {
+              popup: 'rounded-4'
+            }
+          });
           this.crearObs = false
           this.detalle.observaciones.push(data)
 
@@ -1018,7 +1195,18 @@ export class ConsultasComponent implements OnInit {
         this.estadoA = data
       }, (error: any) => {
 
-        Swal.fire('Error', 'Error al cargar los estados', 'error')
+        Swal.fire({
+          title: 'Error!',
+          text: 'Error al cargar los estados',
+          icon: 'success',
+          iconColor: '#811919',
+          confirmButtonColor: '#811919',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
+        });
       }
     )
   }
@@ -1027,7 +1215,18 @@ export class ConsultasComponent implements OnInit {
   filter() {
     this.con = []
     if (this.estado == 'null' && this.fecha == 'null' && this.sede == 'null') {
-      Swal.fire('Error', 'Debe de Seleccionar Al Menos Un Dato', 'error')
+      Swal.fire({
+          title: 'Error!',
+          text: 'Debe de Seleccionar Al Menos Un Dato',
+          icon: 'success',
+          iconColor: '#811919',
+          confirmButtonColor: '#811919',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
+        });
       return
     }
     this.botonFiltrar = true
@@ -1072,7 +1271,13 @@ export class ConsultasComponent implements OnInit {
         icon: 'error',
         title: 'Error',
         text: 'Digite Una Cédula Válida',
-        timer: 3000
+        iconColor: '#811919',
+          confirmButtonColor: '#811919',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
       })
     }
     this.consultarService.getConsignacionByCedula(this.cedula, this.pages, this.size).subscribe(
@@ -1082,7 +1287,13 @@ export class ConsultasComponent implements OnInit {
             icon: 'error',
             title: 'Error',
             text: 'No Hay Consignaciones Con Este Filtro',
-            timer: 3000
+            iconColor: '#811919',
+            confirmButtonColor: '#811919',
+            timer: 2000,
+            showConfirmButton: false,
+            customClass: {
+              popup: 'rounded-4'
+            }
           })
           return
         }
@@ -1628,12 +1839,18 @@ export class ConsultasComponent implements OnInit {
           this.enviarIsSelected(this.isSelected)
 
         }
-
         this.cambios = true
         Swal.fire({
           title: "Consignación Cancelada",
           text: "La Consignación Ha Sido Cancelada con éxito",
-          icon: "success"
+          icon: "success",
+          iconColor: '#28a745',
+          confirmButtonColor: '#28a745',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
         });
       }
     });
@@ -1685,13 +1902,35 @@ export class ConsultasComponent implements OnInit {
   //AL ARRAY RESPECTIVO PARA GUARDARLOS SI ES NECESARIO
   agregarDevolucion() {
     if (this.cambiarEstado.observacion.trim() == '' || this.cambiarEstado.observacion.trim() == null) {
-      Swal.fire('Error', 'Digite Una Observación', 'error')
+      Swal.fire({
+          title: 'Error!',
+          text: 'Digite Una Observación',
+          icon: 'success',
+          iconColor: '#811919',
+          confirmButtonColor: '#811919',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
+        });
       return
     }
 
     if (this.validarPermiso('COMPROBAR CONSIGNACIONES')) {
       if (this.cambiarEstado.estado.trim() == '' || this.cambiarEstado.estado.trim() == null) {
-        Swal.fire('Error', 'Elija Un Estado Para La Devolución', 'error')
+        Swal.fire({
+          title: 'Error!',
+          text: 'Elija Un Estado Para La Devolución',
+          icon: 'success',
+          iconColor: '#811919',
+          confirmButtonColor: '#811919',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'rounded-4'
+          }
+        });
         return
       }
     }
@@ -1759,11 +1998,21 @@ export class ConsultasComponent implements OnInit {
 
     this.botonCambiarConsignacion = true
 
-
     setTimeout(() => {
       this.consultarService.cambiarEstadoConsignacion(this.cambioArray, this.tipoReporte).subscribe(
         (data: any) => {
-          Swal.fire('Datos Guardados', 'Cambio Realizado Con Éxito', 'success')
+           Swal.fire({
+            title: 'Guardada!',
+            text: 'Cambio Realizado Con Éxito',
+            icon: 'success',
+            iconColor: '#28a745',
+            confirmButtonColor: '#28a745',
+            timer: 2000,
+            showConfirmButton: false,
+            customClass: {
+              popup: 'rounded-4'
+            }
+          });
           this.botonCambiarConsignacion = false
           setTimeout(() => {
             window.location.reload()
@@ -1806,7 +2055,18 @@ export class ConsultasComponent implements OnInit {
 
     this.cambioArray = []
 
-    Swal.fire('Datos Guardados', 'Cambios Cancelados Con Éxito', 'success')
+     Swal.fire({
+        title: 'Guardada!',
+        text: 'Cambios Cancelados Con Éxito',
+        icon: 'success',
+        iconColor: '#28a745',
+        confirmButtonColor: '#28a745',
+        timer: 2000,
+        showConfirmButton: false,
+        customClass: {
+          popup: 'rounded-4'
+        }
+      });
 
     setTimeout(() => {
       window.location.reload()
@@ -1839,7 +2099,13 @@ export class ConsultasComponent implements OnInit {
             icon: 'success',
             title: 'Datos Guardados',
             text: 'Reporte Generado Con Éxito',
-            timer: 3000
+            timer: 2000,
+            iconColor: '#811919',
+            confirmButtonColor: '#811919',
+            showConfirmButton: false,
+            customClass: {
+              popup: 'rounded-4'
+            }
           })
           this.botonGenerarPendientes = false
         }, (error: any) => {
@@ -1848,7 +2114,13 @@ export class ConsultasComponent implements OnInit {
             icon: 'error',
             title: 'Error',
             text: 'Error Al Generar El Reporte',
-            timer: 3000
+            timer: 2000,
+            iconColor: '#811919',
+            confirmButtonColor: '#811919',
+            showConfirmButton: false,
+            customClass: {
+              popup: 'rounded-4'
+            }
           })
           this.botonGenerarPendientes = false
         }
@@ -1884,7 +2156,13 @@ export class ConsultasComponent implements OnInit {
             icon: 'error',
             title: 'Error',
             text: 'No se Encontraron Consignaciones Con Estos Filtros',
-            timer: 3000
+            timer: 3000,
+            iconColor: '#811919',
+            confirmButtonColor: '#811919',
+            showConfirmButton: false,
+            customClass: {
+              popup: 'rounded-4'
+            }
           })
           this.spinner = false
           this.botonFiltrar = false
@@ -2154,43 +2432,53 @@ export class ConsultasComponent implements OnInit {
   }
 
  subirArchivo(idConsignacion: number, index: number) {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.pdf,.jpg,.jpeg,.png'; 
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.pdf,.jpg,.jpeg,.png'; 
 
-  input.onchange = (event: any) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file); 
-      reader.onload = () => {
-        const base64 = reader.result as string;
-        console.log('Archivo en Base64:', base64);
-        
-        Swal.fire('Comprobante guardado', 'Comprobante guardado con éxito', 'success')
+    input.onchange = (event: any) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file); 
+        reader.onload = () => {
+          const base64 = reader.result as string;
+          console.log('Archivo en Base64:', base64);
+          
+          Swal.fire({
+            title: 'Comprobante guardado!',
+            text: 'Comprobante guardado correctamente',
+            icon: 'success',
+            iconColor: '#28a745',
+            confirmButtonColor: '#28a745',
+            timer: 2500,
+            showConfirmButton: false,
+            customClass: {
+              popup: 'rounded-4'
+            }
+          });
 
-        this.imgComprobanteCajera(base64);
-        // this.miServicio.subirArchivo({
-        //   idConsignacion,
-        //   archivoBase64: base64,
-        //   nombre: file.name,
-        //   tipo: file.type
-        // }).subscribe({
-        //   next: (resp) => {
-        //     console.log('Archivo guardado correctamente:', resp);
-        //   },
-        //   error: (err) => {
-        //     console.error('Error al subir archivo:', err);
-        //   }
-        // });
-      };
-      reader.onerror = (error) => {
-        console.error('Error leyendo el archivo:', error);
-      };
-    }
-  };
+          this.imgComprobanteCajera(base64);
+          // this.miServicio.subirArchivo({
+          //   idConsignacion,
+          //   archivoBase64: base64,
+          //   nombre: file.name, 
+          //   tipo: file.type
+          // }).subscribe({
+          //   next: (resp) => {
+          //     console.log('Archivo guardado correctamente:', resp);
+          //   },
+          //   error: (err) => {
+          //     console.error('Error al subir archivo:', err);
+          //   }
+          // });
+        };
+        reader.onerror = (error) => {
+          console.error('Error leyendo el archivo:', error);
+        };
+      }
+    };
 
-  input.click();
-}
-
+    input.click();
+ }
 }
