@@ -7,6 +7,7 @@ import { OpcionesComponent } from './componentesGenerales/opciones/opciones.comp
 import { SidebarComponent } from './componentesGenerales/sidebar/sidebar.component';
 import { DashboardComponent } from './Pages/Cartera/pages/dashboard/dashboard.component';
 import { NavbarComponent } from './componentesGenerales/navbar/navbar.component';
+import { RouterModule } from '@angular/router'
 
 import { PerfilUsuarioComponent } from './componentesGenerales/perfil-usuario/perfil-usuario.component';
 import { GestionComponent } from './componentesGenerales/sources/cartera/gestion/gestion.component';
@@ -120,7 +121,8 @@ import { IngresosDiariosComponent } from './Pages/Caja/componentes-caja/ingresos
 import { TipoIngresoComponent } from './Pages/Caja/componentes-caja/tipo-ingreso/tipo-ingreso.component';
 import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-mensual/cuadre-mensual.component';
 import { TipoReporteComponent } from './Pages/Caja/componentes-caja/tipo-reporte/tipo-reporte.component';
-
+import { VerTransaccionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ver-transaccion/ver-transaccion.component';
+import { CrearLinkComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/crear-link/crear-link.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -220,6 +222,8 @@ import { TipoReporteComponent } from './Pages/Caja/componentes-caja/tipo-reporte
     IngresosDiariosComponent,
     TipoIngresoComponent,
     CuadreMensualComponent,
+    CrearLinkComponent,
+    VerTransaccionComponent,
   ],
 
   imports: [
