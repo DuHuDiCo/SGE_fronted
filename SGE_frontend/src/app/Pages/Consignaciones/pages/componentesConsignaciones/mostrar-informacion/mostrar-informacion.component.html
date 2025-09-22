@@ -1,0 +1,96 @@
+<h1 class="titulo"><strong>Detalles del link de pago</strong></h1>
+<hr class="border-4 mb-4">
+
+<div *ngIf="datosUsuario" class="row">
+
+  <div class="col-md-6">
+    <div class="info-card">
+      <h2><strong>Recibir pagos</strong></h2>
+
+      <div class="content-card-vertical">
+
+        <div class="lado">
+          <p><strong>Producto o servicio:</strong><br> {{ datosUsuario.name }}</p>
+        </div>
+        <div class="line-border-vertical"></div>
+        <div class="lado">
+          <p><strong>Descripción:</strong><br> {{ datosUsuario.description }}</p>
+        </div>
+
+      </div>
+
+      <div class="content-card-vertical">
+        <!-- Lado izquierdo -->
+        <div class="lado">
+          <p><strong>Valor:</strong><br>
+            <span *ngIf="precioamount_in_cents !== null; else clienteDefine">
+              COP ${{ precioMostrar | number:'1.2-2' }}
+            </span>
+            <ng-template #clienteDefine>
+              El cliente establece el precio
+            </ng-template>
+          </p>
+        </div>
+
+
+        <div class="line-border-vertical"></div>
+
+        <div class="lado">
+          <p>
+            <strong>Estado del link:</strong><br>
+            <span [ngClass]="{'text-success': datosUsuario.linkActivo, 'text-danger': !datosUsuario.linkActivo}">
+              {{ datosUsuario.linkActivo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <div class="content-card-vertical">
+        <div class="lado">
+          <p><strong>¿Uso único?</strong> <br> {{ datosUsuario.single_use === 'si' ? 'Sí' : 'No' }}</p>
+        </div>
+
+        <div class="line-border-vertical"></div>
+
+        <div class="lado">
+          <p><strong>¿Solicitar envío?</strong> <br> {{ datosUsuario.collect_shipping === 'si' ? 'Sí' : 'No' }}</p>
+        </div>
+      </div>
+
+      <div class="contenedor-crear mt-3">
+        <button class="guardar boton-izquierda">
+          Desactivar link
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Columna derecha -->
+  <div class="col-md-6 text-center">
+    <div class="info-card">
+      <h2><strong>Compártelo</strong></h2>
+      <div class="link-box">
+        <input type="text" [value]="linkPago" readonly class="form-control mb-2">
+        <button class="btn btn-success btn-sm" (click)="copiarLink()">Copiar al portapapeles</button>
+      </div>
+
+      <div class="qr-box my-3">
+        <qrcode [qrdata]="linkPago" [width]="200" [errorCorrectionLevel]="'M'"></qrcode>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Botones -->
+<div class="formulario mt-4">
+  <div class="contenedor-crear">
+    <button type="button" class="guardar boton-centro" (click)="volver()">Volver a Crear Link</button>
+  </div>
+</div>
+
+<!-- Si no hay datos -->
+<div *ngIf="!datosUsuario" class="error text-center">
+  <h2>Error</h2>
+  <p>No se encontró información del usuario.</p>
+  <button class="guardar" (click)="volver()">Ir a Crear Link</button>
+</div>

@@ -80,7 +80,7 @@ import { SidebarPerfilComponent } from './Pages/Perfil/componentes/sidebar-perfi
 
 import { ConfiguracionPerfilComponent } from './Pages/Perfil/configuracion-perfil/configuracion-perfil.component';
 import { DatosPerfilComponent } from './Pages/Perfil/componentes/datos-perfil/datos-perfil.component';
-import { FormsModule, ɵInternalFormsSharedModule } from '@angular/forms';
+import { FormsModule} from '@angular/forms';
 import { AgregarClienteModule } from './moduls/agregar-cliente/agregar-cliente.module';
 import { BuscarUsuariosComponent } from './Pages/AdminGeneral/Usuarios/listar-usuarios/listar-usuarios.component';
 import { RolesUsuarioComponent } from './Pages/Administracion/pages/componenetesAdminstracion/gestion-usuarios/roles-usuario/roles-usuario.component';
@@ -123,6 +123,10 @@ import { CuadreMensualComponent } from './Pages/Caja/componentes-caja/cuadre-men
 import { TipoReporteComponent } from './Pages/Caja/componentes-caja/tipo-reporte/tipo-reporte.component';
 import { VerTransaccionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ver-transaccion/ver-transaccion.component';
 import { CrearLinkComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/crear-link/crear-link.component';
+import { MostrarInformacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/mostrar-informacion/mostrar-informacion.component';
+ 
+import { QRCodeModule } from 'angularx-qrcode';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -224,6 +228,8 @@ import { CrearLinkComponent } from './Pages/Consignaciones/pages/componentesCons
     CuadreMensualComponent,
     CrearLinkComponent,
     VerTransaccionComponent,
+    MostrarInformacionComponent,
+    
   ],
 
   imports: [
@@ -233,7 +239,7 @@ import { CrearLinkComponent } from './Pages/Consignaciones/pages/componentesCons
     HttpClientModule,
     AgregarClienteModule,
     NgxPaginationModule,
-    CommonModule,
+    QRCodeModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     NgxUiLoaderHttpModule.forRoot({
       showForeground: true,

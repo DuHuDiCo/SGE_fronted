@@ -1,38 +1,125 @@
-<h1 class="titulo">Generar Link de Pago </h1><br>
+<h1 class="titulo">Crear Link</h1>
+<br>
 <hr class="border-4">
-<div class="row align-items-center">
-  <div class="row align-items-center">
-    <div class="col-md-12 col-12">
-      <div class="usuario mt-4">
-        <input name="numeroRecibo" type="text" class="input-usuario" placeholder="Número Del Recibo">
-      </div>
-    </div>
-    <div class="col-md-6 col-12">
-      <div class="usuario">
-        <input name="valor" type="text" class="input-usuario" placeholder="Valor">
-      </div>
-    </div>
-    <div class="col-md-6 col-12">
-      <div class="usuario">
-        <input name="fechaPago" type="date" class="input-usuario">
-      </div>
+
+<form (ngSubmit)="generarLink()" novalidate>
+
+  <!-- Nombre del producto o servicio -->
+  <div class="col-12">
+    <div class="usuario mt-4">
+      <label for="producto"><strong>Nombre del producto o servicio:</strong></label>
+      <input [(ngModel)]="datos.name" name="producto" id="producto" type="text" class="input-usuario"
+        placeholder="Ingresa el nombre del producto o servicio" required>
     </div>
   </div>
 
-  <div class="row align-items-end">
-    <div class="col-md-12 col-12">
-      <div class="usuario">
-        <select name="idPlataforma" class="form-select" required aria-label="select example">
-          <option value="0">Medio de Pago</option>
-          <option value="1">Bancolombia </option>
-          <option value="2">Nequi</option>
-          <option value="3"></option>
-        </select>
-      </div>
+  <!-- Descripción -->
+  <div class="col-12">
+    <div class="usuario mt-4">
+      <label for="descripcion"><strong>Descripción:</strong></label>
+      <textarea [(ngModel)]="datos.description" name="descripcion" id="descripcion" class="input-usuario"
+        placeholder="Escribe una descripción" rows="3"></textarea>
     </div>
   </div>
 
-  <div style="text-align: center;">
-    <button class="guardar" type="button">Guardar Consignaciones</button>
-  </div><br>
+   <!-- Moneda -->
+<div class="form-group mt-3">
+  <label for="currency"><strong>Moneda:</strong></label>
+  <select [(ngModel)]="datos.currency" name="currency" id="currency" class="form-select">
+    <option value="COP">COP - Peso colombiano</option>
+  </select>
 </div>
+
+  <!-- Precio -->
+  <div class="form-group">
+    <div class="usuario">
+      <label for="valor"><strong>Precio:</strong></label>
+      <input type="number" id="valor" class="input-usuario" [(ngModel)]="datos.amount_in_cents" name="valor"
+        [disabled]="valorEditable" placeholder="Ingrese el precio">
+    </div>
+
+    <!-- Checkbox cliente define precio -->
+    <div class="form-check mt-2">
+      <input type="checkbox" id="editarPrecio" class="form-check-input" [(ngModel)]="valorEditable"
+        name="valorEditable">
+      <label class="form-check-label" for="editarPrecio">
+        El cliente establece el precio
+      </label>
+    </div>
+
+   
+
+    <!-- Total -->
+    <div class="price-display mt-2">
+      <strong>Total a cobrar:</strong>
+      <span *ngIf="valorEditable">El cliente establece el precio</span>
+      <span *ngIf="!valorEditable">COP ${{ calcularTotal() | number:'1.0-0' }}</span>
+    </div>
+  </div>
+
+  <!-- Configuraciones adicionales -->
+  <div class="section mt-4">
+    <h2 class="section-title">Configuraciones adicionales</h2>
+
+    <!-- Solicitar envío -->
+    <div class="form-group">
+      <label for="solicitarEnvio"><strong>¿Solicitar información de envío?</strong></label>
+      <div class="description">
+        En caso de que necesites hacer un envío, se solicitará esta información al pagador
+      </div>
+      <select [(ngModel)]="datos.collect_shipping" name="solicitarEnvio" id="solicitarEnvio" class="form-select">
+        <option [ngValue]="true">Sí</option>
+        <option [ngValue]="false">No</option>
+      </select>
+    </div>
+
+    <!-- Pago único -->
+    <div class="form-group mt-3">
+      <label for="pagoUnico"><strong>¿Pago único?</strong></label>
+      <div class="description">
+        Inhabilitarás el link de pago después del primer pago aprobado
+      </div>
+      <select [(ngModel)]="datos.single_use" name="pagoUnico" id="pagoUnico" class="form-select">
+        <option [ngValue]="true">Sí</option>
+        <option [ngValue]="false">No</option>
+      </select>
+    </div>
+
+    <!-- Vencimiento
+    <div class="form-group mt-3">
+      <label for="vencimiento"><strong>¿Vencimiento del link de pago?</strong></label>
+      <div class="description">
+        Fecha y hora a partir de las cuales el link no podrá ser usado
+      </div>
+      <div class="usuario mt-3">
+        <input type="datetime-local" [(ngModel)]="datos.vencimiento" name="vencimiento" id="vencimiento"
+          class="input-usuario">
+      </div>
+    </div>
+  </div> -->
+
+    <!-- Botones -->
+    <div class="formulario mt-4">
+      <div class="contenedor-crear">
+        <button type="submit" class="guardar">Crear Link</button>
+      </div>
+      <div class="contenedor-limpiar">
+        <button type="button" class="guardar-secundario" (click)="limpiar()">Limpiar</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+
+<!-- <div class="form-group">
+          <label for="solicitarDocumento"><strong>¿Solicitar documento de identidad del pagador?</strong></label>
+          <div class="description">
+            Se le solicitará al pagador tipo y número de documento
+          </div>
+          <select [(ngModel)]="datos.solicitarDocumento" name="solicitarDocumento" id="solicitarDocumento"
+            class="form-select">
+            <option value="si">Sí</option>
+            <option value="no">No</option>
+          </select>
+        </div> -->

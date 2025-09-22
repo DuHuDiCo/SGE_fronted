@@ -15,6 +15,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthenticationService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    
     let authRequest = request;
     var fecha = this.authService.getFecha()
     if (fecha != null || fecha != undefined) {

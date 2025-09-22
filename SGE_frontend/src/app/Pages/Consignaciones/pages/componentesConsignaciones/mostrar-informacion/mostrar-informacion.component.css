@@ -1,0 +1,72 @@
+/* Título principal */
+.titulo {
+  text-align: center;
+}
+
+
+/* Contenedor general de los botones */
+.contenedor-crear {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* Botón de la izquierda */
+.boton-izquierda {
+  margin-left: 0;
+  /* aseguramos que pegue al borde */
+}
+
+/* Botón del centro */
+.boton-centro {
+  margin-left: 40%;
+}
+
+/* Botón principal */
+.guardar {
+  padding: 10px 20px;
+  border-radius: 18px;
+  height: 50px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+  background: #9C1717;
+  color: #fff;
+  border: none;
+  box-shadow: 2px 2px 2px #707274, -2px 0px 2px 0px #707274;
+}
+
+.guardar:hover {
+  background: #D60303;
+  transform: translateY(-1px);
+  box-shadow: 3px 3px 6px #707274, -3px -3px 6px #707274;
+}
+
+.content-card {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  margin-bottom: 15px;
+}
+
+.content-card-vertical {
+  display: flex;                  
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin: 5px;
+}
+
+.lado {
+  flex: 1;                        
+  padding: 0 10px;               
+}
+
+.line-border-vertical {
+  width: 1px;                      /* Grosor de la línea */
+  background-color: #999;           /* Color de la línea */
+  margin: 0 10px;                   /* Separación lateral de los bloques */
+}

@@ -1,106 +1,172 @@
-.titulo{
+.titulo {
     text-align: center;
 }
 
-.was-validated{
-    text-align: center;
-    color: #000;
-    width: 300px auto;
-    height: 300px auto;
-    position: relative;
-    margin: 0px 10px 40px 40px;
-    border-radius: 20px;
-    overflow: hidden;
-    background: #f2f3f5;
-    box-shadow: 10px 10px 20px #707274, -14px -9px 20px 5px #ffffff;
-}
-
-
-.abs-center {
-    margin: 35px;
-    align-items: center;
-    justify-content: center;
-}
-
-#contenedor1.row{
-    margin: 0;
-    padding: 0;
-}
-
-.usuario,.file{
+/* Campos de entrada */
+.usuario {
     border-radius: 25px;
     text-align: center;
     width: 100%;
     margin: 10px auto;
     background: #ecf0f3;
     box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
-
-}
-.file{
-    border-radius: 25px;
-    text-align: center;
-    width: 90%;
-    margin: 10px auto;
-    background: #ecf0f3;
 }
 
-.form-select{
-    border-radius: 25px;
-    text-align: center;
-    margin: 15px auto;
-    padding: 10px;
-    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
-}
-
-.input-usuario{
+.input-usuario {
     border: none;
     text-align: center;
     outline: none;
     background: none;
     font-size: 15px;
     margin: 13px 10px;
-    border-bottom: 10px;
     width: 90%;
 }
-.form-select{
+
+/* Select */
+.form-select {
+    border-radius: 25px;
+    text-align: center;
+    margin: 15px auto;
+    padding: 10px;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -10px -10px 20px #ffffff;
     border: none;
     outline: none;
-
 }
 
-
-.guardar{
-    display: block;
-    object-fit: cover;
+/* Mensajes de error */
+.mensaje-error {
+    background: #ecf0f3;
+    border-radius: 20px;
+    padding: 15px 20px;
     margin: 15px auto;
-    margin-top: 25px;
-    overflow: hidden;
-    padding: 10px;
-    color: #fff;
-    background: #9C1717;
-    cursor: pointer;
-    width: auto;
-    outline: none;
-    border: #cbced1;
+    text-align: center;
+    color: #9C1717;
+    font-weight: bold;
+    box-shadow: inset 2px 2px 5px #6d7072, inset -5px -5px 10px #ffffff;
+    border-left: 4px solid #9C1717;
+    max-width: 90%;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Botón principal (Crear Link centrado) */
+.contenedor-crear {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Botón secundario (Limpiar abajo izquierda fijo) */
+.contenedor-limpiar {
+
+    bottom: 20px;
+    left: 20px;
+}
+
+/* Estilos generales botones */
+.guardar,
+.guardar-secundario {
+    padding: 10px 20px;
     border-radius: 18px;
     height: 50px;
-    margin-bottom: 30px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+/* Botón principal */
+.guardar {
+    background: #9C1717;
+    color: #fff;
+    border: none;
     box-shadow: 2px 2px 2px #707274, -2px 0px 2px 0px #707274;
 }
-.guardar:hover{
-    background: #D60303 ;
+
+.guardar:hover {
+    background: #D60303;
+    transform: translateY(-1px);
+    box-shadow: 3px 3px 6px #707274, -3px -3px 6px #707274;
 }
 
-.input-usuario2 {
-    color: #000000;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
+/* Botón secundario */
+.guardar-secundario {
+    background: #ecf0f3;
+    color: #9C1717;
+    border: none;
+    box-shadow: 2px 2px 5px #6d7072, -2px -2px 5px #ffffff;
 }
 
-/* Media query for mobile-sized screens */
-@media (max-width: 576px) {
-    .container {
-        width: 400px;
+.guardar-secundario:hover {
+    background: #d4d8db;
+    transform: translateY(-1px);
+    box-shadow: inset 2px 2px 5px #6d7072, inset -2px -2px 5px #ffffff;
+}
+
+/* Inputs y selects deshabilitados */
+.input-usuario:disabled,
+.form-select:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background: #d4d8db;
+    color: #6d7072;
+}
+.checkbox-group {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.price-display {
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: center;
+  color: #000;
+}
+
+.description {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+
+/* Animación fadeIn */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
+
+/* Responsive */
+@media (max-width: 576px) {
+    .mensaje-error {
+        margin: 10px 5px;
+        padding: 12px;
+        font-size: 14px;
+    }
+}
+.price-display {
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: center;
+  color: #000;
+}
+
+.checkbox-group {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  color: #333;
+}
+

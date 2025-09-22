@@ -84,6 +84,7 @@ import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsi
 import { ReportesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/reportes/reportes.component';
 import { VerTransaccionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ver-transaccion/ver-transaccion.component';
 
+
 // Créditos
 import { DashboardCreditosComponent } from './Pages/Creditos/dashboard-creditos/dashboard-creditos.component';
 import { CrearCreditoComponent } from './Pages/Creditos/Componentes_creditos/crear-credito/crear-credito.component';
@@ -114,6 +115,10 @@ import { DashboardServiciosComponent } from './Pages/Servicios/dashboard-servici
 // Ventas
 import { DashboardVentasComponent } from './Pages/Ventas/dashboard-ventas/dashboard-ventas.component';
 import { ProcesoVentasComponent } from './Pages/Ventas/componentesVentas/proceso-ventas/proceso-ventas.component';
+import { MostrarInformacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/mostrar-informacion/mostrar-informacion.component';
+
+
+
 
 
 
@@ -296,13 +301,22 @@ const routes: Routes = [
         component: RankingsComponent,
       },
       {
-        path: 'crear-link', 
-        component: CrearLinkComponent
+        path: 'crear-link',
+        component: CrearLinkComponent,
       },
       {
         path: 'ver-transaccion',
         component: VerTransaccionComponent
       },
+      {
+        path: 'mostrar-informacion',
+        component: MostrarInformacionComponent
+      },
+      // {
+      //   path: 'ver-link',
+      //   component: MostrarInformacionComponent
+      // },
+
     ],
   },
 
@@ -500,4 +514,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
