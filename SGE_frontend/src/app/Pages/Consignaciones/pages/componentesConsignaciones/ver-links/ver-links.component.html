@@ -1,0 +1,74 @@
+<div class="caja">
+  <h1 class="titulo">Ver Links</h1><br>
+
+  <!-- Spinner -->
+  <div *ngIf="spinner" class="text-center">
+    <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <!-- Tabla de links -->
+  <div *ngIf="!spinner && links.length > 0" class="table-responsive text-center">
+    <table class="table table-bordered align-middle text-center">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Valor</th>
+          <th>Links</th>
+          <th>Fecha Creacion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let l of links | slice:(page-1)*size:(page*size); let i = index; trackBy: trackByLink">
+          <th scope="row">
+            {{ i + 1 + ((page - 1) * size) }}
+          </th>
+          <td>
+            COP ${{ (l.data.amount_in_cents / 100) | number:'1.2-2' }}
+          </td>
+          <td>
+            <a [href]="l.payment_link" target="_blank">
+              {{ l.payment_link }}
+            </a>
+            <i class="bi bi-copy" title="Copiar" style="cursor: pointer; margin-left: 8px;"
+              (click)="copiarLink(l.payment_link)">
+            </i>
+          </td>
+          <td>
+            {{l.creation_date ? (l.creation_date | date:'dd/MM/yyyy hh:mm a' ) : 'Sin fecha' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mensaje cuando no hay resultados -->
+  <div *ngIf="!spinner && links.length === 0" class="text-center mt-4">
+    <p>No se encontraron links generados.</p>
+  </div>
+</div>
+
+<!-- Paginación  -->
+<div class="d-flex justify-content-center mt-3 paginacion">
+  <button class="btn btn-paginacion" (click)="cambiarPagina(page - 1)" [disabled]="spinner || page === 1">
+    Anterior
+  </button>
+
+  <div class="dropdown mx-2">
+    <button class="btn btn-paginacion dropdown-toggle" type="button" data-bs-toggle="dropdown" [disabled]="spinner">
+      {{ page }}/{{ totalPaginas }}
+    </button>
+    <ul class="dropdown-menu text-center">
+      <li *ngFor="let _ of [].constructor(totalPaginas); let idx = index">
+        <a class="dropdown-item" (click)="cambiarPagina(idx + 1)">
+          Página {{ idx + 1 }}
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <button class="btn btn-paginacion" (click)="cambiarPagina(page + 1)" [disabled]="spinner || page === totalPaginas">
+    Siguiente
+  </button>
+</div>

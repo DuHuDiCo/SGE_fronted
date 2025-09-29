@@ -83,7 +83,7 @@ import { IngresarComponent } from './Pages/Consignaciones/pages/componentesConsi
 import { RankingsComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/rankings/rankings/rankings.component';
 import { ReportesComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/reportes/reportes.component';
 import { VerTransaccionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ver-transaccion/ver-transaccion.component';
-
+import { VerLinksComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/ver-links/ver-links.component';
 
 // Créditos
 import { DashboardCreditosComponent } from './Pages/Creditos/dashboard-creditos/dashboard-creditos.component';
@@ -116,10 +116,6 @@ import { DashboardServiciosComponent } from './Pages/Servicios/dashboard-servici
 import { DashboardVentasComponent } from './Pages/Ventas/dashboard-ventas/dashboard-ventas.component';
 import { ProcesoVentasComponent } from './Pages/Ventas/componentesVentas/proceso-ventas/proceso-ventas.component';
 import { MostrarInformacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/mostrar-informacion/mostrar-informacion.component';
-
-
-
-
 
 
 const routes: Routes = [
@@ -312,11 +308,10 @@ const routes: Routes = [
         path: 'mostrar-informacion',
         component: MostrarInformacionComponent
       },
-      // {
-      //   path: 'ver-link',
-      //   component: MostrarInformacionComponent
-      // },
-
+      {
+        path: 'ver-links',
+        component: VerLinksComponent
+      },
     ],
   },
 

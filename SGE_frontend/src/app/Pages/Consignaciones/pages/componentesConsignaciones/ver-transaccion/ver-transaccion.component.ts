@@ -41,7 +41,7 @@ export class VerTransaccionComponent implements OnInit {
 
     const filtroParaBackend = {
       ...this.filtro,
-      page: this.filtro.page - 1
+      page: this.filtro.page 
     };
 
     console.log('Enviando al backend:', filtroParaBackend);
@@ -73,7 +73,7 @@ export class VerTransaccionComponent implements OnInit {
       return;
     }
 
-    this.filtro.page = 0;
+    this.filtro.page = 1;
     this.getTransactions();
   }
 

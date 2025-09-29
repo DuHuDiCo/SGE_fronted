@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { WompiService } from 'src/app/Services/Consignaciones/Wompi/wompi.service'; 
-import Swal from 'sweetalert2'; 
+import { WompiService } from 'src/app/Services/Consignaciones/Wompi/wompi.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-mostrar-informacion',
@@ -11,27 +11,21 @@ import Swal from 'sweetalert2';
 export class MostrarInformacionComponent implements OnInit {
 
   datosUsuario: any = null;
-  precioamount_in_cents: number | null = null;         
-  clienteEstablece: boolean = false;     
-  totalTexto: string = 'Total a cobrar: COP $0'; 
+  precioamount_in_cents: number | null = null;
+  clienteEstablece: boolean = false;
+  totalTexto: string = 'Total a cobrar: COP $0';
   linkPago: string = '';
   precioMostrar: string = '0.00';
+  valorEditable: boolean = false;
 
-
-
-  /**
-   * Constructor
-   * @param router: Router de Angular para navegación
-   * @param wompiService: Servicio para interactuar con la API de Wompi/backend
-   */
-  constructor(private router: Router, private wompiService: WompiService, ) {
-
+  constructor(private router: Router, private wompiService: WompiService) {
     const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state && navigation.extras.state['datosUsuario']) {
-      this.datosUsuario = navigation.extras.state['datosUsuario'];
-
-     
-      this.linkPago = this.datosUsuario.linkPago;
+    if (navigation?.extras.state) {
+      this.datosUsuario = navigation.extras.state['datosUsuario'] || null;
+      this.valorEditable = navigation.extras.state['valorEditable'] || false;
+      this.linkPago = this.datosUsuario?.linkPago || '';
+      console.log(" Datos recibidos:", this.datosUsuario);
+      console.log(" Link recibido:", this.linkPago);
     }
   }
 
@@ -40,13 +34,10 @@ export class MostrarInformacionComponent implements OnInit {
       this.router.navigate(['dashboard-consignaciones/crear-link']);
     } else {
       this.actualizarTotal();
-      // this.verificarEstadoLink(); 
     }
   }
 
-  
   actualizarTotal(): void {
-     
     this.precioamount_in_cents = this.datosUsuario.amount_in_cents ?? null;
 
     if (this.precioamount_in_cents !== null) {
@@ -70,6 +61,14 @@ export class MostrarInformacionComponent implements OnInit {
   }
 
   copiarLink(): void {
+    if (!this.linkPago) {
+      Swal.fire({ 
+        icon: 'warning',
+        title: 'Atención', 
+        text: 'No hay link para copiar' });
+      return;
+    }
+
     navigator.clipboard.writeText(this.linkPago).then(() => {
       Swal.fire({
         icon: 'success',
@@ -88,6 +87,7 @@ export class MostrarInformacionComponent implements OnInit {
       });
     });
   }
+
 
   // desactivarLink(): void {
   //   if (!this.linkPago) return;

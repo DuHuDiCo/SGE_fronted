@@ -16,7 +16,7 @@ export class CrearLinkComponent {
     single_use: true,
     collect_shipping: true,
     currency: 'COP',
-    amount_in_cents: 0, // el usuario lo escribe en pesos normales
+    amount_in_cents: 0 
   };
   valorEditable: boolean = false;
 
@@ -26,14 +26,15 @@ export class CrearLinkComponent {
   generarLink() {
     if (!this.validarCampos()) return;
 
-    this.datos.amount_in_cents = this.datos.amount_in_cents * 100
-    console.log("Enviando al backend:", this.datos);
+    this.datos.amount_in_cents = this.datos.amount_in_cents * 100;
+    console.log(" Enviando al backend:", this.datos);
 
     this.http.post<any>('http://192.168.1.241:8025/api/v1/wompi/payment_links', this.datos)
       .subscribe({
         next: (respuesta) => {
+          console.log(" Respuesta backend:", respuesta);
 
-          console.log(respuesta);
+          const linkGenerado = respuesta?.payment_link;
 
           Swal.fire({
             icon: 'success',
@@ -41,14 +42,16 @@ export class CrearLinkComponent {
           }).then(() => {
             this.router.navigate(['dashboard-consignaciones/mostrar-informacion'], {
               state: {
-                datosUsuario: this.datos,
-                linkPago: respuesta.linkGenerado,
+                datosUsuario: {
+                  ...this.datos,
+                  linkPago: linkGenerado   
+                },
                 valorEditable: this.valorEditable
               }
             });
           });
         },
-        error: () => {
+        error: (err) => {
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -56,8 +59,7 @@ export class CrearLinkComponent {
           });
         }
       });
-  } 
-  
+  }
 
   private validarCampos(): boolean {
     if (!this.datos.name.trim()) {
@@ -98,7 +100,6 @@ export class CrearLinkComponent {
       return false;
     }
 
-
     return true;
   }
 
@@ -117,5 +118,4 @@ export class CrearLinkComponent {
     };
     this.valorEditable = false;
   }
-  
 }

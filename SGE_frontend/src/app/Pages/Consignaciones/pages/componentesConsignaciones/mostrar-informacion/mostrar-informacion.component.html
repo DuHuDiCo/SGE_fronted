@@ -74,23 +74,22 @@
         <button class="btn btn-success btn-sm" (click)="copiarLink()">Copiar al portapapeles</button>
       </div>
 
-      <div class="qr-box my-3">
+
+      <div class="qr-box my-3" *ngIf="linkPago">
         <qrcode [qrdata]="linkPago" [width]="200" [errorCorrectionLevel]="'M'"></qrcode>
       </div>
-    </div>
-  </div>
-</div>
 
-<!-- Botones -->
-<div class="formulario mt-4">
-  <div class="contenedor-crear">
-    <button type="button" class="guardar boton-centro" (click)="volver()">Volver a Crear Link</button>
-  </div>
-</div>
 
-<!-- Si no hay datos -->
-<div *ngIf="!datosUsuario" class="error text-center">
-  <h2>Error</h2>
-  <p>No se encontró información del usuario.</p>
-  <button class="guardar" (click)="volver()">Ir a Crear Link</button>
-</div>
+      <!-- Botones -->
+      <div class="formulario mt-4">
+        <div class="contenedor-crear">
+          <button type="button" class="guardar boton-centro" (click)="volver()">Volver a Crear Link</button>
+        </div>
+      </div>
+
+      <!-- Si no hay datos -->
+      <div *ngIf="!datosUsuario" class="error text-center">
+        <h2>Error</h2>
+        <p>No se encontró información del usuario.</p>
+        <button class="guardar" (click)="volver()">Ir a Crear Link</button>
+      </div>
