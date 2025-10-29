@@ -39,25 +39,40 @@
           <th>#</th>
           <th>Fecha Inicio</th>
           <th>Fecha Final</th>
+          <th>Valor</th>
+          <th>Referencia</th>
+          <th>Estado</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let c of transacciones; let i = index; trackBy: trackById">
+        <tr *ngFor="let c of transacciones; let i = index; trackBy: trackById" (click)="verDetalles(c)"
+          style="cursor: pointer;">
           <th scope="row">
             {{ i + 1 + ((filtro.page - 1) * filtro.size) }}
           </th>
+          <td>{{ c.created_at | date: 'dd/MM/yyyy hh:mm a' }}</td>
+
+          <td>{{ c.finalized_at | date: 'dd/MM/yyyy hh:mm a' }}</td>
+
+          <td>{{ c.amount_in_cents / 100 | currency:'COP' }}</td>
+
+
+          <td>{{ c.reference}}</td>
+
           <td>
-            {{ c.fechaInicio ? (c.fechaInicio | date: 'dd/MM/yyyy') : 'Sin fecha' }}
-          </td>
-          <td>
-            {{ c.fechaFin ? (c.fechaFin | date: 'dd/MM/yyyy') : 'Sin fecha' }}
+            <div class="alert mb-0 py-1 text-center" [ngClass]="{
+              'alert-success': c.status === 'APPROVED',
+              'alert-danger': c.status === 'DECLINED',
+              'alert-warning': c.status === 'VOIDED'
+              }" role="alert">
+              {{ traducirEstado(c.status) }}
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Mensaje cuando no hay resultados -->
   <div *ngIf="!spinner && transacciones.length === 0" class="text-center mt-4">
     <p>No se encontraron transacciones en este rango de fechas.</p>
   </div>

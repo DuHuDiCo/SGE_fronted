@@ -170,3 +170,11 @@
   color: #333;
 }
 
+.usuarioMoneda{
+    border-radius: 25px;
+    text-align: center;
+    width: 100%;
+    margin: 10px auto;
+    background: #ecf0f3;
+}
+

@@ -144,6 +144,9 @@ import { ProcesoVentasComponent } from './Pages/Ventas/componentesVentas/proceso
 import { SidebarVentasComponent } from './Pages/Ventas/componentesVentas/sidebar-ventas/sidebar-ventas.component';
 
 import { AgregarClienteModule } from './moduls/agregar-cliente/agregar-cliente.module';
+import { DetallesPagoComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/detalles-pago/detalles-pago.component';
+
+
 
 
 
@@ -249,7 +252,8 @@ import { AgregarClienteModule } from './moduls/agregar-cliente/agregar-cliente.m
     CrearLinkComponent,
     VerTransaccionComponent,
     MostrarInformacionComponent,
-    VerLinksComponent
+    VerLinksComponent,
+    DetallesPagoComponent
   ],
 
   imports: [

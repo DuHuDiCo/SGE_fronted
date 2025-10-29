@@ -116,6 +116,7 @@ import { DashboardServiciosComponent } from './Pages/Servicios/dashboard-servici
 import { DashboardVentasComponent } from './Pages/Ventas/dashboard-ventas/dashboard-ventas.component';
 import { ProcesoVentasComponent } from './Pages/Ventas/componentesVentas/proceso-ventas/proceso-ventas.component';
 import { MostrarInformacionComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/mostrar-informacion/mostrar-informacion.component';
+import { DetallesPagoComponent } from './Pages/Consignaciones/pages/componentesConsignaciones/detalles-pago/detalles-pago.component';
 
 
 const routes: Routes = [
@@ -312,6 +313,10 @@ const routes: Routes = [
         path: 'ver-links',
         component: VerLinksComponent
       },
+      {
+        path: 'detalles-pago',
+        component: DetallesPagoComponent
+      }
     ],
   },
 

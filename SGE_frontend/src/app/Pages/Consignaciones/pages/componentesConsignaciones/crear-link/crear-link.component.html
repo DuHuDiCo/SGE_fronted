@@ -20,15 +20,18 @@
       <textarea [(ngModel)]="datos.description" name="descripcion" id="descripcion" class="input-usuario"
         placeholder="Escribe una descripción" rows="3"></textarea>
     </div>
-  </div>
+    </div>
+  
 
    <!-- Moneda -->
-<div class="form-group mt-3">
-  <label for="currency"><strong>Moneda:</strong></label>
-  <select [(ngModel)]="datos.currency" name="currency" id="currency" class="form-select">
-    <option value="COP">COP - Peso colombiano</option>
-  </select>
-</div>
+  <div class="form-group mt-3">
+    <div class="usuarioMoneda">
+      <label for="currency"><strong>Moneda:</strong></label>
+      <select [(ngModel)]="datos.currency" name="currency" id="currency" class="form-select">
+      <option value="COP">COP - Peso colombiano</option>
+      </select>
+    </div>  
+  </div>
 
   <!-- Precio -->
   <div class="form-group">

@@ -58,7 +58,9 @@ export class SidebarConsignacionesComponent implements OnInit {
     // 22
     "CONFIGURACIONES",
     // 23
-    "INFORMES"
+    "INFORMES",
+    //24
+    "VER WOMPI"
   ]
 
   ngOnInit(): void {

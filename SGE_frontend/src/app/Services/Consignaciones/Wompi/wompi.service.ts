@@ -6,14 +6,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class WompiService {
+
   private apiUrl = 'http://192.168.1.241:8025/api/v1/wompi';
 
   constructor(private http: HttpClient) {}
 
+  //  Crear link de pago
   crearLink(datos: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/payment_links`, datos); 
   }
 
+  // Consultar transacciones
   getTransactions(filtro: any): Observable<any> {
     let params = new HttpParams()
       .set('page', filtro.page)
@@ -29,14 +32,16 @@ export class WompiService {
 
     return this.http.get<any>(`${this.apiUrl}/transactions`, { params });
   }
+
+  //   Desactivar link (cuando el usuario lo desactiva manualmente)
+  desactivarLink(id: string): Observable<any> {
+    const payload = { payment_link_id: id, active: false };
+    console.log(' Desactivando link:', payload);
+    return this.http.patch(`${this.apiUrl}/payment_links/active`, payload);
+  }
+
+  // //   Consultar el estado actual del link
+  // estadoLink(id: string): Observable<any> {
+  //   return this.http.get(`${this.apiUrl}/payment_link/${id}`);
+  // }
 }
-
-  // desactivarLink(link: string): Observable<any> {
-  //   return this.http.post(`${this.apiUrl} `, { link }); //falta ver como se llaman en el backend 
-  // }
-
-  // estadoLink(link: string): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}${link}`); //no estoy seguro si esta en el backend 
-  // }
-
-

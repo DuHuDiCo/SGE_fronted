@@ -16,35 +16,50 @@ export class CrearLinkComponent {
     single_use: true,
     collect_shipping: true,
     currency: 'COP',
-    amount_in_cents: 0 
+    amount_in_cents: 0,
   };
+
   valorEditable: boolean = false;
 
   constructor(
-    private router: Router, private http: HttpClient) { }
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
-  generarLink() {
+  /**
+   * Genera el link de pago llamando directamente al backend
+   */
+  generarLink(): void {
     if (!this.validarCampos()) return;
 
+    // Convertir a centavos antes de enviar
     this.datos.amount_in_cents = this.datos.amount_in_cents * 100;
-    console.log(" Enviando al backend:", this.datos);
+    console.log("Enviando al backend:", this.datos);
 
     this.http.post<any>('http://192.168.1.241:8025/api/v1/wompi/payment_links', this.datos)
       .subscribe({
         next: (respuesta) => {
-          console.log(" Respuesta backend:", respuesta);
+          console.log(" Respuesta del backend:", respuesta);
 
           const linkGenerado = respuesta?.payment_link;
+          const id = linkGenerado?.id;
+          const active = linkGenerado?.active;
+
+          //  Llamamos al método para devolver los datos al backend
+          
 
           Swal.fire({
             icon: 'success',
             title: 'Link generado correctamente',
           }).then(() => {
+            // Navegamos al componente de mostrar información
             this.router.navigate(['dashboard-consignaciones/mostrar-informacion'], {
               state: {
                 datosUsuario: {
                   ...this.datos,
-                  linkPago: linkGenerado   
+                  id,
+                  active,
+                  linkPago: linkGenerado
                 },
                 valorEditable: this.valorEditable
               }
@@ -52,6 +67,7 @@ export class CrearLinkComponent {
           });
         },
         error: (err) => {
+          console.error(" Error al crear el link:", err);
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -61,6 +77,32 @@ export class CrearLinkComponent {
       });
   }
 
+  /**
+   *  Envía al backend los datos del link generado (id + estado)
+  //  */
+  // devolverDatos(id: string, active: boolean ): void {
+  //   const payload = { id, active };
+  //   console.log(" Devolviendo al backend:", payload);
+
+  //   this.http.patch('http://192.168.1.241:8025/api/v1/wompi/payment_link_id', payload)
+  //     .subscribe({
+  //       next: (resp) => {
+  //         console.log(" Datos devueltos correctamente:", resp);
+  //       },
+  //       error: (err) => {
+  //         console.error(" Error al devolver los datos:", err);
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: 'Error',
+  //           text: 'No se pudo enviar la información del link al backend'
+  //         });
+  //       }
+  //     });
+  // }
+
+  /**
+   *  Validación de campos antes de enviar
+   */
   private validarCampos(): boolean {
     if (!this.datos.name.trim()) {
       Swal.fire({
@@ -107,7 +149,7 @@ export class CrearLinkComponent {
     return this.datos.amount_in_cents || 0;
   }
 
-  limpiar() {
+  limpiar(): void {
     this.datos = {
       name: '',
       description: '',

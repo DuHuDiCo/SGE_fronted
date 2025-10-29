@@ -36,13 +36,15 @@
         <div class="line-border-vertical"></div>
 
         <div class="lado">
-          <p>
-            <strong>Estado del link:</strong><br>
-            <span [ngClass]="{'text-success': datosUsuario.linkActivo, 'text-danger': !datosUsuario.linkActivo}">
-              {{ datosUsuario.linkActivo ? 'Activo' : 'Inactivo' }}
+           <p><strong>Estado del link:</strong><br>
+            <span [ngClass]="{ 
+              'text-success': datosUsuario?.data?.active,
+              'text-danger': !datosUsuario?.data?.active
+              }">
+              {{ datosUsuario?.data?.active ? 'Activo' : 'Inactivo' }}
             </span>
-          </p>
-        </div>
+           </p>
+          </div>
       </div>
 
       <div class="content-card-vertical">
@@ -58,7 +60,7 @@
       </div>
 
       <div class="contenedor-crear mt-3">
-        <button class="guardar boton-izquierda">
+        <button class="guardar boton-izquierda" (click)="desactivarLink()">
           Desactivar link
         </button>
       </div>

@@ -36,11 +36,14 @@
                 </ul>
             </div>
         </li>
-        <li class="mb-1">
-            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
-                data-bs-target="#collapseWompi" aria-expanded="false">
-                <i class="fas fa-sort-down"></i>&nbsp; Wompi
-            </button>
+        <li class="mb-1" *appConsignacionesDirective="permisos[24]">
+            <div >
+                <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
+                    data-bs-target="#collapseWompi" aria-expanded="false">
+                    <i class="fas fa-sort-down"></i>&nbsp; Wompi
+                </button>
+            </div>
+
 
             <div class="collapse" id="collapseWompi">
                 <ul class="list-unstyled fw-normal pb-1 small">

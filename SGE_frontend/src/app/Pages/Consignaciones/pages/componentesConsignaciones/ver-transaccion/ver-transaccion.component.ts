@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WompiService } from 'src/app/Services/Consignaciones/Wompi/wompi.service';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-ver-transaccion',
@@ -20,7 +20,7 @@ export class VerTransaccionComponent implements OnInit {
   spinner: boolean = false;
   transacciones: any[] = [];
 
-  constructor(private wompi: WompiService) { }
+  constructor(private wompi: WompiService, private router: Router) {}
 
   ngOnInit(): void {
     this.setDefaultDates();
@@ -32,42 +32,67 @@ export class VerTransaccionComponent implements OnInit {
     const primerDia = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
     const ultimoDia = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
 
-    this.filtro.dateInicio = formatDate(primerDia, 'yyyy-MM-dd', 'en-US');
-    this.filtro.dateFin    = formatDate(ultimoDia, 'yyyy-MM-dd', 'en-US');
+    this.filtro.dateInicio = primerDia.toISOString().split('T')[0];
+    this.filtro.dateFin = ultimoDia.toISOString().split('T')[0];
   }
 
   getTransactions() {
     this.spinner = true;
 
+    const inicio = `${this.filtro.dateInicio} 00:00:00.000000`;
+    const fin = `${this.filtro.dateFin} 23:59:59.999999`;
+
     const filtroParaBackend = {
-      ...this.filtro,
-      page: this.filtro.page 
+      dateInicio: inicio,
+      dateFin: fin,
+      page: this.filtro.page,
+      size: this.filtro.size
     };
 
     console.log('Enviando al backend:', filtroParaBackend);
 
     this.wompi.getTransactions(filtroParaBackend).subscribe({
       next: (resp: any) => {
-        this.transacciones = Array.isArray(resp.content) ? resp.content : [];
-        this.totalPaginas   = resp.totalPages || 0;
-        this.spinner        = false;
+        console.log('Respuesta del backend:', resp);
+
+        this.transacciones = Array.isArray(resp.data)
+          ? resp.data.map((t: any) => ({
+              ...t,
+              from_date: t.from_date ? t.from_date.replace(' ', 'T') : null,
+              until_date: t.until_date ? t.until_date.replace(' ', 'T') : null
+            }))
+          : [];
+
+        this.totalPaginas = resp.meta
+          ? Math.ceil(resp.meta.total_results / this.filtro.size)
+          : 1;
+
+        this.spinner = false;
       },
       error: (err) => {
-        this.spinner        = false;
-        this.transacciones  = [];
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Error cargando transacciones'
-        });
+        this.spinner = false;
+        this.transacciones = [];
+        console.error('Error desde backend:', err);
       }
     });
   }
 
+  traducirEstado(estado: string): string {
+    switch (estado) {
+      case 'APPROVED':
+        return 'APROBADO';
+      case 'DECLINED':
+        return 'RECHAZADO';
+      case 'VOIDED':
+        return 'TRANSACCIÓN ANULADA';
+      default:
+        return estado;
+    }
+  }
+
   aplicarFiltro() {
-    
     const inicio = new Date(this.filtro.dateInicio);
-    const fin    = new Date(this.filtro.dateFin);
+    const fin = new Date(this.filtro.dateFin);
     if (fin < inicio) {
       Swal.fire('Error', 'La fecha final debe ser posterior o igual a la fecha inicio', 'error');
       return;
@@ -83,6 +108,12 @@ export class VerTransaccionComponent implements OnInit {
     this.filtro.page = page;
     this.getTransactions();
   }
+
+  verDetalles(transaccion: any): void {
+  
+  this.router.navigate(['/dashboard-consignaciones/detalles-pago'], { state: { transaccion } });
+ 
+} 
 
   trackById(index: number, item: any) {
     return item.id ?? index;

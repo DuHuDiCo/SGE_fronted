@@ -89,6 +89,7 @@ export class ConsultasComponent implements OnInit {
     "VERIFICACION CARTERA",
     // 26
     "CONSULTAR CONCILIADOS"
+   
   ]
   idActualizaciones: number[] = []
   btnEliminar: boolean = true
