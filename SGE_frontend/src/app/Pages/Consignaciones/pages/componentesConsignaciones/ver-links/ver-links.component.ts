@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { WompiService } from 'src/app/Services/Consignaciones/Wompi/wompi.service';
+import baseUrl from 'src/app/utils/helper';
 
 interface Link {
   payment_link: string;
@@ -33,7 +34,7 @@ export class VerLinksComponent implements OnInit {
 
   cargarLinks() {
     this.spinner = true;
-    this.http.get<Link[]>('http://192.168.1.241:8025/api/v1/wompi/payment_links')
+    this.http.get<Link[]>(`${baseUrl}/wompi/payment_links`)
       .subscribe({
         next: (data) => {
           console.log(" Respuesta backend:", data);

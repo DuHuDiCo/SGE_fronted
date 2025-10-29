@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import baseUrl from 'src/app/utils/helper';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WompiService {
 
-  private apiUrl = 'http://192.168.1.241:8025/api/v1/wompi';
+  private apiUrl = `${baseUrl}/api/v1/wompi`;
 
   constructor(private http: HttpClient) {}
 
