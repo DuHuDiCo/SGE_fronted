@@ -9,7 +9,7 @@ export class ObligacionesService {
 
   constructor(private http:HttpClient) { }
 
-  url = 'http://192.168.1.241:8006/api/v1/cartera'
+  url = `${baseUrl}/api/v1/cartera`
 
   // METODOS ESTADO
 

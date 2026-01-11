@@ -36,6 +36,39 @@
                 </ul>
             </div>
         </li>
+        <li class="mb-1" *appConsignacionesDirective="permisos[24]">
+            <div >
+                <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
+                    data-bs-target="#collapseWompi" aria-expanded="false">
+                    <i class="fas fa-sort-down"></i>&nbsp; Wompi
+                </button>
+            </div>
+
+
+            <div class="collapse" id="collapseWompi">
+                <ul class="list-unstyled fw-normal pb-1 small">
+                    <li>
+                        <button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/crear-link">
+                            <i class="fas fa-link"></i>&nbsp; Crear Link
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/ver-transaccion">
+                            <i class="fas fa-credit-card"></i>&nbsp; Ver Transacción
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-link active" aria-current="page"
+                            routerLink="/dashboard-consignaciones/ver-links">
+                            <i class="fas fa-credit-card"></i>&nbsp; Ver Links
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
     </ul>
     <hr style="color: white;">
     <ul class="nav flex-column" *appConsignacionesDirective="permisos[22]">
@@ -105,7 +138,6 @@
 
             <div class="collapse" id="getting-started-collapse-i" data-bs-dismiss="offcanvas">
                 <ul class="list-unstyled fw-normal pb-1 small">
-                    <!--<li> <button class="nav-link active" aria-current="page"routerLink="/dashboard-consignaciones/ingresar"><i class="fas fa-pen"></i>&nbsp; xxx</button></li> !/-->
 
                     <li><button class="nav-link active" aria-current="page"
                             routerLink="/dashboard-consignaciones/consultar"><i class="fas fa-search"></i>
@@ -125,9 +157,5 @@
             <button (click)="logout()" class="nav-link active" aria-current="page"><i
                     class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</button>
         </li>
-
     </ul>
-
-
-
 </div>

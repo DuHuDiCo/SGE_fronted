@@ -1,0 +1,104 @@
+<div class="caja">
+  <h1 class="titulo">Ver Transacciones</h1><br>
+
+  <!-- Filtros -->
+  <header class="box">
+    <div class="row">
+      <div class="col-md-3 col-12 mb-2">
+        <label for="fechaInicio">Fecha Inicio</label>
+        <input id="fechaInicio" [(ngModel)]="filtro.dateInicio" type="date" class="form-control"
+          placeholder="Fecha inicio" [disabled]="spinner">
+      </div>
+
+      <div class="col-md-3 col-12 mb-2">
+        <label for="fechaFin">Fecha Fin</label>
+        <input id="fechaFin" [(ngModel)]="filtro.dateFin" type="date" class="form-control" placeholder="Fecha fin"
+          [disabled]="spinner">
+      </div>
+
+      <div class="col-md-3 col-12 mb-2">
+        <button class="guardar" (click)="aplicarFiltro()" [disabled]="spinner">
+          Filtrar
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Spinner -->
+  <div *ngIf="spinner" class="text-center">
+    <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; color: #960010;">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <!-- Tabla de transacciones -->
+  <div *ngIf="!spinner && transacciones.length > 0" class="table-responsive text-center">
+    <table class="table table-bordered align-middle text-center">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Final</th>
+          <th>Valor</th>
+          <th>Referencia</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of transacciones; let i = index; trackBy: trackById" (click)="verDetalles(c)"
+          style="cursor: pointer;">
+          <th scope="row">
+            {{ i + 1 + ((filtro.page - 1) * filtro.size) }}
+          </th>
+          <td>{{ c.created_at | date: 'dd/MM/yyyy hh:mm a' }}</td>
+
+          <td>{{ c.finalized_at | date: 'dd/MM/yyyy hh:mm a' }}</td>
+
+          <td>{{ c.amount_in_cents / 100 | currency:'COP' }}</td>
+
+
+          <td>{{ c.reference}}</td>
+
+          <td>
+            <div class="alert mb-0 py-1 text-center" [ngClass]="{
+              'alert-success': c.status === 'APPROVED',
+              'alert-danger': c.status === 'DECLINED',
+              'alert-warning': c.status === 'VOIDED'
+              }" role="alert">
+              {{ traducirEstado(c.status) }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!spinner && transacciones.length === 0" class="text-center mt-4">
+    <p>No se encontraron transacciones en este rango de fechas.</p>
+  </div>
+</div>
+
+<!-- Paginación compacta -->
+<div class="d-flex justify-content-center mt-3 paginacion">
+  <button class="btn btn-paginacion" (click)="cambiarPagina(filtro.page - 1)" [disabled]="spinner || filtro.page === 1">
+    Anterior
+  </button>
+
+  <div class="dropdown mx-2">
+    <button class="btn btn-paginacion dropdown-toggle" type="button" data-bs-toggle="dropdown" [disabled]="spinner">
+      {{ filtro.page }}/{{ totalPaginas }}
+    </button>
+    <ul class="dropdown-menu text-center">
+      <li *ngFor="let _ of [].constructor(totalPaginas); let idx = index">
+        <a class="dropdown-item" (click)="cambiarPagina(idx + 1)">
+          Página {{ idx + 1 }}
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <button class="btn btn-paginacion" (click)="cambiarPagina(filtro.page + 1)"
+    [disabled]="spinner || filtro.page === totalPaginas">
+    Siguiente
+  </button>
+</div>

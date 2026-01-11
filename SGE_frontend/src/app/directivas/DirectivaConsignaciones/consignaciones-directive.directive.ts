@@ -7,17 +7,25 @@ import { ROLES, Roles } from 'src/app/Types/Roles';
 })
 export class ConsignacionesDirectiveDirective implements OnInit {
 
-  permiso:string = ''
+  permiso: string = ''
 
-  constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private authService:AuthenticationService) { }
+  constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private authService: AuthenticationService) { }
 
   ngOnInit(): void {
-    var rol = this.authService.getRolesP()
+    var roles = this.authService.getRoles()
     
-    if(rol != null || rol != undefined){
+    if (roles != null || roles != undefined) {
+      var rol = roles.find((r: any) => r.rol == ROLES.Administration)
       
-      var permisoObtenido = rol.permisos.find((p:any) => p.permiso == this.permiso)
-      if(permisoObtenido != null || permisoObtenido != undefined){
+      if (rol) {
+        this.viewContainer.createEmbeddedView(this.templateRef);
+        return;
+      }
+
+
+      var rolCosig = roles.find((r: any) => r.rol == ROLES.Consignaciones)
+      var permisoObtenido = rolCosig.permisos.find((p: any) => p.permiso == this.permiso)
+      if (permisoObtenido != null || permisoObtenido != undefined) {
         this.viewContainer.createEmbeddedView(this.templateRef);
       }
     }
