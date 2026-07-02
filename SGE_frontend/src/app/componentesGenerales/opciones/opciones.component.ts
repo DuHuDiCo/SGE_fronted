@@ -35,4 +35,8 @@ export class OpcionesComponent implements OnInit {
     window.location.reload()
   }
 
+  irACreditos(): void {
+    window.location.assign('/creditos/');
+  }
+
 }
