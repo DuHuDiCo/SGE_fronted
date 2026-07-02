@@ -36,7 +36,8 @@ export class OpcionesComponent implements OnInit {
   }
 
   irACreditos(): void {
-    window.location.assign('/creditos/');
+    window.location.href = window.location.origin + '/creditos/';
   }
 
 }
+ 
