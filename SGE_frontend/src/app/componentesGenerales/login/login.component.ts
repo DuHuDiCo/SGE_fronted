@@ -59,6 +59,19 @@ export class LoginComponent implements OnInit {
             this.authentication.setFecha(data.ultimaSesion)
             this.router.navigate(['opciones'])
             this.inicioSesion = false
+
+            const sessionInfo = {
+              sede: data.sede,
+              username: data.username,
+              roles: data.roles,
+              token: data.token,
+              ultimaSesion: data.ultimaSesion,
+            };
+
+            localStorage.setItem('sessionData', JSON.stringify(sessionInfo));
+
+
+            console.log(' Datos de inicio de sesión guardados:', sessionInfo);
           },
           (error: any) => {
             Swal.fire({
