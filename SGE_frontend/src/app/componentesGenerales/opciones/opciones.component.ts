@@ -20,7 +20,7 @@ export class OpcionesComponent implements OnInit {
 
   role =ROLES.Administration;
 
-  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST']
+  rolesArray: string[] = ['Cartera', 'Caja', 'Archivos', 'Ventas', 'Servicios', 'Consignaciones', 'SUPERADMINISTRADOR', 'SST', 'CREDITOS']
 
   
 
