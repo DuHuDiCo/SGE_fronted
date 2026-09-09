@@ -8,13 +8,19 @@ services:
     restart: unless-stopped
     # Sin "ports": no se publica nada en el host.
     # El proxy (Nginx Proxy Manager) alcanza el contenedor por la red interna
-    # apuntando a  http://sge-frontend:8010  (ver nginx.conf)
+    # apuntando a  http://sge-frontend:80  (ver nginx.conf)
     expose:
-      - "8010"
+      - "80"
     networks:
       - npm-network
     environment:
       TZ: America/Bogota
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:80/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     logging:
       driver: json-file
       options:
